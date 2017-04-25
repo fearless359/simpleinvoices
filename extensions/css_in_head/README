@@ -1,0 +1,12 @@
+This extension will put in the HTML head:
+
+The contents of templates/default/css/css-map.tpl, if exists, (exchanging {$csspath} for the path automatically.
+Otherwise if that file is not found, each css file in templates/default/css/ is linked as an external css.
+(The HTML head contains a hook name $hook_head_link that is used for the above.)
+(eg. All CSS files in extensions/abc/templates/default/css/ will be put in the HTML head, if the extension is enabled.)
+
+In each extension directory, if the current view css file exists within templates/default/ in the current module directory,
+that files's contents will be loaded into the HTML head as an inline style sheet.
+(The HTML head contains a hook name $hook_head_instyle that is used for the above.)
+(eg. The file extensions/abc/templates/default/xxx/yyy.css will be put inline in the HTML head, if the extension is enabled,
+and on the page "...index?module=xxx&view=yyy".)
