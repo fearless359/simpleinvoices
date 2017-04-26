@@ -116,6 +116,7 @@ try {
         echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode})";
         echo "</h1>";
     }
+	echo '<br /><h2><a href="tutorial/index.php">Installation help</a></h2>';//Suggest link to tutorial
     exit();
 }
 
