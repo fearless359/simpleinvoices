@@ -1,0 +1,30 @@
+$('.hideimgtog').click(function(){
+	$('img').toggle();
+});
+$('.hidedlimg').click(function(){
+	$('.dl').toggle();
+});
+$('.hideulimg').click(function(){
+	$('.ul').toggle();
+});
+$('.hidedbimg').click(function(){
+	$('.db').toggle();
+});
+$('.hidecfgimg').click(function(){
+	$('.cfg').toggle();
+});
+$('.hidebrimg').click(function(){
+	$('.br').toggle();
+});
+$('.hidecfgdimg').click(function(){
+	$('.cfgd').toggle();
+});
+$('.hidesamimg').click(function(){
+	$('.sam').toggle();
+});
+$('.hidesetimg').click(function(){
+	$('.set').toggle();
+});
+$('.hidenimg').click(function(){
+	$('.n').toggle();
+});
