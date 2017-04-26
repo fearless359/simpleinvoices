@@ -65,9 +65,17 @@ Here we'll just refer to "config.php" which may be your custom.config.php file.<
 <p>Sometimes mistakes can happen.</p>
 <p>If you omit the database name ("database.params.dbname"), this message will show,</p>
 <img src="{$path}/images/database/webSiteDBsettings.png" alt="webSiteDBsettings" class="er" /></li>
-<p>However if the specified database name can not be accessed
-(due to either unknown database, unknown database user or bad password for database user), this message will show,</p>
+<p>Here the Database host/server is unknown and can not be contacted, thus this error:</p>
+<img src="{$path}/images/error/wrongHost.png" alt="wrongHost" class="er" />
+<p>If the specified database name can not be accessed, this message will show,</p>
+<img src="{$path}/images/error/wrongHost.png" alt="wrongHost" class="er" />
+<p>If access is denied to the database, many settings could be wrong:
 <img src="{$path}/images/error/accessDeniedBadDb.png" alt="accessDeniedBadDb" class="er" />
+<p>(The database name is highlighted with an arrow. Most likey the user & password are correct; bad dbname.)</p>
+<img src="{$path}/images/error/wrongAccess.png" alt="wrongAccess" class="er" />
+<p>(The user/password combination is wrong, may be dbname is also wrong.)</p>
+<img src="{$path}/images/error/wrongHost.png" alt="wrongHost" class="er" />
+<p>(Database host/server is unknown and can not be contacted.)</p>
 
 
 <h3 id="Install">Install with Browser</h3>
