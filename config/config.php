@@ -12,6 +12,8 @@ database.params.password            = ''
 database.params.dbname              = simple_invoices
 database.params.port                = 3306
 
+smarty.debug 						= true
+
 authentication.enabled              = false
 authentication.http                 =
 
