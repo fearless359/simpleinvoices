@@ -1,27 +1,27 @@
 <?php
 /*
- * Script: ./extensions/css_in_head/include/init.php
- * 	Initialization
+ * Script: extensions/css_in_head/include/init.php
+ *	Initialization
  *
  * Authors:
- *	 git0matt@gmail.com
+ *	git0matt@gmail.com
  *
  * Last edited:
- * 	 2017-04-06
+ *	2017-04-26
  *
- * License:
- *	 GPL v2 or above
- *
- * Website:
- * 	http://www.simpleinvoices.org
+ * Designed for:
+ *	2017.2
  */
-global $ext_names;
+global $ext_names, $smarty;
 if (!isset($cihabs))
 {
 	$cihabs = realpath(dirname(__FILE__));
-	$cihrel = str_replace(dirname($_SERVER['PHP_SELF']), ".", dirname(strstr($cihabs, dirname($_SERVER['PHP_SELF'])))). '/';
+	//$cihrel = str_replace(dirname($_SERVER['PHP_SELF']), ".", dirname(strstr($cihabs, dirname($_SERVER['PHP_SELF'])))). '/';
+$cihrel = substr(str_replace(dirname($_SERVER['PHP_SELF']), "", dirname(strstr($cihabs, dirname($_SERVER['PHP_SELF'])))). '/', 1);
 	error_log('loading '. $cihrel. 'init.php |memory:'. memory_get_usage());
 	defined('SI_ABSROOT') || define('SI_ABSROOT', dirname(dirname(dirname(dirname(__FILE__)))));
+	$smarty->assign('header_tpl', $cihrel. 'templates/default/header.tpl');
+	//$smarty->assign('header_tpl', 'templates/default/header.tpl');
 
 	set_include_path(get_include_path() . PATH_SEPARATOR . "$cihabs/class");	// load classes on-demand
 }
@@ -38,7 +38,7 @@ foreach($ext_names as $ext)	// each enabled extension
 		//$smarty->assign('csspath', dirname($file));
 		$estyles = file_get_contents($file);
 		$estyles = str_replace('{$csspath}', dirname($file). '/', $estyles);
-error_log("YES: $estyles");
+//error_log("YES: $estyles");
 	} else {
 		$file = "extensions/$ext/templates/default/css";
 		if (file_exists($file))

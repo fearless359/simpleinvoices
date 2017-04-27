@@ -2,14 +2,14 @@
 {if isset($header_tpl) && $header_tpl}
 {include file=$header_tpl}
 {else}
-{include file=$path|cat:'../header.tpl'}
+{if file_exists($path|cat:'../header.tpl')}{include file=$path|cat:'../header.tpl'}{else}{if file_exists('templates/default/header.tpl')}{include file='templates/default/header.tpl'}{/if}{/if}
 {/if}
-{*if isset($smarty.capture.hook_auth_login_top) && *}{if $smarty.capture.hook_auth_login_top}{$smarty.capture.hook_auth_login_top}{/if}
+{if $smarty.capture.hook_auth_login_top}{$smarty.capture.hook_auth_login_top}{/if}
 	<div class="si_wrap">
 		<form action="" method="post" id="frmLogin" name="frmLogin">
-{*if isset($hook_auth_login_hidden) && *}{if $hook_auth_login_hidden}{$hook_auth_login_hidden}
+{if $hook_auth_login_hidden}{$hook_auth_login_hidden}
 {else}
-{*if isset($smarty.capture.hook_auth_login_hidden) && *}{if $smarty.capture.hook_auth_login_hidden}{$smarty.capture.hook_auth_login_hidden}{/if}
+{if $smarty.capture.hook_auth_login_hidden}{$smarty.capture.hook_auth_login_hidden}{/if}
 {/if}
 			<input type="hidden" name="action" value="login" />
 			<div class="si_box">
@@ -37,8 +37,7 @@
 		</form>
 	</div>
 	<div id="si_footer">
-{*if isset($smarty.capture.hook_auth_login_footer) && *}{if $smarty.capture.hook_auth_login_footer}
-{$smarty.capture.hook_auth_login_footer}
+{if $smarty.capture.hook_auth_login_footer}{$smarty.capture.hook_auth_login_footer}
 {else}
 		<div class="si_wrap">
 			<a href="http://www.simpleinvoices.org">{$LANG.powered_by}&nbsp;{$LANG.simple_invoices}</a>
