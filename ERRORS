@@ -1,4 +1,0 @@
-20170426
-TypeError: $(...).modal is not a function
- /~/index.php?module=auth&view=login:825
------------------
