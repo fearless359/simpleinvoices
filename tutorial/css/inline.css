@@ -1,0 +1,7 @@
+img {			display: block;	margin: 0 auto;	max-width:100%;	max-height:100%;	}
+.indent {		padding-left: 4%;	}
+.hideimg, 
+.hideimgtog {	color: #bbb;	padding: 0 1%;	border: 1px solid #bbb;	margin: 1%;	cursor: pointer;	display: block;	}
+h1, h2 {		border-bottom: 1px solid blue;	padding-top: 2%;	}
+h3 {			border-top: 1px solid #ccc;	text-decoration: underline;	width: 80%;	margin: auto;	padding: 1%;	}
+hr {			background-color: #ccc;	width: 80%;	margin: 1% auto;	}

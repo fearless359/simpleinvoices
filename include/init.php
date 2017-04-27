@@ -116,6 +116,7 @@ try {
         echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode})";
         echo "</h1>";
     }
+	echo '<br /><h2><a href="tutorial/index.php">Installation help</a></h2>';//Suggest link to tutorial
     exit();
 }
 
@@ -184,7 +185,10 @@ Zend_Date::setOptions(array('cache' => $cache)); // Active aussi pour Zend_Local
 $smarty = new Smarty();
 $smarty->assign("config_file_path", CONFIG_FILE_PATH);
 
-$smarty->debugging = false;
+if (isset($config->smarty->debug) && $config->smarty->debug)
+	$smarty->debugging = true;
+else
+	$smarty->debugging = false;
 $smarty->setConfigDir("config")
        ->setTemplateDir("templates")
        ->setCompileDir("tmp/template_c")

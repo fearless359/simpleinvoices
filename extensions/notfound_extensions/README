@@ -1,0 +1,2 @@
+Display a message for each enabled extension where it's directory is not found.
+Adds a link in the Settings menu, directly to Extensions.

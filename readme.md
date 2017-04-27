@@ -11,7 +11,7 @@ When cloning the repository use the `--recursive` option to ensure that Zend is 
 For Smarty 3 Release, Zend Framework is incorporated in the download.
 
 ## Downloads
-* Smarty 3 Release: [fearless359 SI Smarty 3](https://github.com/fearless359/simpleinvoices_smarty3/archive/si_z2.zip) (.zip)
+* Zend 2 Release: [fearless359 SI](https://github.com/fearless359/simpleinvoices_zend2/archive/master.zip) (.zip)
 * Bleeding Edge Code: [SI Git Master](http://github.com/simpleinvoices/simpleinvoices/archive/master.zip) (.zip)
 * Latest Beta Release: [2013.1 beta 8](https://github.com/simpleinvoices/simpleinvoices/archive/2013.1.beta.8.tar.gz) (tar.gz)
 * Latest Stable Release: [2011.1](http://download.simpleinvoices.org/simpleinvoices/downloads/simpleinvoices.2011.1.zip) (.zip)

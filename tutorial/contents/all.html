@@ -1,0 +1,194 @@
+<h1 id="Tutorial">Tutorial<h1>
+
+
+<h2 id="Installation">Installation</h2>
+
+
+<h3 id="Download">Download</h3>
+
+<small class="hidedlimg hideimg">show/hide all download images</small>
+
+<p>First you must download the application:</p>
+<p>I have chosen to download the <a href="https://github.com/fearless359/simpleinvoices">Fearless359 version</a> via Github.</p>
+<img src="{$path}/images/download/setDownload.png" alt="set download" class="dl" />
+<p>Then press the <a href="https://github.com/fearless359/simpleinvoices/archive/master.zip">Download</a> ZIP button</p>
+<img src="{$path}/images/download/download.png" alt="download" class="dl" />
+<p>Most browsers will give you the choice to save the file on your computer, or open it using a suitable program.
+(I used WinRar to open the archive and extract the files to my computer.)</p>
+
+
+<h3 id="Upload">Upload - optional</h3>
+
+<small class="hideulimg hideimg">show/hide all upload images</small>
+
+<p>If you plan to place the application on a network, an easy option is to use <a href="https://filezilla-project.org/">FileZilla</a> which will use FTP to upload the files.</p>
+<img src="{$path}/images/download/filezilla.png" alt="FileZilla" class="ul" />
+<p>This may take a while to complete.</p>
+
+
+<h3 id="Database">Database</h3>
+
+<small class="hidedbimg hideimg">show/hide all databse images</small>
+
+<p>You need a database for the application:</p>
+<ul>
+	<li>Login to your host - if appliable - and find the database host/server name (usually 'localhost')
+	<li>create a blank database
+		<img src="{$path}/images/database/makeNewDB.png" alt="makeNewDB" class="db" /></li>
+</ul>
+<p>(Enter the database details, yours will probably be different.)</p>
+<p>If you try to visit it in your browser, only a message will show - unless your database is configured link in the standard config file.</p>
+<img src="{$path}/images/database/webSiteDBsettings.png" alt="webSiteDBsettings" class="db" /></li>
+<p>So the next step is important.</p>
+
+
+<h3 id="Modify">Modify the config</h3>
+
+<small class="hidecfgimg hideimg">show/hide all config images</small>
+
+<p>Now you need to let the application how to connect to the database.<p>
+<p>It is suggested to copy the config.php file as custom.config.php and only make modifications in the custom file.
+(This is handy for sharing purposes, where the whole working application can be shared and not the custom file.)
+Here we'll just refer to "config.php" which may be your custom.config.php file.</p>
+<p>Load the config.php, within the config directory, into your text editor.</p>
+<img src="{$path}/images/install/config-php.png" alt="config-php" class="cfg" />
+<p>Change the "database.params..." to reflect you database configuration.
+(Most settings will not need to be changed, eg the port number is usually always 3306.)</p>
+<p>If you use FileZilla, a config prompt may appear.</p>
+<img src="{$path}/images/install/confirmFTP.png" alt="confirmFTP" class="cfg" />
+
+
+<h4 id="Errors">Errors that may occur</h4>
+
+<small class="hideerimg hideimg">show/hide all errors that may occur images</small>
+
+<p>Sometimes mistakes can happen.</p>
+<p>If you omit the database name ("database.params.dbname"), this message will show,</p>
+<img src="{$path}/images/database/webSiteDBsettings.png" alt="webSiteDBsettings" class="er" /></li>
+<p>Here the Database host/server is unknown and can not be contacted, thus this error:</p>
+<img src="{$path}/images/error/wrongHost.png" alt="wrongHost" class="er" />
+<p>If the specified database name can not be accessed, this message will show,</p>
+<img src="{$path}/images/error/wrongHost.png" alt="wrongHost" class="er" />
+<p>If access is denied to the database, many settings could be wrong:
+<img src="{$path}/images/error/accessDeniedBadDb.png" alt="accessDeniedBadDb" class="er" />
+<p>(The database name is highlighted with an arrow. Most likey the user & password are correct; bad dbname.)</p>
+<img src="{$path}/images/error/wrongAccess.png" alt="wrongAccess" class="er" />
+<p>(The user/password combination is wrong, may be dbname is also wrong.)</p>
+<img src="{$path}/images/error/wrongHost.png" alt="wrongHost" class="er" />
+<p>(Database host/server is unknown and can not be contacted.)</p>
+
+
+<h3 id="Install">Install with Browser</h3>
+
+<small class="hidebrimg hideimg">show/hide all browser install images</small>
+
+<p>Open your web browser and type the application url.
+(Usually it will be "http://", then your "database.params.host", then the instation directory - no need to put a file name.
+eg. http://localhost/simpleinvoices )</p>
+<p>The main installation screen should appear, like so</p>
+<img src="{$path}/images/install/start.png" alt="start" class="br" />
+<p>(I have blurred the database settings, because yours are most likely different.)</p>
+<br />
+<p>Next the essential data is put into the database.</p>
+<img src="{$path}/images/install/essentialData.png" alt="essentialData" class="br" />
+<p>Click 'Install Essential Data' button.</p>
+<p>Next you will be asked if you want sample data is put into the database.</p>
+<img src="{$path}/images/install/sampleData.png" alt="sampleData" class="br" />
+
+<p>If you choose to 'Start using SimpleInvoices', the initial screen, the dashboard will appear.</p>
+<div class="indent">
+	<img src="{$path}/images/install/sampleDataNo.png" alt="sampleDataNo" class="br" />
+</div>
+<p>&nbsp;</p>
+
+<h4 id="Initial">Initial items to configure:</h4>
+<small class="hidecfgdimg hideimg">show/hide all configure images</small>
+
+<div class="indent">
+	<img src="{$path}/images/setup/addNew.png" alt="addNew" class="cfgd" />
+
+	<p>Add an initial invoice biller (payee).</p>
+	<img src="{$path}/images/setup/addNewBiller.png" alt="addNewBiller" class="cfgd" />
+
+	<p>Add an initial Customer (payer).</p>
+	<img src="{$path}/images/setup/addNewCust.png" alt="addNewCust" class="cfgd" />
+
+	<p>Add an initial Product.</p>
+	<img src="{$path}/images/setup/addNewProd.png" alt="addNewProd" class="cfgd" />
+
+	<p>Add an initial Invoice.</p>
+	<img src="{$path}/images/setup/addNewInv.png" alt="addNewInv" class="cfgd" />
+
+	<p>Settings.</p>
+	<img src="{$path}/images/setup/doSettings.png" alt="doSettings" class="cfgd" />
+</div>
+<p>&nbsp;</p>
+
+<h4 id="Sample">Sample data installation</h4>
+<p>Otherwise if you install the sample data, it will display a message telling you it was done.</p>
+<small class="hidesamimg hideimg">show/hide all sample data images</small>
+
+<div class="indent">
+	<img src="{$path}/images/install/sampleDataYes.png" alt="sampleDataYes" class="sam" />
+	<img src="{$path}/images/install/sampleDataDone.png" alt="sampleDataDone" class="sam" />
+	<p>And the page will automatically bring the application to the list of invoices, in Money menu.</p>
+	<img src="{$path}/images/money-invoices.png" alt="money-invoices" class="sam" />
+</div>
+<p>&nbsp;</p>
+
+
+<h2 id="Set-up">Set-up</h2>
+
+
+<small class="hidesetimg hideimg">show/hide all set-up images</small>
+
+<p>Now you have at least one Biller, Customer, Product and have probably created an invoice.
+(May be you have also adjusted some settings.)</p>
+<p>If not <a href="#Initial">Click here to learn how to configure them</a>.</p>
+<p>So far, everything have been done under the demo user, as indicated on the top bar.</p>
+<img src="{$path}/images/setup/userName.png" alt="userName" class="set" />
+<p>That is fine if there is only one user and no passwords are required.
+Otherwise, create another user, on this screen.</p>
+<img src="{$path}/images/setup/addNewUser.png" alt="addNewUser" class="set" />
+<p>Also you need to tell simpleinvoices to use authentication.<p>
+<p>Load the config.php, within the config directory, into your text editor.</p>
+<img src="{$path}/images/install/config-php.png" alt="config-php" class="set" />
+<p>Change the "authentication.enabled" option to true.
+<p>When this option is saved and an application page is reload or navigated to, this screen will appear.</p>
+<img src="{$path}/images/login.png" alt="login" class="set" />
+<p>Also this will be displayed when the session times-out.</p>
+
+
+<h2 id="Notes">Notes</h2>
+
+
+<small class="hidenimg hideimg">show/hide all notes images</small>
+
+<p>The user's email address is used during login.</p>
+<img src="{$path}/images/setup/userEmail.png" alt="userEmail" class="n" />
+<br />
+<p>Each Biller can have a logo and they are stored in the templates/invoices/logos directory. Selection here,</p>
+<img src="{$path}/images/setup/addBillerLogo.png" alt="addBillerLogo" class="n" />
+<br />
+<p>Extensions are stored in the extensions directory.  The list can be viewed by selecting Extensions from Settings>Settings.</p>
+<img src="{$path}/images/setup/doExtensions.png" alt="doExtensions" class="n" />
+
+<p>Extensions can be regeristed if not regeristed, by clicking on the jigsaw piece.<p>
+<img src="{$path}/images/setup/clickToReg.png" alt="clickToReg" class="n" />
+<p>(Notice the right jigsaw piece becomes colored.)<p>
+<img src="{$path}/images/setup/extReg.png" alt="extReg" class="n" />
+
+<p>Extensions can be enabled if registered, by clicking on the switch.<p>
+<img src="{$path}/images/setup/clickToEn.png" alt="clickToEn" class="n" />
+<p>(Notice the lightbulb becomes colored.)<p>
+<img src="{$path}/images/setup/extEn.png" alt="extEn" class="n" />
+
+<p>Extensions can be unregeristed if registered, by clicking on the (delete) jigsaw piece.<p>
+<img src="{$path}/images/setup/clickToUnreg.png" alt="clickToUnreg" class="n" />
+<p>(Notice the right jigsaw piece looses color.)<p>
+
+<p>Extensions can be disabled if enabled, by clicking on the switch.<p>
+<img src="{$path}/images/setup/clickToDis.png" alt="clickToDis" class="n" />
+<p>(Notice the lightbulb looses color.)<p>
+
+<br />

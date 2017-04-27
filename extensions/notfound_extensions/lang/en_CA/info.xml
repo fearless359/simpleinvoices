@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<langfile version="1.0.0" type="language">
+	<name>English</name>
+	<shortname>en_CA</shortname>
+	<englishname>Canada</englishname>
+	<version>1.2.3</version>
+	<creationDate>2016-07-18</creationDate>
+	<author>Matt</author>
+	<authorEmail>git0matt@gmail.com</authorEmail>
+</langfile>

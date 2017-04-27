@@ -1,0 +1,5 @@
+Enhance the database backup experience
+
+By adding a manage existing backups list;
+Providing options to skip database tables;
+Present a nicer current backup output with statistics
