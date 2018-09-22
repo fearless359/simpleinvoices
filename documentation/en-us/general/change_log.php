@@ -13,12 +13,22 @@
   </div>
   <div id="left">
     <ul>
-        <li>2018-09-12 - <b>2017.4.0</b>
-            <ul>
-                <li><b>Production Release</b> Removed all deprecated uses of class name for the constructor
-                    and updated links for SI documentation to reference the new wiki site.</li>
-            </ul>
-        </li>
+      <li>2018-09-22 - <b>2018.0.0</b>
+        <ul>
+          <li><b>Production Release</b> Code brought current with PHP 7.2x requirements and all references
+                 to the SimpleInvoices forum and wiki have been updated to access the new Simple Invoices
+                 Group website and Fearless359 Simple Invoices Google+ forum.</li>
+          <li>Added a signature field to the si_biller table along with maintenance support to provide
+              text that will be automatically included in invoice and statement emails. This was an
+              extension and that extension has been removed.</li>
+        </ul>
+      </li>
+      <li>2018-09-12 - <b>2017.4.0</b>
+        <ul>
+          <li><b>Production Release</b> Removed all deprecated uses of class name for the constructor
+                 and updated links for SI documentation to reference the new wiki site.</li>
+        </ul>
+      </li>
       <li>2018-09-12 - <b>2017.3.0</b>
         <ul>
           <li><b>Production Release</b> Updated to support local.locale setting in the custom.config.php
@@ -296,8 +306,8 @@
       <li>NR +1 2008-02
         <ul>
           <li>Favicon.ico added</li>
-          <li>Port removed from the PDF url code as HTTP_HOST was already returning the port - Refer: https://simpleinvoices.group/forum/topic-post2339.html#post2339</li>
-          <li>Quick view page - Customer accounts section now calculting corrently</li>
+          <li>Port removed from the PDF url code as HTTP_HOST was already returning the port</li>
+          <li>Quick view page - Customer accounts section now calculating correctly</li>
           <li>Slovak translation added</li>
           <li>Latvian translation added</li>
           <li>Reports on WAMP problem fixed - https://simpleinvoices.group/forum/topic-449.html</li>
@@ -344,7 +354,7 @@
           <li>Updated PHPMailer to v2.10 Beta 1 for PHP5</li>
           <li>lang/en-gb/lang.php capitalised correctly</li>
           <li>Default Customer now shows up correctly on all add new invoice pages</li>
-          <li>Editing invoice with custom date format issue fixed : https://simpleinvoices.group/forum/topic-424.html</li>
+          <li>Editing invoice with custom date format issue fixed</li>
         </ul>
       </li>
     </ul>
@@ -457,7 +467,7 @@
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=58">Issue 58</a>Date format woes fixed</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=65">Issue 65</a>Invoice date: make editable</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=72">Issue 72</a>Sort not working correctly - fixed</li>
-          <li>Note: If your using authentification please read: <a href="https://simpleinvoices.group/wiki/doku.php?id=how_do_i_enable_authentification_ie_a_login_system_in_simple_invoices">https://simpleinvoices.group/wiki/doku.php?id=how_do_i_enable_authentification_ie_a_login_system_in_simple_invoices</a> as there have been changes</li>
+          <li>Note: If your using authentification please read: <a href="https://simpleinvoices.group/howto" target="_blank">Simple Invoices Knowledge Base HowTo Page</a> as there have been changes</li>
           <li>SQL Patches
             <ul>
               <li>Adding data to the custom fields table for invoice</li>

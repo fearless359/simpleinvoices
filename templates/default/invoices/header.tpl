@@ -6,7 +6,7 @@
  *   GPL v3 or above
  *
  * Website:
- *  https://simpleinvoices.group/doku.php?id=si_wiki:menu *}
+ *  https://simpleinvoices.group *}
   <input type="hidden" name="action" value="insert" />
   <div class="si_filters si_buttons_invoice_header">
     <span class="si_filters_links">

@@ -4,7 +4,7 @@
  * Rowley
  * Last edited: 2015-09-14
  * License: GPL v3
- * Website: https://simpleinvoices.group/doku.php?id=si_wiki:menu */
+ * Website: https://simpleinvoices.group */
 global $menu, $smarty;
 
 checkLogin();

@@ -8,7 +8,7 @@ error_log("in modules/invoices/template.php which isn't supposed to be used anym
 *	 GPL v3 or above
 *
 * Website:
-* 	https://simpleinvoices.group/doku.php?id=si_wiki:menu */
+* 	https://simpleinvoices.group */
 #define("BROWSE","browse");
 /*
  * 

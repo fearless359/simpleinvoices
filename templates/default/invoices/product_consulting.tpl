@@ -13,7 +13,7 @@
 *	 GPL v2 or above
 *
 * Website:
-*	https://simpleinvoices.group/doku.php?id=si_wiki:menu
+*	https://simpleinvoices.group
 */
 *}
 <form name="frmpost" action="index.php?module=invoices&amp;view=save" method="post" onsubmit="return frmpost_Validator(this);">

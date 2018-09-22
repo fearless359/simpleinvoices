@@ -13,7 +13,7 @@
  *     GPL v3
  *
  * Website:
- *     https://simpleinvoices.group/doku.php?id=si_wiki:menu */
+ *     https://simpleinvoices.group */
 global $db, $smarty;
 
 checkLogin();

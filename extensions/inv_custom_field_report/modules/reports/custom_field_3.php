@@ -14,7 +14,7 @@
  *      GPL v3 or later
  *
  *  Website:
- *      https://simpleinvoices.group/doku.php?id=si_wiki:menu */
+ *      https://simpleinvoices.group */
 global $menu, $pdoDb, $smarty;
 
 checkLogin ();

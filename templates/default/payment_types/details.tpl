@@ -6,7 +6,7 @@
  *      GPL v3 or above
  *
  *  Website:
- *      https://simpleinvoices.group/doku.php?id=si_wiki:menu *}
+ *      https://simpleinvoices.group *}
 {if $smarty.get.action == "view" }
 <div class="si_form si_form_view">
   <table>
