@@ -1,6 +1,6 @@
 ;<?php @header("location: ../index.php"); exit(0);?>
 ; SimpleInvoices configuration file
-; - refer https://simpleinvoices.group/config for all options
+; - refer https://simpleinvoices.group/installation for all options
 
 ; Production site configuration data
 [production]
@@ -24,8 +24,8 @@ export.pdf.rightmargin              = 15
 export.pdf.topmargin                = 15
 export.pdf.bottommargin             = 15
 
-version.name                        = 2017.4.0
-version.update_date                 = 20180916
+version.name                        = 2018.0.0
+version.update_date                 = 20180922
 
 local.locale                        = en_US
 local.precision                     = 2
