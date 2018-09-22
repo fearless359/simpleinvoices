@@ -31,6 +31,7 @@ $can_log = false;
 $can_chk_log = (LOGGING && (isset($auth_session->id) && $auth_session->id > 0) && getDefaultLoggingStatus());
 $can_log = $can_chk_log;
 unset($can_chk_log);
+
 /**
  * Establish the PDO connector to the database
  * @return PDO
@@ -47,10 +48,10 @@ function db_connector() {
     try {
         // @formatter:off
         $connlink = new PDO($dbInfo->getAdapter() . ':host=' . $dbInfo->getHost() .
-                                                   '; port=' . $dbInfo->getPort() .
-                                                 '; dbname=' . $dbInfo->getDbname(),
-                                                               $dbInfo->getUsername(),
-                                                               $dbInfo->getPassword());
+                                                        '; port=' . $dbInfo->getPort() .
+                                                      '; dbname=' . $dbInfo->getDbname(),
+                                                                    $dbInfo->getUsername(),
+                                                                    $dbInfo->getPassword());
         // @formatter:on
     } catch (PDOException $exception) {
         simpleInvoicesError("dbConnection", $exception->getMessage());
@@ -142,6 +143,7 @@ function dbQuery($sqlQuery) {
 /**
  * Log database modification entries in the si_log table.
  * @param string $sqlQuery Query to be logged.
+ * @throws PdoDbException
  */
 function dbLogger($sqlQuery) {
     global $auth_session, $can_log, $pdoDb_admin;
@@ -180,7 +182,9 @@ function lastInsertId() {
 }
 
 /**
- * Load SI Extention information into $config->extension.
+ * Load SI Extension information into $config->extension.
+ * @param &array Reference to the extension names array.
+ * @throws PdoDbException
  */
 function loadSiExtentions(&$ext_names) {
     global $config, $databaseBuilt, $patchCount, $pdoDb_admin;
@@ -222,6 +226,7 @@ function loadSiExtentions(&$ext_names) {
 /**
  * Get all patches.
  * @return array Rows retrieved. Test for "=== false" to check for failure.
+ * @throws PdoDbException
  */
 function getSQLPatches() {
     global $pdoDb_admin;
@@ -242,6 +247,7 @@ function getSQLPatches() {
  *        not a be assigned a default label so the undefined custom fields
  *        won't be displayed.
  * @return array Rows retrieved. Test for "=== false" to check for failure.
+ * @throws PdoDbException
  */
 function getCustomFieldLabels($domain_id = '', $noUndefinedLabels = FALSE) {
     global $LANG, $pdoDb_admin;
@@ -270,13 +276,13 @@ function getCustomFieldLabels($domain_id = '', $noUndefinedLabels = FALSE) {
 /**
  * Get a specific si_system_defaults record.
  * @param string $name Name for record to retrieve.
- * @param string $bool If true (default), a boolean field is being retrieved.
+ * @param boolean $bool If true (default), a boolean field is being retrieved.
  *        If false, a character field is being retrieved.
  *        Note: If true, the result will be the $LANG word for 'enabled' or 'disabled'.
- * @param string $domain_id Domain user is logged into.
  * @return mixed Value from database or for bool, 'enabled' or 'disabled' word.
+ * @throws PdoDbException
  */
-function getDefaultGeneric($name, $bool = true, $domain_id = '') {
+function getDefaultGeneric($name, $bool = true) {
     global $LANG, $pdoDb, $databaseBuilt;
 
     // Make the value to return on a false or no DB build condition.
@@ -297,6 +303,7 @@ function getDefaultGeneric($name, $bool = true, $domain_id = '') {
 /**
  * Get "delete" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
  */
 function getDefaultDelete() {
     return getDefaultGeneric('delete');
@@ -305,6 +312,7 @@ function getDefaultDelete() {
 /**
  * Get "logging" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
  */
 function getDefaultLogging() {
     return getDefaultGeneric('logging');
@@ -313,6 +321,7 @@ function getDefaultLogging() {
 /**
  * Get "loggin" entry from the system_defaults table.
  * @return boolean <b>true</b> "1" or "0"
+ * @throws PdoDbException
  */
 function getDefaultLoggingStatus() {
     return (getDefaultGeneric('logging', false) == 1);
@@ -321,6 +330,7 @@ function getDefaultLoggingStatus() {
 /**
  * Get "inventory" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
  */
 function getDefaultInventory() {
     return getDefaultGeneric('inventory');
@@ -329,6 +339,7 @@ function getDefaultInventory() {
 /**
  * Get "product_attributes" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
  */
 function getDefaultProductAttributes() {
     return getDefaultGeneric('product_attributes');
@@ -337,6 +348,7 @@ function getDefaultProductAttributes() {
 /**
  * Get "large_dataset" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
  */
 function getDefaultLargeDataset() {
     return getDefaultGeneric('large_dataset');
@@ -345,11 +357,18 @@ function getDefaultLargeDataset() {
 /**
  * Get "language" entry from the system_defaults table.
  * @return string Language setting (ex: en_US)
+ * @throws PdoDbException
  */
 function getDefaultLanguage() {
     return getDefaultGeneric('language', false);
 }
 
+/**
+ * @param $extension_id
+ * @param int $status
+ * @param string $domain_id
+ * @return bool
+ */
 function setStatusExtension($extension_id, $status = 2, $domain_id = '') {
     $domain_id = domain_id::get($domain_id);
 
@@ -375,6 +394,11 @@ function setStatusExtension($extension_id, $status = 2, $domain_id = '') {
     return false;
 }
 
+/**
+ * @param string $extension_name
+ * @param string $domain_id
+ * @return int
+ */
 function getExtensionID($extension_name = "none", $domain_id = '') {
     $domain_id = domain_id::get($domain_id);
     // @formatter:off
@@ -393,6 +417,10 @@ function getExtensionID($extension_name = "none", $domain_id = '') {
     return $extension_info['id']; // 0 = core, >0 is extension id
 }
 
+/**
+ * @param string $domain_id
+ * @return null
+ */
 function getSystemDefaults($domain_id = '') {
     global $patchCount;
     global $databaseBuilt;
@@ -454,6 +482,12 @@ function getSystemDefaults($domain_id = '') {
     return $lcl_defaults;
 }
 
+/**
+ * @param $name
+ * @param $value
+ * @param string $extension_name
+ * @return bool
+ */
 function updateDefault($name, $value, $extension_name = "core") {
     $domain_id = domain_id::get();
 
@@ -615,12 +649,12 @@ function checkTableExists($table) {
 }
 
 function checkFieldExists($table_in, $column) {
-    global $pdoDb_admin;
+    global $pdoDb_admin, $dbInfo;
     try {
         $pdoDb_admin->setNoErrorLog();
         $table = PdoDb::addTbPrefix($table_in);
-        $result = $pdoDb_admin->query("SELECT 1 FROM information_schema.columns
-                                       WHERE column_name = '$column' AND table_name = '$table' LIMIT 1");
+        $command = "SELECT 1 FROM information_schema.columns WHERE column_name = '$column' AND table_name = '$table' AND table_schema = '{$dbInfo->getDbname()}' LIMIT 1";
+        $result = $pdoDb_admin->query($command);
         return !empty($result);
     } catch (PdoDbException $pde) {
     }
@@ -629,7 +663,7 @@ function checkFieldExists($table_in, $column) {
 
 /**
  * Get a list of fields (aka columns) in a specified table.
- * @param string $table Name of the table to get fields for.
+ * @param string $table_in Name of the table to get fields for.
  *        Note: <b>TB_PREFIX</b> will be added if not present.
  * @return array Column names from the table. An empty array is
  *         returned if no columns found.
@@ -657,6 +691,9 @@ function getTableFields($table_in) {
     return $columns;
 }
 
+/**
+ * @return string
+ */
 function getURL() {
     global $api_request, $config;
 
@@ -685,6 +722,10 @@ function getURL() {
     return $_SERVER['FULL_URL'];
 }
 
+/**
+ * @param $strSql
+ * @return null
+ */
 function sql2array($strSql) {
     global $dbh;
     $sqlInArray = NULL;
@@ -714,8 +755,8 @@ function getNumberOfDoneSQLPatches() {
  * Runs the HTML->PDF conversion with default settings
  * Warning: if you have any files (like CSS stylesheets and/or images referenced by this file,
  * use absolute links (like http://my.host/image.gif).
- * @param $path_to_html String path to source html file.
- * @param $path_to_pdf String path to file to save generated PDF to.
+ * @param string $html_to_pdf html path to source html file.
+ * @param string $pdfname String path to file to save generated PDF to.
  * @param boolean $download <b>true</b> sets <i>DestinationDownload</i> for the output destination.
  *        <b>false</b> sets <i>DestinationFile</i> for the output destination.
  */
@@ -784,7 +825,10 @@ function pdfThis($html_to_pdf, $pdfname, $download) {
     convert_to_pdf($html_to_pdf, $pdfname, $download);
 }
 
-
+/**
+ * @return mixed
+ * @throws PdoDbException
+ */
 function getNumberOfDonePatches() {
     global $pdoDb_admin;
     $pdoDb_admin->addToFunctions(new FunctionStmt("MAX", "sql_patch_ref", "count"));
@@ -793,6 +837,10 @@ function getNumberOfDonePatches() {
     return $rows[0]['count'];
 }
 
+/**
+ * @return mixed
+ * @throws PdoDbException
+ */
 function getNumberOfPatches() {
     global $si_patches;
     $patches = getNumberOfDonePatches();
@@ -800,6 +848,9 @@ function getNumberOfPatches() {
     return $patch_count - $patches;
 }
 
+/**
+ * Run the unapplied patches.
+ */
 function runPatches() {
     global $si_patches;
     global $dbh;
@@ -824,11 +875,11 @@ function runPatches() {
         $smarty_datas['refresh'] = 5;
     } else {
         $smarty_datas['html'] = "Step 1 - This is the first time Database Updates has been run";
-        $smarty_datas['html'] .= initialise_sql_patch();
+        $smarty_datas['html'] .= initialize_sql_patch();
         $smarty_datas['html'] .= "<br />
-        Now that the Database upgrade table has been initialised,
-        please go back to the Database Upgrade Manger page by clicking
-        the following button to run the remaining patches.
+        Now that the Database upgrade table has been initialized, click
+        the following button to return to the Database Upgrade Manager
+        page to run the remaining patches.
         <div class='si_toolbar si_toolbar_form'>
             <a href='index.php?module=options&amp;view=database_sqlpatches'>Continue</a>
         </div>
@@ -839,6 +890,9 @@ function runPatches() {
     $smarty->assign("page", $smarty_datas);
 }
 
+/**
+ * Report patches are done
+ */
 function donePatches() {
     $smarty_datas = array();
     $smarty_datas['message'] = "The database patches are up to date. You can continue working with SimpleInvoices";
@@ -848,18 +902,18 @@ function donePatches() {
     $smarty->assign("page", $smarty_datas);
 }
 
+/**
+ * List all patches and their status.
+ */
 function listPatches() {
     global $si_patches;
 
     $smarty_datas = array();
     $smarty_datas['message'] = "Your version of SimpleInvoices can now be upgraded. With this new release there are database patches that need to be applied";
     $smarty_datas['html'] = <<<EOD
-    <p>The list below describes which patches have and have not been applied to the database,
-       the aim is to have them all applied.
-       <br />
-       If there are patches that have not been applied to the SimpleInvoices database,
-       please run the Update database by clicking update.
-    </p>
+    <div class="si_message_install">The list below describes which patches have and have not been applied to the database. 
+                                    If there are patches that have not been applied, run the Update database by clicking update.
+    </div>
     <div class="si_message_warning">Warning: Please backup your database before upgrading!</div>
     <div class="si_toolbar si_toolbar_form">
         <a href="index.php?case=run" class="">
@@ -870,11 +924,11 @@ EOD;
     for ($p = 0; $p < count($si_patches); $p++) {
         $patch_name = htmlsafe($si_patches[$p]['name']);
         $patch_date = htmlsafe($si_patches[$p]['date']);
-        if (check_sql_patch($p, $si_patches[$p]['name'])) {
+        if (check_sql_patch($p)) {
             $smarty_datas['rows'][$p]['text'] = "SQL patch $p, $patch_name <i>has</i> already been applied in release $patch_date";
             $smarty_datas['rows'][$p]['result'] = 'skip';
         } else {
-            $smarty_datas['rows'][$p]['text'] = "SQL patch $p, $patch_name <b>has not</b> been applied to the database";
+            $smarty_datas['rows'][$p]['text'] = "SQL patch $p, $patch_name <span style='color:red !important;'><b>has not</b> been applied to the database</span>";
             $smarty_datas['rows'][$p]['result'] = 'todo';
         }
     }
@@ -883,7 +937,11 @@ EOD;
     $smarty->assign("page", $smarty_datas);
 }
 
-function check_sql_patch($check_sql_patch_ref, $check_sql_patch_field) {
+/**
+ * @param $check_sql_patch_ref
+ * @return bool
+ */
+function check_sql_patch($check_sql_patch_ref) {
     $sql = "SELECT * FROM " . TB_PREFIX . "sql_patchmanager WHERE sql_patch_ref = :patch";
     $sth = dbQuery($sql, ':patch', $check_sql_patch_ref);
     if (count($sth->fetchAll()) > 0) {
@@ -892,6 +950,11 @@ function check_sql_patch($check_sql_patch_ref, $check_sql_patch_field) {
     return false;
 }
 
+/**
+ * @param $id
+ * @param $patch
+ * @return array
+ */
 function run_sql_patch($id, $patch) {
     global $dbh;
 
@@ -933,9 +996,10 @@ function run_sql_patch($id, $patch) {
     return $smarty_row;
 }
 
-function initialise_sql_patch() {
-    // SC: MySQL-only function, not porting to PostgreSQL
-
+/**
+ * @return string
+ */
+function initialize_sql_patch() {
     // check sql patch 1
     // @formatter:off
     $sql_patch_init = "CREATE TABLE " . TB_PREFIX . "sql_patchmanager (
@@ -971,6 +1035,9 @@ function initialise_sql_patch() {
     return $log;
 }
 
+/**
+ * Special handling for patch #126
+ */
 function patch126() {
     // SC: MySQL-only function, not porting to PostgreSQL
     $sql = "SELECT * FROM " . TB_PREFIX . "invoice_items WHERE product_id = 0";

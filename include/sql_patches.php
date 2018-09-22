@@ -2239,11 +2239,15 @@ $patchlines = array(
 );
 patchmaker('292', $patchlines, $si_patches);
 
+$ud = (checkFieldExists(TB_PREFIX.'biller','signature'));
 $patchlines = array(
-    'name' => 'Add Signature field to the billers table.',
-    'patch' => "ALTER TABLE " . TB_PREFIX . "biller ADD `signature` varchar(255) DEFAULT NULL",
+    'name' => 'Add Signature field to the biller table.',
+    'patch' => ($ud ? "DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'signature_field';" :
+                      "ALTER TABLE `".TB_PREFIX."biller` ADD `signature` varchar(255) DEFAULT '' NOT NULL COMMENT 'Email signature' AFTER `email`;
+                       DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'signature_field';"),
     'date' => "20180921"
 );
 patchmaker('293', $patchlines, $si_patches);
+unset($ud);
 
 
