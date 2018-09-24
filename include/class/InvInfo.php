@@ -10,11 +10,9 @@ class InvInfo {
     public $owed;
     
     public function __construct($id, $billed, $paid, $owed) {
-        // @formatter:off
         $this->id     = $id;
         $this->billed = $billed;
         $this->paid   = $paid;
         $this->owed   = $owed;
-        // @formatter:on
     }
 }

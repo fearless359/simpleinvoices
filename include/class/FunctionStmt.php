@@ -40,8 +40,8 @@ class FunctionStmt {
 
     /**
      * Build function string from specified parameter.
-     * @param $keypairs (Optional) parameter. It is <b>not</b> used in this function. It is
-     *        included to maintain call consistency but can be ommitted if needed.
+     * @param mixed $keypairs (Optional) parameter. It is <b>not</b> used in this function. It is
+     *        included to maintain call consistency but can be omitted if needed.
      * @return string Function string.
      */
     public function build($keypairs = null) {

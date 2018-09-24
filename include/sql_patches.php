@@ -2287,3 +2287,10 @@ $patchlines = array(
     'date' => "20180923"
 );
 patchmaker('295', $patchlines, $si_patches);
+
+$patchlines = array(
+    'name' => 'Add past due report.',
+    'patch' => "DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'past_due_report';",
+    'date' => "20180924"
+);
+patchmaker('296', $patchlines, $si_patches);

@@ -11,12 +11,10 @@ class CustInfo {
     public $inv_info;
 
     public function __construct($name, $billed, $paid, $owed, $inv_info) {
-        // @formatter:off
         $this->name     = $name;
         $this->billed   = $billed;
         $this->paid     = $paid;
         $this->owed     = $owed;
         $this->inv_info = $inv_info;
-        // @formatter:on
     }
 }

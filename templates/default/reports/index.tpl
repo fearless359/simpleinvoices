@@ -200,6 +200,10 @@
       <img src="images/famfam/vcard.png" alt="" />
       {$LANG.total_by_aging_periods}
     </a>
+    <a href="index.php?module=reports&view=report_past_due" class="">
+      <img src="images/famfam/vcard.png" alt="" />
+      {$LANG.past_due_report}
+    </a>
     {if $perform_extension_insertions == true}
       {section name=idx loop=$extension_insertion_files}
         {if $extension_insertion_files[idx].module  == 'reports' &&

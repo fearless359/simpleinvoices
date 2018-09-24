@@ -21,6 +21,8 @@
           <li>Added a signature field to the si_biller table along with maintenance support to provide
               text that will be automatically included in invoice and statement emails. This was an
               extension and that extension has been removed.</li>
+          <li>Moved the Net Income Report extension to be a standard part of the application.</li>
+          <li>Moved the Past Due Report extension to be a standard part of the application.</li>
         </ul>
       </li>
       <li>2018-09-12 - <b>2017.4.0</b>

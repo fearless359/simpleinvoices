@@ -223,15 +223,7 @@ $logger->log("index.php - after header.tpl", Zend_Log::DEBUG);
 // **********************************************************
 // Include php file for the requested page section - START
 // **********************************************************
-// This change allows template files modified with necessary logic, to
-// include sections defined in extensions. The benefit is that multiple
-// extensions that affect the same tpl file can be written without being
-// concerned that the tpl file for one extension will overwrite the tpl
-// for another extension. For an example, look at the file,
-// "extension/past_due_report/templates/default/index.tpl." Note the
-// "data-section" attribute in the <span> tag. The value in this tag
-// is what allows logic in the reports default index.tpl to know where
-// to include the past_due_report extension's index.tpl file.
+// See https://simpleinvoices.group/howto page extension topic.
 $extension_php_insert_files = array();
 if ($extension_php_insert_files) {} // Show variable as used.
 

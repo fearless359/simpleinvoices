@@ -42,7 +42,7 @@ class Payment {
 
         $oc = new OnClause();
         $oc->addSimpleItem("ap.ac_payment_type", new DbField("pt.pt_id"));
-        $pdoDb->addToJoins(array("LEFT", "payment_types", "pt", $oc));
+        display_message(array("LEFT", "payment_types", "pt", $oc));
 
         $oc = new OnClause();
         $oc->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
@@ -187,7 +187,7 @@ class Payment {
 
     /**
      * Get a all payment records.
-     * @param string $domain_id Domain ID logged into.
+     * @param boolean $only_enabled
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      * @throws PdoDbException
      */

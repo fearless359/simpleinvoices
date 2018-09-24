@@ -31,7 +31,7 @@ class WhereItem {
      *        iinserted after this term; otherwise set to <b>false</b>.
      * @param string $connector The "AND" or "OR" connector if additional terms will be
      *        clause. Optional parameter.
-     * @throws Exception If an invalid operator or connector is found.
+     * @throws PdoDbException If an invalid operator or connector is found.
      */
     public function __construct($open_paren, $field, $operator, $value, $close_paren, $connector = NULL) {
         $this->open_paren = $open_paren;

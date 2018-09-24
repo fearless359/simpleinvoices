@@ -1,7 +1,7 @@
 <h1 style="position: relative; margin: 0 auto; text-align: center;">Past Due Report</h1>
 <hr />
 <form name="frmpost"
-      action="index.php?module=reports&amp;view=past_due_report" 
+      action="index.php?module=reports&amp;view=report_past_due"
       method="post" >
   <table class="center" >
     <tr>
@@ -15,7 +15,7 @@
         <table class="center">
           <tr>
             <td>
-              <button type="submit" class="positive" name="submit" value="past_due_report">
+              <button type="submit" class="positive" name="submit" value="report_past_due">
                 <img class="button_img" src="images/common/tick.png" alt="" />
                 Run Report
               </button>

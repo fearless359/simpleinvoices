@@ -99,7 +99,7 @@ class export {
         global $config, $smarty, $pdoDb, $siUrl;
 
         // @formatter:off
-        //$data = null;
+        $data = null;
         switch ($this->module) {
             case "statement":
                 if ($this->do_not_filter_by_date != "yes" && !empty($this->start_date) && !empty($this->end_date)) {
@@ -192,7 +192,7 @@ class export {
 
             case "invoice":
                 if (!isset($this->invoice)) $this->invoice = Invoice::select($this->id);
-                $this->id = $this->invoice['id'];
+
                 $this->file_name = str_replace(" ", "_", $this->invoice['index_name']);
 
                 $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($this->id, $this->domain_id);
@@ -208,6 +208,9 @@ class export {
                 $logo = str_replace(" ", "%20", trim($logo));
 
                 $customFieldLabels = getCustomFieldLabels($this->domain_id, true);
+
+                $past_due_date = (date("Y-m-d", strtotime('-30 days')) . ' 00:00:00');
+                $past_due_amt  = CustomersPastDue::getCustomerPastDue($this->invoice['customer_id'], $this->id, $past_due_date);
 
                 // Set the template to the default
                 $template = $defaults['template'];
@@ -232,6 +235,7 @@ class export {
                 $smarty->assign('template_path'          , $template_path);
                 $smarty->assign('css'                    , $css);
                 $smarty->assign('customFieldLabels'      , $customFieldLabels);
+                $smarty->assign('past_due_amt'           , $past_due_amt);
 
                 // Plugins specifically associated with your invoice template.
                 $template_plugins_dir = "templates/invoices/${template}/plugins/";

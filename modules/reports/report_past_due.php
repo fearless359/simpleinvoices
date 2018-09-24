@@ -1,6 +1,6 @@
 <?php
 /*
- * Script: past_due_report.php collecting past due information.
+ * Script: report_past_due.php collecting past due information.
  * Author: Richard Rowley
  */
 global $menu, $smarty;
