@@ -1,36 +1,44 @@
 <?php
-require_once 'extensions/net_income_report/include/class/NetIncomeInvoice.php';
 
-class NetIncomeReport {
+class NetIncomeReport
+{
     public $domain_id;
 
-    public function select_rpt_items($start_date, $stop_date, $exclude_custom_flag_items) {
+    /**
+     * @param $start_date
+     * @param $stop_date
+     * @param $exclude_custom_flag_items
+     * @return array
+     * @throws PdoDbException
+     */
+    public function select_rpt_items($start_date, $stop_date, $exclude_custom_flag_items)
+    {
         global $pdoDb;
 
         $domain_id = domain_id::get($this->domain_id);
-        
+
         if (isset($exclude_custom_flag_items) && $exclude_custom_flag_items > 0) {
             // Make a regex string that tests for "0" in the specified position
-            $flgs = array('.','.','.','.','.','.','.','.','.','.');
+            $flgs = array('.', '.', '.', '.', '.', '.', '.', '.', '.', '.');
             $flgs[$exclude_custom_flag_items - 1] = '0';
             $pattern = '^';
-            foreach($flgs as $flg) {
+            foreach ($flgs as $flg) {
                 $pattern .= $flg;
             }
         } else {
             $pattern = '.*'; // Basically ignores custom flag setting
         }
-        
+
         // Find all invoices that recvieved payments in this reporting period.
         $iv_ids = array();
-        // @formatter:off
+
         $pdoDb->setOrderBy("ac_inv_id");
         $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
         $pdoDb->addToWhere(new WhereItem(false, "ac_date", "BETWEEN", array($start_date, $stop_date), false));
         $pv_recs = $pdoDb->request("SELECT", "payment");
-        // @formatter:on
+
         $last_inv_id = 0;
-        foreach($pv_recs as $row) {
+        foreach ($pv_recs as $row) {
             $curr_inv_id = $row['ac_inv_id'];
             if ($last_inv_id != $curr_inv_id) {
                 $last_inv_id = $curr_inv_id;
@@ -40,8 +48,7 @@ class NetIncomeReport {
 
         // Get all invoices that had payments made in the current reporting period.
         $invoices = array();
-        foreach($iv_ids as $id) {
-            // @formatter:off
+        foreach ($iv_ids as $id) {
             $jn = new Join("INNER", "customers", "cu");
             $jn->addSimpleItem("cu.id", new DbField("iv.customer_id"), "AND");
             $jn->addSimpleItem("cu.domain_id", new DbField("iv.domain_id"));
@@ -52,9 +59,8 @@ class NetIncomeReport {
             $pdoDb->setSelectList(array("iv.id", "iv.index_id AS iv_number", "iv.date AS iv_date", "cu.name AS customer"));
 
             $iv_recs = $pdoDb->request("SELECT", "invoices", "iv");
-            // @formatter:on
 
-            foreach($iv_recs as $iv) {
+            foreach ($iv_recs as $iv) {
 
                 // Create an invoice object for the report. This object holds the payments and
                 // invoice items for the invoice. We know that a payment to this invoice was
@@ -74,12 +80,12 @@ class NetIncomeReport {
                 $py_recs = $pdoDb->request("SELECT", "payment");
                 // @formatter:on
 
-                foreach($py_recs as $py) {
+                foreach ($py_recs as $py) {
                     $in_period = ($start_date <= $py['ac_date'] &&
-                                  $stop_date  >= $py['ac_date']);
+                        $stop_date >= $py['ac_date']);
                     $invoice->addPayment($py['ac_amount'], $py['ac_date'], $in_period);
                 }
-                
+
                 // Now get all the invoice items with the exception of those flagged
                 // as non-income items provided the option to exclude them was specified.
                 // @formatter:off
@@ -99,7 +105,7 @@ class NetIncomeReport {
 
                 $ii_recs = $pdoDb->request("SELECT", "invoice_items", "ii");
 
-                foreach($ii_recs as $py) {
+                foreach ($ii_recs as $py) {
                     $invoice->addItem($py['amount'], $py['description'], $py['custom_flags']);
                 }
 

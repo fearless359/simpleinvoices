@@ -1,10 +1,15 @@
 <?php
 /*
- * Script: net_income_wo_non_income.php Report income excluding non-income funds Authors: Richard
- * Rowley
- * Last edited: 2015-09-14
+ * Script: net_income_wo_non_income.php Report income excluding non-income funds
+ *
+ * Authors: Richard Rowley
+ *
+ * Last edited: 2018-09-23
+ *
  * License: GPL v3
- * Website: https://simpleinvoices.group */
+ *
+ * Website: https://simpleinvoices.group
+ */
 global $menu, $smarty;
 
 checkLogin();
@@ -17,7 +22,6 @@ function lastOfMonth() {
     return date('Y-m-d', strToTime('last day of this month'));
 }
 
-// @formatter:off
 $start_date     = isset($_POST['start_date'])     ? $_POST['start_date']  : firstOfMonth();
 $end_date       = isset($_POST['end_date'])       ? $_POST['end_date']    : lastOfMonth();
 $custom_flag    = isset($_POST['custom_flag'])    ? $_POST['custom_flag'] : null;
@@ -51,4 +55,3 @@ $smarty->assign('custom_flag_labels'  , $custom_flag_labels);
 $smarty->assign('pageActive', 'report');
 $smarty->assign('active_tab', '#home');
 $smarty->assign('menu'      , $menu);
-// @formatter:on

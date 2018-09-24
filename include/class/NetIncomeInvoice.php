@@ -1,8 +1,7 @@
 <?php
-require_once 'extensions/net_income_report/include/class/NetIncomeItem.php';
-require_once 'extensions/net_income_report/include/class/NetIncomePayment.php';
 
-class NetIncomeInvoice {
+class NetIncomeInvoice
+{
     public $customer;
     public $date;
     public $id;
@@ -13,26 +12,27 @@ class NetIncomeInvoice {
     public $total_payments;
     public $total_period_payments;
 
-    public function __construct($id, $number, $date, $customer) {
-        // @formatter:off
-        $this->id                    = $id;
-        $this->number                = $number;
-        $this->date                  = $date;
-        $this->customer              = $customer;
-        $this->total_invoice         = 0;
-        $this->total_payments        = 0;
+    public function __construct($id, $number, $date, $customer)
+    {
+        $this->id = $id;
+        $this->number = $number;
+        $this->date = $date;
+        $this->customer = $customer;
+        $this->total_amount = 0;
+        $this->total_payments = 0;
         $this->total_period_payments = 0;
-        $this->items                 = array();
-        $this->pymts                 = array();
-        // @formatter:on
+        $this->items = array();
+        $this->pymts = array();
     }
 
-    public function addItem($amount, $description, $cflags) {
+    public function addItem($amount, $description, $cflags)
+    {
         $this->items[] = new NetIncomeItem($amount, $description, $cflags);
         $this->total_amount += $amount;
     }
 
-    public function addPayment($amount, $date, $in_period) {
+    public function addPayment($amount, $date, $in_period)
+    {
         $this->pymts[] = new NetIncomePayment($amount, $date);
         $this->total_payments += $amount;
         if ($in_period) $this->total_period_payments += $amount;
@@ -54,9 +54,9 @@ class NetIncomeInvoice {
      *     Total Paid:             $27.50 (include pre-period and post)         $this->total_payments up to $this->total_amount
      *     Total Paid This Period: $22.50 (net_income for this period)          $this->total_period_payments max of $this->total_payments
      */
-    public function adjustPymtsForNonIncome() {
+    public function adjustPymtsForNonIncome()
+    {
         if ($this->total_payments > $this->total_amount) $this->total_payments = $this->total_amount;
         if ($this->total_period_payments > $this->total_payments) $this->total_period_payments = $this->total_payments;
     }
 }
-    

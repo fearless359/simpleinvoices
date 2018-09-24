@@ -375,7 +375,7 @@ class PdoDb {
     /**
      * Set the <b>ORDER BY</b> statement object to generate when the next request is performed.
      * Note that this method can be called multiple times to add additional values.
-     * @param OrderBy $orderBy Can take several forms.
+     * @param string/array/OrderBy $orderBy Can take several forms.
      *        1) A string that is the name of the field to order by in ascending order.
      *           Ex: "street_address".
      *        2) An array with two elements. The first is the field name and the second is the

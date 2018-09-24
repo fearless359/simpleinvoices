@@ -2280,3 +2280,10 @@ $patchlines = array(
 );
 patchmaker('294', $patchlines, $si_patches);
 unset($ud);
+
+$patchlines = array(
+    'name' => 'Add net income report.',
+    'patch' => "DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'net_income_report';",
+    'date' => "20180923"
+);
+patchmaker('295', $patchlines, $si_patches);

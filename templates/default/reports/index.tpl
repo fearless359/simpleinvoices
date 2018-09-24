@@ -47,7 +47,12 @@
     <a href="index.php?module=reports&view=report_sales_customers_total" class="">
       <img src="images/famfam/money.png" alt="" />
       {$LANG.sales_by_customers} 
-    </a>            
+    </a>
+    <a href="index.php?module=reports&view=report_net_income" class="">
+      <img src="images/famfam/money.png" alt="" />
+      <span>Net Income Report</span>
+    </a>
+
     {if $perform_extension_insertions == true}
       {section name=idx loop=$extension_insertion_files}
         {if $extension_insertion_files[idx].module  == 'reports' &&

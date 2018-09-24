@@ -16,7 +16,6 @@ if (!defined("BROWSE")) define("BROWSE", "browse");
 // Load stuff required before init.php
 require_once "include/init_pre.php";
 
-// @formatter:off
 $module = isset($_GET['module']) ? filenameEscape($_GET['module']) : null;
 $view   = isset($_GET['view'])   ? filenameEscape($_GET['view'])   : null;
 $action = isset($_GET['case'])   ? filenameEscape($_GET['case'])   : null;
@@ -24,7 +23,6 @@ $action = isset($_GET['case'])   ? filenameEscape($_GET['case'])   : null;
 // globals set in the init.php logic
 $databaseBuilt     = false;
 $databasePopulated = false;
-// @formatter:on
 
 // Will be set in the following init.php call to extensions that are enabled.
 $ext_names = array();
@@ -56,7 +54,6 @@ $smarty->assign("help_image_path", $help_image_path);
 // **********************************************************
 // The include configs and requirements stuff section - END
 // **********************************************************
-// @formatter:off
 $smarty->assign("ext_names", $ext_names);
 $smarty->assign("config"   , $config);
 $smarty->assign("module"   , $module);
@@ -64,7 +61,6 @@ $smarty->assign("view"     , $view);
 $smarty->assign("siUrl"    , $siUrl);
 $smarty->assign("LANG"     , $LANG);
 $smarty->assign("enabled"  , array($LANG['disabled'],$LANG['enabled']));
-// @formatter:on
 
 // Menu - hide or show menu
 $menu = (isset($menu) ? $menu : true);
@@ -150,7 +146,7 @@ if (($module == "invoices") && (strstr($view, "template"))) {
 }
 $logger->log("index.php - After invoices/template", Zend_Log::DEBUG);
 
-// Check for "api" module or a "xml" or "ajax" "page requeset" (aka view)
+// Check for "api" module or a "xml" or "ajax" "page request" (aka view)
 if (strstr($module, "api") || (strstr($view, "xml") || (strstr($view, "ajax")))) {
     $extensionXml = 0;
     foreach ($ext_names as $ext_name) {
@@ -385,11 +381,9 @@ $path = '';
 // in the "<span ...>" tag. This tells the program to insert the report
 // menu item at the end of the section with "$LANG.xxxxx" value assigned
 // to the attribute.
-// @formatter:off
 $extension_insertion_files = array();
 $perform_extension_insertions = (($module == 'reports'         && $view == 'index') ||
                                  ($module == 'system_defaults' && $view == 'manage'));
-// @formatter:on
 
 foreach ($ext_names as $ext_name) {
     $tpl_file = "extensions/$ext_name/templates/default/$module/$view.tpl";
@@ -436,7 +430,7 @@ $logger->log("index.php - After $module/$view.tpl", Zend_Log::DEBUG);
 
 // TODO: if more than one extension has a template for the requested file, thats trouble :(
 // This won't happen for reports, standard menu.tpl and system_defaults menu.tpl given
-// changes implimented in this file for them. Similar changes should be implimented for
+// changes implemented in this file for them. Similar changes should be implemented for
 // other templates as needed.
 if ($extensionTemplates == 0) {
     if ($my_tpl_path = getCustomPath("$module/$view")) {
@@ -445,13 +439,11 @@ if ($extensionTemplates == 0) {
     }
 }
 
-// @formatter:off
 $smarty->assign("extension_insertion_files"   , $extension_insertion_files);
 $smarty->assign("perform_extension_insertions", $perform_extension_insertions);
 $smarty->assign("path"                        , $path);
 
 $smarty->$smarty_output($my_tpl_path);
-// @formatter:on
 $logger->log("index.php - After output my_tpl_path[$my_tpl_path]", Zend_Log::DEBUG);
 
 // If no smarty template - add message

@@ -20,7 +20,6 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
 
 $LANG['about'] = "About";//1
 $LANG['account_info'] = "Account Info";//1
@@ -207,6 +206,7 @@ $LANG['financial_status'] = "Financial status";//1
 $LANG['flag_number'] = "Flag&#35;";//0
 $LANG['flags_upper'] = "Flags";//0
 $LANG['for'] = "for";//1
+$LANG['for_the_period_upper'] = "For The Period";//0
 $LANG['format_tooltip'] = "format";//1
 $LANG['forum'] = "Forum";//1
 $LANG['free'] = "Free";//1
@@ -323,6 +323,7 @@ $LANG['invoice_preference_to_add'] = "Invoice preference to add";//1
 $LANG['invoice_preferences'] = "Invoice Preferences";//1
 $LANG['invoice_start'] = "Invoice Start";//1
 $LANG['invoice_summary'] = "Invoice Summary";//1
+$LANG['invoice_total'] = "Invoice Total";//0
 $LANG['invoice_type'] = "Invoice Type";//1
 $LANG['invoice_wording'] = "Invoice wording";//1
 $LANG['invoices'] = "Invoices";//1
@@ -366,6 +367,7 @@ $LANG['more_than_one_pymt_rec'] = "Multiple payment records exist for this invoi
 $LANG['mysql4_features_disabled'] = "As you are using MySQL 4 some features have been disabled";//1
 $LANG['name'] = "Name";//1
 $LANG['need_help'] = "Need help?";//1
+$LANG['net_income_report'] = "Net Income Report";//-
 $LANG['new_inventory_movement'] = "New inventory movement";//1
 $LANG['new_invoice'] = "New invoice";//1
 $LANG['new_invoice_consulting'] = "New Invoices - Consulting";//1
@@ -612,11 +614,13 @@ $LANG['toggle_status'] = "Toggle status";//1
 $LANG['total'] = "Total";//1
 $LANG['total_amount'] = "Total amount";//1
 $LANG['total_by_aging_periods'] = "Total by Aging periods";//1
+$LANG['total_income'] = "Total Income";//0
 $LANG['total_invoices'] = "Total Invoices";//1
 $LANG['total_owed'] = "Total Owed";//1
 $LANG['total_owed_per_customer'] = "Total Owed per Customer";//1
 $LANG['total_owing'] = "Total Owing";//1
 $LANG['total_paid'] = "Total Paid";//1
+$LANG['total_paid_this_period'] = "Total Paid This Period";//0
 $LANG['total_sales'] = "Total Sales";//1
 $LANG['total_sales_by_customer'] = "Total Sales by Customer";//1
 $LANG['total_style'] = "Total style";//1
