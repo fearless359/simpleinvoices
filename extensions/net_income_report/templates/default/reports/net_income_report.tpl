@@ -32,7 +32,6 @@
                size="10" name="end_date" id="date2" value='{$end_date}' />
       </td>
     </tr>
-    {if $custom_flags_enabled == '1'}
     <tr>
       <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
         Exclude Custom Flag #:
@@ -50,7 +49,6 @@
         </select>
       </td>
     </tr>
-    {/if}
     <tr>
       <td class="details_screen">Display Detail</td>
       <td><input type="checkbox" name="display_detail"

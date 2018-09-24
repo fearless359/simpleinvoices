@@ -7,6 +7,9 @@ checkLogin();
 $count = Product::count();
 
 $defaults = getSystemDefaults();
+
+$cflgs = CustomFlags::getCustomFlagsQualified('E', domain_id::get());
+$smarty->assign("cflgs", $cflgs);
 $smarty->assign("defaults",$defaults);
 $smarty->assign("number_of_rows",$count);
 

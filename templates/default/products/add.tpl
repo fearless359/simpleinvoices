@@ -1,14 +1,14 @@
-{* if bill is updated or saved.*}
-{if $smarty.post.description != "" && $smarty.post.id != null }
+{* if product is updated or saved.*}
+{if $smarty.post.description != null && $smarty.post.description != '' }
   {include file="templates/default/products/save.tpl"}
 {else}
-  {* if name was inserted *}
-  {if $smarty.post.id !=null}
-  <div class="validation_alert">
-    <img src="images/common/important.png" alt="" />
-    {$LANG.product_description_prompt}
-  </div>
-  <hr />
+  {* Verify the a description was entered. *} 
+  {if $smarty.post.description != null && $smarty.post.description != ''}
+    <div class="validation_alert">
+      <img src="images/common/important.png" alt="" />
+      {$LANG.product_description_prompt}
+    </div>
+    <hr />
   {/if}
   <form name="frmpost" action="index.php?module=products&view=add"
         method="POST" id="frmpost" onsubmit="return checkForm(this);">
@@ -16,7 +16,7 @@
       <div id="tabs_customer">
         <ul class="anchors">
           <li><a href="#section-1" target="_top">{$LANG.details}</a></li>
-          <li><a href="#section-2" target="_top">{$LANG.custom_fields}</a></li>
+		  <li><a href="#section-2" target="_top">{$LANG.custom_upper}&nbsp;{$LANG.fields_upper}&nbsp;&amp;&nbsp;{$LANG.flags_upper}</a></li>
           <li><a href="#section-3" target="_top">{$LANG.notes}</a></li>
         </ul>
       </div>
@@ -38,8 +38,10 @@
           </tr>
           <tr>
             <th>{$LANG.unit_price}</th>
-            <td><input type="text" class="edit" name="unit_price"
-                       value="{$smarty.post.unit_price|htmlsafe}" size="25" /></td>
+            <td>
+              <input type="text" class="edit" name="unit_price"
+                     value="{$smarty.post.unit_price|htmlsafe}" size="25" />
+            </td>
           </tr>
           {if $defaults.inventory == '1'}
           <tr>
@@ -50,13 +52,17 @@
                 <img src="{$help_image_path}help-small.png" alt="" />
               </a>
             </th>
-            <td><input type="text" class="edit" name="cost"
-                       value="{$smarty.post.cost|htmlsafe}" size="25" /></td>
+            <td>
+              <input type="text" class="edit" name="cost"
+                     value="{$smarty.post.cost|htmlsafe}" size="25" />
+            </td>
           </tr>
           <tr>
             <th>{$LANG.reorder_level}</th>
-            <td><input type="text" class="edit" name="reorder_level"
-                       value="{$smarty.post.reorder_level|htmlsafe}" size="25" /></td>
+            <td>
+              <input type="text" class="edit" name="reorder_level"
+                     value="{$smarty.post.reorder_level|htmlsafe}" size="25" />
+            </td>
           </tr>
           {/if}
           <tr>
@@ -129,6 +135,21 @@
                        value="{$smarty.post.custom_field4|htmlsafe}" size="50" /></td>
           </tr>
           {/if}
+          {foreach from=$cflgs item=cflg}
+            <tr>
+              <th>
+                {$cflg.field_label|trim|htmlsafe}
+                {if strlen($cflg.field_help) > 0}
+                  <a class="cluetip" href="#"
+                     rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
+                     title="{$cflg.field_label}">
+                    <img src="{$help_image_path}help-small.png" alt="" />
+                  </a>
+                {/if}
+              </th>
+              <td><input type="checkbox" name="custom_flags_{$cflg.flg_id}" value="1"/></td>
+            </tr>
+          {/foreach}
           {if $defaults.product_attributes}
           <tr>
             <th class="details_screen">{$LANG.product_attributes}</th>
@@ -151,7 +172,7 @@
           <tr>
             <th>{$LANG.notes}</th>
             <td>
-              <textarea class="editor" name='notes' rows="8" cols="50">
+              <textarea class="editor" name='notes' rows="8" cols="50" wrap="soft" >
                 {$smarty.post.notes|unescape}
               </textarea>
             </td>
@@ -178,15 +199,16 @@
       </div>
     </div>
     <div class="si_toolbar si_toolbar_form">
-      <button type="submit" class="positive" name="id" value="{$LANG.save}">
+      <button type="submit" class="positive" name="save_product" value="{$LANG.save}">
         <img class="button_img" src="images/common/tick.png" alt="" />
         {$LANG.save}
       </button>
-      <a href="index.php?module=products&view=manage" class="negative">
-        <img src="images/common/cross.png" alt="" />
+      <button type="submit" class="negative" name="cancel_change" value="{$LANG.cancel}">
+        <img class="button_img" src="images/common/cross.png" alt=""/>
         {$LANG.cancel}
-      </a>
+      </button>
     </div>
+  </div>
     <input type="hidden" name="op" value="insert_product" />
   </form>
 {/if}

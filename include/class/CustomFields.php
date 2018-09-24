@@ -6,13 +6,15 @@ class CustomFields {
      * Prints name of custom field based on input. If custom field has not been defined
      * by the user than use the default in the lang files
      * @param string $field The custom field in question
+     * @param string $domain_id
+     * @return string
      */
     public static function get_custom_field_label($field, $domain_id = '') {
         global $LANG;
         $domain_id = domain_id::get($domain_id);
 
         $sql = "SELECT cf_custom_label FROM " . TB_PREFIX . "custom_fields
-            WHERE cf_custom_field = :field AND domain_id = :domain_id";
+                WHERE cf_custom_field = :field AND domain_id = :domain_id";
         $sth = dbQuery($sql, ':field', $field, ':domain_id', $domain_id);
 
         $cf = $sth->fetch();
@@ -41,11 +43,9 @@ class CustomFields {
      * @return string Display/input string for a custom field. For "read" permission, the field to
      *         display the data. For "write" permission, the formatted label and field.
      */
-    // @formatter:off
     public static function show_custom_field($custom_field, $custom_field_value, $permission,
                                              $css_class_tr, $css_class_th      , $css_class_td,
                                              $td_col_span , $seperator) {
-        // @formatter:on
         global $help_image_path;
 
         $domain_id = domain_id::get();
@@ -58,8 +58,8 @@ class CustomFields {
         // Get custom field label
         // @formatter:off
         $get_custom_label = "SELECT cf_custom_label
-                 FROM " . TB_PREFIX . "custom_fields
-                 WHERE cf_custom_field = :field AND domain_id = :domain_id";
+                             FROM " . TB_PREFIX . "custom_fields
+                             WHERE cf_custom_field = :field AND domain_id = :domain_id";
         // @formatter:on
         $sth = dbQuery($get_custom_label, ':field', $custom_field, ':domain_id', $domain_id);
 

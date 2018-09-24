@@ -272,6 +272,25 @@ function getCustomFieldLabels($domain_id = '', $noUndefinedLabels = FALSE) {
     }
     return $customFields;
 }
+/**
+ * Test for custom flag field.
+ * @param $field
+ * @return bool
+ */
+function is_custom_flag_field($field) {
+    global $smarty;
+    $useit  = false;
+    $result = false;
+    if (!empty($field)) {
+        if (preg_match('/[Ff]lag:/',$field) == 1) {
+            $useit = true;
+        } else {
+            $result = true;
+        }
+    }
+    $smarty->assign('useit', $useit);
+    return $result;
+}
 
 /**
  * Get a specific si_system_defaults record.
@@ -648,6 +667,12 @@ function checkTableExists($table) {
     return false;
 }
 
+/**
+ * Check for the presence of a column in a table of the SI database.
+ * @param $table_in
+ * @param $column
+ * @return bool true if field exists, false if not.
+ */
 function checkFieldExists($table_in, $column) {
     global $pdoDb_admin, $dbInfo;
     try {

@@ -20,6 +20,7 @@ $acl->addResource('billers');
 $acl->addResource('cron');
 $acl->addResource('custom_fields');
 // actions: custom_fields_view, custom_fields_edit
+$acl->addResource('custom_flags');
 $acl->addResource('customers');
 // actions: customer_view, customer_edit
 $acl->addResource('documentation');

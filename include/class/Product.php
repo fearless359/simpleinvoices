@@ -131,8 +131,6 @@ class Product {
     public static function insertProduct($enabled=ENABLED, $visible=ENABLED) {
         global $pdoDb;
 
-        $cflgs_enabled = isExtensionEnabled('custom_flags');
-
         if (isset($_POST['enabled'])) $enabled = $_POST['enabled'];
 
         if (($attributes = $pdoDb->request("SELECT", "products_attributes")) === false) {
@@ -151,12 +149,10 @@ class Product {
         $notes_as_description = (isset($_POST['notes_as_description']) && $_POST['notes_as_description'] == 'true' ? 'Y' : NULL);
         $show_description     = (isset($_POST['show_description']    ) && $_POST['show_description'    ] == 'true' ? 'Y' : NULL);
 
-        if ($cflgs_enabled) {
-            $custom_flags = '0000000000';
-            for ($i = 1; $i <= 10; $i++) {
-                if (isset($_POST['custom_flags_' . $i]) && $_POST['custom_flags_' . $i] == ENABLED) {
-                    $custom_flags = substr_replace($custom_flags, ENABLED, $i, 1);
-                }
+        $custom_flags = '0000000000';
+        for ($i = 1; $i <= 10; $i++) {
+            if (isset($_POST['custom_flags_' . $i]) && $_POST['custom_flags_' . $i] == ENABLED) {
+                $custom_flags = substr_replace($custom_flags, ENABLED, $i - 1, 1);
             }
         }
 
@@ -174,14 +170,12 @@ class Product {
                           'custom_field4'        => (isset($_POST['custom_field4'] ) ? $_POST['custom_field4']  : ""),
                           'notes'                => (isset($_POST['notes']         ) ? $_POST['notes']          : ""),
                           'default_tax_id'       => (isset($_POST['default_tax_id']) ? $_POST['default_tax_id'] : ""),
+                          'custom_flags'         => $custom_flags,
                           'enabled'              => $enabled,
                           'visible'              => $visible,
                           'attribute'            => json_encode($attr),
                           'notes_as_description' => $notes_as_description,
                           'show_description'     => $show_description);
-        if ($cflgs_enabled) {
-            $fauxPost['custom_flags'] = $custom_flags;
-        }
         $pdoDb->setFauxPost($fauxPost);
         $pdoDb->setExcludedFields("id");
         // @formatter:on
@@ -203,8 +197,6 @@ class Product {
     public static function updateProduct() {
         global $pdoDb;
 
-        $cflgs_enabled = isExtensionEnabled('custom_flags');
-
         if (($attributes = $pdoDb->request("SELECT", "products_attributes")) === false) return false;
 
         $attr = array();
@@ -219,12 +211,10 @@ class Product {
         $notes_as_description = (isset($_POST['notes_as_description']) && $_POST['notes_as_description'] == 'true' ? 'Y' : NULL);
         $show_description     = (isset($_POST['show_description'])     && $_POST['show_description']     == 'true' ? 'Y' : NULL);
 
-        if ($cflgs_enabled) {
-            $custom_flags = '0000000000';
-            for ($i = 1; $i <= 10; $i++) {
-                if (isset($_POST['custom_flags_' . $i]) && $_POST['custom_flags_' . $i] == ENABLED) {
-                    $custom_flags = substr_replace($custom_flags, ENABLED, $i - 1, 1);
-                }
+        $custom_flags = '0000000000';
+        for ($i = 1; $i <= 10; $i++) {
+            if (isset($_POST['custom_flags_' . $i]) && $_POST['custom_flags_' . $i] == ENABLED) {
+                $custom_flags = substr_replace($custom_flags, ENABLED, $i - 1, 1);
             }
         }
 
@@ -238,15 +228,13 @@ class Product {
                           'custom_field2'        => (isset($_POST['custom_field2'])  ? $_POST['custom_field2']  : ""),
                           'custom_field3'        => (isset($_POST['custom_field3'])  ? $_POST['custom_field3']  : ""),
                           'custom_field4'        => (isset($_POST['custom_field4'])  ? $_POST['custom_field4']  : ""),
+                          'custom_flags'         => $custom_flags,
                           'unit_price'           => $unit_price,
                           'cost'                 => $cost,
                           'reorder_level'        => (isset($_POST['reorder_level'])  ? $_POST['reorder_level']  : "0"),
                           'attribute'            => json_encode($attr),
                           'notes_as_description' => $notes_as_description,
                           'show_description'     => $show_description);
-        if ($cflgs_enabled) {
-            $fauxPost['custom_flags'] = $custom_flags;
-        }
         $pdoDb->setFauxPost($fauxPost);
 
         $pdoDb->addSimpleWhere("id", $_GET['id'], "AND");

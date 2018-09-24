@@ -1,13 +1,13 @@
 {*
 /*
  *  Script: save.tpl
- *      Custom fields save template
+ * 	    Custom flags save page
  *
  *  Authors:
- *      Justin Kelly, Nicolas Ruflin
+ *      Richard Rowley
  *
  *  Last edited:
- *      2018-09-23 by Richard Rowley
+ *      2018-09-23
  *
  *  License:
  *      GPL v3 or above

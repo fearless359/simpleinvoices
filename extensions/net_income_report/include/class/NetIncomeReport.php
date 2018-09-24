@@ -7,10 +7,9 @@ class NetIncomeReport {
     public function select_rpt_items($start_date, $stop_date, $exclude_custom_flag_items) {
         global $pdoDb;
 
-        $custom_flags_enabled = isExtensionEnabled('custom_flags');
         $domain_id = domain_id::get($this->domain_id);
         
-        if ($custom_flags_enabled && isset($exclude_custom_flag_items) && $exclude_custom_flag_items > 0) {
+        if (isset($exclude_custom_flag_items) && $exclude_custom_flag_items > 0) {
             // Make a regex string that tests for "0" in the specified position
             $flgs = array('.','.','.','.','.','.','.','.','.','.');
             $flgs[$exclude_custom_flag_items - 1] = '0';
@@ -87,12 +86,11 @@ class NetIncomeReport {
                 $pdoDb->setOrderBy("ii.invoice_id");
                 $pdoDb->setOrderBy("pr.description");
                 $pdoDb->addSimpleWhere("ii.invoice_id", $id, "AND");
-                $pdoDb->addSimpleWhere("ii.domain_id", $domain_id, ($custom_flags_enabled ? "AND" : null));
+                $pdoDb->addSimpleWhere("ii.domain_id", $domain_id, "AND");
                 $list = array("ii.total AS amount", "pr.description AS description");
-                if ($custom_flags_enabled) {
-                    $pdoDb->addToWhere(new WhereItem(false, "pr.custom_flags", "REGEXP", $pattern, false));
-                    $list[] = "pr.custom_flags";
-                }
+                $pdoDb->addToWhere(new WhereItem(false, "pr.custom_flags", "REGEXP", $pattern, false));
+                $list[] = "pr.custom_flags";
+
                 $join = new Join("INNER", "products", "pr");
                 $join->addSimpleItem("pr.id", new DbField("ii.product_id"), "AND");
                 $join->addSimpleItem("pr.domain_id", new DbField("ii.domain_id"));
@@ -102,8 +100,7 @@ class NetIncomeReport {
                 $ii_recs = $pdoDb->request("SELECT", "invoice_items", "ii");
 
                 foreach($ii_recs as $py) {
-                    $invoice->addItem($py['amount'], $py['description'],
-                                      ($custom_flags_enabled ? $py['custom_flags'] : null));
+                    $invoice->addItem($py['amount'], $py['description'], $py['custom_flags']);
                 }
 
                 if ($invoice->total_amount < $invoice->total_payments) $invoice->total_payments = $invoice->total_amount;

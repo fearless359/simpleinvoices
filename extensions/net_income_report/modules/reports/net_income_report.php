@@ -23,8 +23,10 @@ $end_date       = isset($_POST['end_date'])       ? $_POST['end_date']    : last
 $custom_flag    = isset($_POST['custom_flag'])    ? $_POST['custom_flag'] : null;
 $display_detail = isset($_POST['display_detail']) ? true                  : false;
 
-$custom_flags_enabled = isExtensionEnabled('custom_flags');
-$custom_flag_labels   = getCustomFlagLabels($custom_flags_enabled);
+try {
+    $custom_flag_labels = CustomFlags::getCustomFlagLabels();
+} catch (PdoDbException $e) {
+}
 
 $invoices = array();
 $tot_income = 0;
@@ -43,7 +45,6 @@ $smarty->assign('start_date'    , $start_date);
 $smarty->assign('end_date'      , $end_date);
 $smarty->assign('display_detail', $display_detail);
 
-$smarty->assign('custom_flags_enabled', ($custom_flags_enabled ? '1':'0'));
 $smarty->assign('custom_flag'         , $custom_flag);
 $smarty->assign('custom_flag_labels'  , $custom_flag_labels);
 

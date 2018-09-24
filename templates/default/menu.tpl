@@ -127,6 +127,9 @@
       <li><a {if $pageActive== "custom_field"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.custom_fields_upper}</a></li>
       {if $subPageActive == "custom_fields_view"}<li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
       {if $subPageActive == "custom_fields_edit"}<li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+      <li><a {if $pageActive == "custom_flags"}class="active" {/if}href="index.php?module=custom_flags&amp;view=manage">{$LANG.custom_flags_upper}</a></li>
+      {if $subPageActive == "custom_flags_view"}<li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+      {if $subPageActive == "custom_flags_edit"}<li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
       <!-- SECTION:tax_rates -->
       <li><a {if $pageActive== "tax_rate"}class="active" {/if}href="index.php?module=tax_rates&amp;view=manage">{$LANG.tax_rates}</a></li>
       {if $subPageActive == "tax_rates_add"}<li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}

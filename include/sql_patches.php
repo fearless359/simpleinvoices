@@ -2250,4 +2250,33 @@ $patchlines = array(
 patchmaker('293', $patchlines, $si_patches);
 unset($ud);
 
-
+$ud = checkTableExists(TB_PREFIX .'custom_flags');
+$patchlines = array(
+    'name' => 'Add custom_flags table for products.',
+    'patch' => ($ud ? "DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'custom_flags';" :
+                      "CREATE TABLE `".TB_PREFIX."custom_flags` (
+                                      `domain_id`        int(11) DEFAULT '1' NOT NULL,
+                                      `associated_table` char(10)            NOT NULL COMMENT 'Table flag is associated with. Only defined for products for now.',
+                                      `flg_id`           tinyint(3) unsigned NOT NULL COMMENT 'Flag number ranging from 1 to 10',
+                                      `field_label`      varchar(20)         NOT NULL COMMENT 'Label to use on screen where option is set.',
+                                      `enabled`          tinyint(1)          NOT NULL COMMENT 'Defaults to enabled when record created. Can disable to retire flag.',
+                                      `field_help`       varchar(255)        NOT NULL COMMENT 'Help information to display for this field.',
+                                PRIMARY KEY `uid` (`domain_id`, `associated_table`, `flg_id`),
+                                        KEY `domain_id` (`domain_id`),
+                                        KEY `dtable`    (`domain_id`, `associated_table`)) ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';
+                      ALTER TABLE `".TB_PREFIX."products` ADD `custom_flags` CHAR( 10 ) NOT NULL COMMENT 'User defined flags';
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',1,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',2,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',3,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',4,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',5,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',6,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',7,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',8,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',9,0);
+                      INSERT INTO `".TB_PREFIX."custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',10,0);
+                      DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'custom_flags';"),
+    'date' => "20180922"
+);
+patchmaker('294', $patchlines, $si_patches);
+unset($ud);

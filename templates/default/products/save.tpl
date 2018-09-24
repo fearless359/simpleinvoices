@@ -1,24 +1,15 @@
 {*
- * Script: save.tpl
- *   Biller save template
+ *  Script: save.tpl
+ *    Biller save template
  *
- * Authors:
- *   Justin Kelly, Nicolas Ruflin
+ *  Authors:
+ *    Justin Kelly, Nicolas Ruflin
  *
- * Last edited:
- *    2016-08-10
+ *  Last edited:
+ *    2018-09-23 by Richard Rowley
  *
- * License:
- *   GPL v3 or above
+ *  License:
+ *    GPL v3 or above
  *}
-{if $saved == true }
-  <div class="si_message_ok">{$LANG.save_product_success}</div>
-{else}
-  <div class="si_message_error">{$LANG.save_product_failure}</div>
-{/if}
-
-{if $smarty.post.cancel == null }
-  <meta http-equiv="refresh" content="2;URL=index.php?module=products&view=manage" />
-{else}
-  <meta http-equiv="refresh" content="0;URL=index.php?module=products&view=manage" />
-{/if}
+<div class="{$display_class}">{$display_message}</div>
+{$refresh_redirect}

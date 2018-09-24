@@ -8,12 +8,12 @@ if (empty($_GET['id'])) {
     $associated_table = $_GET['associated_table'];
     $flg_id = $_GET['flg_id'];
 } else {
-    $parts = split(':', $_GET['id']);
+    $parts = explode(':', $_GET['id']);
     $associated_table = $parts[0];
     $flg_id = $parts[1];
 }
 
-$cflg = getCustomFlag($associated_table, $flg_id, domain_id::get());
+$cflg = CustomFlags::getCustomFlag($associated_table, $flg_id, domain_id::get());
 
 $smarty->assign('cflg', $cflg);
 
