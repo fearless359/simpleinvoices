@@ -11,7 +11,7 @@ var padding = 12;
 var grid_width = $('.col').width() - (columns * padding);
 var percentage_width = grid_width / 100;
 
-// If Inventory in Simple Invoices is enabled than show quantity etc..
+// If Inventory in SimpleInvoices is enabled than show quantity etc..
 if (inventory == '1') {
     // @formatter:off
     col_model = [

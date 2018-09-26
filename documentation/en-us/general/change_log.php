@@ -16,8 +16,8 @@
       <li>2018-09-22 - <b>2018.0.0</b>
         <ul>
           <li><b>Production Release</b> Code brought current with PHP 7.2x requirements and all references
-                 to the SimpleInvoices forum and wiki have been updated to access the new Simple Invoices
-                 Group website and Fearless359 Simple Invoices Google+ forum.</li>
+                 to the SimpleInvoices forum and wiki have been updated to access the new SimpleInvoices
+                 Group website and Fearless359 SimpleInvoices Google+ forum.</li>
           <li>Added a signature field to the si_biller table along with maintenance support to provide
               text that will be automatically included in invoice and statement emails. This was an
               extension and that extension has been removed.</li>
@@ -146,7 +146,7 @@
                   of attributes such as, <b>&lt;table align=&quot;center&quot; &gt;</b>.</li>
               <li>Modified all occurrences of <b>&lt;textarea&gt;</b> sections to use <b>class="editor"</b>
                   and eliminate the <b>nowrap</b> attribute.</li>
-              <li>Changed all instances of the text, <b>Simple Invoices</b> to be <b>SimpleInvoices</b>
+              <li>Changed all instances of the text, <b>SimpleInvoices</b> to be <b>SimpleInvoices</b>
                   consistent with the logo and name of this applications.</li>
               <li>Remove the <b>class="buttons"</b> values from all <b>&lt;table&gt;</b> tags. The class
                   is commented out in the <b>main.css</b> file.</li>
@@ -208,7 +208,7 @@
                   <li><b>company_name_item</b>: Company name to replace default value (typically
                       <i>SimpleInvoices</i>. The new value will be used in all places where this language
                       it is currently used.</li>
-                  <li><b>company_log</b>: Name of your logo file. That file must reside in thes
+                  <li><b>company_logo</b>: Name of your logo file. That file must reside in thes
                       <i>extensions/user_security/images</i> folder. This will be displayed on the
                       SI logon screen.</li>
                 </ul>
@@ -469,7 +469,7 @@
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=58">Issue 58</a>Date format woes fixed</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=65">Issue 65</a>Invoice date: make editable</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=72">Issue 72</a>Sort not working correctly - fixed</li>
-          <li>Note: If your using authentification please read: <a href="https://simpleinvoices.group/howto" target="_blank">Simple Invoices Knowledge Base HowTo Page</a> as there have been changes</li>
+          <li>Note: If your using authentification please read: <a href="https://simpleinvoices.group/howto" target="_blank">SimpleInvoices Knowledge Base HowTo Page</a> as there have been changes</li>
           <li>SQL Patches
             <ul>
               <li>Adding data to the custom fields table for invoice</li>

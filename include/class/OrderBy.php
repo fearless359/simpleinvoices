@@ -12,7 +12,7 @@ class OrderBy {
      * @param string $field Primary field to order data by.
      * @param string $order Order <b>A</b> ascending, <b>D</b> descending.
      *        Defaults to ascending if not specified.
-     * @throws Exception object if an invalid value is specified for the
+     * @throws PdoDbException object if an invalid value is specified for the
      *         <b>order</b> parameter.
      */
     public function __construct($field = null, $order = 'A') {
@@ -37,7 +37,7 @@ class OrderBy {
      *                          <i>field name</i> and will use the value specified in the <b>$order</b>
      *                          parameter field for sorting.
      * @param string $order Order <b>A</b> ascending, <b>D</b> descending. Defaults to <b>A</b>.
-     * @throws Exception if either parameter does not contain the form and values spcified for them.
+     * @throws PdoDbException if either parameter does not contain the form and values spcified for them.
      */
     public function addField($field, $order = 'A') {
         $lcl_order = strtoupper($order);
@@ -74,6 +74,8 @@ class OrderBy {
             $this->orderByFields[] = $item;
         } else {
             $str = "OrderBy - addField(): Invalid <b>\$field</b> type. Field value is $field.";
+            error_log($str);
+            throw new PdoDbException($str);
         }
     }
 

@@ -41,22 +41,6 @@
         </td>
       </tr>
     {/if}
-    {if $taxes == null}
-      <tr>
-        <th>{$LANG.setup_add_taxrate}</th>
-        <td>
-          <a href="index.php?module=tax_rates&amp;view=add" class="positive"><img src="images/common/money_delete.png" alt="" />{$LANG.add_new_tax_rate}</a>
-        </td>
-      </tr>
-    {/if}
-    {if $preferences == null}
-      <tr>
-        <th>{$LANG.setup_add_inv_pref}</th>
-        <td>
-          <a href="index.php?module=preferences&amp;view=add" class="positive"><img src="images/common/page_white_edit.png" alt="" />{$LANG.add_new_preference}</a>
-        </td>
-      </tr>
-    {/if}
     </table>
   {else}
     <div class="si_invoice_form">

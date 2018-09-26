@@ -19,10 +19,10 @@
 
 <b>Help</b>
 <hr />
-       <div id="left">
-<br />
-For information regarding the setup,installation, and use of SimpleInvoices please refer to the Instructions sub-menu in the Option menu. <br />
-<br />For other queries please refer to the SimpleInvoices website <a href='https://simpleinvoices.group' target="_blank">Simple Invoices Knowledgebase
-              </a> and the SimpleInvoices forum at <a href="https://plus.google.com/communities/104308055324308879768">Simple Invoices Google+ Forum</a>
-
+<div id="left">
+    <br />
+    For information regarding the setup,installation, and use of SimpleInvoices please refer to the Instructions sub-menu in the Option menu. <br />
+    <br />
+    For other queries please refer to the <a href='https://simpleinvoices.group' target="_blank">SimpleInvoices Knowledge Base</a>
+    and the <a href="https://plus.google.com/communities/104308055324308879768">SimpleInvoices Google+ Forum</a>
 </div>

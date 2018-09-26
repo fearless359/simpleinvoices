@@ -15,6 +15,7 @@ class WhereClause {
      * class constructor
      * Instantiates an object of the <b>WhereClause</b> class.
      * @param WhereItem $whereItem (Optional) If set, will add to this newly instantiated object.
+     * @throws PdoDbException
      */
     public function __construct(WhereItem $whereItem = NULL) {
         $this->whereItems = array();
@@ -42,10 +43,8 @@ class WhereClause {
         $this->whereItems[] = $whereItem;
         $this->paren_cnt += $whereItem->parenCount();
         if ($whereItem->endOfClause() && $this->paren_cnt != 0) {
-            // @formatter:off
             throw new PdoDbException("WhereClause - addItem(): Invalid clause termination. There are too " .
                             ($whereItem->parenCount() > 0 ? "few " : "many ") . "closing parenthesis.");
-            // @formatter:on
         }
     }
 
@@ -55,6 +54,7 @@ class WhereClause {
      * @param string $value Constant or <b>DbField</b> for the right side of the test.
      * @param string $connector (Optional) <b>AND</b> or <b>OR</b> connector if this
      *        is not that last statement in the <b>WHERE</b> clause.
+     * @throws PdoDbException
      */
     public function addSimpleItem($field, $value, $connector=null) {
         $this->addItem(new WhereItem(false, $field, "=", $value, false, $connector));
@@ -70,9 +70,10 @@ class WhereClause {
 
     /**
      * Build the <b>WHERE</b> clause to append to the request.
-     * @param array $keyPairs Array of PDO token and value pairs to bind to the PDO statement.
+     * @param &array $keyPairs Array of PDO token and value pairs to bind to the PDO statement.
      *              Note that if not set, this array is initialized to empty by this method.
-     * @throws Exception if specified parenthesis have not been properly paired.
+     * @return string WHERE statement.
+     * @throws PdoDbException if specified parenthesis have not been properly paired.
      */
     public function build(&$keyPairs) {
         if (!isset($keyPairs)) $keyPairs = array();

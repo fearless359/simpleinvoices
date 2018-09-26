@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `si_biller` (
   `mobile_phone` varchar(255) DEFAULT NULL,
   `fax` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `signature` varchar(255) DEFAULT '' NOT NULL,
   `logo` varchar(255) DEFAULT NULL,
   `footer` text,
   `paypal_business_name` varchar(255) DEFAULT NULL,
@@ -30,11 +31,11 @@ CREATE TABLE IF NOT EXISTS `si_biller` (
   PRIMARY KEY (`domain_id`,`id`)
 ) ENGINE=MyISAM;
 
-INSERT INTO `si_biller` (`id`, `domain_id`, `name`, `street_address`, `street_address2`, `city`, `state`, `zip_code`, `country`, `phone`, `mobile_phone`, `fax`, `email`, `logo`, `footer`, `paypal_business_name`, `paypal_notify_url`, `paypal_return_url`, `eway_customer_id`, `paymentsgateway_api_id`, `notes`, `custom_field1`, `custom_field2`, `custom_field3`, `custom_field4`, `enabled`) VALUES
- (1, 1, 'Mr Plough', '43 Evergreen Terace', '', 'Springfield', 'NY', '90245', '', '04 5689 0456', '0456 4568 8966', '04 5689 8956', 'homer@mrplough.com', 'ubuntulogo.png', '', '', '', '', '', '', '', '', '', '7898-87987-87', '', '1')
-,(2, 1, 'Homer Simpson', '43 Evergreen Terace', NULL, 'Springfield', 'NY', '90245', NULL, '04 5689 0456', '0456 4568 8966', '04 5689 8956', 'homer@yahoo.com', NULL, NULL, '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, '1')
-,(3, 1, 'The Beer Baron', '43 Evergreen Terace', NULL, 'Springfield', 'NY', '90245', NULL, '04 5689 0456', '0456 4568 8966', '04 5689 8956', 'beerbaron@yahoo.com', NULL, NULL, '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, '1')
-,(4, 1, 'Fawlty Towers', '13 Seaside Drive', NULL, 'Torquay', 'Brixton on Avon', '65894', 'United Kingdom', '089 6985 4569', '0425 5477 8789', '089 6985 4568', 'penny@fawltytowers.co.uk', NULL, NULL, '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, '1');
+INSERT INTO `si_biller` (`id`, `domain_id`, `name`, `street_address`, `street_address2`, `city`, `state`, `zip_code`, `country`, `phone`, `mobile_phone`, `fax`, `email`, `signature`, `logo`, `footer`, `paypal_business_name`, `paypal_notify_url`, `paypal_return_url`, `eway_customer_id`, `paymentsgateway_api_id`, `notes`, `custom_field1`, `custom_field2`, `custom_field3`, `custom_field4`, `enabled`) VALUES
+ (1, 1, 'Mr Plough', '43 Evergreen Terrace', '', 'Springfield', 'NY', '90245', '', '04 5689 0456', '0456 4568 8966', '04 5689 8956', 'homer@mrplough.com', '', 'ubuntulogo.png', '', '', '', '', '', '', '', '', '', '7898-87987-87', '', '1')
+,(2, 1, 'Homer Simpson', '43 Evergreen Terrace', NULL, 'Springfield', 'NY', '90245', NULL, '04 5689 0456', '0456 4568 8966', '04 5689 8956', 'homer@yahoo.com', '', NULL, NULL, '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, '1')
+,(3, 1, 'The Beer Baron', '43 Evergreen Terrace', NULL, 'Springfield', 'NY', '90245', NULL, '04 5689 0456', '0456 4568 8966', '04 5689 8956', 'beerbaron@yahoo.com', '', NULL, NULL, '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, '1')
+,(4, 1, 'Fawlty Towers', '13 Seaside Drive', NULL, 'Torquay', 'Brixton on Avon', '65894', 'United Kingdom', '089 6985 4569', '0425 5477 8789', '089 6985 4568', 'penny@fawltytowers.co.uk', '', NULL, NULL, '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, '1');
 
 CREATE TABLE IF NOT EXISTS `si_cron` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -84,6 +85,32 @@ INSERT INTO `si_custom_fields` (`cf_id`, `cf_custom_field`, `cf_custom_label`, `
 ,(14, 'invoice_cf2', NULL, '0', 1)
 ,(15, 'invoice_cf3', NULL, '0', 1)
 ,(16, 'invoice_cf4', NULL, '0', 1);
+
+CREATE TABLE `si_custom_flags` (
+  `domain_id` int(11) NOT NULL DEFAULT '1',
+  `associated_table` char(10) NOT NULL COMMENT 'Table flag is associated with. Only defined for products for now.',
+  `flg_id` tinyint(3) UNSIGNED NOT NULL COMMENT 'Flag number ranging from 1 to 10',
+  `field_label` varchar(20) NOT NULL COMMENT 'Label to use on screen where option is set.',
+  `enabled` tinyint(1) NOT NULL COMMENT 'Defaults to enabled when record created. Can disable to retire flag.',
+  `field_help` varchar(255) NOT NULL COMMENT 'Help information to display for this field.'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Specifies an allowed setting for a flag field';
+
+INSERT INTO `si_custom_flags` (`domain_id`, `associated_table`, `flg_id`, `field_label`, `enabled`, `field_help`) VALUES
+(1, 'products', 1, '', 0, ''),
+(1, 'products', 2, '', 0, ''),
+(1, 'products', 3, '', 0, ''),
+(1, 'products', 4, '', 0, ''),
+(1, 'products', 5, '', 0, ''),
+(1, 'products', 6, '', 0, ''),
+(1, 'products', 7, '', 0, ''),
+(1, 'products', 8, '', 0, ''),
+(1, 'products', 9, '', 0, ''),
+(1, 'products', 10, '', 0, '');
+
+ALTER TABLE `si_custom_flags`
+  ADD PRIMARY KEY (`domain_id`,`associated_table`,`flg_id`),
+  ADD KEY `domain_id` (`domain_id`),
+  ADD KEY `dtable` (`domain_id`,`associated_table`);
 
 CREATE TABLE IF NOT EXISTS `si_customers` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -318,15 +345,16 @@ CREATE TABLE IF NOT EXISTS `si_products` (
   `attribute` varchar(255) DEFAULT NULL,
   `notes_as_description` CHAR(1) DEFAULT NULL,
   `show_description` CHAR(1) DEFAULT NULL,
+  `custom_flags` char(10) COLLATE utf8_unicode_ci NOT NULL ,
   PRIMARY KEY (`domain_id`,`id`)
 ) ENGINE=MyISAM;
 
-INSERT INTO `si_products` (`id`, `domain_id`, `description`, `unit_price`, `default_tax_id`, `default_tax_id_2`, `cost`, `reorder_level`, `custom_field1`, `custom_field2`, `custom_field3`, `custom_field4`, `notes`, `enabled`, `visible`, `attribute`, `notes_as_description`, `show_description`) VALUES
- (1, 1, 'Hourly charge', 150.000000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '')
-,(2, 1, 'Accounting services', 140.000000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '')
-,(3, 1, 'Ploughing service', 125.000000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '')
-,(4, 1, 'Bootleg homebrew', 15.500000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '')
-,(5, 1, 'Accomodation', 125.500000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '');
+INSERT INTO `si_products` (`id`, `domain_id`, `description`, `unit_price`, `default_tax_id`, `default_tax_id_2`, `cost`, `reorder_level`, `custom_field1`, `custom_field2`, `custom_field3`, `custom_field4`, `notes`, `enabled`, `visible`, `attribute`, `notes_as_description`, `show_description`, `custom_flags`) VALUES
+ (1, 1, 'Hourly charge', 150.000000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000')
+,(2, 1, 'Accounting services', 140.000000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000')
+,(3, 1, 'Ploughing service', 125.000000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000')
+,(4, 1, 'Bootleg homebrew', 15.500000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000')
+,(5, 1, 'Accommodation', 125.500000, 1, 0, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000');
 
 CREATE TABLE IF NOT EXISTS `si_products_attribute_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -670,7 +698,11 @@ INSERT INTO `si_sql_patchmanager`(`sql_id`,`sql_patch_ref`,`sql_patch`,`sql_rele
 ,(291,290,'','','')
 ,(292,291,'','','')
 ,(293,292,'','','')
-,(294,293,'Add department to the customers','20161004','ALTER TABLE `si_customers` ADD COLUMN `department` VARCHAR(255) NULL AFTER `name`');
+,(294,293,'Add department to the customers','20161004','ALTER TABLE `si_customers` ADD COLUMN `department` VARCHAR(255) NULL AFTER `name`')
+,(295,294,'Add custom_flags table for products.','20180922','')
+,(296,295,'Add net income report.','20180923','')
+,(297,296,'Add past due report.','20180924','')
+,(298,297,'Add User Security enhancement fields and values','20180924','');
 
 CREATE TABLE IF NOT EXISTS `si_system_defaults` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -684,31 +716,40 @@ CREATE TABLE IF NOT EXISTS `si_system_defaults` (
 
 INSERT INTO `si_system_defaults` (`id`, `name`, `value`, `domain_id`, `extension_id`) VALUES
  ('1','biller','','1','1')
-,('2','customer','','1','1')
-,('3','tax','1','1','1')
-,('4','preference','1','1','1')
-,('5','line_items','5','1','1')
-,('6','template','default','1','1')
-,('7','payment_type','1','1','1')
-,('8','language','en_GB','1','1')
-,('9','dateformate','Y-m-d','1','1')
-,('10','spreadsheet','xls','1','1')
-,('11','wordprocessor','doc','1','1')
-,('12','pdfscreensize','800','1','1')
-,('13','pdfpapersize','A4','1','1')
-,('14','pdfleftmargin','15','1','1')
-,('15','pdfrightmargin','15','1','1')
-,('16','pdftopmargin','15','1','1')
-,('17','pdfbottommargin','15','1','1')
-,('18','emailhost','localhost','1','1')
-,('19','emailusername','','1','1')
-,('20','emailpassword','','1','1')
-,('21','logging','0','1','1')
-,('22','delete','N','1','1')
-,('23','tax_per_line_item','1','1','1')
-,('24','inventory','0','1','1')
-,('25','product_attributes','0','1','1')
-,('26','large_dataset','0','1','1');
+,('2','company_logo','simple_invoices_logo.png','1','1')
+,('3','company_name','SimpleInvoices','1','1')
+,('4','company_name_item','SimpleInvoices','1','1')
+,('5','customer','','1','1')
+,('6','dateformate','Y-m-d','1','1')
+,('7','delete','N','1','1')
+,('8','emailhost','localhost','1','1')
+,('9','emailpassword','','1','1')
+,('10','emailusername','','1','1')
+,('11','inventory','0','1','1')
+,('12','language','en_US','1','1')
+,('13','large_dataset','0','1','1')
+,('14','line_items','5','1','1')
+,('15','logging','0','1','1')
+,('16','password_lower','1','1','1')
+,('17','password_min_length','8','1','1')
+,('18','password_number','1','1','1')
+,('19','password_special','1','1','1')
+,('20','password_upper','1','1','1')
+,('21','payment_type','1','1','1')
+,('22','pdfbottommargin','15','1','1')
+,('23','pdfleftmargin','15','1','1')
+,('24','pdfpapersize','A4','1','1')
+,('25','pdfrightmargin','15','1','1')
+,('26','pdfscreensize','800','1','1')
+,('27','pdftopmargin','15','1','1')
+,('28','preference','1','1','1')
+,('29','product_attributes','0','1','1')
+,('30','session_timeout','60','1','1')
+,('31','spreadsheet','xls','1','1')
+,('32','tax','1','1','1')
+,('33','tax_per_line_item','1','1','1')
+,('34','template','default','1','1')
+,('35','wordprocessor','doc','1','1');
 
 CREATE TABLE IF NOT EXISTS `si_tax` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -739,8 +780,8 @@ CREATE TABLE IF NOT EXISTS `si_user` (
   UNIQUE KEY `UnqEMailPwd` (`email`, `password`)
 ) ENGINE=MyISAM;
 
-INSERT INTO `si_user` (`id`, `email`, `role_id`, `domain_id`, `password`, `enabled`, `user_id`) VALUES
- (1, 'demo@simpleinvoices.group', 1, 1, 'fe01ce2a7fbac8fafaed7c982a04e229', 1, 0);
+INSERT INTO `si_user` (`id`, `username`, `email`, `role_id`, `domain_id`, `password`, `enabled`, `user_id`) VALUES
+ (1, 'demo', 'demo@simpleinvoices.group', 1, 1, 'fe01ce2a7fbac8fafaed7c982a04e229', 1, 0);
 
 CREATE TABLE IF NOT EXISTS `si_user_domain` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

@@ -6,7 +6,8 @@ class OnClause extends WhereClause {
 
     /**
      * class constructor
-     * @param WhereItem $whereItem If set, will add to this newly instantiated object.
+     * @param OnItem $onItem If set, will add to this newly instantiated object.
+     * @throws PdoDbException
      */
     public function __construct(OnItem $onItem = NULL) {
         parent::__construct($onItem);
@@ -32,7 +33,7 @@ class OnClause extends WhereClause {
     }
     /**
      * Add a <b>OnItem</b> object to the <i>ON</i> clause.
-     * @param OnItem $onItem
+     * @param WhereItem $whereItem
      * @throws PdoDbException If end of clause shows out of balance parenthesis.
      */
     public function addItem(WhereItem $whereItem) {
@@ -56,8 +57,9 @@ class OnClause extends WhereClause {
 
     /**
      * Build the <b>ON</b> clause to append to the request.
-     * @param array $keyPairs Array of PDO token and value pairs to bind to the PDO statement.
+     * @param &array $keyPairs Array of PDO token and value pairs to bind to the PDO statement.
      * @throws PdoDbException if specified parenthesis have not been properly paired.
+     * @return string ON clause string
      */
     public function build(&$keyPairs) {
         try {

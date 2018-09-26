@@ -1,19 +1,20 @@
 <?php
 /*
- * Script: manage.php
- *   Manage users page
+ *  Script: manage.php
+ *      Manage users page
  *
- * License:
- *   GPL v3 or above
+ *  License:
+ *      GPL v3 or above
  *
- * Website:
- *   https://simpleinvoices.group
+ *  Last updated:
+ *      2018-09-25 by Richard Rowley
+ *
+ *  Website:
+ *      https://simpleinvoices.group
  */
-global $dbh, $smarty;
-$sql = "SELECT count(*) as count FROM ".TB_PREFIX."user";
-$sth = dbQuery($sql) or die(htmlsafe(end($dbh->errorInfo())));
-$number_of_rows  = $sth->fetch(PDO::FETCH_ASSOC);
+global $smarty;
 
+$number_of_rows  = User::count();
 $smarty -> assign("number_of_rows",$number_of_rows);
 
 $smarty -> assign('pageActive', 'user');

@@ -440,7 +440,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      *
      * @param  string $file
      * @return void
-     * @throws Zend_Loader_PluginLoader_Exception if file is not writeable or path does not exist
+     * @throws Zend_Loader_PluginLoader_Exception if file is not writable or path does not exist
      */
     public static function setIncludeFileCache($file)
     {
@@ -462,11 +462,11 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
         if (file_exists($file) && !is_writable($file)) {
             require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception('Specified file is not writeable (' . $file . ')');
+            throw new Zend_Loader_PluginLoader_Exception('Specified file is not writable (' . $file . ')');
         }
         if (!file_exists($file) && file_exists(dirname($file)) && !is_writable(dirname($file))) {
             require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception('Specified file is not writeable (' . $file . ')');
+            throw new Zend_Loader_PluginLoader_Exception('Specified file is not writable (' . $file . ')');
         }
 
         self::$_includeFileCache = $file;

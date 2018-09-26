@@ -39,7 +39,7 @@ require_once ('library/HTMLPurifier/HTMLPurifier.standalone.php');
 include_once ('include/functions.php');
 
 if (!is_writable('./tmp')) {
-    simpleInvoicesError('notWriteable', 'directory', './tmp');
+    simpleInvoicesError('notWritable', 'directory', './tmp');
 }
 
 /* *************************************************************
@@ -47,11 +47,11 @@ if (!is_writable('./tmp')) {
  * *************************************************************/
 $logFile = "tmp/log/si.log";
 if (!is_file($logFile)) {
-    $createLogFile = fopen($logFile, 'w') or die(simpleInvoicesError('notWriteable', 'folder', 'tmp/log'));
+    $createLogFile = fopen($logFile, 'w') or die(simpleInvoicesError('notWritable', 'folder', 'tmp/log'));
     fclose($createLogFile);
 }
 if (!is_writable($logFile)) {
-    simpleInvoicesError('notWriteable', 'file', $logFile);
+    simpleInvoicesError('notWritable', 'file', $logFile);
 }
 $writer = new Zend_Log_Writer_Stream($logFile);
 $logger = new Zend_Log($writer);
@@ -60,7 +60,7 @@ $logger = new Zend_Log($writer);
  * *************************************************************/
 
 if (!is_writable('tmp/cache')) {
-    simpleInvoicesError('notWriteable', 'file', './tmp/cache');
+    simpleInvoicesError('notWritable', 'file', './tmp/cache');
 }
 
 include_once ('config/define.php');
@@ -138,7 +138,6 @@ try {
 date_default_timezone_set($config->phpSettings->date->timezone);
 error_reporting($config->debug->error_reporting);
 
-// @formatter:off
 ini_set('display_startup_errors', $config->phpSettings->display_startup_errors);
 ini_set('display_errors',         $config->phpSettings->display_errors);
 ini_set('log_errors',             $config->phpSettings->log_errors);
@@ -159,6 +158,8 @@ try {
 } catch (Zend_Db_Exception $zde) {
     $databaseBuilt = false;
 }
+
+$timeout = 0;
 if ($api_request) {
     if (!$databaseBuilt) {
         exit("Database not built. Can't run batch job.");
@@ -166,24 +167,23 @@ if ($api_request) {
 } else {
     // If session_timeout is defined in the database, use it. If not
     // set it to the 60-minute default.
-    $session_timeout = 60; // default
     if ($databaseBuilt) {
         try {
-            $timeout = $zendDb->fetchRow("SELECT value FROM ". TB_PREFIX . "system_defaults
-                                          WHERE name='session_timeout'");
-            $session_timeout = intval($timeout['value']);
+            $session_timeout = $zendDb->fetchRow("SELECT value FROM " . TB_PREFIX . "system_defaults WHERE name='session_timeout'");
+            $timeout = intval($session_timeout['value']);
         } catch (Zend_Db_Exception $zde) {
-            $session_timeout = 0;
+            $timeout = 0;
         }
     }
 }
-if ($api_request || $session_timeout <= 0) $session_timeout = 60;
-$frontendOptions = array('lifetime' => ($session_timeout * 60), 'automatic_serialization' => true);
-// @formatter:on
+if ($api_request || $timeout <= 0) {
+    $timeout = 60;
+}
+$frontendOptions = array('lifetime' => ($timeout * 60), 'automatic_serialization' => true);
 
 /* *************************************************************
  * Zend Framework cache section - start
- * -- must come after the tmp dir writeable check
+ * -- must come after the tmp dir writable check
  * *************************************************************/
 $backendOptions = array('cache_dir' => './tmp/'); // Directory where to put the cache files
 
@@ -207,7 +207,7 @@ $smarty->setConfigDir("config")
        ->setPluginsDir(array("library/smarty/libs/plugins", "include/smarty_plugins"));
 
 if (!is_writable($smarty->compile_dir)) {
-    simpleInvoicesError("notWriteable", 'folder', $smarty->compile_dir);
+    simpleInvoicesError("notWritable", 'folder', $smarty->compile_dir);
 }
 
 // add stripslashes smarty function
@@ -219,12 +219,10 @@ $smarty->registerPlugin('modifier', "unescape", "stripslashes");
 $path = pathinfo($_SERVER['REQUEST_URI']);
 // SC: Install path handling will need changes if used in non-HTML contexts
 $install_path = htmlsafe($path['dirname']);
-if ($install_path) {} // Show variable as used.
 
 // With the database built, a connection should be able to be made
 // if the configuration user, password, etc. are set correctly.
 $db = ($databaseBuilt ? db::getInstance() : NULL);
-if ($db) {} // Show variable as used.
 
 require_once ("include/class/Index.php");
 require_once ("include/sql_queries.php");
@@ -240,7 +238,7 @@ if ($databaseBuilt) {
 }
 
 // Turn authorization off until database is built. It messes up the install screens.
-// Or if this is a batchjob
+// Or if this is a batch job
 if ($api_request ||(!$databaseBuilt || !$databasePopulated)) {
     $config->authentication->enabled = DISABLED;
     $module="";
@@ -248,7 +246,6 @@ if ($api_request ||(!$databaseBuilt || !$databasePopulated)) {
 
 $smarty->assign('patchCount', $patchCount);
 
-// @formatter:off
 $smarty->registerPlugin('modifier', "siLocal_number"     , array("siLocal", "number"));
 $smarty->registerPlugin('modifier', "siLocal_number_trim", array("siLocal", "number_trim"));
 $smarty->registerPlugin('modifier', "siLocal_date"       , array("siLocal", "date"));
@@ -259,10 +256,9 @@ $smarty->registerPlugin('modifier', 'outhtml'  , 'outhtml');
 $smarty->registerPlugin('modifier', 'urlencode', 'urlencode');
 $smarty->registerPlugin('modifier', 'urlescape', 'urlencode');
 $smarty->registerPlugin('modifier', 'urlsafe'  , 'urlsafe');
-// @formatter:on
 
 global $ext_names;
-loadSiExtentions($ext_names);
+loadSiExtensions($ext_names);
 
 // point to extension plugin directories if present.
 $plugin_dirs = array();
@@ -281,6 +277,9 @@ $defaults = getSystemDefaults();
 $smarty->assign("defaults", $defaults);
 
 include_once ('include/language.php');
+
+// Load company name from system_defaults table.
+UserSecurity::loadCompanyName($patchCount);
 
 if (!$api_request) {
     include ('include/include_auth.php');

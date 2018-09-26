@@ -3,9 +3,24 @@
 class Customer {
 
     /**
+     * Calculate count of customer records.
+     * @return integer
+     * @throws PdoDbException
+     */
+    public static function count() {
+        global $pdoDb;
+
+        $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
+        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+        $rows = $pdoDb->request("SELECT", "customers");
+        return $rows[0]['count'];
+    }
+
+    /**
      * Get a customer record.
      * @param string $id Unique ID record to retrieve.
      * @return array Row retrieved. Test for "=== false" to check for failure.
+     * @throws PdoDbException
      */
     public static function get($id) {
         global $pdoDb;
@@ -20,9 +35,13 @@ class Customer {
      * Retrieve all <b>customers</b> records per specified option.
      * @param boolean $enabled_only (Defaults to <b>false</b>) If set to <b>true</b> only Customers 
      *        that are <i>Enabled</i> will be selected. Otherwise all <b>customers</b> records are returned.
+     * @param integer $incl_cust_id If not null, id of customer record to retrieve.
+     * @param boolean $no_totals true if only customer record fields to be returned, false (default) to add
+     *        calculated totals field.
      * @return array Customers selected.
+     * @throws PdoDbException
      */
-    public static function get_all($enabled_only = false, $incl_cust_id=null) {
+    public static function get_all($enabled_only = false, $incl_cust_id=null, $no_totals=false) {
         global $LANG, $pdoDb;
 
         if ($enabled_only) {
@@ -36,6 +55,9 @@ class Customer {
         $pdoDb->addSimpleWhere("domain_id", domain_id::get());
         $pdoDb->setOrderBy("name");
         $rows = $pdoDb->request("SELECT", "customers");
+        if ($no_totals) {
+            return $rows;
+        }
 
         $customers = array();
         foreach($rows as $customer) {
@@ -48,6 +70,12 @@ class Customer {
 
         return $customers;
     }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws PdoDbException
+     */
     public static function getCustomerInvoices($id) {
         global $pdoDb;
         $fn = new FunctionStmt("SUM", "COALESCE(ii.total,0)");
@@ -109,6 +137,7 @@ class Customer {
      * Get a default customer name.
      * @param string $domain_id Domain user is logged into.
      * @return string Default customer name
+     * @throws PdoDbException
      */
     public static function getDefaultCustomer($domain_id = '') {
         global $pdoDb;
@@ -127,6 +156,12 @@ class Customer {
         return $rows[0];
     }
 
+    /**
+     * @param $customer_id
+     * @param bool $isReal
+     * @return mixed
+     * @throws PdoDbException
+     */
     public static function calc_customer_total($customer_id, $isReal = false) {
         global $pdoDb;
         $pdoDb->addToFunctions(new FunctionStmt("COALESCE", "SUM(ii.total),0", "total"));

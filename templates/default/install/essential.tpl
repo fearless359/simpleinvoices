@@ -7,8 +7,7 @@
   <p><strong>NOTE:</strong> If the <strong><em>authentication.enabled</em></strong>
      setting in the configuration file, <strong>{$config_file_path}</strong>,
      is set to <strong>true</strong>. You will need to use the demonstration ID,
-     <strong>demo@simpleinvoices.group</strong>, and the password,
-     <strong>demo</strong>.</p>
+     <strong>demo</strong>, and the password, <strong>demo</strong>.</p>
 </div>
 <div class="si_toolbar si_toolbar_form">
   <a href="index.php" class="positive">

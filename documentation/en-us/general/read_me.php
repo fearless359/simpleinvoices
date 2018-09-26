@@ -55,7 +55,7 @@
               </li>
             </ul>
           </li>
-          <li>The following directories must be setup and writeable by the webserver user:
+          <li>The following directories must be setup and writable by the webserver user:
 <pre>
   tmp
   tmp/cache

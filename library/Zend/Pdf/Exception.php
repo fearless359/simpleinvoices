@@ -114,7 +114,7 @@ class Zend_Pdf_Exception extends Zend_Exception
     const NOT_READABLE = 0x0102;
 
     /**
-     * The file is not writeable by the current user.
+     * The file is not writable by the current user.
      */
     const NOT_WRITEABLE = 0x0103;
 

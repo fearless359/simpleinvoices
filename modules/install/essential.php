@@ -1,7 +1,6 @@
 <?php
 global $databaseBuilt, $databasePopulated, $db;
 $menu = false;
-if ($menu) {} // eliminates unused warning.
 
 if ($databaseBuilt && !$databasePopulated) {
     $importjson = new ImportJson();

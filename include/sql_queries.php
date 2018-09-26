@@ -186,7 +186,7 @@ function lastInsertId() {
  * @param &array Reference to the extension names array.
  * @throws PdoDbException
  */
-function loadSiExtentions(&$ext_names) {
+function loadSiExtensions(&$ext_names) {
     global $config, $databaseBuilt, $patchCount, $pdoDb_admin;
 
     if ($databaseBuilt && $patchCount > "196") {
@@ -354,6 +354,50 @@ function getDefaultLoggingStatus() {
 function getDefaultInventory() {
     return getDefaultGeneric('inventory');
 }
+/**
+ * Get "password_lower" entry from the system_defaults table.
+ * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
+ */
+function getDefaultPasswordLower() {
+    return getDefaultGeneric('password_lower');
+}
+
+/**
+ * Get "password_min_length" entry from the system_defaults table.
+ * @return string number setting.
+ * @throws PdoDbException
+ */
+function getDefaultPasswordMinLength() {
+    return getDefaultGeneric('password_min_length', false);
+}
+
+/**
+ * Get "password_number" entry from the system_defaults table.
+ * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
+ */
+function getDefaultPasswordNumber() {
+    return getDefaultGeneric('password_number');
+}
+
+/**
+ * Get "password_special" entry from the system_defaults table.
+ * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
+ */
+function getDefaultPasswordSpecial() {
+    return getDefaultGeneric('password_special');
+}
+
+/**
+ * Get "password_upper" entry from the system_defaults table.
+ * @return string "Enabled" or "Disabled"
+ * @throws PdoDbException
+ */
+function getDefaultPasswordUpper() {
+    return getDefaultGeneric('password_upper');
+}
 
 /**
  * Get "product_attributes" entry from the system_defaults table.
@@ -387,50 +431,60 @@ function getDefaultLanguage() {
  * @param int $status
  * @param string $domain_id
  * @return bool
+ * @throws PdoDbException
  */
 function setStatusExtension($extension_id, $status = 2, $domain_id = '') {
+    global $pdoDb_admin;
+
     $domain_id = domain_id::get($domain_id);
 
     // status=2 = toggle status
     if ($status == 2) {
-        // @formatter:off
-        $sql = "SELECT enabled FROM " . TB_PREFIX . "extensions
-                WHERE id = :id AND domain_id = :domain_id LIMIT 1";
-        // @formatter:on
-        $sth = dbQuery($sql, ':id', $extension_id, ':domain_id', $domain_id);
-        $extension_info = $sth->fetch();
+        $pdoDb_admin->setSelectList('enabled');
+        $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
+        $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
+
+        $pdoDb_admin->setLimit(1);
+
+        $rows = $pdoDb_admin->request('SELECT', 'extensions');
+        $extension_info = $rows[0];
         $status = 1 - $extension_info['enabled'];
     }
 
-    // @formatter:off
-    $sql = "UPDATE " . TB_PREFIX . "extensions
-            SET enabled =  :status
-            WHERE id = :id AND domain_id =  :domain_id";
-    // @formatter:on
-    if (dbQuery($sql, ':status', $status, ':id', $extension_id, ':domain_id', $domain_id)) {
-        return true;
-    }
-    return false;
+    $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
+    $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
+
+    $pdoDb_admin->setFauxPost(array("enabled" => $status));
+
+    $result = $pdoDb_admin->request("UPDATE", 'extensions');
+    return $result;
 }
 
 /**
  * @param string $extension_name
- * @param string $domain_id
  * @return int
+ * @throws PdoDbException
  */
-function getExtensionID($extension_name = "none", $domain_id = '') {
-    $domain_id = domain_id::get($domain_id);
-    // @formatter:off
-    $sql = "SELECT * FROM " . TB_PREFIX . "extensions
-            WHERE name = :extension_name
-              AND (domain_id = 0 OR domain_id = :domain_id )
-            ORDER BY domain_id DESC LIMIT 1";
-    // @formatter:on
-    $sth = dbQuery($sql, ':extension_name', $extension_name, ':domain_id', $domain_id);
-    $extension_info = $sth->fetch();
-    if (!$extension_info) {
-        return -2; // -2 = no result set = extension not found
-    } elseif ($extension_info['enabled'] != ENABLED) {
+function getExtensionID($extension_name = "none") {
+    global $pdoDb_admin;
+
+    $domain_id = domain_id::get();
+
+    $pdoDb_admin->addSimpleWhere('name', $extension_name, 'AND');
+    $pdoDb_admin->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
+    $pdoDb_admin->addToWhere(new WhereItem(false, 'domain_id', '=', $domain_id, true));
+
+    $pdoDb_admin->setOrderBy(array('domain_id', 'D'));
+
+    $pdoDb_admin->setLimit(1);
+
+    $rows = $pdoDb_admin->request('SELECT', 'extensions');
+    if (empty($rows)) {
+        return -2;
+    }
+
+    $extension_info = $rows[0];
+    if ($extension_info['enabled'] != ENABLED) {
         return -1; // -1 = extension not enabled
     }
     return $extension_info['id']; // 0 = core, >0 is extension id
@@ -439,65 +493,58 @@ function getExtensionID($extension_name = "none", $domain_id = '') {
 /**
  * @param string $domain_id
  * @return null
+ * @throws PdoDbException
  */
 function getSystemDefaults($domain_id = '') {
-    global $patchCount;
-    global $databaseBuilt;
+    global $patchCount,
+           $databaseBuilt,
+           $pdoDb_admin;
+
     if (!$databaseBuilt) return NULL;
 
     $domain_id = domain_id::get($domain_id);
 
-    $db = new db();
-
-    // get sql patch level - if less than 198 do sql with no exntesion table
+    // get sql patch level - if less than 198 do sql with no extension table
     if ((checkTableExists(TB_PREFIX . "system_defaults") == false)) {
         return NULL;
     }
 
-    if ($patchCount < "198") {
-        // @formatter:off
-        $sql_default = "SELECT def.name, def.value
-                        FROM " . TB_PREFIX . "system_defaults def";
-        // @formatter:on
-        $sth = $db->query($sql_default);
-    } else {
-        // @formatter:off
-        $sql_default = "SELECT def.name, def.value
-                        FROM " . TB_PREFIX . "system_defaults def
-                        INNER JOIN " . TB_PREFIX . "extensions ext ON (def.domain_id = ext.domain_id)
-                        WHERE enabled = 1
-                          AND ext.name = 'core'
-                          AND def.domain_id = :domain_id
-                        ORDER BY extension_id ASC";     // order is important for overriding setting
-        // @formatter:on
-        $sth = $db->query($sql_default, ':domain_id', 0);
+    $lcl_defaults = NULL;
+    $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+    if ($patchCount >= "198") {
+        $jn = new Join("INNER", "extensions", "ext");
+        $jn->addSimpleItem("def.domain_id", new DbField("ext.domain_id"));
+        $pdoDb_admin->addToJoins($jn);
+
+        $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
+        $pdoDb_admin->addSimpleWhere('ext.name', 'core', 'AND');
+        $pdoDb_admin->addSimpleWhere('def.domain_id', 0);
+
+        $pdoDb_admin->setOrderBy("extension_id");
     }
 
-    $lcl_defaults = NULL;
-    $default = NULL;
-    while ($default = $sth->fetch()) {
-        $nam = $default['name'];
-        $lcl_defaults["$nam"] = $default['value'];
+    $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
+    foreach ($rows as $row) {
+        $lcl_defaults[$row['name']] = $row['value'];
     }
 
     if ($patchCount > "198") {
-        // @formatter:off
-        $sql = "SELECT def.name,def.value
-                FROM " . TB_PREFIX . "system_defaults def
-                INNER JOIN " . TB_PREFIX . "extensions ext ON (def.extension_id = ext.id)
-                WHERE enabled=1
-                  AND def.domain_id = :domain_id
-                ORDER BY extension_id ASC";
-        // @formatter:on
-        $sth = $db->query($sql, 'domain_id', $domain_id);
-        $default = NULL;
+        $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
 
-        while ($default = $sth->fetch()) {
-            $nam = $default['name'];
-            $lcl_defaults["$nam"] = $default['value']; // if setting is redefined, overwrite the previous value
+        $jn = new Join('INNER', 'extensions', 'ext');
+        $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
+        $pdoDb_admin->addToJoins($jn);
+
+        $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
+        $pdoDb_admin->addSimpleWhere('def.domain_id', $domain_id);
+
+        $pdoDb_admin->setOrderBy('extension_id');
+
+        $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
+        foreach ($rows as $row) {
+            $lcl_defaults[$row['name']] = $row['value']; // if setting is redefined, overwrite the previous value
         }
     }
-
     return $lcl_defaults;
 }
 
@@ -506,8 +553,11 @@ function getSystemDefaults($domain_id = '') {
  * @param $value
  * @param string $extension_name
  * @return bool
+ * @throws PdoDbException
  */
 function updateDefault($name, $value, $extension_name = "core") {
+    global $pdoDb_admin;
+
     $domain_id = domain_id::get();
 
     $extension_id = getExtensionID($extension_name);
@@ -515,24 +565,14 @@ function updateDefault($name, $value, $extension_name = "core") {
         die(htmlsafe("Invalid extension name: " . $extension_name));
     }
 
-    // @formatter:off
-    $sql = "INSERT INTO `" . TB_PREFIX . "system_defaults` (
-                    `name`,
-                    `value`,
-                    domain_id,
-                    extension_id)
-            VALUES (:name,
-                    :value,
-                    :domain_id,
-                    :extension_id)
-            ON DUPLICATE KEY UPDATE `value` =  :value";
-    if (dbQuery($sql,
-                ':value'       , $value,
-                ':domain_id'   , $domain_id,
-                ':name'        , $name,
-                ':extension_id', $extension_id)) return true;
-    // @formatter:on
-    return false;
+    try {
+        $pdoDb_admin->setFauxPost(array('name' => $name, 'value' => $value, 'domain_id' => $domain_id, 'extension_id' => $extension_id));
+        $pdoDb_admin->setOnDuplicateKey("`value` = $value");
+        $pdoDb_admin->request("INSERT", "system_defaults");
+    } catch (PdoDbException $pde) {
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -752,7 +792,6 @@ function getURL() {
  * @return null
  */
 function sql2array($strSql) {
-    global $dbh;
     $sqlInArray = NULL;
 
     $result_strSql = dbQuery($strSql);

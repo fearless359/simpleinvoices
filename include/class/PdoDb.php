@@ -40,6 +40,7 @@ class PdoDb {
     private $keyPairs;
     private $limit;
     private $noErrorLog;
+    private $onDuplicateKey;
     private $orderBy;
     private $pdoDb;
     private $pdoDb2;
@@ -47,7 +48,7 @@ class PdoDb {
     private $selectList;
     private $selectStmts;
     private $table_columns;
-    private $table_constrants;
+    private $table_constraints;
     private $table_engine;
     private $table_schema;
     private $transaction;
@@ -70,7 +71,6 @@ class PdoDb {
         $this->debug = $debug;
         $this->transaction = false;
         $host = ($dbinfo->getHost() == "localhost" ? "127.0.0.1" : $dbinfo->getHost());
-        //$dsn = "mysql:host={$dbinfo->getHost()};dbname={$dbinfo->getDbname()}";
         $dsn = "mysql:dbname={$dbinfo->getDbname()};host=$host;port={$dbinfo->getPort()}";
         $username = $dbinfo->getUsername();
         $password = $dbinfo->getPassword();
@@ -123,12 +123,13 @@ class PdoDb {
         $this->keyPairs         = null;
         $this->limit            = 0;
         $this->noErrorLog       = false;
+        $this->onDuplicateKey   = null;
         $this->orderBy          = null;
         $this->selectAll        = false;
         $this->selectList       = null;
         $this->selectStmts      = null;
         $this->table_columns    = null;
-        $this->table_constrants = null;
+        $this->table_constraints = null;
         $this->usePost          = true;
         $this->whereClause      = null;
         if ($clearTran && $this->transaction) {
@@ -198,6 +199,7 @@ class PdoDb {
      * @param string $value Value to test for.
      * @param string $connector (Optional) If specified, used to connect to a subsequent
      *        <i>WhereItem</i>. Typically "AND" or "OR".
+     * @throws PdoDbException
      */
     public function addSimpleWhere($column, $value, $connector=null) {
         $this->addToWhere(new WhereItem(false, $column, "=", $value, false, $connector));
@@ -235,8 +237,8 @@ class PdoDb {
      *        the <b>$column</b> will be added in place of the <i>tilde</i>.
      */
     public function addTableConstraints($column, $constrant) {
-        if (empty($this->table_constrants)) $this->table_constrants = array();
-        $this->table_constrants[$column] = $constrant;
+        if (empty($this->table_constraints)) $this->table_constraints = array();
+        $this->table_constraints[$column] = $constrant;
     }
 
     /**
@@ -265,6 +267,7 @@ class PdoDb {
      * Specify functions with parameters to list of those to perform
      * @param mixed $function FunctionStmt object or a string with a preformatted
      *        function to include in parameter list. For example, "count(id)".
+     * @throws PdoDbException
      */
     public function addToFunctions($function) {
         if (is_string($function) || is_a($function, "FunctionStmt")) {
@@ -373,6 +376,13 @@ class PdoDb {
     }
 
     /**
+     * @param string $statement to perform update on duplicate key.
+     */
+    public function setOnDuplicateKey($statement) {
+        $this->onDuplicateKey = "ON DUPLICATE KEY UPDATE " . $statement;
+    }
+
+    /**
      * Set the <b>ORDER BY</b> statement object to generate when the next request is performed.
      * Note that this method can be called multiple times to add additional values.
      * @param string/array/OrderBy $orderBy Can take several forms.
@@ -460,6 +470,7 @@ class PdoDb {
      * @param string $operator
      * @param mixed $value
      * @param string $connector
+     * @throws PdoDbException
      */
     public function setSimpleHavings($field, $operator, $value, $connector="") {
         $this->havings[] = new Having($field, $operator, $value, $connector);
@@ -560,8 +571,10 @@ class PdoDb {
     }
 
     /**
-     * setter for class property.
-     * @param boolean $selectAll
+     * Specify if all fields are to be selected or not.
+     * @param boolean $selectAll true to select all field, false if only those select list, function
+     *        statements, etc. should be selected. Note that this field does not affect what is
+     *        specified to select in the various select list, statement, etc. functions.
      */
     public function setSelectAll($selectAll) {
         $this->selectAll = $selectAll;
@@ -847,7 +860,7 @@ class PdoDb {
      * @return mixed Result varies with the request type. <b>INSERT</b> returns the
      *         auto increment unique ID (or blank if no such field), <b>SELECT</b>
      *         returns the associative array for selected rows or an empty array if
-     *         no rows are found, <b>SHOW</b> returns the numberic array of
+     *         no rows are found, <b>SHOW</b> returns the numeric array of
      *         specified <b>SHOW</b> request, otherwise <b>true</b> on success of
      *         <b>false</b> on failure..
      * @throws PdoDbException if any unexpected setting or missing information is encountered.
@@ -865,11 +878,11 @@ class PdoDb {
 
         if ($request != "DROP") {
             if ($request == "ALTER TABLE") {
-                if (empty($this->table_constrants)) {
+                if (empty($this->table_constraints)) {
                     throw new PdoDbException("PdoDb - request():");
                 }
 
-                foreach ($this->table_constrants as $column => $constraint) {
+                foreach ($this->table_constraints as $column => $constraint) {
                     if (preg_match('/compound/', $column)) {
                         $column = preg_replace('/compound *(\(.*\)).*$/', '\1', $column);
                     }
@@ -907,6 +920,8 @@ class PdoDb {
                     $this->clearAll();
                     throw new PdoDbException("PdoDb - request(): Invalid table, $table, specified.");
                 }
+
+                $onDuplicateKeyUpdate = (empty($this->onDuplicateKey) ? '' : $this->onDuplicateKey);
 
                 // Build WHERE clause and get value pair list for tokens in the clause.
                 $where = "";
@@ -963,11 +978,12 @@ class PdoDb {
 
             case "SELECT":
                 $useValueList = false;
-                if (!$this->selectAll &&
-                    (isset($this->selectList) || isset($this->functions) || isset($this->caseStmts))) {
+                if ($this->selectAll) {
+                    $list = "*";
+                } else if (isset($this->selectList) || isset($this->functions) || isset($this->caseStmts)) {
                     $list = "";
                 } else {
-                    $list = "*";
+                    $list = "*"; // default if nothing specified, select all.
                 }
 
                 if (isset($this->selectList)) {
@@ -1041,7 +1057,8 @@ class PdoDb {
 
         if ($useValueList) $sql .= $this->makeValueList($request, $valuePairs, $token_cnt) . "\n";
 
-        $sql .= (empty($where  ) ? "" : " " . $where   . "\n") .
+        $sql .= (empty($onDuplicateKeyUpdate) ? "" : " " . $onDuplicateKeyUpdate) .
+                (empty($where  ) ? "" : " " . $where   . "\n") .
                 (empty($group  ) ? "" : " " . $group   . "\n") .
                 (empty($havings) ? "" : " " . $havings . "\n") .
                 (empty($order  ) ? "" : " " . $order   . "\n") .
@@ -1061,7 +1078,7 @@ class PdoDb {
      * @return mixed Result varies with the request type. <b>INSERT</b> returns the
      *         auto increment unique ID (or blank if no such field), <b>SELECT</b>
      *         returns the associative array for selected rows or an empty array if
-     *         no rows are found, <b>SHOW</b> returns the numberic array of
+     *         no rows are found, <b>SHOW</b> returns the numeric array of
      *         specified <b>SHOW</b> request, otherwise <b>true</b> on success.
      * @throws PdoDbException If unable to bind values or execute request.
      */

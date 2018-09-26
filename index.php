@@ -103,9 +103,22 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                 }
                 $menu = false;
             } else {
-                // There aren't patches to apply. So check to see if there are invoices in db.
-                // If so, show the home page as default. Otherwise show Manage Invoices page
-                if ($module == null) {
+                // All patches have been applied. Now check to see if the database has been set up.
+                // It is considered setup when there is at least one biller, one customer and one product.
+                // If it has not been set up, allow the user to add a biller, customer, product or to
+                // modify the setting options.
+                if (isset($module)) {
+                    if (($view == 'add' && ($module == 'billers' || $module == 'customers' || $module == 'products')) ||
+                        ($module == 'system_defaults' && ($view == 'manage' || $view == 'edit' || $view == 'save'))) {
+                        $still_doing_setup = false;
+                    } else {
+                        $still_doing_setup = (Biller::count() == 0 || Customer::count() == 0 || Product::count() == 0);
+                    }
+                } else {
+                    $still_doing_setup = true;
+                }
+
+                if ($still_doing_setup) {
                     if (Invoice::count() > 0) {
                         $module = "invoices";
                         $view = "manage";

@@ -6,9 +6,10 @@
 {else}
   <div class="si_wrap">
     <!-- SECTION:help -->
-    {$LANG.hello} {$smarty.session.Zend_Auth.email|htmlsafe} |
+    {$LANG.hello} {$smarty.session.Zend_Auth.username|htmlsafe} |
     <a href="https://simpleinvoices.group target="blank">{$LANG.help}</a> |
     <a href="index.php?module=si_info&amp;view=index" style="color:white;">{$LANG.information}</a>
+
     <!-- SECTION:auth -->
     {if $config->authentication->enabled == 1} |
       {if $smarty.session.Zend_Auth.id == null}

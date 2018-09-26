@@ -2,7 +2,6 @@
 global $databaseBuilt;
 
 $menu = false;
-if ($menu) {} // eliminates unused warning
 
 // Check if a table that MUST exist in all versions, does exist.
 if (!$databaseBuilt) {

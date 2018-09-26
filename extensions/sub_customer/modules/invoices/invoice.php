@@ -28,7 +28,7 @@ $preferences = Preferences::getActivePreferences();
 $defaults    = getSystemDefaults();
 $matrix      = ProductAttributes::getMatrix();
 
-if (empty($billers) || empty($customers) || empty($products) || empty($preferences)) {
+if (empty($billers) || empty($customers) || empty($products)) {
     $first_run_wizard = true;
     $smarty->assign("first_run_wizard", $first_run_wizard);
 }

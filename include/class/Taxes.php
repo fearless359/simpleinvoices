@@ -3,7 +3,7 @@ class Taxes {
 
     /**
      * Get a tax record.
-     * @param string $id Unique ID record to retrieve.
+     * @param string $tax_id Unique ID record to retrieve.
      * @param string $domain_id Domain ID logged into.
      * @return array Row retrieved. Test for "=== false" to check for failure.
      * @throws PdoDbException
@@ -27,7 +27,6 @@ class Taxes {
 
     /**
      * Get all active taxes records.
-     * @param string $domain_id Domain ID logged into.
      * @return array Rows retrieved.
      * @throws PdoDbException
      */

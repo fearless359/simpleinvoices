@@ -2294,3 +2294,33 @@ $patchlines = array(
     'date' => "20180924"
 );
 patchmaker('296', $patchlines, $si_patches);
+
+$ud = (checkFieldExists("user", "username"));
+$conam = $LANG['company_name'];
+$cologo = 'simple_invoices_logo.png';
+$patchlines = array(
+    'name' => 'Add User Security enhancement fields and values',
+    'patch' => ($ud ? "UPDATE `".TB_PREFIX."system_defaults` SET `extension_id` = 1 WHERE `name` IN
+                            ('company_logo','company_name','company_name_item','password_min_length','password_lower','password_number','password_special','password_upper','session_timeout');                                
+                       DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'user_security';" :
+                      "ALTER TABLE `".TB_PREFIX."user` ADD `username` VARCHAR(255) DEFAULT '' AFTER `id`;
+                       ALTER TABLE `".TB_PREFIX."user` DROP INDEX `UnqEMailPwd`;
+                       UPDATE `".TB_PREFIX."user` AS U1, `".TB_PREFIX."user` AS U2 SET U1.username = U2.email WHERE U2.id = U1.id;
+                       ALTER TABLE `" . TB_PREFIX . "user` ADD UNIQUE INDEX `uname` (`username`); 
+                       ALTER TABLE `".TB_PREFIX."system_defaults CHANGE `value` `value` VARCHAR(60);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'company_logo'        , '$cologo', 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'company_name'        , '$conam' , 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'company_name_item'   , '$conam' , 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'password_min_length' , 8        , 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'password_lower'      , 1        , 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'password_number'     , 1        , 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'password_special'    , 1        , 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'password_upper'      , 1        , 1);
+                       INSERT INTO `".TB_PREFIX."system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ('$domain_id', 'session_timeout'     , 15       , 1);
+                       DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'user_security';"),
+    'date' => "20180924"
+);
+patchmaker('297', $patchlines, $si_patches);
+unset($ud);
+unset($conam);
+unset($cologo);

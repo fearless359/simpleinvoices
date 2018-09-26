@@ -1,16 +1,17 @@
 <?php
 /*
  * Script: add.php
- * 	Billers add page
+ *      User add page
  *
  * Authors:
- *	 Justin Kelly, Nicolas Ruflin
+ *      Justin Kelly, Nicolas Ruflin,
+ *      Rich Rowley
  *
  * Last edited:
- * 	 2007-07-19
+ *      2018-09-24
  *
  * License:
- *	 GPL v2 or above
+ *     GPL v3 or above
  *
  * Website:
  * 	https://simpleinvoices.group
@@ -19,14 +20,14 @@ global $smarty;
 
 checkLogin();
 
-$roles = user::getUserRoles();
+$roles = User::getUserRoles();
 
-$saved = false;
-if (!empty($_POST['email'])) {
-	include ("modules/user/save.php");
+if (!empty($_POST['username'])) {
+    include ("modules/user/save.php");
 }
 
-$smarty->assign('save', $saved);
+$smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
+
 $smarty->assign('roles', $roles);
 
 $smarty->assign('pageActive', 'user');

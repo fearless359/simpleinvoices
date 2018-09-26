@@ -63,6 +63,7 @@ class Select {
     /**
      * Add a <b>JOIN</b> to this <b>SELECT</b> statement.
      * @param Join $join <b>JOIN</b> statement to include.
+     * @throws PdoDbException
      */
     public function addJoin(Join $join) {
         if (!is_a($join, "JOIN")) {
@@ -76,6 +77,7 @@ class Select {
     /**
      * Build select statement.
      * @return string <b>SELECT</b> statement created by specified values.
+     * @throws PdoDbException
      */
     public function build(&$keyPairs) {
         $select = "(SELECT ";
