@@ -28,19 +28,23 @@ class Taxes {
     /**
      * Get all active taxes records.
      * @return array Rows retrieved.
-     * @throws PdoDbException
      */
     public static function getActiveTaxes() {
         global $LANG, $pdoDb;
 
-        $pdoDb->addSimpleWhere("tax_enabled", ENABLED, "AND");
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+        $rows = array();
+        try {
+            $pdoDb->addSimpleWhere("tax_enabled", ENABLED, "AND");
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
 
-        $pdoDb->setSelectAll(true);
-        $pdoDb->setSelectList("'$LANG[enabled]' AS enabled");
+            $pdoDb->setSelectAll(true);
+            $pdoDb->setSelectList("'$LANG[enabled]' AS enabled");
 
-        $pdoDb->setOrderBy("tax_description");
-        $rows = $pdoDb->request("SELECT", "tax");
+            $pdoDb->setOrderBy("tax_description");
+            $rows = $pdoDb->request("SELECT", "tax");
+        } catch (PdoDbException $pde) {
+            error_log("Taxes::getActiveTaxes() - PdoDbException thrown: " . $pde->getMessage());
+        }
         return $rows;
     }
 

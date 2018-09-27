@@ -9,6 +9,9 @@ checkLogin();
 
 /**
  * Help function for sorting the language array by name
+ * @param $a
+ * @param $b
+ * @return int
  */
 function compareNameIndex($a, $b)
 {
@@ -19,7 +22,6 @@ function compareNameIndex($a, $b)
 
 $defaults = getSystemDefaults();
 
-// @formatter:off
 $get_val = (empty($_GET['submit']) ? '' : trim($_GET['submit']));
 switch ($get_val) {
     case "line_items":
@@ -119,7 +121,7 @@ switch ($get_val) {
 
     case "company_name_item":
         $default     = $get_val;
-        $description = "{$LANG[$default]}";
+        $description = "{$LANG['company_name_item_label']}";
         $attribute   = htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='60' name='value' value='$attribute' required />\n";
         $found       = true;
@@ -318,7 +320,7 @@ switch ($get_val) {
 
     default:
         // The following logic allows the edit of system default extension
-        // values.  The content of the extenson edit.tpl file will be inserted
+        // values.  The content of the extension edit.tpl file will be inserted
         // loaded below and all the generic edit template to display them.
         // The $get_val variable contains the field name that is to be edited.
         $found = false;
@@ -346,4 +348,3 @@ $smarty->assign('description', $description);
 $smarty->assign('default', $default);
 $smarty->assign('pageActive', 'system_default');
 $smarty->assign('active_tab', '#setting');
-// @formatter:on

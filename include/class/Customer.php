@@ -39,35 +39,37 @@ class Customer {
      * @param boolean $no_totals true if only customer record fields to be returned, false (default) to add
      *        calculated totals field.
      * @return array Customers selected.
-     * @throws PdoDbException
      */
     public static function get_all($enabled_only = false, $incl_cust_id=null, $no_totals=false) {
         global $LANG, $pdoDb;
 
-        if ($enabled_only) {
-            if (!empty($incl_cust_id)) {
-                $pdoDb->addToWhere(new WhereItem(true, "id", "=", $incl_cust_id, false, "OR"));
-                $pdoDb->addToWhere(new WhereItem(false, "enabled", "=", ENABLED, true, "AND"));
-            } else {
-                $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
-            }
-        }
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
-        $pdoDb->setOrderBy("name");
-        $rows = $pdoDb->request("SELECT", "customers");
-        if ($no_totals) {
-            return $rows;
-        }
-
         $customers = array();
-        foreach($rows as $customer) {
-            $customer['enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
-            $customer['total']   = self::calc_customer_total($customer['id']);
-            $customer['paid']    = Payment::calc_customer_paid($customer['id']);
-            $customer['owing']   = $customer['total'] - $customer['paid'];
-            $customers[]         = $customer;
-        }
+        try {
+            if ($enabled_only) {
+                if (!empty($incl_cust_id)) {
+                    $pdoDb->addToWhere(new WhereItem(true, "id", "=", $incl_cust_id, false, "OR"));
+                    $pdoDb->addToWhere(new WhereItem(false, "enabled", "=", ENABLED, true, "AND"));
+                } else {
+                    $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
+                }
+            }
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+            $pdoDb->setOrderBy("name");
+            $rows = $pdoDb->request("SELECT", "customers");
+            if ($no_totals) {
+                return $rows;
+            }
 
+            foreach ($rows as $customer) {
+                $customer['enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
+                $customer['total'] = self::calc_customer_total($customer['id']);
+                $customer['paid'] = Payment::calc_customer_paid($customer['id']);
+                $customer['owing'] = $customer['total'] - $customer['paid'];
+                $customers[] = $customer;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Customer::get_all() - PdoDbException thrown: " . $pde->getMessage());
+        }
         return $customers;
     }
 

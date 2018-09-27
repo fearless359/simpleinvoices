@@ -13,6 +13,21 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-09-25 - <b>2018.1.0</b>
+            <ul>
+                <li><b>Production Release</b> User Security extension merged into the standard application.
+                    This implements username functionality for logins, password pattern rules maintained in
+                    System Preferences and a Session Timeout setting also in System Preferences that allows
+                    the minutes a session remains inactive to timeout. It also includes upgrade of the
+                    password hash to SHA256 from MD5.</li>
+                <li>Documentation extension merged into the standard application to provide custom help
+                    message support via the "help" keyword.<br/>
+                    Ex:<br/>
+                    &lt;a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
+                       title="{$LANG.custom_flags_upper}"&gt;&lt;img src="{$help_image_path}help-small.png" alt="" /&gt;&lt;/a&gt;
+                </li>
+            </ul>
+        </li>
       <li>2018-09-22 - <b>2018.0.0</b>
         <ul>
           <li><b>Production Release</b> Code brought current with PHP 7.2x requirements and all references

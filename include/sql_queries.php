@@ -299,7 +299,6 @@ function is_custom_flag_field($field) {
  *        If false, a character field is being retrieved.
  *        Note: If true, the result will be the $LANG word for 'enabled' or 'disabled'.
  * @return mixed Value from database or for bool, 'enabled' or 'disabled' word.
- * @throws PdoDbException
  */
 function getDefaultGeneric($name, $bool = true) {
     global $LANG, $pdoDb, $databaseBuilt;
@@ -308,21 +307,25 @@ function getDefaultGeneric($name, $bool = true) {
     $failed = ($bool ? $LANG['disabled'] : 0);
     if (!$databaseBuilt) return $failed;
 
-    $pdoDb->addSimpleWhere("s.name", $name, "AND");
-    $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
-    $pdoDb->setSelectList("value");
-    $rows = $pdoDb->request("SELECT", "system_defaults", "s");
-    if (empty($rows)) return $failed;
+    try {
+        $pdoDb->addSimpleWhere("s.name", $name, "AND");
+        $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
+        $pdoDb->setSelectList("value");
+        $rows = $pdoDb->request("SELECT", "system_defaults", "s");
+        if (empty($rows)) return $failed;
 
-    $row = $rows[0];
-    $nameval = ($bool ? ($row['value'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']) : $row['value']);
+        $row = $rows[0];
+        $nameval = ($bool ? ($row['value'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']) : $row['value']);
+    } catch (PdoDbException $pde) {
+        error_log("getDefaultGeneric() - PdoDbException thrown: " . $pde->getMessage());
+        return $failed;
+    }
     return $nameval;
 }
 
 /**
  * Get "delete" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultDelete() {
     return getDefaultGeneric('delete');
@@ -331,16 +334,14 @@ function getDefaultDelete() {
 /**
  * Get "logging" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultLogging() {
     return getDefaultGeneric('logging');
 }
 
 /**
- * Get "loggin" entry from the system_defaults table.
+ * Get "logging" entry from the system_defaults table.
  * @return boolean <b>true</b> "1" or "0"
- * @throws PdoDbException
  */
 function getDefaultLoggingStatus() {
     return (getDefaultGeneric('logging', false) == 1);
@@ -349,7 +350,6 @@ function getDefaultLoggingStatus() {
 /**
  * Get "inventory" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultInventory() {
     return getDefaultGeneric('inventory');
@@ -357,7 +357,6 @@ function getDefaultInventory() {
 /**
  * Get "password_lower" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultPasswordLower() {
     return getDefaultGeneric('password_lower');
@@ -366,7 +365,6 @@ function getDefaultPasswordLower() {
 /**
  * Get "password_min_length" entry from the system_defaults table.
  * @return string number setting.
- * @throws PdoDbException
  */
 function getDefaultPasswordMinLength() {
     return getDefaultGeneric('password_min_length', false);
@@ -375,7 +373,6 @@ function getDefaultPasswordMinLength() {
 /**
  * Get "password_number" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultPasswordNumber() {
     return getDefaultGeneric('password_number');
@@ -384,7 +381,6 @@ function getDefaultPasswordNumber() {
 /**
  * Get "password_special" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultPasswordSpecial() {
     return getDefaultGeneric('password_special');
@@ -393,7 +389,6 @@ function getDefaultPasswordSpecial() {
 /**
  * Get "password_upper" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultPasswordUpper() {
     return getDefaultGeneric('password_upper');
@@ -402,7 +397,6 @@ function getDefaultPasswordUpper() {
 /**
  * Get "product_attributes" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultProductAttributes() {
     return getDefaultGeneric('product_attributes');
@@ -411,7 +405,6 @@ function getDefaultProductAttributes() {
 /**
  * Get "large_dataset" entry from the system_defaults table.
  * @return string "Enabled" or "Disabled"
- * @throws PdoDbException
  */
 function getDefaultLargeDataset() {
     return getDefaultGeneric('large_dataset');
@@ -420,7 +413,6 @@ function getDefaultLargeDataset() {
 /**
  * Get "language" entry from the system_defaults table.
  * @return string Language setting (ex: en_US)
- * @throws PdoDbException
  */
 function getDefaultLanguage() {
     return getDefaultGeneric('language', false);
@@ -493,7 +485,6 @@ function getExtensionID($extension_name = "none") {
 /**
  * @param string $domain_id
  * @return null
- * @throws PdoDbException
  */
 function getSystemDefaults($domain_id = '') {
     global $patchCount,
@@ -510,40 +501,44 @@ function getSystemDefaults($domain_id = '') {
     }
 
     $lcl_defaults = NULL;
-    $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
-    if ($patchCount >= "198") {
-        $jn = new Join("INNER", "extensions", "ext");
-        $jn->addSimpleItem("def.domain_id", new DbField("ext.domain_id"));
-        $pdoDb_admin->addToJoins($jn);
-
-        $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
-        $pdoDb_admin->addSimpleWhere('ext.name', 'core', 'AND');
-        $pdoDb_admin->addSimpleWhere('def.domain_id', 0);
-
-        $pdoDb_admin->setOrderBy("extension_id");
-    }
-
-    $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
-    foreach ($rows as $row) {
-        $lcl_defaults[$row['name']] = $row['value'];
-    }
-
-    if ($patchCount > "198") {
+    try {
         $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+        if ($patchCount >= "198") {
+            $jn = new Join("INNER", "extensions", "ext");
+            $jn->addSimpleItem("def.domain_id", new DbField("ext.domain_id"));
+            $pdoDb_admin->addToJoins($jn);
 
-        $jn = new Join('INNER', 'extensions', 'ext');
-        $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
-        $pdoDb_admin->addToJoins($jn);
+            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
+            $pdoDb_admin->addSimpleWhere('ext.name', 'core', 'AND');
+            $pdoDb_admin->addSimpleWhere('def.domain_id', 0);
 
-        $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
-        $pdoDb_admin->addSimpleWhere('def.domain_id', $domain_id);
-
-        $pdoDb_admin->setOrderBy('extension_id');
+            $pdoDb_admin->setOrderBy("extension_id");
+        }
 
         $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
         foreach ($rows as $row) {
-            $lcl_defaults[$row['name']] = $row['value']; // if setting is redefined, overwrite the previous value
+            $lcl_defaults[$row['name']] = $row['value'];
         }
+
+        if ($patchCount > "198") {
+            $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+
+            $jn = new Join('INNER', 'extensions', 'ext');
+            $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
+            $pdoDb_admin->addToJoins($jn);
+
+            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
+            $pdoDb_admin->addSimpleWhere('def.domain_id', $domain_id);
+
+            $pdoDb_admin->setOrderBy('extension_id');
+
+            $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
+            foreach ($rows as $row) {
+                $lcl_defaults[$row['name']] = $row['value']; // if setting is redefined, overwrite the previous value
+            }
+        }
+    } catch (PdoDbException $pde) {
+        error_log("getSystemDefaults error thrown: " . $pde->getMessage());
     }
     return $lcl_defaults;
 }

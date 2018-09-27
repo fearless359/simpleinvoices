@@ -93,10 +93,10 @@
       <td>{$defaults.company_logo|htmlsafe}</td>
     </tr>
     <tr>
-      <th>{$LANG.company_name_item}
+      <th>{$LANG.company_name_item_label}
         <a class="cluetip" href="#"
            rel="index.php?module=documentation&amp;view=view&amp;page=help_company_name_item"
-           title="{$LANG.company_name_item}">
+           title="{$LANG.company_name_item_label}">
           <img src="{$help_image_path}help-small.png" alt="" />
         </a>
       </th>

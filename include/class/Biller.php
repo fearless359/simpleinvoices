@@ -7,27 +7,31 @@ class Biller
      * @param boolean $active_only Set to <b>true</b> to get active billers only.
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
-     * @throws PdoDbException
      */
     public static function get_all($active_only = false)
     {
         global $LANG, $pdoDb;
 
-        if ($active_only) {
-            $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
+        $billers = array();
+        try {
+            if ($active_only) {
+                $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
+            }
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+
+            $ca = new CaseStmt("enabled", "wording_for_enabled");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $pdoDb->setOrderBy("name");
+
+            $pdoDb->setSelectAll(true);
+
+            $billers = $pdoDb->request("SELECT", "biller");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::get_all() database error thrown. " . $pde->getMessage());
         }
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
-
-        $ca = new CaseStmt("enabled", "wording_for_enabled");
-        $ca->addWhen("=", ENABLED, $LANG['enabled']);
-        $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-        $pdoDb->addToCaseStmts($ca);
-
-        $pdoDb->setOrderBy("name");
-
-        $pdoDb->setSelectAll(true);
-
-        $billers = $pdoDb->request("SELECT", "biller");
         return $billers;
     }
 
@@ -77,7 +81,6 @@ class Biller
     /**
      * Insert a new biller record
      * @return integer|boolean ID if successful, test "=== false" if failed.
-     * @throws PdoDbException
      */
     public static function insertBiller()
     {
@@ -90,8 +93,13 @@ class Biller
 
         $_POST['notes'] = (empty($_POST['note']) ? "" : trim($_POST['note']));
 
-        $pdoDb->setExcludedFields("id");
-        $id = $pdoDb->request("INSERT", "biller");
+        $id = '';
+        try {
+            $pdoDb->setExcludedFields("id");
+            $id = $pdoDb->request("INSERT", "biller");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::insertBiller() - PdoDbException thrown: " . $pde->getMessage());
+        }
         return !empty($id);
     }
 
@@ -133,11 +141,11 @@ class Biller
     /**
      * Selection of record for the xml list screen
      * @param string $type - 'count' if only count of records desired, otherwise selection of records to display.
-     * @param $start - Record to start out.
-     * @param $dir - Sort order (ASC or DESC)
-     * @param $sort - Field to sort on
-     * @param $rp - Number of records to select for this page
-     * @param $page - Pages processed.
+     * @param int $start - Record to start out.
+     * @param string $dir - Sort order (ASC or DESC)
+     * @param string $sort - Field to sort on
+     * @param string $rp - Number of records to select for this page
+     * @param string $page - Pages processed.
      * @return mixed - Count if 'count' requested, Rows selected from biller table.
      * @throws PdoDbException
      */
