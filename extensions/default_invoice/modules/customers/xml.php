@@ -129,7 +129,7 @@ foreach ($customers as $row) {
             <img src='images/common/edit.png' class='action' />
           </a>
           <a class='index_table' title='$iname' href='index.php?module=invoices&view=usedefault&customer_id=$row[CID]&action=view'>
-            <img src='images/common/view.png' class='action' />
+            <img src='images/common/add.png' class='action' />
           </a>
         ]]></cell>";
     $xml .= "<cell><![CDATA[$row[CID]]]></cell>";
