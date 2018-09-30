@@ -23,7 +23,7 @@ global $smarty, $LANG;
 
 $user = User::getUser($_GET['id']);
 $roles = User::getUserRoles();
-
+error_log("user - " . print_r($user,true));
 $domain_id = domain_id::get();
 
 $cust_info = Customer::get_all(false, null, true);
@@ -68,6 +68,7 @@ $smarty->assign('user_id_desc', $user_id_desc);
 $smarty->assign('orig_role_name', $user['role_name']);
 $smarty->assign('orig_user_id', $user['user_id']);
 
+$smarty->assign('username_pattern', User::$username_pattern);
 $smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
 $smarty->assign('user', $user);
 $smarty->assign('roles', $roles);

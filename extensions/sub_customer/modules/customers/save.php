@@ -24,7 +24,7 @@ $op = ! empty ( $_POST ['op'] ) ? addslashes ( $_POST ['op'] ) : NULL;
 
 $saved = false;
 if ($op === "insert_customer") {
-    $saved = SubCustomers::insertCustomer();
+    if (SubCustomers::insertCustomer() > 0) $saved = true;
 } else if ($op === 'edit_customer' && isset($_POST['save_customer'])) {
     $saved = SubCustomers::updateCustomer();
 }

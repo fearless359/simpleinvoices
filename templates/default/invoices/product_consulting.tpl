@@ -39,7 +39,10 @@
             </tr>
                 
 			<tr class="text{$smarty.section.line.index|htmlsafe} hide">
-        		<td colspan="3" ><textarea class="detail"  name='notes{$smarty.section.line.index|htmlsafe}' rows="3" cols="80"></textarea></td>
+        		<td colspan="3" >
+					<textarea class="detail"  name='notes{$smarty.section.line.index|htmlsafe}' rows="3" cols="80"
+							  data_description="{$LANG['description']}"></textarea>
+				</td>
 			</tr>
 
         {/section}

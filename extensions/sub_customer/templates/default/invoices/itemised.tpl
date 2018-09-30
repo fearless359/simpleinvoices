@@ -93,7 +93,8 @@
                         <td>
                         {if $smarty.section.line.index == "0"}
                           <a href="#" class="trash_link" id="trash_link{$smarty.section.line.index|htmlsafe}"
-                             title="{$LANG.cannot_delete_first_row|htmlsafe}" >
+                             title="{$LANG.cannot_delete_first_row|htmlsafe}"
+                             data_delete_line_item={$config->confirm->deleteLineItem}>
                             <img id="trash_image{$smarty.section.line.index|htmlsafe}" src="images/common/blank.gif" height="16px" width="16px"
                                  title="{$LANG.cannot_delete_first_row}" alt="" />
                           </a>
@@ -102,7 +103,8 @@
                           {* can't delete line 0 *}
                           <!-- onclick="delete_row({$smarty.section.line.index|htmlsafe});" --> 
                           <a id="trash_link{$smarty.section.line.index|htmlsafe}" class="trash_link" title="{$LANG.delete_row}"
-                             rel="{$smarty.section.line.index|htmlsafe}" href="#" style="display: inline;" >
+                             rel="{$smarty.section.line.index|htmlsafe}" href="#" style="display: inline;"
+                             data_delete_line_item={$config->confirm->deleteLineItem}>
                             <img src="images/common/delete_item.png" alt="" />
                           </a>
                         {/if}
@@ -118,7 +120,8 @@
                           <p><em>{$LANG.no_products}</em></p>
                         {else}
                           <select id="products{$smarty.section.line.index|htmlsafe}" name="products{$smarty.section.line.index|htmlsafe}"
-                                  rel="{$smarty.section.line.index|htmlsafe}" class="{if $smarty.section.line.index == "0"}validate[required]{/if} product_change">
+                                  rel="{$smarty.section.line.index|htmlsafe}" class="{if $smarty.section.line.index == "0"}validate[required]{/if} product_change"
+                                  data_description="{$LANG.description}">
                             <option value=""></option>
                             {foreach from=$products item=product}
                               <option value="{if $product.id == $smarty.get.product.$lineNumber} {$smarty.get.product.$lineNumber}" selected {else} {$product.id|htmlsafe}"{/if}" >
@@ -153,7 +156,8 @@
                         <td></td>
                         <td colspan="4">
                           <textarea class="detail" name="description{$smarty.section.line.index|htmlsafe}"
-                                    id="description{$smarty.section.line.index|htmlsafe}" rows="3" cols="50"></textarea>
+                                    id="description{$smarty.section.line.index|htmlsafe}" rows="3" cols="50"
+                                    data_description="{$LANG['description']}"></textarea>
                         </td>
                       </tr>
                     </tbody>
@@ -166,8 +170,7 @@
                 <table class="center" align="left">
                   <tr>
                     <td>
-                      {* onclick="add_line_item();" *}
-                      <a href="#" class="add_line_item">
+                      <a href="#" class="add_line_item" data_description="{$LANG.description}">
                         <img src="images/common/add.png" alt="" />
                         {$LANG.add_new_row}
                       </a>

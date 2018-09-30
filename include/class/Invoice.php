@@ -8,7 +8,7 @@ class Invoice {
     /**
      * Insert a new invoice record
      * @param array Associative array of items to insert into invoice record.
-     * @return integer Unique ID of the new invoice record.
+     * @return integer Unique ID of the new invoice record. 0 if insert failed.
      * @throws PdoDbException
      */
     public static function insert($list) {
@@ -24,7 +24,6 @@ class Invoice {
         $pdoDb->setExcludedFields("id");
 
         $id = $pdoDb->request("INSERT", "invoices");
-        // @formatter:on
 
         Index::increment('invoice', $pref_group['index_group'], $lcl_list['domain_id']);
         return $id;
@@ -65,12 +64,12 @@ class Invoice {
      * @param integer $tax_ids
      * @param string $description
      * @param string $unit_price
-     * @param string $attribute
-     * @return integer <b>id</b> of new <i>invoice_items</i> record.
+     * @param array $attribute
+     * @return integer <b>id</b> of new <i>invoice_items</i> record. 0 if insert failed.
      * @throws PdoDbException
      */
     public static function insertInvoiceItem($invoice_id, $quantity, $product_id, $tax_ids,
-                                             $description = "", $unit_price = "", $attribute = "") {
+                                             $description = "", $unit_price = "", $attribute = null) {
         global $LANG;
 
         // do taxes
@@ -87,7 +86,7 @@ class Invoice {
         $gross_total = $unit_price * $quantity;
         $total       = $gross_total + $tax_amount;
 
-        // Remove jquery auto-fill description - refer jquery.conf.js.tpl autofill section
+        // Remove jquery auto-fill description - refer jquery.conf.js autofill section
         if ($description == $LANG['description']) $description = "";
         $list = array('invoice_id' => $invoice_id,
                       'domain_id'  => domain_id::get(),

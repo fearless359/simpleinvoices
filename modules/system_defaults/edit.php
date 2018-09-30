@@ -20,7 +20,7 @@ function compareNameIndex($a, $b)
     return ($a > $b ? 1 : -1);
 }
 
-$defaults = getSystemDefaults();
+$defaults = SystemDefaults::loadValues();
 
 $get_val = (empty($_GET['submit']) ? '' : trim($_GET['submit']));
 switch ($get_val) {
@@ -186,7 +186,7 @@ switch ($get_val) {
     case "language":
         $default   = "language";
         $languages = getLanguageList();
-        $lang      = getDefaultLanguage();
+        $lang      = SystemDefaults::getDefaultLanguage();
 
         usort($languages, "compareNameIndex");
         $description  = $LANG['language'];

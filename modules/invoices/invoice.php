@@ -27,7 +27,7 @@ $products          = Product::select_all();
 $preferences       = Preferences::getActivePreferences();
 $defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
-$defaults          = getSystemDefaults();
+$defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
 if (empty($billers) || empty($customers) || empty($products)) {

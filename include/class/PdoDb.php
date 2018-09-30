@@ -25,7 +25,6 @@ class PdoDb {
     const TBPREFIX_PATTERN = '/^si_/'; // Chg to use TB_PREFIX when only PHP 5.6x and up supported
 
     private $caseStmts;
-    private $constraints;
     private $debug;
     private $debug_label;
     private $debug_microtime;
@@ -110,7 +109,6 @@ class PdoDb {
     public function clearAll($clearTran=true) {
         // @formatter:off
         $this->caseStmts        = null;
-        $this->constraints      = null;
         $this->debug_microtime  = 0;
         $this->distinct         = false;
         $this->excludedFields   = array();
@@ -656,6 +654,7 @@ class PdoDb {
                 $id = $sth->fetchColumn();
                 return $id;
             }
+            return 0;
         } else {
             $this->clearAll();
             error_log("PdoDb - lastInsertId(): Prepare error." . print_r($sth->errorInfo(), true));
@@ -947,13 +946,12 @@ class PdoDb {
 
                 // Make an array of paired column name and values. The column name is the
                 // index and the value is the content at that column.
-                foreach ($columns as $column => $this->constraints) {
+                foreach ($columns as $column => $values) {
                     // Check to see if a field prefix was specified and that there is no
                     // table alias present. If so, prepend the prefix followed by an underscore.
-                    $postColumn = $column;
-                    if (( $this->usePost && isset($_POST[$postColumn])) ||
-                        (!$this->usePost && isset($this->fauxPost[$postColumn]))) {
-                        $valuePairs[$column] = ($this->usePost ? $_POST[$postColumn] : $this->fauxPost[$postColumn]);
+                    if (( $this->usePost && isset($_POST[$column])) ||
+                        (!$this->usePost && isset($this->fauxPost[$column]))) {
+                        $valuePairs[$column] = ($this->usePost ? $_POST[$column] : $this->fauxPost[$column]);
                     }
                 }
             }
@@ -965,7 +963,7 @@ class PdoDb {
                          $request != "DROP");
         switch ($request) {
             case "ALTER TABLE":
-                // $sql containts the complete command
+                // $sql contains the complete command
                 break;
 
             case "CREATE TABLE":
@@ -1120,11 +1118,7 @@ class PdoDb {
         $parts = explode(' ', $sql);
         $request = strtoupper($parts[0]);
         if ($request == "INSERT") {
-            if (empty($this->constraints) || preg_match('/:ID[:$]/', $this->constraints)) {
-                $result = $this->lastInsertId();
-            } else {
-                $result = "";
-            }
+              $result = $this->lastInsertId();
         } else if ($request == "SELECT") {
             $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         } else if ($request == "SHOW") {

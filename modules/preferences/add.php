@@ -8,7 +8,7 @@ checkLogin();
 if (!empty($_POST['p_description'])) {
 	include("modules/preferences/save.php");
 }
-$defaults = getSystemDefaults();
+$defaults = SystemDefaults::loadValues();
 $preferences = Preferences::getActivePreferences();
 
 $localelist = Zend_Locale::getLocaleList();

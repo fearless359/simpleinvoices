@@ -22,11 +22,7 @@ if (!empty($extension_id)) {
     $extension_name = $info[0]['name'];
     $extension_desc = $info[0]['description'];
 
-    $pdoDb->addSimpleWhere("extension_id", $extension_id, "AND");
-    $pdoDb->addToWhere(new WhereItem(true, "domain_id", "=", $domain_id, false, "OR"));
-    $pdoDb->addToWhere(new WhereItem(false, "domain_id", "=", "0", true));
-    $info = $pdoDb->request("SELECT", "system_defaults");
-    $count = count($info);
+    $count = SystemDefaults::extensionCount($extension_id);
 }
 
 // @formatter:off

@@ -12,7 +12,7 @@
  *  GPL v3 or above
  *}
 {if $smarty.post.username != null && $smarty.post.submit != null }
-    {include file="extensions/user_security/templates/default/user/save.tpl"}
+    {include file="templates/default/user/save.tpl"}
 {else}
     <form name="frmpost" action="index.php?module=user&amp;view=add" method="post" id="frmpost">
         <div class="si_form">
@@ -26,8 +26,9 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="username" size="35" id="username"
-                               autocomplete="off" class="validate[required]" tabindex="10" autofocus />
+                        <input type="text" name="username" size="35" id="username" tabindex="10"
+                               pattern="{$username_pattern}" title="See help for details."
+                               autocomplete="off" class="validate[required]" autofocus />
                     </td>
                 </tr>
                 <tr>
@@ -52,7 +53,8 @@
                         </a>
                     </th>
                     <td><input type="password" name="confirm_password" size="20" tabindex="30"
-                               class="validate[required]" pattern="{$pwd_pattern}" /></td>
+                               class="validate[required]" pattern="{$pwd_pattern}"
+                               title="See help for details" /></td>
                 </tr>
                 <tr>
                     <th>{$LANG.email}
@@ -63,8 +65,8 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email" size="35" id="email"
-                               class="validate[required]" tabindex="40" />
+                        <input type="text" name="email" size="35" id="email" tabindex="40"
+                               class="validate[required]" title="See help for details" />
                     </td>
                 </tr>
                 <tr>
@@ -76,7 +78,7 @@
                         </a>
                     </th>
                     <td>
-                        <select name="role_id" tabindex="50" >
+                        <select name="role_id" tabindex="50" title="See help for details" >
                             {foreach from=$roles item=role name=urole}
                                 <option value="{$role.id|htmlsafe}" {if $smarty.foreach.urole.index == 0}selected{/if}>
                                     {$role.name|htmlsafe}
@@ -98,7 +100,7 @@
                         </a>
                     </th>
                     <td>
-                        <select name="user_id" tabindex="60">
+                        <select name="user_id" tabindex="60" title="See help for details" >
                             <option selected value="0">0 - USER</option>
                             {foreach from=$cust_info item=cust}
                                 <option value="{$cust.id|htmlsafe}">{$cust.id|htmlsafe} - {$cust.name|htmlsafe}</option>
@@ -119,6 +121,5 @@
             </div>
         </div>
         <input type="hidden" name="op" value="insert_user" />
-        <input type="hidden" name="domain_id" />
     </form>
 {/if}

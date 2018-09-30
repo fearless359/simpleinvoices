@@ -23,7 +23,7 @@ $op = (empty($_POST['op']) ? "" : $_POST['op']);
 
 $saved = false;
 if ( $op === 'insert_biller') {
-    if (Biller::insertBiller()) $saved = true;
+    if (Biller::insertBiller() > 0) $saved = true;
 } else if ($op === 'edit_biller') {
     if (isset($_POST['save_biller'])) {
         if (Biller::updateBiller()) $saved = true;

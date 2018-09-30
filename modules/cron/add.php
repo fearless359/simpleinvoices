@@ -4,7 +4,7 @@ global $smarty;
 if (!empty($_POST['op']) && $_POST['op'] =='add' && !empty($_POST['invoice_id'])) {
     try {
         $saved = "false";
-        if (Cron::insert()) $saved = "true";
+        if (Cron::insert() > 0) $saved = "true";
     } catch (PDOException $pde) {
         error_log("cron add.php - insert error: " . $pde->getMessage());
     }

@@ -23,7 +23,7 @@ class SubCustomers {
 
     /**
      * Add a new <b>si_customers</b> record.
-     * @return boolean <b>true</b> if record successfully added; otherwise <b>false</b>.
+     * @return int ID for new record. 0 if insert failed.
      * @throws PdoDbException
      */
     public static function insertCustomer() {

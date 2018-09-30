@@ -1,16 +1,20 @@
 <?php
 class Cron {
 
+    /**
+     * @return int ID of inserted record. 0 if insert failed.
+     * @throws PdoDbException
+     */
     public static function insert() {
         global $pdoDb;
+        $result = 0;
         try {
             $pdoDb->setExcludedFields("id");
-            $pdoDb->request("INSERT", "cron");
+            $result = $pdoDb->request("INSERT", "cron");
         } catch (PDOException $pde) {
             error_log("Cron insert error - " . $pde->getMessage());
-            return false;
         }
-        return true;
+        return $result;
     }
 
     public static function update($id) {

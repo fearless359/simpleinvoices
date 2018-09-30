@@ -83,17 +83,9 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
     if (User::verifyPassword($username, $password)) {
         Zend_Session::start();
 
-        $timeout = 0;
-        $pdoDb->addSimpleWhere('name', 'session_timeout');
-        $pdoDb->setSelectList('value');
-        $rows = $pdoDb->request('SELECT', 'system_defaults');
-        if (empty($rows)) {
+        $timeout = SystemDefaults::getDefaultSessionTimeout();
+        if ($timeout <= 0) {
             $timeout = 60;
-        } else {
-            $timeout = intval($rows[0]['value']);
-            if ($timeout <= 0) {
-                $timeout = 60;
-            }
         }
 
         $authNamespace = new Zend_Session_Namespace('Zend_Auth');

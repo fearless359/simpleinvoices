@@ -23,7 +23,6 @@ $autoloader->setFallbackAutoloader(true);
 
 Zend_Session::start();
 $auth_session = new Zend_Session_Namespace('Zend_Auth');
-if ($auth_session) {} // Show variable as used.
 
 // start use of zend_cache and set the lifetime for 2 hours.
 // $frontendOptions = array('lifetime' => 7200, 'automatic_serialization' => true);
@@ -108,6 +107,7 @@ switch($logger_level) {
 }
 $filter = new Zend_Log_Filter_Priority($level);
 $logger->addFilter($filter);
+$logger->log("init.php - logger has been setup", Zend_Log::DEBUG);
 
 try {
     $dbInfo = new DbInfo(CONFIG_FILE_PATH, "production");
@@ -171,6 +171,7 @@ if ($api_request) {
         try {
             $session_timeout = $zendDb->fetchRow("SELECT value FROM " . TB_PREFIX . "system_defaults WHERE name='session_timeout'");
             $timeout = intval($session_timeout['value']);
+            $logger->log("session_timeout loaded[$timeout]", Zend_Log::DEBUG);
         } catch (Zend_Db_Exception $zde) {
             $timeout = 0;
         }
@@ -179,7 +180,10 @@ if ($api_request) {
 if ($api_request || $timeout <= 0) {
     $timeout = 60;
 }
+$auth_session->setExpirationSeconds($timeout * 60);
+
 $frontendOptions = array('lifetime' => ($timeout * 60), 'automatic_serialization' => true);
+$logger->log("init.php - frontendOptions - " . print_r($frontendOptions,true), Zend_Log::DEBUG);
 
 /* *************************************************************
  * Zend Framework cache section - start
@@ -191,7 +195,7 @@ $backendOptions = array('cache_dir' => './tmp/'); // Directory where to put the 
 $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
 
 // required for some servers
-Zend_Date::setOptions(array('cache' => $cache)); // Active aussi pour Zend_Locale
+Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
 /* *************************************************************
  * Zend Framework cache section - end
  * *************************************************************/
@@ -230,7 +234,9 @@ require_once ("include/sql_queries.php");
 $patchCount = 0;
 if ($databaseBuilt) {
     // Set these global variables.
-    $patchCount = getNumberOfDoneSQLPatches();
+    $pdoDb->addToFunctions('count(sql_patch) AS count');
+    $rows = $pdoDb->request('SELECT', 'sql_patchmanager');
+    $patchCount = (empty($rows) ? 0 : $rows[0]['count']);
     $databasePopulated = $patchCount > 0;
     if ($api_request && !$databasePopulated) {
         exit("Database must be populated to run a batch job.");
@@ -239,7 +245,7 @@ if ($databaseBuilt) {
 
 // Turn authorization off until database is built. It messes up the install screens.
 // Or if this is a batch job
-if ($api_request ||(!$databaseBuilt || !$databasePopulated)) {
+if ($api_request || (!$databaseBuilt || !$databasePopulated)) {
     $config->authentication->enabled = DISABLED;
     $module="";
 }
@@ -273,13 +279,23 @@ if (!empty($plugin_dirs)) {
     $smarty->addPluginsDir($plugin_dirs);
 }
 
-$defaults = getSystemDefaults();
-$smarty->assign("defaults", $defaults);
-
 include_once ('include/language.php');
 
-// Load company name from system_defaults table.
-UserSecurity::loadCompanyName($patchCount);
+$defaults = SystemDefaults::loadValues($databaseBuilt);
+$smarty->assign("defaults", $defaults);
+
+// Load company name values from system_defaults table.
+if (isset($defaults['company_name_item'])) {
+    $LANG['company_name_item'] = $defaults['company_name_item'];
+} else {
+    $LANG['company_name_item'] = 'SimpleInvoices';
+}
+
+if (isset($defaults['company_name'])) {
+    $LANG['company_name'] = $defaults['company_name'];
+} else {
+    $LANG['company_name'] = 'SimpleInvoices';
+}
 
 if (!$api_request) {
     include ('include/include_auth.php');
@@ -322,16 +338,13 @@ switch ($module) {
         $smarty_output = "display";
         break;
 }
-if ($early_exit || $smarty_output) {} // Show variable as used.
 
 // get the url - used for templates / pdf
 $siUrl = getURL();
-if ($siUrl) {} // Show variable as used.
 
 /* *************************************************************
- * If using the folowing line, the DB settings should be
+ * If using the following line, the DB settings should be
  * appended to the config array, instead of replacing it
  * (NOTE: NOT TESTED!)
  * *************************************************************/
 include_once ("include/BackupDb.php");
-

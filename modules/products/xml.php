@@ -7,7 +7,7 @@ $sort  = (isset($_POST['sortname']))  ? $_POST['sortname']  : "description" ;
 $rp    = (isset($_POST['rp']))        ? $_POST['rp']        : "25" ;
 $page  = (isset($_POST['page']))      ? $_POST['page']      : "1" ;
 
-$defaults = getSystemDefaults();
+$defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults",$defaults);
 
 $products_all = Product::xml_select('', $dir, $sort, $rp, $page);

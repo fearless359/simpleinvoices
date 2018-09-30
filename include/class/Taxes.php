@@ -106,27 +106,23 @@ class Taxes {
 
     /**
      * Insert a new tax rate.
-     * @return string Standard "Save tab rate success/failure" message.
+     * @return int ID of new record. 0 if insert failed.
      * @throws PdoDbException
      */
     public static function insertTaxRate() {
-        global $LANG, $pdoDb;
-        // @formatter:off
+        global $pdoDb;
         $pdoDb->setFauxPost(array('domain_id'       => domain_id::get(),
                                   'tax_description' => $_POST['tax_description'],
                                   'tax_percentage'  => $_POST['tax_percentage'],
                                   'type'            => $_POST['type'],
                                   'tax_enabled'     => $_POST['tax_enabled']));
-        // @formatter:on
-        if ($pdoDb->request("INSERT", "tax") === false) {
-            return $LANG['save_tax_rate_failure'];
-        }
-        return $LANG['save_tax_rate_success'];
+      $result = $pdoDb->request("INSERT", "tax");
+      return $result;
     }
 
     /**
      * Update tax rate.
-     * @return string Standard "Save tab rate success/failure" message.
+     * @return bool true if processed successfully, false if not.
      * @throws PdoDbException
      */
     public static function updateTaxRate() {
@@ -139,9 +135,9 @@ class Taxes {
                                   'tax_enabled'     => $_POST['tax_enabled']));
         // @formatter:on
         if ($pdoDb->request("UPDATE", "tax") === false) {
-            return $LANG['save_tax_rate_failure'];
+            return false;
         }
-        return $LANG['save_tax_rate_success'];
+        return true;
     }
 
     /**

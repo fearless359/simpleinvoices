@@ -26,7 +26,7 @@ if(isset($_GET['id'])) {
 // @formatter:off
 $customer = Customer::get($invoice['customer_id']);
 $biller   = Biller::select($invoice['biller_id']);
-$defaults = getSystemDefaults();
+$defaults = SystemDefaults::loadValues();
 
 $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
 $invoice_all = Invoice::select_all("count", "id", "", null, "", "", "");

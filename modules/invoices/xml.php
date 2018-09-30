@@ -17,7 +17,7 @@ $qtype  = (isset($_POST['qtype'])    ) ? $_POST['qtype']     : null;
 // on those invoices generatred for them.
 $read_only = ($auth_session->role_name == 'customer');
 
-$large_dataset = getDefaultLargeDataset();
+$large_dataset = SystemDefaults::getDefaultLargeDataset();
 
 if (!empty($having)) {
     $pdoDb->setHavings(Invoice::buildHavings($having));
@@ -73,10 +73,11 @@ foreach ($invoices as $row) {
              <a title='" .
                 $LANG['export_tooltip'] . " " .
                 $row['preference'] . " " .
-                $row['index_id'] .
-                "' class='invoice_export_dialog' href='#' rel='" . $row['id'] . "'>
-                <img src='images/common/page_white_acrobat.png' class='action' />
-             </a>";
+                $row['index_id'] . "' class='invoice_export_dialog' href='#' rel='{$row['id']}' " .
+                                   "data_spreadsheet='{$config->export->spreadsheet}' " .
+                                   "data_wordprocessor='{$config->export->wordprocessor}'>" .
+                                   "<img src='images/common/page_white_acrobat.png' class='action' />" .
+                                   "</a>";
     if (!$read_only) {
         // Alternatively: The Owing column can have the link on the amount instead of the payment icon code here
         if ($row['status'] && $row['owing'] > 0) {

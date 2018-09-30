@@ -80,7 +80,7 @@ class Biller
 
     /**
      * Insert a new biller record
-     * @return integer|boolean ID if successful, test "=== false" if failed.
+     * @return int ID of new record. 0 if failed to insert.
      */
     public static function insertBiller()
     {
@@ -93,14 +93,14 @@ class Biller
 
         $_POST['notes'] = (empty($_POST['note']) ? "" : trim($_POST['note']));
 
-        $id = '';
+        $id = 0;
         try {
             $pdoDb->setExcludedFields("id");
             $id = $pdoDb->request("INSERT", "biller");
         } catch (PdoDbException $pde) {
             error_log("Biller::insertBiller() - PdoDbException thrown: " . $pde->getMessage());
         }
-        return !empty($id);
+        return $id;
     }
 
     /**

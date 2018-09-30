@@ -15,14 +15,14 @@
             let role_idx = role.selectedIndex;
             let role_text = role.options[role_idx].text;
             let orole_val = document.getElementById("origrole1").value ;
-            if (role_text == orole_val) return;
+            if (role_text === orole_val) return;
 
             let crole_elem = document.getElementById("currrole1");
             crole_elem.value = role_text;
 
             let list = document.getElementById("user_id1");
             let newlist = "";
-            if (role_text == "customer") {
+            if (role_text === "customer") {
                 let cust = document.getElementById("cust1");
                 let cust_value = cust.value;
                 let cust_vals = cust_value.split("~");
@@ -30,7 +30,7 @@
                     let tmp = cust_vals[i].split(" ");
                     newlist += '<option value="' + tmp[0] + '">' + cust_vals[i] + '</option>';
                 }
-            } else if (role_text == "biller") {
+            } else if (role_text === "biller") {
                 let billers = document.getElementById("bilr1");
                 let billers_value = billers.value;
                 let billers_vals = billers_value.split("~");
@@ -42,7 +42,6 @@
                 newlist = '<option selected value="0">0 - User</option>';
             }
             list.innerHTML = newlist;
-            return;
         }
     </script>
 {/literal}
@@ -106,9 +105,9 @@
                     </th>
                     <td>
                         <input type="text" name="username" autocomplete="off" tabindex="10"
-                               value="{$user.username|htmlsafe}" size="30" id="username"
-                               {literal}pattern="(?=^.{6,}$)([A-Za-z][A-Za-z0-9@_\-\.#\$]+)$"{/literal}
-                               title="See help for details." class="validate[required]" autofocus />
+                               value="{$user.username|htmlsafe}" size="35" id="username"
+                               pattern="{$username_pattern}" title="See help for details."
+                               class="validate[required]" autofocus />
                     </td>
                 </tr>
                 <tr>
@@ -135,7 +134,8 @@
                     </th>
                     <td>
                         <input type="password" name="confirm_password" id="confirm_pwd_id"
-                               size="20" tabindex="30" pattern="{$pattern}" />
+                               size="20" tabindex="30" pattern="{$pattern}"
+                               title="See help for details"/>
                     </td>
                 </tr>
                 <tr>
@@ -149,7 +149,7 @@
                     <td>
                         <input type="text" name="email" autocomplete="off" tabindex="40"
                                value="{$user.email|htmlsafe}" size="35" id="email"
-                               class="validate[required]" />
+                               class="validate[required]" title="See help for details" />
                     </td>
                 </tr>
                 <tr>
@@ -161,7 +161,8 @@
                         </a>
                     </th>
                     <td>
-                        <select name="role_id" id="role_id1" tabindex="50" onchange="setuseridlist();" >
+                        <select name="role_id" id="role_id1" tabindex="50" onchange="setuseridlist();"
+                                title="See help for details">
                             {foreach from=$roles item=role}
                                 <option {if $role.id == $user.role_id}selected{/if} value="{$role.id|htmlsafe}">
                                     {$role.name|htmlsafe}
@@ -179,7 +180,7 @@
                         </a>
                     </th>
                     <td>
-                        <select name="user_id" id="user_id1" tabindex="60">
+                        <select name="user_id" id="user_id1" tabindex="60" title="See help for details">
                             {if $user.role_name == "customer"}
                                 {assign var="ids" value="~"|explode:$cust}
                                 {foreach from=$ids item=id}
@@ -227,6 +228,7 @@
             </div>
         </div>
         <input type="hidden" name="op" value="edit_user" />
+        <input type="hidden" name="id" value="{$user.id|htmlsafe}" />
         <input type="hidden" name="domain_id" value="{$user.domain_id|htmlsafe}" />
     {/if}
 </form>

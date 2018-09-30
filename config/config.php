@@ -57,7 +57,7 @@ phpSettings.error_log               = tmp/log/php.log
 ; DEBUG(7),INFO(6),NOTICE(5),WARN(4),ERR(3),CRIT(2),ALERT(1),EMERG(0)
 zend.logger_level                   = EMERG 
 
-; Explicity confirm delete of line items from invoices? (yes/no)
+; Explicitly confirm delete of line items from invoices? (yes/no)
 confirm.deleteLineItem              = no
 
 ; Staging site configuration data inherits from production and

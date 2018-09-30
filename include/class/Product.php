@@ -124,7 +124,7 @@ class Product {
      *        the <b>$_POST</b> array. Defaults to ENABLED (1) or set to DISABLED (0).
      * @param string $visible Flags record seen in list. Defaults to ENABLED (1) for
      *        visible or DISABLED (0) for not visible.
-     * @return boolean <b>true</b> for success or <b>false</b> for failure.
+     * @return int New ID if insert OK. 0 if insert failed.
      * @throws PdoDbException
      * @throws Zend_Locale_Exception
      */
@@ -145,7 +145,6 @@ class Product {
             }
         }
 
-        // @formatter:off
         $notes_as_description = (isset($_POST['notes_as_description']) && $_POST['notes_as_description'] == 'true' ? 'Y' : NULL);
         $show_description     = (isset($_POST['show_description']    ) && $_POST['show_description'    ] == 'true' ? 'Y' : NULL);
 
@@ -178,14 +177,13 @@ class Product {
                           'show_description'     => $show_description);
         $pdoDb->setFauxPost($fauxPost);
         $pdoDb->setExcludedFields("id");
-        // @formatter:on
 
         $result = $pdoDb->request("INSERT", "products");
-        if ($result === false) {
-            error_log("Products::insertItems - Unable to store products description, {$description}");
-            return false;
+        if ($result > 0) {
+            return $result;
         }
-        return true;
+        error_log("Products::insertItems - Unable to store products description, {$description}");
+        return 0;
     }
 
     /**

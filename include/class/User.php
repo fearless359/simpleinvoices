@@ -3,6 +3,7 @@
 class User
 {
     private static $hash_algo = "sha256";
+    public static $username_pattern = "(?=^.{4,}$)([A-Za-z0-9][A-Za-z0-9@_\-\.#\$]+)$";
 
     /**
      * Calculate the count of user records.
@@ -28,15 +29,17 @@ class User
     {
         global $pdoDb;
         try {
-            $_POST['password'] = self::hashPassword($_POST['password']); // OK. Save hashed password
-
             $excludedFields = array('id', 'domain_id');
-            if ($exclude_pwd) $excludedFields[] = 'password';
+            if ($exclude_pwd) {
+                $excludedFields[] = 'password';
+            } else {
+                $_POST['password'] = self::hashPassword($_POST['password']); // OK. Save hashed password
+            }
 
             $pdoDb->setExcludedFields($excludedFields);
 
-            $pdoDb->addSimpleWhere('id', $_GET['id'], 'AND');
-            $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+            $pdoDb->addSimpleWhere('id', $_POST['id'], 'AND');
+            $pdoDb->addSimpleWhere('domain_id', $_POST['domain_id']);
 
             $result = $pdoDb->request('UPDATE', 'user');
         } catch (Exception $e) {
@@ -55,6 +58,7 @@ class User
         global $pdoDb;
         try {
             $_POST['password'] = self::hashPassword($_POST['password']); // OK. Save hashed password
+            $_POST['domain_id'] = domain_id::get();
             $pdoDb->setExcludedFields('id');
             $id = $pdoDb->request('INSERT', 'user');
         } catch (Exception $e) {
@@ -122,44 +126,52 @@ class User
     /**
      * Get all user role records.
      * @return array of <b>user_role</b> records.
-     * @throws PdoDbException
      */
     public static function getUserRoles()
     {
         global $pdoDb;
-        $pdoDb->setOrderBy(new OrderBy("id"));
-        $pdoDb->setSelectList(array("id", "name"));
-        $rows = $pdoDb->request("SELECT", "user_role");
+        try {
+            $pdoDb->setOrderBy(new OrderBy("id"));
+            $pdoDb->setSelectList(array("id", "name"));
+            $rows = $pdoDb->request("SELECT", "user_role");
+        } catch (PdoDbException $pde) {
+            error_log("User::getUserRoles() - PdoDbException: " . $pde->getMessage());
+            return array();
+        }
         return $rows;
     }
 
     /**
      * Get a specific <b>user</b> table record.
      * @param int $id of the record to retrieve.
-     * @return user record.
-     * @throws PdoDbException
+     * @return array of User fields else empty array.
      */
     public static function getUser($id)
     {
         global $LANG, $pdoDb;
 
-        // Note that id is a unique identifier irrespective of the domain_id.
-        $pdoDb->addSimpleWhere("u.id", $id);
+        try {
+            // Note that id is a unique identifier irrespective of the domain_id.
+            $pdoDb->addSimpleWhere("u.id", $id);
 
-        $list = array("ur.name AS role_name");
-        $pdoDb->setSelectList($list);
-        $pdoDb->setSelectAll(true);
+            $list = array("u.id as id", "ur.name AS role_name");
+            $pdoDb->setSelectList($list);
+            $pdoDb->setSelectAll(true);
 
-        $caseStmt = new CaseStmt("enabled", "enabled_txt");
-        $caseStmt->addWhen("=", ENABLED, $LANG['enabled']);
-        $caseStmt->addWhen("!=", ENABLED, $LANG['disabled'], true);
-        $pdoDb->addToCaseStmts($caseStmt);
+            $caseStmt = new CaseStmt("enabled", "enabled_txt");
+            $caseStmt->addWhen("=", ENABLED, $LANG['enabled']);
+            $caseStmt->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($caseStmt);
 
-        $join = new Join("LEFT", "user_role", "ur");
-        $join->addSimpleItem("ur.id", new DbField("role_id"));
-        $pdoDb->addToJoins($join);
+            $join = new Join("LEFT", "user_role", "ur");
+            $join->addSimpleItem("ur.id", new DbField("role_id"));
+            $pdoDb->addToJoins($join);
 
-        $rows = $pdoDb->request("SELECT", "user", "u");
+            $rows = $pdoDb->request("SELECT", "user", "u");
+        } catch (PdoDbException $pde) {
+            error_log("User::getUser($id) - PdoException: " . $pde->getMessage());
+            return array();
+        }
         return (empty($rows) ? array() : $rows[0]);
     }
 

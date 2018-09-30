@@ -20,7 +20,6 @@ $smarty -> assign('pageActive', 'invoice_new');
 $smarty -> assign('active_tab', '#money');
 
 $display_block = "<div class=\"si_message_error\">{$LANG['save_invoice_failure']}</div>";
-$refresh_total = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($_POST['id']) . "\" />";
 
 // Deal with op and add some basic sanity checking
 if(!isset( $_POST['type']) && !isset($_POST['action'])) {
@@ -43,14 +42,15 @@ if ($_POST['action'] == "insert" ) {
     $id = Invoice::insert($list);
     if ($id > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";
+        $refresh_total = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($id) . "\" />";
         if ($type == TOTAL_INVOICE) {
             $product_id = Product::insertProduct(DISABLED, DISABLED);
-            if ($product_id === false) {
-                error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
-                $saved = false;
-            } else {
+            if ($product_id > 0) {
                 $tax_id = (empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0]);
                 Invoice::insertInvoiceItem($id, 1, $product_id, $tax_id, $_POST['description'], $_POST['unit_price']);
+            } else {
+                error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
+                $saved = false;
             }
         } else { // itemized invoice
             $i = 0;
@@ -69,6 +69,7 @@ if ($_POST['action'] == "insert" ) {
     }
 } else if ( $_POST['action'] == "edit") {
     $id = $_POST['id'];
+    $refresh_total = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($_POST['id']) . "\" />";
     if (Invoice::updateInvoice($id)) {
         if ($type == TOTAL_INVOICE) {
             $pdoDb->setFauxPost(array("unit_price" => $_POST['unit_price'], "description" => $_POST['description0']));

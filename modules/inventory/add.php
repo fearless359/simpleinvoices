@@ -4,7 +4,7 @@ global $smarty;
 if (!empty($_POST['op']) && $_POST['op'] =='add' && !empty($_POST['product_id'])) {
     try {
         $saved = "false";
-        if (Inventory::insert()) $saved = "true";
+        if (Inventory::insert() > 0) $saved = "true";
     } catch (PDOException $pde) {
         error_log("add.php insert error: " . $pde->getMessage());
     }

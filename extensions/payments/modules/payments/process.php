@@ -48,7 +48,7 @@ if(isset($_GET['id'])) {
 // @formatter:off
 $customer = Customer::get($invoice['customer_id']);
 $biller   = Biller::select($invoice['biller_id']);
-$defaults = getSystemDefaults();
+$defaults = SystemDefaults::loadValues();
 // @formatter:on
 
 $pdoDb->setHavings(Invoice::buildHavings("money_owed"));

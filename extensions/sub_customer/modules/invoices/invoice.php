@@ -25,7 +25,7 @@ $customers   = Customer::get_all(true);
 $taxes       = Taxes::getActiveTaxes();
 $products    = Product::select_all();
 $preferences = Preferences::getActivePreferences();
-$defaults    = getSystemDefaults();
+$defaults    = SystemDefaults::loadValues();
 $matrix      = ProductAttributes::getMatrix();
 
 if (empty($billers) || empty($customers) || empty($products)) {

@@ -63,7 +63,8 @@
           <tr>
             <td>
             {if $smarty.section.line.index == "0"}
-              <a href="#" class="trash_link" id="trash_link{$smarty.section.line.index|htmlsafe}" title="{$LANG.cannot_delete_first_row|htmlsafe}" >
+              <a href="#" class="trash_link" id="trash_link{$smarty.section.line.index|htmlsafe}" title="{$LANG.cannot_delete_first_row|htmlsafe}"
+                 data_delete_line_item={$config->confirm->deleteLineItem}>
                 <img id="trash_image{$smarty.section.line.index|htmlsafe}" src="images/common/blank.gif" height="16px" width="16px" title="{$LANG.cannot_delete_first_row}" alt="" />
               </a>
             {else}
@@ -71,7 +72,7 @@
               <!-- onclick="delete_row({$smarty.section.line.index|htmlsafe});" --> 
               <a id="trash_link{$smarty.section.line.index|htmlsafe}" class="trash_link"
                  title="{$LANG.delete_row}" rel="{$smarty.section.line.index|htmlsafe}"
-                 href="#" style="display: inline;">
+                 href="#" style="display: inline;" data_delete_line_item={$config->confirm->deleteLineItem}>
                 <img src="images/common/delete_item.png" alt="" />
               </a>
             {/if}
@@ -89,7 +90,8 @@
               <select id="products{$smarty.section.line.index|htmlsafe}"
                       name="products{$smarty.section.line.index|htmlsafe}"
                       rel="{$smarty.section.line.index|htmlsafe}"
-                      class="{if $smarty.section.line.index == "0"}validate[required]{/if} product_change" >
+                      class="{if $smarty.section.line.index == "0"}validate[required]{/if} product_change"
+                      data_description="{$LANG.description}">
                 <option value=""></option>
                 {foreach from=$products item=product}
                   <option {if $product.id == $smarty.get.product.$lineNumber}
@@ -131,15 +133,15 @@
             <td></td>
             <td colspan="4">
               <textarea class="detail" name="description{$smarty.section.line.index|htmlsafe}"
-                        id="description{$smarty.section.line.index|htmlsafe}" rows="4" cols="60"></textarea>
+                        id="description{$smarty.section.line.index|htmlsafe}" rows="4" cols="60"
+                        data_description="{$LANG['description']}"></textarea>
             </td>
           </tr>
         </tbody>
         {/section}
       </table>
       <div class="si_toolbar si_toolbar_inform">
-        {* onclick="add_line_item();" *}
-        <a href="#" class="add_line_item"><img src="images/common/add.png" alt="" />{$LANG.add_new_row}</a>
+        <a href="#" class="add_line_item" data_description="{$LANG.description}"><img src="images/common/add.png" alt="" />{$LANG.add_new_row}</a>
         <a href='#' class="show-details" onclick="javascript: $('.details').addClass('si_show').removeClass('si_hide');$('.show-details').addClass('si_hide').removeClass('si_show');"><img src="images/common/page_white_add.png" title="{$LANG.show_details}" alt="" />{$LANG.show_details}</a>
         <a href='#' class="details si_hide" onclick="javascript: $('.details').removeClass('si_show').addClass('si_hide');$('.show-details').addClass('si_show').removeClass('si_hide');" ><img src="images/common/page_white_delete.png" title="{$LANG.hide_details}" alt="" />{$LANG.hide_details}</a>
       </div>
@@ -148,7 +150,6 @@
         {$customFields.2}
         {$customFields.3}
         {$customFields.4}
-        {* {showCustomFields categorieId="4" itemId=""} *}
         <tr>
           <td class='si_invoice_notes' colspan="2">
             <h5>{$LANG.notes}</h5>

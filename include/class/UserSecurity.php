@@ -8,49 +8,7 @@
 class UserSecurity {
 
     /**
-     * Static function to add the session_timeout column to the system_defaults
-     * table if it is not present.
-     */
-    public static function loadCompanyName($patchCount) {
-        global $pdoDb, $LANG;
-
-        $rows = null;
-        try {
-            $pdoDb->setSelectList("value");
-            $pdoDb->addSimpleWhere("name", "company_name_item");
-            $rows = $pdoDb->request("SELECT", "system_defaults");
-        } catch (PdoDbException $pde) {
-            // no action needed
-        }
-        if (empty($rows)) {
-            $LANG['company_name_item'] = 'SimpleInvoices';
-            if ($patchCount > 297) {
-                error_log("UserSecurity - loadCompanyName(): Failed to retrieve company name item.");
-            }
-        } else {
-            $LANG['company_name_item'] = $rows[0]['value'];
-        }
-
-        $rows = null;
-        try {
-            $pdoDb->setSelectList("value");
-            $pdoDb->addSimpleWhere("name", "company_name");
-            $rows = $pdoDb->request("SELECT", "system_defaults");
-        } catch(PdoDbException $pde) {
-            // No action needed
-        }
-        if (empty($rows)) {
-            $LANG['company_name'] = 'SimpleInvoices';
-            if ($patchCount > 297) {
-                error_log("UserSecurity - loadCompanyName(): Failed to retrieve company name.");
-            }
-        } else {
-            $LANG['company_name'] = $rows[0]['value'];
-        }
-    }
-
-    /**
-     * Build the pattern for the specified password constrants.
+     * Build the pattern for the specified password constraints.
      * @return string Password pattern.
      */
     public static function buildPwdPattern() {

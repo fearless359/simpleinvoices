@@ -7,8 +7,8 @@
   <div class="si_wrap">
     <!-- SECTION:help -->
     {$LANG.hello} {$smarty.session.Zend_Auth.username|htmlsafe} |
-    <a href="https://simpleinvoices.group target="blank">{$LANG.help}</a> |
-    <a href="index.php?module=si_info&amp;view=index" style="color:white;">{$LANG.information}</a>
+    <a href="index.php?module=si_info&amp;view=index">{$LANG.about}</a>
+    <a href="https://simpleinvoices.group" target="_blank" style="color:white;" title="SimpleInvoices Group">{$LANG.help}</a> |
 
     <!-- SECTION:auth -->
     {if $config->authentication->enabled == 1} |
@@ -50,7 +50,7 @@
       {if $subPageActive == "invoice_edit"}<li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
       {if $subPageActive == "invoice_view"}<li><a class="active active_subpage" href="#">{$LANG.quick_view} </a></li>{/if}
       <!-- SECTION:new_invoice -->
-      <li><a {if $pageActive== "invoice_new"}class="active" {/if}id="invoice_dialogx" href="index.php?module=invoices&amp;view=itemised">{$LANG.new_invoice}</a></li>
+      <li><a {if $pageActive== "invoice_new"}class="active" {/if}id="invoice_dialog" href="index.php?module=invoices&amp;view=itemised">{$LANG.new_invoice}</a></li>
       {if $subPageActive == "invoice_new_itemised"}<li><a class="active active_subpage" href="#">{$LANG.itemised}</a></li>{/if}
       {if $subPageActive == "invoice_new_total"}<li><a class="active active_subpage" href="#">{$LANG.total}</a></li>{/if}
       <!-- SECTION:recurrence -->

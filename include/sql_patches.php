@@ -1591,10 +1591,10 @@ $patchlines = array(
 );
 patchmaker('208', $patchlines, $si_patches);
 
-$defaults = getSystemDefaults();
+$preference = SystemDefaults::getDefaultPreference();
 $patchlines = array(
     'name'  => "Populate the status, locale, and language fields in preferences table",
-    'patch' => "UPDATE `".TB_PREFIX."preferences` SET index_group = '".$defaults['preference']."' ;",
+    'patch' => "UPDATE `".TB_PREFIX."preferences` SET index_group = '$preference' ;",
     'date'  => "20090826"
 );
 patchmaker('209', $patchlines, $si_patches);
@@ -2303,7 +2303,7 @@ $patchlines = array(
     'patch' => ($ud ? "UPDATE `".TB_PREFIX."system_defaults` SET `extension_id` = 1 WHERE `name` IN
                             ('company_logo','company_name','company_name_item','password_min_length','password_lower','password_number','password_special','password_upper','session_timeout');                                
                        DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'user_security';" :
-                      "ALTER TABLE `".TB_PREFIX."user` ADD `username` VARCHAR(255) DEFAULT '' AFTER `id`;
+                      "ALTER TABLE `".TB_PREFIX."user` ADD `username` VARCHAR(255) DEFAULT '' NOT NULL AFTER `id`;
                        ALTER TABLE `".TB_PREFIX."user` DROP INDEX `UnqEMailPwd`;
                        UPDATE `".TB_PREFIX."user` AS U1, `".TB_PREFIX."user` AS U2 SET U1.username = U2.email WHERE U2.id = U1.id;
                        ALTER TABLE `" . TB_PREFIX . "user` ADD UNIQUE INDEX `uname` (`username`); 

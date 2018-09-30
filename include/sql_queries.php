@@ -23,12 +23,12 @@ try {
 }
 // @formatter:on
 
-// Cannot redfine LOGGING (withour PHP PECL runkit extension) since already true in define.php
+// Cannot redefine LOGGING (without PHP PECL run kit extension) since already true in define.php
 // Ref: http://php.net/manual/en/function.runkit-method-redefine.php
 // Hence take from system_defaults into new variable
 // Initialize so that while it is being evaluated, it prevents logging
 $can_log = false;
-$can_chk_log = (LOGGING && (isset($auth_session->id) && $auth_session->id > 0) && getDefaultLoggingStatus());
+$can_chk_log = (LOGGING && (isset($auth_session->id) && $auth_session->id > 0) && SystemDefaults::getDefaultLoggingStatus());
 $can_log = $can_chk_log;
 unset($can_chk_log);
 
@@ -104,7 +104,7 @@ function interpolateQuery($query, $params) {
  * ':id', $id);
  *
  * @param string $sqlQuery Query to be performed.
- * @return PDOStatement Result of query.
+ * @return bool/PDOStatement Result of query.
  */
 function dbQuery($sqlQuery) {
     global $dbh;
@@ -114,7 +114,7 @@ function dbQuery($sqlQuery) {
 
     $argc = func_num_args();
     $binds = func_get_args();
-    $sth = false;
+
     // PDO SQL Preparation
     $params = array();
     $sth = $dbh->prepare($sqlQuery);
@@ -293,132 +293,6 @@ function is_custom_flag_field($field) {
 }
 
 /**
- * Get a specific si_system_defaults record.
- * @param string $name Name for record to retrieve.
- * @param boolean $bool If true (default), a boolean field is being retrieved.
- *        If false, a character field is being retrieved.
- *        Note: If true, the result will be the $LANG word for 'enabled' or 'disabled'.
- * @return mixed Value from database or for bool, 'enabled' or 'disabled' word.
- */
-function getDefaultGeneric($name, $bool = true) {
-    global $LANG, $pdoDb, $databaseBuilt;
-
-    // Make the value to return on a false or no DB build condition.
-    $failed = ($bool ? $LANG['disabled'] : 0);
-    if (!$databaseBuilt) return $failed;
-
-    try {
-        $pdoDb->addSimpleWhere("s.name", $name, "AND");
-        $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
-        $pdoDb->setSelectList("value");
-        $rows = $pdoDb->request("SELECT", "system_defaults", "s");
-        if (empty($rows)) return $failed;
-
-        $row = $rows[0];
-        $nameval = ($bool ? ($row['value'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']) : $row['value']);
-    } catch (PdoDbException $pde) {
-        error_log("getDefaultGeneric() - PdoDbException thrown: " . $pde->getMessage());
-        return $failed;
-    }
-    return $nameval;
-}
-
-/**
- * Get "delete" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultDelete() {
-    return getDefaultGeneric('delete');
-}
-
-/**
- * Get "logging" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultLogging() {
-    return getDefaultGeneric('logging');
-}
-
-/**
- * Get "logging" entry from the system_defaults table.
- * @return boolean <b>true</b> "1" or "0"
- */
-function getDefaultLoggingStatus() {
-    return (getDefaultGeneric('logging', false) == 1);
-}
-
-/**
- * Get "inventory" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultInventory() {
-    return getDefaultGeneric('inventory');
-}
-/**
- * Get "password_lower" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultPasswordLower() {
-    return getDefaultGeneric('password_lower');
-}
-
-/**
- * Get "password_min_length" entry from the system_defaults table.
- * @return string number setting.
- */
-function getDefaultPasswordMinLength() {
-    return getDefaultGeneric('password_min_length', false);
-}
-
-/**
- * Get "password_number" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultPasswordNumber() {
-    return getDefaultGeneric('password_number');
-}
-
-/**
- * Get "password_special" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultPasswordSpecial() {
-    return getDefaultGeneric('password_special');
-}
-
-/**
- * Get "password_upper" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultPasswordUpper() {
-    return getDefaultGeneric('password_upper');
-}
-
-/**
- * Get "product_attributes" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultProductAttributes() {
-    return getDefaultGeneric('product_attributes');
-}
-
-/**
- * Get "large_dataset" entry from the system_defaults table.
- * @return string "Enabled" or "Disabled"
- */
-function getDefaultLargeDataset() {
-    return getDefaultGeneric('large_dataset');
-}
-
-/**
- * Get "language" entry from the system_defaults table.
- * @return string Language setting (ex: en_US)
- */
-function getDefaultLanguage() {
-    return getDefaultGeneric('language', false);
-}
-
-/**
  * @param $extension_id
  * @param int $status
  * @param string $domain_id
@@ -483,94 +357,6 @@ function getExtensionID($extension_name = "none") {
 }
 
 /**
- * @param string $domain_id
- * @return null
- */
-function getSystemDefaults($domain_id = '') {
-    global $patchCount,
-           $databaseBuilt,
-           $pdoDb_admin;
-
-    if (!$databaseBuilt) return NULL;
-
-    $domain_id = domain_id::get($domain_id);
-
-    // get sql patch level - if less than 198 do sql with no extension table
-    if ((checkTableExists(TB_PREFIX . "system_defaults") == false)) {
-        return NULL;
-    }
-
-    $lcl_defaults = NULL;
-    try {
-        $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
-        if ($patchCount >= "198") {
-            $jn = new Join("INNER", "extensions", "ext");
-            $jn->addSimpleItem("def.domain_id", new DbField("ext.domain_id"));
-            $pdoDb_admin->addToJoins($jn);
-
-            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
-            $pdoDb_admin->addSimpleWhere('ext.name', 'core', 'AND');
-            $pdoDb_admin->addSimpleWhere('def.domain_id', 0);
-
-            $pdoDb_admin->setOrderBy("extension_id");
-        }
-
-        $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
-        foreach ($rows as $row) {
-            $lcl_defaults[$row['name']] = $row['value'];
-        }
-
-        if ($patchCount > "198") {
-            $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
-
-            $jn = new Join('INNER', 'extensions', 'ext');
-            $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
-            $pdoDb_admin->addToJoins($jn);
-
-            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
-            $pdoDb_admin->addSimpleWhere('def.domain_id', $domain_id);
-
-            $pdoDb_admin->setOrderBy('extension_id');
-
-            $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
-            foreach ($rows as $row) {
-                $lcl_defaults[$row['name']] = $row['value']; // if setting is redefined, overwrite the previous value
-            }
-        }
-    } catch (PdoDbException $pde) {
-        error_log("getSystemDefaults error thrown: " . $pde->getMessage());
-    }
-    return $lcl_defaults;
-}
-
-/**
- * @param $name
- * @param $value
- * @param string $extension_name
- * @return bool
- * @throws PdoDbException
- */
-function updateDefault($name, $value, $extension_name = "core") {
-    global $pdoDb_admin;
-
-    $domain_id = domain_id::get();
-
-    $extension_id = getExtensionID($extension_name);
-    if (!($extension_id >= 0)) {
-        die(htmlsafe("Invalid extension name: " . $extension_name));
-    }
-
-    try {
-        $pdoDb_admin->setFauxPost(array('name' => $name, 'value' => $value, 'domain_id' => $domain_id, 'extension_id' => $extension_id));
-        $pdoDb_admin->setOnDuplicateKey("`value` = $value");
-        $pdoDb_admin->request("INSERT", "system_defaults");
-    } catch (PdoDbException $pde) {
-        return false;
-    }
-    return true;
-}
-
-/**
  * Ensure that there is a time value in the datetime object.
  *
  * @param string $in_date Datetime string in the format, "YYYY/MM/DD HH:MM:SS".
@@ -608,7 +394,6 @@ function delete($module, $idField, $id, $domain_id = '') {
     $has_domain_id = false;
 
     $lctable = strtolower($module);
-    $s_idField = ''; // Presetting the whitelisted column to fail
 
     // SC: $valid_tables contains the base names of all tables that can have rows
     // deleted using this function. This is used for whitelisting deletion targets.
@@ -679,7 +464,7 @@ function delete($module, $idField, $id, $domain_id = '') {
         return false; // Fail, column whitelisting not performed
     }
 
-    // Tablename and column both pass whitelisting and FK checks
+    // Table name and column both pass whitelisting and FK checks
     $sql = "DELETE FROM " . TB_PREFIX . "$module WHERE $s_idField = :id";
     if ($has_domain_id) {
         $sql .= " AND domain_id = :domain_id";
@@ -780,34 +565,6 @@ function getURL() {
 	    substr($_SERVER['FULL_URL'], -1, 1) != '/') $_SERVER['FULL_URL'] .= '/';
 
     return $_SERVER['FULL_URL'];
-}
-
-/**
- * @param $strSql
- * @return null
- */
-function sql2array($strSql) {
-    $sqlInArray = NULL;
-
-    $result_strSql = dbQuery($strSql);
-
-    for ($i = 0; $sqlInRow = PDOStatement::fetchAll($result_strSql); $i++) {
-        $sqlInArray[$i] = $sqlInRow;
-    }
-    return $sqlInArray;
-}
-
-/**
- * Calculate number of patches applied.
- * This is used to determine the database structure and by that
- * the features that are available.
- * @return Number of patches applied to the database.
- */
-function getNumberOfDoneSQLPatches() {
-    $check_patches_sql = "SELECT count(sql_patch) AS count FROM " . TB_PREFIX . "sql_patchmanager ";
-    $sth = dbQuery($check_patches_sql);
-    $patches = $sth->fetch();
-    return $patches['count'];
 }
 
 /**

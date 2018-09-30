@@ -2,6 +2,11 @@
 // $Header: /cvsroot/html2ps/box.table.section.php,v 1.14 2006/10/28 12:24:16 Konstantin Exp $
 
 class TableSectionBox extends GenericContainerBox {
+
+  function __construct() {
+    parent::__construct();
+  }
+
   function &create(&$root, &$pipeline) {
     $state =& $pipeline->getCurrentCSSState();
     $box =  new TableSectionBox();
@@ -21,10 +26,6 @@ class TableSectionBox extends GenericContainerBox {
     };
 
     return $box;
-  }
-  
-  function __construct() {
-    $this->__construct();
   }
 
   // Overrides default 'add_child' in GenericFormattedBox

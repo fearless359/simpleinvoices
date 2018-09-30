@@ -26,6 +26,7 @@ if (!empty($_POST['username'])) {
     include ("modules/user/save.php");
 }
 
+$smarty->assign('username_pattern', User::$username_pattern);
 $smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
 
 $smarty->assign('roles', $roles);

@@ -202,7 +202,7 @@ class export {
                 if (!isset($this->biller)) $this->biller = Biller::select($this->invoice['biller_id']);
                 if (!isset($this->preference)) $this->preference = Preferences::getPreference($this->invoice['preference_id'], $this->domain_id);
 
-                $defaults  = getSystemDefaults($this->domain_id);
+                $defaults = SystemDefaults::loadValues();
 
                 $logo = getLogo($this->biller);
                 $logo = str_replace(" ", "%20", trim($logo));

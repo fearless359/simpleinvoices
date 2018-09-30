@@ -23,7 +23,7 @@ checkLogin();
 $id           = $_GET['id'];
 $invoice      = Invoice::getInvoice($id);
 $preference   = Preferences::getPreference($invoice['preference_id']);
-$defaults     = getSystemDefaults();
+$defaults     = SystemDefaults::loadValues();
 $invoicePaid  = Payment::calc_invoice_paid($id);
 $invoiceItems = Invoice::getInvoiceItems($id);
 

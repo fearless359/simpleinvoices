@@ -6,15 +6,13 @@ checkLogin ();
 
 // @formatter:off
 $expense_add = Expense::add ();
-$defaults    = getSystemDefaults();
+$defaults    = SystemDefaults::loadValues();
 $taxes       = Taxes::getActiveTaxes();
 
 // if valid then do save
 if (!empty( $_POST ['expense_account_id'] )) {
     include "extensions/expense/modules/expense/save.php";
 }
-
-$defaults = getSystemDefaults();
 
 $smarty->assign('domain_id'  , domain_id::get());
 $smarty->assign('taxes'      , $taxes);

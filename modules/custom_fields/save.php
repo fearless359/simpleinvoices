@@ -25,8 +25,7 @@ global $LANG,
 checkLogin();
 
 // Deal with op and add some basic sanity checking
-$display_class = "si_message_warning";
-$display_message = $LANG['cancelled'];
+$display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}<div>";
 $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=custom_fields&amp;view=manage' />";
 $op = !empty($_POST['op']) ? addslashes($_POST['op']) : NULL;
 
@@ -36,7 +35,7 @@ if ($op === 'edit_custom_field') {
         $error_found = FALSE;
         // Check to see if the option to clear the value of the custom field in
         // the associated table. This can only happen if the field was changed
-        // from non-blank to blank and the check box set on the custrom field
+        // from non-blank to blank and the check box set on the custom field
         // maintenance screen.
         if (isset($_POST['clear_data']) && $_POST['clear_data'] == "yes") {
             // There is logic on the screen that prevents the clear data field from
@@ -46,7 +45,7 @@ if ($op === 'edit_custom_field') {
             if (empty($_POST['cf_custom_label'])) {
                 $clear_field = TRUE;
             } else {
-                $display_message = $LANG['clear_data'] . ' field setting is invalid. No update performed.';
+                $display_block ="<div class=\"si_message_warning\">{$LANG['clear_data']} field setting is invalid. No update performed.<div>";
                 $error_found = TRUE;
                 error_log("modules/custom_fields/save.php - Clear Date set when label not empty.");
                 error_log("Custom Field[" . $_POST['cr_custom_field'] . "] Label[" . $_POST['cf_custom_label'] . "]");
@@ -75,21 +74,16 @@ if ($op === 'edit_custom_field') {
                         }
                     }
                 }
-                $display_class = "si_message";
-                $display_message = $LANG['save_custom_field_success'];
+                $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}<div>";
             } else {
-                $display_message = $LANG['save_custom_field_failure'] . end($dbh->errorInfo());
+                $display_block = "<div class=\"si_message_warning\">{$LANG['save_custom_field_failure']}" . end($dbh->errorInfo()) . "</div>";
             }
         }
     }
 }
 
-error_log("display_class[$display_class]");
-error_log("display_message[$display_message");
-error_log("refresh_redirect[$refresh_redirect]");
-
-$smarty->assign('display_class', $display_class);
-$smarty->assign('display_message', $display_message);
+$smarty->assign('display_block', $display_block);
 $smarty->assign('refresh_redirect', $refresh_redirect);
+
 $smarty->assign('pageActive', 'custom_field');
 $smarty->assign('active_tab', '#setting');

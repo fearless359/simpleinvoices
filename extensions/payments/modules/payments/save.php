@@ -16,7 +16,7 @@ if (isset($_POST['process_payment'])) {
             "ac_payment_type" => $_POST['ac_payment_type'],
             "domain_id"       => domain_id::get(),
             "ac_check_number" => $_POST['ac_check_number']));
-        $saved  = !empty($result) ? "true" : "false";
+        $saved  = ($result > 0 ? "true" : "false");
     } catch (Exception $e) {
         $saved = "false";
     }

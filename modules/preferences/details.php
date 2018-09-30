@@ -14,7 +14,7 @@ $preference = Preferences::getPreference($preference_id);
 $index_group = Preferences::getPreference($preference['index_group']);
 
 $preferences = Preferences::getActivePreferences();
-$defaults = getSystemDefaults();
+$defaults = SystemDefaults::loadValues();
 $status = array(array('id'=>'0','status'=>$LANG['draft']), array('id'=>'1','status'=>$LANG['real']));
 $localelist = Zend_Locale::getLocaleList();
 

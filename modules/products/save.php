@@ -12,7 +12,7 @@ $op = (!empty ( $_POST ['op'] ) ? $_POST['op'] : NULL);
 if ($op === 'insert_product') {
     try {
         if (isset($_POST['save_product'])) {
-            if (Product::insertProduct()) {
+            if (Product::insertProduct() > 0) {
                 $display_class = "si_message_ok";
                 $display_message = $LANG['save_product_success'];
             } else {

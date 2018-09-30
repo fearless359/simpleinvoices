@@ -41,7 +41,7 @@ global $smarty,
        $auth_session,
        $early_exit;
 
-$logger->log("index.php - After init.php", Zend_Log::DEBUG);
+$logger->log("index.php - After init.php - module($module] view[$view]", Zend_Log::DEBUG);
 foreach ($ext_names as $ext_name) {
     if (file_exists("extensions/$ext_name/include/init.php")) {
         require_once ("extensions/$ext_name/include/init.php");
@@ -475,7 +475,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
         $smarty->$smarty_output(getCustomPath('footer'));
     }
 }
-$logger->log("index.php - At END", Zend_Log::DEBUG);
+$logger->log("index.php - At END\n\n", Zend_Log::DEBUG);
 // **********************************************************
 // Footer - END
 // **********************************************************

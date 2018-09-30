@@ -22,7 +22,7 @@ $detail['expense_tax_grouped'] = ExpenseTax::grouped($expense_id);
 $detail['status_wording']      = ($expense['status'] == 1 ? $LANG['paid'] : $LANG['not_paid']);
 
 $taxes = Taxes::getActiveTaxes();
-$defaults = getSystemDefaults();
+$defaults = SystemDefaults::loadValues();
 
 $smarty->assign('expense' ,$expense);
 $smarty->assign('detail'  ,$detail);
