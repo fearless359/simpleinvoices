@@ -23,7 +23,7 @@ global $smarty, $LANG;
 
 $user = User::getUser($_GET['id']);
 $roles = User::getUserRoles();
-error_log("user - " . print_r($user,true));
+
 $domain_id = domain_id::get();
 
 $cust_info = Customer::get_all(false, null, true);

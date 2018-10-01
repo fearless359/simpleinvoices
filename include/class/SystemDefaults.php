@@ -14,7 +14,6 @@ class SystemDefaults
      *      returned.
      * @return array with system_defaults values or values with extension_id per
      *      parameter settings. Can be empty array if database not built.
-     * @throws PdoDbException
      */
     public static function loadValues(bool $databaseBuilt = true, bool $valuesOnly = true)
     {
@@ -46,7 +45,8 @@ class SystemDefaults
                     'domain_id' => $row['domain_id']);
             }
         } catch (PdoDbException $pde) {
-            throw new PdoDbException("SystemDefaults::loadValues() error thrown: " . $pde->getMessage());
+            error_log("SystemDefaults::loadValues() error thrown: " . $pde->getMessage());
+            return array();
         }
 
         self::$initialized = true;
@@ -58,33 +58,43 @@ class SystemDefaults
      * @param string $name of system default row
      * @param string $value of system default row
      * @param string $extension_name Key to extensions row to obtain extension_id for this row
-     * @throws PdoDbException reported it invalid extension or system default name, or DB update error.
+     * @return boolean true if processed correctly, false if not.
      */
     public static function updateDefault($name, $value, $extension_name = "core")
     {
         global $pdoDb;
 
-        $extension_id = getExtensionID($extension_name);
+        try {
+            $extension_id = getExtensionID($extension_name);
+        } catch (PdoDbException $pde) {
+            error_log("SystemDefaults::updateDefault(): SystemDefaults::updateDefault(): getExtensionID error - " . $pde->getMessage());
+            return false;
+        }
+
         if (!($extension_id >= 0)) {
-            throw new PdoDbException("SystemDefaults::updateDefault(): No such extension_name[$extension_name]");
+            error_log("SystemDefaults::updateDefault(): No such extension_name[$extension_name]");
+            return false;
         }
 
         if (!isset(self::$values[$name])) {
-            throw new PdoDbException("SystemDefault::updateDefault(): No such default for name[$name]");
+            error_log("SystemDefault::updateDefault(): No such default for name[$name]");
+            return false;
         }
 
         try {
             $pdoDb->setFauxPost(array(
-                'name' => $name,
                 'value' => addslashes($value),
-                'domain_id' => domain_id::get(),
                 'extension_id' => $extension_id
             ));
+            $pdoDb->addSimpleWhere('name', $name, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', domain_id::get());
             $pdoDb->request("UPDATE", "system_defaults");
         } catch (PdoDbException $pde) {
-            throw new PdoDbException("Unable to add name[$name] value[$value] to database. " . $pde->getMessage());
+            error_log("SystemDefaults::updateDefault(): Unable to add name[$name] value[$value] to database. " . $pde->getMessage());
+            return false;
         }
         self::$values[$name] = array($value, $extension_id);
+        return true;
     }
 
     /**
@@ -93,7 +103,6 @@ class SystemDefaults
      *          contain this extension id.
      * @param bool $ret_string true if failed flag to return as 'DISABLED' string, false returns 0.
      * @return mixed Value of system_defaults row for specified name.
-     * @throws PdoDbException if name is not in table.
      */
     public static function getValue(string $name, $extension_id = null, $ret_string = true)
     {
@@ -104,7 +113,8 @@ class SystemDefaults
             return $failed;
         }
         if (!isset(self::$values[$name])) {
-            throw new PdoDbException("Invalid system_defaults name[$name]");
+            error_log("SystemDefaults::getValue(): Invalid system_defaults name[$name]");
+            return $failed;
         }
 
         $values = self::$values[$name];
@@ -135,7 +145,6 @@ class SystemDefaults
     /**
      * Get "delete" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultDelete()
     {
@@ -145,7 +154,6 @@ class SystemDefaults
     /**
      * Get "inventory" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultInventory()
     {
@@ -155,7 +163,6 @@ class SystemDefaults
     /**
      * Get "language" entry from the system_defaults table.
      * @return string Language setting (ex: en_US)
-     * @throws PdoDbException
      */
     public static function getDefaultLanguage()
     {
@@ -165,7 +172,6 @@ class SystemDefaults
     /**
      * Get "large_dataset" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultLargeDataset()
     {
@@ -175,7 +181,6 @@ class SystemDefaults
     /**
      * Get "logging" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultLogging()
     {
@@ -185,7 +190,6 @@ class SystemDefaults
     /**
      * Get "logging" entry from the system_defaults table.
      * @return boolean <b>true</b> "1" or "0"
-     * @throws PdoDbException
      */
     public static function getDefaultLoggingStatus()
     {
@@ -195,7 +199,6 @@ class SystemDefaults
     /**
      * Get "password_lower" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultPasswordLower()
     {
@@ -205,7 +208,6 @@ class SystemDefaults
     /**
      * Get "password_min_length" entry from the system_defaults table.
      * @return string number setting.
-     * @throws PdoDbException
      */
     public static function getDefaultPasswordMinLength()
     {
@@ -215,7 +217,6 @@ class SystemDefaults
     /**
      * Get "password_number" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultPasswordNumber()
     {
@@ -225,7 +226,6 @@ class SystemDefaults
     /**
      * Get "password_special" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultPasswordSpecial()
     {
@@ -235,7 +235,6 @@ class SystemDefaults
     /**
      * Get "password_upper" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultPasswordUpper()
     {
@@ -246,7 +245,6 @@ class SystemDefaults
     /**
      * Get "preference" entry from the system_defaults table.
      * @return mixed
-     * @throws PdoDbException
      */
     public static function getDefaultPreference()
     {
@@ -256,7 +254,6 @@ class SystemDefaults
     /**
      * Get "product_attributes" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
-     * @throws PdoDbException
      */
     public static function getDefaultProductAttributes()
     {
@@ -266,7 +263,6 @@ class SystemDefaults
     /**
      * Get "session_timeout" entry from the system_defaults table.
      * @return int Session timeout setting
-     * @throws PdoDbException
      */
     public static function getDefaultSessionTimeout()
     {

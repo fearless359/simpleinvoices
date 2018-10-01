@@ -7,7 +7,7 @@ $display_block = "<div class='si_message_error'>$LANG[save_defaults_failure]</di
 $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=system_defaults&amp;view=manage' />";
 
 if (isset($_POST['op']) && $_POST['op'] == 'update_system_defaults' ) {
-    if (updateDefault($_POST['name'], $_POST['value'])) {
+    if (SystemDefaults::updateDefault($_POST['name'], $_POST['value'])) {
         $display_block = "<div class='si_message_ok'>$LANG[save_defaults_success]</div>";
     }
 }
