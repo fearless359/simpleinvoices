@@ -1,6 +1,6 @@
 <?php
 /*
- * Read language informations
+ * Read language information
  * 1. reads default-language file
  * 2. reads requested language file
  * 3. make some editing (Upper-Case etc.)
@@ -12,6 +12,7 @@ $LANG = array();
 
 if ($databaseBuilt) {
     $tables = $zendDb->listTables(); // TEST: print db tables
+
     // if upgrading from old version then getDefaultLang wont work during install
     if (in_array(TB_PREFIX . 'system_defaults', $tables)) {
         $language = SystemDefaults::getDefaultLanguage();

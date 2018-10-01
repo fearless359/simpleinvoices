@@ -279,10 +279,10 @@ if (!empty($plugin_dirs)) {
     $smarty->addPluginsDir($plugin_dirs);
 }
 
-include_once ('include/language.php');
-
 $defaults = SystemDefaults::loadValues($databaseBuilt);
 $smarty->assign("defaults", $defaults);
+
+include_once ('include/language.php');
 
 // Load company name values from system_defaults table.
 if (isset($defaults['company_name_item'])) {

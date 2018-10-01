@@ -112,12 +112,13 @@ class SystemDefaults
         if (empty(self::$values)) {
             return $failed;
         }
+
         if (!isset(self::$values[$name])) {
             error_log("SystemDefaults::getValue(): Invalid system_defaults name[$name]");
             return $failed;
         }
 
-        $values = self::$values[$name];
+        $values = self::$values_arrays[$name];
         if (isset($extension_id) && $extension_id != $values['extension_id']) {
             return $failed;
         }
@@ -166,7 +167,8 @@ class SystemDefaults
      */
     public static function getDefaultLanguage()
     {
-        return self::getValue('language', null, false);
+        $result = self::getValue('language', null, false);
+        return ($result == 0 ? "en_US" : $result);
     }
 
     /**
