@@ -433,7 +433,7 @@ foreach ($ext_names as $ext_name) {
 }
 $logger->log("index.php - After $module/$view.tpl", Zend_Log::DEBUG);
 
-// TODO: if more than one extension has a template for the requested file, thats trouble :(
+// TODO: if more than one extension has a template for the requested file, that's trouble :(
 // This won't happen for reports, standard menu.tpl and system_defaults menu.tpl given
 // changes implemented in this file for them. Similar changes should be implemented for
 // other templates as needed.
