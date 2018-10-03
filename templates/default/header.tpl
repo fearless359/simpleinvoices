@@ -10,9 +10,7 @@
     {$smarty.capture.hook_head_start}
 {/strip}
     <title>{$tmp_lang_module} : {$tmp_lang_view} - {$LANG.company_name} </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta charset="UTF-8" />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="shortcut icon" href="images/common/favicon.ico" />
 
@@ -42,9 +40,6 @@
     <script type="text/javascript" src="include/jquery/jquery.conf.js"></script>
 {/literal}
     {$extension_jquery_files }
-{literal}
-
-{/literal}
     {if $config->debug->level == "All"}
     <link rel="stylesheet" type="text/css" href="library/blackbirdjs/blackbird.css" />    
     <script type="text/javascript" src="library/blackbirdjs/blackbird.js"></script>

@@ -7,8 +7,8 @@
   <div class="si_wrap">
     <!-- SECTION:help -->
     {$LANG.hello} {$smarty.session.Zend_Auth.username|htmlsafe} |
-    <a href="index.php?module=si_info&amp;view=index">{$LANG.about}</a>
-    <a href="https://simpleinvoices.group" target="_blank" style="color:white;" title="SimpleInvoices Group">{$LANG.help}</a> |
+    <a href="index.php?module=si_info&amp;view=index">{$LANG.about}</a> |
+    <a href="https://simpleinvoices.group" target="_blank" style="color:white;" title="SimpleInvoices Group">{$LANG.help}</a>
 
     <!-- SECTION:auth -->
     {if $config->authentication->enabled == 1} |
