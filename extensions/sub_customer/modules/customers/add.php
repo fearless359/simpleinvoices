@@ -32,5 +32,5 @@ $smarty->assign('parent_customers', $parent_customers);
 $smarty->assign('pageActive'      , 'customer');
 $smarty->assign('subPageActive'   , 'customer_add');
 $smarty->assign('active_tab'      , '#people');
-$smarty->assign('domain_id', domain_id::get());
+$smarty->assign('domain_id'       , domain_id::get());
 

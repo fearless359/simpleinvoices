@@ -17,6 +17,49 @@ class Customer {
     }
 
     /**
+     * Insert a new customer record.
+     * @param bool $excludeCreditCardNumber true if no credit card number to store, false otherwise.
+     * @return bool true if insert succeeded, false if failed.
+     */
+    public static function insertCustomer($excludeCreditCardNumber) {
+        global $pdoDb;
+
+        try {
+            if ($excludeCreditCardNumber) {
+                $pdoDb->setExcludedFields('credit_card_number');
+            }
+            $pdoDb->request('INSERT', 'customers');
+        } catch (Exception $e) {
+            error_log("Customer::insertCustomer(): Unable to add new customer record. Error: " . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Update an existing customer record.
+     * @param int $id of customer to update.
+     * @param bool true if credit card number field should be excluded, false to include it.
+     * @return bool true if update ok, false otherwise.
+     */
+    public static function updateCustomer($id, $excludeCreditCardNumber) {
+        global $pdoDb;
+
+        try {
+            $excludedFields = array('id', 'domain_id');
+            if ($excludeCreditCardNumber) $excludedFields[] = 'credit_card_number';
+            $pdoDb->setExcludedFields($excludedFields);
+            $pdoDb->addSimpleWhere('id', $id, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+            $pdoDb->request('UPDATE', 'customers');
+        } catch (PdoDbException $pde) {
+            error_log("Customer::updateCustomer(): Unable to update the customer record. Error: " . $pde->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Get a customer record.
      * @param string $id Unique ID record to retrieve.
      * @return array Row retrieved. Test for "=== false" to check for failure.
@@ -137,11 +180,10 @@ class Customer {
 
     /**
      * Get a default customer name.
-     * @param string $domain_id Domain user is logged into.
      * @return string Default customer name
      * @throws PdoDbException
      */
-    public static function getDefaultCustomer($domain_id = '') {
+    public static function getDefaultCustomer() {
         global $pdoDb;
 
         $pdoDb->addSimpleWhere("s.name", "customer", "AND");

@@ -22,11 +22,8 @@ if (!strstr($curr_path, $path1)) {
 
 // Create & initialize DB table if it doesn't exist.
 SubCustomers::addParentCustomerId();
+$count = Customer::count();
 
-$pdoDb->addSimpleWhere("domain_id", domain_id::get());
-$pdoDb->addToFunctions("count(*) AS count");
-$rows = $pdoDb->request("SELECT", "customers");
-$count = $rows[0]["count"];
 $smarty->assign('number_of_customers', $count);
 
 $smarty->assign('pageActive', 'customer');

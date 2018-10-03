@@ -17,8 +17,8 @@
             {display: '{/literal}{$LANG.customer}{literal}'  , name : 'c.name'     , width : 15 * percentage_width, sortable : true , align: 'left'},
             {display: '{/literal}{$LANG.biller}{literal}'    , name : 'b.name'     , width : 15 * percentage_width, sortable : true , align: 'left'},
             {display: '{/literal}{$LANG.amount}{literal}'    , name : 'ac_amount'  , width : 09 * percentage_width, sortable : true , align: 'right'},
-            {display: '{/literal}{$LANG.notes}{literal}'     , name : 'notes'      , width : 17 * percentage_width, sortable : false, align: 'left'},
-            {display: '{/literal}{$LANG.type}{literal}'      , name : 'description', width : 10 * percentage_width, sortable : true , align: 'left'},
+            {display: '{/literal}{$LANG.notes}{literal}'     , name : 'notes'      , width : 18 * percentage_width, sortable : false, align: 'left'},
+            {display: '{/literal}{$LANG.type}{literal}'      , name : 'type'       , width : 09 * percentage_width, sortable : true , align: 'left'},
             {display: '{/literal}{$LANG.date_upper}{literal}', name : 'date'       , width : 10 * percentage_width, sortable : true , align: 'center'}
         ],
         searchitems : [

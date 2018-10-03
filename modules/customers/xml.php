@@ -6,6 +6,7 @@ function sql($type = '', $start, $dir, $sort, $rp, $page) {
     $valid_search_fields = array(
         "c.id",
         "c.name",
+        "c.department",
         "c.enabled",
         "c.street_address",
         "c.city",
@@ -39,6 +40,7 @@ function sql($type = '', $start, $dir, $sort, $rp, $page) {
         new DbField("c.id", "CID"),
         "c.domain_id",
         "c.name",
+        "c.department",
         "c.enabled",
         "c.street_address",
         "c.city",
@@ -88,7 +90,7 @@ function sql($type = '', $start, $dir, $sort, $rp, $page) {
     $se = new Select($fn, null, null, "owing");
     $pdoDb->addToSelectStmts($se);
 
-    $validFields = array('CID', 'name', 'customer_total', 'paid', 'owing', 'enabled');
+    $validFields = array('CID', 'name', 'department', 'customer_total', 'paid', 'owing', 'enabled');
     if (in_array($sort, $validFields)) {
         $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
         $sortlist = array(array("enabled", "D"), array($sort, $dir));
@@ -107,11 +109,13 @@ global $LANG;
 
 header("Content-type: text/xml");
 
+// @formatter:off
 $start = (isset($_POST['start'])    ) ? $_POST['start']     : "0";
 $dir   = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "ASC";
 $sort  = (isset($_POST['sortname']) ) ? $_POST['sortname']  : "name";
 $rp    = (isset($_POST['rp'])       ) ? $_POST['rp']        : "25";
 $page  = (isset($_POST['page'])     ) ? $_POST['page']      : "1";
+// @formatter:on
 
 $customers = sql('', $start, $dir, $sort, $rp, $page);
 $count = sql('count', $start, $dir, $sort, $rp, $page);
@@ -139,6 +143,7 @@ foreach ($customers as $row) {
         ]]></cell>";
     $xml .= "<cell><![CDATA[" . $row['CID'] . "]]></cell>";
     $xml .= "<cell><![CDATA[" . $row['name'] . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . $row['department'] . "]]></cell>";
     $xml .= "<cell><![CDATA[" . siLocal::number($row['customer_total']) . "]]></cell>";
     $xml .= "<cell><![CDATA[" . siLocal::number($row['paid']) . "]]></cell>";
     $xml .= "<cell><![CDATA[" . siLocal::number($row['owing']) . "]]></cell>";

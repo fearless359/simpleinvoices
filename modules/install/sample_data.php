@@ -2,7 +2,6 @@
 global $db, $smarty;
 
 $menu = false;
-if ($menu) {} // eliminates unused warning
 
 $samplejson = new ImportJson();
 $samplejson->file = "databases/json/sample_data.json";

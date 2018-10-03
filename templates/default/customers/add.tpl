@@ -39,6 +39,13 @@
           </td>
         </tr>
         <tr>
+          <th>{$LANG.customer_department}</th>
+          <td>
+            <input type="text" name="department" id="department" value="{$smarty.post.department|htmlsafe}" size="25"
+                   tabindex="15" />
+          </td>
+        </tr>
+        <tr>
           <th>{$LANG.customer_contact}
             <a rel="index.php?module=documentation&amp;view=view&amp;page=help_customer_contact"
                href="#" class="cluetip" title="{$LANG.customer_contact}">
@@ -170,9 +177,7 @@
         <tr>
           <th>{$LANG.notes}</th>
           <td>
-            <textarea name="notes" class="editor" rows="8" cols="50" tabindex="200" >
-              {$smarty.post.notes|outhtml}
-            </textarea>
+            <textarea name="notes" class="editor" rows="8" cols="50" tabindex="200" >{$smarty.post.notes|outhtml}</textarea>
           </td>
         </tr>
         <tr>

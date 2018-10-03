@@ -2239,16 +2239,12 @@ $patchlines = array(
 );
 patchmaker('292', $patchlines, $si_patches);
 
-$ud = (checkFieldExists(TB_PREFIX.'biller','signature'));
 $patchlines = array(
-    'name' => 'Add Signature field to the biller table.',
-    'patch' => ($ud ? "DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'signature_field';" :
-                      "ALTER TABLE `".TB_PREFIX."biller` ADD `signature` varchar(255) DEFAULT '' NOT NULL COMMENT 'Email signature' AFTER `email`;
-                       DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'signature_field';"),
-    'date' => "20180921"
+    'name' => "Add department to the customers",
+    'patch' => "ALTER TABLE `".TB_PREFIX."customers` ADD COLUMN `department` VARCHAR(255) NULL AFTER `name`;",
+    'date' => "20161004"
 );
 patchmaker('293', $patchlines, $si_patches);
-unset($ud);
 
 $ud = checkTableExists(TB_PREFIX .'custom_flags');
 $patchlines = array(
@@ -2324,3 +2320,25 @@ patchmaker('297', $patchlines, $si_patches);
 unset($ud);
 unset($conam);
 unset($cologo);
+
+$ud = (checkFieldExists(TB_PREFIX.'biller','signature'));
+$patchlines = array(
+    'name' => 'Add Signature field to the biller table.',
+    'patch' => ($ud ? "DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'signature_field';" :
+                      "ALTER TABLE `".TB_PREFIX."biller` ADD `signature` varchar(255) DEFAULT '' NOT NULL COMMENT 'Email signature' AFTER `email`;
+                       DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'signature_field';"),
+    'date' => "20181003"
+);
+patchmaker('298', $patchlines, $si_patches);
+unset($ud);
+
+$ud = (checkFieldExists(TB_PREFIX.'payment','ac_check_number'));
+$patchlines = array(
+    'name' => 'Add check number field to the payment table.',
+    'patch' => ($ud ? "DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'payments';" :
+                      "ALTER TABLE `".TB_PREFIX."payment` ADD `ac_check_number` varchar(10) DEFAULT '' NOT NULL COMMENT 'Check number for CHECK payment types';
+                       DELETE IGNORE FROM `".TB_PREFIX."extensions` WHERE `name` = 'payments';"),
+    'date' => "20181003"
+);
+patchmaker('299', $patchlines, $si_patches);
+unset($ud);

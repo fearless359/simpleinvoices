@@ -13,6 +13,15 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-03 - <b>2018.1.1</b>
+            <ul>
+                <li>Moved the payments extension into the standard code. This adds a check number field
+                    to the payment table. It also changes the logic to return to the invoice management
+                    page after a payment is entered.</li>
+                <li>Fixed logic supporting department field in the customer table.</li>
+                <li>Added last_invoice language index for the default_invoice module.</li>
+            </ul>
+        </li>
         <li>2018-09-25 - <b>2018.1.0</b>
             <ul>
                 <li><b>Production Release</b> User Security extension merged into the standard application.

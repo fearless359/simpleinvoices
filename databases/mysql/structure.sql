@@ -56,6 +56,7 @@ CREATE TABLE `si_customers` (
   `domain_id` int(11) NOT NULL DEFAULT '1',
   `attention` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `department` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `street_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `street_address2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `city` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -191,7 +192,7 @@ CREATE TABLE `si_payment` (
   `ac_payment_type` int(10) NOT NULL DEFAULT '1',
   `domain_id` int(11) NOT NULL,
   `online_payment_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ac_check_number` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Check number for CHECK payment types'
+  `ac_check_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT '' NOT NULL COMMENT 'Check number for CHECK payment types'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `si_payment_types` (

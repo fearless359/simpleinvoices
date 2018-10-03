@@ -16,7 +16,8 @@ if (isset($_POST['process_payment'])) {
             "ac_notes"        => $_POST['ac_notes'],
             "ac_date"         => sqlDateWithTime($_POST['ac_date']),
             "ac_payment_type" => $_POST['ac_payment_type'],
-            "domain_id"       => domain_id::get()));
+            "domain_id"       => domain_id::get(),
+            "ac_check_number" => $_POST['ac_check_number']));
         if ($result > 0) {
             $display_block = "<div class='si_message_ok'>$LANG[save_payment_success]</div>";
         }

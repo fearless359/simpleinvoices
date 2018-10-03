@@ -89,15 +89,15 @@
   <table>
     <tr>
       <td class="details_screen">{$LANG.total_invoices}</td>
-      <td style="text-align: right">{$stuff.total|number_format:2}</td>
+      <td style="text-align: right">{$customer.total|number_format:2}</td>
     </tr>
     <tr>
       <td class="details_screen">{$LANG.total_paid}</td>
-      <td style="text-align: right">{$stuff.paid|number_format:2}</td>
+      <td style="text-align: right">{$customer.paid|number_format:2}</td>
     </tr>
     <tr>
       <td class="details_screen">{$LANG.total_owing}</td>
-      <td style="text-align: right"><u>{$stuff.owing|number_format:2}</u></td>
+      <td style="text-align: right"><u>{$customer.owing|number_format:2}</u></td>
     </tr>
   </table>
   <br />

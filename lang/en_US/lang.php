@@ -19,7 +19,7 @@
 
 #all
 
-global $LANG;
+global $databaseBuilt, $LANG;
 
 $LANG['about'] = "About";//1
 $LANG['account_info'] = "Account Info";//1
@@ -83,6 +83,7 @@ $LANG['cancel'] = "Cancel";//1
 $LANG['cancelled'] = "Request cancelled by user. No changes made.";//1
 $LANG['cannot_delete_first_row'] = "The first row cannot be deleted";//1
 $LANG['change_log'] = "Change Log";//1
+$LANG['check_number'] = "Check #";//0
 $LANG['city'] = "City";//1
 $LANG['clear_data'] = "Clear Data";//1
 $LANG['company_logo'] = "Company Logo File Name";//1
@@ -685,12 +686,12 @@ $LANG['your_reports'] = "Your reports";//1
 $LANG['zero_invoice_amt'] = "Zero invoice amount. No payment due.";//1
 $LANG['zip'] = "Zip code";//1
 
-$defaults = SystemDefaults::loadValues();
-$pwd_msg = "Passwords must:
-            <ul>
-              <li>Begin with an alpha character</li>
-              <li>Be at least " . $defaults['password_min_length'] . "-characters long</li>
-              <li>Contain no blanks</li>";
+$defaults = SystemDefaults::loadValues($databaseBuilt);
+$pwd_msg =  "Passwords must:" .
+            "<ul>" .
+            "  <li>Begin with an alpha character</li>" .
+            "  <li>Be at least " . $defaults['password_min_length'] . "-characters long</li>" .
+            "  <li>Contain no blanks</li>";
 
 if (isset($defaults['password_upper']) && $defaults['password_upper'] == 1) {
     $pwd_msg .= "<li>Contain at least one upper case character</li>";

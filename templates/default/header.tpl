@@ -22,9 +22,6 @@
 
     <link rel="stylesheet" type="text/css" href="templates/default/css/main.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="templates/default/css/print.css" media="print" />
-<!--[if IE]>
-    <link rel="stylesheet" type="text/css" href="templates/default/css/main_ie.css" media="all" />
-<![endif]-->
 
     <script type="text/javascript" src="include/jquery/jquery-1.2.6.min.js"></script>
     <script type="text/javascript" src="include/jquery/jquery.init.js"></script>

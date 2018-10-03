@@ -374,8 +374,7 @@ class Invoice {
      * @throws PdoDbException
      */
     public static function getInvoices($q) {
-        $q = strtolower($_GET["q"]);
-        if (!$q) return;
+        if (!$q) return array();
 
         $invoices = self::select_all();
         foreach ($invoices as $invoice) {

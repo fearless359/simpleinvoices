@@ -3,7 +3,18 @@
 function sql($type='', $start, $dir, $sort, $rp, $page ) {
     global $LANG, $pdoDb;
 
-    $valid_search_fields = array('c.id', 'c.name');
+    $valid_search_fields = array(
+        "c.id",
+        "c.name",
+        "c.department",
+        "c.enabled",
+        "c.street_address",
+        "c.city",
+        "c.state",
+        "c.phone",
+        "c.mobile_phone",
+        "c.email"
+    );
 
     $query = isset($_POST['query']) ? $_POST['query'] : null;
     $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
@@ -25,12 +36,28 @@ function sql($type='', $start, $dir, $sort, $rp, $page ) {
 
     $start = (($page - 1) * $rp);
 
-    $ca = new CaseStmt("c.enabled", "enabled_txt");
-    $ca->addWhen( "=", ENABLED, $LANG['enabled']);
-    $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-    $pdoDb->addToCaseStmts($ca);
+    $expr_list = array(
+        new DbField("c.id", "CID"),
+        "c.domain_id",
+        "c.name",
+        "c.department",
+        "c.enabled",
+        "c.street_address",
+        "c.city",
+        "c.state",
+        "c.phone",
+        "c.mobile_phone",
+        "c.email"
+    );
+    $pdoDb->setSelectList($expr_list);
+    $pdoDb->setGroupBy($expr_list);
 
-    $fn = new FunctionStmt("SUM", "COALESCE(ii.total, 0)", "total");
+    $case = new CaseStmt("c.enabled", "enabled_txt");
+    $case->addWhen( "=", ENABLED, $LANG['enabled']);
+    $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
+    $pdoDb->addToCaseStmts($case);
+
+    $fn = new FunctionStmt("COALESCE", "SUM(ii.total), 0", "total");
     $fr = new FromStmt("invoice_items", "ii");
     $jn = new Join("INNER", "invoices", "iv");
     $oc = new OnClause();
@@ -71,11 +98,7 @@ function sql($type='', $start, $dir, $sort, $rp, $page ) {
     $se = new Select($fn, null, null, "owing");
     $pdoDb->addToSelectStmts($se);
 
-    $expr_list = array(new DbField("c.id", "CID"), "c.domain_id", "c.name", "c.enabled");
-    $pdoDb->setSelectList($expr_list);
-    $pdoDb->setGroupBy($expr_list);
-
-    $validFields = array('CID', 'name', 'customer_total', 'paid', 'owing', 'enabled');
+    $validFields = array('CID', 'name', 'department', 'customer_total', 'paid', 'owing', 'enabled');
     if (in_array($sort, $validFields)) {
         $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
         $sortlist = array(array("enabled", "D"), array($sort, $dir));
@@ -96,8 +119,8 @@ header("Content-type: text/xml");
 
 // @formatter:off
 $start = (isset($_POST['start'])    ) ? $_POST['start']     : "0";
-$dir   = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "";
-$sort  = (isset($_POST['sortname']) ) ? $_POST['sortname']  : "";
+$dir   = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "ASC";
+$sort  = (isset($_POST['sortname']) ) ? $_POST['sortname']  : "name";
 $rp    = (isset($_POST['rp'])       ) ? $_POST['rp']        : "25";
 $page  = (isset($_POST['page'])     ) ? $_POST['page']      : "1";
 // @formatter:on
@@ -110,9 +133,9 @@ $xml .= "<rows>";
 $xml .= "<page>$page</page>";
 $xml .= "<total>$count</total>";
 
-$viewcust = "$LANG[view] $LANG[customer]";
-$editcust = "$LANG[edit] $LANG[customer]";
-$inv4cust = "$LANG[new_invoice] $LANG[for] $LANG[customer]";
+$viewcust = $LANG['view'] . " " . $LANG['customer'];
+$editcust = $LANG['edit'] . " " . $LANG['customer'];
+$inv4cust = $LANG['new_invoice'] . " " . $LANG['for'] . " " . $LANG['customer'];
 foreach ($customers as $row) {
     $last_invoice = utf8_encode($row['last_invoice']);
     $vname = $viewcust . $row['name'];
@@ -134,6 +157,7 @@ foreach ($customers as $row) {
         ]]></cell>";
     $xml .= "<cell><![CDATA[$row[CID]]]></cell>";
     $xml .= "<cell><![CDATA[$row[name]]]></cell>";
+    $xml .= "<cell><![CDATA[$row[department]]]></cell>";
     $xml .=
        "<cell><![CDATA[
           <a class='index_table' title='quick view' href='index.php?module=invoices&view=quick_view&id=$last_invoice'>
