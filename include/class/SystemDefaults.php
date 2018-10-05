@@ -17,8 +17,7 @@ class SystemDefaults
      */
     public static function loadValues(bool $databaseBuilt = true, bool $valuesOnly = true)
     {
-        global $pdoDb;
-
+        global $pdoDb_admin;
         if (self::$initialized) {
             return ($valuesOnly ? self::$values : self::$values_arrays);
         }
@@ -26,17 +25,44 @@ class SystemDefaults
         if (!$databaseBuilt) return array();
 
         try {
-            $pdoDb->setSelectList(array('def.name', 'def.value', 'def.extension_id', 'def.domain_id'));
+            // Logic for patch count >= 198
+            $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+
             $jn = new Join("INNER", "extensions", "ext");
             $jn->addSimpleItem("def.domain_id", new DbField("ext.domain_id"));
-            $pdoDb->addToJoins($jn);
+            $pdoDb_admin->addToJoins($jn);
 
-            $pdoDb->addSimpleWhere('enabled', ENABLED, 'AND');
-            $pdoDb->addToWhere(new WhereItem(false, 'def.domain_id', '=', domain_id::get(), false, 'OR'));
-            $pdoDb->addToWhere(new WhereItem(true, 'ext.name', '=', 'core', false, 'AND'));
-            $pdoDb->addToWhere(new WhereItem(false, 'def.domain_id', '=', 0, true));
+            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
+            $pdoDb_admin->addSimpleWhere('ext.name', 'core', 'AND');
+            $pdoDb_admin->addSimpleWhere('def.domain_id', 0);
 
-            $rows = $pdoDb->request('SELECT', 'system_defaults', 'def');
+            $pdoDb_admin->setOrderBy("extension_id");
+
+            $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
+            foreach ($rows as $row) {
+                self::$values[$row['name']] = stripslashes($row['value']);
+                self::$values_arrays[$row['name']] = array(
+                    'value' => stripslashes($row['value']),
+                    'extension_id' => $row['extension_id'],
+                    'domain_id' => $row['domain_id']);
+
+            }
+
+            // Logic for patch count > 198
+            // Why the overlap, I don't know. But items duplicate with ones
+            // found previously will be overloaded. (RCR 20181004)
+            $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+
+            $jn = new Join('INNER', 'extensions', 'ext');
+            $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
+            $pdoDb_admin->addToJoins($jn);
+
+            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
+            $pdoDb_admin->addSimpleWhere('def.domain_id', domain_id::get());
+
+            $pdoDb_admin->setOrderBy('extension_id');
+
+            $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
             foreach ($rows as $row) {
                 self::$values[$row['name']] = stripslashes($row['value']);
                 self::$values_arrays[$row['name']] = array(

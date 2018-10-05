@@ -23,6 +23,7 @@ class ImportJson extends Import {
                 if ($this->debug) echo "<br>";
                 $i = "1";
                 foreach($v2 as $k3 => $v3) {
+                    $v3 = addslashes($v3); // Fix issue of single quotes used in input value.
                     // TODO: IF NULL don't ''
                     $i == "1" ? $columns .= $k3 : $columns .= ", " . $k3;
                     $i == "1" ? $values .= "'" . $v3 . "'" : $values .= ", '" . $v3 . "'";

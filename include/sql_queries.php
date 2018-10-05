@@ -1,27 +1,11 @@
 <?php
-require_once "include/class/PdoDb.php";
-global $auth_session, $config, $dbInfo;
+global $auth_session, $config, $dbh, $dbInfo;
 
 /**
- *
  * @deprecated - Migrate to PdoDb class
  *               Rich Rowley 20160702
  */
 $dbh = db_connector();
-
-// @formatter:off
-try {
-    $pdoDb = new PdoDb($dbInfo);
-    $pdoDb->clearAll(); // to eliminate never used warning.
-
-    // For use by admin functions only. This avoids issues of
-    // concurrent use with user app object, <i>$pdoDb</i>.
-    $pdoDb_admin = new PdoDb($dbInfo);
-    $pdoDb_admin->clearAll();
-} catch (PdoDbException $pde) {
-    error_log($pde->getMessage());
-}
-// @formatter:on
 
 // Cannot redefine LOGGING (without PHP PECL run kit extension) since already true in define.php
 // Ref: http://php.net/manual/en/function.runkit-method-redefine.php
@@ -86,8 +70,9 @@ function interpolateQuery($query, $params) {
         if (is_null($value)) $values[$key] = 'NULL';
     }
 
-    // Walk the array to see if we can add single-quotes to strings
-    array_walk($values, create_function('&$v, $k', 'if (!is_numeric($v) && $v!="NULL") $v = "\'".$v."\'";'));
+    // Walk the array to see if we can add single-quotes to strings.
+    // The $k == $k test is to remove an unused warning.
+    array_walk($values, function(&$v, $k) {if ($k == $k && !is_numeric($v) && $v!="NULL") $v = "'".$v."'";});
     $query = preg_replace($keys, $values, $query, 1);
     return $query;
 }
@@ -100,8 +85,7 @@ function interpolateQuery($query, $params) {
  *
  * Examples:
  * $sth = dbQuery('SELECT b.id, b.name FROM si_biller b WHERE b.enabled');
- * $tth = dbQuery('SELECT c.name FROM si_customers c WHERE c.id = :id',
- * ':id', $id);
+ * $tth = dbQuery('SELECT c.name FROM si_customers c WHERE c.id = :id', ':id', $id);
  *
  * @param string $sqlQuery Query to be performed.
  * @return bool/PDOStatement Result of query.
@@ -154,31 +138,18 @@ function dbLogger($sqlQuery) {
                     (preg_match('/^\s*show\s*tables\s*like/iD', $sqlQuery) == 0)) {
         // Only log queries that could result in data/database modification
         $last = NULL;
-        if (preg_match('/^(insert|update|delete)/iD', $sqlQuery)) $last = lastInsertId();
+        if (preg_match('/^(insert|update|delete)/iD', $sqlQuery)) {
+            $sql = 'SELECT last_insert_id()';
+            $last = $pdoDb_admin->query($sql);
+        }
 
         // @formatter:off
-        $pdoDb_admin->setFauxPost(array("domain_id" => $auth_session->domain_id,
-                                        "timestamp" => CURRENT_TIMESTAMP,
+        $pdoDb_admin->setFauxPost(array("domain_id" => domain_id::get(),
                                         "userid"    => $auth_session->id,
                                         "sqlquerie" => trim($sqlQuery),
                                         "last_id"   => $last));
         $pdoDb_admin->request("INSERT", "log");
     }
-}
-
-/**
- * Retrieves the record ID of the most recently inserted row for the session.
- * Note: That the session is for the $dbh whose id was created by AUTO_INCREMENT
- * (MySQL) or a sequence (PostgreSQL). This is a convenience function to handle
- * the backend-specific details so you don't have to.
- * @return integer Record ID
- */
-function lastInsertId() {
-    global $dbh;
-    $sql = 'SELECT last_insert_id()';
-    $sth = $dbh->prepare($sql);
-    $sth->execute();
-    return $sth->fetchColumn();
 }
 
 /**
@@ -221,22 +192,6 @@ function loadSiExtensions(&$ext_names) {
             $ext_names[] = $extension->name;
         }
     }
-}
-
-/**
- * Get all patches.
- * @return array Rows retrieved. Test for "=== false" to check for failure.
- * @throws PdoDbException
- */
-function getSQLPatches() {
-    global $pdoDb_admin;
-    $pdoDb_admin->addToWhere(new WhereItem(false, "sql_patch"    , "<>", "", false, "OR"));
-    $pdoDb_admin->addToWhere(new WhereItem(false, "sql_release"  , "<>", "", false, "OR"));
-    $pdoDb_admin->addToWhere(new WhereItem(false, "sql_statement", "<>", "", false));
-    $pdoDb_admin->setOrderBy(array(array("sql_release","A"), array("sql_patch_ref","A")));
-
-    $rows = $pdoDb_admin->request("SELECT", "sql_patchmanager");
-    return $rows;
 }
 
 /**
@@ -433,7 +388,7 @@ function delete($module, $idField, $id, $domain_id = '') {
             $s_idField = $idField;
         } elseif ($lctable == 'invoices') {
             $has_domain_id = true;
-            // Check for existant payments and line items
+            // Check for existing payments and line items
             // @formatter:off
             $sth = $dbh->prepare('SELECT count(*)
                                   FROM (SELECT id FROM ' . TB_PREFIX . 'invoice_items
@@ -471,69 +426,6 @@ function delete($module, $idField, $id, $domain_id = '') {
         return dbQuery($sql, ':id', $id, ':domain_id', $domain_id);
     }
     return dbQuery($sql, ':id', $id);
-}
-
-/**
- * Test for database table existing.
- * @param string $table Table to check for.
- * @return true if specified table exists, false otherwise.
- */
-function checkTableExists($table) {
-    $sql = "SHOW TABLES LIKE '" . $table . "'";
-    $sth = dbQuery($sql);
-    if ($sth !== false && $sth->fetchAll()) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * Check for the presence of a column in a table of the SI database.
- * @param $table_in
- * @param $column
- * @return bool true if field exists, false if not.
- */
-function checkFieldExists($table_in, $column) {
-    global $pdoDb_admin, $dbInfo;
-    try {
-        $pdoDb_admin->setNoErrorLog();
-        $table = PdoDb::addTbPrefix($table_in);
-        $command = "SELECT 1 FROM information_schema.columns WHERE column_name = '$column' AND table_name = '$table' AND table_schema = '{$dbInfo->getDbname()}' LIMIT 1";
-        $result = $pdoDb_admin->query($command);
-        return !empty($result);
-    } catch (PdoDbException $pde) {
-    }
-    return false;
-}
-
-/**
- * Get a list of fields (aka columns) in a specified table.
- * @param string $table_in Name of the table to get fields for.
- *        Note: <b>TB_PREFIX</b> will be added if not present.
- * @return array Column names from the table. An empty array is
- *         returned if no columns found.
- */
-function getTableFields($table_in) {
-    global $dbh;
-
-    $pattern = '/^' . TB_PREFIX . '/';
-    if (!preg_match($pattern, $table_in)) {
-        $table = TB_PREFIX . $table_in;
-    } else {
-        $table = $table_in;
-    }
-
-    $sql = "SELECT column_name FROM information_schema.columns WHERE table_name = :table";
-
-    $columns = array();
-    if ($sth = $dbh->prepare($sql)) {
-        if ($sth->execute(array(':table' => $table))) {
-            while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-                $columns[] = $row['column_name'];
-            }
-        }
-    }
-    return $columns;
 }
 
 /**
@@ -639,248 +531,4 @@ function pdfThis($html_to_pdf, $pdfname, $download) {
     }
 
     convert_to_pdf($html_to_pdf, $pdfname, $download);
-}
-
-/**
- * @return mixed
- * @throws PdoDbException
- */
-function getNumberOfDonePatches() {
-    global $pdoDb_admin;
-    $pdoDb_admin->addToFunctions(new FunctionStmt("MAX", "sql_patch_ref", "count"));
-    $rows = $pdoDb_admin->request("SELECT", "sql_patchmanager");
-    // Returns number of patches applied
-    return $rows[0]['count'];
-}
-
-/**
- * @return mixed
- * @throws PdoDbException
- */
-function getNumberOfPatches() {
-    global $si_patches;
-    $patches = getNumberOfDonePatches();
-    $patch_count = max(array_keys($si_patches));
-    return $patch_count - $patches;
-}
-
-/**
- * Run the unapplied patches.
- */
-function runPatches() {
-    global $si_patches;
-    global $dbh;
-
-    $sql = "SHOW TABLES LIKE '" . TB_PREFIX . "sql_patchmanager'";
-    $sth = dbQuery($sql);
-    $rows = $sth->fetchAll();
-
-    $smarty_datas = array();
-
-    if (count($rows) == 1) {
-        $dbh->beginTransaction();
-
-        for ($i = 0; $i < count($si_patches); $i++) {
-            $smarty_datas['rows'][$i] = run_sql_patch($i, $si_patches[$i]);
-        }
-
-        $dbh->commit();
-
-        $smarty_datas['message'] = "The database patches have now been applied. You can now start working with SimpleInvoices";
-        $smarty_datas['html'] = "<div class='si_toolbar si_toolbar_form'><a href='index.php'>HOME</a></div>";
-        $smarty_datas['refresh'] = 5;
-    } else {
-        $smarty_datas['html'] = "Step 1 - This is the first time Database Updates has been run";
-        $smarty_datas['html'] .= initialize_sql_patch();
-        $smarty_datas['html'] .= "<br />
-        Now that the Database upgrade table has been initialized, click
-        the following button to return to the Database Upgrade Manager
-        page to run the remaining patches.
-        <div class='si_toolbar si_toolbar_form'>
-            <a href='index.php?module=options&amp;view=database_sqlpatches'>Continue</a>
-        </div>
-        .";
-    }
-
-    global $smarty;
-    $smarty->assign("page", $smarty_datas);
-}
-
-/**
- * Report patches are done
- */
-function donePatches() {
-    $smarty_datas = array();
-    $smarty_datas['message'] = "The database patches are up to date. You can continue working with SimpleInvoices";
-    $smarty_datas['html'] = "<div class='si_toolbar si_toolbar_form'><a href='index.php'>HOME</a></div>";
-    $smarty_datas['refresh'] = 3;
-    global $smarty;
-    $smarty->assign("page", $smarty_datas);
-}
-
-/**
- * List all patches and their status.
- */
-function listPatches() {
-    global $si_patches;
-
-    $smarty_datas = array();
-    $smarty_datas['message'] = "Your version of SimpleInvoices can now be upgraded. With this new release there are database patches that need to be applied";
-    $smarty_datas['html'] = <<<EOD
-    <div class="si_message_install">The list below describes which patches have and have not been applied to the database. 
-                                    If there are patches that have not been applied, run the Update database by clicking update.
-    </div>
-    <div class="si_message_warning">Warning: Please backup your database before upgrading!</div>
-    <div class="si_toolbar si_toolbar_form">
-        <a href="index.php?case=run" class="">
-        <img src="images/common/tick.png" alt="" />Update</a>
-    </div>
-EOD;
-
-    for ($p = 0; $p < count($si_patches); $p++) {
-        $patch_name = htmlsafe($si_patches[$p]['name']);
-        $patch_date = htmlsafe($si_patches[$p]['date']);
-        if (check_sql_patch($p)) {
-            $smarty_datas['rows'][$p]['text'] = "SQL patch $p, $patch_name <i>has</i> already been applied in release $patch_date";
-            $smarty_datas['rows'][$p]['result'] = 'skip';
-        } else {
-            $smarty_datas['rows'][$p]['text'] = "SQL patch $p, $patch_name <span style='color:red !important;'><b>has not</b> been applied to the database</span>";
-            $smarty_datas['rows'][$p]['result'] = 'todo';
-        }
-    }
-
-    global $smarty;
-    $smarty->assign("page", $smarty_datas);
-}
-
-/**
- * @param $check_sql_patch_ref
- * @return bool
- */
-function check_sql_patch($check_sql_patch_ref) {
-    $sql = "SELECT * FROM " . TB_PREFIX . "sql_patchmanager WHERE sql_patch_ref = :patch";
-    $sth = dbQuery($sql, ':patch', $check_sql_patch_ref);
-    if (count($sth->fetchAll()) > 0) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * @param $id
- * @param $patch
- * @return array
- */
-function run_sql_patch($id, $patch) {
-    global $dbh;
-
-    $sql = "SELECT * FROM " . TB_PREFIX . "sql_patchmanager WHERE sql_patch_ref = :id";
-    $sth = dbQuery($sql, ':id', $id);
-
-    $escaped_id = htmlsafe($id);
-    $patch_name = htmlsafe($patch['name']);
-
-    $smarty_row = array();
-    if (count($sth->fetchAll()) != 0) {
-        // forget about the patch as it has already been run!!
-        $smarty_row['text'] = "Skipping SQL patch $escaped_id, $patch_name as it <i>has</i> already been applied";
-        $smarty_row['result'] = "skip";
-    } else {
-        // patch hasn't been run, so run it
-        dbQuery($patch['patch']);
-
-        $smarty_row['text'] = "SQL patch $escaped_id, $patch_name <i>has</i> been applied to the database";
-        $smarty_row['result'] = "done";
-
-        // now update the ".TB_PREFIX."sql_patchmanager table
-        // @formatter:off
-        $sql = "INSERT INTO " . TB_PREFIX . "sql_patchmanager (
-                        sql_patch_ref,
-                        sql_patch,
-                        sql_release,
-                        sql_statement)
-                VALUES (:id, :name, :date, :patch)";
-        dbQuery($sql,   ':id'   , $id,
-                        ':name' , $patch['name'],
-                        ':date' , $patch['date'],
-                        ':patch', $patch['patch']);
-        // @formatter:on
-        if ($id == 126) {
-            patch126();
-        }
-    }
-    return $smarty_row;
-}
-
-/**
- * @return string
- */
-function initialize_sql_patch() {
-    // check sql patch 1
-    // @formatter:off
-    $sql_patch_init = "CREATE TABLE " . TB_PREFIX . "sql_patchmanager (
-                           sql_id        INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                           sql_patch_ref VARCHAR( 50) NOT NULL,
-                           sql_patch     VARCHAR(255) NOT NULL,
-                           sql_release   VARCHAR( 25) NOT NULL,
-                           sql_statement TEXT         NOT NULL)
-                       TYPE = MYISAM ";
-    // @formatter:on
-    dbQuery($sql_patch_init);
-
-    $log = "Step 2 - The SQL patch table has been created<br />";
-
-    // @formatter:off
-    $sql_insert = "INSERT INTO " . TB_PREFIX . "sql_patchmanager (
-                       sql_id,
-                       sql_patch_ref,
-                       sql_patch,
-                       sql_release,
-                       sql_statement)
-                   VALUES (
-                       '',
-                       '1',
-                       'Create " . TB_PREFIX . "sql_patchmanger table',
-                       '20060514',
-                       :patch)";
-    // @formatter:on
-    dbQuery($sql_insert, ':patch', $sql_patch_init);
-
-    $log .= "Step 3 - The SQL patch has been inserted into the SQL patch table<br />";
-
-    return $log;
-}
-
-/**
- * Special handling for patch #126
- */
-function patch126() {
-    // SC: MySQL-only function, not porting to PostgreSQL
-    $sql = "SELECT * FROM " . TB_PREFIX . "invoice_items WHERE product_id = 0";
-    $sth = dbQuery($sql);
-
-    while ($res = $sth->fetch()) {
-        // @formatter:off
-        $sql = "INSERT INTO " . TB_PREFIX . "products (
-                        id,
-                        description,
-                        unit_price,
-                        enabled,
-                        visible)
-                VALUES (NULL,
-                        :description,
-                        :gross_total,
-                        '0',
-                        '0')";
-        dbQuery($sql, ':description', $res['description'],
-                      ':total'      , $res['gross_total']);
-        $id = lastInsertId();
-
-        $sql = "UPDATE  " . TB_PREFIX . "invoice_items
-                SET product_id = :id,
-                    unit_price = :price
-                WHERE " . TB_PREFIX . "invoice_items.id = :item";
-        dbQuery($sql, ':id', $id[0], ':price', $res['gross_total'], ':item', $res['id']);
-        // @formatter:on
-    }
 }

@@ -189,8 +189,7 @@ class Product {
     /**
      * Update a product record.
      * @return PDO statement object on success, false on failure.
-     * @throws PdoDbException,
-     * @throws Zend_Locale_Exception
+     * @throws Exception thrown as PdoDbException or Zend_Locale_Exception.
      */
     public static function updateProduct() {
         global $pdoDb;

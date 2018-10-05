@@ -70,8 +70,7 @@ $menu = (isset($menu) ? $menu : true);
 $logger->log("index.php - module[$module] view[$view] " .
              "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", Zend_Log::DEBUG);
 if (($module == "options") && ($view == "database_sqlpatches")) {
-    include_once ('include/sql_patches.php');
-    donePatches();
+    SqlPatchManager::donePatchesMessage();
 } else {
     // Check that database structure has been built and populated.
     $skip_db_patches = false;
@@ -91,15 +90,14 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
     if (!$skip_db_patches) {
         // If default user or an active session exists, proceed with check.
         if ($config->authentication->enabled == 0 || isset($auth_session->id)) {
-            include_once ('./include/sql_patches.php');
             // Check if there are patches to process
-            if (getNumberOfPatches() > 0) {
+            if (SqlPatchManager::numberOfUnappliedPatches() > 0) {
                 $view = "database_sqlpatches";
                 $module = "options";
                 if ($action == "run") {
-                    runPatches();
+                    SqlPatchManager::runPatches();
                 } else {
-                    listPatches();
+                    SqlPatchManager::listPatches();
                 }
                 $menu = false;
             } else {

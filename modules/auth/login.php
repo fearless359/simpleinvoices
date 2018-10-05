@@ -10,7 +10,10 @@
  *      GPL v3 or above
  */
 if (!function_exists('loginLogo')) {
-    function loginLogo($smarty, $defaults) {
+    function loginLogo($smarty) {
+        global $pdoDb;
+
+        $defaults = SystemDefaults::loadValues();
         // Not a post action so set up company logo and name to display on login screen.
         //<img src="extensions/user_security/images/{$defaults.company_logo}" alt="User Logo">
         $image = "templates/invoices/logos/" . $defaults['company_logo'];
@@ -58,7 +61,6 @@ if (!function_exists('loginLogo')) {
 }
 
 global $patchCount,
-       $defaults,
        $smarty,
        $pdoDb;
 
@@ -71,7 +73,7 @@ if (!defined("STD_LOGIN_FAILED_MSG")) define("STD_LOGIN_FAILED_MSG", "Invalid Us
 
 Zend_Session::start();
 $errorMessage = '';
-loginLogo($smarty, $defaults);
+loginLogo($smarty);
 
 if (empty($_POST['user']) || empty($_POST['pass'])) {
     if (isset($_POST['action']) && $_POST['action'] == 'login') {

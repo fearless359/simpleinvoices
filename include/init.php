@@ -2,6 +2,43 @@
 /* *************************************************************
  * Zend framework init - start
  * *************************************************************/
+
+/**
+ * Test for database table existing.
+ * @param string $table Table to check for.
+ * @return true if specified table exists, false otherwise.
+ */
+function checkTableExists($table) {
+    global $pdoDb_admin;
+
+    try {
+        $result = $pdoDb_admin->request('SHOW TABLES', $table);
+    } catch (PdoDbException $pde) {
+        error_log("checkTableExists failed for table[$table]. Error: " . $pde->getMessage());
+        return false;
+    }
+    return !empty($result);
+}
+
+/**
+ * Check for the presence of a column in a table of the SI database.
+ * @param $table_in
+ * @param $column
+ * @return bool true if field exists, false if not.
+ */
+function checkFieldExists($table_in, $column) {
+    global $pdoDb_admin, $dbInfo;
+    try {
+        $pdoDb_admin->setNoErrorLog();
+        $table = PdoDb::addTbPrefix($table_in);
+        $command = "SELECT 1 FROM information_schema.columns WHERE column_name = '$column' AND table_name = '$table' AND table_schema = '{$dbInfo->getDbname()}' LIMIT 1";
+        $result = $pdoDb_admin->query($command);
+        return !empty($result);
+    } catch (PdoDbException $pde) {
+    }
+    return false;
+}
+
 global $api_request, $config;
 if (!isset($api_request)) $api_request = false;
 
@@ -111,6 +148,14 @@ $logger->log("init.php - logger has been setup", Zend_Log::DEBUG);
 
 try {
     $dbInfo = new DbInfo(CONFIG_FILE_PATH, "production");
+
+    $pdoDb = new PdoDb($dbInfo);
+    $pdoDb->clearAll(); // to eliminate never used warning.
+
+    // For use by admin functions only. This avoids issues of
+    // concurrent use with user app object, <i>$pdoDb</i>.
+    $pdoDb_admin = new PdoDb($dbInfo);
+    $pdoDb_admin->clearAll();
 } catch (PdoDbException $pde) {
     if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
         echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
@@ -152,13 +197,7 @@ $zendDb = Zend_Db::factory($config->database->adapter,
 
 // It's possible that we are in the initial install mode. If so, set
 // a flag so we won't terminate on an "Unknown database" error later.
-try {
-    $tbl_info = $zendDb->describeTable(TB_PREFIX . "biller");
-    $databaseBuilt = !empty($tbl_info);
-} catch (Zend_Db_Exception $zde) {
-    $databaseBuilt = false;
-}
-
+$databaseBuilt = checkTableExists('biller');
 $timeout = 0;
 if ($api_request) {
     if (!$databaseBuilt) {
@@ -234,10 +273,8 @@ require_once ("include/sql_queries.php");
 $patchCount = 0;
 if ($databaseBuilt) {
     // Set these global variables.
-    $pdoDb->addToFunctions('count(sql_patch) AS count');
-    $rows = $pdoDb->request('SELECT', 'sql_patchmanager');
-    $patchCount = (empty($rows) ? 0 : $rows[0]['count']);
-    $databasePopulated = $patchCount > 0;
+    $patchCount = SqlPatchManager::lastPatchApplied();
+    $databasePopulated = ($patchCount > 0);
     if ($api_request && !$databasePopulated) {
         exit("Database must be populated to run a batch job.");
     }

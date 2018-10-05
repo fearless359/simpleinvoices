@@ -13,6 +13,15 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-04 - <b>2018.1.2</b>
+            <ul>
+                <li>Moved SQL patch management logic into a new SqlPatchManager class. This change
+                    deprecates the sql_patches.php file which is left as an empty file to force it
+                    to overload the previous version of the file.</li>
+                <li>Used addslashes() to fix issue where single quotes in essential_data.json file
+                    sql_statement entries stopped data from being loaded.</li>
+            </ul>
+        </li>
         <li>2018-10-03 - <b>2018.1.1</b>
             <ul>
                 <li>Moved the payments extension into the standard code. This adds a check number field
