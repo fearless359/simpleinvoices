@@ -91,7 +91,6 @@ class User
             $pdoDb_admin->addSimpleWhere("username", $username);
             $rows = $pdoDb_admin->request('SELECT', 'user');
             if (empty($rows)) {
-                error_log("User::verifyPassword() - No such username[$username]");
                 return false;
             }
             $user = $rows[0];

@@ -9,7 +9,7 @@ class Select {
 
     /**
      * Class constructor
-     * @param array $list One of several objects.
+     * @param FunctionStmt/array $list One of several objects.
      *        <ol>
      *          <li><b>array()</b>: Ordered array of strings containing field names to include in the list.</li>
      *          <li><b>FunctionStmt</b> object</li>

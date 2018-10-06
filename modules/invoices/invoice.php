@@ -63,7 +63,7 @@ $smarty->assign("preferences"       , $preferences);
 $smarty->assign("defaultPreference" , $defaultPreference);
 $smarty->assign("dynamic_line_items", $dynamic_line_items);
 $smarty->assign("customFields"      , $customFields);
-$smarty->assign("defaultCustomerID" , $defaultCustomer['id']);
+$smarty->assign("defaultCustomerID" , (empty($defaultCustomer) ? 0 : $defaultCustomer['id']));
 $smarty->assign("defaults"          , $defaults);
 
 $smarty->assign('active_tab', '#money');

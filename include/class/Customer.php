@@ -5,15 +5,19 @@ class Customer {
     /**
      * Calculate count of customer records.
      * @return integer
-     * @throws PdoDbException
      */
     public static function count() {
         global $pdoDb;
 
-        $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
-        $rows = $pdoDb->request("SELECT", "customers");
-        return $rows[0]['count'];
+        try {
+            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+            $rows = $pdoDb->request("SELECT", "customers");
+        } catch (PdoDbException $pde) {
+            error_log("Customer::count() - Error: " . $pde->getMessage());
+            return 0;
+        }
+        return (empty($rows) ? 0 : $rows[0]['count']);
     }
 
     /**
@@ -180,7 +184,7 @@ class Customer {
 
     /**
      * Get a default customer name.
-     * @return string Default customer name
+     * @return array Default customer row
      * @throws PdoDbException
      */
     public static function getDefaultCustomer() {
@@ -203,7 +207,7 @@ class Customer {
     /**
      * @param $customer_id
      * @param bool $isReal
-     * @return mixed
+     * @return array()
      * @throws PdoDbException
      */
     public static function calc_customer_total($customer_id, $isReal = false) {

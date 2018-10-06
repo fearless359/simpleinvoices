@@ -1,115 +1,119 @@
 <?php
 
-function sql($type='', $start, $dir, $sort, $rp, $page ) {
+function sql($type, $dir, $sort, $rp, $page ) {
     global $LANG, $pdoDb;
 
-    $valid_search_fields = array(
-        "c.id",
-        "c.name",
-        "c.department",
-        "c.enabled",
-        "c.street_address",
-        "c.city",
-        "c.state",
-        "c.phone",
-        "c.mobile_phone",
-        "c.email"
-    );
+    try {
+        $valid_search_fields = array(
+            "c.id",
+            "c.name",
+            "c.department",
+            "c.enabled",
+            "c.street_address",
+            "c.city",
+            "c.state",
+            "c.phone",
+            "c.mobile_phone",
+            "c.email"
+        );
 
-    $query = isset($_POST['query']) ? $_POST['query'] : null;
-    $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
-    if (!empty($qtype) && !empty($query)) {
-        if ( in_array($qtype, $valid_search_fields) ) {
-            $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
+        $query = isset($_POST['query']) ? $_POST['query'] : null;
+        $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
+        if (!empty($qtype) && !empty($query)) {
+            if (in_array($qtype, $valid_search_fields)) {
+                $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
+            }
         }
+        $pdoDb->addSimpleWhere("c.domain_id", domain_id::get());
+
+        if ($type == "count") {
+            $pdoDb->addToFunctions("COUNT(*) AS count");
+            $rows = $pdoDb->request("SELECT", "customers", "c");
+            return $rows[0]['count'];
+        }
+
+        if (intval($page) != $page) $page = 1;
+        if (intval($rp) != $rp) $rp = 25;
+
+        $start = (($page - 1) * $rp);
+
+        $expr_list = array(
+            new DbField("c.id", "CID"),
+            "c.domain_id",
+            "c.name",
+            "c.department",
+            "c.enabled",
+            "c.street_address",
+            "c.city",
+            "c.state",
+            "c.phone",
+            "c.mobile_phone",
+            "c.email"
+        );
+        $pdoDb->setSelectList($expr_list);
+        $pdoDb->setGroupBy($expr_list);
+
+        $case = new CaseStmt("c.enabled", "enabled_txt");
+        $case->addWhen("=", ENABLED, $LANG['enabled']);
+        $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
+        $pdoDb->addToCaseStmts($case);
+
+        $fn = new FunctionStmt("COALESCE", "SUM(ii.total), 0", "total");
+        $fr = new FromStmt("invoice_items", "ii");
+        $jn = new Join("INNER", "invoices", "iv");
+        $oc = new OnClause();
+        $oc->addSimpleItem("iv.id", new DbField("ii.invoice_id"), "AND");
+        $oc->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
+        $jn->setOnClause($oc);
+        $wh = new WhereClause();
+        $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
+        $wh->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
+        $se = new Select($fn, $fr, $wh, "customer_total");
+        $se->addJoin($jn);
+        $pdoDb->addToSelectStmts($se);
+
+        $fn = new FunctionStmt("MAX", new DbField("iv.index_id"));
+        $fr = new FromStmt("invoices", "iv");
+        $wh = new WhereClause();
+        $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
+        $wh->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
+        $se = new Select($fn, $fr, $wh, "last_invoice");
+        $pdoDb->addToSelectStmts($se);
+
+        $fn = new FunctionStmt("SUM", "COALESCE(ap.ac_amount, 0)", "amount");
+        $fr = new FromStmt("payment", "ap");
+        $jn = new Join("INNER", "invoices", "iv");
+        $oc = new OnClause();
+        $oc->addSimpleItem("iv.id", new DbField("ap.ac_inv_id"), "AND");
+        $oc->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
+        $jn->setOnClause($oc);
+        $wh = new WhereClause();
+        $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
+        $wh->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
+        $se = new Select($fn, $fr, $wh, "paid");
+        $se->addJoin($jn);
+        $pdoDb->addToSelectStmts($se);
+
+        $fn = new FunctionStmt(null, "customer_total");
+        $fn->addPart("-", "paid");
+        $se = new Select($fn, null, null, "owing");
+        $pdoDb->addToSelectStmts($se);
+
+        $validFields = array('CID', 'name', 'department', 'customer_total', 'paid', 'owing', 'enabled');
+        if (in_array($sort, $validFields)) {
+            $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
+            $sortlist = array(array("enabled", "D"), array($sort, $dir));
+        } else {
+            $sortlist = array(array("enabled", "D"), array("name", "A"));
+        }
+        $pdoDb->setOrderBy($sortlist);
+
+        $pdoDb->setLimit($rp, $start);
+
+        $result = $pdoDb->request("SELECT", "customers", "c");
+    } catch (PdoDbException $pde) {
+        return array();
     }
-    $pdoDb->addSimpleWhere("c.domain_id", domain_id::get());
-
-    if($type =="count") {
-        $pdoDb->addToFunctions("COUNT(*) AS count");
-        $rows = $pdoDb->request("SELECT", "customers", "c");
-        return $rows[0]['count'];
-    }
-
-    if (intval($page) != $page) $start = 0;
-    if (intval($rp)   != $rp  ) $rp = 25;
-
-    $start = (($page - 1) * $rp);
-
-    $expr_list = array(
-        new DbField("c.id", "CID"),
-        "c.domain_id",
-        "c.name",
-        "c.department",
-        "c.enabled",
-        "c.street_address",
-        "c.city",
-        "c.state",
-        "c.phone",
-        "c.mobile_phone",
-        "c.email"
-    );
-    $pdoDb->setSelectList($expr_list);
-    $pdoDb->setGroupBy($expr_list);
-
-    $case = new CaseStmt("c.enabled", "enabled_txt");
-    $case->addWhen( "=", ENABLED, $LANG['enabled']);
-    $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
-    $pdoDb->addToCaseStmts($case);
-
-    $fn = new FunctionStmt("COALESCE", "SUM(ii.total), 0", "total");
-    $fr = new FromStmt("invoice_items", "ii");
-    $jn = new Join("INNER", "invoices", "iv");
-    $oc = new OnClause();
-    $oc->addSimpleItem("iv.id", new DbField("ii.invoice_id"), "AND");
-    $oc->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
-    $jn->setOnClause($oc);
-    $wh = new WhereClause();
-    $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
-    $wh->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
-    $se = new Select($fn, $fr, $wh, "customer_total");
-    $se->addJoin($jn);
-    $pdoDb->addToSelectStmts($se);
-
-    $fn = new FunctionStmt("MAX", new DbField("iv.index_id"));
-    $fr = new FromStmt("invoices", "iv");
-    $wh = new WhereClause();
-    $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
-    $wh->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-    $se = new Select($fn, $fr, $wh, "last_invoice");
-    $pdoDb->addToSelectStmts($se);
-
-    $fn = new FunctionStmt("SUM", "COALESCE(ap.ac_amount, 0)", "amount");
-    $fr = new FromStmt("payment", "ap");
-    $jn = new Join("INNER", "invoices", "iv");
-    $oc = new OnClause();
-    $oc->addSimpleItem("iv.id", new DbField("ap.ac_inv_id"), "AND");
-    $oc->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
-    $jn->setOnClause($oc);
-    $wh = new WhereClause();
-    $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
-    $wh->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
-    $se = new Select($fn, $fr, $wh, "paid");
-    $se->addJoin($jn);
-    $pdoDb->addToSelectStmts($se);
-
-    $fn = new FunctionStmt(null, "customer_total");
-    $fn->addPart("-", "paid");
-    $se = new Select($fn, null, null, "owing");
-    $pdoDb->addToSelectStmts($se);
-
-    $validFields = array('CID', 'name', 'department', 'customer_total', 'paid', 'owing', 'enabled');
-    if (in_array($sort, $validFields)) {
-        $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
-        $sortlist = array(array("enabled", "D"), array($sort, $dir));
-    } else {
-        $sortlist = array(array("enabled", "D"), array("name", "A"));
-    }
-    $pdoDb->setOrderBy($sortlist);
-
-    $pdoDb->setLimit($rp, $start);
-
-    $result = $pdoDb->request("SELECT", "customers", "c");
     return $result;
 }
 
@@ -118,15 +122,14 @@ global $LANG;
 header("Content-type: text/xml");
 
 // @formatter:off
-$start = (isset($_POST['start'])    ) ? $_POST['start']     : "0";
 $dir   = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "ASC";
 $sort  = (isset($_POST['sortname']) ) ? $_POST['sortname']  : "name";
 $rp    = (isset($_POST['rp'])       ) ? $_POST['rp']        : "25";
 $page  = (isset($_POST['page'])     ) ? $_POST['page']      : "1";
 // @formatter:on
 
-$customers = sql('', $start, $dir, $sort, $rp, $page);
-$count = sql('count', $start, $dir, $sort, $rp, $page);
+$customers = sql('', $dir, $sort, $rp, $page);
+$count = sql('count', $dir, $sort, $rp, $page);
 
 $xml  = "";
 $xml .= "<rows>";

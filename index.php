@@ -110,11 +110,19 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                         ($module == 'system_defaults' && ($view == 'manage' || $view == 'edit' || $view == 'save'))) {
                         $still_doing_setup = false;
                     } else {
-                        $still_doing_setup = (Biller::count() == 0 || Customer::count() == 0 || Product::count() == 0);
+                        $b_count = Biller::count();
+                        $c_count = Customer::count();
+                        $p_count = Product::count();
+
+                        $logger->log("index.php - b_count[$b_count] c_count[$c_count] p_count[$p_count]", Zend_Log::DEBUG);
+
+                        $still_doing_setup = ($b_count == 0 || $c_count == 0 || $p_count == 0);
                     }
                 } else {
                     $still_doing_setup = true;
                 }
+
+                $logger->log("index.php - still_doing_setup[$still_doing_setup]", Zend_Log::DEBUG);
 
                 if ($still_doing_setup) {
                     if (Invoice::count() > 0) {
