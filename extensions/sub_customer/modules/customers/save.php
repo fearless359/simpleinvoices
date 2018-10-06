@@ -23,7 +23,7 @@ checkLogin ();
 $op = ! empty ( $_POST ['op'] ) ? addslashes ( $_POST ['op'] ) : NULL;
 
 $display_block = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
-$refresh_total = "meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
+$refresh_total = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
 
 $saved = false;
 if ($op === "insert_customer") {
