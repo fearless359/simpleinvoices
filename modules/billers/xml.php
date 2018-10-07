@@ -10,8 +10,8 @@ $rp        = (isset($_POST['rp']))        ? $_POST['rp']        : "25" ;
 $page      = (isset($_POST['page']))      ? $_POST['page']      : "1" ;
 $pdo_error = (isset($_POST['pdo_error'])) ? $_POST['pdo_error'] : "";
 
-$billers = Biller::sql('', $start,  $dir, $sort, $rp, $page);
-$count = Biller::sql('count',$start, $dir, $sort, $rp, $page);
+$billers = Biller::sql('', $dir, $sort, $rp, $page);
+$count = Biller::sql('count',$dir, $sort, $rp, $page);
 
 $xml  = "";
 $xml .= $pdo_error;

@@ -14,7 +14,8 @@ $cflgs = CustomFlags::getCustomFlagsQualified('E');
 $taxes = Taxes::getActiveTaxes();
 $tax_selected = Taxes::getTaxRate($product['default_tax_id']);
 
-$smarty->assign("defaults", getSystemDefaults());
+$defaults = SystemDefaults::loadValues();
+$smarty->assign("defaults"        , $defaults);
 $product['attribute_decode'] = json_decode($product['attribute'],true);
 $smarty->assign('product'         , $product);
 $smarty->assign('taxes'           , $taxes);

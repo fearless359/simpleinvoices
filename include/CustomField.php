@@ -33,18 +33,22 @@ abstract class CustomField {
         $this->name = $name;
     }
 
+    /***** Please override the following functions *****/
     function installPlugin() {
     }
 
     function updatePlugin() {
     }
 
-    /***** Please overwrite the following functions *****/
     function printInputField() {
     }
     /***** Please overwrite the above functions *****/
 
-    /* Updates the custom field value */
+    /**
+     * Updates the custom field value
+     * @param $value
+     * @param $itemId
+     */
     function updateInput($value, $itemId) {
         global $dbh;
 

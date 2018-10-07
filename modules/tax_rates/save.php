@@ -16,22 +16,31 @@ switch ($op) {
 
     case "insert_tax_rate":
         #insert tax rate
-        $display_block = Taxes::insertTaxRate();
+        if (Taxes::insertTaxRate() > 0) {
+            $display_block = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
+        } else {
+            $display_block = "<div class=\"si_message_warning\">{$LANG['save_tax_rate_failure']}</div>";
+        }
         break;
 
     case "edit_tax_rate":
         #edit tax rate
-        if (isset($_POST['save_tax_rate'])) 
-            $display_block = Taxes::updateTaxRate();
-        else
-            $refresh_total = '&nbsp';
+        if (isset($_POST['save_tax_rate'])) {
+            if (Taxes::updateTaxRate()) {
+                $display_block = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
+            } else {
+                $display_block = "<div class=\"si_message_warning\">{$LANG['save_tax_rate_failure']}</div>";
+            }
+        } else {
+            $refresh_total = '&nbsp;';
+        }
         break;
 
     case "cancel":
         break;
 
     default:
-        $refresh_total = '&nbsp';
+        $refresh_total = '&nbsp;';
 }
 
 $smarty -> assign('display_block',$display_block); 

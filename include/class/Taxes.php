@@ -3,7 +3,7 @@ class Taxes {
 
     /**
      * Get a tax record.
-     * @param string $id Unique ID record to retrieve.
+     * @param string $tax_id Unique ID record to retrieve.
      * @param string $domain_id Domain ID logged into.
      * @return array Row retrieved. Test for "=== false" to check for failure.
      * @throws PdoDbException
@@ -27,21 +27,24 @@ class Taxes {
 
     /**
      * Get all active taxes records.
-     * @param string $domain_id Domain ID logged into.
      * @return array Rows retrieved.
-     * @throws PdoDbException
      */
     public static function getActiveTaxes() {
         global $LANG, $pdoDb;
 
-        $pdoDb->addSimpleWhere("tax_enabled", ENABLED, "AND");
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+        $rows = array();
+        try {
+            $pdoDb->addSimpleWhere("tax_enabled", ENABLED, "AND");
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
 
-        $pdoDb->setSelectAll(true);
-        $pdoDb->setSelectList("'$LANG[enabled]' AS enabled");
+            $pdoDb->setSelectAll(true);
+            $pdoDb->setSelectList("'$LANG[enabled]' AS enabled");
 
-        $pdoDb->setOrderBy("tax_description");
-        $rows = $pdoDb->request("SELECT", "tax");
+            $pdoDb->setOrderBy("tax_description");
+            $rows = $pdoDb->request("SELECT", "tax");
+        } catch (PdoDbException $pde) {
+            error_log("Taxes::getActiveTaxes() - PdoDbException thrown: " . $pde->getMessage());
+        }
         return $rows;
     }
 
@@ -103,27 +106,23 @@ class Taxes {
 
     /**
      * Insert a new tax rate.
-     * @return string Standard "Save tab rate success/failure" message.
+     * @return int ID of new record. 0 if insert failed.
      * @throws PdoDbException
      */
     public static function insertTaxRate() {
-        global $LANG, $pdoDb;
-        // @formatter:off
+        global $pdoDb;
         $pdoDb->setFauxPost(array('domain_id'       => domain_id::get(),
                                   'tax_description' => $_POST['tax_description'],
                                   'tax_percentage'  => $_POST['tax_percentage'],
                                   'type'            => $_POST['type'],
                                   'tax_enabled'     => $_POST['tax_enabled']));
-        // @formatter:on
-        if ($pdoDb->request("INSERT", "tax") === false) {
-            return $LANG['save_tax_rate_failure'];
-        }
-        return $LANG['save_tax_rate_success'];
+      $result = $pdoDb->request("INSERT", "tax");
+      return $result;
     }
 
     /**
      * Update tax rate.
-     * @return string Standard "Save tab rate success/failure" message.
+     * @return bool true if processed successfully, false if not.
      * @throws PdoDbException
      */
     public static function updateTaxRate() {
@@ -136,9 +135,9 @@ class Taxes {
                                   'tax_enabled'     => $_POST['tax_enabled']));
         // @formatter:on
         if ($pdoDb->request("UPDATE", "tax") === false) {
-            return $LANG['save_tax_rate_failure'];
+            return false;
         }
-        return $LANG['save_tax_rate_success'];
+        return true;
     }
 
     /**

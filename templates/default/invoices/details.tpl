@@ -154,7 +154,7 @@
           <td>
             <a id="trash_link_edit{$line|htmlsafe}" class="trash_link_edit"
                title="{$LANG.delete_line_item}" href="#" style="display:inline;"
-               rel="{$line|htmlsafe}">
+               rel="{$line|htmlsafe}" data_delete_line_item={$config->confirm->deleteLineItem}>
               <img id="delete_image{$line|htmlsafe}"
                    src="images/common/{if $line == "0"}blank.gif{else}delete_item.png{/if}" alt="" />
             </a>
@@ -168,10 +168,8 @@
           {if $products == null }
             <em>{$LANG.no_products}</em>
           {else}
-            {* onchange="invoice_product_change_price($(this).val(), {$line|htmlsafe},
-                                                      jQuery('#quantity{$line|htmlsafe}').val() );" *}
             <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}"
-                    rel="{$line|htmlsafe}" class="product_change">
+                    rel="{$line|htmlsafe}" class="product_change" data_description="{$LANG.description}">
             {foreach from=$products item=product}
               <option {if $product.id == $invoiceItem.product_id} selected {/if}
                       value="{$product.id|htmlsafe}">{$product.description|htmlsafe}</option>
@@ -203,15 +201,15 @@
           <td></td>
           <td colspan="4">
             <textarea class="detail" name="description{$line|htmlsafe}" style="overflow:scroll;"
-                      id="description{$line|htmlsafe}" rows="3" cols="70">{$invoiceItem.description|outhtml}</textarea>
+                      id="description{$line|htmlsafe}" rows="3" cols="70"
+                      data_description="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
           </td>
         </tr>
       </tbody>
       {/foreach}
     </table>
     <div class="si_toolbar si_toolbar_inform">
-      {* onclick="add_line_item();" *}
-      <a href="#" class="add_line_item">
+      <a href="#" class="add_line_item" data_description="{$LANG.description}">
         <img src="images/common/add.png" alt=""/>{$LANG.add_new_row}</a>
       <a href='#' class="show-details" onclick="javascript: $('.details').show();$('.show-details').hide();">
         <img src="images/common/page_white_add.png"
@@ -225,7 +223,6 @@
       {$customFields.2}
       {$customFields.3}
       {$customFields.4}
-      {* {showCustomFields categorieId="4" itemId=$smarty.get.invoice} *}
       <tr>
         <td class='si_invoice_notes' colspan="2">
           <h5>{$LANG.notes}</h5>

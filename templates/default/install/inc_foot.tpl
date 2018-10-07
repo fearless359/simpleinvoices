@@ -1,7 +1,7 @@
-<div class="si_message">
-	<strong>Note:</strong>
-	If you have any problems or queries re installation
-	please refer to <a href="https://simpleinvoices.group/installation" target="blank">Simple Invoices Knowledgebase - Installation</a> documentation on the website
-	<br />
-	 -> <a href="https://simpleinvoices.group/installation" target="blank">Simple Invoices Knowledgebase - Installation</a>
+<div style="text-align:center;">
+	<strong>Note:</strong> Questions or problems about this installation? Refer to the
+	<a href="https://simpleinvoices.group/installation" target="blank">
+        SimpleInvoices Knowledge Base - Installation
+    </a>
+	documentation.
 </div>

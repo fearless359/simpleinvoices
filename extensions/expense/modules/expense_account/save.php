@@ -11,7 +11,7 @@ $op = ! empty ( $_POST ['op'] ) ? addslashes ( $_POST ['op'] ) : NULL;
 $saved = false;
 
 if ($op === 'insert') {
-    $saved = ExpenseAccount::insert ();
+    if (ExpenseAccount::insert()) $saved = true;
 } else if ($op === 'edit') {
     $saved = ExpenseAccount::update ();
 }

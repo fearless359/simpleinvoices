@@ -25,7 +25,7 @@ function sql($type = '', $dir, $sort, $rp, $page) {
     if (!empty($qtype) && !empty($query)) {
         $valid_search_fields = array('ap.id','b.name', 'c.name');
         if ( in_array($qtype, $valid_search_fields) ) {
-            $pdoDb->addSimpleWhere($qtype, "%$query%", "AND");
+            $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
         }
     }
     $pdoDb->addSimpleWhere("ap.domain_id", domain_id::get());
@@ -74,18 +74,25 @@ function sql($type = '', $dir, $sort, $rp, $page) {
     $start = (($page-1) * $rp);
     $pdoDb->setLimit($rp, $start);
 
-    if (in_array($sort, array('ap.id', 'ac_inv_id', 'c.name', 'b.name', 'ac_amount', 'description', 'date'))) {
-        if (!preg_match('/^(asc|desc)$/iD', $dir)) $dir = 'D';
-        $oc = new OrderBy($sort, $dir);
+    if (in_array($sort, array('ap.id', 'ac_inv_id', 'ac.amount', 'type', 'b.name', 'c.name', 'date'))) {
+        if (!preg_match('/^(asc|desc)$/iD', $dir)) {
+            $dir = 'D';
+        }
+
+        if ($sort == 'type') {
+            $oc = new OrderBy('description', $dir);
+            $oc->addField('ac_check_number', $dir);
+        } else {
+            $oc = new OrderBy($sort, $dir);
+        }
     } else {
-        $oc = new OrderBy("ac_inv_id", "DESC");
+        $oc = new OrderBy("ac_inv_id", "D");
     }
+    $pdoDb->setOrderBy($oc);
 
     $fn = new FunctionStmt("DATE_FORMAT", "ac_date,'%Y-%m-%d'");
     $se = new Select($fn, null, null, "date");
     $pdoDb->addToSelectStmts($se);
-
-    $pdoDb->setOrderBy($oc);
 
     $list = array("ap.*", "c.name as cname", "b.name as bname", "pt.pt_description AS description",
                   "ap.ac_notes AS notes");
@@ -93,6 +100,10 @@ function sql($type = '', $dir, $sort, $rp, $page) {
     
     $fn = new FunctionStmt("CONCAT", "pr.pref_inv_wording,' ',iv.index_id");
     $se = new Select($fn, null, null, "index_name");
+    $pdoDb->addToSelectStmts($se);
+
+    $fn = new FunctionStmt("CONCAT", "description,' ',ac_check_number");
+    $se = new Select($fn, null, null, "type");
     $pdoDb->addToSelectStmts($se);
 
     $result = $pdoDb->request("SELECT", "payment", "ap");
@@ -128,7 +139,7 @@ foreach ($payments as $row) {
     $xml .= "<cell><![CDATA[$row[bname]]]></cell>";
     $xml .= "<cell><![CDATA[".siLocal::number($row['ac_amount'])."]]></cell>";
     $xml .= "<cell><![CDATA[$notes]]></cell>";
-    $xml .= "<cell><![CDATA[$row[description]]]></cell>";
+    $xml .= "<cell><![CDATA[$row[type]]]></cell>";
     $xml .= "<cell><![CDATA[".siLocal::date($row['date'])."]]></cell>";
     $xml .= "</row>";
 }

@@ -113,7 +113,7 @@ class Zend_Tool_Project_Context_Repository implements Countable
 
         if (isset($this->_shortContextNames[$normalName]) && ($this->_contexts[$this->_shortContextNames[$normalName]]['isOverwritable'] === false) ) {
             require_once 'Zend/Tool/Project/Context/Exception.php';
-            throw new Zend_Tool_Project_Context_Exception('Context ' . $context->getName() . ' is not overwriteable.');
+            throw new Zend_Tool_Project_Context_Exception('Context ' . $context->getName() . ' is not overwritable.');
         }
 
         $this->_shortContextNames[$normalName] = $index;

@@ -33,6 +33,9 @@ class siLocal {
      * Format number in default form.
      * Note: Default form is without leading & trailing zeros, and locale decimal point (period or comma).
      * @param string $number Numeric value to be formatted.
+     * @param string $precision Decimal places for the number. Optional, precision from $config file used if not specified.
+     * @param string $locale Locale to use for formatting the number. Optional, locale from $config file used if not specified.
+     * @param string $symbol Currency symbol to use. Optional, specify if want included in formatted number.
      * @return string Formatted string.
      * @throws Zend_Locale_Exception
      */
@@ -78,7 +81,7 @@ class siLocal {
     /**
      * Format a date value.
      * Note: This is a wrapper for the <b>Zend_Date</b> function.
-     * @param string $date Date value to be forematted.
+     * @param string $date Date value to be formatted.
      * @param string $date_format (Optional) Date format. Values are:
      *        <ul>
      *          <li><b>day</b>        : Zend_Date constant DAY              - Ex: 06</li>
@@ -96,19 +99,26 @@ class siLocal {
      *        Defaults to <b>local.locale</b> setting in the <i>config.php</i> setting.
      *        Ex: en_US.
      * @return string <b>$date</b> formatted per option settings.
-     * @throws Exception if an undefined <b>$date_format</b> is specified.
      */
     public static function date($date, $date_format = "medium", $locale = "") {
         global $config;
 
         if (!preg_match(self::DATE_FORMAT_PARAMETER, $date_format)) {
-            $str = "siLocal - date(): Invalid date format, $date_format, specified.";
-            error_log($str);
-            throw new Exception($str);
+            error_log("siLocal::date() - Invalid date format, $date_format, specified.");
+            return '';
         }
-        if (!empty($locale)) $locale = new Zend_Locale($config->local->locale);
 
-        $temp_date = new Zend_Date($date, 'yyyy-MM-dd');
+        try {
+            if (!empty($locale)) $locale = new Zend_Locale($config->local->locale);
+
+            $temp_date = new Zend_Date($date, 'yyyy-MM-dd');
+        } catch (Zend_Locale_Exception $zle) {
+            error_log("siLocal::date() - Zend_Locale_Exception thrown by Zend_Locale. Error: " . $zle->getMessage());
+            return "";
+        } catch (Zend_Date_Exception $zde) {
+            error_log("siLocal::date() - Zend_Date_Exception thrown by Zend_Date. Error: " . $zde->getMessage());
+            return "";
+        }
 
         // @formatter:off
         switch ($date_format) {

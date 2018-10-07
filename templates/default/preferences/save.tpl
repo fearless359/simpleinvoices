@@ -1,13 +1,15 @@
-
-
-
-{if $saved == true }
-	<div class="si_message_ok">{$LANG.save_preference_success}</div>
-{else}
-	<div class="si_message_error">{$LANG.save_preference_failure}</div>
-{/if}
-
-
-{if $saved == true }
-	<meta http-equiv="refresh" content="2;URL=index.php?module=preferences&amp;view=manage" />
-{/if}
+{*
+ * 	Script: save.tpl
+ * 		Preferences save template
+ *
+ * 	Authors:
+ *	 	Justin Kelly, Nicolas Ruflin, Soif
+ *
+ * 	Last edited:
+ * 	 	2018-10-04 by Richard Rowley
+ *
+ *	License:
+ *	 	GPL v3 or above
+*}
+{$display_block}
+{$refresh_total}

@@ -1,5 +1,7 @@
 <?php
-global $config, $auth_session;
+global $config, $auth_session, $logger;
+
+$logger->log("include_auth.php - authentication-enabled[{$config->authentication->enabled}] fake_auth[{$auth_session->fake_auth}]", Zend_Log::DEBUG);
 
 // if user logged into SimpleInvoices with authentication set to false,
 // then use the fake authentication, killing the session that was started.
@@ -21,6 +23,7 @@ if ($config->authentication->enabled == 1) {
     // Chuck the user details sans password into the Zend_auth session
     $auth_session->id = "1";
     $auth_session->domain_id = "1";
+    $auth_session->username = "demo";
     $auth_session->email = "demo@simpleinvoices.group";
     // fake_auth is identifier to say that user logged in with auth off
     $auth_session->fake_auth = "1";

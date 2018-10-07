@@ -14,7 +14,7 @@
  *
  * Website:
  * 	https://simpleinvoices.group */
-global $smarty, $LANG, $pdoDb, $config;
+global $smarty, $LANG, $config;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
@@ -23,10 +23,7 @@ checkLogin();
 $cid = $_GET['id'];
 $domain_id = domain_id::get();
 
-$pdoDb->addSimpleWhere("id", $cid, "AND");
-$pdoDb->addSimpleWhere("domain_id", $domain_id);
-$rows = $pdoDb->request("SELECT", "customers");
-$customer = $rows[0];
+$customer = Customer::get($cid);
 $customer['wording_for_enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
 if (empty($customer['credit_card_number'])) {
     $customer['credit_card_number_masked'] = "";
@@ -43,10 +40,9 @@ if (empty($customer['credit_card_number'])) {
 }
 $invoices = Customer::getCustomerInvoices($cid);
 
-$stuff = array();
-$stuff['total'] = Customer::calc_customer_total($customer['id'], true);
-$stuff['paid']  = Payment::calc_customer_paid( $customer['id'], true);
-$stuff['owing'] = $stuff['total'] - $stuff['paid'];
+$customer['total'] = Customer::calc_customer_total($customer['id'], true);
+$customer['paid']  = Payment::calc_customer_paid( $customer['id'], true);
+$customer['owing'] = $customer['total'] - $customer['paid'];
 
 $customFieldLabel = getCustomFieldLabels('',true);
 
@@ -57,14 +53,13 @@ $page   = (isset($_POST['page'])     ? $_POST['page']     : "1");
 $query  = (isset($_REQUEST['query']) ? $_REQUEST['query'] : "");
 $qtype  = (isset($_REQUEST['qtype']) ? $_REQUEST['qtype'] : "");
 
-$type = (getDefaultLargeDataset() == $LANG['enabled'] ? "count" : "");
+$type = (SystemDefaults::getDefaultLargeDataset() == $LANG['enabled'] ? "count" : "");
 
 $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
 
 $invoices_owing = Invoice::select_all($type, $sort, $dir, $rp, $page, $query, $qtype);
 $subPageActive  = ($_GET['action'] == "view"  ? "customer_view" : "customer_edit");
 
-$smarty->assign("stuff"           , $stuff);
 $smarty->assign('customer'        , $customer);
 $smarty->assign('invoices'        , $invoices);
 $smarty->assign('invoices_owing'  , $invoices_owing);

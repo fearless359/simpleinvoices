@@ -7,27 +7,31 @@ class Biller
      * @param boolean $active_only Set to <b>true</b> to get active billers only.
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
-     * @throws PdoDbException
      */
     public static function get_all($active_only = false)
     {
         global $LANG, $pdoDb;
 
-        if ($active_only) {
-            $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
+        $billers = array();
+        try {
+            if ($active_only) {
+                $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
+            }
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+
+            $ca = new CaseStmt("enabled", "wording_for_enabled");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $pdoDb->setOrderBy("name");
+
+            $pdoDb->setSelectAll(true);
+
+            $billers = $pdoDb->request("SELECT", "biller");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::get_all() database error thrown. " . $pde->getMessage());
         }
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
-
-        $ca = new CaseStmt("enabled", "wording_for_enabled");
-        $ca->addWhen("=", ENABLED, $LANG['enabled']);
-        $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-        $pdoDb->addToCaseStmts($ca);
-
-        $pdoDb->setOrderBy("name");
-
-        $pdoDb->setSelectAll(true);
-
-        $billers = $pdoDb->request("SELECT", "biller");
         return $billers;
     }
 
@@ -76,8 +80,7 @@ class Biller
 
     /**
      * Insert a new biller record
-     * @return integer|boolean ID if successful, test "=== false" if failed.
-     * @throws PdoDbException
+     * @return int ID of new record. 0 if failed to insert.
      */
     public static function insertBiller()
     {
@@ -90,9 +93,14 @@ class Biller
 
         $_POST['notes'] = (empty($_POST['note']) ? "" : trim($_POST['note']));
 
-        $pdoDb->setExcludedFields("id");
-        $id = $pdoDb->request("INSERT", "biller");
-        return !empty($id);
+        $id = 0;
+        try {
+            $pdoDb->setExcludedFields("id");
+            $id = $pdoDb->request("INSERT", "biller");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::insertBiller() - PdoDbException thrown: " . $pde->getMessage());
+        }
+        return $id;
     }
 
     /**
@@ -116,7 +124,6 @@ class Biller
     /**
      * Calculate the number of invoices in the database
      * @return integer Count of invoices in the database
-     * @throws PdoDbException
      */
     public static function count()
     {
@@ -124,68 +131,76 @@ class Biller
 
         domain_id::get();
 
-        $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
-        $rows = $pdoDb->request("SELECT", "biller");
-        return $rows[0]['count'];
+        try {
+            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+            $rows = $pdoDb->request("SELECT", "biller");
+            $count = $rows[0]['count'];
+        } catch(PdoDbException $pde) {
+            error_log("Biller::count() - Error: " . $pde->getMessage());
+            return 0;
+        }
+        return $count;
     }
 
     /**
      * Selection of record for the xml list screen
      * @param string $type - 'count' if only count of records desired, otherwise selection of records to display.
-     * @param $start - Record to start out.
-     * @param $dir - Sort order (ASC or DESC)
-     * @param $sort - Field to sort on
-     * @param $rp - Number of records to select for this page
-     * @param $page - Pages processed.
+     * @param string $dir - Sort order (ASC or DESC)
+     * @param string $sort - Field to sort on
+     * @param string $rp - Number of records to select for this page
+     * @param string $page - Pages processed.
      * @return mixed - Count if 'count' requested, Rows selected from biller table.
-     * @throws PdoDbException
      */
-    function sql($type = '', $start, $dir, $sort, $rp, $page)
+    function sql($type, $dir, $sort, $rp, $page)
     {
         global $LANG, $pdoDb;
 
-        $count_type = ($type == "count");
+        try {
+            $count_type = ($type == "count");
 
-        // If caller pass a null value, that mean there is no limit.
-        if (isset($rp) && !$count_type) {
-            if (empty($rp)) $rp = "25";
-            if (empty($page)) $page = "1";
-            $start = (($page - 1) * $rp);
-            $pdoDb->setLimit($rp, $start);
-        }
-
-        if (!(empty($_POST['query']) || empty($_POST['qtype']))) {
-            $query = $_POST['query'];
-            $qtype = $_POST['qtype'];
-            if (in_array($qtype, array("id", "name", "email"))) {
-                $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
+            // If caller pass a null value, that mean there is no limit.
+            if (isset($rp) && !$count_type) {
+                if (empty($rp)) $rp = "25";
+                if (empty($page)) $page = "1";
+                $start = (($page - 1) * $rp);
+                $pdoDb->setLimit($rp, $start);
             }
-        }
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
 
-        if ($type == "count") {
-            $pdoDb->addToFunctions("COUNT(*) AS count");
+            if (!(empty($_POST['query']) || empty($_POST['qtype']))) {
+                $query = $_POST['query'];
+                $qtype = $_POST['qtype'];
+                if (in_array($qtype, array("id", "name", "email"))) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
+                }
+            }
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+
+            if ($type == "count") {
+                $pdoDb->addToFunctions("COUNT(*) AS count");
+                $rows = $pdoDb->request("SELECT", "biller");
+                return $rows[0]['count'];
+            }
+
+            $expr_list = array("id", "domain_id", "name", "email");
+            $pdoDb->setSelectList($expr_list);
+            $pdoDb->setGroupBy($expr_list);
+
+            $case = new CaseStmt("enabled");
+            $case->addWhen("=", ENABLED, $LANG['enabled']);
+            $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($case);
+
+            if (empty($sort) ||
+                !in_array($sort, array("id", "name", "email", 'enabled'))) $sort = "id";
+            if (empty($dir)) $dir = "DESC";
+            $pdoDb->setOrderBy(array($sort, $dir));
+
             $rows = $pdoDb->request("SELECT", "biller");
-            return $rows[0]['count'];
+        } catch (PdoDbException $pde) {
+            error_log("Biller::sql() - Error: " . $pde->getMessage());
+            return array();
         }
-
-        $expr_list = array("id", "domain_id", "name", "email");
-        $pdoDb->setSelectList($expr_list);
-        $pdoDb->setGroupBy($expr_list);
-
-        $case = new CaseStmt("enabled");
-        $case->addWhen("=", ENABLED, $LANG['enabled']);
-        $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
-        $pdoDb->addToCaseStmts($case);
-
-        if (empty($sort) ||
-            !in_array($sort, array("id", "name", "email", 'enabled'))) $sort = "id";
-        if (empty($dir)) $dir = "DESC";
-        $pdoDb->setOrderBy(array($sort, $dir));
-
-        $rows = $pdoDb->request("SELECT", "biller");
-
         return $rows;
     }
 

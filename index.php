@@ -41,7 +41,7 @@ global $smarty,
        $auth_session,
        $early_exit;
 
-$logger->log("index.php - After init.php", Zend_Log::DEBUG);
+$logger->log("index.php - After init.php - module($module] view[$view]", Zend_Log::DEBUG);
 foreach ($ext_names as $ext_name) {
     if (file_exists("extensions/$ext_name/include/init.php")) {
         require_once ("extensions/$ext_name/include/init.php");
@@ -70,8 +70,7 @@ $menu = (isset($menu) ? $menu : true);
 $logger->log("index.php - module[$module] view[$view] " .
              "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", Zend_Log::DEBUG);
 if (($module == "options") && ($view == "database_sqlpatches")) {
-    include_once ('include/sql_patches.php');
-    donePatches();
+    SqlPatchManager::donePatchesMessage();
 } else {
     // Check that database structure has been built and populated.
     $skip_db_patches = false;
@@ -83,6 +82,8 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
         $module = "install";
         $view == "essential" ? $view = "essential" : $view = "structure";
         $skip_db_patches = true; // do installer
+    } else if($module == 'install' && $view == 'sample_data') {
+        $skip_db_patches = true;
     }
 
     $logger->log("index.php - skip_db_patches[$skip_db_patches]", Zend_Log::DEBUG);
@@ -91,21 +92,41 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
     if (!$skip_db_patches) {
         // If default user or an active session exists, proceed with check.
         if ($config->authentication->enabled == 0 || isset($auth_session->id)) {
-            include_once ('./include/sql_patches.php');
             // Check if there are patches to process
-            if (getNumberOfPatches() > 0) {
+            if (SqlPatchManager::numberOfUnappliedPatches() > 0) {
                 $view = "database_sqlpatches";
                 $module = "options";
                 if ($action == "run") {
-                    runPatches();
+                    SqlPatchManager::runPatches();
                 } else {
-                    listPatches();
+                    SqlPatchManager::listPatches();
                 }
                 $menu = false;
             } else {
-                // There aren't patches to apply. So check to see if there are invoices in db.
-                // If so, show the home page as default. Otherwise show Manage Invoices page
-                if ($module == null) {
+                // All patches have been applied. Now check to see if the database has been set up.
+                // It is considered setup when there is at least one biller, one customer and one product.
+                // If it has not been set up, allow the user to add a biller, customer, product or to
+                // modify the setting options.
+                if (isset($module)) {
+                    if (($view == 'add' && ($module == 'billers' || $module == 'customers' || $module == 'products')) ||
+                        ($module == 'system_defaults' && ($view == 'manage' || $view == 'edit' || $view == 'save'))) {
+                        $still_doing_setup = false;
+                    } else {
+                        $b_count = Biller::count();
+                        $c_count = Customer::count();
+                        $p_count = Product::count();
+
+                        $logger->log("index.php - b_count[$b_count] c_count[$c_count] p_count[$p_count]", Zend_Log::DEBUG);
+
+                        $still_doing_setup = ($b_count == 0 || $c_count == 0 || $p_count == 0);
+                    }
+                } else {
+                    $still_doing_setup = true;
+                }
+
+                $logger->log("index.php - still_doing_setup[$still_doing_setup]", Zend_Log::DEBUG);
+
+                if ($still_doing_setup) {
                     if (Invoice::count() > 0) {
                         $module = "invoices";
                         $view = "manage";
@@ -420,7 +441,7 @@ foreach ($ext_names as $ext_name) {
 }
 $logger->log("index.php - After $module/$view.tpl", Zend_Log::DEBUG);
 
-// TODO: if more than one extension has a template for the requested file, thats trouble :(
+// TODO: if more than one extension has a template for the requested file, that's trouble :(
 // This won't happen for reports, standard menu.tpl and system_defaults menu.tpl given
 // changes implemented in this file for them. Similar changes should be implemented for
 // other templates as needed.
@@ -462,7 +483,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
         $smarty->$smarty_output(getCustomPath('footer'));
     }
 }
-$logger->log("index.php - At END", Zend_Log::DEBUG);
+$logger->log("index.php - At END\n\n", Zend_Log::DEBUG);
 // **********************************************************
 // Footer - END
 // **********************************************************

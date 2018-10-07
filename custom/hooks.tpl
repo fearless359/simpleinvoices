@@ -32,82 +32,60 @@
 
 {* In header.tpl - Immediately after the <head> tag ********************** *}
 {if $smarty.capture.hook_head_start eq ""}
-  {capture name=hook_head_start}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_head_start}{* Insert code here *}{/capture}
 {/if}
 
 {* In header.tpl - Immediately before the </head> tag ******************** *}
 {if $smarty.capture.hook_head_end eq ""}
-  {capture name=hook_head_end}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_head_end}{* Insert code here *}{/capture}
 {/if}
 
 {* In header.tpl - Immediately after the <body> tag ********************** *}
 {if $smarty.capture.hook_body_start eq ""}
-  {capture name=hook_body_start}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_body_start}{* Insert code here *}{/capture}
 {/if}
 
 {* In menu.tpl - Immediately after the <div id="si_header"> ************** *}
 {if $smarty.capture.hook_topmenu_start eq ""}
-  {capture name=hook_topmenu_start}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_topmenu_start}{* Insert code here *}{/capture}
 {/if}
 
 {* In menu.tpl - Immediately after the previous topmenu_start hook ******* *}
 {if $smarty.capture.hook_topmenu_section01_replace eq ""}
-  {capture name=hook_topmenu_section01_replace}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_topmenu_section01_replace}{* Insert code here *}{/capture}
 {/if}
  
 {* In menu.tpl - Immediately before the </div> for this section ********** *}
 {if $smarty.capture.hook_topmenu_end eq ""}
-  {capture name=hook_topmenu_end}
-    {* Insert code here  *}
-  {/capture}
+  {capture name=hook_topmenu_end}{* Insert code here  *}{/capture}
 {/if}
 
 {* In menu.tpl - Immediately after the
                    <div id="tabmenu" class="flora si_wrap" > tag ********* *}
 {if $smarty.capture.hook_tabmenu_start eq ""}
-  {capture name=hook_tabmenu_start}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_tabmenu_start}{* Insert code here *}{/capture}
 {/if}
 
 {* In menu.tpl - Immediately before the </div> tag that closes the
                    <div id="tabmenu" class="flora si_wrap" > tag ********* *}
 {if $smarty.capture.hook_tabmenu_end eq ""}
-  {capture name=hook_tabmenu_end}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_tabmenu_end}{* Insert code here *}{/capture}
 {/if}
 
 {* In menu.tpl - Immediately after the <ul> tag for the main tab menu **** *}
 {if $smarty.capture.hook_tabmenu_main_start eq ""}
-  {capture name=hook_tabmenu_main_start}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_tabmenu_main_start}{* Insert code here *}{/capture}
 {/if}
 
 {* In menu.tpl - Immediately before the <li id="si_tab_settings"></ul>
                    tags at the end of the main tab menu list. ************ *}
 {if $smarty.capture.hook_tabmenu_main_end eq ""}
-  {capture name=hook_tabmenu_main_end}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_tabmenu_main_end}{* Insert code here *}{/capture}
 {/if}
 
 {* In footer.tpl - Immediately before the </body> tag ******************** *}
 {if $smarty.capture.hook_body_end eq ""}
-  {capture name=hook_body_end}
-    {* Insert code here *}
-  {/capture}
+  {capture name=hook_body_end}{* Insert code here *}{/capture}
 {/if}
 
 {/strip}

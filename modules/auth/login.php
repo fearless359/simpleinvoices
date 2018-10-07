@@ -4,106 +4,115 @@
  *      Login page
  *
  *  Last modified:
- *      2016-07-27
+ *		2018-09-24 by Richard Rowley
  *
  *  License:
  *      GPL v3 or above
  */
-global $zendDb, $patchCount, $smarty;
+if (!function_exists('loginLogo')) {
+    function loginLogo($smarty) {
+        global $pdoDb;
+
+        $defaults = SystemDefaults::loadValues();
+        // Not a post action so set up company logo and name to display on login screen.
+        //<img src="extensions/user_security/images/{$defaults.company_logo}" alt="User Logo">
+        $image = "templates/invoices/logos/" . $defaults['company_logo'];
+        if (is_readable($image)) {
+            $imgWidth = 0;
+            $imgHeight = 0;
+            $maxWidth = 100;
+            $maxHeight = 100;
+            $type = "";
+            $attr = "";
+            list($width, $height, $type, $attr) = getimagesize($image);
+
+            if (($width > $maxWidth || $height > $maxHeight)) {
+                $wp = $maxWidth / $width;
+                $hp = $maxHeight / $height;
+                $percent = ($wp > $hp ? $hp : $wp);
+                $imgWidth = ($width * $percent);
+                $imgHeight = ($height * $percent);
+            }
+            if ($imgWidth > 0 && $imgWidth > $imgHeight) {
+                $w1 = "20%";
+                $w2 = "78%";
+            } else {
+                $w1 = "18%";
+                $w2 = "80%";
+            }
+            $comp_logo_lines = "<div style='display:inline-block;width:$w1;'>" .
+                               "  <img src='$image' alt='Company Logo' " .
+                                  ($imgHeight == 0 ? "" : "height='$imgHeight' ") .
+                                  ($imgWidth  == 0 ? "" : "width='$imgWidth' ") . "/>" .
+                               "</div>";
+            $smarty->assign('comp_logo_lines', $comp_logo_lines);
+            $txt_align = "left";
+        } else {
+            $w2 = "100%";
+            $txt_align = "center";
+        }
+        $comp_name_lines = "<div style='display:inline-block;width:$w2;vertical-align:middle;'>" .
+                           "  <h1 style='margin-left:20px;text-align:$txt_align;'>" .
+                                  $defaults['company_name_item'] . "</h1>" .
+                           "</div>";
+
+        $smarty->assign('comp_name_lines', $comp_name_lines);
+    }
+}
+
+global $patchCount,
+       $smarty,
+       $pdoDb;
 
 $menu = false;
-if ($menu) {} // eliminate unused variable warning.
 
 if (!defined("BROWSE")) define("BROWSE", "browse");
 
+// The error on any authentication attempt needs to be the same for all situations.
+if (!defined("STD_LOGIN_FAILED_MSG")) define("STD_LOGIN_FAILED_MSG", "Invalid User ID and/or Password!");
+
 Zend_Session::start();
-
 $errorMessage = '';
-if (!empty($_POST['user']) && !empty($_POST['pass'])) {
-    $authAdapter = new Zend_Auth_Adapter_DbTable($zendDb);
+loginLogo($smarty);
 
-    // @formatter:off
-    $user_table    = ($patchCount < "161") ? "users"         : "user";
-    $user_email    = ($patchCount < "184") ? "user_email"    : "email";
-    $user_password = ($patchCount < "184") ? "user_password" : "password";
-
-    $authAdapter->setTableName(TB_PREFIX.$user_table)
-                    ->setIdentityColumn($user_email)
-                        ->setCredentialColumn($user_password)
-                            ->setCredentialTreatment('MD5(?)');
-
-    $userEmail = $_POST['user'];
+if (empty($_POST['user']) || empty($_POST['pass'])) {
+    if (isset($_POST['action']) && $_POST['action'] == 'login') {
+        $errorMessage = STD_LOGIN_FAILED_MSG;
+    }
+} else {
+    $username = $_POST['user'];
     $password  = $_POST['pass'];
-
-    // Set the input credential values (e.g., from a login form)
-    $authAdapter->setIdentity($userEmail)->setCredential($password);
-
-    // Perform the authentication query, saving the result
-    $result = $authAdapter->authenticate();
-/* debug */ //error_log("moudles/auth/login.php: patchCount[$patchCount] result - " . print_r($result,true));
-    if ($result->isValid()) {
+    if (User::verifyPassword($username, $password)) {
         Zend_Session::start();
 
-        // Grab user data from the database
-        //patch 147 adds user_role table - need to accomodate pre and post patch 147
-        // @formatter:off
-        if ($patchCount < "147") {
-            $result = $zendDb->fetchRow("SELECT	u.user_id AS id,
-                                                u.user_email,
-                                                u.user_name
-                                         FROM " . TB_PREFIX . "users u
-                                         WHERE user_email = ?", $userEmail);
-             $result['role_name']="administrator";
-        } elseif ($patchCount < "184") {
-            $result = $zendDb->fetchRow("SELECT u.user_id AS id,
-                                                u.user_email,
-                                                u.user_name,
-                                                r.name AS role_name,
-                                                u.user_domain_id
-                                         FROM " . TB_PREFIX . "user u
-                                         LEFT JOIN ".TB_PREFIX."user_role r ON (u.user_role_id = r.id)
-                                         WHERE u.user_email = ?", $userEmail);
-        } elseif ($patchCount < "292") {
-            $result = $zendDb->fetchRow("SELECT u.id, u.email,
-                                                r.name AS role_name,
-                                                u.domain_id,
-                                                0 AS user_id
-                                         FROM " . TB_PREFIX . "user u
-                                         LEFT JOIN ".TB_PREFIX."user_role r ON (u.role_id = r.id)
-                                         WHERE u.email = ? AND u.enabled = '" . ENABLED . "'", $userEmail);
-        } else {
-            $result = $zendDb->fetchRow("SELECT u.id,
-                                                u.email,
-                                                r.name AS role_name,
-                                                u.domain_id,
-                                                u.user_id
-                                         FROM " . TB_PREFIX . "user u
-                                         LEFT JOIN ".TB_PREFIX."user_role r ON (u.role_id = r.id)
-                                         WHERE  u.email = ? AND u.enabled = '" . ENABLED . "'", $userEmail);
+        $timeout = SystemDefaults::getDefaultSessionTimeout();
+        if ($timeout <= 0) {
+            $timeout = 60;
         }
-        // @formatter:on
 
-        // Chuck the user details sans password into the Zend_auth session
         $authNamespace = new Zend_Session_Namespace('Zend_Auth');
-        $authNamespace->setExpirationSeconds(60 * 60);
-        foreach ($result as $key => $value) {
+        $authNamespace->setExpirationSeconds($timeout * 60);
+
+        $jn = new Join('LEFT', 'user_role', 'r');
+        $jn->addSimpleItem('u.role_id', new DbField('r.id'));
+        $pdoDb->addToJoins($jn);
+
+        $pdoDb->setSelectList(array('u.id', 'u.username', 'u.email', new DbField('r.name', 'role_name'), 'u.domain_id', 'u.user_id'));
+        $pdoDb->addSimpleWhere('u.username', $username, 'AND');
+        $pdoDb->addSimpleWhere('u.enabled', ENABLED);
+        $rows = $pdoDb->request('SELECT', 'user', 'u');
+        foreach ($rows[0] as $key => $value) {
             $authNamespace->$key = $value;
         }
 
-        if ($authNamespace->role_name == 'customer' && $authNamespace->user_id > 0) {
+        if (isset($authNamespace->role_name) && $authNamespace->role_name == 'customer' && $authNamespace->user_id > 0) {
             header('Location: index.php?module=customers&view=details&action=view&id='.$authNamespace->user_id);
         } else {
             header('Location: .');
         }
     } else {
-        $errorMessage = 'Sorry, wrong user / password';
-    }
+        $errorMessage = STD_LOGIN_FAILED_MSG;
+	}
 }
-
-if (isset($_POST['action']) && $_POST['action'] == 'login' &&
-   (empty($_POST['user']) || empty($_POST['pass']))) {
-        $errorMessage = 'Username and password required';
-}
-
 // No translations for login since user's lang not known as yet
 $smarty->assign("errorMessage",$errorMessage);

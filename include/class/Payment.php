@@ -246,7 +246,7 @@ class Payment {
     /**
      * Insert a new payment record
      * @param array $list <i>Faux Post</i> list of record's values.
-     * @return integer <b>ID</b> of record inserted. Test for <i>=== false</i> for failure.
+     * @return integer <b>ID</b> of record inserted. 0 if insert failed.
      * @throws PdoDbException
      */
     public static function insert($list) {

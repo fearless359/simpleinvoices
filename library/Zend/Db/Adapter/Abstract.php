@@ -747,6 +747,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param mixed $bind Data to bind into SELECT placeholders.
      * @param mixed                 $fetchMode Override current fetch mode.
      * @return mixed Array, object, or scalar depending on fetch mode.
+     * @throws Zend_Db_Exception
      */
     public function fetchRow($sql, $bind = array(), $fetchMode = null)
     {
@@ -770,6 +771,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param string|Zend_Db_Select $sql An SQL SELECT statement.
      * @param mixed $bind Data to bind into SELECT placeholders.
      * @return array
+     * @throws Zend_Db_Exception
      */
     public function fetchAssoc($sql, $bind = array())
     {
@@ -1168,7 +1170,7 @@ abstract class Zend_Db_Adapter_Abstract
      * TABLE_NAME  => string;
      * COLUMN_NAME => string; column name
      * COLUMN_POSITION => number; ordinal position of column in table
-     * DATA_TYPE   => string; SQL datatype name of column
+     * DATA_TYPE   => string; SQL data type name of column
      * DEFAULT     => string; default expression of column, null if none
      * NULLABLE    => boolean; true if column can have nulls
      * LENGTH      => number; length of CHAR/VARCHAR
@@ -1181,6 +1183,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param string $tableName
      * @param string $schemaName OPTIONAL
      * @return array
+     * @throws Zend_Db_Exception
      */
     abstract public function describeTable($tableName, $schemaName = null);
 

@@ -1,2 +1,2 @@
-<div class="si_message">{$display_block}</div>
+{$display_block}
 {$refresh_total}

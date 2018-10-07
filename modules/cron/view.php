@@ -4,8 +4,7 @@ global $smarty;
 $saved = "false";
 if (isset($_POST['op']) && $_POST['op'] =='edit' && !empty($_POST['invoice_id'])) {
     try {
-        Cron::insert();
-       $saved = "true";
+        if (Cron::insert() > 0) $saved = "true";
     } catch (PDOException $pdo) {
         error_log("cron view.php - unable to insert record");
     }

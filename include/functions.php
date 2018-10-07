@@ -166,7 +166,7 @@ function simpleInvoicesError($type, $info1 = "", $info2 = "") {
     }
     // @formatter:off
     switch ($type) {
-        case "notWriteable":
+        case "notWritable":
             $error = exit("
             <br />
             ===========================================
@@ -175,7 +175,7 @@ function simpleInvoicesError($type, $info1 = "", $info2 = "") {
             <br />
             ===========================================
             <br />
-            The " . $info1 . " <b>" . $info2 . "</b> has to be writeable");
+            The " . $info1 . " <b>" . $info2 . "</b> has to be writable");
             break;
 
         case "dbConnection":
@@ -183,12 +183,12 @@ function simpleInvoicesError($type, $info1 = "", $info2 = "") {
             <br />
             ===========================================
             <br />
-            Simple Invoices database connection problem
+            SimpleInvoices database connection problem
             <br />
             ===========================================
             <br />
             <br />
-            Could not connect to the Simple Invoices database
+            Could not connect to the SimpleInvoices database
             <br />
             <br />
             For information on how to fix this pease refer to the following database error:
@@ -202,7 +202,7 @@ function simpleInvoicesError($type, $info1 = "", $info2 = "") {
             custom.config.php.
             <br />
             <br />
-            <b>Note:</b> If you are installing Simple Invoices please follow the below steps:
+            <b>Note:</b> If you are installing SimpleInvoices please follow the below steps:
             <br />
             1. Create a blank MySQL database (cPanel or myPHPAdmin). Defined a DB Admin user
             name with full access to this database. Assign a password to this DB Admin user.
@@ -221,7 +221,7 @@ function simpleInvoicesError($type, $info1 = "", $info2 = "") {
             $error = exit("
               <div id='Container' class='col si_wrap'>
                 <div id='si_install_logo'>
-                  <img src='images/common/simple_invoices_logo.jpg' class='si_install_logo' width='300'/>
+                  <img src='templates/invoices/logos/simple_invoices_logo.png' class='si_install_logo' width='300'/>
                 </div>
                 <table class='center' style='width:50%'>
                   <tr>

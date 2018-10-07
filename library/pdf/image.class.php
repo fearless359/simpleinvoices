@@ -106,7 +106,7 @@ class Image {
     // @file_exists("adirectory/.");"
     // 
     if (!is_readable(CACHE_DIR) || 
-        !is_writeable(CACHE_DIR) || 
+        !is_writable(CACHE_DIR) ||
         (!@file_exists(CACHE_DIR.'.'))) {
       // omg. Cache directory exists, but useless
       //

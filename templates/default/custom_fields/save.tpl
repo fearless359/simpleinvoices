@@ -13,5 +13,5 @@
  *      GPL v3 or above
  */
  *}
-<div class="{$display_class}">{$display_message}</div>
+{$display_block}
 {$refresh_redirect}

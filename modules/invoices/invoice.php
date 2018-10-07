@@ -27,10 +27,10 @@ $products          = Product::select_all();
 $preferences       = Preferences::getActivePreferences();
 $defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
-$defaults          = getSystemDefaults();
+$defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
-if (empty($billers) || empty($customers) || empty($products) || empty($preferences)) {
+if (empty($billers) || empty($customers) || empty($products)) {
     $first_run_wizard = true;
     $smarty->assign("first_run_wizard", $first_run_wizard);
 }
@@ -63,7 +63,7 @@ $smarty->assign("preferences"       , $preferences);
 $smarty->assign("defaultPreference" , $defaultPreference);
 $smarty->assign("dynamic_line_items", $dynamic_line_items);
 $smarty->assign("customFields"      , $customFields);
-$smarty->assign("defaultCustomerID" , $defaultCustomer['id']);
+$smarty->assign("defaultCustomerID" , (empty($defaultCustomer) ? 0 : $defaultCustomer['id']));
 $smarty->assign("defaults"          , $defaults);
 
 $smarty->assign('active_tab', '#money');

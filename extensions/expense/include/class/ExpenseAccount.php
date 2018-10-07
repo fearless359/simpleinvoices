@@ -4,6 +4,7 @@ class ExpenseAccount {
     /**
      * Get count of expense_account records for the current domain.
      * @return integer count of records.
+     * @throws PdoDbException
      */
     public static function count() {
         global $pdoDb;
@@ -16,6 +17,7 @@ class ExpenseAccount {
     /**
      * Get all records for the current domain_id.
      * @return array Rows retrieved.
+     * @throws PdoDbException
      */
     public static function get_all() {
         global $pdoDb;
@@ -29,6 +31,7 @@ class ExpenseAccount {
      * Retrieve <i>expense_account</i> record for the current domain and the specified <b>$id</b>
      * @param number $id ID of expense record to retrieve.
      * @return mixed Result
+     * @throws PdoDbException
      */
     public static function select($id) {
         global $pdoDb;
@@ -40,7 +43,8 @@ class ExpenseAccount {
 
     /**
      * Insert a new <i>expense_account</i> record.
-     * @return boolean <b>true</b> if record inserted, <b>false</b> if an error occurred.
+     * @return int ID of new record. 0 if insert failed.
+     * @throws PdoDbException
      */
     public static function insert() {
         global $pdoDb;
@@ -53,6 +57,7 @@ class ExpenseAccount {
     /**
      * Update <i>expense_account</i> record.
      * @return boolean <b>true</b> if record inserted, <b>false</b> if an error occurred.
+     * @throws PdoDbException
      */
     public static function update() {
         global $pdoDb;

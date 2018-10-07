@@ -10,9 +10,7 @@
     {$smarty.capture.hook_head_start}
 {/strip}
     <title>{$tmp_lang_module} : {$tmp_lang_view} - {$LANG.company_name} </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta charset="UTF-8" />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="shortcut icon" href="images/common/favicon.ico" />
 
@@ -24,9 +22,6 @@
 
     <link rel="stylesheet" type="text/css" href="templates/default/css/main.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="templates/default/css/print.css" media="print" />
-<!--[if IE]>
-    <link rel="stylesheet" type="text/css" href="templates/default/css/main_ie.css" media="all" />
-<![endif]-->
 
     <script type="text/javascript" src="include/jquery/jquery-1.2.6.min.js"></script>
     <script type="text/javascript" src="include/jquery/jquery.init.js"></script>
@@ -38,15 +33,10 @@
     <script type="text/javascript" src="include/jquery/jquery.plugins.js"></script>
     <script type="text/javascript" src="include/jquery/wysiwyg/wysiwyg.modified.packed.js"></script>
     <script type="text/javascript" src="include/jquery/jquery.livequery.pack.js"></script>
+    <script type="text/javascript" src="include/jquery/jquery.functions.js"></script>
+    <script type="text/javascript" src="include/jquery/jquery.conf.js"></script>
 {/literal}
     {$extension_jquery_files }
-    {include file='include/jquery/jquery.functions.js.tpl'}
-    {include file='include/jquery/jquery.conf.js.tpl'}
-{literal}
-
-    <!--<script type="text/javascript" src="include/jquery/jquery.conf.js.tpl"></script>-->
-
-{/literal}
     {if $config->debug->level == "All"}
     <link rel="stylesheet" type="text/css" href="library/blackbirdjs/blackbird.css" />    
     <script type="text/javascript" src="library/blackbirdjs/blackbird.js"></script>

@@ -25,7 +25,6 @@ class PdoDb {
     const TBPREFIX_PATTERN = '/^si_/'; // Chg to use TB_PREFIX when only PHP 5.6x and up supported
 
     private $caseStmts;
-    private $constraints;
     private $debug;
     private $debug_label;
     private $debug_microtime;
@@ -38,16 +37,19 @@ class PdoDb {
     private $havings;
     private $joinStmts;
     private $keyPairs;
+    private $lastCommand;
     private $limit;
     private $noErrorLog;
+    private $onDuplicateKey;
     private $orderBy;
     private $pdoDb;
     private $pdoDb2;
+    private $saveLastCommand;
     private $selectAll;
     private $selectList;
     private $selectStmts;
     private $table_columns;
-    private $table_constrants;
+    private $table_constraints;
     private $table_engine;
     private $table_schema;
     private $transaction;
@@ -70,7 +72,6 @@ class PdoDb {
         $this->debug = $debug;
         $this->transaction = false;
         $host = ($dbinfo->getHost() == "localhost" ? "127.0.0.1" : $dbinfo->getHost());
-        //$dsn = "mysql:host={$dbinfo->getHost()};dbname={$dbinfo->getDbname()}";
         $dsn = "mysql:dbname={$dbinfo->getDbname()};host=$host;port={$dbinfo->getPort()}";
         $username = $dbinfo->getUsername();
         $password = $dbinfo->getPassword();
@@ -78,8 +79,8 @@ class PdoDb {
             // Used for user requests.
             $this->pdoDb = new PDO($dsn, $username, $password);
 
-            // Used internally to perform table structure lookups, etc. so these
-            // queries will not impact inprocess activity for the user's requests.
+            // Used internally to perform table structure look ups, etc. so these
+            // queries will not impact in process activity for the user's requests.
             $this->pdoDb2 = new PDO($dsn, $username, $password);
         } catch (PDOException $e) {
             $str = "PdoDb - construct error: " . $e->getMessage();
@@ -92,7 +93,8 @@ class PdoDb {
 
     /**
      * Class destructor
-     * Verifies no incomplete transactions inprocess. If found, rollback performed.
+     * Verifies no incomplete transactions in process. If found, rollback performed.
+     * @throws PdoDbException
      */
     public function __destruct() {
         if ($this->transaction) {
@@ -106,11 +108,12 @@ class PdoDb {
     /**
      * Reset class properties with the exception of the database object,
      * to their default (unset) state.
+     * @param bool $clearTran
+     * @throws PdoDbException
      */
-    public function clearAll($clearTran=true) {
+    public function clearAll($clearTran = true) {
         // @formatter:off
         $this->caseStmts        = null;
-        $this->constraints      = null;
         $this->debug_microtime  = 0;
         $this->distinct         = false;
         $this->excludedFields   = array();
@@ -121,14 +124,17 @@ class PdoDb {
         $this->havings          = new Havings();
         $this->joinStmts        = null;
         $this->keyPairs         = null;
+        $this->lastCommand      = "";
         $this->limit            = 0;
         $this->noErrorLog       = false;
+        $this->onDuplicateKey   = null;
         $this->orderBy          = null;
+        $this->saveLastCommand  = false;
         $this->selectAll        = false;
         $this->selectList       = null;
         $this->selectStmts      = null;
         $this->table_columns    = null;
-        $this->table_constrants = null;
+        $this->table_constraints = null;
         $this->usePost          = true;
         $this->whereClause      = null;
         if ($clearTran && $this->transaction) {
@@ -140,8 +146,9 @@ class PdoDb {
     /**
      * Turn on debug mode.
      * Enables error log display of query requests.
+     * @param string $debug_label Label to identify where the debug was performed.
      */
-    public function debugOn($debug_label="") {
+    public function debugOn($debug_label = "") {
         $this->debug = true;
         if (empty($debug_label)) {
             $bt = debug_backtrace();
@@ -160,6 +167,23 @@ class PdoDb {
      */
     public function debugOff() {
         $this->debug = false;
+    }
+
+    /**
+     * Sets flag to save the last command.
+     * Note: Flag reset automatically after each command.
+     */
+    public function saveLastCommand() {
+        $this->saveLastCommand = true;
+    }
+
+    /**
+     * Returns the last command saved.
+     * Note that this is reset when the next request is performed.
+     * @return string Last command saved.
+     */
+    public function getLastCommand() {
+        return $this->lastCommand;
     }
 
     /**
@@ -198,6 +222,7 @@ class PdoDb {
      * @param string $value Value to test for.
      * @param string $connector (Optional) If specified, used to connect to a subsequent
      *        <i>WhereItem</i>. Typically "AND" or "OR".
+     * @throws PdoDbException
      */
     public function addSimpleWhere($column, $value, $connector=null) {
         $this->addToWhere(new WhereItem(false, $column, "=", $value, false, $connector));
@@ -207,7 +232,7 @@ class PdoDb {
      * Add and entry for a table column to correct.
      * @param string $column Name of table field.
      * @param string $type Data type of the table column, ex: VARCHAR(255)
-     * @param string $attributes Additional column attributs,
+     * @param string $attributes Additional column attributes,
      *        ex: NOT NULL AUTO_INCREMENT
      */
     public function addTableColumns($column, $type, $attributes) {
@@ -227,16 +252,16 @@ class PdoDb {
     }
 
     /**
-     * Specify <b>ALTER TABLE</b> contraints to add to table columns.
-     * @param string $column Name of table field the contraint is being aplied to.
-     * @param string $constrant Constrant to apply to the table field. Note that
-     *        the <b>$column</b> will be appended to the end of the <b>$constrant</b>
+     * Specify <b>ALTER TABLE</b> constraints to add to table columns.
+     * @param string $column Name of table field the constraint is being applied to.
+     * @param string $constraint Constraint to apply to the table field. Note that
+     *        the <b>$column</b> will be appended to the end of the <b>$constraint</b>
      *        unless there is a <i>tilde</i>, <b>~</b>, character in it. If present,
      *        the <b>$column</b> will be added in place of the <i>tilde</i>.
      */
-    public function addTableConstraints($column, $constrant) {
-        if (empty($this->table_constrants)) $this->table_constrants = array();
-        $this->table_constrants[$column] = $constrant;
+    public function addTableConstraints($column, $constraint) {
+        if (empty($this->table_constraints)) $this->table_constraints = array();
+        $this->table_constraints[$column] = $constraint;
     }
 
     /**
@@ -265,6 +290,7 @@ class PdoDb {
      * Specify functions with parameters to list of those to perform
      * @param mixed $function FunctionStmt object or a string with a preformatted
      *        function to include in parameter list. For example, "count(id)".
+     * @throws PdoDbException
      */
     public function addToFunctions($function) {
         if (is_string($function) || is_a($function, "FunctionStmt")) {
@@ -373,6 +399,13 @@ class PdoDb {
     }
 
     /**
+     * @param string $statement to perform update on duplicate key.
+     */
+    public function setOnDuplicateKey($statement) {
+        $this->onDuplicateKey = "ON DUPLICATE KEY UPDATE " . $statement;
+    }
+
+    /**
      * Set the <b>ORDER BY</b> statement object to generate when the next request is performed.
      * Note that this method can be called multiple times to add additional values.
      * @param string/array/OrderBy $orderBy Can take several forms.
@@ -460,6 +493,7 @@ class PdoDb {
      * @param string $operator
      * @param mixed $value
      * @param string $connector
+     * @throws PdoDbException
      */
     public function setSimpleHavings($field, $operator, $value, $connector="") {
         $this->havings[] = new Having($field, $operator, $value, $connector);
@@ -498,7 +532,7 @@ class PdoDb {
      * clause but are to be excluded from the <i>INSERT</i> or </i>UPDATE</i> fields. Typically
      * excluded fields are the unique identifier for the record which cannot be updated. However,
      * any field may be specified for exclusion..
-     * @param array $excludedFields Can be one of the following:
+     * @param array/string $excludedFields Can be one of the following:
      *        <ol>
      *          <li>A string with <i><u>one</u> field name</i> in it. Ex: <b>"name"</b>.</li>
      *          <li>An ordered array of <i>field names</i>. Ex: <b>array("id", "user_id")</b></li>
@@ -540,7 +574,7 @@ class PdoDb {
      *        of "t2" is used for table 2 fields. This means the "name" attribute for
      *        these fields will contain t2_name, t2_address, t2_city, t2_state and t2_zip.
      *        When a <i>PdoDb request</i> is submitted for table 1 fields, no prefix will
-     *        be set. Then when the <i>PdoDb request</i> is submitted for talbe 2, this
+     *        be set. Then when the <i>PdoDb request</i> is submitted for table 2, this
      *        field prefix of <b>"t2"</b> will be set.
      */
     public function setFieldPrefix($fieldPrefix) {
@@ -560,8 +594,10 @@ class PdoDb {
     }
 
     /**
-     * setter for class property.
-     * @param boolean $selectAll
+     * Specify if all fields are to be selected or not.
+     * @param boolean $selectAll true to select all field, false if only those select list, function
+     *        statements, etc. should be selected. Note that this field does not affect what is
+     *        specified to select in the various select list, statement, etc. functions.
      */
     public function setSelectAll($selectAll) {
         $this->selectAll = $selectAll;
@@ -600,7 +636,7 @@ class PdoDb {
      *        is instantiated.
      */
     private function debugger($sql) {
-        if ($this->debug) {
+        if ($this->debug || $this->saveLastCommand) {
             $keys = array();
             if ($this->keyPairs != null) {
                 $values = ($this->keyPairs == null ? array() : $this->keyPairs);
@@ -620,14 +656,21 @@ class PdoDb {
                 }
 
                 // Walk the array to see if we can add single-quotes to strings
+                // The $k == $k test is to remove an unused warning.
                 $count = null;
-                array_walk($values, create_function('&$v, $k', 'if (!is_numeric($v) && $v!="NULL") $v = "\'".$v."\'";'));
+                array_walk($values, function(&$v, $k) { if ($k == $k && !is_numeric($v) && $v!="NULL") $v = "'".$v."'";});
                 $sql = preg_replace($keys, $values, $sql, 1, $count);
 
                 // Compact query to be logged
                 $sql = preg_replace('/  +/', ' ', str_replace(PHP_EOL, '', $sql));
             }
-            error_log("PdoDb - debugger($this->debug_label): $sql");
+            if ($this->debug) {
+                error_log("PdoDb - debugger($this->debug_label): $sql");
+            }
+
+            if ($this->saveLastCommand) {
+                $this->lastCommand = $sql;
+            }
         }
     }
 
@@ -643,6 +686,7 @@ class PdoDb {
                 $id = $sth->fetchColumn();
                 return $id;
             }
+            return 0;
         } else {
             $this->clearAll();
             error_log("PdoDb - lastInsertId(): Prepare error." . print_r($sth->errorInfo(), true));
@@ -741,7 +785,7 @@ class PdoDb {
 
     /**
      * Begin a transaction.
-     * @throw new PdoDbException if a transaction is already in process.
+     * @throws PdoDbException if a transaction is already in process.
      */
     public function begin() {
         if ($this->debug) error_log("begin()");
@@ -756,6 +800,7 @@ class PdoDb {
 
     /**
      * Rollback actions performed as part of the current transaction.
+     * @throws PdoDbException
      */
     public function rollback() {
         if ($this->transaction) {
@@ -844,12 +889,12 @@ class PdoDb {
      * @param string $table Database table name.
      * @param string $alias (Optional) Alias for table name. Note that the alias need
      *         be in the select list. If not present, it will be added to selected fields.
-     * @return mixed Result varies with the request type. <b>INSERT</b> returns the
-     *         auto increment unique ID (or blank if no such field), <b>SELECT</b>
-     *         returns the associative array for selected rows or an empty array if
-     *         no rows are found, <b>SHOW</b> returns the numberic array of
-     *         specified <b>SHOW</b> request, otherwise <b>true</b> on success of
-     *         <b>false</b> on failure..
+     * @return mixed Result varies with the request type.
+     *         <b>INSERT</b> returns the auto increment unique ID (or blank if no such field),
+     *         <b>SELECT</b> returns the associative array for selected rows or an empty array if no rows are found,
+     *         <b>SHOW TABLES</b> returns the associative array for tables <i>LIKE</i> the specified table or empty array,
+     *         <b>SHOW</b> returns the numeric array of specified <b>SHOW</b> request,
+     *         otherwise <b>true</b> on success or <b>false</b> on failure.
      * @throws PdoDbException if any unexpected setting or missing information is encountered.
      */
     public function request($request, $table, $alias = null) {
@@ -865,11 +910,11 @@ class PdoDb {
 
         if ($request != "DROP") {
             if ($request == "ALTER TABLE") {
-                if (empty($this->table_constrants)) {
+                if (empty($this->table_constraints)) {
                     throw new PdoDbException("PdoDb - request():");
                 }
 
-                foreach ($this->table_constrants as $column => $constraint) {
+                foreach ($this->table_constraints as $column => $constraint) {
                     if (preg_match('/compound/', $column)) {
                         $column = preg_replace('/compound *(\(.*\)).*$/', '\1', $column);
                     }
@@ -902,11 +947,15 @@ class PdoDb {
                 }
 
                 $sql .= ") ENGINE = " . $this->table_engine . ";";
+            } else if ($request == "SHOW TABLES") {
+                $sql = $request . " LIKE '{$table}'";
             } else {
                 if (!($columns = $this->getTableFields($table))) {
                     $this->clearAll();
                     throw new PdoDbException("PdoDb - request(): Invalid table, $table, specified.");
                 }
+
+                $onDuplicateKeyUpdate = (empty($this->onDuplicateKey) ? '' : $this->onDuplicateKey);
 
                 // Build WHERE clause and get value pair list for tokens in the clause.
                 $where = "";
@@ -932,13 +981,12 @@ class PdoDb {
 
                 // Make an array of paired column name and values. The column name is the
                 // index and the value is the content at that column.
-                foreach ($columns as $column => $this->constraints) {
+                foreach ($columns as $column => $values) {
                     // Check to see if a field prefix was specified and that there is no
                     // table alias present. If so, prepend the prefix followed by an underscore.
-                    $postColumn = $column;
-                    if (( $this->usePost && isset($_POST[$postColumn])) ||
-                        (!$this->usePost && isset($this->fauxPost[$postColumn]))) {
-                        $valuePairs[$column] = ($this->usePost ? $_POST[$postColumn] : $this->fauxPost[$postColumn]);
+                    if (( $this->usePost && isset($_POST[$column])) ||
+                        (!$this->usePost && isset($this->fauxPost[$column]))) {
+                        $valuePairs[$column] = ($this->usePost ? $_POST[$column] : $this->fauxPost[$column]);
                     }
                 }
             }
@@ -947,10 +995,12 @@ class PdoDb {
         // @formatter:off
         $useValueList = ($request != "ALTER TABLE"  &&
                          $request != "CREATE TABLE" &&
+                         $request != "SHOW TABLES"  &&
                          $request != "DROP");
         switch ($request) {
             case "ALTER TABLE":
-                // $sql containts the complete command
+            case "SHOW TABLES":
+                // $sql contains the complete command
                 break;
 
             case "CREATE TABLE":
@@ -963,11 +1013,12 @@ class PdoDb {
 
             case "SELECT":
                 $useValueList = false;
-                if (!$this->selectAll &&
-                    (isset($this->selectList) || isset($this->functions) || isset($this->caseStmts))) {
+                if ($this->selectAll) {
+                    $list = "*";
+                } else if (isset($this->selectList) || isset($this->functions) || isset($this->caseStmts)) {
                     $list = "";
                 } else {
-                    $list = "*";
+                    $list = "*"; // default if nothing specified, select all.
                 }
 
                 if (isset($this->selectList)) {
@@ -1041,7 +1092,8 @@ class PdoDb {
 
         if ($useValueList) $sql .= $this->makeValueList($request, $valuePairs, $token_cnt) . "\n";
 
-        $sql .= (empty($where  ) ? "" : " " . $where   . "\n") .
+        $sql .= (empty($onDuplicateKeyUpdate) ? "" : " " . $onDuplicateKeyUpdate) .
+                (empty($where  ) ? "" : " " . $where   . "\n") .
                 (empty($group  ) ? "" : " " . $group   . "\n") .
                 (empty($havings) ? "" : " " . $havings . "\n") .
                 (empty($order  ) ? "" : " " . $order   . "\n") .
@@ -1058,15 +1110,19 @@ class PdoDb {
      * @param array $valuePairs Array of value pairs. This parameter is optional
      *        and only needs to be specified if bind values are needed.
      *        Example: array(':id' => '7', ':domain_id' => '1');
-     * @return mixed Result varies with the request type. <b>INSERT</b> returns the
-     *         auto increment unique ID (or blank if no such field), <b>SELECT</b>
-     *         returns the associative array for selected rows or an empty array if
-     *         no rows are found, <b>SHOW</b> returns the numberic array of
-     *         specified <b>SHOW</b> request, otherwise <b>true</b> on success.
+     * @return mixed Result varies with the request type.
+     *         <b>INSERT</b> returns the auto increment unique ID (or blank if no such field),
+     *         <b>SELECT</b> returns the associative array for selected rows or an empty array if no rows are found,
+     *         <b>SHOW TABLES</b> returns the associative array for tables <i>LIKE</i> the specified table or empty array,
+     *         <b>SHOW</b> returns the numeric array of specified <b>SHOW</b> request,
+     *         otherwise <b>true</b> on success or <b>false</b> on failure.
      * @throws PdoDbException If unable to bind values or execute request.
      */
     public function query($sql, $valuePairs = null) {
+        $this->lastCommand = ""; // Clear the previous last command.
         $this->debugger($sql);
+        $this->saveLastCommand = false; // reset flag now that it has been saved.
+
         if (!($sth = $this->pdoDb->prepare($sql))) {
             if ($this->debug || !$this->noErrorLog) {
                 error_log("PdoDb - query(): Prepare error." . print_r($sth->errorInfo(), true));
@@ -1103,12 +1159,9 @@ class PdoDb {
         $parts = explode(' ', $sql);
         $request = strtoupper($parts[0]);
         if ($request == "INSERT") {
-            if (empty($this->constraints) || preg_match('/:ID[:$]/', $this->constraints)) {
-                $result = $this->lastInsertId();
-            } else {
-                $result = "";
-            }
-        } else if ($request == "SELECT") {
+              $result = $this->lastInsertId();
+        } else if ($request == "SELECT" ||
+                   $request == "SHOW TABLES") {
             $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         } else if ($request == "SHOW") {
             $result = $sth->fetchAll(PDO::FETCH_NUM);
@@ -1118,7 +1171,7 @@ class PdoDb {
 
         if ($this->debug) {
             $msc = microtime(true) - $this->debug_microtime;
-            error_log("Processing time: " . ($msc * 1000) . "ms"); // in millseconds
+            error_log("Processing time: " . ($msc * 1000) . "ms"); // in milliseconds
         }
 
         // Don't clear the transaction setting.

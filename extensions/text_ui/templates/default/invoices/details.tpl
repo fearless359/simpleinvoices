@@ -192,7 +192,8 @@
           </tr>
           <tr>
             <td colspan="6">
-              <textarea name="description{$line}" class="detail" rows="5" cols="70" style="overflow:scroll;">
+              <textarea class="detail" name="description{$line}" rows="5" cols="70" style="overflow:scroll;"
+                        data_description="{$LANG['description']}">
                 {$invoiceItem.description}
               </textarea>
             </td>

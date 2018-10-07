@@ -37,6 +37,10 @@ class Join {
         $this->onClause = null;
     }
 
+    /**
+     * @param $table
+     * @return string
+     */
     private function addPrefix($table) {
         if (preg_match(self::PREFIX, $table) != 1) return TB_PREFIX . $table;
         return $table;
@@ -51,6 +55,7 @@ class Join {
      *        class should be used to render it. Ex: obj->addSimpleItem(iv.id, new DbField(ii.id)).
      * @param string $connector Connector to the next item, <b>AND</b> or <b>OR</b>. If not
      *        specified, this is the last item in the <b>OnClause</b>.
+     * @throws PdoDbException
      */
     public function addSimpleItem($field, $value, $connector = null) {
         if (!isset($this->onClause)) $this->onClause = new OnClause();
@@ -60,6 +65,7 @@ class Join {
     /**
      * Specify the <b>ON</b> clause to qualify join this table to the selection.
 `    * @param OnClause $onClause Object of class type <b>OnClause</b>.
+     * @throws PdoDbException
      */
     public function setOnClause(OnClause $onClause) {
         if (isset($this->onClause)) {
@@ -78,10 +84,9 @@ class Join {
 
     /**
      * Build the <b>JOIN<\b> statement from the specified components.
-     * @param array $keyPairs Array of PDO token and value pairs to bind to the PDO statement.
+     * @param &array $keyPairs Array of PDO token and value pairs to bind to the PDO statement.
      *              Note that this array is initialized to empty by this method.
      * @return string <b>JOIN</b> statement.
-     * @throws PdoDbException if unbalanced parenthesis have been specified.
      */
     public function build(&$keypairs) {
         $isSelect = is_a($this->table, "SELECT");

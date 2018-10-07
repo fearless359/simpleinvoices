@@ -27,7 +27,7 @@ $invoice_type            = Invoice::getInvoiceType($invoice['type_id']);
 $customer                = Customer::get($invoice['customer_id']);
 $biller                  = Biller::select($invoice['biller_id']);
 $preference              = Preferences::getPreference($invoice['preference_id']);
-$defaults                = getSystemDefaults();
+$defaults                = SystemDefaults::loadValues();
 $invoiceItems            = Invoice::getInvoiceItems($invoice_id);
 
 $eway_check          = new eway();

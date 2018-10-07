@@ -20,4 +20,4 @@
 <hr />
        <div id="left">
 <br />
-This feature is still a work-in-progress, please refer to our homepage: <a href='https://simpleinvoices.group'>Simple Invoices Group</a> for update.
+This feature is still a work-in-progress, please refer to our homepage: <a href='https://simpleinvoices.group'>SimpleInvoices Group</a> for update.

@@ -14,19 +14,15 @@
  *
  *  Website:
  *      https://simpleinvoices.group */
-global $smarty, $pdoDb, $LANG, $config;
+global $smarty, $LANG, $config;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
 // @formatter:off
 $cid = $_GET['id'];
-$domain_id = domain_id::get();
 
-$pdoDb->addSimpleWhere("id", $cid, "AND");
-$pdoDb->addSimpleWhere("domain_id", $domain_id);
-$rows = $pdoDb->request("SELECT", "customers");
-$customer = $rows[0];
+$customer = Customer::get($cid);
 $customer['wording_for_enabled'] = ($customer['enabled'] == 1 ? $LANG['enabled'] : $LANG['disabled']);
 if (empty($customer['credit_card_number'])) {
     $customer['credit_card_number_masked'] = "";
@@ -43,11 +39,9 @@ if (empty($customer['credit_card_number'])) {
 }
 $sub_customers = SubCustomers::getSubCustomers($cid);
 
-//TODO: Perhaps possible a bit nicer?
-$stuff = array();
-$stuff['total'] = Customer::calc_customer_total($customer['id']);
-$stuff['paid' ] = Payment::calc_customer_paid($customer['id']);
-$stuff['owing'] = $stuff['total'] - $stuff['paid'];
+$customer['total'] = Customer::calc_customer_total($customer['id']);
+$customer['paid' ] = Payment::calc_customer_paid($customer['id']);
+$customer['owing'] = $customer['total'] - $customer['paid'];
 
 $customFieldLabel = getCustomFieldLabels('',true);
 $invoices = Customer::getCustomerInvoices($cid);
@@ -55,7 +49,6 @@ $invoices = Customer::getCustomerInvoices($cid);
 $parent_customers = Customer::get_all(true);
 $smarty->assign('parent_customers', $parent_customers);
 
-$smarty->assign("stuff",$stuff);
 $smarty->assign('customer',$customer);
 $smarty->assign('sub_customers',$sub_customers);
 $smarty->assign('invoices',$invoices);

@@ -14,7 +14,7 @@
  *
  * Website:
  *      https://simpleinvoices.group */
-global $config, $smarty, $pdoDb;
+global $config, $smarty, $LANG;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
@@ -22,20 +22,20 @@ checkLogin();
 // Deal with op and add some basic sanity checking
 $op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : NULL;
 
-$saved = false;
+$display_block = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
+$refresh_total = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
+
 $error = false;
-$excludedFields = array("id");
 // The field is only non-empty if the user entered a value.
 // TODO: A proper entry and confirmation new credit card value.
-if (empty($_POST['credit_card_number'])) {
-    $excludedFields[] = 'credit_card_number';
-} else {
+$excludeCreditCardNumber = true;
+if (!empty($_POST['credit_card_number'])) {
     try {
         $key = $config->encryption->default->key;
         $enc = new Encryption();
         $_POST['credit_card_number'] = $enc->encrypt($key, $_POST['credit_card_number']);
+        $excludeCreditCardNumber = false;
     } catch (Exception $e) {
-        echo '<h1>Unable to encrypt the card number.</h1>';
         error_log("Unable to encrypt the credit card number. Error reported: " . $e->getMessage());
         $error = true;
     }
@@ -43,32 +43,18 @@ if (empty($_POST['credit_card_number'])) {
 
 if (!$error) {
     if ($op === "insert_customer") {
-        try {
-            $pdoDb->setExcludedFields($excludedFields);
-            $pdoDb->request('INSERT', 'customers');
-            $saved = true;
-        } catch (Exception $e) {
-            echo '<h1>Unable to add the new ' . TB_PREFIX . 'customer record.</h1>';
-            error_log("Unable to add the new " . TB_PREFIX . "customers record. Error reported: " . $e->getMessage());
-            $error = true;
+        if (Customer::insertCustomer($excludeCreditCardNumber)) {
+            $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }
     } else if ($op === 'edit_customer' && isset($_POST['save_customer'])) {
-        try {
-            $excludedFields[] = 'domain_id';
-            $pdoDb->setExcludedFields($excludedFields);
-            $pdoDb->addSimpleWhere('id', $_GET['id'], 'AND');
-            $pdoDb->addSimpleWhere('domain_id', $_POST['domain_id']);
-            $pdoDb->request('UPDATE', 'customers');
-            $saved = true;
-        } catch (Exception $e) {
-            echo '<h1>Unable to update the ' . TB_PREFIX . 'customers record.</h1>';
-            error_log("Unable to update the " . TB_PREFIX . "customers record. Error reported: " . $e->getMessage());
-            $error = true;
+        if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
+            $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }
     }
 }
 
-$smarty->assign('saved',$saved);
+$smarty->assign('display_block', $display_block);
+$smarty->assign('refresh_total', $refresh_total);
 
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('active_tab', '#people');

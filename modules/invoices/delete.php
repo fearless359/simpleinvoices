@@ -23,7 +23,7 @@ checkLogin();
 $id           = $_GET['id'];
 $invoice      = Invoice::getInvoice($id);
 $preference   = Preferences::getPreference($invoice['preference_id']);
-$defaults     = getSystemDefaults();
+$defaults     = SystemDefaults::loadValues();
 $invoicePaid  = Payment::calc_invoice_paid($id);
 $invoiceItems = Invoice::getInvoiceItems($id);
 
@@ -46,10 +46,10 @@ if (($_GET['stage'] == 2) && ($_POST['doDelete'] == 'y')) {
     $error = false;
 
     // delete line item taxes
+
     $invoice_line_items = Invoice::getInvoiceItems($id);
 
     foreach($invoice_line_items as $key => $value) {
-        if ($value) {} // elimiates unused warning
         delete('invoice_item_tax', 'invoice_item_id', $invoice_line_items[$key]['id']);
     }
 

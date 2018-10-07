@@ -9,7 +9,7 @@ class Select {
 
     /**
      * Class constructor
-     * @param array $list One of several objects.
+     * @param FunctionStmt/array $list One of several objects.
      *        <ol>
      *          <li><b>array()</b>: Ordered array of strings containing field names to include in the list.</li>
      *          <li><b>FunctionStmt</b> object</li>
@@ -63,6 +63,7 @@ class Select {
     /**
      * Add a <b>JOIN</b> to this <b>SELECT</b> statement.
      * @param Join $join <b>JOIN</b> statement to include.
+     * @throws PdoDbException
      */
     public function addJoin(Join $join) {
         if (!is_a($join, "JOIN")) {
@@ -76,6 +77,7 @@ class Select {
     /**
      * Build select statement.
      * @return string <b>SELECT</b> statement created by specified values.
+     * @throws PdoDbException
      */
     public function build(&$keyPairs) {
         $select = "(SELECT ";

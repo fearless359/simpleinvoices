@@ -3,9 +3,71 @@
 class Customer {
 
     /**
+     * Calculate count of customer records.
+     * @return integer
+     */
+    public static function count() {
+        global $pdoDb;
+
+        try {
+            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+            $rows = $pdoDb->request("SELECT", "customers");
+        } catch (PdoDbException $pde) {
+            error_log("Customer::count() - Error: " . $pde->getMessage());
+            return 0;
+        }
+        return (empty($rows) ? 0 : $rows[0]['count']);
+    }
+
+    /**
+     * Insert a new customer record.
+     * @param bool $excludeCreditCardNumber true if no credit card number to store, false otherwise.
+     * @return bool true if insert succeeded, false if failed.
+     */
+    public static function insertCustomer($excludeCreditCardNumber) {
+        global $pdoDb;
+
+        try {
+            if ($excludeCreditCardNumber) {
+                $pdoDb->setExcludedFields('credit_card_number');
+            }
+            $pdoDb->request('INSERT', 'customers');
+        } catch (Exception $e) {
+            error_log("Customer::insertCustomer(): Unable to add new customer record. Error: " . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Update an existing customer record.
+     * @param int $id of customer to update.
+     * @param bool true if credit card number field should be excluded, false to include it.
+     * @return bool true if update ok, false otherwise.
+     */
+    public static function updateCustomer($id, $excludeCreditCardNumber) {
+        global $pdoDb;
+
+        try {
+            $excludedFields = array('id', 'domain_id');
+            if ($excludeCreditCardNumber) $excludedFields[] = 'credit_card_number';
+            $pdoDb->setExcludedFields($excludedFields);
+            $pdoDb->addSimpleWhere('id', $id, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+            $pdoDb->request('UPDATE', 'customers');
+        } catch (PdoDbException $pde) {
+            error_log("Customer::updateCustomer(): Unable to update the customer record. Error: " . $pde->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Get a customer record.
      * @param string $id Unique ID record to retrieve.
      * @return array Row retrieved. Test for "=== false" to check for failure.
+     * @throws PdoDbException
      */
     public static function get($id) {
         global $pdoDb;
@@ -20,34 +82,49 @@ class Customer {
      * Retrieve all <b>customers</b> records per specified option.
      * @param boolean $enabled_only (Defaults to <b>false</b>) If set to <b>true</b> only Customers 
      *        that are <i>Enabled</i> will be selected. Otherwise all <b>customers</b> records are returned.
+     * @param integer $incl_cust_id If not null, id of customer record to retrieve.
+     * @param boolean $no_totals true if only customer record fields to be returned, false (default) to add
+     *        calculated totals field.
      * @return array Customers selected.
      */
-    public static function get_all($enabled_only = false, $incl_cust_id=null) {
+    public static function get_all($enabled_only = false, $incl_cust_id=null, $no_totals=false) {
         global $LANG, $pdoDb;
 
-        if ($enabled_only) {
-            if (!empty($incl_cust_id)) {
-                $pdoDb->addToWhere(new WhereItem(true, "id", "=", $incl_cust_id, false, "OR"));
-                $pdoDb->addToWhere(new WhereItem(false, "enabled", "=", ENABLED, true, "AND"));
-            } else {
-                $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
-            }
-        }
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
-        $pdoDb->setOrderBy("name");
-        $rows = $pdoDb->request("SELECT", "customers");
-
         $customers = array();
-        foreach($rows as $customer) {
-            $customer['enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
-            $customer['total']   = self::calc_customer_total($customer['id']);
-            $customer['paid']    = Payment::calc_customer_paid($customer['id']);
-            $customer['owing']   = $customer['total'] - $customer['paid'];
-            $customers[]         = $customer;
-        }
+        try {
+            if ($enabled_only) {
+                if (!empty($incl_cust_id)) {
+                    $pdoDb->addToWhere(new WhereItem(true, "id", "=", $incl_cust_id, false, "OR"));
+                    $pdoDb->addToWhere(new WhereItem(false, "enabled", "=", ENABLED, true, "AND"));
+                } else {
+                    $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
+                }
+            }
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+            $pdoDb->setOrderBy("name");
+            $rows = $pdoDb->request("SELECT", "customers");
+            if ($no_totals) {
+                return $rows;
+            }
 
+            foreach ($rows as $customer) {
+                $customer['enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
+                $customer['total'] = self::calc_customer_total($customer['id']);
+                $customer['paid'] = Payment::calc_customer_paid($customer['id']);
+                $customer['owing'] = $customer['total'] - $customer['paid'];
+                $customers[] = $customer;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Customer::get_all() - PdoDbException thrown: " . $pde->getMessage());
+        }
         return $customers;
     }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws PdoDbException
+     */
     public static function getCustomerInvoices($id) {
         global $pdoDb;
         $fn = new FunctionStmt("SUM", "COALESCE(ii.total,0)");
@@ -107,10 +184,10 @@ class Customer {
 
     /**
      * Get a default customer name.
-     * @param string $domain_id Domain user is logged into.
-     * @return string Default customer name
+     * @return array Default customer row
+     * @throws PdoDbException
      */
-    public static function getDefaultCustomer($domain_id = '') {
+    public static function getDefaultCustomer() {
         global $pdoDb;
 
         $pdoDb->addSimpleWhere("s.name", "customer", "AND");
@@ -127,6 +204,12 @@ class Customer {
         return $rows[0];
     }
 
+    /**
+     * @param $customer_id
+     * @param bool $isReal
+     * @return array()
+     * @throws PdoDbException
+     */
     public static function calc_customer_total($customer_id, $isReal = false) {
         global $pdoDb;
         $pdoDb->addToFunctions(new FunctionStmt("COALESCE", "SUM(ii.total),0", "total"));
