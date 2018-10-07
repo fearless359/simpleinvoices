@@ -273,7 +273,8 @@ CREATE TABLE `si_sql_patchmanager` (
   `sql_patch_ref` int(11) NOT NULL,
   `sql_patch` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `sql_release` varchar(25) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `sql_statement` text COLLATE utf8_unicode_ci NOT NULL
+  `sql_statement` text COLLATE utf8_unicode_ci NOT NULL,
+  `source` varchar(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `si_system_defaults` (

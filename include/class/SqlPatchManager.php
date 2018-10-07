@@ -29,7 +29,8 @@ class SqlPatchManager
         self::$patchLines[] = array(
             'name' => $patch['name'],
             'patch' => $patch['patch'],
-            'date' => $patch['date']
+            'date' => $patch['date'],
+            'source' => $patch['source']
         );
 
         self::$patchCount = $num;
@@ -66,6 +67,9 @@ class SqlPatchManager
             self::loadPatches();
         }
 
+        // Add and initialize source column if not in table.
+        self::addSourceColumn();
+
         return self::$patchCount - self::lastPatchApplied();
     }
 
@@ -80,6 +84,83 @@ class SqlPatchManager
             'html' => '<div class="si_toolbar si_toolbar_form"><a href="index.php">HOME</a></div>',
             'refresh' => 3);
         $smarty->assign("page", $page_info);
+    }
+
+    /**
+     * @param $row db row to test
+     * @return bool true if same as in $patchLines, false if not.
+     */
+    private static function sameUpdate($row)
+    {
+        $ndx = $row['sql_patch_ref'] - 1;
+        return ($row['sql_patch'] == self::$patchLines[$ndx]['name']);
+    }
+
+    /**
+     * Add and initialize source column to sql_patchmanager table if not present.
+     * If no error thrown, then this function processed correctly.
+     * @throws PdoDbException If exception was reported.
+     */
+    private static function addSourceColumn()
+    {
+        global $pdoDb_admin;
+
+        if (!checkFieldExists('sql_patchmanager', 'source')) {
+            try {
+                $pdoDb_admin->addTableConstraints('source', 'ADD ~ VARCHAR(20) NOT NULL');
+                if (!$pdoDb_admin->request('ALTER TABLE', 'sql_patchmanager')) {
+                    throw new PdoDbException('Unable to add "source" column to sql_patchmanager.');
+                }
+
+                $pdoDb_admin->setFauxPost(array("source" => "original"));
+                $pdoDb_admin->addToWhere(new WhereItem(false, 'sql_patch_ref', '<', 294, false));
+                if (!$pdoDb_admin->request('UPDATE', 'sql_patchmanager')) {
+                    throw new PdoDbException('Unable to set source to "original"');
+                }
+
+                $pdoDb_admin->setSelectAll(true);
+                $pdoDb_admin->addToWhere(new WhereItem(false, 'sql_patch_ref', '>=', 294, false));
+                $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
+                foreach ($rows as $row) {
+                    if (!self::sameUpdate($row)) {
+                        throw new PdoDbException("Patch #{$row['sql_patch_ref']} does not match fearless359 patch. Can't update source");
+                    }
+
+                    $pdoDb_admin->setFauxPost(array('source' => 'fearless359'));
+                    $pdoDb_admin->addSimpleWhere('sql_id', $row['sql_id']);
+                    if (!$pdoDb_admin->request('UPDATE', 'sql_patchmanager')) {
+                        throw new PdoDbException("Patch #{$row['sql_patch_ref']} source update failed");
+                    }
+                }
+            } catch (PdoDbException $pde) {
+                throw new PdoDbException("SqlPatchManager::addSourceColumn() - Error: " . $pde->getMessage());
+            }
+        }
+    }
+
+    /**
+     * Check that database updates are consistent to where Fearless359 version
+     * diverged from historic version.
+     * @return bool true if update can proceed, false if it can't.
+     */
+    private static function siCanUpdateCheck()
+    {
+        global $pdoDb_admin;
+        if (self::lastPatchApplied() < 293) return true;
+
+        try {
+            $pdoDb_admin->setOrderBy('sql_patch_ref');
+            $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
+            foreach ($rows as $row) {
+                if ($row['sql_patch_ref'] < 294 && (empty($row['source']) || $row['source'] != 'original' )) continue;
+                if ($row['sql_patch_ref'] >= 294 && $row['source'] == 'fearless359') continue;
+                return false;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::siCanUpdateCheck() - Error: " . $pde->getMessage());
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -134,6 +215,7 @@ class SqlPatchManager
 
     /**
      * Run the unapplied patches.
+     * @throws PdoDbException - See error message to know the issue.
      */
     public static function runPatches()
     {
@@ -148,6 +230,11 @@ class SqlPatchManager
         $page_info = array();
         $init_patch_table = true;
         if (count($rows) == 1) {
+            // Check to see if database patch level contains patches consistent with
+            // point where fearless359/simpleinvoices version patches diverged from
+            // original simpleinvoices version.
+            self::siCanUpdateCheck();
+
             $pdoDb_admin->begin();
 
             $i = 0;
@@ -353,105 +440,120 @@ class SqlPatchManager
                                                                           sql_release VARCHAR( 25 ) NOT NULL,
                                                                           sql_statement TEXT NOT NULL)
                                                                           ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
-            'date' => "20060514"
+            'date' => "20060514",
+            'source' => 'original'
         );
         self::makePatch('1', $patch);
 
         $patch = array(
             'name' => "Update invoice no details to have a default currency sign",
             'patch' => "UPDATE `" . TB_PREFIX . "preferences` SET pref_currency_sign = '$' WHERE pref_id =2 LIMIT 1",
-            'date' => "20060514"
+            'date' => "20060514",
+            'source' => 'original'
         );
         self::makePatch('2', $patch);
 
         $patch = array(
             'name' => "Add a row into the defaults table to handle the default number of line items",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "defaults` ADD def_number_line_items INT( 25 ) NOT NULL",
-            'date' => "20060514"
+            'date' => "20060514",
+            'source' => 'original'
         );
         self::makePatch('3', $patch);
 
         $patch = array(
             'name' => "Set the default number of line items to 5",
             'patch' => "UPDATE `" . TB_PREFIX . "defaults` SET def_number_line_items = 5 WHERE def_id =1 LIMIT 1",
-            'date' => "20060514"
+            'date' => "20060514",
+            'source' => 'original'
         );
         self::makePatch('4', $patch);
 
         $patch = array(
             'name' => "Add logo and invoice footer support to biller",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD b_co_logo VARCHAR( 50 ), ADD b_co_footer TEXT",
-            'date' => "20060514"
+            'date' => "20060514",
+            'source' => 'original'
         );
         self::makePatch('5', $patch);
 
         $patch = array(
             'name' => "Add default invoice template option",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "defaults` ADD def_inv_template VARCHAR( 25 ) DEFAULT 'print_preview.php' NOT NULL",
-            'date' => "20060514"
+            'date' => "20060514",
+            'source' => 'original'
         );
         self::makePatch('6', $patch);
 
         $patch = array(
             'name' => "Edit tax description field length to 50",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "tax` CHANGE tax_description tax_description VARCHAR( 50 ) DEFAULT NULL",
-            'date' => "20060526"
+            'date' => "20060526",
+            'source' => 'original'
         );
         self::makePatch('7', $patch);
 
         $patch = array(
             'name' => "Edit default invoice template field length to 50",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "defaults` CHANGE def_inv_template def_inv_template VARCHAR( 50 ) DEFAULT NULL",
-            'date' => "20060526"
+            'date' => "20060526",
+            'source' => 'original'
         );
         self::makePatch('8', $patch);
 
         $patch = array(
             'name' => "Add consulting style invoice",
             'patch' => "INSERT INTO `" . TB_PREFIX . "invoice_type` ( inv_ty_id , inv_ty_description ) VALUES (3, 'Consulting')",
-            'date' => "20060531"
+            'date' => "20060531",
+            'source' => 'original'
         );
         self::makePatch('9', $patch);
 
         $patch = array(
             'name' => "Add enabled to biller",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD b_enabled varchar(1) NOT NULL default '1'",
-            'date' => "20060815"
+            'date' => "20060815",
+            'source' => 'original'
         );
         self::makePatch('10', $patch);
 
         $patch = array(
             'name' => "Add enabled to customers",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` ADD c_enabled varchar(1) NOT NULL default '1'",
-            'date' => "20060815"
+            'date' => "20060815",
+            'source' => 'original'
         );
         self::makePatch('11', $patch);
 
         $patch = array(
             'name' => "Add enabled to preferences",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD pref_enabled varchar(1) NOT NULL default '1'",
-            'date' => "20060815"
+            'date' => "20060815",
+            'source' => 'original'
         );
         self::makePatch('12', $patch);
 
         $patch = array(
             'name' => "Add enabled to products",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD prod_enabled varchar(1) NOT NULL default '1'",
-            'date' => "20060815"
+            'date' => "20060815",
+            'source' => 'original'
         );
         self::makePatch('13', $patch);
 
         $patch = array(
             'name' => "Add enabled to products",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "tax` ADD tax_enabled varchar(1) NOT NULL default '1'",
-            'date' => "20060815"
+            'date' => "20060815",
+            'source' => 'original'
         );
         self::makePatch('14', $patch);
 
         $patch = array(
             'name' => "Add tax_id into invoice_items table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD inv_it_tax_id VARCHAR( 25 ) NOT NULL default '0' AFTER inv_it_unit_price",
-            'date' => "20060815"
+            'date' => "20060815",
+            'source' => 'original'
         );
         self::makePatch('15', $patch);
 
@@ -463,14 +565,16 @@ class SqlPatchManager
                                                                           `ac_notes` TEXT NOT NULL ,
                                                                           `ac_date` DATETIME NOT NULL)
                                                                            ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20060827"
+            'date' => "20060827",
+            'source' => 'original'
         );
         self::makePatch('16', $patch);
 
         $patch = array(
             'name' => "Adjust data type of quantity field",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_quantity` `inv_it_quantity` FLOAT NOT NULL DEFAULT '0'",
-            'date' => "20060827"
+            'date' => "20060827",
+            'source' => 'original'
         );
         self::makePatch('17', $patch);
 
@@ -480,49 +584,56 @@ class SqlPatchManager
                                                                        `pt_description` VARCHAR( 250 ) NOT NULL ,
                                                                        `pt_enabled` VARCHAR( 1 ) NOT NULL DEFAULT '1')
                                                                         ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
-            'date' => "20060909"
+            'date' => "20060909",
+            'source' => 'original'
         );
         self::makePatch('18', $patch);
 
         $patch = array(
             'name' => "Add info into the Payment Type table",
             'patch' => "INSERT INTO `" . TB_PREFIX . "payment_types` ( `pt_id` , `pt_description` ) VALUES (NULL , 'Cash'), (NULL , 'Credit Card')",
-            'date' => "20060909"
+            'date' => "20060909",
+            'source' => 'original'
         );
         self::makePatch('19', $patch);
 
         $patch = array(
             'name' => "Adjust accounts payments table to add a type field",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "account_payments` ADD `ac_payment_type` INT( 10 ) NOT NULL DEFAULT '1'",
-            'date' => "20060909"
+            'date' => "20060909",
+            'source' => 'original'
         );
         self::makePatch('20', $patch);
 
         $patch = array(
             'name' => "Adjust the defaults table to add a payment type field",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "defaults` ADD `def_payment_type` VARCHAR( 25 ) DEFAULT '1'",
-            'date' => "20060909"
+            'date' => "20060909",
+            'source' => 'original'
         );
         self::makePatch('21', $patch);
 
         $patch = array(
             'name' => "Add note field to customer",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` ADD `c_notes` TEXT NULL AFTER `c_email`",
-            'date' => "20061026"
+            'date' => "20061026",
+            'source' => 'original'
         );
         self::makePatch('22', $patch);
 
         $patch = array(
             'name' => "Add note field to Biller",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD `b_notes` TEXT NULL AFTER `b_co_footer`",
-            'date' => "20061026"
+            'date' => "20061026",
+            'source' => 'original'
         );
         self::makePatch('23', $patch);
 
         $patch = array(
             'name' => "Add note field to Products",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `prod_notes` TEXT NOT NULL AFTER `prod_unit_price`",
-            'date' => "20061026"
+            'date' => "20061026",
+            'source' => 'original'
         );
         self::makePatch('24', $patch);
 
@@ -530,7 +641,8 @@ class SqlPatchManager
         $patch = array(
             'name' => "Add street address 2 to customers",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` ADD `c_street_address2` VARCHAR( 50 ) AFTER `c_street_address` ",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('25', $patch);
 
@@ -540,21 +652,24 @@ class SqlPatchManager
                                                                  ADD `c_custom_field2` VARCHAR( 50 ) AFTER `c_custom_field1` ,
                                                                  ADD `c_custom_field3` VARCHAR( 50 ) AFTER `c_custom_field2` ,
                                                                  ADD `c_custom_field4` VARCHAR( 50 ) AFTER `c_custom_field3` ;",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('26', $patch);
 
         $patch = array(
             'name' => "Add mobile phone to customers",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` ADD `c_mobile_phone` VARCHAR( 50 ) AFTER `c_phone`",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('27', $patch);
 
         $patch = array(
             'name' => "Add street address 2 to billers",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD `b_street_address2` VARCHAR( 50 ) AFTER `b_street_address` ",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('28', $patch);
 
@@ -564,7 +679,8 @@ class SqlPatchManager
                                                               ADD `b_custom_field2` VARCHAR( 50 ) AFTER `b_custom_field1` ,
                                                               ADD `b_custom_field3` VARCHAR( 50 ) AFTER `b_custom_field2` ,
                                                               ADD `b_custom_field4` VARCHAR( 50 ) AFTER `b_custom_field3` ;",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('29', $patch);
 
@@ -575,7 +691,8 @@ class SqlPatchManager
                                                                        `cf_custom_label` VARCHAR( 50 ) ,
                                                                        `cf_display` VARCHAR( 1 ) DEFAULT '1' NOT NULL ,
                                PRIMARY KEY(`cf_id`)) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('30', $patch);
 
@@ -585,7 +702,8 @@ class SqlPatchManager
                         VALUES (NULL,'biller_cf1'  ,NULL,'0'),(NULL,'biller_cf2'  ,NULL,'0'),(NULL,'biller_cf3'  ,NULL,'0'),(NULL,'biller_cf4'  ,NULL,'0'),
                                (NULL,'customer_cf1',NULL,'0'),(NULL,'customer_cf2',NULL,'0'),(NULL,'customer_cf3',NULL,'0'),(NULL,'customer_cf4',NULL,'0'),
                                (NULL,'product_cf1' ,NULL,'0'),(NULL,'product_cf2' ,NULL,'0'),(NULL,'product_cf3' ,NULL,'0'),(NULL,'product_cf4' ,NULL,'0');",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('31', $patch);
 
@@ -595,21 +713,24 @@ class SqlPatchManager
                                                                 ADD `prod_custom_field2` VARCHAR( 50 ) AFTER `prod_custom_field1`,
                                                                 ADD `prod_custom_field3` VARCHAR( 50 ) AFTER `prod_custom_field2`,
                                                                 ADD `prod_custom_field4` VARCHAR( 50 ) AFTER `prod_custom_field3`;",
-            'date' => "20061211"
+            'date' => "20061211",
+            'source' => 'original'
         );
         self::makePatch('32', $patch);
 
         $patch = array(
             'name' => "Alter product custom field 4",
             'patch' => "UPDATE `" . TB_PREFIX . "custom_fields` SET `cf_custom_field` = 'product_cf4' WHERE `" . TB_PREFIX . "custom_fields`.`cf_id` =12 LIMIT 1 ;",
-            'date' => "20061214"
+            'date' => "20061214",
+            'source' => 'original'
         );
         self::makePatch('33', $patch);
 
         $patch = array(
             'name' => "Reset invoice template to default refer Issue 70",
             'patch' => "UPDATE `" . TB_PREFIX . "defaults` SET `def_inv_template` = 'default' WHERE `def_id` =1 LIMIT 1;",
-            'date' => "20070125"
+            'date' => "20070125",
+            'source' => 'original'
         );
         self::makePatch('34', $patch);
 
@@ -617,7 +738,8 @@ class SqlPatchManager
             'name' => "Adding data to the custom fields table for invoices",
             'patch' => "INSERT INTO `" . TB_PREFIX . "custom_fields` ( `cf_id` , `cf_custom_field` , `cf_custom_label` , `cf_display` )
                         VALUES (NULL,'invoice_cf1',NULL,'0'),(NULL,'invoice_cf2',NULL,'0'),(NULL,'invoice_cf3',NULL,'0'),(NULL,'invoice_cf4',NULL,'0');",
-            'date' => "20070204"
+            'date' => "20070204",
+            'source' => 'original'
         );
         self::makePatch('35', $patch);
 
@@ -627,182 +749,208 @@ class SqlPatchManager
                                                                 ADD `invoice_custom_field2` VARCHAR( 50 ) AFTER `invoice_custom_field1` ,
                                                                 ADD `invoice_custom_field3` VARCHAR( 50 ) AFTER `invoice_custom_field2` ,
                                                                 ADD `invoice_custom_field4` VARCHAR( 50 ) AFTER `invoice_custom_field3` ;",
-            'date' => "20070204"
+            'date' => "20070204",
+            'source' => 'original'
         );
         self::makePatch('36', $patch);
 
         $patch = array(
             'name' => "Reset invoice template to default due to new invoice template system",
             'patch' => "UPDATE `" . TB_PREFIX . "defaults` SET `def_inv_template` = 'default' WHERE `def_id` =1 LIMIT 1 ;",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('37', $patch);
 
         $patch = array(
             'name' => "Alter custom field table - field length now 255 for field name",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "custom_fields` CHANGE `cf_custom_field` `cf_custom_field` VARCHAR( 255 )",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('38', $patch);
 
         $patch = array(
             'name' => "Alter custom field table - field length now 255 for field label",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "custom_fields` CHANGE `cf_custom_label` `cf_custom_label` VARCHAR( 255 )",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('39', $patch);
 
         $patch = array(
             'name' => "Alter field name in sql_patchmanager",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` CHANGE `sql_patch` `sql_patch` VARCHAR( 255 ) NOT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('40', $patch);
 
         $patch = array(
             'name' => "Alter field name in " . TB_PREFIX . "account_payments",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "account_payments` CHANGE  `ac_id`  `id` INT( 10 ) NOT NULL AUTO_INCREMENT",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('41', $patch);
 
         $patch = array(
             'name' => "Alter field name b_name to name",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_name`  `name` VARCHAR( 255 ) NULL DEFAULT NULL;",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('42', $patch);
 
         $patch = array(
             'name' => "Alter field name b_id to id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_id`  `id` INT( 10 ) NOT NULL AUTO_INCREMENT",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('43', $patch);
 
         $patch = array(
             'name' => "Alter field name b_street_address to street_address",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_street_address`  `street_address` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('44', $patch);
 
         $patch = array(
             'name' => "Alter field name b_street_address2 to street_address2",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_street_address2`  `street_address2` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('45', $patch);
 
         $patch = array(
             'name' => "Alter field name b_city to city",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_city`  `city` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('46', $patch);
 
         $patch = array(
             'name' => "Alter field name b_state to state",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_state`  `state` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('47', $patch);
 
         $patch = array(
             'name' => "Alter field name b_zip_code to zip_code",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_zip_code`  `zip_code` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('48', $patch);
 
         $patch = array(
             'name' => "Alter field name b_country to country",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_country`  `country` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('49', $patch);
 
         $patch = array(
             'name' => "Alter field name b_phone to phone",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_phone`  `phone` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('50', $patch);
 
         $patch = array(
             'name' => "Alter field name b_mobile_phone to mobile_phone",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_mobile_phone`  `mobile_phone` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('51', $patch);
 
         $patch = array(
             'name' => "Alter field name b_fax to fax",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_fax`  `fax` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('52', $patch);
 
         $patch = array(
             'name' => "Alter field name b_email to email",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_email`  `email` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('53', $patch);
 
         $patch = array(
             'name' => "Alter field name b_co_logo to logo",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE  `b_co_logo`  `logo` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('54', $patch);
 
         $patch = array(
             'name' => "Alter field name b_co_footer to footer",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `b_co_footer` `footer` TEXT NULL DEFAULT NULL ",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('55', $patch);
 
         $patch = array(
             'name' => "Alter field name b_notes to notes",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `b_notes` `notes` TEXT NULL DEFAULT NULL ",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('56', $patch);
 
         $patch = array(
             'name' => "Alter field name b_enabled to enabled",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `b_enabled` `enabled` VARCHAR( 1 ) NOT NULL DEFAULT '1'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('57', $patch);
 
         $patch = array(
             'name' => "Alter field name b_custom_field1 to custom_field1",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `b_custom_field1` `custom_field1` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('58', $patch);
 
         $patch = array(
             'name' => "Alter field name b_custom_field2 to custom_field2",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `b_custom_field2` `custom_field2` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('59', $patch);
 
         $patch = array(
             'name' => "Alter field name b_custom_field3 to custom_field3",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `b_custom_field3` `custom_field3` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('60', $patch);
 
         $patch = array(
             'name' => "Alter field name b_custom_field4 to custom_field4",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `b_custom_field4` `custom_field4` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('61', $patch);
 
@@ -813,7 +961,8 @@ class SqlPatchManager
                                                                          `value` varchar(30) NOT NULL,
                                PRIMARY KEY  (`id`),
                                UNIQUE KEY `name` (`name`)) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('62', $patch);
 
@@ -841,357 +990,408 @@ class SqlPatchManager
                           (18, 'emailhost'      , 'localhost'),
                           (19, 'emailusername'  , ''),
                           (20, 'emailpassword'  , '');",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('63', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_id to id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('64', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_description to description",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_description` `description` TEXT NOT NULL ",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('65', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_unit_price to unit_price",
             'patch' => " ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_unit_price` `unit_price` DECIMAL( 25, 2 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('66', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_custom_field1 to custom_field1",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_custom_field1` `custom_field1` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('67', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_custom_field2 to custom_field2",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_custom_field2` `custom_field2` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('68', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_custom_field3 to custom_field3",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_custom_field3` `custom_field3` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('69', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_custom_field4 to custom_field4",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_custom_field4` `custom_field4` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('70', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_notes to notes",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_notes` `notes` TEXT NOT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('71', $patch);
 
         $patch = array(
             'name' => "Alter field name prod_enabled to enabled",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `prod_enabled` `enabled` VARCHAR( 1 ) NOT NULL DEFAULT '1'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('72', $patch);
 
         $patch = array(
             'name' => "Alter field name c_id to id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('73', $patch);
 
         $patch = array(
             'name' => "Alter field name c_attention to attention",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_attention` `attention` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('74', $patch);
 
         $patch = array(
             'name' => "Alter field name c_name to name",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_name` `name` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('75', $patch);
 
         $patch = array(
             'name' => "Alter field name c_street_address to street_address",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_street_address` `street_address` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('76', $patch);
 
         $patch = array(
             'name' => "Alter field name c_street_address2 to street_address2",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_street_address2` `street_address2` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('77', $patch);
 
         $patch = array(
             'name' => "Alter field name c_city to city",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_city` `city` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('78', $patch);
 
         $patch = array(
             'name' => "Alter field name c_state to state",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_state` `state` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('79', $patch);
 
         $patch = array(
             'name' => "Alter field name c_zip_code to zip_code",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_zip_code` `zip_code` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('80', $patch);
 
         $patch = array(
             'name' => "Alter field name c_country to country",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_country` `country` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('81', $patch);
 
         $patch = array(
             'name' => "Alter field name c_phone to phone",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_phone` `phone` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('82', $patch);
 
         $patch = array(
             'name' => "Alter field name c_mobile_phone to mobile_phone",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_mobile_phone` `mobile_phone` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('83', $patch);
 
         $patch = array(
             'name' => "Alter field name c_fax to fax",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_fax` `fax` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('84', $patch);
 
         $patch = array(
             'name' => "Alter field name c_email to email",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_email` `email` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('85', $patch);
 
         $patch = array(
             'name' => "Alter field name c_notes to notes",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_notes` `notes` TEXT  NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('86', $patch);
 
         $patch = array(
             'name' => "Alter field name c_custom_field1 to custom_field1",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_custom_field1` `custom_field1` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('87', $patch);
 
         $patch = array(
             'name' => "Alter field name c_custom_field2 to custom_field2",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_custom_field2` `custom_field2` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('88', $patch);
 
         $patch = array(
             'name' => "Alter field name c_custom_field3 to custom_field3",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_custom_field3` `custom_field3` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('89', $patch);
 
         $patch = array(
             'name' => "Alter field name c_custom_field4 to custom_field4",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_custom_field4` `custom_field4` VARCHAR( 255 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('90', $patch);
 
         $patch = array(
             'name' => "Alter field name c_enabled to enabled",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `c_enabled` `enabled` VARCHAR( 1 ) NOT NULL DEFAULT '1'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('91', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_id to id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `inv_id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('92', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_biller_id to biller_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `inv_biller_id` `biller_id` INT( 10 ) NOT NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('93', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_customer_id to customer_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `inv_customer_id` `customer_id` INT( 10 ) NOT NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('94', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_type type_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `inv_type` `type_id` INT( 10 ) NOT NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('95', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_preference to preference_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `inv_preference` `preference_id` INT( 10 ) NOT NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('96', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_date to date",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `inv_date` `date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('97', $patch);
 
         $patch = array(
             'name' => "Alter field name invoice_custom_field1 to custom_field1",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `invoice_custom_field1` `custom_field1` VARCHAR( 50 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('98', $patch);
 
         $patch = array(
             'name' => "Alter field name invoice_custom_field2 to custom_field2",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `invoice_custom_field2` `custom_field2` VARCHAR( 50 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('99', $patch);
 
         $patch = array(
             'name' => "Alter field name invoice_custom_field3 to custom_field3",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `invoice_custom_field3` `custom_field3` VARCHAR( 50 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('100', $patch);
 
         $patch = array(
             'name' => "Alter field name invoice_custom_field4 to custom_field4",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `invoice_custom_field4` `custom_field4` VARCHAR( 50 ) NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('101', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_note to note ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` CHANGE `inv_note` `note` TEXT NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('102', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_id to id ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('103', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_invoice_id to invoice_id ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_invoice_id` `invoice_id` INT( 10 ) NOT NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('104', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_quantity to quantity ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_quantity` `quantity` FLOAT NOT NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('105', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_product_id to product_id ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_product_id` `product_id` INT( 10 ) NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('106', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_unit_price to unit_price ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_unit_price` `unit_price` DOUBLE( 25, 2 ) NULL DEFAULT '0.00'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('107', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_tax_id to tax_id  ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_tax_id` `tax_id` VARCHAR( 25 ) NOT NULL DEFAULT '0'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('108', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_tax to tax  ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_tax` `tax` DOUBLE( 25, 2 ) NULL DEFAULT '0.00'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('109', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_tax_amount to tax_amount  ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_tax_amount` `tax_amount` DOUBLE( 25, 2 ) NULL DEFAULT NULL ",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('110', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_gross_total to gross_total ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_gross_total` `gross_total` DOUBLE( 25, 2 ) NULL DEFAULT '0.00'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('111', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_description to description ",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_description` `description` TEXT NULL DEFAULT NULL",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('112', $patch);
 
         $patch = array(
             'name' => "Alter field name inv_it_total to total",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `inv_it_total` `total` DOUBLE( 25, 2 ) NULL DEFAULT '0.00'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('113', $patch);
 
@@ -1201,63 +1401,72 @@ class SqlPatchManager
                                                              `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
                                                              `userid` INT NOT NULL ,
                                                              `sqlquerie` TEXT NOT NULL) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('114', $patch);
 
         $patch = array(
             'name' => "Add logging system preference",
             'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` ( `id` , `name` , `value` ) VALUES (NULL , 'logging', '0');",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('115', $patch);
 
         $patch = array(
             'name' => "System defaults conversion patch - set default biller",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_biller] where name = 'biller'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('116', $patch);
 
         $patch = array(
             'name' => "System defaults conversion patch - set default customer",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_customer] where name = 'customer'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('117', $patch);
 
         $patch = array(
             'name' => "System defaults conversion patch - set default tax",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_tax] where name = 'tax'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('118', $patch);
 
         $patch = array(
             'name' => "System defaults conversion patch - set default invoice reference",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_inv_preference] where name = 'preference'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('119', $patch);
 
         $patch = array(
             'name' => "System defaults conversion patch - set default number of line items",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_number_line_items] where name = 'line_items'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('120', $patch);
 
         $patch = array(
             'name' => "System defaults conversion patch - set default invoice template",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$defaults[def_inv_template]' where name = 'template'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('121', $patch);
 
         $patch = array(
             'name' => "System defaults conversion patch - set default paymemt type",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_payment_type] where name = 'payment_type'",
-            'date' => "20070523"
+            'date' => "20070523",
+            'source' => 'original'
         );
         self::makePatch('122', $patch);
 
@@ -1343,28 +1552,32 @@ class SqlPatchManager
         $patch = array(
             'name' => "Correct Foreign Key Tax ID Field Type in Invoice Items Table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `tax_id` `tax_id` int  DEFAULT '0' NOT NULL ;",
-            'date' => "20071126"
+            'date' => "20071126",
+            'source' => 'original'
         );
         self::makePatch('132', $patch);
 
         $patch = array(
             'name' => "Correct Foreign Key Invoice ID Field Type in Ac Payments Table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "account_payments` CHANGE `ac_inv_id` `ac_inv_id` int  NOT NULL ;",
-            'date' => "20071126"
+            'date' => "20071126",
+            'source' => 'original'
         );
         self::makePatch('133', $patch);
 
         $patch = array(
             'name' => "Drop non-int compatible default from si_sql_patchmanager",
             'patch' => "SELECT 1+1;",
-            'date' => "20071218"
+            'date' => "20071218",
+            'source' => 'original'
         );
         self::makePatch('134', $patch);
 
         $patch = array(
             'name' => "Change sql_patch_ref type in sql_patchmanager to int",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` change `sql_patch_ref` `sql_patch_ref` int NOT NULL ;",
-            'date' => "20071218"
+            'date' => "20071218",
+            'source' => 'original'
         );
         self::makePatch('135', $patch);
 
@@ -1428,21 +1641,24 @@ class SqlPatchManager
         $patch = array(
             'name' => "Change group field to user_role_id in users table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "users` CHANGE `user_group` `user_role_id` INT  DEFAULT '1' NOT NULL;",
-            'date' => "20080102"
+            'date' => "20080102",
+            'source' => 'original'
         );
         self::makePatch('144', $patch);
 
         $patch = array(
             'name' => "Change domain field to user_domain_id in users table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "users` CHANGE `user_domain` `user_domain_id` INT  DEFAULT '1' NOT NULL;",
-            'date' => "20080102"
+            'date' => "20080102",
+            'source' => 'original'
         );
         self::makePatch('145', $patch);
 
         $patch = array(
             'name' => "Drop old auth_challenges table",
             'patch' => "DROP TABLE IF EXISTS `" . TB_PREFIX . "auth_challenges`;",
-            'date' => "20080102"
+            'date' => "20080102",
+            'source' => 'original'
         );
         self::makePatch('146', $patch);
 
@@ -1450,105 +1666,120 @@ class SqlPatchManager
             'name' => "Create user_role table",
             'patch' => "CREATE TABLE " . TB_PREFIX . "user_role (`id` int(11) NOT NULL auto_increment  PRIMARY KEY,
                                                                  `name` varchar(255) UNIQUE NOT NULL) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20080102"
+            'date' => "20080102",
+            'source' => 'original'
         );
         self::makePatch('147', $patch);
 
         $patch = array(
             'name' => "Insert default user group",
             'patch' => "INSERT INTO " . TB_PREFIX . "user_role (name) VALUES ('administrator');",
-            'date' => "20080102"
+            'date' => "20080102",
+            'source' => 'original'
         );
         self::makePatch('148', $patch);
 
         $patch = array(
             'name' => "Table = Account_payments Field = ac_amount : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "account_payments` CHANGE `ac_amount` `ac_amount` DECIMAL( 25, 6 ) NOT NULL;",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('149', $patch);
 
         $patch = array(
             'name' => "Table = Invoice_items Field = quantity : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `quantity` `quantity` DECIMAL( 25, 6 ) NOT NULL DEFAULT '0' ",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('150', $patch);
 
         $patch = array(
             'name' => "Table = Invoice_items Field = unit_price : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `unit_price` `unit_price` DECIMAL( 25, 6 ) NULL DEFAULT '0.00' ",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('151', $patch);
 
         $patch = array(
             'name' => "Table = Invoice_items Field = tax : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `tax` `tax` DECIMAL( 25, 6 ) NULL DEFAULT '0.00' ",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('152', $patch);
 
         $patch = array(
             'name' => "Table = Invoice_items Field = tax_amount : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `tax_amount` `tax_amount` DECIMAL( 25, 6 ) NULL DEFAULT '0.00'",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('153', $patch);
 
         $patch = array(
             'name' => "Table = Invoice_items Field = gross_total : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `gross_total` `gross_total` DECIMAL( 25, 6 ) NULL DEFAULT '0.00'",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('154', $patch);
 
         $patch = array(
             'name' => "Table = Invoice_items Field = total : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` CHANGE `total` `total` DECIMAL( 25, 6 ) NULL DEFAULT '0.00' ",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('155', $patch);
 
         $patch = array(
             'name' => "Table = Products Field = unit_price : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` CHANGE `unit_price` `unit_price` DECIMAL( 25, 6 ) NULL DEFAULT '0.00'",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('156', $patch);
 
         $patch = array(
             'name' => "Table = Tax Field = quantity : change field type and length to decimal",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "tax` CHANGE `tax_percentage` `tax_percentage` DECIMAL( 25, 6 ) NULL DEFAULT '0.00'",
-            'date' => "20080128"
+            'date' => "20080128",
+            'source' => 'original'
         );
         self::makePatch('157', $patch);
 
         $patch = array(
             'name' => "Rename table si_account_payments to si_payment",
             'patch' => "RENAME TABLE `" . TB_PREFIX . "account_payments` TO  `" . TB_PREFIX . "payment`;",
-            'date' => "20081201"
+            'date' => "20081201",
+            'source' => 'original'
         );
         self::makePatch('158', $patch);
 
         $patch = array(
             'name' => "Add domain_id to payments table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "payment` ADD  `domain_id` INT NOT NULL ;",
-            'date' => "20081201"
+            'date' => "20081201",
+            'source' => 'original'
         );
         self::makePatch('159', $patch);
 
         $patch = array(
             'name' => "Add domain_id to tax table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "tax` ADD  `domain_id` INT NOT NULL ;",
-            'date' => "20081201"
+            'date' => "20081201",
+            'source' => 'original'
         );
         self::makePatch('160', $patch);
 
         $patch = array(
             'name' => "Change user table from si_users to si_user",
             'patch' => "RENAME TABLE `" . TB_PREFIX . "users` TO  `" . TB_PREFIX . "user`;",
-            'date' => "20081201"
+            'date' => "20081201",
+            'source' => 'original'
         );
         self::makePatch('161', $patch);
 
@@ -1560,7 +1791,8 @@ class SqlPatchManager
                                                                           `tax_type` VARCHAR( 1 ) NOT NULL ,
                                                                           `tax_rate` DECIMAL( 25, 6 ) NOT NULL ,
                                                                           `tax_amount` DECIMAL( 25, 6 ) NOT NULL) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('162', $patch);
 
@@ -1569,7 +1801,8 @@ class SqlPatchManager
             'name' => "Convert tax info in si_invoice_items to si_invoice_item_tax",
             'patch' => "INSERT INTO `" . TB_PREFIX . "invoice_item_tax` (invoice_item_id, tax_id, tax_type, tax_rate, tax_amount)
                         SELECT id, tax_id, '%', tax, tax_amount FROM `" . TB_PREFIX . "invoice_items`;",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('163', $patch);
 
@@ -1577,231 +1810,264 @@ class SqlPatchManager
         $patch = array(
             'name' => "Add default tax id into products table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `default_tax_id` INT( 11 ) NULL AFTER `unit_price` ;",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('164', $patch);
 
         $patch = array(
             'name' => "Add default tax id 2 into products table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `default_tax_id_2` INT( 11 ) NULL AFTER `default_tax_id` ;",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('165', $patch);
 
         $patch = array(
             'name' => "Add default tax into product items",
             'patch' => "UPDATE `" . TB_PREFIX . "products` SET default_tax_id = (SELECT value FROM `" . TB_PREFIX . "system_defaults` WHERE name ='tax');",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('166', $patch);
 
         $patch = array(
             'name' => "Add default number of taxes per line item into system_defaults",
             'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` VALUES ('','tax_per_line_item','1')",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('167', $patch);
 
         $patch = array(
             'name' => "Add tax type",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "tax` ADD `type` VARCHAR( 1 ) NULL AFTER `tax_percentage` ;",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('168', $patch);
 
         $patch = array(
             'name' => "Set tax type on current taxes to %",
             'patch' => "SELECT 1+1;",
-            'date' => "20081212"
+            'date' => "20081212",
+            'source' => 'original'
         );
         self::makePatch('169', $patch);
 
         $patch = array(
             'name' => "Set domain_id on tax table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "tax` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('170', $patch);
 
         $patch = array(
             'name' => "Set domain_id on payment table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "payment` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('171', $patch);
 
         $patch = array(
             'name' => "Set domain_id on payment_types table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "payment_types` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('172', $patch);
 
         $patch = array(
             'name' => "Set domain_id on preference table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "preferences` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('173', $patch);
 
         $patch = array(
             'name' => "Set domain_id on products table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "products` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('174', $patch);
 
         $patch = array(
             'name' => "Set domain_id on biller table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "biller` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('175', $patch);
 
         $patch = array(
             'name' => "Set domain_id on invoices table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "invoices` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('176', $patch);
 
         $patch = array(
             'name' => "Set domain_id on customers table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "customers` SET `domain_id` = '1' ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('177', $patch);
 
         $patch = array(
             'name' => "Rename si_user.user_id to si_user.id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` CHANGE `user_id` `id` int(11) ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('178', $patch);
 
         $patch = array(
             'name' => "Rename si_user.user_email to si_user.email",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` CHANGE `user_email` `email` VARCHAR( 255 );",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('179', $patch);
 
         $patch = array(
             'name' => "Rename si_user.user_name to si_user.name",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` CHANGE `user_name` `name` VARCHAR( 255 );",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('180', $patch);
 
         $patch = array(
             'name' => "Rename si_user.user_role_id to si_user.role_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` CHANGE `user_role_id` `role_id` int(11);",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('181', $patch);
 
         $patch = array(
             'name' => "Rename si_user.user_domain_id to si_user.domain_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` CHANGE `user_domain_id` `domain_id` int(11) ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('182', $patch);
 
         $patch = array(
             'name' => "Rename si_user.user_password to si_user.password",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` CHANGE `user_password` `password` VARCHAR( 255 ) ;",
-            'date' => "20081229"
+            'date' => "20081229",
+            'source' => 'original'
         );
         self::makePatch('183', $patch);
 
         $patch = array(
             'name' => "Drop name column from si_user table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` DROP `name`  ;",
-            'date' => "20081230"
+            'date' => "20081230",
+            'source' => 'original'
         );
         self::makePatch('184', $patch);
 
         $patch = array(
             'name' => "Drop old defaults table",
             'patch' => "DROP TABLE `" . TB_PREFIX . "defaults` ;",
-            'date' => "20081230"
+            'date' => "20081230",
+            'source' => 'original'
         );
         self::makePatch('185', $patch);
 
         $patch = array(
             'name' => "Set domain_id on customers table to 1",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "custom_fields` ADD  `domain_id` INT NOT NULL ;",
-            'date' => "20081230"
+            'date' => "20081230",
+            'source' => 'original'
         );
         self::makePatch('186', $patch);
 
         $patch = array(
             'name' => "Set domain_id on custom_fields table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "custom_fields` SET `domain_id` = '1' ;",
-            'date' => "20081230"
+            'date' => "20081230",
+            'source' => 'original'
         );
         self::makePatch('187', $patch);
 
         $patch = array(
             'name' => "Drop tax_id column from si_invoice_items table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` DROP `tax_id`  ;",
-            'date' => "20090118"
+            'date' => "20090118",
+            'source' => 'original'
         );
         self::makePatch('188', $patch);
 
         $patch = array(
             'name' => "Drop tax column from si_invoice_items table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` DROP `tax`  ;",
-            'date' => "20090118"
+            'date' => "20090118",
+            'source' => 'original'
         );
         self::makePatch('189', $patch);
 
         $patch = array(
             'name' => "Insert user role - user",
             'patch' => "INSERT INTO " . TB_PREFIX . "user_role (name) VALUES ('user');",
-            'date' => "20090215"
+            'date' => "20090215",
+            'source' => 'original'
         );
         self::makePatch('190', $patch);
 
         $patch = array(
             'name' => "Insert user role - viewer",
             'patch' => "INSERT INTO " . TB_PREFIX . "user_role (name) VALUES ('viewer');",
-            'date' => "20090215"
+            'date' => "20090215",
+            'source' => 'original'
         );
         self::makePatch('191', $patch);
 
         $patch = array(
             'name' => "Insert user role - customer",
             'patch' => "INSERT INTO " . TB_PREFIX . "user_role (name) VALUES ('customer');",
-            'date' => "20090215"
+            'date' => "20090215",
+            'source' => 'original'
         );
         self::makePatch('192', $patch);
 
         $patch = array(
             'name' => "Insert user role - biller",
             'patch' => "INSERT INTO " . TB_PREFIX . "user_role (name) VALUES ('biller');",
-            'date' => "20090215"
+            'date' => "20090215",
+            'source' => 'original'
         );
         self::makePatch('193', $patch);
 
         $patch = array(
             'name' => "User table - auto increment",
             'patch' => "ALTER TABLE " . TB_PREFIX . "user CHANGE id id INT( 11 ) NOT NULL AUTO_INCREMENT;",
-            'date' => "20090215"
+            'date' => "20090215",
+            'source' => 'original'
         );
         self::makePatch('194', $patch);
 
         $patch = array(
             'name' => "User table - add enabled field",
             'patch' => "ALTER TABLE " . TB_PREFIX . "user ADD enabled INT( 1 ) NOT NULL ;",
-            'date' => "20090215"
+            'date' => "20090215",
+            'source' => 'original'
         );
         self::makePatch('195', $patch);
 
         $patch = array(
             'name' => "User table - make all existing users enabled",
             'patch' => "UPDATE " . TB_PREFIX . "user SET enabled = 1 ;",
-            'date' => "20090217"
+            'date' => "20090217",
+            'source' => 'original'
         );
         self::makePatch('196', $patch);
 
@@ -1811,7 +2077,8 @@ class SqlPatchManager
                                                                      ADD `extension_id` INT( 5 ) NOT NULL DEFAULT '1',
                                                                      DROP INDEX `name`,
                                                                      ADD INDEX `name` ( `name` );",
-            'date' => "20090321"
+            'date' => "20090321",
+            'source' => 'original'
         );
         self::makePatch('197', $patch);
 
@@ -1822,7 +2089,8 @@ class SqlPatchManager
                                                                   `name` VARCHAR( 255 ) NOT NULL ,
                                                                   `description` VARCHAR( 255 ) NOT NULL ,
                                                                   `enabled` VARCHAR( 1 ) NOT NULL DEFAULT '0') ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20090322"
+            'date' => "20090322",
+            'source' => 'original'
         );
         self::makePatch('198', $patch);
 
@@ -1830,35 +2098,40 @@ class SqlPatchManager
             'name' => "Update extensions table",
             'patch' => "INSERT INTO " . TB_PREFIX . "extensions (`id`,`domain_id`,`name`,`description`,`enabled`)
                         VALUES ('1','1','core','Core part of SimpleInvoices - always enabled','1');",
-            'date' => "20090529"
+            'date' => "20090529",
+            'source' => 'original'
         );
         self::makePatch('199', $patch);
 
         $patch = array(
             'name' => "Update extensions table",
             'patch' => "UPDATE " . TB_PREFIX . "extensions SET `id` = '1' WHERE `name` = 'core' LIMIT 1;",
-            'date' => "20090529"
+            'date' => "20090529",
+            'source' => 'original'
         );
         self::makePatch('200', $patch);
 
         $patch = array(
             'name' => "Set domain_id on system defaults table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET `domain_id` = '1' ;",
-            'date' => "20090622"
+            'date' => "20090622",
+            'source' => 'original'
         );
         self::makePatch('201', $patch);
 
         $patch = array(
             'name' => "Set extension_id on system defaults table to 1",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET `extension_id` = '1' ;",
-            'date' => "20090622"
+            'date' => "20090622",
+            'source' => 'original'
         );
         self::makePatch('202', $patch);
 
         $patch = array(
             'name' => "Move all old consulting style invoices to itemised",
             'patch' => "UPDATE `" . TB_PREFIX . "invoices` SET `type_id` = '2' where `type_id`=3 ;",
-            'date' => "20090704"
+            'date' => "20090704",
+            'source' => 'original'
         );
         self::makePatch('203', $patch);
 
@@ -1868,14 +2141,16 @@ class SqlPatchManager
                                                                `node` VARCHAR( 255 ) NOT NULL ,
                                                                `sub_node` VARCHAR( 255 ) NULL ,
                                                                `domain_id` INT( 11 ) NOT NULL) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20090818"
+            'date' => "20090818",
+            'source' => 'original'
         );
         self::makePatch('204', $patch);
 
         $patch = array(
             'name' => "Add index_id to invoice table - new invoice numbering",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD `index_id` INT( 11 ) NOT NULL AFTER `id`;",
-            'date' => "20090818"
+            'date' => "20090818",
+            'source' => 'original'
         );
         self::makePatch('205', $patch);
 
@@ -1884,21 +2159,24 @@ class SqlPatchManager
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD `status` INT( 1 ) NOT NULL ,
                                                                    ADD `locale` VARCHAR( 255 ) NULL ,
                                                                    ADD `language` VARCHAR( 255 ) NULL ;",
-            'date' => "20090826"
+            'date' => "20090826",
+            'source' => 'original'
         );
         self::makePatch('206', $patch);
 
         $patch = array(
             'name' => "Populate the status, locale, and language fields in preferences table",
             'patch' => "UPDATE `" . TB_PREFIX . "preferences` SET status = '1', locale = '" . $config->local->locale . "', language = '$language' ;",
-            'date' => "20090826"
+            'date' => "20090826",
+            'source' => 'original'
         );
         self::makePatch('207', $patch);
 
         $patch = array(
             'name' => "Populate the status, locale, and language fields in preferences table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD `index_group` INT( 11 ) NOT NULL ;",
-            'date' => "20090826"
+            'date' => "20090826",
+            'source' => 'original'
         );
         self::makePatch('208', $patch);
 
@@ -1906,28 +2184,32 @@ class SqlPatchManager
         $patch = array(
             'name' => "Populate the status, locale, and language fields in preferences table",
             'patch' => "UPDATE `" . TB_PREFIX . "preferences` SET index_group = '$preference' ;",
-            'date' => "20090826"
+            'date' => "20090826",
+            'source' => 'original'
         );
         self::makePatch('209', $patch);
 
         $patch = array(
             'name' => "Create composite primary key for invoice table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`,`id` );",
-            'date' => "20090826"
+            'date' => "20090826",
+            'source' => 'original'
         );
         self::makePatch('210', $patch);
 
         $patch = array(
             'name' => "Reset auto-increment for invoice table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` AUTO_INCREMENT = 1;",
-            'date' => "20090826"
+            'date' => "20090826",
+            'source' => 'original'
         );
         self::makePatch('211', $patch);
 
         $patch = array(
             'name' => "Copy invoice.id into invoice.index_id",
             'patch' => "update `" . TB_PREFIX . "invoices` set index_id = id;",
-            'date' => "20090902"
+            'date' => "20090902",
+            'source' => 'original'
         );
         self::makePatch('212', $patch);
 
@@ -1937,7 +2219,8 @@ class SqlPatchManager
             'patch' => ($max_invoice > "0" ? "INSERT INTO `" . TB_PREFIX . "index` (id, node, sub_node, domain_id)
                                               VALUES (" . $max_invoice . ", 'invoice', '" . $defaults['preference'] . "','1');" :
                 "SELECT 1+1;"),
-            'date' => "20090902"
+            'date' => "20090902",
+            'source' => 'original'
         );
         self::makePatch('213', $patch);
         unset($defaults);
@@ -1946,91 +2229,104 @@ class SqlPatchManager
         $patch = array(
             'name' => "Add sub_node_2 to si_index table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "index` ADD  `sub_node_2` VARCHAR( 255 ) NULL AFTER  `sub_node`",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('214', $patch);
 
         $patch = array(
             'name' => "si_invoices - add composite primary key - patch removed",
             'patch' => "SELECT 1+1;",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('215', $patch);
 
         $patch = array(
             'name' => "si_payment - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "payment` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `id`)",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('216', $patch);
 
         $patch = array(
             'name' => "si_payment_types - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "payment_types` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `pt_id`)",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('217', $patch);
 
         $patch = array(
             'name' => "si_preferences - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `pref_id`)",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('218', $patch);
 
         $patch = array(
             'name' => "si_products - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `id`)",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('219', $patch);
 
         $patch = array(
             'name' => "si_tax - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "tax` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `tax_id`)",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('220', $patch);
 
         $patch = array(
             'name' => "si_user - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `id`)",
-            'date' => "20090912"
+            'date' => "20090912",
+            'source' => 'original'
         );
         self::makePatch('221', $patch);
 
         $patch = array(
             'name' => "si_biller - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `id`)",
-            'date' => "20100209"
+            'date' => "20100209",
+            'source' => 'original'
         );
         self::makePatch('222', $patch);
 
         $patch = array(
             'name' => "si_customers - add composite primary key",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` DROP PRIMARY KEY, ADD PRIMARY KEY(`domain_id`, `id`)",
-            'date' => "20100209"
+            'date' => "20100209",
+            'source' => 'original'
         );
         self::makePatch('223', $patch);
 
         $patch = array(
             'name' => "Add paypal business name",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD `paypal_business_name` VARCHAR( 255 ) NULL AFTER  `footer`",
-            'date' => "20100209"
+            'date' => "20100209",
+            'source' => 'original'
         );
         self::makePatch('224', $patch);
 
         $patch = array(
             'name' => "Add paypal notify url",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD `paypal_notify_url` VARCHAR( 255 ) NULL AFTER  `paypal_business_name`",
-            'date' => "20100209"
+            'date' => "20100209",
+            'source' => 'original'
         );
         self::makePatch('225', $patch);
 
         $patch = array(
             'name' => "Define currency in preferences",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD `currency_code` VARCHAR( 25 ) NULL ;",
-            'date' => "20100209"
+            'date' => "20100209",
+            'source' => 'original'
         );
         self::makePatch('226', $patch);
 
@@ -2046,7 +2342,8 @@ class SqlPatchManager
                                                               `email_biller` INT( 1 ) NULL ,
                                                               `email_customer` INT( 1 ) NULL ,
                                PRIMARY KEY (`domain_id` ,`id`)) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20100215"
+            'date' => "20100215",
+            'source' => 'original'
         );
         self::makePatch('227', $patch);
 
@@ -2056,84 +2353,96 @@ class SqlPatchManager
                                                                   `domain_id` INT( 11 ) NOT NULL ,
                                                                   `run_date` DATE NOT NULL ,
                                PRIMARY KEY (  `domain_id` , `id`)) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20100216"
+            'date' => "20100216",
+            'source' => 'original'
         );
         self::makePatch('228', $patch);
 
         $patch = array(
             'name' => "preferences - add online payment type",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD `include_online_payment` VARCHAR( 255 ) NULL ;",
-            'date' => "20100209"
+            'date' => "20100209",
+            'source' => 'original'
         );
         self::makePatch('229', $patch);
 
         $patch = array(
             'name' => "Add paypal notify url",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "biller` ADD `paypal_return_url` VARCHAR( 255 ) NULL AFTER  `paypal_notify_url`",
-            'date' => "20100223"
+            'date' => "20100223",
+            'source' => 'original'
         );
         self::makePatch('230', $patch);
 
         $patch = array(
             'name' => "Add paypal payment id into payment table",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "payment` ADD `online_payment_id` VARCHAR( 255 ) NULL AFTER  `domain_id`",
-            'date' => "20100226"
+            'date' => "20100226",
+            'source' => 'original'
         );
         self::makePatch('231', $patch);
 
         $patch = array(
             'name' => "Define currency display in preferences",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD `currency_position` VARCHAR( 25 ) NULL ;",
-            'date' => "20100227"
+            'date' => "20100227",
+            'source' => 'original'
         );
         self::makePatch('232', $patch);
 
         $patch = array(
             'name' => "Add system default to control invoice number by biller -- dummy patch -- this sql was removed",
             'patch' => "SELECT 1+1;",
-            'date' => "20100302"
+            'date' => "20100302",
+            'source' => 'original'
         );
         self::makePatch('233', $patch);
 
         $patch = array(
             'name' => "Add eway customer ID",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "biller` ADD `eway_customer_id` VARCHAR( 255 ) NULL AFTER `paypal_return_url`;",
-            'date' => "20100315"
+            'date' => "20100315",
+            'source' => 'original'
         );
         self::makePatch('234', $patch);
 
         $patch = array(
             'name' => "Add eway card holder name",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "customers` ADD `credit_card_holder_name` VARCHAR( 255 ) NULL AFTER `email`;",
-            'date' => "20100315"
+            'date' => "20100315",
+            'source' => 'original'
         );
         self::makePatch('235', $patch);
 
         $patch = array(
             'name' => "Add eway card number",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "customers` ADD `credit_card_number` VARCHAR( 255 ) NULL AFTER `credit_card_holder_name`;",
-            'date' => "20100315"
+            'date' => "20100315",
+            'source' => 'original'
         );
         self::makePatch('236', $patch);
 
         $patch = array(
             'name' => "Add eway card expiry month",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "customers` ADD `credit_card_expiry_month` VARCHAR( 02 ) NULL AFTER `credit_card_number`;",
-            'date' => "20100315"
+            'date' => "20100315",
+            'source' => 'original'
         );
         self::makePatch('237', $patch);
 
         $patch = array(
             'name' => "Add eway card expirt year",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "customers` ADD `credit_card_expiry_year` VARCHAR( 04 ) NULL AFTER `credit_card_expiry_month` ;",
-            'date' => "20100315"
+            'date' => "20100315",
+            'source' => 'original'
         );
         self::makePatch('238', $patch);
 
         $patch = array(
             'name' => "cronlog - add invoice id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "cron_log` ADD `cron_id` VARCHAR( 25 ) NULL AFTER `domain_id` ;",
-            'date' => "20100321"
+            'date' => "20100321",
+            'source' => 'original'
         );
         self::makePatch('239', $patch);
 
@@ -2145,28 +2454,32 @@ class SqlPatchManager
                         ALTER TABLE  `" . TB_PREFIX . "system_defaults` DROP INDEX `name` ;
                         ALTER TABLE  `" . TB_PREFIX . "system_defaults` CHANGE  `new_id`  `id` INT( 11 ) NOT NULL;
                         ALTER TABLE  `" . TB_PREFIX . "system_defaults` ADD PRIMARY KEY(`domain_id`,`id` );",
-            'date' => "20100305"
+            'date' => "20100305",
+            'source' => 'original'
         );
         self::makePatch('240', $patch);
 
         $patch = array(
             'name' => "si_system_defaults - add composite primary key",
             'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` VALUES ('','inventory','0','1','1');",
-            'date' => "20100409"
+            'date' => "20100409",
+            'source' => 'original'
         );
         self::makePatch('241', $patch);
 
         $patch = array(
             'name' => "Add cost to products table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `cost` DECIMAL( 25, 6 ) NULL DEFAULT '0.00' AFTER `default_tax_id_2`;",
-            'date' => "20100409"
+            'date' => "20100409",
+            'source' => 'original'
         );
         self::makePatch('242', $patch);
 
         $patch = array(
             'name' => "Add reorder_level to products table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `reorder_level` INT( 11 ) NULL AFTER `cost` ;",
-            'date' => "20100409"
+            'date' => "20100409",
+            'source' => 'original'
         );
         self::makePatch('243', $patch);
 
@@ -2180,77 +2493,88 @@ class SqlPatchManager
                                                                     `date` DATE NOT NULL ,
                                                                     `note` TEXT NULL ,
                                PRIMARY KEY (`domain_id`, `id`)) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20100409"
+            'date' => "20100409",
+            'source' => 'original'
         );
         self::makePatch('244', $patch);
 
         $patch = array(
             'name' => "Preferences - make locale null field",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "preferences` CHANGE  `locale`  `locale` VARCHAR( 255 ) NULL ;",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('245', $patch);
 
         $patch = array(
             'name' => "Preferences - make language a null field",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "preferences` CHANGE  `language`  `language` VARCHAR( 255 ) NULL;",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('246', $patch);
 
         $patch = array(
             'name' => "Custom fields - make sure domain_id is 1",
             'patch' => "update " . TB_PREFIX . "custom_fields set domain_id = '1';",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('247', $patch);
 
         $patch = array(
             'name' => "Make SimpleInvoices faster - add index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD INDEX(`domain_id`);",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('248', $patch);
 
         $patch = array(
             'name' => "Make SimpleInvoices faster - add index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD INDEX(`biller_id`) ;",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('249', $patch);
 
         $patch = array(
             'name' => "Make SimpleInvoices faster - add index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD INDEX(`customer_id`);",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('250', $patch);
 
         $patch = array(
             'name' => "Make SimpleInvoices faster - add index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "payment` ADD INDEX(`domain_id`);",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('251', $patch);
 
         $patch = array(
             'name' => "Language - reset to en_US - due to folder renaming",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value ='en_US' where name='language';",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('252', $patch);
 
         $patch = array(
             'name' => "Add PaymentsGateway API ID field",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD  `paymentsgateway_api_id` VARCHAR( 255 ) NULL AFTER `eway_customer_id`;",
-            'date' => "20110918"
+            'date' => "20110918",
+            'source' => 'original'
         );
         self::makePatch('253', $patch);
 
         $patch = array(
             'name' => "Product Matrix - update line items table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD `attribute` VARCHAR( 255 ) NULL ;",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('254', $patch);
 
@@ -2259,14 +2583,16 @@ class SqlPatchManager
             'patch' => "CREATE TABLE `" . TB_PREFIX . "products_attributes` (`id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                                                                              `name` VARCHAR( 255 ) NOT NULL,
                                                                              `type_id` VARCHAR( 255 ) NOT NULL) ENGINE = MYISAM ;",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('255', $patch);
 
         $patch = array(
             'name' => "Product Matrix - update line items table",
             'patch' => "INSERT INTO `" . TB_PREFIX . "products_attributes` (`id`, `name`, `type_id`) VALUES (NULL, 'Size','1'), (NULL,'Colour','1');",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('256', $patch);
 
@@ -2275,7 +2601,8 @@ class SqlPatchManager
             'patch' => "CREATE TABLE `" . TB_PREFIX . "products_values` (`id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                                                                          `attribute_id` INT( 11 ) NOT NULL ,
                                                                          `value` VARCHAR( 255 ) NOT NULL) ENGINE = MYISAM ;",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('257', $patch);
 
@@ -2283,56 +2610,64 @@ class SqlPatchManager
             'name' => "Product Matrix - update line items table",
             'patch' => "INSERT INTO `" . TB_PREFIX . "products_values` (`id`, `attribute_id`,`value`)
                         VALUES (NULL,'1', 'S'),  (NULL,'1', 'M'), (NULL,'1', 'L'),  (NULL,'2', 'Red'),  (NULL,'2', 'White');",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('258', $patch);
 
         $patch = array(
             'name' => "Product Matrix - update line items table",
             'patch' => "SELECT 1+1;",  //remove matrix code
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('259', $patch);
 
         $patch = array(
             'name' => "Product Matrix - update line items table",
             'patch' => "SELECT 1+1;", //remove matrix code
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('260', $patch);
 
         $patch = array(
             'name' => "Product Matrix - update line items table",
             'patch' => "SELECT 1+1;", //remove matrix code
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('261', $patch);
 
         $patch = array(
             'name' => "Add product attributes system preference",
             'patch' => "INSERT INTO " . TB_PREFIX . "system_defaults (id, name ,value ,domain_id ,extension_id ) VALUES (NULL , 'product_attributes', '0', '1', '1');",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('262', $patch);
 
         $patch = array(
             'name' => "Product Matrix - update line items table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `attribute` VARCHAR( 255 ) NULL ;",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('263', $patch);
 
         $patch = array(
             'name' => "Product - use notes as default line item description",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `notes_as_description` VARCHAR( 1 ) NULL ;",
-            'date' => "20130314"
+            'date' => "20130314",
+            'source' => 'original'
         );
         self::makePatch('264', $patch);
 
         $patch = array(
             'name' => "Product - expand/show line item description",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `show_description` VARCHAR( 1 ) NULL ;",
-            'date' => "20130314"
+            'date' => "20130314",
+            'source' => 'original'
         );
         self::makePatch('265', $patch);
 
@@ -2341,14 +2676,16 @@ class SqlPatchManager
             'patch' => "CREATE TABLE `" . TB_PREFIX . "products_attribute_type` (`id` int(11) NOT NULL AUTO_INCREMENT,
                                                                                  `name` varchar(255) NOT NULL,
                                                                                  PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-            'date' => "20130322"
+            'date' => "20130322",
+            'source' => 'original'
         );
         self::makePatch('266', $patch);
 
         $patch = array(
             'name' => "Product Matrix - insert attribute types",
             'patch' => "INSERT INTO `" . TB_PREFIX . "products_attribute_type` (`id`, `name`) VALUES (NULL,'list'),  (NULL,'decimal'), (NULL,'free');",
-            'date' => "20130325"
+            'date' => "20130325",
+            'source' => 'original'
         );
         self::makePatch('267', $patch);
 
@@ -2356,49 +2693,56 @@ class SqlPatchManager
             'name' => "Product Matrix - insert attribute types",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "products_attributes` ADD `enabled` VARCHAR( 1 ) NULL DEFAULT  '1',
                                                                             ADD `visible` VARCHAR( 1 ) NULL DEFAULT  '1';",
-            'date' => "20130327"
+            'date' => "20130327",
+            'source' => 'original'
         );
         self::makePatch('268', $patch);
 
         $patch = array(
             'name' => "Product Matrix - insert attribute types",
             'patch' => "ALTER TABLE  `" . TB_PREFIX . "products_values` ADD  `enabled` VARCHAR( 1 ) NULL DEFAULT  '1';",
-            'date' => "20130327"
+            'date' => "20130327",
+            'source' => 'original'
         );
         self::makePatch('269', $patch);
 
         $patch = array(
             'name' => "Make SimpleInvoices faster - add index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "payment` ADD INDEX(`ac_inv_id`);",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('270', $patch);
 
         $patch = array(
             'name' => "Make SimpleInvoices faster - add index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "payment` ADD INDEX(`ac_amount`);",
-            'date' => "20100419"
+            'date' => "20100419",
+            'source' => 'original'
         );
         self::makePatch('271', $patch);
 
         $patch = array(
             'name' => "Add product attributes system preference",
             'patch' => "INSERT INTO " . TB_PREFIX . "system_defaults (id, name ,value ,domain_id ,extension_id ) VALUES (NULL , 'large_dataset', '0', '1', '1');",
-            'date' => "20130313"
+            'date' => "20130313",
+            'source' => 'original'
         );
         self::makePatch('272', $patch);
 
         $patch = array(
             'name' => "Make SimpleInvoices faster - add index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD INDEX(`invoice_id`);",
-            'date' => "20130927"
+            'date' => "20130927",
+            'source' => 'original'
         );
         self::makePatch('273', $patch);
 
         $patch = array(
             'name' => "Only One Default Variable name per domain allowed - add unique index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "system_defaults` ADD UNIQUE INDEX `UnqNameInDomain` (`domain_id`, `name`);",
-            'date' => "20131007"
+            'date' => "20131007",
+            'source' => 'original'
         );
         self::makePatch('274', $patch);
 
@@ -2406,21 +2750,24 @@ class SqlPatchManager
             'name' => "Make EMail / Password pair unique per domain - add unique index",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` CHANGE `password` `password` VARCHAR(64) NULL,
                                                             ADD UNIQUE INDEX `UnqEMailPwd` (`email`, `password`);",
-            'date' => "20131007"
+            'date' => "20131007",
+            'source' => 'original'
         );
         self::makePatch('275', $patch);
 
         $patch = array(
             'name' => "Each invoice Item must belong to a specific Invoice with a specific domain_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD COLUMN `domain_id` INT NOT NULL DEFAULT '1' AFTER `invoice_id`;",
-            'date' => "20131008"
+            'date' => "20131008",
+            'source' => 'original'
         );
         self::makePatch('276', $patch);
 
         $patch = array(
             'name' => "Add Index for Quick Invoice Item Search for a domain_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD INDEX `DomainInv` (`invoice_id`, `domain_id`);",
-            'date' => "20131008"
+            'date' => "20131008",
+            'source' => 'original'
         );
         self::makePatch('277', $patch);
 
@@ -2429,21 +2776,24 @@ class SqlPatchManager
             //    Patch disabled for old installs with inadequate database integrity
             //    self::$patchLines['278']['patch'] = "ALTER TABLE `".TB_PREFIX."invoice_item_tax` ADD UNIQUE INDEX `UnqInvTax` (`invoice_item_id`, `tax_id`);";
             'patch' => "SELECT 1+1;",
-            'date' => "20131008"
+            'date' => "20131008",
+            'source' => 'original'
         );
         self::makePatch('278', $patch);
 
         $patch = array(
             'name' => "Drop unused superceeded table si_product_matrix if present",
             'patch' => "DROP TABLE IF EXISTS `" . TB_PREFIX . "products_matrix`;",
-            'date' => "20131009"
+            'date' => "20131009",
+            'source' => 'original'
         );
         self::makePatch('279', $patch);
 
         $patch = array(
             'name' => "Each domain has their own extension instances",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "extensions` DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `domain_id`);",
-            'date' => "20131011"
+            'date' => "20131011",
+            'source' => 'original'
         );
         self::makePatch('280', $patch);
 
@@ -2451,7 +2801,8 @@ class SqlPatchManager
             'name' => "Each domain has their own custom_field id sets",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "custom_fields` DROP PRIMARY KEY,
                                                                      ADD PRIMARY KEY (`cf_id`, `domain_id`);",
-            'date' => "20131011"
+            'date' => "20131011",
+            'source' => 'original'
         );
         self::makePatch('281', $patch);
 
@@ -2460,14 +2811,16 @@ class SqlPatchManager
             'patch' => "ALTER TABLE `" . TB_PREFIX . "log` ADD COLUMN `domain_id` INT NOT NULL DEFAULT '1' AFTER `id`,
                                                            DROP PRIMARY KEY,
                                                            ADD PRIMARY KEY (`id`, `domain_id`);",
-            'date' => "20131011"
+            'date' => "20131011",
+            'source' => 'original'
         );
         self::makePatch('282', $patch);
 
         $patch = array(
             'name' => "Match field type with foreign key field si_user.id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "log` CHANGE `userid` `userid` INT NOT NULL DEFAULT '1';",
-            'date' => "20131012"
+            'date' => "20131012",
+            'source' => 'original'
         );
         self::makePatch('283', $patch);
 
@@ -2476,14 +2829,16 @@ class SqlPatchManager
             'patch' => "ALTER TABLE `" . TB_PREFIX . "index` CHANGE `node` `node` VARCHAR(64) NOT NULL,
                                                              CHANGE `sub_node` `sub_node` INT NOT NULL,
                                                              CHANGE `sub_node_2` `sub_node_2` INT NOT NULL;",
-            'date' => "20131016"
+            'date' => "20131016",
+            'source' => 'original'
         );
         self::makePatch('284', $patch);
 
         $patch = array(
             'name' => "Fix compound Primary Key for si_index table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "index` ADD PRIMARY KEY (`node`, `sub_node`, `sub_node_2`, `domain_id`);",
-            'date' => "20131016"
+            'date' => "20131016",
+            'source' => 'original'
         );
         self::makePatch('285', $patch);
 
@@ -2492,28 +2847,32 @@ class SqlPatchManager
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices`
                         ADD UNIQUE INDEX `UniqDIB` (`index_id`, `preference_id`, `biller_id`, `domain_id`),
                         ADD INDEX `IdxDI` (`index_id`, `preference_id`, `domain_id`);",
-            'date' => "20131016"
+            'date' => "20131016",
+            'source' => 'original'
         );
         self::makePatch('286', $patch);
 
         $patch = array(
             'name' => "Populate additional user roles like domain_administrator",
             'patch' => "INSERT IGNORE INTO `" . TB_PREFIX . "user_role` (`name`) VALUES ('domain_administrator'), ('customer'), ('biller');",
-            'date' => "20131017"
+            'date' => "20131017",
+            'source' => 'original'
         );
         self::makePatch('287', $patch);
 
         $patch = array(
             'name' => "Fully relational now - do away with the si_index table",
             'patch' => "SELECT 1+1;",
-            'date' => "20131017"
+            'date' => "20131017",
+            'source' => 'original'
         );
         self::makePatch('288', $patch);
 
         $patch = array(
             'name' => "Each cron_id can run a maximum of only once a day for each domain_id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "cron_log` ADD UNIQUE INDEX `CronIdUnq` (`domain_id`, `cron_id`, `run_date`);",
-            'date' => "20131108"
+            'date' => "20131108",
+            'source' => 'original'
         );
         self::makePatch('289', $patch);
 
@@ -2538,7 +2897,8 @@ class SqlPatchManager
                                                                            CHANGE `visible` `visible` TINYINT(1) DEFAULT 1 NOT NULL;
                         ALTER TABLE `" . TB_PREFIX . "products_VALUES` CHANGE `enabled` `enabled` TINYINT(1) DEFAULT 1 NOT NULL;
                         ALTER TABLE `" . TB_PREFIX . "user` CHANGE `enabled` `enabled` TINYINT(1) DEFAULT 1 NOT NULL;",
-            'date' => "20131109"
+            'date' => "20131109",
+            'source' => 'original'
         );
         self::makePatch('290', $patch);
 
@@ -2547,21 +2907,24 @@ class SqlPatchManager
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` CHANGE `zip_code` `zip_code` VARCHAR(20) NULL,
                                                                  CHANGE `credit_card_number` `credit_card_number` VARCHAR(20) NULL;
                         ALTER TABLE `" . TB_PREFIX . "biller` CHANGE `zip_code` `zip_code` VARCHAR(20) NULL;",
-            'date' => "20131111"
+            'date' => "20131111",
+            'source' => 'original'
         );
         self::makePatch('291', $patch);
 
         $patch = array(
             'name' => "Added Customer/Biller User ID column to user table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "user` ADD COLUMN `user_id` INT  DEFAULT 0 NOT NULL AFTER `enabled`;",
-            'date' => "20140103"
+            'date' => "20140103",
+            'source' => 'original'
         );
         self::makePatch('292', $patch);
 
         $patch = array(
             'name' => "Add department to the customers",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` ADD COLUMN `department` VARCHAR(255) NULL AFTER `name`;",
-            'date' => "20161004"
+            'date' => "20161004",
+            'source' => 'original'
         );
         self::makePatch('293', $patch);
 
@@ -2591,7 +2954,8 @@ class SqlPatchManager
                               INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',9,0);
                               INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',10,0);
                               DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'custom_flags';"),
-            'date' => "20180922"
+            'date' => "20180922",
+            'source' => 'fearless359'
         );
         self::makePatch('294', $patch);
         unset($ud);
@@ -2599,14 +2963,16 @@ class SqlPatchManager
         $patch = array(
             'name' => 'Add net income report.',
             'patch' => "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'net_income_report';",
-            'date' => "20180923"
+            'date' => "20180923",
+            'source' => 'fearless359'
         );
         self::makePatch('295', $patch);
 
         $patch = array(
             'name' => 'Add past due report.',
             'patch' => "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'past_due_report';",
-            'date' => "20180924"
+            'date' => "20180924",
+            'source' => 'fearless359'
         );
         self::makePatch('296', $patch);
 
@@ -2633,7 +2999,8 @@ class SqlPatchManager
                                INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_upper'      , 1        , 1);
                                INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'session_timeout'     , 15       , 1);
                                DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'user_security';"),
-            'date' => "20180924"
+            'date' => "20180924",
+            'source' => 'fearless359'
         );
         self::makePatch('297', $patch);
         unset($ud);
@@ -2646,7 +3013,8 @@ class SqlPatchManager
             'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'signature_field';" :
                               "ALTER TABLE `" . TB_PREFIX . "biller` ADD `signature` varchar(255) DEFAULT '' NOT NULL COMMENT 'Email signature' AFTER `email`;
                                DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'signature_field';"),
-            'date' => "20181003"
+            'date' => "20181003",
+            'source' => 'fearless359'
         );
         self::makePatch('298', $patch);
         unset($ud);
@@ -2657,7 +3025,8 @@ class SqlPatchManager
             'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'payments';" :
                               "ALTER TABLE `" . TB_PREFIX . "payment` ADD `ac_check_number` varchar(10) DEFAULT '' NOT NULL COMMENT 'Check number for CHECK payment types';
                                DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'payments';"),
-            'date' => "20181003"
+            'date' => "20181003",
+            'source' => 'fearless359'
         );
         self::makePatch('299', $patch);
         unset($ud);

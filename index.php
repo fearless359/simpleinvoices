@@ -82,6 +82,8 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
         $module = "install";
         $view == "essential" ? $view = "essential" : $view = "structure";
         $skip_db_patches = true; // do installer
+    } else if($module == 'install' && $view == 'sample_data') {
+        $skip_db_patches = true;
     }
 
     $logger->log("index.php - skip_db_patches[$skip_db_patches]", Zend_Log::DEBUG);
