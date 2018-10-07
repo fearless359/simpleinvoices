@@ -15,6 +15,9 @@
     <ul>
         <li>2018-10-04 - <b>2018.1.2</b>
             <ul>
+                <li>2018-10-06 - Minor fix. Modified new install to go to Start Working screen after
+                    required biller, customer and product have been set up. Previously went to the
+                    list screen of the last of the required items set up (typically Products).</li>
                 <li>Moved SQL patch management logic into a new SqlPatchManager class. This change
                     deprecates the sql_patches.php file which is left as an empty file to force it
                     to overload the previous version of the file.</li>
