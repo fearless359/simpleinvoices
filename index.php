@@ -113,35 +113,25 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                         ($module == 'system_defaults' && ($view == 'manage' || $view == 'edit' || $view == 'save'))) {
                         $still_doing_setup = false;
                     } else {
-                        $still_doing_setup = true;
-                        $c_count = 0;
-                        $i_count = 0;
-                        $p_count = 0;
+                        $still_doing_setup = false;
+                        if (Invoice::count() == 0) {
+                            $still_doing_setup = true;
+                            if (Biller::count() > 0 && Customer::count() > 0 && Product::count()  > 0) {
+                                $still_doing_setup = false;
 
-                        $b_count = Biller::count();
-                        if ($b_count > 0) {
-                            $c_count = Customer::count();
-                            if ($c_count > 0) {
-                                $p_count = Product::count();
-                                if ($p_count > 0) {
-                                    $i_count = Invoice::count();
-                                    $still_doing_setup = false;
-                                    if ($i_count == 0) {
-                                        // Biller, Customer and Product set up but no invoices. Check to
-                                        // see if this is the first time we've encountered this. If so,
-                                        // flag $still_doing_setup but set install completed status in
-                                        // database so subsequent requests will go to the specified screen.
-                                        $rows = $pdoDb->request('SELECT', 'install_complete');
-                                        if (empty($rows) || $rows[0]['completed'] != ENABLED) {
-                                            $pdoDb->setFauxPost(array('completed' => ENABLED));
-                                            if (empty($rows)) {
-                                                $pdoDb->request('INSERT', 'install_complete');
-                                            } else {
-                                                $pdoDb->request('UPDATE', 'install_complete');
-                                            }
-                                            $still_doing_setup = true;
-                                        }
+                                // Biller, Customer and Product set up but no invoices. Check to
+                                // see if this is the first time we've encountered this. If so,
+                                // flag $still_doing_setup but set install completed status in
+                                // database so subsequent requests will go to the specified screen.
+                                $rows = $pdoDb->request('SELECT', 'install_complete');
+                                if (empty($rows) || $rows[0]['completed'] != ENABLED) {
+                                    $pdoDb->setFauxPost(array('completed' => ENABLED));
+                                    if (empty($rows)) {
+                                        $pdoDb->request('INSERT', 'install_complete');
+                                    } else {
+                                        $pdoDb->request('UPDATE', 'install_complete');
                                     }
+                                    $still_doing_setup = true;
                                 }
                             }
                         }
