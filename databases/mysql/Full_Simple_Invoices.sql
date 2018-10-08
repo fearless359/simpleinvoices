@@ -169,6 +169,12 @@ CREATE TABLE IF NOT EXISTS `si_index` (
 INSERT INTO `si_index` (`id`, `node`, `sub_node`, `sub_node_2`, `domain_id`) VALUES
  (1, 'invoice', '1', '', 1);
 
+CREATE TABLE `si_install_complete` (
+  `completed` tinyint(1) NOT NULL COMMENT 'Flag SI install has completed'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `si_install_complete` (`completed`) VALUES (1);
+
 CREATE TABLE IF NOT EXISTS `si_inventory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain_id` int(11) NOT NULL,

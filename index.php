@@ -39,7 +39,8 @@ global $smarty,
        $siUrl,
        $config,
        $auth_session,
-       $early_exit;
+       $early_exit,
+       $pdoDb;
 
 $logger->log("index.php - After init.php - module($module] view[$view]", Zend_Log::DEBUG);
 foreach ($ext_names as $ext_name) {
@@ -112,14 +113,41 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                         ($module == 'system_defaults' && ($view == 'manage' || $view == 'edit' || $view == 'save'))) {
                         $still_doing_setup = false;
                     } else {
+                        $still_doing_setup = true;
+                        $c_count = 0;
+                        $i_count = 0;
+                        $p_count = 0;
+
                         $b_count = Biller::count();
-                        $c_count = Customer::count();
-                        $p_count = Product::count();
-                        $i_count = Invoice::count();
+                        if ($b_count > 0) {
+                            $c_count = Customer::count();
+                            if ($c_count > 0) {
+                                $p_count = Product::count();
+                                if ($p_count > 0) {
+                                    $i_count = Invoice::count();
+                                    $still_doing_setup = false;
+                                    if ($i_count == 0) {
+                                        // Biller, Customer and Product set up but no invoices. Check to
+                                        // see if this is the first time we've encountered this. If so,
+                                        // flag $still_doing_setup but set install completed status in
+                                        // database so subsequent requests will go to the specified screen.
+                                        $rows = $pdoDb->request('SELECT', 'install_complete');
+                                        if (empty($rows) || $rows[0]['completed'] != ENABLED) {
+                                            $pdoDb->setFauxPost(array('completed' => ENABLED));
+                                            if (empty($rows)) {
+                                                $pdoDb->request('INSERT', 'install_complete');
+                                            } else {
+                                                $pdoDb->request('UPDATE', 'install_complete');
+                                            }
+                                            $still_doing_setup = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
-                        $logger->log("index.php - b_count[$b_count] c_count[$c_count] p_count[$p_count]", Zend_Log::DEBUG);
-
-                        $still_doing_setup = ($b_count == 0 || $c_count == 0 || $i_count == 0 || $p_count == 0);
+                        $logger->log("index.php - b_count[$b_count] c_count[$c_count] p_count[$p_count] " .
+                            "i_count[$i_count] still_doing_setup[$still_doing_setup]", Zend_Log::DEBUG);
                     }
                 } else {
                     $still_doing_setup = true;

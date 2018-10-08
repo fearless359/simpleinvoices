@@ -16,7 +16,7 @@ class Requests {
      */
     public function __construct() {
         global $environment;
-        $this->pdoDb = new PdoDb(new DbInfo(CONFIG_FILE_PATH, $environment, "database"));
+        $this->pdoDb = new PdoDb(new DbInfo(CUSTOM_CONFIG_FILE, $environment, "database"));
         $this->reset();
     }
 

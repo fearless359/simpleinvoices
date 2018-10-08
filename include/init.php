@@ -105,7 +105,7 @@ require_once ("include/class/db.php");
 require_once("include/class/PdoDb.php");
 
 // added 'true' to allow modifications from db
-$config = new Zend_Config_Ini("./" . CONFIG_FILE_PATH, $environment, true);
+$config = new Zend_Config_Ini("./" . CUSTOM_CONFIG_FILE, $environment, true);
 
 $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
 switch($logger_level) {
@@ -147,7 +147,7 @@ $logger->addFilter($filter);
 $logger->log("init.php - logger has been setup", Zend_Log::DEBUG);
 
 try {
-    $dbInfo = new DbInfo(CONFIG_FILE_PATH, "production");
+    $dbInfo = new DbInfo(CUSTOM_CONFIG_FILE, "production");
 
     $pdoDb = new PdoDb($dbInfo);
     $pdoDb->clearAll(); // to eliminate never used warning.
@@ -240,7 +240,7 @@ Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
  * *************************************************************/
 
 $smarty = new Smarty();
-$smarty->assign("config_file_path", CONFIG_FILE_PATH);
+$smarty->assign("config_file_path", CUSTOM_CONFIG_FILE);
 
 $smarty->debugging = false;
 $smarty->setConfigDir("config")

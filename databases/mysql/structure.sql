@@ -113,6 +113,10 @@ CREATE TABLE `si_index` (
   `domain_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `si_install_complete` (
+  `completed` tinyint(1) NOT NULL COMMENT 'Flag SI install has completed'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `si_inventory` (
   `id` int(11) NOT NULL,
   `domain_id` int(11) NOT NULL,

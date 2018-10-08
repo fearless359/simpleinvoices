@@ -891,7 +891,8 @@ class Invoice {
         if (empty($rows)) return false;
 
         // Check tax id
-        if (!empty($tax_ids)) {
+        if (( is_array($tax_ids) && !empty($tax_ids[0])) ||
+            (!is_array($tax_ids) && !empty($tax_ids))) {
             if (!is_array($tax_ids)) {
                 $tax_ids = array($tax_ids);
             }

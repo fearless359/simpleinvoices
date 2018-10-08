@@ -7,18 +7,19 @@ define("DISABLED","0");
 
 //invoice styles
 define("TOTAL_INVOICE","1");
-define("ITIMISED_INVOICE","2");
+define("ITEMIZED_INVOICE","2");
 define("CONSULTING_INVOICE","3");
 
 //To turn logging on set the below to true - not needed as it is set in System Defaults
 define("LOGGING",false);
 //define("LOGGING",true);
 
-// Include another config file if required
-if (is_file('./config/custom.config.php')) {
-    define("CONFIG_FILE_PATH", "config/custom.config.php");
-} else {
-    define("CONFIG_FILE_PATH", "config/config.php");
+define("CONFIG_FILE", "config/config.php");
+define("CUSTOM_CONFIG_FILE", "config/custom.config.php");
+
+// Create custom.config.php file if it doesn't already exist
+if (!file_exists("./" . CUSTOM_CONFIG_FILE)) {
+    copy("./" . CONFIG_FILE, "./" . CUSTOM_CONFIG_FILE);
 }
 
 ####################

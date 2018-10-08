@@ -3030,6 +3030,21 @@ class SqlPatchManager
         );
         self::makePatch('299', $patch);
         unset($ud);
+
+        $ud = checkTableExists(TB_PREFIX . 'install_complete');
+        $patch = array(
+            'name' => 'Add install complete table.',
+            'patch' => ($ud ? "UPDATE `" . TB_PREFIX . "install_complete` SET `completed` = 1;" :
+                              "CREATE TABLE `" . TB_PREFIX . "install_complete` (
+                                            `completed` tinyint(1) NOT NULL COMMENT 'Flag SI install has completed'
+                                            ) ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';
+                               INSERT INTO `" . TB_PREFIX . "install_complete` (completed) VALUES (1);"),
+            'date' => "20181008",
+            'source' => 'fearless359'
+        );
+        self::makePatch('300', $patch);
+        unset($ud);
+
         // @formatter:on
     }
 

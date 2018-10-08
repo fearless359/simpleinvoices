@@ -2410,6 +2410,13 @@
       "sql_release": "20181004",
       "sql_statement": "ALTER TABLE `si_payment` ADD `ac_check_number` varchar(10) DEFAULT '' NOT NULL COMMENT 'Check number for CHECK payment types';",
       "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "300",
+      "sql_patch": "Add install complete table.",
+      "sql_release": "20181008",
+      "sql_statement": "CREATE TABLE `si_install_complete` (`completed` tinyint(1) NOT NULL COMMENT 'Flag SI install has completed') ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';",
+      "source": "fearless359"
     }
   ],
   "si_system_defaults": [

@@ -208,6 +208,13 @@
             }
         ]
     ,
+	"si_install_complete":
+	[
+		{
+			"completed":"1"
+		}
+	]
+	,
 	"si_invoice_items":
         [
             {
