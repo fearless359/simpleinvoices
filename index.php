@@ -135,9 +135,6 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                                 }
                             }
                         }
-
-                        $logger->log("index.php - b_count[$b_count] c_count[$c_count] p_count[$p_count] " .
-                            "i_count[$i_count] still_doing_setup[$still_doing_setup]", Zend_Log::DEBUG);
                     }
                 } else {
                     $still_doing_setup = true;
