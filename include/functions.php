@@ -14,6 +14,7 @@
  * Tue Jan 19 12:55:00 PST 2016
  * Mon Oct 28 12:00:00 IST 2013
  */
+
 function checkLogin() {
     if (!defined("BROWSE")) {
         echo "You Cannot Access This Script Directly, Have a Nice Day.";
@@ -28,7 +29,7 @@ function checkLogin() {
  * existing file is the path returned.
  * @param string $name Name or dir/name of file without an extension.
  * @param string $mode Set to "template" or "module".
- * @return file path or NULL if no file path determined.
+ * @return mixed File path or NULL if no file path determined.
  */
 function getCustomPath($name, $mode = 'template') {
     $my_custom_path = "custom/";
@@ -67,6 +68,9 @@ function isExtensionEnabled($ext_name) {
     return $enabled;
 }
 
+/**
+ * @return array List of logo file.
+ */
 function getLogoList() {
     $dirname = "templates/invoices/logos";
     $ext = array("jpg", "png", "jpeg", "gif");
@@ -85,6 +89,10 @@ function getLogoList() {
     return $files;
 }
 
+/**
+ * @param array $biller
+ * @return string path to biller logo if present, else default SI logo.
+ */
 function getLogo($biller) {
     $url = getURL();
 
@@ -95,13 +103,11 @@ function getLogo($biller) {
 }
 
 /**
- * Function: get_custom_field_name
- *
  * Used by manage_custom_fields to get the name of the custom field and which section it relates to (ie,
  * biller/product/customer)
  *
- * Arguments:
- * field - The custom field in question
+ * @param string $field - The custom field in question
+ * @return mixed $custom field name or false if undefined entry in $field.
  */
 function get_custom_field_name($field) {
     global $LANG;
@@ -111,8 +117,7 @@ function get_custom_field_name($field) {
     // grab the last character of the field variable
     $get_cf_number = $field[strlen($field) - 1];
 
-    // functon to return false if invalid custom_field
-    $custom_field_name = "";
+    // function to return false if invalid custom_field
     switch ($get_cf_letter) {
         case "b":
             $custom_field_name = $LANG['biller'];
@@ -158,223 +163,9 @@ function dropDown($choiceArray, $defVal) {
     return $dropDown;
 }
 
-function simpleInvoicesError($type, $info1 = "", $info2 = "") {
-    if ($type == "dbConnection" && strstr($info1, "Unknown database") !== false) {
-        $type = "install";
-        $parts = explode("'", $info1);
-        $dbname = $parts[1];
-    }
-    // @formatter:off
-    switch ($type) {
-        case "notWritable":
-            $error = exit("
-            <br />
-            ===========================================
-            <br />
-            SimpleInvoices error
-            <br />
-            ===========================================
-            <br />
-            The " . $info1 . " <b>" . $info2 . "</b> has to be writable");
-            break;
-
-        case "dbConnection":
-            $error = exit("
-            <br />
-            ===========================================
-            <br />
-            SimpleInvoices database connection problem
-            <br />
-            ===========================================
-            <br />
-            <br />
-            Could not connect to the SimpleInvoices database
-            <br />
-            <br />
-            For information on how to fix this pease refer to the following database error:
-            <br />
-            --> <b>$info1</b>
-            <br />
-            <br />
-            If this is an &quot;Access denied&quot; error please enter the correct database
-            connection details config/custom.config.php. If you don't have a custom.config.php
-            file in the config directory, copy the config.php file and name the copy
-            custom.config.php.
-            <br />
-            <br />
-            <b>Note:</b> If you are installing SimpleInvoices please follow the below steps:
-            <br />
-            1. Create a blank MySQL database (cPanel or myPHPAdmin). Defined a DB Admin user
-            name with full access to this database. Assign a password to this DB Admin user.
-            <br />
-            2. Enter the correct database connection details in the config/custom.config.php file.
-            <br />
-            3. Refresh this page
-            <br />
-            <br />
-            ===========================================
-            <br />
-            ");
-            break;
-
-        case "install":
-            $error = exit("
-              <div id='Container' class='col si_wrap'>
-                <div id='si_install_logo'>
-                  <img src='templates/invoices/logos/simple_invoices_logo.png' class='si_install_logo' width='300'/>
-                </div>
-                <table class='center' style='width:50%'>
-                  <tr>
-                    <th style='font-weight: bold;text-align:center;'>
-                      ===========================================
-                    </th>
-                  </tr>
-                  <tr>
-                    <th style='font-weight: bold;text-align:center;'>
-                      SimpleInvoices database connection problem
-                    </th>
-                  </tr>
-                  <tr>
-                    <th style='font-weight: bold;text-align:center;'>
-                      ===========================================
-                    </th>
-                  </tr>
-                  <tr>
-                    <th style='font-weight:normal;'>
-                      You&#39;ve reached this page because the name of the database in your
-                      configuration file has not been created. Please follow the the following
-                      instructions before leaving this page.
-                      <ol>
-                        <li>Using your database admin program, phpMyAdmin for MySQL, create a database
-                            preferably with UTF-8 collation. It can be named whatever you like but the
-                            name currently in the configuration file is, $dbname.</li>
-                        <li>Assign an administrative user and password to the database.</li>
-                        <li>Enter the database connection details in the <strong>" . CUSTOM_CONFIG_FILE . "</strong> file.
-                            The fields that need to be set are:
-                            <ul style='font-family:\"Lucida Console\", \"Courier New\"'>
-                                <li>database.params.host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;localhost</li>
-                                <li>database.params.username&nbsp;=&nbsp;root</li>
-                                <li>database.params.password&nbsp;=&nbsp;&#39;mypassword&#39;</li>
-                                <li>database.params.dbname&nbsp;&nbsp;&nbsp;=&nbsp;simple_invoices</li>
-                                <li>database.params.port&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;3306</li>
-                            </ul>
-                        </li>
-                        <li>When you have completed these steps, simply refresh this page and follow
-                            the instructions to complete installation of SimpleInvoices.</li>
-                      </ol>
-                    </th>
-                  </tr>
-                </table>
-              </div>
-            ");
-            break;
-
-
-        case "PDO":
-            $error = exit("
-            <br />
-            ===========================================
-            <br />
-            SimpleInvoices - PDO problem
-            <br />
-            ===========================================
-            <br />
-            <br />
-            PDO is not configured in your PHP installation.
-            <br />
-            This means that SimpleInvoices can't be used.
-            <br />
-            <br />
-            To fix this please installed the pdo_mysql php extension.
-            <br />
-            If you are using a webhost please email them and get them to
-            <br />
-            install PDO for PHP with the MySQL extension
-            <br />
-            <br />
-            ===========================================
-            <br />
-            ");
-            break;
-
-        case "sql":
-            $error = exit("
-            <br />
-            ===========================================
-            <br />
-            SimpleInvoices - SQL problem
-            <br />
-            ===========================================
-            <br />
-            <br />
-            The following sql statement:
-            <br />
-            $info2
-            <br />
-            <br />
-            had the following error code: " . $info1['1'] . "
-            <br />
-            with the message of:" . $info1['2'] . "
-            <br />
-            <br />
-            ===========================================
-            <br />
-            ");
-            break;
-
-        case "PDO_mysql_attr":
-            $error = exit("
-            <br />
-            ===========================================
-            <br />
-            SimpleInvoices - PDO - MySQL problem
-            <br />
-            ===========================================
-            <br />
-            <br />
-            Your SimpleInvoices installation can't use the
-            <br />
-            database settings 'database.utf8'.
-            <br />
-            <br />
-            To fix this please edit config/config.php and
-            <br />
-            set 'database.utf8' to 'false'
-            <br />
-            <br />
-            ===========================================
-            <br />
-            ");
-            break;
-
-            case "PDO_not_mysql":
-            $error = exit("
-            <br />
-            ===========================================
-            <br />
-            SimpleInvoices - PDO - MySQL problem
-            <br />
-            ===========================================
-            <br />
-            <br />
-            Your SimpleInvoices installation can't use database types other than 'mysql'.
-            <br />
-            <br />
-            To fix this please edit config/config.php (or config/custom.config.php)
-            <br />
-            file and set database.adapter to 'pdo_mysql' and database.utf8 to 'true'.
-            <br />
-            <br />
-            ===========================================
-            <br />
-            ");
-                break;
-            }
-    // @formatter:off
-
-    return $error;
-}
-
+/**
+ * @return array
+ */
 function getLangList() {
     $startdir = './lang/';
     $ignoredDirectory = array();
@@ -398,6 +189,11 @@ function getLangList() {
     return ($folderList);
 }
 
+/**
+ * @param $sth
+ * @param $count
+ * @return string
+ */
 function sql2xml($sth, $count) {
     // you can choose any name for the starting tag
     $xml = ("<result>");
@@ -416,17 +212,12 @@ function sql2xml($sth, $count) {
 }
 
 /**
- * Function: si_truncate
+ * Truncate a given string
  *
- * Trucate a given string
- *
- * Parameters:
- * string - the string to truncate
- * max - the max length in characters to truncate the string to
- * rep - characters to be added at end of truncated string
- *
- * Returns:
- * The array sorted as you want
+ * @param $string - the string to truncate
+ * @param $max - the max length in characters to truncate the string to
+ * @param $rep - characters to be added at end of truncated string
+ * @return string truncated to specified length.
  */
 function si_truncate($string, $max = 20, $rep = '') {
     if (strlen($string) <= ($max + strlen($rep))) {
@@ -436,12 +227,18 @@ function si_truncate($string, $max = 20, $rep = '') {
     return substr_replace($string, $rep, $leave);
 }
 
-/* Escapes HTML stuff */
+/**
+ * @param $str
+ * @return string
+ */
 function htmlsafe($str) {
     return htmlentities($str, ENT_QUOTES, 'UTF-8');
 }
 
-/* Makes a string to be put inside a href="" safe */
+/**
+ * @param $str
+ * @return bool|null|string|string[]
+ */
 function urlsafe($str) {
     $str = preg_replace('/[^a-zA-Z0-9@;:%_\+\.~#\?\/\=\&\/\-]/', '', $str);
     if (preg_match('/^\s*javascript/i', $str)) {
@@ -451,7 +248,11 @@ function urlsafe($str) {
     return $str;
 }
 
-/* Sanitises HTML for output stuff */
+/**
+ * @param $html
+ * @return string Purified HTML
+ * @throws HTMLPurifier_Exception
+ */
 function outhtml($html) {
     $config = HTMLPurifier_Config::createDefault();
 
@@ -463,7 +264,14 @@ function outhtml($html) {
     return $purifier->purify($html);
 }
 
-// Generates a token to be used on forms that change something
+/**
+ * Generates a token to be used on forms that change something
+ * @param bool $action
+ * @param bool $userid
+ * @param bool $tickTock
+ * @return string
+ */
+
 function siNonce($action = false, $userid = false, $tickTock = false) {
     global $config;
     global $auth_session;
@@ -479,12 +287,18 @@ function siNonce($action = false, $userid = false, $tickTock = false) {
     return $hash;
 }
 
-// Verify a nonce token
+/**
+ * Verify nonce token
+ * @param $hash
+ * @param $action
+ * @param bool $userid
+ * @return bool
+ */
 function verifySiNonce($hash, $action, $userid = false) {
     global $config;
 
     $tickTock = floor(time() / $config->nonce->timelimit);
-    if (!isempty($hash) &&
+    if (!empty($hash) &&
         ($hash === siNonce($action, $userid) || $hash === siNonce($action, $userid, $tickTock - 1))) {
         return true;
     }
@@ -492,11 +306,20 @@ function verifySiNonce($hash, $action, $userid = false) {
     return false;
 }
 
-// Put this before an action is commited make sure to put a unique $action
+/**
+ * Put this before an action is committed make sure to put a unique $action
+ * @param string $action
+ * @param bool $userid
+ */
 function requireCSRFProtection($action = 'all', $userid = false) {
     verifySiNonce($_REQUEST['csrfprotectionbysr'], $action, $userid) or die('CSRF Attack Detected');
 }
 
+/**
+ * @param string $action
+ * @param bool $userid
+ * @return string
+ */
 function antiCSRFHiddenInput($action = 'all', $userid = false) {
     return '<input type="hidden" name="csrfprotectionbysr" value="' . htmlsafe(siNonce($action, $userid)) . '" />';
 }
@@ -505,7 +328,7 @@ function antiCSRFHiddenInput($action = 'all', $userid = false) {
  * Mask a string with specified string of characters exposed.
  * @param string $value Value to be masked.
  * @param string $chr Character to replace masked characters.
- * @param number $num_to_show Number of characters to leave exposed.
+ * @param int $num_to_show Number of characters to leave exposed.
  * @return string Masked value.
  */
 function maskValue($value, $chr='x', $num_to_show=4) {

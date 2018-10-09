@@ -24,7 +24,7 @@
  *
  * HTML Purifier is an HTML filter that will take an arbitrary snippet of
  * HTML and rigorously test, validate and filter it into a version that
- * is safe for output onto webpages. It achieves this by:
+ * is safe for output onto web pages. It achieves this by:
  *
  *  -# Lexing (parsing into tokens) the document,
  *  -# Executing various strategies on the tokens:
@@ -99,7 +99,7 @@ class HTMLPurifier
 
     /**
      * Initializes the purifier.
-     * @param $config Optional HTMLPurifier_Config object for all instances of
+     * @param object $config Optional HTMLPurifier_Config object for all instances of
      *                the purifier, if omitted, a default configuration is
      *                supplied (which can be overridden on a per-use basis).
      *                The parameter can also be any type that
@@ -130,7 +130,8 @@ class HTMLPurifier
      *                defaults to the config object specified during this
      *                object's construction. The parameter can also be any type
      *                that HTMLPurifier_Config::create() supports.
-     * @return Purified HTML
+     * @return string Purified HTML
+     * @throws HTMLPurifier_Exception
      */
     public function purify($html, $config = null) {
 
@@ -212,9 +213,11 @@ class HTMLPurifier
 
     /**
      * Filters an array of HTML snippets
-     * @param $config Optional HTMLPurifier_Config object for this operation.
+     * @param array
+     * @param object $config Optional HTMLPurifier_Config object for this operation.
      *                See HTMLPurifier::purify() for more details.
-     * @return Array of purified HTML
+     * @return array of purified HTML
+     * @throws HTMLPurifier_Exception
      */
     public function purifyArray($array_of_html, $config = null) {
         $context_array = array();
@@ -228,9 +231,10 @@ class HTMLPurifier
 
     /**
      * Singleton for enforcing just one HTML Purifier in your system
-     * @param $prototype Optional prototype HTMLPurifier instance to
+     * @param object $prototype Optional prototype HTMLPurifier instance to
      *                   overload singleton with, or HTMLPurifier_Config
      *                   instance to configure the generated version with.
+     * @return object
      */
     public static function instance($prototype = null) {
         if (!self::$instance || $prototype) {
@@ -255,13 +259,9 @@ class HTMLPurifier
 }
 
 
-
-
-
 /**
  * Defines common attribute collections that modules reference
  */
-
 class HTMLPurifier_AttrCollections
 {
 
@@ -275,7 +275,7 @@ class HTMLPurifier_AttrCollections
      * It also collects all attribute collection extensions from
      * modules
      * @param $attr_types HTMLPurifier_AttrTypes instance
-     * @param $modules Hash array of HTMLPurifier_HTMLModule members
+     * @param array $modules Hash array of HTMLPurifier_HTMLModule members
      */
     public function __construct($attr_types, $modules) {
         // load extensions from the modules
@@ -307,7 +307,7 @@ class HTMLPurifier_AttrCollections
     /**
      * Takes a reference to an attribute associative array and performs
      * all inclusions specified by the zero index.
-     * @param &$attr Reference to attribute array
+     * @param array &$attr Reference to attribute array
      */
     public function performInclusions(&$attr) {
         if (!isset($attr[0])) return;
@@ -334,8 +334,8 @@ class HTMLPurifier_AttrCollections
     /**
      * Expands all string identifiers in an attribute array by replacing
      * them with the appropriate values inside HTMLPurifier_AttrTypes
-     * @param &$attr Reference to attribute array
-     * @param $attr_types HTMLPurifier_AttrTypes instance
+     * @param array &$attr Reference to attribute array
+     * @param object $attr_types HTMLPurifier_AttrTypes instance
      */
     public function expandIdentifiers(&$attr, $attr_types) {
 
@@ -383,10 +383,6 @@ class HTMLPurifier_AttrCollections
 
 }
 
-
-
-
-
 /**
  * Base class for all validating attribute definitions.
  *
@@ -396,7 +392,6 @@ class HTMLPurifier_AttrCollections
  * Besides defining (through code) what precisely makes the string valid,
  * subclasses are also responsible for cleaning the code if possible.
  */
-
 abstract class HTMLPurifier_AttrDef
 {
 
@@ -415,9 +410,9 @@ abstract class HTMLPurifier_AttrDef
     /**
      * Validates and cleans passed string according to a definition.
      *
-     * @param $string String to be validated and cleaned.
-     * @param $config Mandatory HTMLPurifier_Config object.
-     * @param $context Mandatory HTMLPurifier_AttrContext object.
+     * @param string $string to be validated and cleaned.
+     * @param object $config Mandatory HTMLPurifier_Config object.
+     * @param object $context Mandatory HTMLPurifier_AttrContext object.
      */
     abstract public function validate($string, $config, $context);
 
@@ -451,7 +446,7 @@ abstract class HTMLPurifier_AttrDef
     /**
      * Factory method for creating this class from a string.
      * @param $string String construction info
-     * @return Created AttrDef object corresponding to $string
+     * @return object Created AttrDef object corresponding to $string
      */
     public function make($string) {
         // default implementation, return a flyweight of this object.
@@ -462,16 +457,18 @@ abstract class HTMLPurifier_AttrDef
     }
 
     /**
-     * Removes spaces from rgb(0, 0, 0) so that shorthand CSS properties work
-     * properly. THIS IS A HACK!
+     * Removes spaces from rgb(0, 0, 0) so that shorthand CSS properties work properly. THIS IS A HACK!
+     * @param string $string
+     * @return string
      */
     protected function mungeRgb($string) {
         return preg_replace('/rgb\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\)/', 'rgb(\1,\2,\3)', $string);
     }
 
     /**
-     * Parses a possibly escaped CSS string and returns the "pure" 
-     * version of it.
+     * Parses a possibly escaped CSS string and returns the "pure"  version of it.
+     * @param string
+     * @return string
      */
     protected function expandCSSEscape($string) {
         // flexibly parse it
@@ -508,9 +505,6 @@ abstract class HTMLPurifier_AttrDef
 }
 
 
-
-
-
 /**
  * Processes an entire attribute array for corrections needing multiple values.
  *
@@ -531,18 +525,17 @@ abstract class HTMLPurifier_AttrTransform
     /**
      * Abstract: makes changes to the attributes dependent on multiple values.
      *
-     * @param $attr Assoc array of attributes, usually from
-     *              HTMLPurifier_Token_Tag::$attr
-     * @param $config Mandatory HTMLPurifier_Config object.
-     * @param $context Mandatory HTMLPurifier_Context object
-     * @returns Processed attribute array.
+     * @param array $attr Assoc array of attributes, usually from HTMLPurifier_Token_Tag::$attr
+     * @param object $config Mandatory HTMLPurifier_Config object.
+     * @param object $context Mandatory HTMLPurifier_Context object
+     * @returns array Processed attribute array.
      */
     abstract public function transform($attr, $config, $context);
 
     /**
      * Prepends CSS properties to the style attribute, creating the
      * attribute if it doesn't exist.
-     * @param $attr Attribute array to process (passed by reference)
+     * @param array $attr Attribute array to process (passed by reference)
      * @param $css CSS to prepend
      */
     public function prependCSS(&$attr, $css) {
@@ -552,8 +545,9 @@ abstract class HTMLPurifier_AttrTransform
 
     /**
      * Retrieves and removes an attribute
-     * @param $attr Attribute array to process (passed by reference)
-     * @param $key Key of attribute to confiscate
+     * @param array $attr Attribute array to process (passed by reference)
+     * @param string $key Key of attribute to confiscate
+     * @return string
      */
     public function confiscateAttr(&$attr, $key) {
         if (!isset($attr[$key])) return null;
@@ -563,9 +557,6 @@ abstract class HTMLPurifier_AttrTransform
     }
 
 }
-
-
-
 
 
 /**
@@ -615,7 +606,7 @@ class HTMLPurifier_AttrTypes
     /**
      * Retrieves a type
      * @param $type String type name
-     * @return Object AttrDef for type
+     * @return string Object AttrDef for type
      */
     public function get($type) {
 
@@ -641,9 +632,6 @@ class HTMLPurifier_AttrTypes
         $this->info[$type] = $impl;
     }
 }
-
-
-
 
 
 /**
@@ -1377,8 +1365,8 @@ class HTMLPurifier_Config
     private $lock;
 
     /**
-     * @param $definition HTMLPurifier_ConfigSchema that defines what directives
-     *                    are allowed.
+     * @param $definition HTMLPurifier_ConfigSchema that defines what directives are allowed.
+     * @param $parent
      */
     public function __construct($definition, $parent = null) {
         $parent = $parent ? $parent : $definition->defaultPlist;
@@ -1394,7 +1382,7 @@ class HTMLPurifier_Config
      *                      an array of directives based on loadArray(),
      *                      or a string filename of an ini file.
      * @param HTMLPurifier_ConfigSchema Schema object
-     * @return Configured HTMLPurifier_Config object
+     * @return HTMLPurifier_Config object
      */
     public static function create($config, $schema = null) {
         if ($config instanceof HTMLPurifier_Config) {
@@ -1423,7 +1411,7 @@ class HTMLPurifier_Config
 
     /**
      * Convenience constructor that creates a default configuration object.
-     * @return Default HTMLPurifier_Config object.
+     * @return object Default HTMLPurifier_Config object.
      */
     public static function createDefault() {
         $definition = HTMLPurifier_ConfigSchema::instance();
@@ -1434,6 +1422,9 @@ class HTMLPurifier_Config
     /**
      * Retreives a value from the configuration.
      * @param $key String key
+     * @param $a
+     * @return mixed/void
+     * @throws HTMLPurifier_Exception
      */
     public function get($key, $a = null) {
         if ($a !== null) {
@@ -1466,6 +1457,7 @@ class HTMLPurifier_Config
     /**
      * Retreives an array of directives to values from a given namespace
      * @param $namespace String namespace
+     * @return mixed
      */
     public function getBatch($namespace) {
         if (!$this->finalized) $this->autoFinalize();
@@ -1523,6 +1515,7 @@ class HTMLPurifier_Config
      * Sets a value to configuration.
      * @param $key String key
      * @param $value Mixed value
+     * @param $a
      */
     public function set($key, $value, $a = null) {
         if (strpos($key, '.') === false) {
@@ -1609,6 +1602,7 @@ class HTMLPurifier_Config
      * Retrieves object reference to the HTML definition.
      * @param $raw Return a copy that has not been setup yet. Must be
      *             called before it's been setup, otherwise won't work.
+     * @return
      */
     public function getHTMLDefinition($raw = false) {
         return $this->getDefinition('HTML', $raw);
@@ -1627,6 +1621,7 @@ class HTMLPurifier_Config
      * Retrieves a definition
      * @param $type Type of definition: HTML, CSS, etc
      * @param $raw  Whether or not definition should be returned raw
+     * @throws HTMLPurifier_Exception
      */
     public function getDefinition($type, $raw = false) {
         if (!$this->finalized) $this->autoFinalize();

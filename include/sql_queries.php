@@ -26,7 +26,7 @@ function db_connector() {
     if (!$databaseBuilt) return NULL;
 
     if (!defined('PDO::MYSQL_ATTR_INIT_COMMAND') && $dbInfo->getAdapter() == "mysql" && $config->database->adapter->utf8 == true) {
-        simpleInvoicesError("PDO::mysql_attr");
+        SiError::out("PDO::mysql_attr");
     }
 
     try {
@@ -38,7 +38,7 @@ function db_connector() {
                                                                     $dbInfo->getPassword());
         // @formatter:on
     } catch (PDOException $exception) {
-        simpleInvoicesError("dbConnection", $exception->getMessage());
+        SiError::out("dbConnection", $exception->getMessage());
         die($exception->getMessage());
     }
 

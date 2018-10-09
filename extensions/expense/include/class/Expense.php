@@ -49,11 +49,11 @@ class Expense {
     }
 
     public static function save() {
-        global $logger, $pdoDb;
+        global $pdoDb;
         $pdoDb->setExcludedFields("id");
         $id = $pdoDb->request("INSERT", "expense");
 
-        $logger->log("Exp ITEM tax- last insert ID-$id", Zend_Log::INFO);
+        Log::out("Exp ITEM tax- last insert ID-$id", Zend_Log::INFO);
         $line_item_tax_id = (isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "");
         self::expense_item_tax($id, $line_item_tax_id, $_POST['amount'], "1", "insert");
         return true;

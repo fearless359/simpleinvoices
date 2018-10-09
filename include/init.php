@@ -55,14 +55,14 @@ if (set_include_path($lcl_path) === false) {
 require_once ("smarty/libs/Smarty.class.php");
 require_once 'Zend/Loader/Autoloader.php';
 
+/* *************************************************************
+ * Zend framework init - beg
+ * *************************************************************/
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);
 
 Zend_Session::start();
 $auth_session = new Zend_Session_Namespace('Zend_Auth');
-
-// start use of zend_cache and set the lifetime for 2 hours.
-// $frontendOptions = array('lifetime' => 7200, 'automatic_serialization' => true);
 /* *************************************************************
  * Zend framework init - end
  * *************************************************************/
@@ -75,28 +75,11 @@ require_once ('library/HTMLPurifier/HTMLPurifier.standalone.php');
 include_once ('include/functions.php');
 
 if (!is_writable('./tmp')) {
-    simpleInvoicesError('notWritable', 'directory', './tmp');
+    SiError::out('notWritable', 'directory', './tmp');
 }
-
-/* *************************************************************
- * log file - start
- * *************************************************************/
-$logFile = "tmp/log/si.log";
-if (!is_file($logFile)) {
-    $createLogFile = fopen($logFile, 'w') or die(simpleInvoicesError('notWritable', 'folder', 'tmp/log'));
-    fclose($createLogFile);
-}
-if (!is_writable($logFile)) {
-    simpleInvoicesError('notWritable', 'file', $logFile);
-}
-$writer = new Zend_Log_Writer_Stream($logFile);
-$logger = new Zend_Log($writer);
-/* *************************************************************
- * log file - end
- * *************************************************************/
 
 if (!is_writable('tmp/cache')) {
-    simpleInvoicesError('notWritable', 'file', './tmp/cache');
+    SiError::out('notWritable', 'file', './tmp/cache');
 }
 
 include_once ('config/define.php');
@@ -105,46 +88,16 @@ require_once ("include/class/db.php");
 require_once("include/class/PdoDb.php");
 
 // added 'true' to allow modifications from db
-$config = new Zend_Config_Ini("./" . CUSTOM_CONFIG_FILE, $environment, true);
+try {
+    $config = new Zend_Config_Ini("./" . CUSTOM_CONFIG_FILE, $environment, true);
+} catch (Zend_Config_Exception $zce) {
+    SiError::out('generic', 'Zend_Config_Ini', $zce->getMessage());
+}
 
 $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
-switch($logger_level) {
-    case 'DEBUG':
-        $level = Zend_Log::DEBUG;
-        break;
 
-    case 'INFO':
-        $level = Zend_Log::INFO;
-        break;
-
-    case 'NOTICE':
-        $level = Zend_Log::NOTICE;
-        break;
-
-    case 'WARN':
-        $level = Zend_Log::WARN;
-        break;
-
-    case 'ERR':
-        $level = Zend_Log::ERR;
-        break;
-
-    case 'CRIT':
-        $level = Zend_Log::CRIT;
-        break;
-
-    case 'ALERT':
-        $level = Zend_Log::ALERT;
-        break;
-
-    case 'EMERG':
-    default:
-        $level = Zend_Log::EMERG;
-        break;
-}
-$filter = new Zend_Log_Filter_Priority($level);
-$logger->addFilter($filter);
-$logger->log("init.php - logger has been setup", Zend_Log::DEBUG);
+Log::open($logger_level);
+Log::out("init.php - logger has been setup", Zend_Log::DEBUG);
 
 try {
     $dbInfo = new DbInfo(CUSTOM_CONFIG_FILE, "production");
@@ -188,12 +141,18 @@ ini_set('display_errors',         $config->phpSettings->display_errors);
 ini_set('log_errors',             $config->phpSettings->log_errors);
 ini_set('error_log',              $config->phpSettings->error_log);
 
-$zendDb = Zend_Db::factory($config->database->adapter,
-                           array('host'     => $dbInfo->getHost(),
-                                 'username' => $dbInfo->getUsername(),
-                                 'password' => $dbInfo->getPassword(),
-                                 'dbname'   => $dbInfo->getDbname(),
-                                 'port'     => $dbInfo->getPort()));
+try {
+    // @formatter:off
+    $zendDb = Zend_Db::factory($config->database->adapter,
+                               array('host'     => $dbInfo->getHost(),
+                                     'username' => $dbInfo->getUsername(),
+                                     'password' => $dbInfo->getPassword(),
+                                     'dbname'   => $dbInfo->getDbname(),
+                                     'port'     => $dbInfo->getPort()));
+    // @formatter:on
+} catch (Zend_Db_Exception $zde) {
+    SiError::out('generic', 'Zend_Db_Exception', $zde->getMessage());
+}
 
 // It's possible that we are in the initial install mode. If so, set
 // a flag so we won't terminate on an "Unknown database" error later.
@@ -208,10 +167,12 @@ if ($api_request) {
     // set it to the 60-minute default.
     if ($databaseBuilt) {
         try {
-            $session_timeout = $zendDb->fetchRow("SELECT value FROM " . TB_PREFIX . "system_defaults WHERE name='session_timeout'");
-            $timeout = intval($session_timeout['value']);
-            $logger->log("session_timeout loaded[$timeout]", Zend_Log::DEBUG);
-        } catch (Zend_Db_Exception $zde) {
+            $pdoDb_admin->addSimpleWhere('name', 'session_timeout');
+            $pdoDb_admin->setSelectList('value');
+            $rows = $pdoDb_admin->request('SELECT', 'system_defaults');
+            $timeout = (empty($rows) ? 0 : intval($rows[0]['value']));
+            Log::out("session_timeout loaded[$timeout]", Zend_Log::DEBUG);
+        } catch (PdoDbException $pde) {
             $timeout = 0;
         }
     }
@@ -219,10 +180,15 @@ if ($api_request) {
 if ($api_request || $timeout <= 0) {
     $timeout = 60;
 }
-$auth_session->setExpirationSeconds($timeout * 60);
+
+try {
+    $auth_session->setExpirationSeconds($timeout * 60);
+} catch (Zend_Session_Exception $zse) {
+    SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
+}
 
 $frontendOptions = array('lifetime' => ($timeout * 60), 'automatic_serialization' => true);
-$logger->log("init.php - frontendOptions - " . print_r($frontendOptions,true), Zend_Log::DEBUG);
+Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), Zend_Log::DEBUG);
 
 /* *************************************************************
  * Zend Framework cache section - start
@@ -231,10 +197,19 @@ $logger->log("init.php - frontendOptions - " . print_r($frontendOptions,true), Z
 $backendOptions = array('cache_dir' => './tmp/'); // Directory where to put the cache files
 
 // getting a Zend_Cache_Core object
-$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+try {
+    $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+} catch (Zend_Cache_Exception $zce) {
+    SiError::out('generic', 'Zend_Cache_Exception', $zce->getMessage());
+}
 
 // required for some servers
-Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
+try {
+    Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
+} catch (Zend_Date_Exception $zde) {
+    SiError::out('generic', 'Zend_Date_Exception', $zde->getMessage());
+}
+
 /* *************************************************************
  * Zend Framework cache section - end
  * *************************************************************/
@@ -250,15 +225,21 @@ $smarty->setConfigDir("config")
        ->setPluginsDir(array("library/smarty/libs/plugins", "include/smarty_plugins"));
 
 if (!is_writable($smarty->compile_dir)) {
-    simpleInvoicesError("notWritable", 'folder', $smarty->compile_dir);
+    SiError::out("notWritable", 'folder', $smarty->compile_dir);
 }
 
 // add stripslashes smarty function
-$smarty->registerPlugin('modifier', "unescape", "stripslashes");
+try {
+    $smarty->registerPlugin('modifier', "unescape", "stripslashes");
+} catch (SmartyException $se) {
+    SiError::out('generic', 'SmartyException', $se->getMessage());
+}
+// Keep this line. Uncomment to test smarty
 //$smarty->testInstall();
 /* *************************************************************
  * Smarty init - end
  * *************************************************************/
+
 $path = pathinfo($_SERVER['REQUEST_URI']);
 // SC: Install path handling will need changes if used in non-HTML contexts
 $install_path = htmlsafe($path['dirname']);
@@ -289,16 +270,20 @@ if ($api_request || (!$databaseBuilt || !$databasePopulated)) {
 
 $smarty->assign('patchCount', $patchCount);
 
-$smarty->registerPlugin('modifier', "siLocal_number"     , array("siLocal", "number"));
-$smarty->registerPlugin('modifier', "siLocal_number_trim", array("siLocal", "number_trim"));
-$smarty->registerPlugin('modifier', "siLocal_date"       , array("siLocal", "date"));
+try {
+    $smarty->registerPlugin('modifier', "siLocal_number", array("siLocal", "number"));
+    $smarty->registerPlugin('modifier', "siLocal_number_trim", array("siLocal", "number_trim"));
+    $smarty->registerPlugin('modifier', "siLocal_date", array("siLocal", "date"));
 
-$smarty->registerPlugin('modifier', 'htmlout'  , 'outhtml');
-$smarty->registerPlugin('modifier', 'htmlsafe' , 'htmlsafe');
-$smarty->registerPlugin('modifier', 'outhtml'  , 'outhtml');
-$smarty->registerPlugin('modifier', 'urlencode', 'urlencode');
-$smarty->registerPlugin('modifier', 'urlescape', 'urlencode');
-$smarty->registerPlugin('modifier', 'urlsafe'  , 'urlsafe');
+    $smarty->registerPlugin('modifier', 'htmlout', 'outhtml');
+    $smarty->registerPlugin('modifier', 'htmlsafe', 'htmlsafe');
+    $smarty->registerPlugin('modifier', 'outhtml', 'outhtml');
+    $smarty->registerPlugin('modifier', 'urlencode', 'urlencode');
+    $smarty->registerPlugin('modifier', 'urlescape', 'urlencode');
+    $smarty->registerPlugin('modifier', 'urlsafe', 'urlsafe');
+} catch (SmartyException $se) {
+    SiError('generic', 'SmartyException', $se->getMessage());
+}
 
 global $ext_names;
 loadSiExtensions($ext_names);

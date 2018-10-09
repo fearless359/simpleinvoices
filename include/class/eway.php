@@ -33,7 +33,7 @@ class eway {
     }
 
     public function payment() {
-        global $config, $logger;
+        global $config;
 
         //set customer,biller and preference if not defined
         if(empty($this->customer)) {
@@ -53,7 +53,7 @@ class eway {
         //Eway only accepts amount in cents - so times 100
         $value = $this->invoice['total'] * 100;
         $eway_invoice_total = htmlsafe(trim($value));
-        $logger->log("eway total: " . $eway_invoice_total, Zend_Log::INFO);
+        Log::out("eway total: " . $eway_invoice_total, Zend_Log::INFO);
 
         try {
             $key = $config->encryption->default->key;
@@ -89,20 +89,20 @@ class eway {
         $this->message = $ewayResponseFields;
         $message ="";
         if($ewayResponseFields["EWAYTRXNSTATUS"]=="False") {
-            $logger->log("Transaction Error: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Zend_Log::INFO);
+            Log::out("Transaction Error: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Zend_Log::INFO);
             foreach($ewayResponseFields as $key => $value) {
                 $message .= "\n<br>\$ewayResponseFields[\"$key\"] = $value";
             }
-            $logger->log("Eway message: " . $message . "<br>\n", Zend_Log::INFO);
+            Log::out("Eway message: " . $message . "<br>\n", Zend_Log::INFO);
             return 'false';
         }
 
         if($ewayResponseFields["EWAYTRXNSTATUS"]=="True") {
-            $logger->log("Transaction Success: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Zend_Log::INFO);
+            Log::out("Transaction Success: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Zend_Log::INFO);
             foreach($ewayResponseFields as $key => $value) {
                 $message .= "\n<br>\$ewayResponseFields[\"$key\"] = $value";
             }
-            $logger->log("Eway message: " . $message . "<br>\n", Zend_Log::INFO);
+            Log::out("Eway message: " . $message . "<br>\n", Zend_Log::INFO);
 
             // @formatter:off
             Payment::insert(array("ac_inv_id"         => $this->invoice['id'],
