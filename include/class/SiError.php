@@ -97,7 +97,7 @@ class SiError
                                 "preferably with UTF-8 collation. It can be named whatever you like but the " .
                                 "name currently in the configuration file is, $dbname.</li>" .
                             "<li>Assign an administrative user and password to the database.</li>" .
-                            "<li>Enter the database connection details in the <strong>" . CUSTOM_CONFIG_FILE . "</strong> file." .
+                            "<li>Enter the database connection details in the <strong>" . Config::CUSTOM_CONFIG_FILE . "</strong> file." .
                                 "The fields that need to be set are:" .
                                 "<ul style='font-family:\"Lucida Console\", \"Courier New\"'>" .
                                     "<li>database.params.host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;localhost</li>" .

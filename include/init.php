@@ -62,7 +62,11 @@ $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);
 
 Zend_Session::start();
-$auth_session = new Zend_Session_Namespace('Zend_Auth');
+try {
+    $auth_session = new Zend_Session_Namespace('Zend_Auth');
+} catch (Zend_Session_Exception $zse) {
+    SiError('generic', 'Zend_Session_Exception', $zse->getMessage());
+}
 /* *************************************************************
  * Zend framework init - end
  * *************************************************************/
@@ -87,20 +91,14 @@ global $environment;
 require_once ("include/class/db.php");
 require_once("include/class/PdoDb.php");
 
-// added 'true' to allow modifications from db
-try {
-    $config = new Zend_Config_Ini("./" . CUSTOM_CONFIG_FILE, $environment, true);
-} catch (Zend_Config_Exception $zce) {
-    SiError::out('generic', 'Zend_Config_Ini', $zce->getMessage());
-}
+$config = Config::init($environment);
 
 $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
-
 Log::open($logger_level);
 Log::out("init.php - logger has been setup", Zend_Log::DEBUG);
 
 try {
-    $dbInfo = new DbInfo(CUSTOM_CONFIG_FILE, "production");
+    $dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, "production");
 
     $pdoDb = new PdoDb($dbInfo);
     $pdoDb->clearAll(); // to eliminate never used warning.
@@ -215,7 +213,7 @@ try {
  * *************************************************************/
 
 $smarty = new Smarty();
-$smarty->assign("config_file_path", CUSTOM_CONFIG_FILE);
+$smarty->assign("config_file_path", Config::CUSTOM_CONFIG_FILE);
 
 $smarty->debugging = false;
 $smarty->setConfigDir("config")
