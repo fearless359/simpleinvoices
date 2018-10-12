@@ -18,13 +18,16 @@ class Config
     /**
      * Make sure we have a custom.config.php file that is consistent with the config.php file.
      * @param $environment
+     * @param $module
      * @return null|Zend_Config_Ini
      * @throws Exception
      */
-    public static function init($environment) {
-        self::makeCustomConfig();
+    public static function init($environment, $module) {
         try {
-            self::updateConfig();
+            if (empty($module)) {
+                self::makeCustomConfig();
+                self::updateConfig();
+            }
             self::$custom_config = new Zend_Config_Ini("./" . self::CUSTOM_CONFIG_FILE, $environment, true);
         } catch (Zend_Config_Exception $zce) {
             SiError::out('generic', 'Zend_Config_Ini', $zce->getMessage());

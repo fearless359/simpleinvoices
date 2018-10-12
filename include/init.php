@@ -91,7 +91,7 @@ global $environment;
 require_once ("include/class/db.php");
 require_once("include/class/PdoDb.php");
 
-$config = Config::init($environment);
+$config = Config::init($environment, $module);
 
 $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
 Log::open($logger_level);
