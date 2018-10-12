@@ -247,6 +247,8 @@ class Config
 
             rename(self::CUSTOM_CONFIG_FILE, $oldcopy);
             rename($filename_new, self::CUSTOM_CONFIG_FILE);
+        } else if (file_exists($filename_new)) {
+            unlink($filename_new);
         }
     }
 

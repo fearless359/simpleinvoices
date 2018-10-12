@@ -13,6 +13,22 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-12 - <b>2018.1.3</b>
+            <ul>
+                <li>Added logic to create and/or update the custom.config.php file. If the file
+                    doesn't exist, it will be created by making a copy from the config.php. If
+                    it does exist, it will be updated as follows:
+                    <ol>
+                        <li>If line is in config.php but not custom.config.php, it will be added
+                            added to custom.config.php.</li>
+                        <li>If line is in custom.config.php but not in config.php, it will be
+                            enclosed in a "Possibly deprecated" comment lines.</li>
+                        <li>The version name and date will be set to the value in the config.php
+                            file.</li>
+                    </ol>
+                </li>
+            </ul>
+        </li>
         <li>2018-10-04 - <b>2018.1.2</b>
             <ul>
                 <li>2018-10-06 - Minor fix. Modified new install to go to Start Working screen after
