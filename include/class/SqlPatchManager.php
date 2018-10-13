@@ -198,18 +198,19 @@ class SqlPatchManager
                     'sql_release' => $patch['date'],
                     'sql_statement' => $patch['patch']
                 ));
-            }
 
-            if ($pdoDb_admin->request('INSERT', 'sql_patchmanager') == 0) {
-                throw new PdoDbException( "SqlPatchManager::runSqlPatch() = Unable to insert into sql_patchmanager.");
+                if ($pdoDb_admin->request('INSERT', 'sql_patchmanager') == 0) {
+                    throw new PdoDbException("SqlPatchManager::runSqlPatch() = Unable to insert into sql_patchmanager.");
+                }
+
+                if ($id == 126) {
+                    self::patch126();
+                }
             }
         } catch (PdoDbException $pde) {
             throw new PdoDbException("SqlPatchManager::runSqlPatch() - " . $pde->getMessage());
         }
 
-        if ($id == 126) {
-            self::patch126();
-        }
         return $smarty_row;
     }
 
