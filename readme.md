@@ -1,5 +1,5 @@
 # SimpleInvoices
-[Join the Fearless359 SimpleInvoices chat on Google+](https://plus.google.com/u/0/communities/104308055324308879768 target="_blank")
+<a href="https://plus.google.com/u/0/communities/104308055324308879768" target="_blank">Join the Fearless359 SimpleInvoices chat on Google+</a>
 
 ***Making invoicing rock since '05***
 
