@@ -66,6 +66,9 @@ if ($_POST['action'] == "insert" ) {
                 $i++;
             }
         }
+
+        // Have to set the value after invoice items have been posted.
+        Invoice::updateAging($id);
     }
 } else if ( $_POST['action'] == "edit") {
     $id = $_POST['id'];
@@ -104,6 +107,10 @@ if ($_POST['action'] == "insert" ) {
             }
             $i++;
         }
+
+        // Have to update values after the invoice items are updated.
+        Invoice::updateAging($id);
+
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";
     }
 }

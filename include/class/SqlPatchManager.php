@@ -3046,6 +3046,21 @@ class SqlPatchManager
         self::makePatch('300', $patch);
         unset($ud);
 
+        $fe = checkFieldExists('invoices', 'last_activity_date');
+        $patch = array(
+            'name' => 'Add last_activity_date, aging_date and aging_value to invoices.',
+            'patch' => ($fe ? "SELECT 1+1;" :
+                              "ALTER TABLE `" . TB_PREFIX . "invoices` " .
+                                "ADD `last_activity_date` DATETIME DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice', " .
+                                "ADD `aging_date` DATETIME DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated', " .
+                                "ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Age of invoice balance', " .
+                                "ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.';"),
+            'date' => "20181012",
+            'source' => 'fearless359'
+        );
+        self::makePatch('301', $patch);
+        unset($fe);
+
         // @formatter:on
     }
 

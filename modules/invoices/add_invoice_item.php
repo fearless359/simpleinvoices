@@ -7,13 +7,18 @@
  *     GPL v3 or above
  *
  * Website:
- *     https://simpleinvoices.group */
+ *     https://simpleinvoices.group
+ */
+// Added by RCR 20181014 to see if this is ever used.
+error_log("modules/invoices/add_invoice_item.php used. _POST: " . print_r($_POST,true));
+
 global $smarty;
 if(isset($_POST['submit'])) {
-    Invoice::insertInvoiceItem($_POST['id'], $_POST['quantity1'], $_POST['product1'],
+    $id = $_POST['id'];
+    Invoice::insertInvoiceItem($id, $_POST['quantity1'], $_POST['product1'],
                                $_POST['tax_id'], trim($_POST['description']), $_POST['unit_price1']);
-}
-else {
+    Invoice::updateAging($id);
+} else {
     $products = Product::select_all();
     $smarty -> assign("products",$products);
 }

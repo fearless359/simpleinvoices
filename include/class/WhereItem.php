@@ -7,7 +7,7 @@ require_once 'include/class/DbField.php';
  */
 class WhereItem {
     const CONNECTORS = '/^(AND|OR)$/';
-    const OPERATORS = '/^(=|<>|<|>|<=|>=|BETWEEN|LIKE|IN|REGEXP)$/';
+    const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|REGEXP|IS)$/';
 
     private $close_paren;
     private $connector;

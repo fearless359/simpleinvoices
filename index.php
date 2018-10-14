@@ -143,6 +143,7 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
 
                 if ($still_doing_setup) {
                     if (Invoice::count() > 0) {
+                        Invoice::updateAging();
                         $module = "invoices";
                         $view = "manage";
                     } else {

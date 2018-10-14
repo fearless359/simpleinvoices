@@ -6,6 +6,144 @@ require_once 'include/class/Requests.php';
 class Invoice {
 
     /**
+     * Determine if recent activity has occurred by comparing the last_activity_date is more
+     * recent than the aging_date.
+     * @param string $last_activity_date yyyy-mm-dd format.
+     * @param string $aging_date yyyy-mm-dd format.
+     * @return bool true if aging value is current, false if not.
+     */
+    public static function is_aging_current($last_activity_date, $aging_date) {
+        return ($last_activity_date < $aging_date);
+    }
+
+    /**
+     * Create the aging wording to show on the invoice list.
+     * @param int $age_days to get string for.
+     * @return string Aging string (ex: 1-14, 15-30, etc).
+     */
+    public static function aging_wording($age_days) {
+        $age_str = '';
+        if (isset($age_days) && $age_days > 0) {
+            if ($age_days <= 14) {
+                $age_str = '1-14';
+            } else if ($age_days <= 30) {
+                $age_str = '15-30';
+            } else if ($age_days <= 60) {
+                $age_str = '31-60';
+            } else if ($age_days <= 90) {
+                $age_str = '61-90';
+            } else {
+                $age_str = '90+';
+            }
+        }
+        return $age_str;
+    }
+
+    /**
+     * Calculate the age_days for an invoice. The age_days will be zero if the
+     * invoice has not balance, otherwise it will be the number of days between the
+     * invoice date and the current date.
+     * @param int $id of invoice to calculate age_days for.
+     * @param string $invoice_date yyyy-mm-dd date invoice created.
+     * @param string $last_activity_date yyyy-mm-dd date of last activity on this invoice.
+     * @param string $aging_date yyyy-mm-dd date of last calculation of age_days.
+     * @param  int $age_days current age_days value.
+     * @param float $owing on the invoice. This is an optional field and will be calculated
+     *      if no present.
+     * @return array age_info - associative array with key value pairs for "last_activity_date",
+     *      "aging_date", "age_days" and "aging" (aging is the wording such as 1-14.
+     * @throws PdoDbException
+     */
+    public static function calculate_age_days($id, $invoice_date, $last_activity_date, $aging_date, $age_days, $owing=null) {
+
+        $age_info = array(
+            "last_activity_date" => $last_activity_date,
+            "aging_date" => $aging_date,
+            "age_days" => $age_days,
+            "aging" => self::aging_wording($age_days)
+        );
+
+        // Note that null dates are allowed and will result a false result.
+        if (self::is_aging_current($last_activity_date, $aging_date)) {
+            return $age_info;
+        }
+
+        $curr_dt = new DateTime();
+        // We have the last activity date and the last aging date. If the activity
+        // date is greater than the aging date, set the invoice aging value.
+        $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
+
+        // Setting make aging date greater than last activity date, so information
+        // is treated as current.
+        $age_info['aging_date'] = $curr_dt_ymd_hms;
+        $age_info['age_days'] = 0;
+        $age_info['aging'] = '';
+
+        if (!isset($owing)) {
+            $total = self::getInvoiceTotal($id);
+            $paid = Payment::calc_invoice_paid($id);
+            $owing = $total - $paid;
+        }
+
+        if ($owing > 0) {
+            $inv_dt = new DateTime($invoice_date);
+            $date_diff = $curr_dt->diff($inv_dt);
+            $dys = $date_diff->days;
+            if ($dys > 0) {
+                $age_info['age_days'] = $dys;
+                $age_info['aging'] = self::aging_wording($dys);
+            }
+        }
+
+        return $age_info;
+    }
+
+    /**
+     * Update aging information on all invoices that have had activity since the information was last set.
+     * @param int $id if specified, the fields for a specified invoice will be updated. Otherwise, all
+     *      invoices that need to be updated, will be updated.
+     * @throws PdoDbException If update error occurs
+     */
+    public static function updateAging($id = null) {
+        global $pdoDb;
+
+        $pdoDb->setSelectList(array('id', 'date', 'last_activity_date', 'aging_date', 'age_days'));
+        if (isset($id)) {
+            $pdoDb->addSimpleWhere('id', $id);
+        } else {
+            $pdoDb->addToWhere(new WhereItem(false, 'last_activity_date', '>', new DbField('aging_date'), false));
+        }
+        $rows = $pdoDb->request("SELECT", "invoices");
+
+        $pdoDb->begin();
+        foreach ($rows as $row) {
+            $id = $row['id'];
+            $invoice_date = $row['date'];
+            $last_activity_date = $row['last_activity_date'];
+            $aging_date = $row['aging_date'];
+            $age_days = $row['age_days'];
+            $age_info = self::calculate_age_days($id, $invoice_date, $last_activity_date, $aging_date, $age_days);
+            try {
+                $pdoDb->setFauxPost(array(
+                    'last_activity_date' => $age_info['last_activity_date'],
+                    'aging_date' => $age_info['aging_date'],
+                    'age_days' => $age_info['age_days'],
+                    'aging' => $age_info['aging']
+                ));
+                $pdoDb->addSimpleWhere('id', $id);
+                if (!$pdoDb->request('UPDATE', 'invoices')) {
+                    // Note that will be caught by following catch block and message added to its output.
+                    throw new PdoDbException(("Unable to update invoice aging information for id[$id]."));
+                }
+            } catch (PdoDbException $pde) {
+                $pdoDb->rollback();
+                throw new PdoDbException(("Invoice::calculate_age_days() - Update error. " . $pde->getMessage()));
+            }
+        }
+        $pdoDb->commit();
+    }
+
+    /**
      * Insert a new invoice record
      * @param array Associative array of items to insert into invoice record.
      * @return integer Unique ID of the new invoice record. 0 if insert failed.
@@ -32,6 +170,7 @@ class Invoice {
     /**
      * Insert a new invoice_item and the invoice_item_tax records.
      * @param array Associative array keyed by field name with its assigned value.
+     * @param mixed $tax_ids
      * @return integer Unique ID of the new invoice_item record.
      * @throws PdoDbException
      */
@@ -61,7 +200,7 @@ class Invoice {
      * @param integer $invoice_id <b>id</b>
      * @param integer $quantity
      * @param integer $product_id
-     * @param integer $tax_ids
+     * @param mixed $tax_ids
      * @param string $description
      * @param string $unit_price
      * @param array $attribute
@@ -286,7 +425,7 @@ class Invoice {
     }
 
     /**
-     * Get all the inovice records with associated information.
+     * Get all the invoice records with associated information.
      * @return array invoice records.
      * @throws PdoDbException
      */
@@ -443,10 +582,7 @@ class Invoice {
      * Standard invoice selection for display in flexgrid by xml files.
      * @param string $type Three setting:
      *        <ol>
-     *        <li><b>count</b> - Accessed for row count based on select criteria. Excludes the <i>LIMIT</i>
-     *                           setting and <i>aging</i> information to speed the calculation.</li>
-     *        <li><b>noage</b> - Standard access but without aging information. Used by <i>Large Dataset</i>
-     *                           system preferences setting to reduce access time.</li>
+     *        <li><b>count</b> - Accessed for row count based on select criteria. Excludes <i>LIMIT</i> setting</li>
      *        <li><b>&nbsp;&nbsp;</b> - All other settings are result in normal access of data based on
      *                                  specified criteria.</li>
      *        </ol>
@@ -470,7 +606,6 @@ class Invoice {
         }
 
         $count_type = ($type == "count");
-        $noage_type = ($type == "noage" || $count_type);
 
         if (empty($sort) ||
             !in_array($sort, array('index_id', 'b.name', 'c.name', 'date', 'invoice_total', 'owing', 'aging'))) $sort = "index_id";
@@ -514,26 +649,6 @@ class Invoice {
         $fn = new FunctionStmt("DATE_FORMAT", "date, '%Y-%m-%d'", "date");
         $pdoDb->addToFunctions($fn);
 
-        // Only run aging for real full query
-        if ($noage_type) {
-            $pdoDb->setSelectList("'' AS Age, '' AS aging");
-        } else {
-            $fn = new FunctionStmt("IF", "(owing = 0 OR owing < 0 OR DateDiff(now(), date) < 0), 0, DateDiff(now(), date)");
-            $se = new Select($fn, null, null, "Age");
-            $pdoDb->addToSelectStmts($se);
-
-            // @formatter:off
-            $ca = new CaseStmt("Age");
-            $ca->addWhen( "=",  "0",       "" );
-            $ca->addWhen("<=", "14",   "0-14" );
-            $ca->addWhen("<=", "30",  "15-30" );
-            $ca->addWhen("<=", "60",  "31-60" );
-            $ca->addWhen("<=", "90",  "61-90" );
-            $ca->addWhen( ">", "90",     "90+", true);
-            $pdoDb->addToSelectStmts(new Select($ca, null, null, "aging"));
-            // @formatter:on
-        }
-
         $fn = new FunctionStmt("CONCAT", "pf.pref_inv_wording, ' ', iv.index_id");
         $se = new Select($fn, null, null,"index_name");
         $pdoDb->addToSelectStmts($se);
@@ -558,6 +673,10 @@ class Invoice {
         $expr_list = array(
             "iv.id",
             "iv.domain_id",
+            "iv.last_activity_date",
+            "iv.aging_date",
+            "iv.age_days",
+            "iv.aging",
             new DbField("iv.index_id", "index_id"),
             new DbField("iv.type_id", "type_id"),
             new DbField("b.name", "biller"),
@@ -568,9 +687,22 @@ class Invoice {
 
         $pdoDb->setGroupBy($expr_list);
 
-        $pdoDb->setGroupBy(array("date", "Age", "aging", "index_name"));
+        $pdoDb->setGroupBy('date', 'index_name');
 
-        $result = $pdoDb->request("SELECT", "invoices", "iv");
+        $rows = $pdoDb->request("SELECT", "invoices", "iv");
+
+        $result = array();
+        foreach($rows as $row) {
+            $age_list = self::calculate_age_days(
+                $row['id'],
+                $row['date'],
+                $row['last_activity_date'],
+                $row['aging_date'],
+                $row['age_days'],
+                $row['owing']);
+            // The merge will update fields that exist and append those that don't.
+            $result[] = array_merge($row,$age_list);
+        }
         return $result;
     }
 
@@ -748,7 +880,6 @@ class Invoice {
 
     /**
      * Retrieve maximum invoice number assigned.
-     * @param string $domain_id
      * @return integer Maximum invoice number assigned.
      * @throws PdoDbException
      */

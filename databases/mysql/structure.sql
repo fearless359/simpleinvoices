@@ -140,7 +140,11 @@ CREATE TABLE `si_invoices` (
   `custom_field2` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field3` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field4` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `note` text COLLATE utf8_unicode_ci
+  `note` text COLLATE utf8_unicode_ci,
+  `last_activity_date` datetime DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice',
+  `aging_date` datetime DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated',
+  `age_days` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Age of invoice balance',
+  `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `si_invoice_items` (
