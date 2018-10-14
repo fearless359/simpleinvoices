@@ -125,6 +125,7 @@ class Config
     private static function genChanges($config_info, $custom_config_info) {
         $newitems = array();
         $olditems = array();
+
         // The key is:  section|key_part_of_value_pair
         // The value is: ConfigLines object
         foreach ($config_info as $key => $value) {
@@ -179,7 +180,7 @@ class Config
             switch (ConfigLines::line_type($line)) {
                 case 'section':
                     fwrite($fnew, $line);
-                    $section = trim(preg_replace('/^ *\[(.*)\].*$/', '$1', $line));
+                    $section = trim(preg_replace('/^[\t ]*\[(.*)\].*$/', '$1', $line));
                     // Write out all new lines for this section
                     if (isset($newpairs[$section])) {
                         $changed = true;
@@ -192,7 +193,7 @@ class Config
                     break;
 
                 case 'pair':
-                    $key = trim(preg_replace('/^ *([a-z0-9._]+) *=.*$/', '$1', $line));
+                    $key = trim(preg_replace('/^[\t ]*([a-zA-Z0-9._]+)[\t ]*=.*$/', '$1', $line));
                     if (!isset($section)) {
                         fclose($fnew);
                         fclose($fcur);
@@ -285,7 +286,7 @@ class ConfigLines
     {
         $line = trim($line);
         if (preg_match('/^\[.*\]$/', $line) == 1) return 'section';
-        if (preg_match('/^[a-z0-9._]+ *=/', $line) == 1) return 'pair';
+        if (preg_match('/^[a-zA-Z0-9._]+[\t ]*=/', $line) == 1) return 'pair';
         return 'other';
     }
 
