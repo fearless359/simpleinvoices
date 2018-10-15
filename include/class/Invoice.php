@@ -157,7 +157,14 @@ class Invoice {
         $pref_group = Preferences::getPreference($lcl_list['preference_id'], $lcl_list['domain_id']);
         $lcl_list['index_id'] = Index::next('invoice', $pref_group['index_group'], $lcl_list['domain_id']);
 
+        $curr_date = new DateTime();
+        $last_activity_date = $curr_date->format('Y-m-d h:i:s');
+
         $lcl_list['date'] = sqlDateWithTime($lcl_list['date']);
+        $lcl_list['last_activity_date'] = $last_activity_date;
+        $lcl_list['aging_date'] = $lcl_list['last_activity_date'];
+        $lcl_list['age_days'] = 0;
+        $lcl_list['aging'] = '';
         $pdoDb->setFauxPost($lcl_list);
         $pdoDb->setExcludedFields("id");
 
@@ -262,20 +269,23 @@ class Invoice {
         }
 
         $type = $current_invoice['type_id'];
-        // TODO: Add foriegn key logic to database definition
+        // TODO: Add foreign key logic to database definition
         if (!self::invoice_check_fk($_POST['biller_id'], $_POST['customer_id'], $type, $_POST['preference_id'])) return null;
 
+        $curr_datetime = new DateTime();
+        $last_activity_date = $curr_datetime->format('Y-m-d h:i:s');
         $pdoDb->addSimpleWhere("id", $invoice_id);
-        $pdoDb->setFauxPost(array('index_id'      => $index_id,
-                                  'biller_id'     => $_POST['biller_id'],
-                                  'customer_id'   => $_POST['customer_id'],
-                                  'preference_id' => $_POST['preference_id'],
-                                  'date'          => sqlDateWithTime($_POST['date']),
-                                  'note'          => trim($_POST['note']),
-                                  'custom_field1'  => (isset($_POST['custom_field1']) ? $_POST['custom_field1'] : ''),
-                                  'custom_field2'  => (isset($_POST['custom_field2']) ? $_POST['custom_field2'] : ''),
-                                  'custom_field3'  => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ''),
-                                  'custom_field4'  => (isset($_POST['custom_field4']) ? $_POST['custom_field4'] : '')));
+        $pdoDb->setFauxPost(array('index_id'           => $index_id,
+                                  'biller_id'          => $_POST['biller_id'],
+                                  'customer_id'        => $_POST['customer_id'],
+                                  'preference_id'      => $_POST['preference_id'],
+                                  'date'               => sqlDateWithTime($_POST['date']),
+                                  'last_activity_date' => $last_activity_date,
+                                  'note'               => trim($_POST['note']),
+                                  'custom_field1'      => (isset($_POST['custom_field1']) ? $_POST['custom_field1'] : ''),
+                                  'custom_field2'      => (isset($_POST['custom_field2']) ? $_POST['custom_field2'] : ''),
+                                  'custom_field3'      => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ''),
+                                  'custom_field4'      => (isset($_POST['custom_field4']) ? $_POST['custom_field4'] : '')));
         $pdoDb->setExcludedFields(array("id", "domain_id"));
         $result = $pdoDb->request("UPDATE", "invoices");
         return $result;
@@ -383,6 +393,9 @@ class Invoice {
      */
     public static function select($id) {
         global $pdoDb;
+
+        // Make sure aging is current
+        self::updateAging($id);
 
         $domain_id = domain_id::get();
         // @formatter:off
@@ -509,7 +522,7 @@ class Invoice {
 
     /**
      * @param $q
-     * @return array|void
+     * @return mixed
      * @throws PdoDbException
      */
     public static function getInvoices($q) {
@@ -522,6 +535,16 @@ class Invoice {
             $invoice['total']     = self::getInvoiceTotal($invoice['id']);
             $invoice['paid']      = Payment::calc_invoice_paid($invoice['id']);
             $invoice['owing']     = $invoice['total'] - $invoice['paid'];
+
+            $age_list = self::calculate_age_days(
+                $invoice['id'],
+                $invoice['date'],
+                $invoice['last_activity_date'],
+                $invoice['aging_date'],
+                $invoice['age_days'],
+                $invoice['owing']);
+            // The merge will update fields the existing fields if needed.
+            array_merge($invoice, $age_list);
 
             if (strpos(strtolower($invoice['index_id']), $q) !== false) {
                 // @formatter:off

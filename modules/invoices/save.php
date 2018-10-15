@@ -26,7 +26,6 @@ if(!isset( $_POST['type']) && !isset($_POST['action'])) {
     exit("no save action");
 }
 
-$saved = false;
 $type = $_POST['type'];
 if ($_POST['action'] == "insert" ) {
     $list = array('biller_id'     => $_POST['biller_id'],
@@ -50,7 +49,6 @@ if ($_POST['action'] == "insert" ) {
                 Invoice::insertInvoiceItem($id, 1, $product_id, $tax_id, $_POST['description'], $_POST['unit_price']);
             } else {
                 error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
-                $saved = false;
             }
         } else { // itemized invoice
             $i = 0;
