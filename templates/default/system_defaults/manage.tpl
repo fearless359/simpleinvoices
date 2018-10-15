@@ -73,11 +73,6 @@
       <td>{$defaultProductAttributes|htmlsafe}</td>
     </tr>
     <tr>
-      <th>{$LANG.large_dataset}</th>
-      <td><a href='index.php?module=system_defaults&amp;view=edit&amp;submit=large_dataset'><img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}" /></a></td>
-      <td>{$defaultLargeDataset|htmlsafe}</td>
-    </tr>
-    <tr>
       <th>{$LANG.company_logo}
         <a class="cluetip" href="#"
            rel="index.php?module=documentation&amp;view=view&amp;page=help_company_logo"

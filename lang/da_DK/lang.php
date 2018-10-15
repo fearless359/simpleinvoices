@@ -317,7 +317,6 @@ $LANG['item'] = "Post";//1
 $LANG['itemised'] = "Post";//1
 $LANG['itemised_style'] = "Post stil";//1
 $LANG['language'] = "Sprog";//1
-$LANG['large_dataset'] = "Stort datasæt";//1
 $LANG['license'] = "Licens";//1
 $LANG['list'] = "Liste";//1
 $LANG['loading'] = "Indl&#230;ser";//1

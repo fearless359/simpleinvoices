@@ -18,7 +18,6 @@ $smarty->assign("defaultLanguage"         , $lang);
 $smarty->assign("defaults"                , SystemDefaults::loadValues());
 $smarty->assign("defaultDelete"           , SystemDefaults::getDefaultDelete());
 $smarty->assign("defaultInventory"        , SystemDefaults::getDefaultInventory());
-$smarty->assign("defaultLargeDataset"     , SystemDefaults::getDefaultLargeDataset());
 $smarty->assign("defaultLogging"          , SystemDefaults::getDefaultLogging());
 $smarty->assign("defaultPasswordLower"    , SystemDefaults::getDefaultPasswordLower());
 $smarty->assign("defaultPasswordMinLength", SystemDefaults::getDefaultPasswordMinLength());

@@ -309,7 +309,6 @@ $LANG['item'] = "Produto";//1
 $LANG['itemised'] = "Detalhamento de itens";//1
 $LANG['itemised_style'] = "Fatura com detalhamento de itens";//1
 $LANG['language'] = "Idioma";//1
-$LANG['large_dataset'] = "Large dataset";//1
 $LANG['license'] = "Licen&ccedil;a";//1
 $LANG['list'] = "List";//1
 $LANG['loading'] = "Carregando";//1

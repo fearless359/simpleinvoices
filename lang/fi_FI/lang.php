@@ -312,7 +312,6 @@ $LANG['item'] = "Palvelu";//1
 $LANG['itemised'] = "yksilöitynä";//1
 $LANG['itemised_style'] = "yksilöitynä";//1
 $LANG['language'] = "Kieli";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Lisenssi";//1
 $LANG['list'] = "List";//0
 $LANG['loading'] = "Loading";//0

@@ -313,7 +313,6 @@ $LANG['item'] = "Position";//1
 $LANG['itemised'] = "Positionsbasiert";//1
 $LANG['itemised_style'] = "Positionsbasiert";//1
 $LANG['language'] = "Sprache";//1
-$LANG['large_dataset'] = "Großer Datensatz";//1
 $LANG['license'] = "Lizenz";//1
 $LANG['list'] = "Liste";//1
 $LANG['loading'] = "Laden";//1

@@ -312,7 +312,6 @@ $LANG['item'] = "Articolo";//1
 $LANG['itemised'] = "Voci articoli";//1
 $LANG['itemised_style'] = "Stile con voci articoli";//1
 $LANG['language'] = "Lingua";//1
-$LANG['large_dataset'] = "Dataset di grandi dimensioni";//1
 $LANG['license'] = "Licenza";//1
 $LANG['list'] = "Lista";//1
 $LANG['loading'] = "Caricamento";//1

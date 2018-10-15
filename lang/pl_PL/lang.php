@@ -309,7 +309,6 @@ $LANG['item'] = "Pozycja";//1
 $LANG['itemised'] = "Szczegółowe wykazy";//1
 $LANG['itemised_style'] = "Szczegółowe wykazy stylu";//1
 $LANG['language'] = "Język";//1
-$LANG['large_dataset'] = "Duży zestaw danych";//1
 $LANG['license'] = "Licencja";//1
 $LANG['list'] = "Lista";//1
 $LANG['loading'] = "Ładowanie";//1

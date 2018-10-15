@@ -312,7 +312,6 @@ $LANG['item'] = "Artikel";//1
 $LANG['itemised'] = "Artikelvis";//1
 $LANG['itemised_style'] = "Artikelvis";//1
 $LANG['language'] = "Språk";//1
-$LANG['large_dataset'] = "Stor Datamängd";//1
 $LANG['license'] = "Licens";//1
 $LANG['list'] = "Lista";//1
 $LANG['loading'] = "Laddar";//1

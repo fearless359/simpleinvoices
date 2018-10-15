@@ -308,7 +308,6 @@ $LANG['item'] = "Sản phẩm";//1
 $LANG['itemised'] = "Hóa đơn Bán hàng";//1
 $LANG['itemised_style'] = "Hóa đơn Bán hàng";//1
 $LANG['language'] = "Ngôn Ngữ";//1
-$LANG['large_dataset'] = "tập dữ liệu lớn";//1
 $LANG['license'] = "Bản Quyền";//1
 $LANG['list'] = "danh sách";//1
 $LANG['loading'] = "Đang tải";//1

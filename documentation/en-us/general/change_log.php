@@ -13,6 +13,19 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-15 - <b>2018.2.0</b>
+            <ul>
+                <li>Added interactive calculation of invoice aging. This means:
+                    <ol>
+                        <li>That when the list of invoices are selected to display in the flexigrid
+                            list on the primary invoice screen, the aging information does not have
+                            to be calculated thus improving performance.</li>
+                        <li>Removal of the Large Dataset system preference option as this change
+                            eliminates need for its suppression of aging information calculation.</li>
+                    </ol>
+                </li>
+            </ul>
+        </li>
         <li>2018-10-12 - <b>2018.1.3</b>
             <ul>
                 <li>Added logic to create and/or update the custom.config.php file. If the file

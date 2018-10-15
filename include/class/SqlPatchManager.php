@@ -3054,7 +3054,8 @@ class SqlPatchManager
                                 "ADD `last_activity_date` DATETIME DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice', " .
                                 "ADD `aging_date` DATETIME DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated', " .
                                 "ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Age of invoice balance', " .
-                                "ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.';"),
+                                "ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.';" .
+                                "DELETE IGNORE FROM `" . TB_PREFIX . "system_defaults` WHERE `name` = 'large_dataset';"),
             'date' => "20181012",
             'source' => 'fearless359'
         );

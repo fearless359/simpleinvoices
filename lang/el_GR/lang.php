@@ -311,7 +311,6 @@ $LANG['item'] = "Είδος";//1
 $LANG['itemised'] = "Πώληση Ειδών";//1
 $LANG['itemised_style'] = "Πώλησης ειδών";//1
 $LANG['language'] = "Γλώσσες";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Άδεια Χρήσης";//1
 $LANG['list'] = "Λίστα";//1
 $LANG['loading'] = "Φόρτωση";//1

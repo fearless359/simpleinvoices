@@ -308,7 +308,6 @@ $LANG['item'] = "Артикул";//1
 $LANG['itemised'] = "С артикули";//1
 $LANG['itemised_style'] = "Стил с артикули";//1
 $LANG['language'] = "Език";//1
-$LANG['large_dataset'] = "Големи набори данни";//1
 $LANG['license'] = "Лиценз";//1
 $LANG['list'] = "Списък";//1
 $LANG['loading'] = "Зареждане";//1

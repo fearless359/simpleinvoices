@@ -310,7 +310,6 @@ $LANG['item'] = "Позиция";//1
 $LANG['itemised'] = "Детализированный";//1
 $LANG['itemised_style'] = "Детализированный счет";//1
 $LANG['language'] = "Язык";//1
-$LANG['large_dataset'] = "Большой набор данных";//1
 $LANG['license'] = "Лицензия";//1
 $LANG['list'] = "Список";//1
 $LANG['loading'] = "Загрузка";//1

@@ -312,7 +312,6 @@ $LANG['item'] = "Položka";//1
 $LANG['itemised'] = "Po položkách";//1
 $LANG['itemised_style'] = "S položkami";//1
 $LANG['language'] = "Jazyk";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Licencia";//1
 $LANG['list'] = "List";//0
 $LANG['loading'] = "Načítavam";//1

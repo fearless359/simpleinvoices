@@ -198,15 +198,6 @@ class SystemDefaults
     }
 
     /**
-     * Get "large_dataset" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
-     */
-    public static function getDefaultLargeDataset()
-    {
-        return self::getValue('large_dataset');
-    }
-
-    /**
      * Get "logging" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
      */

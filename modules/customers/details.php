@@ -53,8 +53,6 @@ $page   = (isset($_POST['page'])     ? $_POST['page']     : "1");
 $query  = (isset($_REQUEST['query']) ? $_REQUEST['query'] : "");
 $qtype  = (isset($_REQUEST['qtype']) ? $_REQUEST['qtype'] : "");
 
-//$type = (SystemDefaults::getDefaultLargeDataset() == $LANG['enabled'] ? "count" : "");
-
 $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
 
 //$invoices_owing = Invoice::select_all($type, $sort, $dir, $rp, $page, $query, $qtype);

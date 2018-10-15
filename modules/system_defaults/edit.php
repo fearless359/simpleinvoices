@@ -200,13 +200,6 @@ switch ($get_val) {
         $value       .= '</select>' . "\n";
         break;
 
-    case "large_dataset":
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $default     = "large_dataset";
-        $description = $LANG['large_dataset'];
-        $value       = dropDown($array, $defaults[$default]);
-        break;
-
     case "logging":
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
         $default     = "logging";

@@ -308,7 +308,6 @@ $LANG['item'] = "項目";//1
 $LANG['itemised'] = "分項";//1
 $LANG['itemised_style'] = "分項樣式";//1
 $LANG['language'] = "語言";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "授權";//1
 $LANG['list'] = "List";//1
 $LANG['loading'] = "載入中";//1

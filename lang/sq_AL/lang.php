@@ -312,7 +312,6 @@ $LANG['item'] = "Artikulli";//1
 $LANG['itemised'] = "Sipas Artikullit";//1
 $LANG['itemised_style'] = "Sipas Artikullit";//1
 $LANG['language'] = "Gjuha";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Licensa";//1
 $LANG['list'] = "List";//0
 $LANG['loading'] = "Loading";//0

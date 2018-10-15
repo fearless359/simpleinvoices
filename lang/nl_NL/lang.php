@@ -312,7 +312,6 @@ $LANG['item'] = "Item";//1
 $LANG['itemised'] = "Gedetailleerd";//1
 $LANG['itemised_style'] = "Gedetailleerde stijl";//1
 $LANG['language'] = "Taal";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Licentie";//1
 $LANG['list'] = "List";//1
 $LANG['loading'] = "Laden";//1

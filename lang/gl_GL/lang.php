@@ -309,7 +309,6 @@ $LANG['item'] = "Elemento";//1
 $LANG['itemised'] = "Desagregado";//1
 $LANG['itemised_style'] = "Estilo desagregado";//1
 $LANG['language'] = "Idioma";//1
-$LANG['large_dataset'] = "Large dataset";//1
 $LANG['license'] = "Licenza";//1
 $LANG['list'] = "List";//1
 $LANG['loading'] = "Cargando";//1

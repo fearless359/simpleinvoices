@@ -309,7 +309,6 @@ $LANG['item'] = "Produkt";//1
 $LANG['itemised'] = "Artikkelbasert";//1
 $LANG['itemised_style'] = "Artikkelbasert stil";//1
 $LANG['language'] = "Språk";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Lisens";//1
 $LANG['list'] = "List";//0
 $LANG['loading'] = "Laster";//1

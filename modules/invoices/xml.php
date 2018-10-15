@@ -17,23 +17,13 @@ $qtype  = (isset($_POST['qtype'])    ) ? $_POST['qtype']     : null;
 // on those invoices generated for them.
 $read_only = ($auth_session->role_name == 'customer');
 
-$large_dataset = SystemDefaults::getDefaultLargeDataset();
-
 if (!empty($having)) {
     $pdoDb->setHavings(Invoice::buildHavings($having));
 }
 
 // @formatter:off
-//if ($large_dataset == $LANG['enabled']) {
-//    // There are two things here that are different. First, there is no aging information
-//    // calculated. Second, the count is a count of all invoices and not just those that
-//    // meet the selection criteria.
-//    $invoices      = Invoice::select_all('noage', $sort, $dir, $rp, $page, $qtype, $query);
-//    $invoice_count = Invoice::count();
-//} else {
-    $invoices = Invoice::select_all(''     , $sort, $dir, $rp, $page, $qtype, $query);
-    $invoice_count = count(Invoice::select_all('count', $sort, $dir, $rp, $page, $qtype, $query));
-//}
+$invoices = Invoice::select_all(''     , $sort, $dir, $rp, $page, $qtype, $query);
+$invoice_count = count(Invoice::select_all('count', $sort, $dir, $rp, $page, $qtype, $query));
 
 $xml  = "";
 $xml .= "<rows>";

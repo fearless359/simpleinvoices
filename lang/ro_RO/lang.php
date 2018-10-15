@@ -313,7 +313,6 @@ $LANG['item'] = "Element";//1
 $LANG['itemised'] = "Detaliata";//1
 $LANG['itemised_style'] = "Stil detaliat";//1
 $LANG['language'] = "Limba";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Licenta";//1
 $LANG['list'] = "List";//0
 $LANG['loading'] = "Loading";//0

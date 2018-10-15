@@ -312,7 +312,6 @@ $LANG['item'] = "Description";//1
 $LANG['itemised'] = "D&eacute;tail";//1
 $LANG['itemised_style'] = "d&eacute;taill&eacute;e";//1
 $LANG['language'] = "Langue";//1
-$LANG['large_dataset'] = "Echantillon large";//1
 $LANG['license'] = "Licence";//1
 $LANG['list'] = "Liste";//1
 $LANG['loading'] = "Chargement";//1

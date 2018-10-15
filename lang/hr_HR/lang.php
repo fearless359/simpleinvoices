@@ -309,7 +309,6 @@ $LANG['item'] = "Stavka";//1
 $LANG['itemised'] = "Itemized";//1
 $LANG['itemised_style'] = "Stil Itemized";//1
 $LANG['language'] = "Jezik";//1
-$LANG['large_dataset'] = "Large dataset";//1
 $LANG['license'] = "Licenca";//1
 $LANG['list'] = "List";//1
 $LANG['loading'] = "Učitavanje";//1

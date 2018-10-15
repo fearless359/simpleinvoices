@@ -2422,7 +2422,7 @@
       "sql_patch_ref": "301",
       "sql_patch": "Add last_activity_date, aging_date and aging_value to invoices.",
       "sql_release": "20181012",
-      "sql_statement": "ALTER TABLE `si_invoices` ADD `last_activity_date` DATETIME DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice', ADD `aging_date` DATETIME DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated', ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Age of invoice balance', ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.';",
+      "sql_statement": "ALTER TABLE `si_invoices` ADD `last_activity_date` DATETIME DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice', ADD `aging_date` DATETIME DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated', ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Age of invoice balance', ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.'; DELETE IGNORE FROM `si_system_defaults` WHERE `name` = 'large_dataset';",
       "source": "fearless359"
     }
   ],
@@ -2513,160 +2513,153 @@
     },
     {
       "id": "13",
-      "name": "large_dataset",
-      "value": "0",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "id": "14",
       "name": "line_items",
       "value": "3",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "15",
+      "id": "14",
       "name": "logging",
       "value": "0",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "16",
+      "id": "15",
       "name": "password_lower",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "17",
+      "id": "16",
       "name": "password_min_length",
       "value": "8",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "18",
+      "id": "17",
       "name": "password_number",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "19",
+      "id": "18",
       "name": "password_special",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "20",
+      "id": "19",
       "name": "password_upper",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "21",
+      "id": "20",
       "name": "payment_type",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "22",
+      "id": "21",
       "name": "pdfbottommargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "23",
+      "id": "22",
       "name": "pdfleftmargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "24",
+      "id": "23",
       "name": "pdfpapersize",
       "value": "A4",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "25",
+      "id": "24",
       "name": "pdfrightmargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "26",
+      "id": "25",
       "name": "pdfscreensize",
       "value": "800",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "27",
+      "id": "26",
       "name": "pdftopmargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "28",
+      "id": "27",
       "name": "preference",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "29",
+      "id": "28",
       "name": "product_attributes",
       "value": "0",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "30",
+      "id": "29",
       "name": "session_timeout",
       "value": "60",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "31",
+      "id": "30",
       "name": "spreadsheet",
       "value": "xls",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "32",
+      "id": "31",
       "name": "tax",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "33",
+      "id": "32",
       "name": "tax_per_line_item",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "34",
+      "id": "33",
       "name": "template",
       "value": "default",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "35",
+      "id": "34",
       "name": "wordprocessor",
       "value": "doc",
       "domain_id": "DOMAIN-ID",

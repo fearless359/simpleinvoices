@@ -311,7 +311,6 @@ $LANG['item'] = "Ürün";//1
 $LANG['itemised'] = "Ürün bazlý";//1
 $LANG['itemised_style'] = "Ürün faturasý";//1
 $LANG['language'] = "Dil";//1
-$LANG['large_dataset'] = "Large dataset";//0
 $LANG['license'] = "Lisans";//1
 $LANG['list'] = "List";//0
 $LANG['loading'] = "Loading";//0
