@@ -13,6 +13,13 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-16 - <b>2018.2.1</b>
+            <ul>
+                <li>Modified templates using obsolete number_formatted function to use the
+                    updated siLocal_number function. This fixes display of numbers formatted
+                    for the locale set in the custom.config.php file.</li>
+            </ul>
+        </li>
         <li>2018-10-15 - <b>2018.2.0</b>
             <ul>
                 <li>Added interactive calculation of invoice aging. This means:
