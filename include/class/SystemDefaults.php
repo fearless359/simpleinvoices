@@ -114,7 +114,9 @@ class SystemDefaults
             ));
             $pdoDb->addSimpleWhere('name', $name, 'AND');
             $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+$pdoDb->debugOn();
             $pdoDb->request("UPDATE", "system_defaults");
+$pdoDb->debugOff();
         } catch (PdoDbException $pde) {
             error_log("SystemDefaults::updateDefault(): Unable to add name[$name] value[$value] to database. " . $pde->getMessage());
             return false;
@@ -193,8 +195,8 @@ class SystemDefaults
      */
     public static function getDefaultLanguage()
     {
-        $result = self::getValue('language', null, false);
-        return ($result == 0 ? "en_US" : $result);
+        $result = self::getValue('language');
+        return $result;
     }
 
     /**
