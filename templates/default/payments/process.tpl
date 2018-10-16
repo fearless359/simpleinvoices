@@ -7,7 +7,7 @@
         <th>{$invoice.preference|htmlsafe}</th>
         <td>{$invoice.index_id|htmlsafe}</td>
         <th class="details_screen">{$LANG.total}</th>
-        <td>{$invoice.total|number_format:2}</td>
+        <td>{$invoice.total|siLocal_number:2}</td>
       </tr>
       <tr>
         <th>{$LANG.biller}</th>

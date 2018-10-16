@@ -89,13 +89,13 @@
       <td></td>
       <td></td>
       <td style="text-align:right">
-        {$preference.pref_currency_sign}{$invoiceItems.0.gross_total|number_format:2}
+        {$preference.pref_currency_sign}{$invoiceItems.0.gross_total|siLocal_number:2}
       </td>
       <td style="text-align:right">
-        {$preference.pref_currency_sign}{$invoiceItems.0.tax_amount|number_format:2}
+        {$preference.pref_currency_sign}{$invoiceItems.0.tax_amount|siLocal_number:2}
       </td>
       <td style="text-align:right" style="text-decoration:underline;">
-        {$preference.pref_currency_sign}{$invoiceItems.0.total|number_format:2}
+        {$preference.pref_currency_sign}{$invoiceItems.0.total|siLocal_number:2}
       </td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@
           {foreach from=$invoiceItems item=invoiceItem }
             {if $invoice.type_id == 2 || $invoice.type_id == 4}
               <tr>
-                <td>{$invoiceItem.quantity|number_format:2}</td>
+                <td>{$invoiceItem.quantity|siLocal_number:2}</td>
                 <td colspan="3">
                   {$invoiceItem.product.description}
                   {if $invoiceItem.attr1.display != "" } ::{/if}
@@ -159,13 +159,13 @@
                 </td>
               </tr>
               <tr>
-                <td >{$preference.pref_currency_sign}{$invoiceItem.unit_price|number_format:2}</td>
-                <td >{$preference.pref_currency_sign}{$invoiceItem.gross_total|number_format:2}</td>
+                <td >{$preference.pref_currency_sign}{$invoiceItem.unit_price|siLocal_number:2}</td>
+                <td >{$preference.pref_currency_sign}{$invoiceItem.gross_total|siLocal_number:2}</td>
                 <td style="text-align:right">
-                  {$preference.pref_currency_sign}{$invoiceItem.tax_amount|number_format:2}
+                  {$preference.pref_currency_sign}{$invoiceItem.tax_amount|siLocal_number:2}
                 </td>
                 <td style="text-align:right">
-                  {$preference.pref_currency_sign}{$invoiceItem.total|number_format:2}
+                  {$preference.pref_currency_sign}{$invoiceItem.total|siLocal_number:2}
                 </td>
               </tr>
               <tr class='itemised'>       
@@ -205,19 +205,19 @@
             {/if}	
             {if $invoice.type_id == 3 }
               <tr>
-                <td>{$invoiceItem.quantity|number_format:2}</td>
+                <td>{$invoiceItem.quantity|siLocal_number:2}</td>
                 <td>{$invoiceItem.product.description}</td>
                 <td style="text-align:right">
-                  {$preference.pref_currency_sign}{$invoiceItem.unit_price|number_format:2}
+                  {$preference.pref_currency_sign}{$invoiceItem.unit_price|siLocal_number:2}
                 </td>
                 <td style="text-align:right">
-                  {$preference.pref_currency_sign}{$invoiceItem.gross_total|number_format:2}
+                  {$preference.pref_currency_sign}{$invoiceItem.gross_total|siLocal_number:2}
                 </td>
                 <td style="text-align:right">
-                  {$preference.pref_currency_sign}{$invoiceItem.tax_amount|number_format:2}
+                  {$preference.pref_currency_sign}{$invoiceItem.tax_amount|siLocal_number:2}
                 </td>
                 <td style="text-align:right">
-                  {$preference.pref_currency_sign}{$invoiceItem.total|number_format:2}
+                  {$preference.pref_currency_sign}{$invoiceItem.total|siLocal_number:2}
                 </td>
               </tr>
               <tr  class='consulting' >	
@@ -300,19 +300,19 @@
 {/if}
 <br />
 {$LANG.total} {$LANG.tax} {$LANG.included}: 
-{$preference.pref_currency_sign}{$invoice.total_tax|number_format:2}
+{$preference.pref_currency_sign}{$invoice.total_tax|siLocal_number:2}
 <br />
 <b>{$preference.pref_inv_wording} {$LANG.amount}</b>: 
-<u>{$preference.pref_currency_sign}{$invoice.total|number_format:2}</u>
+<u>{$preference.pref_currency_sign}{$invoice.total|siLocal_number:2}</u>
 <br />
 <hr />
 <b>{$LANG.account_info}</b>
 <br />
 {$LANG.total}: 
-{$preference.pref_currency_sign}{$invoice.total|number_format:2} :: 
+{$preference.pref_currency_sign}{$invoice.total|siLocal_number:2} ::
 <a href='index.php?module=payments&amp;view=manage&amp;id={$invoice.id}'>{$LANG.paid}:</a>
-{$preference.pref_currency_sign}{$invoice.paid|number_format:2} :: 
-{$LANG.owing}: <u>{$preference.pref_currency_sign}{$invoice.owing|number_format:2}</u> ::
+{$preference.pref_currency_sign}{$invoice.paid|siLocal_number:2} ::
+{$LANG.owing}: <u>{$preference.pref_currency_sign}{$invoice.owing|siLocal_number:2}</u> ::
 {$LANG.age}: {$invoice_age} 
 <br />
 <hr />

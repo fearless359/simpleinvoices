@@ -11,19 +11,19 @@
         {$invoice.id|escape:html}
       </td>
       <td class="details_screen">{$LANG.total}</td>
-      <td>{$invoice.total|number_format:2}</td>
+      <td>{$invoice.total|siLocal_number:2}</td>
     </tr>
     <tr>
       <td class="details_screen">{$LANG.biller}</td>
       <td>{$biller.name|escape:html}</td>
       <td class="details_screen">{$LANG.paid}</td>
-      <td>{$invoice.paid|number_format:2}</td>
+      <td>{$invoice.paid|siLocal_number:2}</td>
     </tr>
     <tr>
       <td class="details_screen">{$LANG.customer}</td>
       <td>{$customer.name|escape:html}</td>
       <td class="details_screen">{$LANG.owing}</td>
-      <td style="text-decoration:underline;">{$invoice.owing|number_format:2}</td>
+      <td style="text-decoration:underline;">{$invoice.owing|siLocal_number:2}</td>
     </tr>
     <tr>
       <td class="details_screen">{$LANG.amount}</td>

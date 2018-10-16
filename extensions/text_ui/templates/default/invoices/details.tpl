@@ -131,7 +131,7 @@
           <tr>
             <td>
               <input type="text" name="quantity{$line}"
-                     value="{$invoiceItem.quantity|number_format:2}" size="10" />
+                     value="{$invoiceItem.quantity|siLocal_number:2}" size="10" />
               <input type="hidden" name='id{$line}' value='{$invoiceItem.id}' size="10" />
             </td>
             <td>
@@ -183,7 +183,7 @@
             {/if}
             <td>
               <input id="unit_price{$line}" name="unit_price{$line}" size="7" 
-                     value="{$invoiceItem.unit_price|number_format:2}" />
+                     value="{$invoiceItem.unit_price|siLocal_number:2}" />
             </td>
           </tr>
           {if $invoice.type_id == 3}

@@ -53,7 +53,7 @@
       <tr>
         <td class="details_screen">{$LANG.unit_price}</td>
         <td>
-          <input id="unit_price1" name="unit_price1" size="7" value="{$invoiceItem.unit_price|number_format:2}" />
+          <input id="unit_price1" name="unit_price1" size="7" value="{$invoiceItem.unit_price|siLocal_number:2}" />
         </td>
       </tr>
       {if $type == 3}

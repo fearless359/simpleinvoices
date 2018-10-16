@@ -56,15 +56,15 @@
       {/if}
       <tr>
         <td>{$LANG.total}:</td>
-        <td colspan="3">{$preference.pref_currency_sign}{$invoice.total|number_format:2}</td>
+        <td colspan="3">{$preference.pref_currency_sign}{$invoice.total|siLocal_number:2}</td>
       </tr>
       <tr>
         <td>{$LANG.paid}:</td>
-        <td colspan="3">{$preference.pref_currency_sign}{$invoice.paid|number_format:2}</td>
+        <td colspan="3">{$preference.pref_currency_sign}{$invoice.paid|siLocal_number:2}</td>
       </tr>
       <tr>
         <td nowrap>{$LANG.owing}:</td>
-        <td colspan="3">{$preference.pref_currency_sign}{$invoice.owing|number_format:2}</td>
+        <td colspan="3">{$preference.pref_currency_sign}{$invoice.owing|siLocal_number:2}</td>
       </tr>
     </table>
     <!-- Summary - end -->
@@ -334,7 +334,7 @@
       <tr>
         <td colspan="3"></td>
         <td align="right" colspan="2">{$LANG.tax_total}</td>
-        <td align="right">{$preference.pref_currency_sign}{$invoice.total_tax|number_format:2}</td>
+        <td align="right">{$preference.pref_currency_sign}{$invoice.total_tax|siLocal_number:2}</td>
       </tr>
       <tr>
         <td colspan="6"><br /></td>
@@ -345,7 +345,7 @@
           <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount}</b>
         </td>
         <td align="right" style="text-decoration:underline;">
-          {$preference.pref_currency_sign}{$invoice.total|number_format:2}
+          {$preference.pref_currency_sign}{$invoice.total|siLocal_number:2}
         </td>
       </tr>
       *************************************************************************** *}
