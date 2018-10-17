@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-17 - <b>2018.2.2</b>
+            <ul>
+                <li>Added owing to invoices table to fix aging issue.</li>
+                <li>Fix inventory sales profit report selection logic.</li>
+            </ul>
+        </li>
         <li>2018-10-16 - <b>2018.2.1</b>
             <ul>
                 <li>Modified templates using obsolete number_formatted function to use the

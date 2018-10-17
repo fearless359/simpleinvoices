@@ -7,7 +7,6 @@ $invoice    = Invoice::getInvoice($invoice_id);
 $preference = Preferences::getPreference($invoice['preference_id']);
 $biller     = Biller::select($invoice['biller_id']);
 $customer   = Customer::get($invoice['customer_id']);
-if ($biller || $customer) {} // elimiate unused warning
 
 $pdoDb->addSimpleWhere("inv_ty_id", $invoice['type_id']);
 $pdoDb->setSelectList("inv_ty_description AS type");

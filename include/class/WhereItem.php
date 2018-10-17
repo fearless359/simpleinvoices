@@ -28,7 +28,7 @@ class WhereItem {
      *        operator are allowed: <b>=</b>, <b><></b>, <b><</b>, <b>></b>, <b><=</b> and <b>>=</b>.
      * @param mixed $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginval,endval)</b>.
      * @param boolean $close_paren Set to <b>true</b> if a closing parenthesis should be
-     *        iinserted after this term; otherwise set to <b>false</b>.
+     *        inserted after this term; otherwise set to <b>false</b>.
      * @param string $connector The "AND" or "OR" connector if additional terms will be
      *        clause. Optional parameter.
      * @throws PdoDbException If an invalid operator or connector is found.

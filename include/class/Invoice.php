@@ -6,24 +6,14 @@ require_once 'include/class/Requests.php';
 class Invoice {
 
     /**
-     * Determine if recent activity has occurred by comparing the last_activity_date is more
-     * recent than the aging_date.
-     * @param string $last_activity_date yyyy-mm-dd format.
-     * @param string $aging_date yyyy-mm-dd format.
-     * @return bool true if aging value is current, false if not.
-     */
-    public static function is_aging_current($last_activity_date, $aging_date) {
-        return ($last_activity_date < $aging_date);
-    }
-
-    /**
      * Create the aging wording to show on the invoice list.
      * @param int $age_days to get string for.
+     * @param float $owing Amount owing on invoice.
      * @return string Aging string (ex: 1-14, 15-30, etc).
      */
-    public static function aging_wording($age_days) {
+    private static function aging_wording($age_days, $owing) {
         $age_str = '';
-        if (isset($age_days) && $age_days > 0) {
+        if ($owing > 0 && $age_days > 0) {
             if ($age_days <= 14) {
                 $age_str = '1-14';
             } else if ($age_days <= 30) {
@@ -40,60 +30,51 @@ class Invoice {
     }
 
     /**
-     * Calculate the age_days for an invoice. The age_days will be zero if the
-     * invoice has not balance, otherwise it will be the number of days between the
-     * invoice date and the current date.
+     * Calculate the age_days for an invoice. The age_days will be zero if the invoice has no amount owing,
+     * otherwise it will be the number of days between the invoice date and the current date.
      * @param int $id of invoice to calculate age_days for.
      * @param string $invoice_date yyyy-mm-dd date invoice created.
+     * @param float $owing on this invoice. Note: Set positive to force aging info recalculation.
      * @param string $last_activity_date yyyy-mm-dd date of last activity on this invoice.
      * @param string $aging_date yyyy-mm-dd date of last calculation of age_days.
-     * @param  int $age_days current age_days value.
-     * @param float $owing on the invoice. This is an optional field and will be calculated
-     *      if no present.
-     * @return array age_info - associative array with key value pairs for "last_activity_date",
-     *      "aging_date", "age_days" and "aging" (aging is the wording such as 1-14.
+     * @return array age_info - associative array with updated key value pairs for
+     *              "last_activity_date",
+     *              "owing" ,
+     *              "aging_date",
+     *              "age_days"
+     *              "aging" (aging is the wording such as 1-14).
      * @throws PdoDbException
      */
-    public static function calculate_age_days($id, $invoice_date, $last_activity_date, $aging_date, $age_days, $owing=null) {
+    private static function calculate_age_days($id, $invoice_date, $owing, $last_activity_date, $aging_date) {
 
-        $age_info = array(
-            "last_activity_date" => $last_activity_date,
-            "aging_date" => $aging_date,
-            "age_days" => $age_days,
-            "aging" => self::aging_wording($age_days)
-        );
-
-        // Note that null dates are allowed and will result a false result.
-        if (self::is_aging_current($last_activity_date, $aging_date)) {
-            return $age_info;
+        // Don't recalculate $owing unless you have to because it involves DB reads.
+        // Note that there is a time value in the dates so they are typically equal only when
+        // an account is created.
+        if ($last_activity_date >= $aging_date || $owing > 0) {
+            $total = self::getInvoiceTotal($id);
+            $paid = Payment::calc_invoice_paid($id);
+            $owing = $total - $paid;
         }
+
+        // We don't want create values here.
+        if ($owing < 0) $owing = 0;
 
         $curr_dt = new DateTime();
         // We have the last activity date and the last aging date. If the activity
         // date is greater than the aging date, set the invoice aging value.
         $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
 
-        // Setting make aging date greater than last activity date, so information
-        // is treated as current.
-        $age_info['aging_date'] = $curr_dt_ymd_hms;
-        $age_info['age_days'] = 0;
-        $age_info['aging'] = '';
+        $inv_dt = new DateTime($invoice_date);
+        $date_diff = $curr_dt->diff($inv_dt);
+        $dys = $date_diff->days;
 
-        if (!isset($owing)) {
-            $total = self::getInvoiceTotal($id);
-            $paid = Payment::calc_invoice_paid($id);
-            $owing = $total - $paid;
-        }
-
-        if ($owing > 0) {
-            $inv_dt = new DateTime($invoice_date);
-            $date_diff = $curr_dt->diff($inv_dt);
-            $dys = $date_diff->days;
-            if ($dys > 0) {
-                $age_info['age_days'] = $dys;
-                $age_info['aging'] = self::aging_wording($dys);
-            }
-        }
+        $age_info = array(
+            "owing" => $owing,
+            "last_activity_date" => $last_activity_date,
+            "aging_date" => $curr_dt_ymd_hms,
+            "age_days" => $dys,
+            "aging" => self::aging_wording($dys, $owing)
+        );
 
         return $age_info;
     }
@@ -107,11 +88,12 @@ class Invoice {
     public static function updateAging($id = null) {
         global $pdoDb;
 
-        $pdoDb->setSelectList(array('id', 'date', 'last_activity_date', 'aging_date', 'age_days'));
+        $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date'));
         if (isset($id)) {
             $pdoDb->addSimpleWhere('id', $id);
         } else {
-            $pdoDb->addToWhere(new WhereItem(false, 'last_activity_date', '>', new DbField('aging_date'), false));
+            $pdoDb->addToWhere(new WhereItem(false, 'last_activity_date', '>=', new DbField('aging_date'), false, 'OR'));
+            $pdoDb->addToWhere(new WhereItem(false, 'owing', '>', 0, false));
         }
         $rows = $pdoDb->request("SELECT", "invoices");
 
@@ -120,11 +102,18 @@ class Invoice {
             $id = $row['id'];
             $invoice_date = $row['date'];
             $last_activity_date = $row['last_activity_date'];
+            $owing = $row['owing'];
             $aging_date = $row['aging_date'];
-            $age_days = $row['age_days'];
-            $age_info = self::calculate_age_days($id, $invoice_date, $last_activity_date, $aging_date, $age_days);
+            $age_info = self::calculate_age_days(
+                $id,
+                $invoice_date,
+                $owing,
+                $last_activity_date,
+                $aging_date);
+
             try {
                 $pdoDb->setFauxPost(array(
+                    'owing' => $age_info['owing'],
                     'last_activity_date' => $age_info['last_activity_date'],
                     'aging_date' => $age_info['aging_date'],
                     'age_days' => $age_info['age_days'],
@@ -137,7 +126,7 @@ class Invoice {
                 }
             } catch (PdoDbException $pde) {
                 $pdoDb->rollback();
-                throw new PdoDbException(("Invoice::calculate_age_days() - Update error. " . $pde->getMessage()));
+                throw new PdoDbException(("Invoice::updateAging() - Update error. " . $pde->getMessage()));
             }
         }
         $pdoDb->commit();
@@ -162,6 +151,7 @@ class Invoice {
 
         $lcl_list['date'] = sqlDateWithTime($lcl_list['date']);
         $lcl_list['last_activity_date'] = $last_activity_date;
+        $lcl_list['owing'] = 1; // force update of aging info
         $lcl_list['aging_date'] = $lcl_list['last_activity_date'];
         $lcl_list['age_days'] = 0;
         $lcl_list['aging'] = '';
@@ -272,6 +262,8 @@ class Invoice {
         // TODO: Add foreign key logic to database definition
         if (!self::invoice_check_fk($_POST['biller_id'], $_POST['customer_id'], $type, $_POST['preference_id'])) return null;
 
+        // Note that this will make the last activity date greater than the aging_date which will force the
+        // aging information to be recalculated.
         $curr_datetime = new DateTime();
         $last_activity_date = $curr_datetime->format('Y-m-d h:i:s');
         $pdoDb->addSimpleWhere("id", $invoice_id);
@@ -280,8 +272,9 @@ class Invoice {
                                   'customer_id'        => $_POST['customer_id'],
                                   'preference_id'      => $_POST['preference_id'],
                                   'date'               => sqlDateWithTime($_POST['date']),
-                                  'last_activity_date' => $last_activity_date,
                                   'note'               => trim($_POST['note']),
+                                  'last_activity_date' => $last_activity_date,
+                                  'owing'              => '1', // force update of aging information
                                   'custom_field1'      => (isset($_POST['custom_field1']) ? $_POST['custom_field1'] : ''),
                                   'custom_field2'      => (isset($_POST['custom_field2']) ? $_POST['custom_field2'] : ''),
                                   'custom_field3'      => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ''),
@@ -296,11 +289,10 @@ class Invoice {
      * @param int $id Unique id for the record to be updated.
      * @param int $quantity Number of items
      * @param int $product_id Unique id of the si_products record for this item.
-     * @param int $tax_ids Unique id for the taxes to apply to this line item.
+     * @param mixed $tax_ids Unique id for the taxes to apply to this line item.
      * @param string $description Extended description for this line item.
      * @param float $unit_price Price of each unit of this item.
      * @param string $attribute Attributes for invoice.
-     * @return boolean true always returned.
      * @throws PdoDbException
      */
     public static function updateInvoiceItem($id    , $quantity   , $product_id,
@@ -320,23 +312,23 @@ class Invoice {
         $total       = $gross_total + $tax_amount;
         if ($description == $LANG['description']) $description = "";
 
-        if (!self::invoice_items_check_fk(null, $product_id, $tax_ids, true)) return null;
+        if (self::invoice_items_check_fk(null, $product_id, $tax_ids, true)) {
+            // @formatter:off
+            $pdoDb->addSimpleWhere("id", $id);
+            $pdoDb->setFauxPost(array('quantity'    => $quantity,
+                                      'product_id'  => $product_id,
+                                      'unit_price'  => $unit_price,
+                                      'tax_amount'  => $tax_amount,
+                                      'gross_total' => $gross_total,
+                                      'description' => $description,
+                                      'total'       => $total,
+                                      'attribute'   => json_encode($attr)));
+            $pdoDb->setExcludedFields(array("id", "domain_id"));
+            $pdoDb->request("UPDATE", "invoice_items");
+            // @formatter:on
 
-        // @formatter:off
-        $pdoDb->addSimpleWhere("id", $id);
-        $pdoDb->setFauxPost(array('quantity'    => $quantity,
-                                  'product_id'  => $product_id,
-                                  'unit_price'  => $unit_price,
-                                  'tax_amount'  => $tax_amount,
-                                  'gross_total' => $gross_total,
-                                  'description' => $description,
-                                  'total'       => $total,
-                                  'attribute'   => json_encode($attr)));
-        $pdoDb->setExcludedFields(array("id", "domain_id"));
-        $pdoDb->request("UPDATE", "invoice_items");
-        // @formatter:on
-
-        self::chgInvoiceItemTax($id, $tax_ids, $unit_price, $quantity, true);
+            self::chgInvoiceItemTax($id, $tax_ids, $unit_price, $quantity, true);
+        }
     }
 
     /**
@@ -349,8 +341,10 @@ class Invoice {
      * @return boolean <b>true</b> if successful, <b>false</b> if not.
      */
     public static function chgInvoiceItemTax($invoice_item_id, $line_item_tax_ids, $unit_price, $quantity, $update) {
-        // if editing invoice delete all tax info then insert first then do insert again
-        // probably can be done without delete - someone to look into this if required - TODO
+        /*
+         * @TODO: if editing invoice delete all tax info then insert first then do insert again.
+         *  This can probably can be done without delete - someone to look into this if required
+         */
         try {
             $domain_id = domain_id::get();
             $requests = new Requests();
@@ -394,13 +388,15 @@ class Invoice {
     public static function select($id) {
         global $pdoDb;
 
-        // Make sure aging is current
+        // Make sure aging is current. Don't worry about performance as
+        // this is only one record.
         self::updateAging($id);
 
         $domain_id = domain_id::get();
         // @formatter:off
         $list = array(new DbField("i.*"),
                       new DbField("i.date", "date_original"),
+                      new DbField("i.owing", "owing"),
                       new DbField("p.pref_inv_wording", "preference"),
                       new DbField("p.status"));
         $pdoDb->setSelectList($list);
@@ -428,7 +424,6 @@ class Invoice {
         $invoice['total']         = self::getInvoiceTotal($invoice['id']);
         $invoice['gross']         = self::getInvoiceGross($invoice['id']);
         $invoice['paid']          = Payment::calc_invoice_paid($invoice['id']);
-        $invoice['owing']         = $invoice['total'] - $invoice['paid'];
         $invoice['invoice_items'] = self::getInvoiceItems($id);
         $invoice['tax_grouped']   = self::taxesGroupedForInvoice($id);
         $invoice['calc_date']     = date('Y-m-d', strtotime($invoice['date']));
@@ -460,7 +455,18 @@ class Invoice {
         $pdoDb->setOrderBy("index_name");
 
         $rows = $pdoDb->request("SELECT", "invoices", "i");
-        return $rows;
+        $results = array();
+        foreach($rows as $row) {
+            $age_info = self::calculate_age_days(
+                $row['id'],
+                $row['date'],
+                $row['owing'],
+                $row['last_activity_date'],
+                $row['aging_date']);
+            array_merge($row, $age_info);
+            $results[] = $row;
+        }
+        return $results;
     }
 
     /**
@@ -494,30 +500,39 @@ class Invoice {
         $pdoDb->addSimpleWhere("domain_id", $domain_id);
         $rows = $pdoDb->request("SELECT", "invoices");
         if (empty($rows)) {
-            $invoice = array();
-        } else {
-            $invoice = $rows[0];
-
-            // @formatter:off
-            $invoice['calc_date'] = date('Y-m-d', strtotime($invoice['date']));
-            $invoice['date']      = siLocal::date($invoice['date']);
-            $invoice['total']     = self::getInvoiceTotal($invoice['id']);
-            $invoice['gross']     = self::getInvoiceGross($invoice['id']);
-            $invoice['paid']      = Payment::calc_invoice_paid($invoice['id']);
-            $invoice['owing']     = $invoice['total'] - $invoice['paid'];
-            // invoice total tax
-            $pdoDb->addToFunctions("SUM(tax_amount) AS total_tax");
-            $pdoDb->addToFunctions("SUM(total) AS total");
-            $pdoDb->addSimpleWhere("invoice_id", $id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", $domain_id);
-            $rows = $pdoDb->request("SELECT", "invoice_items");
-
-            $invoice_item_tax = $rows[0];
-            $invoice['total_tax']   = $invoice_item_tax['total_tax'];
-            $invoice['tax_grouped'] = self::taxesGroupedForInvoice($id);
-            // @formatter:on
+            return array();
         }
-        return $invoice;
+
+        $row = $rows[0];
+
+        // @formatter:off
+        $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
+        $row['date']      = siLocal::date($row['date']);
+        $row['total']     = self::getInvoiceTotal($row['id']);
+        $row['gross']     = self::getInvoiceGross($row['id']);
+        $row['paid']      = Payment::calc_invoice_paid($row['id']);
+
+        $age_info = self::calculate_age_days(
+            $row['id'],
+            $row['date'],
+            $row['total'] - $row['paid'],
+            $row['last_activity_date'],
+            $row['aging_date']);
+        array_merge($row, $age_info);
+
+        // invoice total tax
+        $pdoDb->addToFunctions("SUM(tax_amount) AS total_tax");
+        $pdoDb->addToFunctions("SUM(total) AS total");
+        $pdoDb->addSimpleWhere("invoice_id", $id, "AND");
+        $pdoDb->addSimpleWhere("domain_id", $domain_id);
+        $rows = $pdoDb->request("SELECT", "invoice_items");
+
+        $invoice_item_tax = $rows[0];
+        $row['total_tax']   = $invoice_item_tax['total_tax'];
+        $row['tax_grouped'] = self::taxesGroupedForInvoice($id);
+        // @formatter:on
+
+        return $row;
     }
 
     /**
@@ -526,38 +541,57 @@ class Invoice {
      * @throws PdoDbException
      */
     public static function getInvoices($q) {
-        if (!$q) return array();
+        $results = array();
+        if (isset($q)) {
+            $rows = self::select_all();
+            foreach ($rows as $row) {
+                $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
+                $row['date'] = siLocal::date($row['date']);
+                $row['total'] = self::getInvoiceTotal($row['id']);
+                $row['paid'] = Payment::calc_invoice_paid($row['id']);
 
-        $invoices = self::select_all();
-        foreach ($invoices as $invoice) {
-            $invoice['calc_date'] = date('Y-m-d', strtotime($invoice['date']));
-            $invoice['date']      = siLocal::date($invoice['date']);
-            $invoice['total']     = self::getInvoiceTotal($invoice['id']);
-            $invoice['paid']      = Payment::calc_invoice_paid($invoice['id']);
-            $invoice['owing']     = $invoice['total'] - $invoice['paid'];
+                $age_info = self::calculate_age_days(
+                    $row['id'],
+                    $row['date'],
+                    $row['total'] - $row['paid'],
+                    $row['last_activity_date'],
+                    $row['aging_date']);
+                array_merge($row, $age_info);
 
-            $age_list = self::calculate_age_days(
-                $invoice['id'],
-                $invoice['date'],
-                $invoice['last_activity_date'],
-                $invoice['aging_date'],
-                $invoice['age_days'],
-                $invoice['owing']);
-            // The merge will update fields the existing fields if needed.
-            array_merge($invoice, $age_list);
+                $results[] = $row;
 
-            if (strpos(strtolower($invoice['index_id']), $q) !== false) {
-                // @formatter:off
-                $invoice['id']    = htmlsafe($invoice['id']);
-                $invoice['total'] = htmlsafe(number_format($invoice['total'],2));
-                $invoice['paid']  = htmlsafe(number_format($invoice['paid'],2));
-                $invoice['owing'] = htmlsafe(number_format($invoice['owing'],2));
-                // @formatter:on
-                echo "$invoice[id]|<table><tr><td class='details_screen'>$invoice[preference]:</td><td>$invoice[index_id]</td><td  class='details_screen'>Total: </td><td>$invoice[total] </td></tr><tr><td class='details_screen'>Biller: </td><td>$invoice[biller] </td><td class='details_screen'>Paid: </td><td>$invoice[paid] </td></tr><tr><td class='details_screen'>Customer: </td><td>$invoice[customer] </td><td class='details_screen'>Owing: </td><td><u>$invoice[owing]</u></td></tr></table>\n";
+                if (strpos(strtolower($row['index_id']), strtolower($q)) !== false) {
+                    // @formatter:off
+                    $total = htmlsafe(number_format($row['total'],2));
+                    $paid  = htmlsafe(number_format($row['paid'],2));
+                    $owing = htmlsafe(number_format($row['owing'],2));
+                    echo "{$row['id']}|" .
+                            "<table>" .
+                                "<tr>" .
+                                    "<td class='details_screen'>{$row['preference']}:</td>" .
+                                    "<td>{$row['index_id']}</td>" .
+                                    "<td class='details_screen'>Total: </td>" .
+                                    "<td>{$total}</td>" .
+                                "</tr>" .
+                                "<tr>" .
+                                    "<td class='details_screen'>Biller: </td>" .
+                                    "<td>{$row['biller']}</td>" .
+                                    "<td class='details_screen'>Paid: </td>" .
+                                    "<td>{$paid}</td>" .
+                                "</tr>" .
+                                "<tr>" .
+                                    "<td class='details_screen'>Customer: </td>" .
+                                    "<td>{$row['customer']}</td>" .
+                                    "<td class='details_screen'>Owing: </td>" .
+                                    "<td><u>{$owing}</u></td>" .
+                                "</tr>" .
+                            "</table>\n";
+                    // @formatter:on
+                }
             }
         }
 
-        return $invoices;
+        return $results;
     }
 
     /**
@@ -605,9 +639,8 @@ class Invoice {
      * Standard invoice selection for display in flexgrid by xml files.
      * @param string $type Three setting:
      *        <ol>
-     *        <li><b>count</b> - Accessed for row count based on select criteria. Excludes <i>LIMIT</i> setting</li>
-     *        <li><b>&nbsp;&nbsp;</b> - All other settings are result in normal access of data based on
-     *                                  specified criteria.</li>
+     *          <li><b>count</b> - Accessed for row count based on select criteria. Excludes <i>LIMIT</i> setting</li>
+     *          <li><b>&nbsp;&nbsp;</b> - All other settings are result in normal access of data based on specified criteria.</li>
      *        </ol>
      * @param string $sort Field to order results.
      * @param string $dir Direction of the order (ASC, DESC, A or D).
@@ -665,10 +698,6 @@ class Invoice {
         $se = new Select($fn, $fr, $wh, "INV_PAID");
         $pdoDb->addToSelectStmts($se);
 
-        $fn = new FunctionStmt("", "(invoice_total - INV_PAID)");
-        $se = new Select($fn, null, null, "owing");
-        $pdoDb->addToSelectStmts($se);
-
         $fn = new FunctionStmt("DATE_FORMAT", "date, '%Y-%m-%d'", "date");
         $pdoDb->addToFunctions($fn);
 
@@ -697,6 +726,7 @@ class Invoice {
             "iv.id",
             "iv.domain_id",
             "iv.last_activity_date",
+            "iv.owing",
             "iv.aging_date",
             "iv.age_days",
             "iv.aging",
@@ -714,19 +744,18 @@ class Invoice {
 
         $rows = $pdoDb->request("SELECT", "invoices", "iv");
 
-        $result = array();
+        $results = array();
         foreach($rows as $row) {
             $age_list = self::calculate_age_days(
                 $row['id'],
                 $row['date'],
+                $row['owing'],
                 $row['last_activity_date'],
-                $row['aging_date'],
-                $row['age_days'],
-                $row['owing']);
+                $row['aging_date']);
             // The merge will update fields that exist and append those that don't.
-            $result[] = array_merge($row,$age_list);
+            $results[] = array_merge($row,$age_list);
         }
-        return $result;
+        return $results;
     }
 
     /**

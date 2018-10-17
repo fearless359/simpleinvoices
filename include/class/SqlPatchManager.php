@@ -3046,21 +3046,28 @@ class SqlPatchManager
         self::makePatch('300', $patch);
         unset($ud);
 
-        $fe = checkFieldExists('invoices', 'last_activity_date');
         $patch = array(
             'name' => 'Add last_activity_date, aging_date and aging_value to invoices.',
-            'patch' => ($fe ? "SELECT 1+1;" :
-                              "ALTER TABLE `" . TB_PREFIX . "invoices` " .
-                                "ADD `last_activity_date` DATETIME DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice', " .
-                                "ADD `aging_date` DATETIME DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated', " .
-                                "ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Age of invoice balance', " .
-                                "ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.';" .
-                                "DELETE IGNORE FROM `" . TB_PREFIX . "system_defaults` WHERE `name` = 'large_dataset';"),
+            'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` " .
+                           "ADD `last_activity_date` DATETIME DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice', " .
+                           "ADD `aging_date` DATETIME DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated', " .
+                           "ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Age of invoice balance', " .
+                           "ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.';" .
+                       "DELETE IGNORE FROM `" . TB_PREFIX . "system_defaults` WHERE `name` = 'large_dataset';",
             'date' => "20181012",
             'source' => 'fearless359'
         );
         self::makePatch('301', $patch);
         unset($fe);
+
+        $patch = array(
+            'name' => "Added owing to invoices table",
+            'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT 'Amount owing as of aging-date' AFTER `note`;" .
+                       "UPDATE `" . TB_PREFIX . "invoices` SET `owing` = 1;",
+            'date' => "20181017",
+            'source' => 'fearless359'
+        );
+        self::makePatch('302', $patch);
 
         // @formatter:on
     }

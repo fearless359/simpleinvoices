@@ -7,7 +7,7 @@
  * GPL v3
  * Website:
  * https://simpleinvoices.group */
-global $smarty;
+global $pdoDb, $smarty;
 
 checkLogin();
 function firstOfMonth() {
@@ -23,11 +23,10 @@ isset($_POST['start_date']) ? $start_date = $_POST['start_date'] : $start_date =
 isset($_POST['end_date']) ? $end_date = $_POST['end_date'] : $end_date = lastOfMonth();
 
 // @formatter:off
-$values = array("start_date" => $start_date,
-                "end_date"   => $end_date,
-                "having"     => "date_between",
-                "having_and" => "real");
-$invoices = Invoice::select_all($values);
+// Select invoice date between range for real invoices.
+$pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
+$pdoDb->setHavings(Invoice::buildHavings("real"));
+$invoices = Invoice::select_all();
 
 $invoice_totals = array();
 foreach($invoices as $k=>$v) {
