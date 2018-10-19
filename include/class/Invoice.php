@@ -278,7 +278,8 @@ class Invoice {
                                   'custom_field1'      => (isset($_POST['custom_field1']) ? $_POST['custom_field1'] : ''),
                                   'custom_field2'      => (isset($_POST['custom_field2']) ? $_POST['custom_field2'] : ''),
                                   'custom_field3'      => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ''),
-                                  'custom_field4'      => (isset($_POST['custom_field4']) ? $_POST['custom_field4'] : '')));
+                                  'custom_field4'      => (isset($_POST['custom_field4']) ? $_POST['custom_field4'] : ''),
+                                  'sales_representative' => (isset($_POST['sales_representative']) ? $_POST['sales_representative'] : '')));
         $pdoDb->setExcludedFields(array("id", "domain_id"));
         $result = $pdoDb->request("UPDATE", "invoices");
         return $result;
@@ -637,6 +638,9 @@ class Invoice {
 
     /**
      * Standard invoice selection for display in flexgrid by xml files.
+     * <strong>NOTE:</strong> DO NOT CLEAR $pdoDb as some selection and other values might have been added
+     * prior to calling this method.
+     *
      * @param string $type Three setting:
      *        <ol>
      *          <li><b>count</b> - Accessed for row count based on select criteria. Excludes <i>LIMIT</i> setting</li>
@@ -681,6 +685,7 @@ class Invoice {
                 $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
             }
         }
+        $pdoDb->addSimpleWhere("iv.domain_id", domain_id::get());
 
         $fn = new FunctionStmt("COALESCE", "SUM(ii.total),0");
         $fr = new FromStmt("invoice_items", "ii");
@@ -720,16 +725,15 @@ class Invoice {
         $jn->addSimpleItem('pf.domain_id', new DbField("iv.domain_id"));
         $pdoDb->addToJoins($jn);
 
-        $pdoDb->addSimpleWhere("iv.domain_id", domain_id::get());
-
         $expr_list = array(
             "iv.id",
             "iv.domain_id",
-            "iv.last_activity_date",
             "iv.owing",
+            "iv.last_activity_date",
             "iv.aging_date",
             "iv.age_days",
             "iv.aging",
+            "iv.sales_representative",
             new DbField("iv.index_id", "index_id"),
             new DbField("iv.type_id", "type_id"),
             new DbField("b.name", "biller"),

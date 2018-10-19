@@ -50,7 +50,11 @@
     </a>
     <a href="index.php?module=reports&view=report_net_income" class="">
       <img src="images/famfam/money.png" alt="" />
-      <span>Net Income Report</span>
+      <span>{$LANG.net_income_report}</span>
+    </a>
+    <a href="index.php?module=reports&view=report_sales_by_representative" class="">
+      <img src="images/famfam/report_edit.png" alt="" />
+      <span>{$LANG.sales_by_representative}</span>
     </a>
 
     {if $perform_extension_insertions == true}
@@ -229,13 +233,13 @@
     <img src="images/famfam/database.png" alt="" />
     {$LANG.database_log}
   </a>
-    {if $perform_extension_insertions == true}
-      {section name=idx loop=$extension_insertion_files}
-        {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $LANG.other}
-          {include file=$extension_insertion_files[idx].file}
-        {/if}
-      {/section}
-    {/if}
+  {if $perform_extension_insertions == true}
+    {section name=idx loop=$extension_insertion_files}
+      {if $extension_insertion_files[idx].module  == 'reports' &&
+          $extension_insertion_files[idx].section == $LANG.other}
+        {include file=$extension_insertion_files[idx].file}
+      {/if}
+    {/section}
+  {/if}
   </div>
 </div>

@@ -258,6 +258,7 @@ CREATE TABLE IF NOT EXISTS `si_invoices` (
   `aging_date` datetime DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated',
   `age_days` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Age of invoice balance',
   `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.',
+  `sales_representative` VARCHAR(50) DEFAULT '' NOT NULL,
   PRIMARY KEY (`domain_id`,`id`),
   KEY `domain_id` (`domain_id`),
   KEY `biller_id` (`biller_id`),
@@ -718,7 +719,8 @@ INSERT INTO `si_sql_patchmanager`(`sql_patch_ref`,`sql_patch`,`sql_release`,`sql
 ,(299,'Add check number field to the payment table.','20181003','ALTER TABLE `si_payment` ADD `ac_check_number` varchar(10) DEFAULT "" NOT NULL COMMENT "Check number for CHECK payment types"','fearless359')
 ,(300,'Add install complete table.','20181008','CREATE TABLE `si_install_complete` (`completed` tinyint(1) NOT NULL COMMENT "Flag SI install has completed") ENGINE=InnoDB COMMENT="Specifies an allowed setting for a flag field"','fearless359')
 ,(301,'Add last_activity_date, aging_date and aging_value to invoices.','20181012','ALTER TABLE `si_invoices` ADD `last_activity_date` DATE NULL COMMENT "Date last activity update to the invoice", ADD `aging_date` DATE NULL COMMENT "Date aging was last calculated", ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT "Age of invoice balance"','fearless359')
-,(302,'Added owing to invoices table','20181017','ALTER TABLE `si_invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT "Amount owing as of aging-date" AFTER "note"; UPDATE `si_invoices` SET owing = 1;', 'fearless359');
+,(302,'Added owing to invoices table','20181017','ALTER TABLE `si_invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT "Amount owing as of aging-date" AFTER "note"; UPDATE `si_invoices` SET owing = 1;', 'fearless359')
+,(303,'Add invoice custom field report extension to standard application and add sales_representative field.','20181018','ALTER TABLE `si_invoices` ADD `sales_representative` VARCHAR(50) DEFAULT "" NOT NULL;', 'fearless359');
 
 CREATE TABLE IF NOT EXISTS `si_system_defaults` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

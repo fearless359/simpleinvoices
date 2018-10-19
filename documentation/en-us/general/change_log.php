@@ -13,6 +13,15 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-19 - <b>2018.2.3</b>
+            <ul>
+                <li>Add sales_representative field to the invoices table and add maintenance
+                    support for it. If the inv_custom_field_report extension is enabled, copy
+                    the content of the invoice custom_field3 to the new sales_representative
+                    field and move the inv_custom_field_report extension to the standard
+                    application as Sales by Representative.</li>
+            </ul>
+        </li>
         <li>2018-10-17 - <b>2018.2.2</b>
             <ul>
                 <li>Added owing to invoices table to fix aging issue.</li>

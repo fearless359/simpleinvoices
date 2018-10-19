@@ -201,8 +201,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="details_screen">
+                    <th>
                         {$LANG.inv_pref}&nbsp;&nbsp;
+                    </th>
+                    <td class="details_screen">
                         {if $preferences == null }
                             <p><em>{$LANG.no_preferences}</em></p>
                         {else}
@@ -214,6 +216,11 @@
                                 {/foreach}
                             </select>
                         {/if}
+                    </td>
+                    <th>{$LANG.sales_representative}</th>
+                    <td>
+                        <input id="sales_representative}" name="sales_representative" size="30"
+                               value="{$invoice.sales_representative|htmlsafe}" />
                     </td>
                 </tr>
                 <tr>

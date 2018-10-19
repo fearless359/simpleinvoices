@@ -6,7 +6,7 @@
  *   Justin Kelly, Nicolas Ruflin, Ap.Muthu
  *
  * Last edited:
- *   2008-01-03
+ *   2018-10-19 by Richard Rowley
  *
  * License:
  *   GPL v2 or above
@@ -257,7 +257,7 @@
       <td colspan="6">
         <table class="si_invoice_view_items">
           <tr class="tr_head_items">
-            <th class="si_quantity">{$LANG.quantity_short}</th>
+            <th>{$LANG.quantity_short}</th>
             <th colspan="2">{$LANG.item}</th>
             <th class="si_right">{$LANG.unit_cost}</th>
             <th class="si_right">{$LANG.price}</th>
@@ -415,7 +415,12 @@
         <td colspan="6">{$invoice.note|outhtml}</td>
       </tr>
     {/if}
+    <tr class="tr_head">
+      <th>{$LANG.sales_representative}</th>
+      <td colspan="5">{$invoice.sales_representative|htmlsafe}</td>
+    </tr>
     {* end itemized invoice *}
+    <tr><td colspan="6">&nbsp;</td></tr>
   {/if}
   {* tax section - start --------------------- *}
   {if $invoice_number_of_taxes > 0}

@@ -37,7 +37,8 @@ if ($_POST['action'] == "insert" ) {
                   'custom_field1' => $_POST['custom_field1'],
                   'custom_field2' => $_POST['custom_field2'],
                   'custom_field3' => $_POST['custom_field3'],
-                  'custom_field4' => $_POST['custom_field4']);
+                  'custom_field4' => $_POST['custom_field4'],
+                  'sales_representative' => $_POST['sales_representative']);
     $id = Invoice::insert($list);
     if ($id > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";

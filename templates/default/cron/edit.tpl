@@ -60,7 +60,7 @@
         <td>
           <select name="email_biller" class="validate[required]">
             <option value="1" {if $cron.email_biller == '1'}selected{/if}>{$LANG.yes}</option>
-            <option value="0" {if $cron.email_biller == '0'}selected{/if}>{$LANG.no}</option>
+            <option value="0" {if $cron.email_biller == '0'}selected{/if}>{$LANG.no_lowercase}</option>
           </select>
         </td>
       </tr>
@@ -69,7 +69,7 @@
         <td>
           <select name="email_customer" class="validate[required]">
             <option value="1" {if $cron.email_customer == '1'}selected{/if}>{$LANG.yes}</option>
-            <option value="0" {if $cron.email_customer == '0'}selected{/if}>{$LANG.no}</option>
+            <option value="0" {if $cron.email_customer == '0'}selected{/if}>{$LANG.no_lowercase}</option>
           </select>
         </td>
       </tr>

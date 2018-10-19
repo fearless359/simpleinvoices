@@ -17,8 +17,8 @@ $xml .= "<page>$page</page>";
 $xml .= "<total>$count</total>";
 
 foreach ( $crons as $row ) {
-    $row['email_biller_nice']   = ($row['email_biller']   == ENABLED ? $LANG['yes'] : $LANG['no']);
-    $row['email_customer_nice'] = ($row['email_customer'] == ENABLED ? $LANG['yes'] : $LANG['no']);
+    $row['email_biller_nice']   = ($row['email_biller']   == ENABLED ? $LANG['yes'] : $LANG['no_lowercase']);
+    $row['email_customer_nice'] = ($row['email_customer'] == ENABLED ? $LANG['yes'] : $LANG['no_lowercase']);
     $xml .= "<row id='" . $row['id'] . "'>";
     $xml .=
         "<cell><![CDATA[

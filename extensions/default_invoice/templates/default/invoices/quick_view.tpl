@@ -11,7 +11,7 @@
  *         notes when present.
  *
  * Last edited:
- *      2017-12-25
+ *      2018-10-18 by Richard Rowley to add sales_representative
  *
  * License:
  *     GPL v3 or above
@@ -417,12 +417,18 @@
     </td>
   </tr>
   <tr><td colspan="6">&nbsp;</td></tr>
+  {if ($invoice.note != null) }
   <tr class="details_screen">
     <th class="" style="text-align:left;"><b>{$LANG.notes}:</b></th>
     <td colspan="5" class="details_screen align_right"></td>
   </tr>
   <tr class='details_screen notes'>
-    <td class='details_screen' colspan="6">{if ($invoice.note != null)}{$invoice.note|unescape}{/if}</td>
+    <td class='details_screen' colspan="6">{$invoice.note|outhtml}</td>
+  </tr>
+  {/if}
+  <tr class="tr_head">
+    <th>{$LANG.sales_representative}</th>
+    <td colspan="5">{$invoice.sales_representative|htmlsafe}</td>
   </tr>
   <tr><td colspan="6">&nbsp;</td></tr>
   {foreach from=$invoice.tax_grouped item=taxg}

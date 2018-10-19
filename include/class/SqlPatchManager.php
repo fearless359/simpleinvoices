@@ -10,6 +10,7 @@ class SqlPatchManager
     // Note that array is zero based but patch ref is 1 based.
     private static $patchLines = array();
     private static $patchCount = 0;
+    private static $numberToBeginPatchListAt = 0;
 
     /**
      * Add an entry to the $patchLines array.
@@ -53,7 +54,9 @@ class SqlPatchManager
             return 0;
         }
         // Returns number of patches applied
-        return $rows[0]['sql_patch_ref'];
+        $last_patch_applied = $rows[0]['sql_patch_ref'];
+        self::$numberToBeginPatchListAt = $last_patch_applied - 20;
+        return $last_patch_applied;
     }
 
     /**
@@ -181,9 +184,16 @@ class SqlPatchManager
             $pdoDb_admin->addSimpleWhere('sql_patch_ref', $id);
             $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
             if (!empty($rows)) {
-                // forget about the patch as it has already been run!!
-                $smarty_row['text'] = "Skipping SQL patch $escaped_id, $patch_name as it <i>has</i> already been applied";
-                $smarty_row['result'] = "skip";
+                if ($id < self::$numberToBeginPatchListAt) {
+                    if ($id == 1) {
+                        $smarty_row['text'] = "*** Previously applied patches skipped to #" . self::$numberToBeginPatchListAt . " ***";
+                        $smarty_row['result'] = "sep";
+                    }
+                } else {
+                    // forget about the patch as it has already been run!!
+                    $smarty_row['text'] = "Skipping SQL patch $escaped_id, $patch_name as it <i>has</i> already been applied";
+                    $smarty_row['result'] = "skip";
+                }
             } else {
                 // patch hasn't been run, so run it
                 $pdoDb_admin->query($patch['patch']);
@@ -205,6 +215,8 @@ class SqlPatchManager
 
                 if ($id == 126) {
                     self::patch126();
+                } else if ($id == 303) {
+                    self::patch303();
                 }
             }
         } catch (PdoDbException $pde) {
@@ -244,7 +256,10 @@ class SqlPatchManager
             foreach(self::$patchLines as $patch) {
                 $i++;
                 try {
-                    $page_info['rows'][$i] = self::runSqlPatch($i, $patch);
+                    $result = self::runSqlPatch($i, $patch);
+                    if (!empty($result)) {
+                        $page_info['rows'][$i] = $result;
+                    }
                 } catch (PdoDbException $pde) {
                     error_log($pde->getMessage());
                     $page_info['html'] .= "<div class=\"si_message_error\">Unable to process patch #{$i}. Error: " . $pde->getMessage() . "</div>";
@@ -303,14 +318,20 @@ class SqlPatchManager
             $patch_name = htmlsafe($patch['name']);
             $patch_date = htmlsafe($patch['date']);
             if (self::checkIfSqlPatchApplied($i)) {
-                $page_info['rows'][$i]['text'] = "SQL patch $i, $patch_name <i>has</i> already been applied in release $patch_date";
-                $page_info['rows'][$i]['result'] = 'skip';
+                if ($i < self::$numberToBeginPatchListAt) {
+                    if ($i == 1) {
+                        $page_info['rows'][$i]['text'] = "*** Previously applied patches skipped to #" . self::$numberToBeginPatchListAt . " ***";
+                        $page_info['rows'][$i]['result'] = "sep";
+                    }
+                } else {
+                    $page_info['rows'][$i]['text'] = "SQL patch $i, $patch_name <i>has</i> already been applied in release $patch_date";
+                    $page_info['rows'][$i]['result'] = 'skip';
+                }
             } else {
                 $page_info['rows'][$i]['text'] = "SQL patch $i, $patch_name <span style='color:red !important;'><b>has not</b> been applied to the database</span>";
                 $page_info['rows'][$i]['result'] = 'todo';
             }
         }
-
         $smarty->assign("page", $page_info);
     }
 
@@ -412,6 +433,40 @@ class SqlPatchManager
                     "id[{$row['id']}] product_id[$id] unit_price[{$row['gross_total']}]");
             }
         }
+    }
+
+    /**
+     * Special handling for patch #303
+     * @throws PdoDbException
+     */
+    private static function patch303()
+    {
+        global $pdoDb_admin;
+
+        $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report', 'AND');
+        $pdoDb_admin->addSimpleWhere('enabled', ENABLED);
+        $rows = $pdoDb_admin->request('SELECT', 'extensions');
+        if (!empty($rows)) {
+            // Copy invoice custom field 3 value to the new sales representative field.
+            $pdoDb_admin->addToWhere(new WhereItem(false,'custom_field3', "<>", "", false));
+            $rows = $pdoDb_admin->request("SELECT", "invoices");
+            try {
+                foreach ($rows as $row) {
+                    // Note that custom_field3 is intentionally NOT cleared. The user can do that
+                    // through the custom field maintenance screen.
+                    $pdoDb_admin->addSimpleWhere('id', $row['id']);
+                    $pdoDb_admin->setFauxPost(array('sales_representative' => $row['custom_field3']));
+                    $pdoDb_admin->request('UPDATE', 'invoices');
+                }
+            } catch (PdoDbException $pde) {
+                error_log("SqlPatchManager::patch303() - Error: " . $pde->getMessage());
+                throw new PdoDbException("SqlPatchManager::patch303() - " . $pde->getMessage());
+            }
+        }
+
+        // Delete extension record if present (enabled or not)
+        $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report');
+        $pdoDb_admin->request('DELETE', 'extensions');
     }
 
     /**
@@ -3068,6 +3123,14 @@ class SqlPatchManager
             'source' => 'fearless359'
         );
         self::makePatch('302', $patch);
+
+        $patch = array(
+            'name' => 'Add invoice custom field report extension to standard application and add sales_representative field.',
+            'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD `sales_representative` VARCHAR(50) DEFAULT '' NOT NULL;",
+            'date' => "20181018",
+            'source' => 'fearless359'
+        );
+        self::makePatch('303', $patch);
 
         // @formatter:on
     }

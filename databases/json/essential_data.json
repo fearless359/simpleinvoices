@@ -2431,6 +2431,13 @@
       "sql_release": "20181017",
       "sql_statement": "ALTER TABLE `si_invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT 'Amount owing as of aging-date' AFTER `note`;UPDATE `si_invoices` SET `owing` = 1;",
       "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "303",
+      "sql_patch": "Add invoice custom field report extension to standard application and add sales_representative field.",
+      "sql_release": "20181018",
+      "sql_statement": "ALTER TABLE `si_invoices` ADD `sales_representative` VARCHAR(50) DEFAULT '' NOT NULL;",
+      "source": "fearless359"
     }
   ],
   "si_system_defaults": [

@@ -204,6 +204,13 @@
                     {/if}
                 </td>
             </tr>
+            <tr>
+                <th>{$LANG.sales_representative}</th>
+                <td>
+                    <input id="sales_representative}" name="sales_representative" size="30"
+                           value="{$invoice.sales_representative|htmlsafe}" />
+                </td>
+            </tr>
         </table>
         <input type="hidden" id="max_items" name="max_items" value="{$smarty.section.line.index|htmlsafe}"/>
         <input type="hidden" name="type" value="2"/>

@@ -224,7 +224,7 @@
       {$customFields.3}
       {$customFields.4}
       <tr>
-        <td class='si_invoice_notes' colspan="2">
+        <td class='si_invoice_notes' colspan="4">
           <h5>{$LANG.notes}</h5>
           <textarea class="editor" name="note" rows="10" cols="70"
                     style="overflow:scroll;">{$invoice.note|outhtml}</textarea>
@@ -245,6 +245,11 @@
           {/foreach}
           </select>
         {/if}
+        </td>
+        <th>{$LANG.sales_representative}</th>
+        <td>
+          <input id="sales_representative}" name="sales_representative" size="30"
+                 value="{$invoice.sales_representative|htmlsafe}" />
         </td>
       </tr>
     {* This is the end of the non-terminated tables in the IF statements *}

@@ -62,7 +62,7 @@
         <td>
           <select name="email_biller" class="validate[required]">
             <option value="1">{$LANG.yes}</option>
-            <option value="0">{$LANG.no}</option>
+            <option value="0">{$LANG.no_lowercase}</option>
           </select>
         </td>
       </tr>
@@ -71,7 +71,7 @@
         <td>
           <select name="email_customer" class="validate[required]">
             <option value="1">{$LANG.yes}</option>
-            <option value="0">{$LANG.no}</option>
+            <option value="0">{$LANG.no_lowercase}</option>
           </select>
         </td>
       </tr>
