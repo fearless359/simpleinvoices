@@ -20,6 +20,7 @@
                     the content of the invoice custom_field3 to the new sales_representative
                     field and move the inv_custom_field_report extension to the standard
                     application as Sales by Representative.</li>
+                <li>Added Custom Flags button to System Settings screen.</li>
             </ul>
         </li>
         <li>2018-10-17 - <b>2018.2.2</b>
