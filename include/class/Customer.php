@@ -123,62 +123,71 @@ class Customer {
     /**
      * @param $id
      * @return array
-     * @throws PdoDbException
      */
     public static function getCustomerInvoices($id) {
         global $pdoDb;
-        $fn = new FunctionStmt("SUM", "COALESCE(ii.total,0)");
-        $fr = new FromStmt("invoice_items", "ii");
-        $wh = new WhereClause();
-        $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), "AND");
-        $wh->addSimpleItem("ii.domain_id", new DbField("iv.domain_id"));
-        $se = new Select($fn, $fr, $wh, "invd");
-        $pdoDb->addToSelectStmts($se);
-
-        $fn = new FunctionStmt("SUM", "COALESCE(ap.ac_amount, 0)");
-        $fr = new FromStmt("payment", "ap");
-        $wh = new WhereClause();
-        $wh->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
-        $wh->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-        $se = new Select($fn, $fr, $wh, "pmt");
-        $pdoDb->addToSelectStmts($se);
-
-        $fn = new FunctionStmt("COALESCE", "invd, 0");
-        $se = new Select($fn, null, null, "total");
-        $pdoDb->addToSelectStmts($se);
-
-        $fn = new FunctionStmt("COALESCE", "pmt, 0");
-        $se = new Select($fn, null, null, "paid");
-        $pdoDb->addToSelectStmts($se);
-
-        $fn = new FunctionStmt("", "total - paid");
-        $se = new Select($fn, null, null, "owing");
-        $pdoDb->addToSelectStmts($se);
-
-        $pdoDb->setSelectList(array("iv.id", "iv.index_id", "iv.date", "iv.type_id",
-                                    "pr.status", "pr.pref_inv_wording"));
-
-        $jn = new Join("LEFT", "preferences", "pr");
-        $oc = new OnClause();
-        $oc->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
-        $oc->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
-        $jn->setOnClause($oc);
-        $pdoDb->addToJoins($jn);
-
-        $pdoDb->addSimpleWhere("iv.customer_id", $id, "AND");
-        $pdoDb->addSimpleWhere("iv.domain_id", domain_id::get());
-
-        $pdoDb->setOrderBy(array("iv.id", "D"));
-
-        $rows = $pdoDb->request("SELECT", "invoices", "iv");
 
         $invoices = array();
-        foreach ($rows as $row) {
-            $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-            $row['date'] = siLocal::date($row['date']);
-            $invoices[] = $row;
-        }
+        try {
+            $fn = new FunctionStmt("SUM", "COALESCE(ii.total,0)");
+            $fr = new FromStmt("invoice_items", "ii");
+            $wh = new WhereClause();
+            $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), "AND");
+            $wh->addSimpleItem("ii.domain_id", new DbField("iv.domain_id"));
+            $se = new Select($fn, $fr, $wh, "invd");
+            $pdoDb->addToSelectStmts($se);
 
+            $fn = new FunctionStmt("SUM", "COALESCE(ap.ac_amount, 0)");
+            $fr = new FromStmt("payment", "ap");
+            $wh = new WhereClause();
+            $wh->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
+            $wh->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
+            $se = new Select($fn, $fr, $wh, "pmt");
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt("COALESCE", "invd, 0");
+            $se = new Select($fn, null, null, "total");
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt("COALESCE", "pmt, 0");
+            $se = new Select($fn, null, null, "paid");
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt("", "total - paid");
+            $se = new Select($fn, null, null, "owing");
+            $pdoDb->addToSelectStmts($se);
+
+            $pdoDb->setSelectList(array("iv.id", "iv.index_id", "iv.date", "iv.type_id",
+                "pr.status", "pr.pref_inv_wording", "b.name"));
+
+            $jn = new Join("LEFT", "preferences", "pr");
+            $oc = new OnClause();
+            $oc->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
+            $oc->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
+            $jn->setOnClause($oc);
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join("LEFT", "biller", "b");
+            $oc = new OnClause();
+            $oc->addSimpleItem('b.id', new DbField('iv.biller_id'), 'AND');
+            $oc->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
+            $jn->setOnClause($oc);
+            $pdoDb->addToJoins($jn);
+
+            $pdoDb->addSimpleWhere("iv.customer_id", $id, "AND");
+            $pdoDb->addSimpleWhere("iv.domain_id", domain_id::get());
+
+            $pdoDb->setOrderBy(array("iv.id", "D"));
+
+            $rows = $pdoDb->request("SELECT", "invoices", "iv");
+            foreach ($rows as $row) {
+                $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
+                $row['date'] = siLocal::date($row['date']);
+                $invoices[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Customer::getCustomerInvoices() - id[$id] error: " . $pde->getMessage());
+        }
         return $invoices;
     }
 
@@ -233,6 +242,173 @@ class Customer {
 
         $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
         return $rows[0]['total'];
+    }
+
+    /**
+     * Find the last invoice index_id for a customer.
+     * @param $customer_id
+     * @return int $index_id
+     */
+    public static function getLastInvoiceIndexId($customer_id) {
+        global $pdoDb;
+
+        try {
+            $pdoDb->addSimpleWhere('customer_id', $customer_id, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+
+            $fn = new FunctionStmt("MAX", new DbField("index_id"), 'last_index_id');
+            $pdoDb->addToFunctions($fn);
+
+            $rows = $pdoDb->request('SELECT', 'invoices');
+            if (empty($rows)) {
+                return 0;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Customer::getLastInvoiceIndexId() - Error: " . $pde->getMessage());
+            return 0;
+        }
+
+        return $rows[0]['last_index_id'];
+    }
+
+    /**
+     * Select records for the flexigrid list
+     * @param $type
+     * @param $dir
+     * @param $sort
+     * @param $rp
+     * @param $page
+     * @return array|mixed
+     */
+    public static function sql($type, $dir, $sort, $rp, $page) {
+        global $LANG, $pdoDb;
+
+        try {
+            $valid_search_fields = array(
+                "c.id",
+                "c.name",
+                "c.department",
+                "c.enabled",
+                "c.street_address",
+                "c.city",
+                "c.state",
+                "c.phone",
+                "c.mobile_phone",
+                "c.email"
+            );
+
+            $query = isset($_POST['query']) ? $_POST['query'] : null;
+            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
+            if (!empty($qtype) && !empty($query)) {
+                if (in_array($qtype, $valid_search_fields)) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
+                }
+            }
+            $pdoDb->addSimpleWhere("c.domain_id", domain_id::get());
+
+            if ($type == "count") {
+                $pdoDb->addToFunctions("COUNT(*) AS count");
+                $rows = $pdoDb->request("SELECT", "customers", "c");
+                return $rows[0]['count'];
+            }
+
+            if (intval($page) != $page) $page = 1;
+            if (intval($rp) != $rp) $rp = 25;
+
+            $start = (($page - 1) * $rp);
+
+            $expr_list = array(
+                new DbField("c.id", "CID"),
+                "c.domain_id",
+                "c.name",
+                "c.department",
+                "c.enabled",
+                "c.street_address",
+                "c.city",
+                "c.state",
+                "c.phone",
+                "c.mobile_phone",
+                "c.email"
+            );
+            $pdoDb->setSelectList($expr_list);
+            $pdoDb->setGroupBy($expr_list);
+
+            $case = new CaseStmt("c.enabled", "enabled_txt");
+            $case->addWhen("=", ENABLED, $LANG['enabled']);
+            $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($case);
+
+            $fn = new FunctionStmt("COALESCE", "SUM(ii.total), 0", "total");
+            $fr = new FromStmt("invoice_items", "ii");
+            $jn = new Join("INNER", "invoices", "iv");
+            $oc = new OnClause();
+            $oc->addSimpleItem("iv.id", new DbField("ii.invoice_id"), "AND");
+            $oc->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
+            $jn->setOnClause($oc);
+            $wh = new WhereClause();
+            $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
+            $wh->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
+            $se = new Select($fn, $fr, $wh, "customer_total");
+            $se->addJoin($jn);
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt("MAX", new DbField("iv.id"));
+            $fr = new FromStmt("invoices", "iv");
+            $wh = new WhereClause();
+            $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
+            $wh->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
+            $se = new Select($fn, $fr, $wh, "last_inv_id");
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt("COALESCE", "SUM(ap.ac_amount), 0", "amount");
+            $fr = new FromStmt("payment", "ap");
+            $jn = new Join("INNER", "invoices", "iv");
+            $oc = new OnClause();
+            $oc->addSimpleItem("iv.id", new DbField("ap.ac_inv_id"), "AND");
+            $oc->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
+            $jn->setOnClause($oc);
+            $wh = new WhereClause();
+            $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
+            $wh->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
+            $se = new Select($fn, $fr, $wh, "paid");
+            $se->addJoin($jn);
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt(null, "customer_total");
+            $fn->addPart("-", "paid");
+            $se = new Select($fn, null, null, "owing");
+            $pdoDb->addToSelectStmts($se);
+
+            $validFields = array('CID', 'name', 'department', 'customer_total', 'paid', 'owing', 'enabled');
+            if (in_array($sort, $validFields)) {
+                $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
+                $sortlist = array(array("enabled", "D"), array($sort, $dir));
+            } else {
+                $sortlist = array(array("enabled", "D"), array("name", "A"));
+            }
+            $pdoDb->setOrderBy($sortlist);
+
+            $pdoDb->setLimit($rp, $start);
+
+            $rows = $pdoDb->request("SELECT", "customers", "c");
+
+            $result = array();
+            foreach($rows as $row) {
+                if ($row['last_inv_id'] > 0) {
+                    $pdoDb->addSimpleWhere('id', $row['last_inv_id']);
+                    $pdoDb->setSelectList('index_id');
+                    $recs = $pdoDb->request("SELECT", 'invoices');
+                    $row['last_invoice'] = $recs[0]['index_id'];
+                } else {
+                    $row['last_invoice'] = '0';
+                }
+                $result[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            return array();
+        }
+
+        return $result;
     }
 
 }

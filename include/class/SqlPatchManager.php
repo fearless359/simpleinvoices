@@ -107,8 +107,28 @@ class SqlPatchManager
     private static function addSourceColumn()
     {
         global $pdoDb_admin;
+        static $fixSource = true;
 
-        if (!checkFieldExists('sql_patchmanager', 'source')) {
+        if ($pdoDb_admin->checkFieldExists('sql_patchmanager', 'source')) {
+            // Fix an issue where the source column update was lost, so fix it
+            if ($fixSource) {
+                $pdoDb_admin->setSelectAll(true);
+                $pdoDb_admin->addSimpleWhere('source', '');
+                $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
+                foreach ($rows as $row) {
+                    if ($row['sql_patch_ref'] > 293) {
+                        $source = 'fearless359';
+                    } else {
+                        $source = 'original';
+                    }
+                    $pdoDb_admin->setFauxPost(array('source' => $source));
+                    $pdoDb_admin->addSimpleWhere('sql_id', $row['sql_id']);
+                    $pdoDb_admin->request('UPDATE', 'sql_patchmanager');
+                }
+            }
+            $fixSource = false;
+        } else {
+            $fixSource = false;
             try {
                 $pdoDb_admin->addTableConstraints('source', 'ADD ~ VARCHAR(20) NOT NULL');
                 if (!$pdoDb_admin->request('ALTER TABLE', 'sql_patchmanager')) {
@@ -206,7 +226,8 @@ class SqlPatchManager
                     'sql_patch_ref' => $id,
                     'sql_patch' => $patch['name'],
                     'sql_release' => $patch['date'],
-                    'sql_statement' => $patch['patch']
+                    'sql_statement' => $patch['patch'],
+                    'source' => $patch['patch']
                 ));
 
                 if ($pdoDb_admin->request('INSERT', 'sql_patchmanager') == 0) {
@@ -217,6 +238,8 @@ class SqlPatchManager
                     self::patch126();
                 } else if ($id == 303) {
                     self::patch303();
+                } else if ($id == 304) {
+                    self::patch304();
                 }
             }
         } catch (PdoDbException $pde) {
@@ -247,7 +270,6 @@ class SqlPatchManager
             // point where fearless359/simpleinvoices version patches diverged from
             // original simpleinvoices version.
             self::siCanUpdateCheck();
-
             $pdoDb_admin->begin();
 
             $i = 0;
@@ -466,6 +488,134 @@ class SqlPatchManager
 
         // Delete extension record if present (enabled or not)
         $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report');
+        $pdoDb_admin->request('DELETE', 'extensions');
+    }
+
+    /**
+     * Special handling for patch #304 - default_invoice.
+     * The first step is to see if the default_invoice extension is enabled.
+     * If not, there are no values to convert but the system_defaults "default_invoice"
+     * record will be added. If the extension is enabled, the following is performed:
+     *   1) Non-empty custom_field4 values from the invoices table are converted from
+     *      an invoice "id" to the invoice "index_id". Then the "index_id" is stored
+     *      in the new "default_invoice" field of the customers record associated with
+     *      the invoice.
+     *   2) Non-empty custom_field4 values from the customers records are converted
+     *      from the invoice "id" to the invoice "index_id" and that "index_id" is
+     *      stored in the new "default_invoice" field of the customers record. Note
+     *      that in theory, this might overwrite a value stored in step 1 giving
+     *      priority to the value in the customers record.
+     *   3) If a "default_invoice" entry exists in the system_defaults table and it
+     *      contains a non-zero value, that value will be converted from an invoice
+     *      "id" to the invoice "index_id" value. If NO "default_invoice" entry exists
+     *      a "default_invoice" record with a zero setting will be created.
+     * @throws PdoDbException
+     */
+    private static function patch304()
+    {
+        global $pdoDb_admin;
+
+        $pdoDb_admin->addSimpleWhere('name', 'default_invoice', 'AND');
+        $pdoDb_admin->addSimpleWhere('enabled', ENABLED);
+        $rows = $pdoDb_admin->request('SELECT', 'extensions');
+        if (!empty($rows)) {
+            // 1) Convert default invoice id in invoices *custom_field4' to the index_id and then store it in the customers table.
+            //    Clear the default value from the invoice.
+            $pdoDb_admin->addToWhere(new WhereItem(false,'custom_field4', "<>", "", false));
+            $rows = $pdoDb_admin->request("SELECT", "invoices");
+            try {
+                // Convert id to the index_id and store it in the customers record.
+                foreach ($rows as $row) {
+                    $pdoDb_admin->setSelectList('index_id', 'customer_id');
+                    $pdoDb_admin->addSimpleWhere('id', $row['custom_field4']);
+                    $recs = $pdoDb_admin->request('SELECT', 'invoices');
+                    if (!empty($recs)) {
+                        $pdoDb_admin->setFauxPost(array('default_invoice' => $recs[0]['index_id']));
+                        $pdoDb_admin->addSimpleWhere('id', $recs['customer_id']);
+                        $pdoDb_admin->request('UPDATE', 'customers');
+                    }
+
+                    $pdoDb_admin->setFauxPost(array('custom_field4' => ''));
+                    $pdoDb_admin->addSimpleWhere('id', $row['id']);
+                    $pdoDb_admin->request('UPDATE', 'invoices');
+                }
+            } catch (PdoDbException $pde) {
+                error_log("SqlPatchManager::patch304() - Error(1): " . $pde->getMessage());
+                throw new PdoDbException("SqlPatchManager::patch304() - " . $pde->getMessage());
+            }
+
+            // 2) Convert non-blank custom_field4 values in the customers table to the corresponding index_id and store
+            //    it in the new default_value field. Also clear the existing custom_field4 field. Note this will INTENTIONALLY
+            //    overwrite any value set up the invoices file above.
+            $pdoDb_admin->setSelectList(array('id', 'custom_field4'));
+            $pdoDb_admin->addToWhere(new WhereItem(false,'custom_field4', "<>", "", false));
+            $rows = $pdoDb_admin->request("SELECT", "customers");
+            try {
+                foreach ($rows as $row) {
+                    // Convert id to index_id
+                    $pdoDb_admin->setSelectList('index_id');
+                    $pdoDb_admin->addSimpleWhere('id', $row['custom_field4']);
+                    $recs = $pdoDb_admin->request('SELECT', 'invoices');
+                    if (!empty($recs)) {
+                        // Note that custom_field4 is intentionally NOT cleared. The user can do that
+                        // through the custom field maintenance screen.
+                        $pdoDb_admin->setFauxPost(array(
+                            'default_invoice' => $recs[0]['index_id'],
+                            'custom_field4' => ''
+                        ));
+                        $pdoDb_admin->addSimpleWhere('id', $row['id']);
+                        $pdoDb_admin->request('UPDATE', 'customers');
+                    }
+                }
+            } catch (PdoDbException $pde) {
+                error_log("SqlPatchManager::patch304() - Error(2): " . $pde->getMessage());
+                throw new PdoDbException("SqlPatchManager::patch304() - " . $pde->getMessage());
+            }
+        }
+
+        // Check for a default_invoice entry in the system_defaults table. If none, put an empty
+        // record in there for it. If found, convert from id to index_id for non-zero setting.
+        $pdoDb_admin->addSimpleWhere('name', 'default_invoice', 'AND');
+        $pdoDb_admin->addSimpleWhere('domain_id', domain_id::get());
+        $rows = $pdoDb_admin->request('SELECT', 'system_defaults');
+        if (empty($rows)) {
+            $pdoDb_admin->setFauxPost(array(
+                'name' => 'default_invoice',
+                'value' => '',
+                'domain_id' => domain_id::get(),
+                'extension_id' => '1'
+            ));
+            $pdoDb_admin->request('INSERT', 'system_defaults');
+        } else {
+            $invoice_id = $rows['value'];
+            $id = $rows['id'];
+            if (!empty($invoice_id) && $invoice_id > 0) {
+                $row = Invoice::getInvoice($invoice_id);
+                $pdoDb_admin->setFauxPost(array('value' => $row['index_id']));
+                $pdoDb_admin->addSimpleWhere('id', $id);
+                $pdoDb_admin->request('UPDATE', 'system_defaults');
+            }
+        }
+
+        // Clear custom_field4 labels for Customer sand Invoices if present
+        try {
+            $pdoDb_admin->setSelectAll(true);
+            $pdoDb_admin->addSimpleWhere('domain_id', domain_id::get(), 'AND');
+            $pdoDb_admin->addToWhere(new WhereItem(true, 'cf_custom_field', '=', 'invoice_cf4', false, 'OR'));
+            $pdoDb_admin->addToWhere(new WhereItem(false, 'cf_custom_field', '=', 'customer_cf4', true));
+            $rows = $pdoDb_admin->request('SELECT', 'custom_fields');
+            foreach($rows as $row) {
+                $pdoDb_admin->setFauxPost(array('cf_custom_label' => "", 'cf_display' => DISABLED));
+                $pdoDb_admin->addSimpleWhere('cf_id', $row['cf_id']);
+                $pdoDb_admin->request('UPDATE', 'custom_fields');
+            }
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::patch304() - Error(3): " . $pde->getMessage());
+            throw new PdoDbException("SqlPatchManager::patch304() - " . $pde->getMessage());
+        }
+
+        // Delete extension record if present (enabled or not)
+        $pdoDb_admin->addSimpleWhere('name', 'default_invoice');
         $pdoDb_admin->request('DELETE', 'extensions');
     }
 
@@ -1561,8 +1711,8 @@ class SqlPatchManager
         );
         self::makePatch('127', $patch);
 
-        $u = (checkTableExists(TB_PREFIX . 'users'));
-        $ud = (checkFieldExists(TB_PREFIX . 'users', 'user_domain'));
+        $u = ($pdoDb_admin->checkTableExists('users'));
+        $ud = ($pdoDb_admin->checkFieldExists('users', 'user_domain'));
         $patch = array(
             'name' => "Add user table",
             'patch' => ($u ? ($ud ? "SELECT * FROM " . TB_PREFIX . "users;" :
@@ -1588,7 +1738,7 @@ class SqlPatchManager
         );
         self::makePatch('129', $patch);
 
-        $ac = (checkTableExists(TB_PREFIX . 'auth_challenges'));
+        $ac = ($pdoDb_admin->checkTableExists('auth_challenges'));
         $patch = array(
             'name' => "Create auth_challenges table",
             'patch' => ($ac ? "SELECT * FROM " . TB_PREFIX . "auth_challenges" :
@@ -2984,7 +3134,7 @@ class SqlPatchManager
         );
         self::makePatch('293', $patch);
 
-        $ud = checkTableExists(TB_PREFIX . 'custom_flags');
+        $ud = $pdoDb_admin->checkTableExists('custom_flags');
         $patch = array(
             'name' => 'Add custom_flags table for products.',
             'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'custom_flags';" :
@@ -3032,7 +3182,7 @@ class SqlPatchManager
         );
         self::makePatch('296', $patch);
 
-        $ud = (checkFieldExists("user", "username"));
+        $ud = ($pdoDb_admin->checkFieldExists("user", "username"));
         $conam = $LANG['company_name'];
         $cologo = 'simple_invoices_logo.png';
         $patch = array(
@@ -3063,19 +3213,19 @@ class SqlPatchManager
         unset($conam);
         unset($cologo);
 
-        $ud = (checkFieldExists(TB_PREFIX . 'biller', 'signature'));
+        $ud = ($pdoDb_admin->checkFieldExists('biller', 'signature'));
         $patch = array(
             'name' => 'Add Signature field to the biller table.',
             'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'signature_field';" :
-                              "ALTER TABLE `" . TB_PREFIX . "biller` ADD `signature` varchar(255) DEFAULT '' NOT NULL COMMENT 'Email signature' AFTER `email`;
-                               DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'signature_field';"),
+                              "ALTER TABLE `" . TB_PREFIX . "biller` ADD `signature` varchar(255) DEFAULT '' NOT NULL COMMENT 'Email signature' AFTER `email`;" .
+                              "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'signature_field';"),
             'date' => "20181003",
             'source' => 'fearless359'
         );
         self::makePatch('298', $patch);
         unset($ud);
 
-        $ud = (checkFieldExists(TB_PREFIX . 'payment', 'ac_check_number'));
+        $ud = ($pdoDb_admin->checkFieldExists('payment', 'ac_check_number'));
         $patch = array(
             'name' => 'Add check number field to the payment table.',
             'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'payments';" :
@@ -3087,7 +3237,7 @@ class SqlPatchManager
         self::makePatch('299', $patch);
         unset($ud);
 
-        $ud = checkTableExists(TB_PREFIX . 'install_complete');
+        $ud = $pdoDb_admin->checkTableExists( 'install_complete');
         $patch = array(
             'name' => 'Add install complete table.',
             'patch' => ($ud ? "UPDATE `" . TB_PREFIX . "install_complete` SET `completed` = 1;" :
@@ -3131,6 +3281,14 @@ class SqlPatchManager
             'source' => 'fearless359'
         );
         self::makePatch('303', $patch);
+
+        $patch = array(
+            'name' => 'Add default_invoice field to the customers table.',
+            'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` ADD `default_invoice` INT(10) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Invoice index_id value to use as the default template' AFTER `notes`;",
+            'date' => "20181020",
+            'source' => 'fearless359'
+        );
+        self::makePatch('304', $patch);
 
         // @formatter:on
     }

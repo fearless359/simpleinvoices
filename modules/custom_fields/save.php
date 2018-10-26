@@ -25,7 +25,7 @@ global $LANG,
 checkLogin();
 
 // Deal with op and add some basic sanity checking
-$display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}<div>";
+$display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
 $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=custom_fields&amp;view=manage' />";
 $op = !empty($_POST['op']) ? addslashes($_POST['op']) : NULL;
 
@@ -45,7 +45,7 @@ if ($op === 'edit_custom_field') {
             if (empty($_POST['cf_custom_label'])) {
                 $clear_field = TRUE;
             } else {
-                $display_block ="<div class=\"si_message_warning\">{$LANG['clear_data']} field setting is invalid. No update performed.<div>";
+                $display_block ="<div class=\"si_message_warning\">{$LANG['clear_data']} field setting is invalid. No update performed.</div>";
                 $error_found = TRUE;
                 error_log("modules/custom_fields/save.php - Clear Date set when label not empty.");
                 error_log("Custom Field[" . $_POST['cr_custom_field'] . "] Label[" . $_POST['cf_custom_label'] . "]");
@@ -74,7 +74,7 @@ if ($op === 'edit_custom_field') {
                         }
                     }
                 }
-                $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}<div>";
+                $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";
             } else {
                 $display_block = "<div class=\"si_message_warning\">{$LANG['save_custom_field_failure']}" . end($dbh->errorInfo()) . "</div>";
             }

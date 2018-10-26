@@ -2,7 +2,7 @@
 class ModifyExpenseTables {
     public static function modifyTables() {
         global $pdoDb;
-        if (checkFieldExists(TB_PREFIX . 'expense', 'status') != false) return true;
+        if ($pdoDb->checkFieldExists('expense', 'status') != false) return true;
 
         // Update si_expense
         if (!$pdoDb->request("DROP", "expense")) return false;

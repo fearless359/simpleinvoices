@@ -5,11 +5,10 @@
  * License:
  *  GPL v3 or above
  *}
-
+{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
 <form name="frmpost"
       action="index.php?module=custom_flags&amp;view=save&amp;associated_table={$cflg.associated_table|urlencode}&amp;flg_id={$cflg.flg_id|urlencode}"
-      method="POST"
-      onsubmit="return frmpost_Validator(this);">
+      method="POST" onsubmit="return frmpost_Validator(this);">
     {if $smarty.get.action == "view" }
         <div class="si_form si_form_view">
             <table>

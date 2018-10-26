@@ -64,23 +64,27 @@ class Taxes {
      *         Note that a field named, "wording_for_enabled", was added to store the $LANG
      *         enable or disabled word depending on the "pref_enabled" setting
      *         of the record.
-     * @throws PdoDbException
      */
     public static function getTaxes() {
         global $LANG, $pdoDb;
 
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+        $rows = array();
+        try {
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
 
-        $ca = new CaseStmt("tax_enabled", "enabled");
-        $ca->addWhen( "=", ENABLED, $LANG['enabled']);
-        $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-        $pdoDb->addToCaseStmts($ca);
+            $ca = new CaseStmt("tax_enabled", "enabled");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
 
-        $pdoDb->setSelectAll(true);
+            $pdoDb->setSelectAll(true);
 
-        $pdoDb->setOrderBy("tax_description");
+            $pdoDb->setOrderBy("tax_description");
 
-        $rows = $pdoDb->request("SELECT", "tax");
+            $rows = $pdoDb->request("SELECT", "tax");
+        } catch (PdoDbException $pde) {
+            error_log("Taxes::getTaxes() - error: " . $pde->getMessage());
+        }
         return $rows;
     }
 

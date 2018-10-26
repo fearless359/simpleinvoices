@@ -13,6 +13,18 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-20 - <b>2018.2.4</b>
+            <ul>
+                <li>Move the default invoice extension to the main application. This includes
+                    adding default_invoice field to the customer file. When the patch is
+                    loaded and the module is enabled, the content of custom_field4 will be
+                    copied to the new field.</li>
+                <li>Moved CustomField.php and BackupDb.php files to the include/class directory.</li>
+                <li>Add help information to all the fields on the System Preferences screen. Also
+                    modified toggle field to show Enabled/Disabled text rather than 1/0 on the list screen.</li>
+                <li>Deleted the text_ui extension as not needed, wasn't working and unmaintained.</li>
+            </ul>
+        </li>
         <li>2018-10-19 - <b>2018.2.3</b>
             <ul>
                 <li>Add sales_representative field to the invoices table and add maintenance
@@ -169,7 +181,7 @@
             <ul>
               <li>Extension now automatically adds the new <b>parent_customer_id</b> field to the
                   <i>si_customers</i> table when the extension is enabled and the customer information
-                  is accesed.</li>
+                  is accessed.</li>
               <li>The credit card information is masked leaving the last four digits showing.</li>
             </ul>
           </li>
@@ -190,12 +202,12 @@
           </li>
           <li>Enhancements for extension development
           <p style="padding-left:20px;">
-            These changes impliment a process that allows files that might be updated by multiple
-            extentions to specify only the section that needs to be changed rather than having to
+            These changes implement a process that allows files that might be updated by multiple
+            extensions to specify only the section that needs to be changed rather than having to
             replicate the entire file. This means there won't be competition between extensions
             having to consider whether or not another extension has been enabled and uses the same
-            file. The following files were specifically enhanced to accomodate the likely use in
-            multiple extentions:
+            file. The following files were specifically enhanced to accommodate the likely use in
+            multiple extensions:
           </p>
           <ul>
             <li><b>template/default/reports/index.tpl</b>: Modified to contain section identifiers
@@ -209,7 +221,7 @@
           </li>
           <li>Modified to move popup calendar to move it over a bit.
           <p style="padding-left:20px;">
-            If you use a start and end date that are positioned vertically, thep opup for
+            If you use a start and end date that are positioned vertically, the popup for
             the start date covers the icon to access the popup for the stop date making it a
             two click process to get to the stop date when no change is made in the start date.
             This change positions the popup to the right so the icons aren't obscured and the
@@ -258,7 +270,7 @@
           </li>
           <li>Added User Security extension.
           <p style="padding-left:20px;">
-            This is an important enhancement and is recmmended for all users that have internet
+            This is an important enhancement and is recommended for all users that have internet
             access to their <b>SimpleInvoices</b> system. New features with this enhancement are:
           </p>
           <ul>
@@ -268,7 +280,7 @@
                 they first logon the system. Their <b>email</b> information is retained for
                 informational purposes.
             </li>
-            <li>Addition of password constrant options maintained in the <b>si_system_defaults</b>
+            <li>Addition of password constraint options maintained in the <b>si_system_defaults</b>
                 table. Based on the settings of these fields, a validation pattern is generated
                 that will be used to verify user password compliance. The new database fields are:
                 <ul>
@@ -297,7 +309,7 @@
                   <li><b>company_name_item</b>: Company name to replace default value (typically
                       <i>SimpleInvoices</i>. The new value will be used in all places where this language
                       it is currently used.</li>
-                  <li><b>company_logo</b>: Name of your logo file. That file must reside in thes
+                  <li><b>company_logo</b>: Name of your logo file. That file must reside in the
                       <i>extensions/user_security/images</i> folder. This will be displayed on the
                       SI logon screen.</li>
                 </ul>
@@ -313,7 +325,7 @@
                 </ul>
             </li>
             <li>Addition of new image files for help and required help will be used to make them less prominent
-                on the user screens. These images are strored in the <b>extensions/user_security/images</b>
+                on the user screens. These images are stored in the <b>extensions/user_security/images</b>
                 folder and can be replaced by the original images if desired.</li>
           </ul>
           </li>
@@ -329,7 +341,7 @@
               <li>Provide error log information if email fails.</li>
               <li>Added missing css class to fix display issue on invoice quick view form.</li>
             </ul>
-          <li>Modified logic to only display <b>Custom Fields</b> if their associated label is degined.
+          <li>Modified logic to only display <b>Custom Fields</b> if their associated label is defined.
           <p style="padding-left:20px;">
             Currently custom fields display and function whether they have a label defined of not. This
             change imposes a rule that a label must be defined to activate a custom field cleaning up the
@@ -370,8 +382,8 @@
     <ul>
       <li>2008-05-11
         <ul>
-          <li>modules\payment_types\save.php // Added domain_id to Yinsert SQL // -Dimante</li>
-          <li>modiles\sql_queries.php // Added domain_id to insert SQL for Add Biller // -Dimante</li>
+          <li>modules\payment_types\save.php // Added domain_id to insert SQL // -Dimante</li>
+          <li>modules\sql_queries.php // Added domain_id to insert SQL for Add Biller // -Dimante</li>
         </ul>
       </li>
     </ul>
@@ -380,7 +392,7 @@
         <ul>
           <li>modules/preferences/save.php // Added domain_id to parameters // -Dimante</li>
           <li>templates/default/preferences/details.tpl // Added coding to prevent \' in text rendering for lines with apostrophes. // -Dimante</li>
-          <li>Renamed datebase_backup.tpl to database_backup.tpl so that the backup function would work. // -Dimante</li>
+          <li>Renamed database_backup.tpl to database_backup.tpl so that the backup function would work. // -Dimante</li>
         </ul>
       </li>
     </ul>
@@ -421,7 +433,7 @@
           <li>Right side border lines now display correctly in print preview of invoices</li>
           <li>Mobile Phone of Biller and Customer now prints and displays correctly</li>
           <li>Removed duplicates in all lang files (insert_biller, insert_customer, insert_product)</li>
-          <li>Synched all language files alphabetically with new variables to that in en-gb with 0 attribute and same as in stable version</li>
+          <li>Synced all language files alphabetically with new variables to that in en-gb with 0 attribute and same as in stable version</li>
           <li>Patch 141: sql_patchmanager.sql_patch_ref field changed to INT</li>
           <li>Some more NULL replacements in various save.php files</li>
           <li>Some more TB_PREFIX replacements in various php files</li>
@@ -453,7 +465,7 @@
       <li>2007-11-16
         <ul>
           <li>Security patch to fix issue with the login system - could be bypassed by disabling javascript support</li>
-          <li>Documentation and docs.php udpates</li>
+          <li>Documentation and docs.php updates</li>
           <li>Default language on upgrade from older version, refer: https://simpleinvoices.group/forum/topic-359.html</li>
         </ul>
       </li>
@@ -467,11 +479,11 @@
           <li>New javascript menu included - now works in IEs,FF and Opera</li>
           <li>New language select system - system language can now be changed via the System Preferences page</li>
           <li>All pages move to the smarty templating system</li>
-          <li>Updated UI - were slowly moving away from our 37signals style UI to a more unqiue UI</li>
+          <li>Updated UI - were slowly moving away from our 37signals style UI to a more unique UI</li>
           <li>PDF system modified - $installation_path no longer required</li>
           <li>Authentication sql table added to the default install - so you now longer have to manually run the login sql to get authentication working</li>
           <li>How total invoices are stored in the DB has changed - now a total invoices gets stored as a product in the products table but set to not visible via the Manage Products page</li>
-          <li>System Defautls renamed to System Preferences</li>
+          <li>System Defaults renamed to System Preferences</li>
           <li>Authentication can now be set via the config.php file - no need to adjust include_auth.php anymore</li>
           <li>Customer add template fixed for if no name entered</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=106">Issue 106</a>Edit tax rates bug fixed</li>
@@ -503,7 +515,7 @@
           <li>Major rewrite (refactoring) of backend code by aplsyia to simplify and make sane</li>
           <li>Replace the javascript validation with a purely php validation system</li>
           <li>Table prefix configuration option added</li>
-          <li>Corrected &lt;? ... ?&gt; Sytax to &lt;?php ... ?&gt; Syntax</li>
+          <li>Corrected &lt;? ... ?&gt; Syntax to &lt;?php ... ?&gt; Syntax</li>
           <li>Lots of small optimizations</li>
           <li>Introduced XHTML header</li>
           <li>Czech translation added</li>
@@ -511,15 +523,15 @@
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=90">Issue 90</a>Translation update: save button updates</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=84">Issue 84</a>File cleanup for live grid</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=93">Issue 93</a>Translation: make the redirect pages (ie save.php) translatable</li>
-          <li>Old invoice templates (old_lco and old_original) retired, sorry Gaelyne, we moved to a new template system and these didnt make it</li>
+          <li>Old invoice templates (old_lco and old_original) retired, sorry Gaelyne, we moved to a new template system and these didn't make it</li>
           <li>ibox replaced with greybox as the ajax alert box of choice</li>
           <li>PDF name now 'Wording for invoice'.'Invoice ID'.pdf (ie. Invoice12.pdf or Estimate8.pdf)</li>
-          <li>Moved alot of the templates to smarty - still an ongoing project</li>
+          <li>Moved a lot of the templates to smarty - still an ongoing project</li>
           <li>Language file cleanup - duplicates and old style variables removed</li>
           <li>Logo directory moved from images/logos to templates/invoices/logos</li>
           <li>css update by lionel</li>
           <li>MySQL connect - pretty info messages instead of errors all over the page</li>
-          <li>SQL Pathces: system changes - manage screen made all nice and if are patches to be applied you have to apply them before using SimpleInvoices</li>
+          <li>SQL Patches: system changes - manage screen made all nice and if are patches to be applied you have to apply them before using SimpleInvoices</li>
           <li>System defaults: moved to a new db format to be sane</li>
           <li>Documentation system altered</li>
           <li>Reports: If report runs OK you no longer see the did you get an OOPS error message</li>
@@ -543,7 +555,7 @@
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=78">Issue 78</a>The ajax info page/alert boxes moved from jQuery thickbox to ibox so as to work with the new open rico live grid</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=81">Issue 81</a>New info page for Custom Fields in voices</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=80">Issue 80</a>New info detailing what custom fields are</li>
-          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=74">Issue 74</a>Standardised on using Engligh Number system throughout (ie, 2,400.00 instead of 2400)</li>
+          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=74">Issue 74</a>Standardised on using English Number system throughout (ie, 2,400.00 instead of 2400)</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=86">Issue 86</a>Live grid modified to work with IT</li>
           <li>Romanian translation added</li>
         </ul>
@@ -558,7 +570,7 @@
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=58">Issue 58</a>Date format woes fixed</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=65">Issue 65</a>Invoice date: make editable</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=72">Issue 72</a>Sort not working correctly - fixed</li>
-          <li>Note: If your using authentification please read: <a href="https://simpleinvoices.group/howto" target="_blank">SimpleInvoices Knowledge Base HowTo Page</a> as there have been changes</li>
+          <li>Note: If your using authentication please read: <a href="https://simpleinvoices.group/howto" target="_blank">SimpleInvoices Knowledge Base HowTo Page</a> as there have been changes</li>
           <li>SQL Patches
             <ul>
               <li>Adding data to the custom fields table for invoice</li>
@@ -571,7 +583,7 @@
     <ul>
       <li>2007-02-02
         <ul>
-          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=73">Issue 73</a>Security: Controller.php doesnt validate the $_GET input</li>
+          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=73">Issue 73</a>Security: Controller.php doesn't validate the $_GET input</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=71">Issue 71</a>Null Invoice: Consulting style issue</li>
           <li>Manage tables font size reduction</li>
           <li>Known Issue: <a href="http://code.google.com/p/simpleinvoices/issues/detail?id=73">Issue 72</a>Sort not working correctly for numbers</li>
@@ -586,7 +598,7 @@
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=70">Issue 70</a>Invoice templates names changed and system modified</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=63">Issue 63</a>MySQL password format changed to MD5</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=63">Issue 66</a>New user interface added</li>
-          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=64">Issue 64</a>Authentification: Headers already sent drama resolved</li>
+          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=64">Issue 64</a>Authentication: Headers already sent drama resolved</li>
           <li>Manage Invoices: some unneeded filters removed</li>
           <li>Jquery greybox replace with Jquery thickbox as the ajax popup window javascript</li>
           <li>Menus structure modification - Manage then Add</li>
@@ -604,7 +616,7 @@
       <li>2006-12-11
         <ul>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=55">Issue 55</a> Custom Fields added to billers, customers, and products</li>
-          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=30">Issue 30</a> Issue with blank fields and commas being displayed on the invoice has been fixed, now only fields which are not null get displayed and the commas appera in the right places</li>
+          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=30">Issue 30</a> Issue with blank fields and commas being displayed on the invoice has been fixed, now only fields which are not null get displayed and the commas appear in the right places</li>
           <li>Invoice templates updated to enable custom fields and moved to a more css base</li>
           <li>Language files updated</li>
           <li>More of SimpleInvoices made translatable</li>
@@ -617,7 +629,7 @@
           <li>Database Upgrade Manager: updated to display the number of patches that need to be displayed</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=30">Issue 43</a> Street address 2 field added to customers and billers</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=30">Issue 32</a> Add amount owed on the invoice print out</li>
-          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=53">Issue 53</a> MySQL 4 sql file: auto-increment added even though phpMyAdmin doesnt include it in the export (using MySQL 4 compatability)</li>
+          <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=53">Issue 53</a> MySQL 4 sql file: auto-increment added even though phpMyAdmin doesn't include it in the export (using MySQL 4 comparability)</li>
           <li>Mobile phone field added to customers</li>
           <li>8 sql patches added (number 25 to number 23)</li>
           <li>Known issues with this release:
@@ -654,7 +666,7 @@
           <li>Issue 25: IE print_preview.ph borders fixed</li>
           <li>Exporting to xls and doc fixed</li>
           <li>German translation added</li>
-          <li>Menu text made more easilty translatable</li>
+          <li>Menu text made more easily translatable</li>
           <li>Documentation upgraded to include FAQs</li>
           <li>Creation of a new cache directory to make it easier  to setup SimpleInvoices</li>
         </ul>
@@ -676,14 +688,14 @@
         <ul>
           <li>Invoices are now editable!!</li>
           <li>Invoice - consulting now includes an optional notes section - similar to the other 2 invoice styles</li>
-          <li>Authentification work started</li>
+          <li>Authentication work started</li>
         </ul>
       </li>
     </ul>
     <ul>
       <li>2006-09-25
         <ul>
-          <li>Adding TinyMCE support for all the text box fields - a javascipt html editor</li>
+          <li>Adding TinyMCE support for all the text box fields - a javascript html editor</li>
           <li>Minor reports updated</li>
           <li>Options menu now points to index.php instead of the nonexistent options.php</li>
         </ul>
@@ -705,7 +717,7 @@
     <ul>
       <li>2006-09-13
         <ul>
-          <li>Process payments modified to include auto-complete in the invoice id field aswell as the details box being auto updated with the selected invoices information</li>
+          <li>Process payments modified to include auto-complete in the invoice id field as well as the details box being auto updated with the selected invoices information</li>
           <li>Validation updated for the process payment page and other small changes to cover various other pages</li>
           <li>Print Preview - small bug fix to make the click through to the various customer account screens work correctly</li>
         </ul>
@@ -726,7 +738,7 @@
           <li>The 'Manage' pages have been modified to include a header and be able to create a New Item button</li>
           <li><a href="https://mirror2.cvsdude.com/trac/simpleinvoices/simpleinvoices/ticket/45">Ticket 45</a>PDF printing issues fixed</li>
           <li><a href="https://mirror2.cvsdude.com/trac/simpleinvoices/simpleinvoices/ticket/23">Ticket 23</a>'Add' button it the Manage pages done</li>
-          <li>Clent Accounts
+          <li>Client Accounts
                <a href="https://mirror2.cvsdude.com/trac/simpleinvoices/simpleinvoices/wiki/Client_Accounts">Stage 2</a>
                :
                <a href="https://mirror2.cvsdude.com/trac/simpleinvoices/simpleinvoices/ticket/41">implemented</a></li>
@@ -744,11 +756,11 @@
     <ul>
       <li>2006-08-25
         <ul>
-          <li>Clent Accounts added:
+          <li>Client Accounts added:
               <a href="https://mirror2.cvsdude.com/trac/simpleinvoices/simpleinvoices/wiki/Client_Accounts">Stage 1</a> :
               <a href="https://mirror2.cvsdude.com/trac/simpleinvoices/simpleinvoices/ticket/40">complete</a>
             <ul>
-              <li>In Manage Invoice/Manage Customer and Customer Details pages the fields "Total","Piad","owing" have been added to reflect the customers account summary</li>
+              <li>In Manage Invoice/Manage Customer and Customer Details pages the fields "Total","Paid","owing" have been added to reflect the customers account summary</li>
               <li>A Process Payment feature has been added in Manage Invoice and Quick View to allow the recording of payments by clients for invoice</li>
             </ul>
           </li>
@@ -785,7 +797,7 @@
     <ul>
       <li>2006-07-28
         <ul>
-          <li>Fix minor issues with previous release - niftycorners location and UFT-8</li>
+          <li>Fix minor issues with previous release - nifty corners location and UFT-8</li>
         </ul>
       </li>
     </ul>
@@ -794,7 +806,7 @@
         <ul>
           <li>Manage pages now sortable and filterable</li>
           <li>Translation framework added</li>
-          <li>Portugueuse translation added</li>
+          <li>Portuguese translation added</li>
           <li>Reports added</li>
         </ul>
       </li>
@@ -862,8 +874,8 @@
           </li>
           <li>Print_preview_slick.php modified to work with multi line invoices</li>
           <li>Ajax text modifed</li>
-          <li>Raymonds php/mysql sanity patches applied</li>
-          <li>Tax description and default invoce template fields increased to 50 characters</li>
+          <li>Raymond's php/mysql sanity patches applied</li>
+          <li>Tax description and default invoice template fields increased to 50 characters</li>
           <li>SQL Patches
             <ul>
               <li>ALTER TABLE si_tax CHANGE tax_description tax_description VARCHAR( 50 ) DEFAULT NULL</li>
@@ -899,11 +911,11 @@
           <li>Invoice template theme support added</li>
           <li>/invoice_templates directory created. Print_preview.php has been moved to this directory</li>
           <li>2 new fields have been added to the biller, biller logo file and invoice footer</li>
-          <li>A new invocie template contributed by Dave Holden called print_preview_slick.php has been added to the /invoice_templates directory</li>
+          <li>A new invoice template contributed by Dave Holden called print_preview_slick.php has been added to the /invoice_templates directory</li>
           <li>print_view_manual.php has been renamed to print_quick_view.php</li>
-          <li>Add leightbox text popups</li>
+          <li>Add lightbox text popups</li>
           <li>Add input validation</li>
-          <li>SQL PatchManager (Upgrade Database in the Option menu) has been added, this allows for the upgrade of the SimpleInvoices database from within SimpleInvoices, so the user no longer has to manually run sql sripts when SimpleInvoices is upgraded.</li>
+          <li>SQL PatchManager (Upgrade Database in the Option menu) has been added, this allows for the upgrade of the SimpleInvoices database from within SimpleInvoices, so the user no longer has to manually run sql scripts when SimpleInvoices is upgraded.</li>
           <li>SQL Patches
             <ul>
               <li>#update invoice no details to have a default currency sign of $
@@ -955,7 +967,7 @@
           <li>Tax Rate: a 'No Tax' rate has been added to the 2 .sql files</li>
           <li>Insert_action.php - change 5 seconds to 2 and alter text</li>
           <li>Add Instructions into the Options menu - this links to the ReadMe.html file</li>
-          <li>Add About sub-meun in the Options menu - which reads from the ChangeLog.html and RoadMap.html files</li>
+          <li>Add About sub-menu in the Options menu - which reads from the ChangeLog.html and RoadMap.html files</li>
         </ul>
       </li>
     </ul>
@@ -971,7 +983,7 @@
       <li>2006-04-28
         <ul>
           <li>Bug fix release
-          <li>Tax caluation - fix tax calculation issue as per Jestered email</li>
+          <li>Tax calculation - fix tax calculation issue as per Jestered email</li>
         </ul>
       </li>
     </ul>
@@ -980,7 +992,7 @@
         <ul>
           <li>Bug fix release</li>
           <li>Invoice - duplicate fields bug fixed</li>
-          <li>Invoice - Not erdirecting to Quick View issue fixed</li>
+          <li>Invoice - Not redirecting to Quick View issue fixed</li>
           <li>Menus - menus now working in Opera and IE</li>
         </ul>
       </li>

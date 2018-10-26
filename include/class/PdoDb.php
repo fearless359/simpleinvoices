@@ -695,6 +695,56 @@ class PdoDb {
     }
 
     /**
+     * Check if a specified table exists in the database attached to this object.
+     * @param string $table_in to look for. Note that TB_PREFIX will be added if not present.
+     * @return bool true if table exists, false if not.
+     */
+    public function checkTableExists($table_in) {
+        try{
+            $table = self::addTbPrefix($table_in);
+            $sql = "SELECT 1" .
+                   " FROM `information_schema`.`tables`" .
+                   " WHERE `table_name` = '$table'" .
+                   " AND `table_schema` = '{$this->table_schema}';";
+            if ($sth = $this->pdoDb2->prepare($sql)) {
+                if ($sth->execute() !== false) {
+                    $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+                    return (!empty($result));
+                }
+            }
+        } catch (Exception $e) {
+            error_log("PdoDb checkTableExists(): Error: " . $e->getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Check to see if a column (aka field) exists in a table of the database attached to this object.
+     * @param string $table_in name of the table to get fields for. Note that TB_PREFIX will be added if not present.
+     * @param string $column to search for.
+     * @return bool true if column exists in the table, false if not.
+     */
+    public function checkFieldExists($table_in, $column) {
+        try {
+            $table = self::addTbPrefix($table_in);
+            $sql = "SELECT 1" .
+                   " FROM `information_schema`.`columns`" .
+                   " WHERE `column_name`= '$column'" .
+                   " AND `table_name` = '$table'" .
+                   " AND `table_schema` = '{$this->table_schema}';";
+            if (($sth = $this->pdoDb2->prepare($sql)) !== false) {
+                if ($sth->execute() !== false) {
+                    $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+                    return (!empty($result));
+                }
+            }
+        } catch (Exception $e) {
+            error_log("PdoDb checkFieldExists(): Error: " . $e->getMessage());
+        }
+        return false;
+    }
+
+    /**
      * Get a list of fields (aka columns) in a specified table.
      * @param string $table_in Name of the table to get fields for.
      * @return array Column names from the table. An empty array is
@@ -706,10 +756,10 @@ class PdoDb {
             $columns = array();
 
             // @formatter:off
-            $sql = "SELECT `column_name`
-                      FROM `information_schema`.`columns`
-                     WHERE `table_schema`=:table_schema
-                       AND `table_name`  =:table;";
+            $sql = "SELECT `column_name`" .
+                   " FROM `information_schema`.`columns`" .
+                   " WHERE `table_schema`=:table_schema" .
+                   " AND `table_name`  =:table;";
             $token_pairs = array(':table_schema'=>$this->table_schema,
                                  ':table'       =>$table);
             if ($sth = $this->pdoDb2->prepare($sql)) {
@@ -717,11 +767,11 @@ class PdoDb {
                     while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
                         $nam = $row['column_name'];
                         $columns[$nam] = "";
-                        $sql = "SELECT `constraint_name`
-                                  FROM `information_schema`.`key_column_usage`
-                                 WHERE `column_name` =:column_name
-                                   AND `table_schema`=:table_schema
-                                   AND `table_name`  =:table;";
+                        $sql = "SELECT `constraint_name`" .
+                               " FROM `information_schema`.`key_column_usage`" .
+                               " WHERE `column_name` =:column_name" .
+                               " AND `table_schema`=:table_schema" .
+                               " AND `table_name`  =:table;";
                         $token_pairs = array(':column_name' => $nam,
                                              ':table_schema'=> $this->table_schema,
                                              ':table'       => $table

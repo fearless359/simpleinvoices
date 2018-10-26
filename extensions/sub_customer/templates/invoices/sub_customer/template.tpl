@@ -192,7 +192,7 @@
       <tr>
         <td colspan="6"><br /></td>
       </tr>
-      {if $invoice.type_id == 2 }
+      {if $invoice.type_id == ITEMIZED_INVOICE}
       <tr>
         <td class="tbl1-bottom col1"><b>{$LANG.quantity_short}</b></td>
         <td class="tbl1-bottom col1" colspan="3"><b>{$LANG.item}</b></td>
@@ -239,7 +239,7 @@
         </tr>
         {/foreach}
       {/if}
-      {if $invoice.type_id == 3 }
+      {if $invoice.type_id == CONSULTING_INVOICE}
       <tr class="tbl1-bottom col1">
         <td class="tbl1-bottom "><b>{$LANG.quantity_short}</b></td>
         <td colspan="3" class=" tbl1-bottom"><b>{$LANG.item}</b></td>
@@ -291,7 +291,7 @@
           </tr>
         {/foreach}
       {/if}
-      {if $invoice.type_id == 1 }
+      {if $invoice.type_id == TOTAL_INVOICE}
       <table class="left" width="100%">
         <tr class="col1">
           <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description}</b></td>
@@ -302,7 +302,7 @@
           </tr>
         {/foreach}
       {/if}
-      {if ($invoice.type_id == 2 && $invoice.note != "") || ($invoice.type_id == 3 && $invoice.note != "" ) }
+      {if ($invoice.type_id == ITEMIZED_INVOICE && $invoice.note != "") || ($invoice.type_id == CONSULTING_INVOICE && $invoice.note != "" ) }
         <tr>
           <td class="" colspan="6"><br /></td>
         </tr>

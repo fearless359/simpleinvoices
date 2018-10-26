@@ -1,7 +1,7 @@
 <h2>About to <i>{$action|htmlsafe}</i>: {$name|htmlsafe}</h2>
 
-
-<form name="frmpost" action="index.php?module=extensions&view=save" method="post" onsubmit="return frmpost_Validator(this)">
+{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+<form name="frmpost" action="index.php?module=extensions&view=save" method="post" onsubmit="return frmpost_Validator(this);">
 
 <div class="si_form">
 	<table>

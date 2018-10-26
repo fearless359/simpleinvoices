@@ -36,7 +36,7 @@ if (!strstr($curr_path, $path1)) {
 // Create & initialize DB table if it doesn't exist.
 SubCustomers::addParentCustomerId();
 
-$smarty->assign('number_of_customers', $count);
+$smarty->assign('number_of_customers', $customer_count);
 
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('active_tab', '#people');

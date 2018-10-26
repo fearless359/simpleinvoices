@@ -16,8 +16,8 @@ foreach ($paymentTypes as $paymentType) {
 // Generate form validation script
 jsBegin();
 jsFormValidationBegin("frmpost");
-jsValidateifNum("ac_amount",$LANG['amount']);
-jsValidateifNum("ac_date",$LANG['date']);
+jsValidateIfNum("ac_amount",$LANG['amount']);
+jsValidateIfNum("ac_date",$LANG['date']);
 echo "if(theForm.ac_payment_type.value=='$chk_pt') {\n";
 echo "    var cknum = theForm.ac_check_number.value;\n";
 echo "    cknum = cknum.toUpperCase();\n";

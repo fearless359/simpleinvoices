@@ -16,7 +16,9 @@
 *	https://simpleinvoices.group
 */
 *}
-<form name="frmpost" action="index.php?module=invoices&amp;view=save" method="post" onsubmit="return frmpost_Validator(this);">
+{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+<form name="frmpost" action="index.php?module=invoices&amp;view=save"
+	  method="post" onsubmit="return frmpost_Validator(this);">
 
 <h3>{$LANG.inv} {$LANG.inv_consulting}</h3>
 

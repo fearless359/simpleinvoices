@@ -53,6 +53,17 @@ for ($i = 1; $i <= 4; $i++) {
                                                              ''              , '');
 }
 
+if (isset($_GET['template'])) {
+    $default_id = Invoice::getInvoiceByIndexId($_GET['template']);
+    $invoiceItems = Invoice::getInvoiceItems ( $default_id );
+
+    $smarty->assign("template", $_GET['template']);
+    $smarty->assign("defaultCustomerID", $_GET['customer_id']);
+    $smarty->assign('defaultInvoiceItems', $invoiceItems);
+
+} else {
+    $smarty->assign("defaultCustomerID" , (empty($defaultCustomer) ? 0 : $defaultCustomer['id']));
+}
 $smarty->assign("matrix"            , $matrix);
 $smarty->assign("billers"           , $billers);
 $smarty->assign("customers"         , $customers);
@@ -63,7 +74,6 @@ $smarty->assign("preferences"       , $preferences);
 $smarty->assign("defaultPreference" , $defaultPreference);
 $smarty->assign("dynamic_line_items", $dynamic_line_items);
 $smarty->assign("customFields"      , $customFields);
-$smarty->assign("defaultCustomerID" , (empty($defaultCustomer) ? 0 : $defaultCustomer['id']));
 $smarty->assign("defaults"          , $defaults);
 
 $smarty->assign('active_tab', '#money');

@@ -3,42 +3,6 @@
  * Zend framework init - start
  * *************************************************************/
 
-/**
- * Test for database table existing.
- * @param string $table Table to check for.
- * @return true if specified table exists, false otherwise.
- */
-function checkTableExists($table) {
-    global $pdoDb_admin;
-
-    try {
-        $result = $pdoDb_admin->request('SHOW TABLES', $table);
-    } catch (PdoDbException $pde) {
-        error_log("checkTableExists failed for table[$table]. Error: " . $pde->getMessage());
-        return false;
-    }
-    return !empty($result);
-}
-
-/**
- * Check for the presence of a column in a table of the SI database.
- * @param $table_in
- * @param $column
- * @return bool true if field exists, false if not.
- */
-function checkFieldExists($table_in, $column) {
-    global $pdoDb_admin, $dbInfo;
-    try {
-        $pdoDb_admin->setNoErrorLog();
-        $table = PdoDb::addTbPrefix($table_in);
-        $command = "SELECT 1 FROM information_schema.columns WHERE column_name = '$column' AND table_name = '$table' AND table_schema = '{$dbInfo->getDbname()}' LIMIT 1";
-        $result = $pdoDb_admin->query($command);
-        return !empty($result);
-    } catch (PdoDbException $pde) {
-    }
-    return false;
-}
-
 global $api_request, $config;
 if (!isset($api_request)) $api_request = false;
 
@@ -52,7 +16,7 @@ if (set_include_path($lcl_path) === false) {
     error_log("Error reported by set_include_path() for path: {$lcl_path}");
 }
 
-require_once ("smarty/libs/Smarty.class.php");
+require_once 'smarty/libs/Smarty.class.php';
 require_once 'Zend/Loader/Autoloader.php';
 
 /* *************************************************************
@@ -154,7 +118,8 @@ try {
 
 // It's possible that we are in the initial install mode. If so, set
 // a flag so we won't terminate on an "Unknown database" error later.
-$databaseBuilt = checkTableExists('biller');
+$databaseBuilt = $pdoDb_admin->checkTableExists('biller');
+
 $timeout = 0;
 if ($api_request) {
     if (!$databaseBuilt) {
@@ -367,4 +332,4 @@ $siUrl = getURL();
  * appended to the config array, instead of replacing it
  * (NOTE: NOT TESTED!)
  * *************************************************************/
-include_once ("include/BackupDb.php");
+include_once ("include/class/BackupDb.php");

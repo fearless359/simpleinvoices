@@ -487,52 +487,77 @@ class Invoice {
     }
 
     /**
+     * Get the invoice record by the index_id and current domain_id.
+     * @param $index_id
+     * @return array empty if no such record otherwise invoices record.
+     */
+    public static function getInvoiceByIndexId($index_id) {
+        global $pdoDb;
+
+        try {
+            $pdoDb->addSimpleWhere('index_id', $index_id, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+            $rows = $pdoDb->request('SELECT', 'invoices');
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::  getInvoiceByIndexId() - error: " . $pde->getMessage());
+            return array();
+        }
+        if (empty($rows)) {
+            return array();
+        }
+        return $rows[0];
+    }
+
+    /**
      * Get a specific invoice from the database.
      * @param $id
      * @return array
-     * @throws PdoDbException
      */
     public static function getInvoice($id) {
         global $pdoDb;
 
         $domain_id = domain_id::get();
 
-        $pdoDb->addSimpleWhere("id", $id, "AND");
-        $pdoDb->addSimpleWhere("domain_id", $domain_id);
-        $rows = $pdoDb->request("SELECT", "invoices");
-        if (empty($rows)) {
-            return array();
+        $row = array();
+        try {
+            $pdoDb->addSimpleWhere("id", $id, "AND");
+            $pdoDb->addSimpleWhere("domain_id", $domain_id);
+            $rows = $pdoDb->request("SELECT", "invoices");
+            if (empty($rows)) {
+                return array();
+            }
+
+            $row = $rows[0];
+
+            // @formatter:off
+            $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
+            $row['date']      = siLocal::date($row['date']);
+            $row['total']     = self::getInvoiceTotal($row['id']);
+            $row['gross']     = self::getInvoiceGross($row['id']);
+            $row['paid']      = Payment::calc_invoice_paid($row['id']);
+
+            $age_info = self::calculate_age_days(
+                $row['id'],
+                $row['date'],
+                $row['total'] - $row['paid'],
+                $row['last_activity_date'],
+                $row['aging_date']);
+            array_merge($row, $age_info);
+
+            // invoice total tax
+            $pdoDb->addToFunctions("SUM(tax_amount) AS total_tax");
+            $pdoDb->addToFunctions("SUM(total) AS total");
+            $pdoDb->addSimpleWhere("invoice_id", $id, "AND");
+            $pdoDb->addSimpleWhere("domain_id", $domain_id);
+            $rows = $pdoDb->request("SELECT", "invoice_items");
+
+            $invoice_item_tax = $rows[0];
+            $row['total_tax']   = $invoice_item_tax['total_tax'];
+            $row['tax_grouped'] = self::taxesGroupedForInvoice($id);
+            // @formatter:on
+        } catch(PdoDbException $pde) {
+            error_log("Invoice::getInvoice() - id[$id] error: " . $pde->getMessage());
         }
-
-        $row = $rows[0];
-
-        // @formatter:off
-        $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-        $row['date']      = siLocal::date($row['date']);
-        $row['total']     = self::getInvoiceTotal($row['id']);
-        $row['gross']     = self::getInvoiceGross($row['id']);
-        $row['paid']      = Payment::calc_invoice_paid($row['id']);
-
-        $age_info = self::calculate_age_days(
-            $row['id'],
-            $row['date'],
-            $row['total'] - $row['paid'],
-            $row['last_activity_date'],
-            $row['aging_date']);
-        array_merge($row, $age_info);
-
-        // invoice total tax
-        $pdoDb->addToFunctions("SUM(tax_amount) AS total_tax");
-        $pdoDb->addToFunctions("SUM(total) AS total");
-        $pdoDb->addSimpleWhere("invoice_id", $id, "AND");
-        $pdoDb->addSimpleWhere("domain_id", $domain_id);
-        $rows = $pdoDb->request("SELECT", "invoice_items");
-
-        $invoice_item_tax = $rows[0];
-        $row['total_tax']   = $invoice_item_tax['total_tax'];
-        $row['tax_grouped'] = self::taxesGroupedForInvoice($id);
-        // @formatter:on
-
         return $row;
     }
 
@@ -766,37 +791,41 @@ class Invoice {
      * Get the invoice-items associated with a specific invoice.
      * @param $id
      * @return array
-     * @throws PdoDbException
      */
     public static function getInvoiceItems($id) {
         global $pdoDb;
-        $pdoDb->addSimpleWhere("invoice_id", $id, 'AND');
-        $pdoDb->addSimpleWhere('domain_id', domain_id::get());
-        $pdoDb->setOrderBy("id");
-        $rows = $pdoDb->request("SELECT", "invoice_items");
 
         $invoiceItems = array();
-        foreach($rows as $invoiceItem) {
-            if (isset($invoiceItem['attribute'])) {
-                $invoiceItem['attribute_decode'] = json_decode($invoiceItem['attribute'], true);
-                foreach ($invoiceItem['attribute_decode'] as $key => $value) {
-                    $invoiceItem['attribute_json'][$key]['name']    = ProductAttributes::getName($key);
-                    $invoiceItem['attribute_json'][$key]['type']    = ProductAttributes::getType($key);
-                    $invoiceItem['attribute_json'][$key]['visible'] = ProductAttributes::getVisible($key);
-                    $invoiceItem['attribute_json'][$key]['value']   = ProductValues::getValue($key, $value);
-                }
-            }
-
-            $pdoDb->addSimpleWhere("id", $invoiceItem['product_id'], 'AND');
+        try {
+            $pdoDb->addSimpleWhere("invoice_id", $id, 'AND');
             $pdoDb->addSimpleWhere('domain_id', domain_id::get());
-            $rows = $pdoDb->request("SELECT", "products");
-            $invoiceItem['product'] = $rows[0];
+            $pdoDb->setOrderBy("id");
+            $rows = $pdoDb->request("SELECT", "invoice_items");
 
-            $tax = self::taxesGroupedForInvoiceItem($invoiceItem['id']);
-            foreach ($tax as $key => $value) {
-                $invoiceItem['tax'][$key] = $value['tax_id'];
+            foreach ($rows as $invoiceItem) {
+                if (isset($invoiceItem['attribute'])) {
+                    $invoiceItem['attribute_decode'] = json_decode($invoiceItem['attribute'], true);
+                    foreach ($invoiceItem['attribute_decode'] as $key => $value) {
+                        $invoiceItem['attribute_json'][$key]['name'] = ProductAttributes::getName($key);
+                        $invoiceItem['attribute_json'][$key]['type'] = ProductAttributes::getType($key);
+                        $invoiceItem['attribute_json'][$key]['visible'] = ProductAttributes::getVisible($key);
+                        $invoiceItem['attribute_json'][$key]['value'] = ProductValues::getValue($key, $value);
+                    }
+                }
+
+                $pdoDb->addSimpleWhere("id", $invoiceItem['product_id'], 'AND');
+                $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+                $rows = $pdoDb->request("SELECT", "products");
+                $invoiceItem['product'] = $rows[0];
+
+                $tax = self::taxesGroupedForInvoiceItem($invoiceItem['id']);
+                foreach ($tax as $key => $value) {
+                    $invoiceItem['tax'][$key] = $value['tax_id'];
+                }
+                $invoiceItems[] = $invoiceItem;
             }
-            $invoiceItems[] = $invoiceItem;
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::getInvoiceItems() - id[$id] error: " . $pde->getMessage());
         }
         return $invoiceItems;
     }

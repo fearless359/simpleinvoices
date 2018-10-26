@@ -11,10 +11,9 @@
 * License:
 *	 GPL v3 or above
 *}
-<form name="frmpost"
-      action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}"
-      method="POST"
-      onsubmit="return frmpost_Validator(this);">
+{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+<form name="frmpost" action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}"
+      method="POST" onsubmit="return frmpost_Validator(this);">
     {if $smarty.get.action == "view" }
         <div class="si_form si_form_view">
             <table>
@@ -59,15 +58,14 @@
                 </tr>
                 <tr>
                     <th>{$LANG.custom_label}</th>
-                    <td><input type="text" name="cf_custom_label" id="cf_custom_label_maint" size="25"
+                    <td><input type="text" name="cf_custom_label" id="cf_custom_label_maint" size="25" autofocus
                                value="{$cf.cf_custom_label|htmlsafe}"/></td>
                 </tr>
                 <tr>
                     <th>
                         {$LANG.clear_data}
-                        <a class="cluetip"
-                           href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_reset_custom_flags_products"
-                           title="{$LANG.reset_custom_flags}">
+                        <a class="cluetip" title="{$LANG.reset_custom_flags}" tabindex="-1"
+                           href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_reset_custom_flags_products">
                             <img src="{$help_image_path}help-small.png" alt=""/>
                         </a>
                     </th>

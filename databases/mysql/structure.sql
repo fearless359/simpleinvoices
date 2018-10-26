@@ -72,6 +72,7 @@ CREATE TABLE `si_customers` (
   `credit_card_expiry_month` varchar(2) COLLATE utf8_unicode_ci DEFAULT NULL,
   `credit_card_expiry_year` varchar(4) COLLATE utf8_unicode_ci DEFAULT NULL,
   `notes` text COLLATE utf8_unicode_ci,
+  `default_invoice` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Invoice index_id value to use as the default template',
   `custom_field1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,

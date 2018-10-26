@@ -2438,6 +2438,13 @@
       "sql_release": "20181018",
       "sql_statement": "ALTER TABLE `si_invoices` ADD `sales_representative` VARCHAR(50) DEFAULT '' NOT NULL;",
       "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "304",
+      "sql_patch": "Add default_invoice field to the customers table.",
+      "sql_release": "20181020",
+      "sql_statement": "ALTER TABLE `si_customers` ADD `default_invoice` INT(10) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Invoice index_id value to use as the default template' AFTER `notes`;",
+      "source": "fearless359"
     }
   ],
   "si_system_defaults": [

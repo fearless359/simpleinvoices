@@ -720,7 +720,8 @@ INSERT INTO `si_sql_patchmanager`(`sql_patch_ref`,`sql_patch`,`sql_release`,`sql
 ,(300,'Add install complete table.','20181008','CREATE TABLE `si_install_complete` (`completed` tinyint(1) NOT NULL COMMENT "Flag SI install has completed") ENGINE=InnoDB COMMENT="Specifies an allowed setting for a flag field"','fearless359')
 ,(301,'Add last_activity_date, aging_date and aging_value to invoices.','20181012','ALTER TABLE `si_invoices` ADD `last_activity_date` DATE NULL COMMENT "Date last activity update to the invoice", ADD `aging_date` DATE NULL COMMENT "Date aging was last calculated", ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT "Age of invoice balance"','fearless359')
 ,(302,'Added owing to invoices table','20181017','ALTER TABLE `si_invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT "Amount owing as of aging-date" AFTER "note"; UPDATE `si_invoices` SET owing = 1;', 'fearless359')
-,(303,'Add invoice custom field report extension to standard application and add sales_representative field.','20181018','ALTER TABLE `si_invoices` ADD `sales_representative` VARCHAR(50) DEFAULT "" NOT NULL;', 'fearless359');
+,(303,'Add invoice custom field report extension to standard application and add sales_representative field.','20181018','ALTER TABLE `si_invoices` ADD `sales_representative` VARCHAR(50) DEFAULT "" NOT NULL;', 'fearless359')
+,(304,'Add default_invoice field to the customers table.','20181020','ALTER TABLE `si_customers` ADD `default_invoice` INT(10) UNSIGNED DEFAULT 0 NOT NULL COMMENT "Invoice index_id value to use as the default template" AFTER `notes`;', 'fearless359');
 
 CREATE TABLE IF NOT EXISTS `si_system_defaults` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

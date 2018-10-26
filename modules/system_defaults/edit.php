@@ -24,73 +24,6 @@ $defaults = SystemDefaults::loadValues();
 
 $get_val = (empty($_GET['submit']) ? '' : trim($_GET['submit']));
 switch ($get_val) {
-    case "line_items":
-        jsBegin();
-        jsFormValidationBegin("frmpost");
-        jsValidateifNum("def_num_line_items", "Default number of line items");
-        jsFormValidationEnd();
-        jsEnd();
-
-        $default = "line_items";
-        $value = '<input type="text" size="25" name="value" value="' . htmlsafe($defaults['line_items']) . '">';
-        $description = "{$LANG['default_number_items']}";
-        break;
-
-    case "def_inv_template":
-        $default = "template";
-
-        /****************************************************************
-         * Make drop down list invoice template - start
-         * Note: Only show the folder names in src/invoices/templates
-         ****************************************************************/
-        $handle = opendir("templates/invoices/");
-        $files = array();
-        while ($template = readdir($handle)) {
-            if ($template != ".." &&
-                $template != "." &&
-                $template != "logos" &&
-                $template != ".svn" &&
-                $template != "template.php" &&
-                $template != "template.php~") {
-                $files[] = $template;
-            }
-        }
-        closedir($handle);
-        sort($files);
-
-        $escaped = htmlsafe($defaults['template']);
-        $value = '<select name="value">' . "\n";
-        $value .= '  <option selected value="' . $escaped . '" style="font-weight:bold;" >';
-        $value .= '    ' . $escaped;
-        $value .= '  </option>' . "\n";
-
-        foreach ($files as $var) {
-            $var = htmlsafe($var);
-            $value .= '  <option value="' . $var . '" >';
-            $value .= '    ' . $var;
-            $value .= '  </option> . "\n"';
-        }
-
-        $value .= '</select>' . "\n";
-        /****************************************************************
-         * Make drop down list invoice template - end
-         ****************************************************************/
-
-        /****************************************************************
-         * Validation section - start
-         ****************************************************************/
-        jsBegin();
-        jsFormValidationBegin("frmpost");
-        jsValidateRequired("def_inv_template", "{$LANG['default_inv_template']}");
-        jsFormValidationEnd();
-        jsEnd();
-        /****************************************************************
-         * Validation section - end
-         ****************************************************************/
-
-        $description = $LANG['default_inv_template'];
-        break;
-
     case "biller":
         $default = "biller";
         $billers = Biller::get_all(true);
@@ -148,6 +81,61 @@ switch ($get_val) {
         $description = "{$LANG['customer_name']}";
         break;
 
+    case "def_inv_template":
+        $default = "template";
+
+        /****************************************************************
+         * Make drop down list invoice template - start
+         * Note: Only show the folder names in src/invoices/templates
+         ****************************************************************/
+        $handle = opendir("templates/invoices/");
+        $files = array();
+        while ($template = readdir($handle)) {
+            if ($template != ".." &&
+                $template != "." &&
+                $template != "logos" &&
+                $template != ".svn" &&
+                $template != "template.php" &&
+                $template != "template.php~") {
+                $files[] = $template;
+            }
+        }
+        closedir($handle);
+        sort($files);
+
+        $escaped = htmlsafe($defaults['template']);
+        $value = '<select name="value">' . "\n";
+        $value .= '  <option selected value="' . $escaped . '" style="font-weight:bold;" >';
+        $value .= '    ' . $escaped;
+        $value .= '  </option>' . "\n";
+
+        foreach ($files as $var) {
+            $var = htmlsafe($var);
+            $value .= '  <option value="' . $var . '" >';
+            $value .= '    ' . $var;
+            $value .= '  </option> . "\n"';
+        }
+
+        $value .= '</select>' . "\n";
+        /****************************************************************
+         * Make drop down list invoice template - end
+         ****************************************************************/
+
+        /****************************************************************
+         * Validation section - start
+         ****************************************************************/
+        jsBegin();
+        jsFormValidationBegin("frmpost");
+        jsValidateRequired("def_inv_template", "{$LANG['default_inv_template']}");
+        jsFormValidationEnd();
+        jsEnd();
+        /****************************************************************
+         * Validation section - end
+         ****************************************************************/
+
+        $description = $LANG['default_inv_template'];
+        break;
+
     case "def_payment_type":
         $payments = PaymentType::select_all(true);
         if (empty($payments)) {
@@ -167,6 +155,18 @@ switch ($get_val) {
         }
 
         $description = "{$LANG['payment_type']}";
+        break;
+
+    case "default_invoice":
+        jsBegin();
+        jsFormValidationBegin("frmpost");
+        jsValidateifNum("default_invoice", $LANG['default_invoice']);
+        jsFormValidationEnd();
+        jsEnd();
+
+        $default = "default_invoice";
+        $value = '<input type="text" size="10" name="value" value="' . htmlsafe($defaults['default_invoice']) . '">';
+        $description = "{$LANG['default_invoice']}";
         break;
 
     case "delete":
@@ -198,6 +198,18 @@ switch ($get_val) {
             $value   .= '  </option>' . "\n";
         }
         $value       .= '</select>' . "\n";
+        break;
+
+    case "line_items":
+        jsBegin();
+        jsFormValidationBegin("frmpost");
+        jsValidateifNum("def_num_line_items", "Default number of line items");
+        jsFormValidationEnd();
+        jsEnd();
+
+        $default = "line_items";
+        $value = '<input type="text" size="25" name="value" value="' . htmlsafe($defaults['line_items']) . '">';
+        $description = "{$LANG['default_number_items']}";
         break;
 
     case "logging":

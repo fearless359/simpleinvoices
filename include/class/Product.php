@@ -166,9 +166,9 @@ class Product {
 
     /**
      * Insert a new record in the products table.
-     * @param string $enabled Product enabled/disabled status used if not present in
+     * @param int $enabled Product enabled/disabled status used if not present in
      *        the <b>$_POST</b> array. Defaults to ENABLED (1) or set to DISABLED (0).
-     * @param string $visible Flags record seen in list. Defaults to ENABLED (1) for
+     * @param int $visible Flags record seen in list. Defaults to ENABLED (1) for
      *        visible or DISABLED (0) for not visible.
      * @return int New ID if insert OK. 0 if insert failed.
      * @throws PdoDbException

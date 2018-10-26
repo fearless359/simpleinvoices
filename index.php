@@ -162,21 +162,13 @@ Log::out("index.php - module[" . (empty($module) ? "" : $module) .
                            "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
                          "] menu[$menu]", Zend_Log::DEBUG);
 
-// Don't include the header if requested file is an invoice template.
-// For print preview etc.. header is not needed
+// This logic is for the default_invoice where the invoice "template" (aka record)
+// is used to make the new invoice.
 if (($module == "invoices") && (strstr($view, "template"))) {
-    // Loop through the extensions. Load the module path php file for it if one exists.
-    // TODO: Make this more efficient.
-    $extensionInvoiceTemplateFile = 0;
-    foreach ($ext_names as $ext_name) {
-        if (file_exists("extensions/$ext_name/modules/invoices/template.php")) {
-            include_once ("extensions/$ext_name/modules/invoices/template.php");
-            $extensionInvoiceTemplateFile++;
-        }
-    }
-
     // Get the default module path php if their aren't any for enabled extensions.
-    if (($extensionInvoiceTemplateFile == 0) && ($my_path = getCustomPath("invoices/template", 'module'))) {
+    $my_path = getCustomPath("invoices/template", 'module');
+    Log::out("index.php - default invoice template path[$my_path]");
+    if (!empty($my_path)) {
         include_once ($my_path);
     }
     exit(0);

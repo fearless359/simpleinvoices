@@ -7,7 +7,7 @@ checkLogin();
 jsBegin();
 jsFormValidationBegin("frmpost");
 jsValidateRequired("tax_description",$LANG['tax_description']);
-jsValidateifNum("tax_percentage",$LANG['tax_percentage']);
+jsValidateIfNum("tax_percentage",$LANG['tax_percentage']);
 jsFormValidationEnd();
 jsEnd();
 

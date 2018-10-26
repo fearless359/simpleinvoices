@@ -19,6 +19,12 @@ global $smarty, $LANG, $config;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
+jsBegin();
+jsFormValidationBegin("frmpost");
+jsValidateIfEmail("email", "true");
+jsFormValidationEnd();
+jsEnd();
+
 // @formatter:off
 $cid = $_GET['id'];
 $domain_id = domain_id::get();

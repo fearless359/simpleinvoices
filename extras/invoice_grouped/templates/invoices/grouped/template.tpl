@@ -244,7 +244,7 @@
       <tr>
         <td colspan="6"><br /></td>
       </tr>
-      {if $invoice.type_id == 2 }
+      {if $invoice.type_id == ITEMIZED_INVOICE }
         {foreach from=$product_group key=group_id item=group}
           <tr>
             <td class="col1" align="middle" colspan="6">{$group.name|htmlsafe}</td>
@@ -297,8 +297,8 @@
         {/foreach}
       {/if}
 {* ************************ BEGIN COMMENTED OUT SECTION ****************************
-      {if ($invoice.type_id == 2 && $invoice.note != "") ||
-          ($invoice.type_id == 3 && $invoice.note != "" )  }
+      {if ($invoice.type_id == ITEMIZED_INVOICE && $invoice.note != "") ||
+          ($invoice.type_id == CONSULTING_INVOICE && $invoice.note != "" )  }
         <tr>
           <td class="" colspan="6"><br></td>
         </tr>
@@ -314,7 +314,7 @@
         <td class="" colspan="6" ><br></td>
       </tr>
 {* ************************ BEGIN COMMENTED OUT SECTION ****************************
-      {if $invoice.type_id == 1} <!-- Only Type 1 is a single entry - hence last row gross is valid as gross_total - see Invoice 2 in sample data-->
+      {if $invoice.type_id == TOTAL_INVOICE} <!-- Only Type TOTAL_INVOICE is a single entry - hence last row gross is valid as gross_total - see Invoice 2 in sample data-->
         <tr>
           <td class="" colspan="2"></td>
           <td align="right" colspan="3">{$LANG.gross_total}</td>

@@ -8,7 +8,7 @@ class SubCustomers {
     public static function addParentCustomerId() {
         global $pdoDb;
 
-        if (checkFieldExists(TB_PREFIX . "customers", "parent_customer_id")) return true;
+        if ($pdoDb->checkFieldExists("customers", "parent_customer_id")) return true;
 
         try {
             $sql = "ALTER TABLE `" . TB_PREFIX . "customers` ADD `parent_customer_id` INT(11) NULL AFTER `custom_field4`;";

@@ -31,6 +31,7 @@
   </a>
 </div>
 {else}
+{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
 <form name="frmpost" method="post" onsubmit="return frmpost_Validator(this)"
       action="index.php?module=payment_types&amp;view=save&amp;id={$smarty.get.id|htmlsafe}">
   <div class="si_form">
@@ -44,7 +45,7 @@
           </a>
         </td>
         <td>
-          <input type="text" class="validate[required]" name="pt_description" size-"30"
+          <input type="text" class="validate[required]" name="pt_description" size="30"
                  value="{$paymentType.pt_description|htmlsafe|htmlsafe}" tabindex="10" />
         </td>
       </tr>

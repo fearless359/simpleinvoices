@@ -33,7 +33,8 @@ for (var x = 0; x <= {/literal}{$dynamic_line_items}{literal}; x++)
 </script>
 {/literal}
 
-<form name="frmpost" action="index.php?module=invoices&view=save" method="post" onsubmit="return frmpost_Validator(this)">
+{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+<form name="frmpost" action="index.php?module=invoices&view=save" method="post" onsubmit="return frmpost_Validator(this);">
 
 <h3>{$LANG.inv} {$LANG.inv_itemized}</h3>
 
