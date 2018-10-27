@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-10-27 - <b>2018.2.5</b>
+            <ul>
+                <li>Fixed issue of default invoice values not populating the new invoice.</li>
+            </ul>
+        </li>
         <li>2018-10-20 - <b>2018.2.4</b>
             <ul>
                 <li>Move the default invoice extension to the main application. This includes

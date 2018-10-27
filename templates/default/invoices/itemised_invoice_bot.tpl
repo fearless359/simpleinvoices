@@ -8,7 +8,7 @@
     </tr>
     <tr>
         <td class='si_invoice_notes' colspan="2">
-            <textarea class="editor" name="note" rows="5" cols="100%">{$smarty.get.note}</textarea>
+            <textarea class="editor" name="note" rows="5" cols="100%">{$defaultInvoice.note}</textarea>
         </td>
     </tr>
     <tr>
@@ -31,7 +31,7 @@
         </td>
         <td>
             <input id="sales_representative}" name="sales_representative" size="30"
-                   value="{$invoice.sales_representative|htmlsafe}" />
+                   value="{$defaultInvoice.sales_representative|htmlsafe}" />
         </td>
     </tr>
 </table>

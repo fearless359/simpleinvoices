@@ -54,11 +54,12 @@ for ($i = 1; $i <= 4; $i++) {
 }
 
 if (isset($_GET['template'])) {
-    $default_id = Invoice::getInvoiceByIndexId($_GET['template']);
-    $invoiceItems = Invoice::getInvoiceItems ( $default_id );
+    $invoice = Invoice::getInvoiceByIndexId($_GET['template']);
+    $invoiceItems = Invoice::getInvoiceItems ( $invoice['id'] );
 
     $smarty->assign("template", $_GET['template']);
     $smarty->assign("defaultCustomerID", $_GET['customer_id']);
+    $smarty->assign('defaultInvoice', $invoice);
     $smarty->assign('defaultInvoiceItems', $invoiceItems);
 
 } else {
