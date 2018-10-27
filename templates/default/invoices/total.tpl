@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <td class="si_invoice_notes">
-                    <textarea class="editor" name="description" rows="10" cols="100%"></textarea>
+                    <textarea class="editor" name="description" rows="10" cols="100%">{$defaultInvoice.note}</textarea>
                 </td>
             </tr>
         </table>
@@ -37,18 +37,20 @@
             </tr>
 
             <tr class="si_invoice_total">
-                <td><input type="text" class="validate[required]" name="unit_price" size="15"/></td>
+                <td><input type="text" class="si_right validate[required]" name="unit_price" id="unit_price0" size="15"
+                    value="{if $defaultInvoiceItems[0].unit_price}{$defaultInvoiceItems[0].unit_price|siLocal_number}{/if}"/></td>
                 {if $taxes == null }
                     <td><p><em>{$LANG.no_taxes}</em></p></td>
                 {else}
                     {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
+                        {assign var="taxNumber" value=$smarty.section.tax.index }
                         <td>
-                            <select id="tax_id[0][{$smarty.section.tax.index|htmlsafe}]" name="tax_id[0][{$smarty.section.tax.index|htmlsafe}]">
+                            <select id="tax_id[{$smarty.section.line.index|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]"
+                                    name="tax_id[{$smarty.section.line.index|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
                                 <option value=""></option>
                                 {foreach from=$taxes item=tax}
-                                    <option {if $tax.tax_id == $defaults.tax AND $smarty.section.tax.index == 0} selected {/if} value="{$tax.tax_id|htmlsafe}">
-                                        {$tax.tax_description|htmlsafe}
-                                    </option>
+                                    <option value="{$tax.tax_id|htmlsafe}"
+                                            {if $tax.tax_id == $defaultInvoiceItems[0].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlsafe}</option>
                                 {/foreach}
                             </select>
                         </td>
@@ -75,7 +77,7 @@
                 <th>{$LANG.sales_representative}</th>
                 <td>
                     <input id="sales_representative}" name="sales_representative" size="30"
-                           value="{$invoice.sales_representative|htmlsafe}"/>
+                           value="{$defaultInvoice.sales_representative|htmlsafe}" />
                 </td>
             </tr>
 

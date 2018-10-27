@@ -53,6 +53,7 @@ for ($i = 1; $i <= 4; $i++) {
                                                              ''              , '');
 }
 
+// Check to see if this is a default_invoice (aka from a template).
 if (isset($_GET['template'])) {
     $invoice = Invoice::getInvoiceByIndexId($_GET['template']);
     $invoiceItems = Invoice::getInvoiceItems ( $invoice['id'] );
