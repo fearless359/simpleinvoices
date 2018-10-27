@@ -227,7 +227,7 @@ class SqlPatchManager
                     'sql_patch' => $patch['name'],
                     'sql_release' => $patch['date'],
                     'sql_statement' => $patch['patch'],
-                    'source' => $patch['patch']
+                    'source' => $patch['source']
                 ));
 
                 if ($pdoDb_admin->request('INSERT', 'sql_patchmanager') == 0) {
