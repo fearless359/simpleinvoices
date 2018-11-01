@@ -10,12 +10,17 @@
 <input type="hidden" name="action" value="insert"/>
 <div class="si_filters si_buttons_invoice_header">
     <span class="si_filters_links">
-      <a href="index.php?module=invoices&amp;view=itemised{if $template}&amp;template={$template}{/if}{if $defaultCustomerID}&amp;customer_id={$defaultCustomerID}{/if}"
+      <a href="index.php?module=invoices&amp;view=itemised
+               {if $template}&amp;template={$template}{/if}
+               {if $defaultCustomerID}&amp;customer_id={$defaultCustomerID}{/if}"
          class="first{if $view=='itemised'} selected{/if}">
         <img class="action" src="images/common/edit.png"/>
           {$LANG.itemised_style}
       </a>
-      <a href="index.php?module=invoices&amp;view=total{if $template}&amp;template={$template}{/if}{if $defaultCustomerID}&amp;customer_id={$defaultCustomerID}{/if}" class="{if $view=='total'}selected{/if}">
+      <a href="index.php?module=invoices&amp;view=total
+               {if $template}&amp;template={$template}{/if}
+               {if $defaultCustomerID}&amp;customer_id={$defaultCustomerID}{/if}"
+         class="{if $view=='total'}selected{/if}">
         <img class="action" src="images/common/page_white_edit.png"/>
           {$LANG.total_style}
       </a>

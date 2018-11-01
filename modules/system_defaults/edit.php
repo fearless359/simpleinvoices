@@ -176,6 +176,13 @@ switch ($get_val) {
         $value       = dropDown($array, $defaults['delete']);
         break;
 
+    case "expense":
+        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
+        $default     = "expense";
+        $description = $LANG['expense'];
+        $value       = dropDown($array, $defaults[$default]);
+        break;
+
     case "inventory":
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
         $default     = "inventory";

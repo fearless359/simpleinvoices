@@ -98,6 +98,35 @@ CREATE TABLE `si_custom_flags` (
   `field_help` varchar(255) NOT NULL COMMENT 'Help information to display for this field.'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Specifies an allowed setting for a flag field';
 
+CREATE TABLE `si_expense` (
+  `id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
+  `amount` decimal(25,6) NOT NULL,
+  `expense_account_id` int(11) NOT NULL,
+  `biller_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `note` text COLLATE utf8_unicode_ci NOT NULL,
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `si_expense_account` (
+  `id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `si_expense_item_tax` (
+  `id` int(11) NOT NULL,
+  `expense_id` int(11) NOT NULL,
+  `tax_id` int(11) NOT NULL,
+  `tax_type` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_rate` decimal(25,6) NOT NULL,
+  `tax_amount` decimal(25,6) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `si_extensions` (
   `id` int(11) NOT NULL,
   `domain_id` int(11) NOT NULL,
@@ -347,6 +376,17 @@ ALTER TABLE `si_custom_flags`
   ADD KEY `domain_id` (`domain_id`),
   ADD KEY `dtable` (`domain_id`,`associated_table`);
 
+ALTER TABLE `si_expense`
+  ADD PRIMARY KEY (`domain_id`,`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+ALTER TABLE `si_expense_account`
+  ADD PRIMARY KEY (`domain_id`,`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+ALTER TABLE `si_expense_item_tax`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `si_extensions`
   ADD PRIMARY KEY (`id`,`domain_id`);
 
@@ -444,6 +484,15 @@ ALTER TABLE `si_customers`
 
 ALTER TABLE `si_custom_fields`
   MODIFY `cf_id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `si_expense`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `si_expense_account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `si_expense_item_tax`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `si_extensions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

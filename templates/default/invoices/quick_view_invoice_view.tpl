@@ -12,8 +12,8 @@
             </a>
         </td>
     </tr>
-    <tr class="summary">
-        <th class="">{$preference.pref_inv_wording} {$LANG.date_upper}:</th>
+    <tr class="summary invoice">
+        <th>{$preference.pref_inv_wording} {$LANG.date_upper}:</th>
         <td colspan="5">{$invoice.date|htmlsafe}</td>
     </tr>
     {$customFields.1}
@@ -111,7 +111,7 @@
     </tr>
     <tr class="customer">
         <th>{$LANG.attention_short}:</th>
-        <td colspan="5" align="left">{$customer.attention|htmlsafe},</td>
+        <td colspan="5" align="left">{$customer.attention|htmlsafe}</td>
     </tr>
     <tr class="customer">
         <th>{$LANG.street}:</th>
@@ -168,12 +168,15 @@
         </tr>
     {/if}
     <tr class="customer">
-        <th>{$LANG.default_invoice}</th>
-        <td colspan="4">{$customer.default_invoice}</td>
+        <th>{$LANG.default_invoice}:</th>
+        <td colspan="4">{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</td>
         <td class='details_screen align_right'>
-            <a href="?module=invoices&view=usedefault&action=update_template&id={$invoice.id}&customer_id={$customer.id}">
-                <img src="images/flexigrid/load.png" title='{$LANG.invoice} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}'/>
-            </a>
+            {if $customer.default_invoice != $invoice.index_id}
+                <a href="?module=invoices&amp;view=usedefault&amp;action=update_template&amp;index_id={$invoice.index_id}&amp;customer_id={$customer.id}">
+                    <img src="images/flexigrid/load.png" title='{$LANG.invoice} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}'/>
+                </a>
+            {/if}
+        </td>
         </td>
     </tr>
 </table>

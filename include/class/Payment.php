@@ -42,7 +42,7 @@ class Payment {
 
         $oc = new OnClause();
         $oc->addSimpleItem("ap.ac_payment_type", new DbField("pt.pt_id"));
-        display_message(array("LEFT", "payment_types", "pt", $oc));
+        $pdoDb->addToJoins(array("LEFT", "payment_types", "pt", $oc));
 
         $oc = new OnClause();
         $oc->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");

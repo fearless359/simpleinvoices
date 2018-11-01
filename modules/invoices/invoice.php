@@ -57,11 +57,13 @@ for ($i = 1; $i <= 4; $i++) {
 if (isset($_GET['template'])) {
     $invoice = Invoice::getInvoiceByIndexId($_GET['template']);
     $invoiceItems = Invoice::getInvoiceItems ( $invoice['id'] );
+    $num_inv_items = count($invoiceItems);
 
     $smarty->assign("template", $_GET['template']);
     $smarty->assign("defaultCustomerID", $_GET['customer_id']);
     $smarty->assign('defaultInvoice', $invoice);
     $smarty->assign('defaultInvoiceItems', $invoiceItems);
+    $dynamic_line_items = ($num_inv_items > $dynamic_line_items ? $num_inv_items : $dynamic_line_items);
 
 } else {
     $smarty->assign("defaultCustomerID" , (empty($defaultCustomer) ? 0 : $defaultCustomer['id']));

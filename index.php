@@ -254,7 +254,6 @@ Log::out("index.php - after header.tpl", Zend_Log::DEBUG);
 // **********************************************************
 // See https://simpleinvoices.group/howto page extension topic.
 $extension_php_insert_files = array();
-if ($extension_php_insert_files) {} // Show variable as used.
 
 $perform_extension_php_insertions = (($module == 'system_defaults' && $view == 'edit'));
 $extensionPhpFile = 0;
