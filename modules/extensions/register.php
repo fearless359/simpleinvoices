@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\SystemDefaults;
+
 global $pdoDb, $smarty;
 
 // Stop direct browsing to this file
@@ -11,7 +15,7 @@ $action         = (empty($_GET['action']     ) ? "" : $_GET['action']);
 $extension_desc = (empty($_GET['description']) ? "" : $_GET['description']);
 // @formatter:on
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 $count = 0;
 if (!empty($extension_id)) {
     // retrieve name and description from DB

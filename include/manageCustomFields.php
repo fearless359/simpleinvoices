@@ -1,4 +1,6 @@
 <?php
+use Inc\Claz\CustomFieldDeprecated;
+
 /*
 * Script: index.php
 *     All manage functions for the custom field system (global)
@@ -12,8 +14,6 @@
 * License:
 *     GPL v2 or above
 */
-include("include/CustomField.php");
-
 
 function saveCustomField($id, $category, $name, $description) {
     $sql = "INSERT INTO ".TB_PREFIX."customFields  (pluginId, categorieId, name, description) 

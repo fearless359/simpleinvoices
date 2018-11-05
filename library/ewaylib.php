@@ -26,7 +26,7 @@ define('EWAY_PAYMENT_HOSTED_REAL_TIME_TESTING_MODE', 'https://www.eway.com.au/ga
 define('EWAY_PAYMENT_HOSTED_REAL_TIME_CVN', 'https://www.eway.com.au/gateway_cvn/payment.asp');
 define('EWAY_PAYMENT_HOSTED_REAL_TIME_CVN_TESTING_MODE', 'https://www.eway.com.au/gateway_cvn/payment.asp');
 
-class ewaylib {
+class Ewaylib {
     var $myGatewayURL;
     var $myCustomerID;
     var $myTransactionData = array();

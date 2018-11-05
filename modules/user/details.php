@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\DomainId;
+use Inc\Claz\User;
+use Inc\Claz\UserSecurity;
+
 /*
  * Script: details.php
  *      User details page
@@ -24,7 +30,7 @@ global $smarty, $LANG;
 $user = User::getUser($_GET['id']);
 $roles = User::getUserRoles();
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 $cust_info = Customer::get_all(false, null, true);
 $billers = Biller::get_all();

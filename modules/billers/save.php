@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\Biller;
+
 /*
  *  Script: save.php
  *      Biller save page

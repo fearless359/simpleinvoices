@@ -1,8 +1,11 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 if ($_POST['action'] == "register") {
     $sql = "INSERT INTO ".TB_PREFIX."extensions (`id`,`name`,`description`,`domain_id`,`enabled`) VALUES ( NULL, :name ,  :description , :domain_id , '0');";

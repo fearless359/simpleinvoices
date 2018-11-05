@@ -1,4 +1,12 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\PaymentType;
+use Inc\Claz\Preferences;
+use Inc\Claz\SystemDefaults;
+use Inc\Claz\Taxes;
+
 global $LANG,
        $smarty,
        $extension_php_insert_files,

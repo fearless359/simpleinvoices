@@ -1,5 +1,8 @@
 <?php
 
+use Inc\Claz\DomainId;
+use Inc\Claz\PdoDbException;
+
 class SubCustomers {
     /**
      * Add extension database field if not present.
@@ -30,7 +33,7 @@ class SubCustomers {
         global $config, $pdoDb;
 
         $pdoDb->addSimpleWhere("name", $_POST['name'], "AND");
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
         $rows = $pdoDb->request("SELECT", "customers");
         if (!empty($rows)) {
             error_log("The specified customer name[{$_POST['name']}) already exists.");
@@ -92,7 +95,7 @@ class SubCustomers {
         global $pdoDb;
         try {
             $pdoDb->addSimpleWhere("parent_customer_id", $parent_id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
             $rows = $pdoDb->request("SELECT", "customers");
         } catch (PdoDbException $pde) {
             $str = "SubCustomers::getSubCustomers(): " . $pde->getMessage();

@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\Biller;
+
 global $LANG;
 
 header("Content-type: text/xml");

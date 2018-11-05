@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 /*
  *  Script: add.php
  *      Billers add page
@@ -13,7 +16,8 @@
  *      GPL v3 or above
  *
  *  Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $smarty;
 
 checkLogin();
@@ -21,7 +25,7 @@ checkLogin();
 $files = getLogoList();
 $smarty->assign("files", $files);
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 $smarty->assign("domain_id", $domain_id);
 
 // Only load labels if they are defined. Screen will only

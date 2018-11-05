@@ -1,11 +1,15 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\WhereItem;
+
 function sql($type='', $dir, $sort, $rp, $page ) {
     global $pdoDb;
 
     $validFields = array('id', 'name');
 
     // Set up WHERE clause which is needed for both count and data access modes.
-    $domain_id = domain_id::get();
+    $domain_id = DomainId::get();
     if (!empty($_POST['qtype']) && !empty($_POST['query'])) {
         $qtype = $_POST['qtype'];
         if (in_array($qtype, $validFields)) {

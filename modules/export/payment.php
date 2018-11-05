@@ -13,7 +13,7 @@ $id        = $_GET['id'];
 $format    = $_GET['format'];
 $file_type = $_GET['filetype'];
 
-$export = new export();
+$export = new Export();
 $export->id        = $id;
 $export->format    = $format;
 $export->file_type = $file_type;

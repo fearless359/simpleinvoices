@@ -1,4 +1,15 @@
 <?php
+
+use Inc\Claz\Config;
+use Inc\Claz\Db;
+use Inc\Claz\DbInfo;
+use Inc\Claz\Log;
+use Inc\Claz\PdoDb;
+use Inc\Claz\PdoDbException;
+use Inc\Claz\SiError;
+use Inc\Claz\SqlPatchManager;
+use Inc\Claz\SystemDefaults;
+
 /* *************************************************************
  * Zend framework init - start
  * *************************************************************/
@@ -25,11 +36,11 @@ require_once 'Zend/Loader/Autoloader.php';
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);
 
-Zend_Session::start();
 try {
+    Zend_Session::start();
     $auth_session = new Zend_Session_Namespace('Zend_Auth');
 } catch (Zend_Session_Exception $zse) {
-    SiError('generic', 'Zend_Session_Exception', $zse->getMessage());
+    SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
 }
 /* *************************************************************
  * Zend framework init - end
@@ -52,14 +63,18 @@ if (!is_writable('tmp/cache')) {
 
 include_once ('config/define.php');
 global $environment;
-require_once ("include/class/db.php");
-require_once("include/class/PdoDb.php");
 
-$config = Config::init($environment, $module);
+try {
+    $config = Config::init($environment, $module);
+} catch (Exception $e) {
+    echo "<h1 style='font-weight:bold;color:red;'>";
+    echo "  " . $e->getMessage() . " (Error code: {$e->getCode()})";
+    echo "</h1>";
+}
 
 $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
 Log::open($logger_level);
-Log::out("init.php - logger has been setup", Zend_Log::DEBUG);
+Log::out("init.php - logger has been setup", \Zend_Log::DEBUG);
 
 try {
     $dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, "production");
@@ -88,7 +103,7 @@ try {
         echo "</ol>";
     } else {
         echo "<h1 style='font-weight:bold;color:red;'>";
-        echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode})";
+        echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode()})";
         echo "</h1>";
     }
     exit();
@@ -134,7 +149,7 @@ if ($api_request) {
             $pdoDb_admin->setSelectList('value');
             $rows = $pdoDb_admin->request('SELECT', 'system_defaults');
             $timeout = (empty($rows) ? 0 : intval($rows[0]['value']));
-            Log::out("session_timeout loaded[$timeout]", Zend_Log::DEBUG);
+            Log::out("session_timeout loaded[$timeout]", \Zend_Log::DEBUG);
         } catch (PdoDbException $pde) {
             $timeout = 0;
         }
@@ -151,7 +166,7 @@ try {
 }
 
 $frontendOptions = array('lifetime' => ($timeout * 60), 'automatic_serialization' => true);
-Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), Zend_Log::DEBUG);
+Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), \Zend_Log::DEBUG);
 
 /* *************************************************************
  * Zend Framework cache section - start
@@ -209,9 +224,8 @@ $install_path = htmlsafe($path['dirname']);
 
 // With the database built, a connection should be able to be made
 // if the configuration user, password, etc. are set correctly.
-$db = ($databaseBuilt ? db::getInstance() : NULL);
+$db = ($databaseBuilt ? Db::getInstance() : NULL);
 
-require_once ("include/class/Index.php");
 require_once ("include/sql_queries.php");
 
 $patchCount = 0;
@@ -234,9 +248,9 @@ if ($api_request || (!$databaseBuilt || !$databasePopulated)) {
 $smarty->assign('patchCount', $patchCount);
 
 try {
-    $smarty->registerPlugin('modifier', "siLocal_number", array("siLocal", "number"));
-    $smarty->registerPlugin('modifier', "siLocal_number_trim", array("siLocal", "number_trim"));
-    $smarty->registerPlugin('modifier', "siLocal_date", array("siLocal", "date"));
+    $smarty->registerPlugin('modifier', "siLocal_number", array("Inc\Claz\siLocal", "number"));
+    $smarty->registerPlugin('modifier', "siLocal_number_trim", array("Inc\Claz\siLocal", "number_trim"));
+    $smarty->registerPlugin('modifier', "siLocal_date", array("Inc\Claz\siLocal", "date"));
 
     $smarty->registerPlugin('modifier', 'htmlout', 'outhtml');
     $smarty->registerPlugin('modifier', 'htmlsafe', 'htmlsafe');
@@ -245,7 +259,7 @@ try {
     $smarty->registerPlugin('modifier', 'urlescape', 'urlencode');
     $smarty->registerPlugin('modifier', 'urlsafe', 'urlsafe');
 } catch (SmartyException $se) {
-    SiError('generic', 'SmartyException', $se->getMessage());
+    SiError::out('generic', 'SmartyException', $se->getMessage());
 }
 
 global $ext_names;

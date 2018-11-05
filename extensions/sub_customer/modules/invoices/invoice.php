@@ -1,4 +1,14 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\CustomFields;
+use Inc\Claz\Preferences;
+use Inc\Claz\Product;
+use Inc\Claz\ProductAttributes;
+use Inc\Claz\SystemDefaults;
+use Inc\Claz\Taxes;
+
 /*
  * Script: invoice.php
  *
@@ -50,7 +60,7 @@ if (!empty( $_GET['line_items'] )) {
 $customFields = array();
 for($i=1;$i<=4;$i++) {
     // Note that this is a 1's based array and not a 0's based array.
-    $customFields[$i] = CustomFields::show_custom_field("invoice_cf$i"  , '', "write", '',
+    $customFields[$i] = CustomFields::showCustomField("invoice_cf$i"  , '', "write", '',
                                                              "details_screen", '', ''     , '');
 }
 

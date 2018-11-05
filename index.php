@@ -1,4 +1,13 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\Invoice;
+use Inc\Claz\Funcs;
+use Inc\Claz\Log;
+use Inc\Claz\Product;
+use Inc\Claz\SqlPatchManager;
+
 /*
  * Script: index.php
  * Main controller file for SimpleInvoices
@@ -14,7 +23,13 @@ if (!defined("BROWSE")) define("BROWSE", "browse");
 // **********************************************************
 
 // Load stuff required before init.php
-require_once "include/init_pre.php";
+//require_once "include/init_pre.php";
+function filenameEscape($str)
+{
+    // Returns an escaped value.
+    $safe_str = preg_replace('/[^a-z0-9\-_\.]/i','_',$str);
+    return $safe_str;
+}
 
 $module = isset($_GET['module']) ? filenameEscape($_GET['module']) : null;
 $view   = isset($_GET['view'])   ? filenameEscape($_GET['view'])   : null;
@@ -41,13 +56,13 @@ global $smarty,
        $early_exit,
        $pdoDb;
 
-Log::out("index.php - After init.php - module($module] view[$view]", Zend_Log::DEBUG);
+Log::out("index.php - After init.php - module($module] view[$view]", \Zend_Log::DEBUG);
 foreach ($ext_names as $ext_name) {
     if (file_exists("extensions/$ext_name/include/init.php")) {
         require_once ("extensions/$ext_name/include/init.php");
     }
 }
-Log::out("index.php - After processing init.php for extensions", Zend_Log::DEBUG);
+Log::out("index.php - After processing init.php for extensions", \Zend_Log::DEBUG);
 
 $smarty->assign("help_image_path", $help_image_path);
 
@@ -68,7 +83,7 @@ $menu = (isset($menu) ? $menu : true);
 // Check for any unapplied SQL patches when going home
 // TODO - redo this code
 Log::out("index.php - module[$module] view[$view] " .
-             "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", Zend_Log::DEBUG);
+             "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", \Zend_Log::DEBUG);
 if (($module == "options") && ($view == "database_sqlpatches")) {
     SqlPatchManager::donePatchesMessage();
 } else {
@@ -86,16 +101,19 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
         $skip_db_patches = true;
     }
 
-    Log::out("index.php - skip_db_patches[$skip_db_patches]", Zend_Log::DEBUG);
+    Log::out("index.php - skip_db_patches[$skip_db_patches]", \Zend_Log::DEBUG);
 
     // See if we need to verify patches have been loaded.
     if (!$skip_db_patches) {
+        Log::out("index.php - config->authentication->enabled[{$config->authentication->enabled}] auth_session->id: " .
+            print_r($auth_session->id,true), \Zend_Log::DEBUG);
         // If default user or an active session exists, proceed with check.
-        if ($config->authentication->enabled == 0 || isset($auth_session->id)) {
+        if ($config->authentication->enabled == DISABLED || isset($auth_session->id)) {
             // Check if there are patches to process
             if (SqlPatchManager::numberOfUnappliedPatches() > 0) {
                 $view = "database_sqlpatches";
                 $module = "options";
+                Log::out("index.php - view[$view] module[$module]", \Zend_Log::DEBUG);
                 if ($action == "run") {
                     SqlPatchManager::runPatches();
                 } else {
@@ -103,6 +121,7 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                 }
                 $menu = false;
             } else {
+                Log::out("index.php - module: " . print_r($module,true), \Zend_Log::DEBUG);
                 // All patches have been applied. Now check to see if the database has been set up.
                 // It is considered setup when there is at least one biller, one customer and one product.
                 // If it has not been set up, allow the user to add a biller, customer, product or to
@@ -139,7 +158,7 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                     $still_doing_setup = true;
                 }
 
-                Log::out("index.php - still_doing_setup[$still_doing_setup]", Zend_Log::DEBUG);
+                Log::out("index.php - still_doing_setup[$still_doing_setup]", \Zend_Log::DEBUG);
 
                 if ($still_doing_setup) {
                     if (Invoice::count() > 0) {
@@ -160,7 +179,7 @@ Log::out("index.php - module[" . (empty($module) ? "" : $module) .
                          "] view[" . (empty($view) ? "" : $view) .
                        "] action[" . (empty($action) ? "" : $action) .
                            "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
-                         "] menu[$menu]", Zend_Log::DEBUG);
+                         "] menu[$menu]", \Zend_Log::DEBUG);
 
 // This logic is for the default_invoice where the invoice "template" (aka record)
 // is used to make the new invoice.
@@ -173,7 +192,7 @@ if (($module == "invoices") && (strstr($view, "template"))) {
     }
     exit(0);
 }
-Log::out("index.php - After invoices/template", Zend_Log::DEBUG);
+Log::out("index.php - After invoices/template", \Zend_Log::DEBUG);
 
 // Check for "api" module or a "xml" or "ajax" "page request" (aka view)
 if (strstr($module, "api") || (strstr($view, "xml") || (strstr($view, "ajax")))) {
@@ -191,7 +210,7 @@ if (strstr($module, "api") || (strstr($view, "xml") || (strstr($view, "ajax"))))
     }
     exit(0);
 }
-Log::out("index.php - After api/xml or ajax", Zend_Log::DEBUG);
+Log::out("index.php - After api/xml or ajax", \Zend_Log::DEBUG);
 
 // **********************************************************
 // Prep the page - load the header stuff - START
@@ -215,7 +234,7 @@ foreach ($ext_names as $ext_name) {
 }
 $smarty->assign("extension_jquery_files", $extension_jquery_files);
 
-Log::out("index.php - After extension_jquery_files", Zend_Log::DEBUG);
+Log::out("index.php - After extension_jquery_files", \Zend_Log::DEBUG);
 
 // Load any hooks that are defined for extensions
 foreach ($ext_names as $ext_name) {
@@ -227,7 +246,7 @@ foreach ($ext_names as $ext_name) {
 // impacted by loading this file.
 $smarty->$smarty_output("custom/hooks.tpl");
 
-Log::out("index.php - after custom/hooks.tpl", Zend_Log::DEBUG);
+Log::out("index.php - after custom/hooks.tpl", \Zend_Log::DEBUG);
 
 if (!in_array($module . "_" . $view, $early_exit)) {
     $extensionHeader = 0;
@@ -243,7 +262,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
         $smarty->$smarty_output($my_path);
     }
 }
-Log::out("index.php - after header.tpl", Zend_Log::DEBUG);
+Log::out("index.php - after header.tpl", \Zend_Log::DEBUG);
 
 // **********************************************************
 // Prep the page - load the header stuff - END
@@ -276,10 +295,10 @@ foreach ($ext_names as $ext_name) {
         }
     }
 }
-Log::out("index.php - After extension_php_insert_files, etc.", Zend_Log::DEBUG);
+Log::out("index.php - After extension_php_insert_files, etc.", \Zend_Log::DEBUG);
 
 if ($extensionPhpFile == 0 && ($my_path = getCustomPath("$module/$view", 'module'))) {
-    Log::out("index.php - my_path[$my_path]", Zend_Log::DEBUG);
+    Log::out("index.php - my_path[$my_path]", \Zend_Log::DEBUG);
     include $my_path;
 }
 // **********************************************************
@@ -288,7 +307,7 @@ if ($extensionPhpFile == 0 && ($my_path = getCustomPath("$module/$view", 'module
 if ($module == "export" || $view == "export") {
     exit(0);
 }
-Log::out("index.php - After export/export exit", Zend_Log::DEBUG);
+Log::out("index.php - After export/export exit", \Zend_Log::DEBUG);
 
 // **********************************************************
 // Post load javascript files - START
@@ -306,7 +325,7 @@ foreach ($ext_names as $ext_name) {
 if ($module != 'auth') {
     $smarty->$smarty_output("include/jquery/post_load.jquery.ext.js.tpl");
 }
-Log::out("index.php - post_load...", Zend_Log::DEBUG);
+Log::out("index.php - post_load...", \Zend_Log::DEBUG);
 
 // **********************************************************
 // Post load javascript files - END
@@ -346,7 +365,7 @@ if ($menu) {
     //
     // If no matching section is found, the file will NOT be inserted.
     $my_path = getCustomPath('menu');
-    Log::out("index.php - menu my_path[$my_path]", Zend_Log::DEBUG);
+    Log::out("index.php - menu my_path[$my_path]", \Zend_Log::DEBUG);
 
     $menutpl = $smarty->fetch($my_path);
     $lines = array();
@@ -355,7 +374,7 @@ if ($menu) {
     $menutpl = Funcs::mergeMenuSections($ext_names, $lines, $sections);
     echo $menutpl;
 }
-Log::out("index.php - After menutpl processed", Zend_Log::DEBUG);
+Log::out("index.php - After menutpl processed", \Zend_Log::DEBUG);
 
 // **********************************************************
 // Main: Custom menu - END
@@ -377,7 +396,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
         $smarty->$smarty_output(getCustomPath('main'));
     }
 }
-Log::out("index.php - After main.tpl", Zend_Log::DEBUG);
+Log::out("index.php - After main.tpl", \Zend_Log::DEBUG);
 // **********************************************************
 // Main: Custom layout - END
 // **********************************************************
@@ -446,7 +465,7 @@ foreach ($ext_names as $ext_name) {
         }
     }
 }
-Log::out("index.php - After $module/$view.tpl", Zend_Log::DEBUG);
+Log::out("index.php - After $module/$view.tpl", \Zend_Log::DEBUG);
 
 // TODO: if more than one extension has a template for the requested file, that's trouble :(
 // This won't happen for reports, standard menu.tpl and system_defaults menu.tpl given
@@ -464,7 +483,7 @@ $smarty->assign("perform_extension_insertions", $perform_extension_insertions);
 $smarty->assign("path"                        , $path);
 
 $smarty->$smarty_output($my_tpl_path);
-Log::out("index.php - After output my_tpl_path[$my_tpl_path]", Zend_Log::DEBUG);
+Log::out("index.php - After output my_tpl_path[$my_tpl_path]", \Zend_Log::DEBUG);
 
 // If no smarty template - add message
 if ($extensionTemplates == 0) {
@@ -490,7 +509,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
         $smarty->$smarty_output(getCustomPath('footer'));
     }
 }
-Log::out("index.php - At END\n\n", Zend_Log::DEBUG);
+Log::out("index.php - At END\n\n", \Zend_Log::DEBUG);
 // **********************************************************
 // Footer - END
 // **********************************************************

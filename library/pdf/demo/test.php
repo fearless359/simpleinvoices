@@ -1,5 +1,12 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\Invoice;
+use Inc\Claz\Preferences;
+
 global $pdoDb, $config, $http_auth, $httpPort, $install_path;
+
 // fetch the page to write the pdf
 $invoice_id = $_GET['invoice'];
 

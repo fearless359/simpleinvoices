@@ -1,25 +1,32 @@
 <?php
+
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\WhereItem;
+
 /*
-* Script: report_sales_by_period.php
-* 	Sales reports by period add page
-*
-* Authors:
-*	 Justin Kelly
-*	Francois Dechery, aka Soif
-*
-* Last edited:
-* 	 2008-05-13
-*
-* License:
-*	 GPL v3
-*
-* Website:
-* 	https://simpleinvoices.group*/
+ * Script: report_sales_by_period.php
+ * 	Sales reports by period add page
+ *
+ * Authors:
+ *	 Justin Kelly
+ *	Francois Dechery, aka Soif
+ *
+ * Last edited:
+ * 	 2008-05-13
+ *
+ * License:
+ *	 GPL v3
+ *
+ * Website:
+ * 	https://simpleinvoices.group
+ */
 
 checkLogin();
 
 $max_years = 10;
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 // Get earliest invoice date
 $pdoDb->addToFunctions(new FunctionStmt("MIN", new DbField("iv.date"), "date"));

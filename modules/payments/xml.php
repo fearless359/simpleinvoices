@@ -1,5 +1,17 @@
 <?php
+
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
+use Inc\Claz\OnClause;
+use Inc\Claz\OrderBy;
+use Inc\Claz\Select;
+use Inc\Claz\SiLocal;
+use Inc\Claz\WhereItem;
+
 header("Content-type: text/xml");
+
 global $LANG;
 
 // @formatter:off
@@ -28,7 +40,7 @@ function sql($type = '', $dir, $sort, $rp, $page) {
             $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
         }
     }
-    $pdoDb->addSimpleWhere("ap.domain_id", domain_id::get());
+    $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get());
 
     $jn = new Join("INNER", "invoices", "iv");
     $oc = new OnClause();

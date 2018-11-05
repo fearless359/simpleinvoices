@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 /*
  * Script: add.php
  * 	    Customers add page
@@ -13,7 +16,8 @@
  *	    GPL v3 or above
  *
  * Website:
- * 	    https://simpleinvoices.group */
+ * 	    https://simpleinvoices.group
+ */
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
@@ -29,4 +33,4 @@ $smarty->assign('customFieldLabel',$customFieldLabel);
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('subPageActive', 'customer_add');
 $smarty->assign('active_tab', '#people');
-$smarty->assign('domain_id', domain_id::get());
+$smarty->assign('domain_id', DomainId::get());

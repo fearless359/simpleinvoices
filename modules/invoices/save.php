@@ -1,5 +1,10 @@
 <?php
 
+use Inc\Claz\DomainId;
+use Inc\Claz\Invoice;
+use Inc\Claz\Product;
+use Inc\Claz\SiLocal;
+
 /*
  * Script: save.php
  *     Invoice save file
@@ -81,7 +86,7 @@ if ($_POST['action'] == "insert" ) {
             if ($type == TOTAL_INVOICE) {
                 $pdoDb->setFauxPost(array("unit_price" => $_POST['unit_price'], "description" => $_POST['description0']));
                 $pdoDb->addSimpleWhere("id", $_POST['products0'], "AND");
-                $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+                $pdoDb->addSimpleWhere("domain_id", DomainId::get());
                 if (!$pdoDb->request("UPDATE", "products")) {
                     error_log("modules/invoices/save.php - Unable to update product 0 - _POST - " . print_r($_POST, true));
                 }

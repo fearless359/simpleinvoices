@@ -1,5 +1,8 @@
 <?php
 
+use Inc\Claz\Expense;
+use Inc\Claz\SiLocal;
+
 global $LANG;
 
 header("Content-type: text/xml");

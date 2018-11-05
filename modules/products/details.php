@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\CustomFlags;
+use Inc\Claz\Product;
+use Inc\Claz\SystemDefaults;
+use Inc\Claz\Taxes;
+
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed

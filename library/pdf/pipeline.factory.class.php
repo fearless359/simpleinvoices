@@ -3,7 +3,7 @@ require_once(HTML2PS_DIR.'pipeline.class.php');
 require_once(HTML2PS_DIR.'fetcher.url.class.php');
 
 class PipelineFactory {
-  function &create_default_pipeline($encoding, $filename) {
+  public static function &create_default_pipeline($encoding, $filename) {
     $pipeline = new Pipeline();
 
     if (isset($GLOBALS['g_config'])) {
@@ -23,7 +23,9 @@ class PipelineFactory {
     $pipeline->post_tree_filters = array();
     $pipeline->output_driver     = new OutputDriverFPDF();
     $pipeline->output_filters    = array();
-    $pipeline->destination       = new DestinationDownload($filename, ContentType::pdf());
+    $pipeline->destination       = new DestinationDownload($filename);
+// Changed to using a single parameter by Rich Rowley 20181104
+//    $pipeline->destination       = new DestinationDownload($filename, ContentType::pdf());
     // @formatter:on
     return $pipeline;
   }

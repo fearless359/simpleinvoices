@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\Customer;
+use Inc\Claz\Payment;
+
 /*
  *  Script: details.php
  *      Customers details page
@@ -13,7 +17,8 @@
  *      GPL v3 or above
  *
  *  Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $smarty, $LANG, $config;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed

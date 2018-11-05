@@ -721,7 +721,7 @@ $LANG['your_reports'] = "Your reports";//1
 $LANG['zero_invoice_amt'] = "Zero invoice amount. No payment due.";//1
 $LANG['zip'] = "Zip code";//1
 
-$defaults = SystemDefaults::loadValues($databaseBuilt);
+$defaults = Inc\Claz\SystemDefaults::loadValues($databaseBuilt);
 $pwd_msg =  "Passwords must:" .
             "<ul>" .
             "  <li>Begin with an alpha character</li>" .

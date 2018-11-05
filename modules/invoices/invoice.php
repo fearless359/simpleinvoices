@@ -1,4 +1,14 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\CustomFields;
+use Inc\Claz\Invoice;
+use Inc\Claz\Preferences;
+use Inc\Claz\Product;
+use Inc\Claz\ProductAttributes;
+use Inc\Claz\Taxes;
+
 /*
  * Script: invoice.php
  *
@@ -12,7 +22,8 @@
  *   GPL v3 or above
  *
  * Website:
- *   https://simpleinvoices.group */
+ *   https://simpleinvoices.group
+ */
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
@@ -47,7 +58,7 @@ if (!empty($_GET['line_items'])) {
 $customFields = array();
 for ($i = 1; $i <= 4; $i++) {
     // Note that this is a 1 based array not a 0 based array.
-    $customFields[$i] = CustomFields::show_custom_field("invoice_cf$i"  , '',
+    $customFields[$i] = CustomFields::showCustomField("invoice_cf$i"  , '',
                                                              "write"         , '',
                                                              "details_screen", '',
                                                              ''              , '');

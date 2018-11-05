@@ -1,5 +1,9 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 global $smarty;
+
 $sql = "SELECT pr.index_group AS `group`,
                GROUP_CONCAT(DISTINCT pr.pref_description SEPARATOR ',') AS template,
                COUNT(DISTINCT ii.invoice_id) AS `count`,
@@ -10,7 +14,7 @@ $sql = "SELECT pr.index_group AS `group`,
         WHERE pr.status = '1'
           AND ii.domain_id = :domain_id
         GROUP BY pr.index_group";
-$sth = dbQuery($sql, ':domain_id', domain_id::get());
+$sth = dbQuery($sql, ':domain_id', DomainId::get());
 
 $grand_total_sales = 0;
 $total_sales = array();

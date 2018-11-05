@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\Cron;
+use Inc\Claz\DomainId;
+
 global $smarty;
 
 $saved = "false";
@@ -14,7 +18,7 @@ $cron = Cron::select();
 
 $smarty->assign('cron'     , $cron);
 $smarty->assign('saved'    , $saved);
-$smarty->assign("domain_id", domain_id::get());
+$smarty->assign("domain_id", DomainId::get());
 
 $smarty->assign('pageActive', 'cron');
 

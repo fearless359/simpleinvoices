@@ -1,4 +1,9 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\Invoice;
+
 /*
  * Script: report_sales_by_period.php
  * Sales reports by period add page
@@ -13,7 +18,8 @@
  * GPL v3
  *
  * Website:
- * https://simpleinvoices.group */
+ * https://simpleinvoices.group
+ */
 global $menu, $pdoDb, $smarty;
 
 checkLogin ();

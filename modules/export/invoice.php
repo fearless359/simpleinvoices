@@ -10,7 +10,7 @@
  *      https://simpleinvoices.group
  */
 
-$export            = new export();
+$export            = new Export();
 $export->id        = (isset($_GET['id']      ) ? $_GET['id']       : "");
 $export->format    = (isset($_GET['format']  ) ? $_GET['format']   : "");
 $export->file_type = (isset($_GET['filetype']) ? $_GET['filetype'] : "");

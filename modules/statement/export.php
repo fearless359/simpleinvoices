@@ -19,7 +19,7 @@ $get_format            = (isset($_GET ['format'])                ? $_GET ['forma
 $get_file_type         = (isset($_GET ['filetype'])              ? $_GET ['filetype']              : "");
 
 // get the invoice id
-$export = new export ();
+$export = new Export ();
 $export->format                = $get_format;
 $export->file_type             = $get_file_type;
 $export->module                = 'statement';

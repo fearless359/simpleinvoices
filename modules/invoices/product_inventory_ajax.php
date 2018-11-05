@@ -1,8 +1,11 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 global $output, $pdoDb;
 
 if($_GET['id']) {
-    $domain_id = domain_id::get();
+    $domain_id = DomainId::get();
     $pdoDb->addSimpleWhere("id", $_GET['id'], "AND");
     $pdoDb->addSimpleWhere("domain_id", $domain_id);
     $pdoDb->setLimit(1);

@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\Invoice;
+use Inc\Claz\Product;
+
 /*
  * Script: add_invoice_item.php
  *     add new invoice item in edit page

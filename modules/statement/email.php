@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\Email;
+use Inc\Claz\Export;
+
 /*
  *  Script: email.php
  *      Email invoice page
@@ -7,7 +13,8 @@
  *      GPL v3 or above
  *      
  *  Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
@@ -44,7 +51,7 @@ $end_date   = (isset($_GET['end_date']  ) ? $_GET['end_date']   : "");
 $show_only_unpaid = (empty($_GET['show_only_unpaid']) ? "no" : $_GET['show_only_unpaid']);
 
 if ($_GET['stage'] == 2) {
-    $export = new export();
+    $export = new Export();
     $export->format                = 'pdf';
     $export->module                = 'statement';
     $export->biller_id             = $biller_id;
@@ -72,7 +79,7 @@ if ($_GET['stage'] == 2) {
 } else if ($_GET['stage'] == 3) {
     // stage 3 = assemble email and send
     $message = "Invalid routing to stage 3 of email processing. Probably a process error.";
-    $error - true;
+    $error = true;
 }
 
 $smarty->assign('error'   , ($error ? "1":"0"));

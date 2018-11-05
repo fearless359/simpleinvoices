@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\Eway;
+use Inc\Claz\Invoice;
+
 global $smarty;
 
 $saved = false;
@@ -8,13 +12,13 @@ $invoice_all = Invoice::get_all();
 if (($_POST ['op'] == 'add') && (! empty ( $_POST ['invoice_id'] ))) {
     $invoice = Invoice::select ( $_POST ['invoice_id'] );
 
-    $eway_check = new eway ();
+    $eway_check = new Eway ();
     $eway_check->invoice = $invoice;
     $eway_pre_check = $eway_check->pre_check ();
 
     if ($eway_pre_check == 'true') {
         // do eway payment
-        $eway = new eway ();
+        $eway = new Eway ();
         $eway->invoice = $invoice;
         $saved = $eway->payment ();
     } else {

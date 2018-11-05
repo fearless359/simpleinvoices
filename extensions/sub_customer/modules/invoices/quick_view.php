@@ -1,5 +1,14 @@
 <?php
 
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\CustomFields;
+use Inc\Claz\Eway;
+use Inc\Claz\Invoice;
+use Inc\Claz\Payment;
+use Inc\Claz\Preferences;
+use Inc\Claz\SystemDefaults;
+
 /*
  * Script: quick_view.php
  *     Quick view model
@@ -32,7 +41,7 @@ $defaults                = SystemDefaults::loadValues();
 $invoiceItems            = Invoice::getInvoiceItems($invoice_id);
 $sub_customer            = Customer::get($invoice['custom_field1']);
 
-$eway_check          = new eway();
+$eway_check          = new Eway();
 $eway_check->invoice = $invoice;
 $eway_pre_check      = $eway_check->pre_check();
 
@@ -52,7 +61,7 @@ $customFieldLabels = getCustomFieldLabels('',true);
 
 $customFields = array();
 for($i=1;$i<=4;$i++) {
-    $customFields[$i] = CustomFields::show_custom_field("invoice_cf$i"  , $invoice["custom_field$i"],
+    $customFields[$i] = CustomFields::showCustomField("invoice_cf$i"  , $invoice["custom_field$i"],
                                                         "read"          , 'details_screen summary'  ,
                                                         'details_screen', 'details_screen'          ,
                                                         5               , ':');

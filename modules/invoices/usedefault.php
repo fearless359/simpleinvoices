@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\Customer;
+use Inc\Claz\DomainId;
+use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
+
 /*
  *  Script: usedefault.php
  *      page which chooses an empty page or another invoice as template
@@ -13,19 +19,15 @@
  *      GPL v3 or above
  *
  *  Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $defaults, $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin ();
 
 $master_customer_id = $_GET ['customer_id'];
-try {
-    $customer = Customer::get($master_customer_id);
-} catch (PdoDbException $pde) {
-    error_log("modules/invoices/usedefault.php error: " . $pde->getMessage());
-    exit("Database access error(1). See error log.");
-}
+$customer = Customer::get($master_customer_id);
 
 // NOTE: The customer record default_invoice field contains the index_id for the invoice NOT the id.
 if ($_GET ['action'] == 'update_template') {
@@ -36,7 +38,7 @@ if ($_GET ['action'] == 'update_template') {
     try {
         $pdoDb->setFauxPost(array("default_invoice" => $invoice['index_id']));
         $pdoDb->addSimpleWhere("id", $master_customer_id, 'AND');
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
         $pdoDb->request("UPDATE", "customers");
     } catch (PdoDbException $pde) {
         error_log("modules/invoices/usedefault.php error: " . $pde->getMessage());

@@ -1,4 +1,9 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\Product;
+
 /*
  *  Script: manage.php
  *      Customers manage page

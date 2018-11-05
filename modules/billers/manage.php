@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\Biller;
+
 /*
  * Script: manage.php
  * Biller manage page

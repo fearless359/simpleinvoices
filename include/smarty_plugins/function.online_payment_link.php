@@ -1,8 +1,11 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 function smarty_function_online_payment_link($params, &$smarty) {
     global $siUrl;
 
-    $domain_id = domain_id::get($params['domain_id']);
+    $domain_id = DomainId::get($params['domain_id']);
     $url = getURL();
     if (in_array("paypal", explode(",", $params['type']))) {
         $link = "<a href=\"https://www.paypal.com/xclick/?business="        . urlencode($params['business']) .

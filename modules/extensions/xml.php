@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 global $LANG;
 
 header("Content-type: text/xml");
@@ -9,7 +12,7 @@ $sort = "id";
 $rp = (isset($_POST['rp'])) ? $_POST['rp'] : "25";
 $page = (isset($_POST['page'])) ? $_POST['page'] : "1";
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 $valid_search_fields = array('id','name','description');
 

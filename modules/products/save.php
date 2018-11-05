@@ -1,4 +1,6 @@
 <?php
+use Inc\Claz\Product;
+
 global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin ();
@@ -17,7 +19,7 @@ if ($op === 'insert_product') {
                 $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
             }
         }
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         error_log("products save.php - error: " . $e->getMessage());
         $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
     }
@@ -30,7 +32,7 @@ if ($op === 'insert_product') {
                 $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
             }
         }
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         error_log("products save.php - error: " . $e->getMessage());
         $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
     }

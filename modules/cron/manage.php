@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 /*
  *  Script: manage.php
  *      Manage Invoices page
@@ -6,7 +9,7 @@
  *  License:
  *      GPL v3 or above
  *
- *  Last Modifield:
+ *  Last Modified:
  *      2016-08-07
  *  Website:
  *      https://simpleinvoices.group
@@ -16,7 +19,7 @@ global $pdoDb, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-$pdoDb->addSimpleWhere("domain_id", domain_id::get());
+$pdoDb->addSimpleWhere("domain_id", DomainId::get());
 $pdoDb->addToFunctions("COUNT(*) as count");
 $rows = $pdoDb->request("SELECT", "cron");
 $number_of_crons  = $rows[0]['count'];

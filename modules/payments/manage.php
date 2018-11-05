@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\Customer;
+use Inc\Claz\Invoice;
+use Inc\Claz\Payment;
+use Inc\Claz\Preferences;
+
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed

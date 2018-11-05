@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\Expense;
+use Inc\Claz\SystemDefaults;
+use Inc\Claz\Taxes;
+
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
@@ -14,7 +20,7 @@ if (!empty( $_POST ['expense_account_id'] )) {
     include "modules/expense/save.php";
 }
 
-$smarty->assign('domain_id'  , domain_id::get());
+$smarty->assign('domain_id'  , DomainId::get());
 $smarty->assign('taxes'      , $taxes);
 $smarty->assign('expense_add', $expense_add);
 $smarty->assign('defaults'   , $defaults);

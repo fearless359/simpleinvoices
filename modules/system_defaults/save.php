@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\SystemDefaults;
+
 global $smarty;
 
 checkLogin();

@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\Product;
+use Inc\Claz\SystemDefaults;
+
 header("Content-type: text/xml");
 global $smarty, $LANG;
 

@@ -1,12 +1,16 @@
 <?php
 
+use Inc\Claz\DomainId;
+use Inc\Claz\Invoice;
+
 /*
  * Script: report_sales_by_period.php
  * Sales reports by period add page
  * License:
  * GPL v3
  * Website:
- * https://simpleinvoices.group */
+ * https://simpleinvoices.group
+ */
 global $pdoDb, $smarty;
 
 checkLogin();
@@ -17,7 +21,7 @@ function lastOfMonth() {
     return date("Y-m-d", strtotime('-1 second', strtotime('+1 month', strtotime('01-' . date('m') . '-' . date('Y') . ' 00:00:00'))));
 }
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 isset($_POST['start_date']) ? $start_date = $_POST['start_date'] : $start_date = firstOfMonth();
 isset($_POST['end_date']) ? $end_date = $_POST['end_date'] : $end_date = lastOfMonth();

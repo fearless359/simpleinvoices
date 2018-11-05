@@ -1,4 +1,12 @@
 <?php
+
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
+use Inc\Claz\PdoDbException;
+use Inc\Claz\WhereItem;
+
 /*
  * Script: report_sales_by_period.php
  *     Sales reports by period add page
@@ -13,12 +21,13 @@
  *     GPL v3
  *
  * Website:
- *     https://simpleinvoices.group */
+ *     https://simpleinvoices.group
+ */
 global$pdoDb, $smarty;
 
 checkLogin();
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 // Get earliest invoice date
 
@@ -87,7 +96,7 @@ while($year <= $this_year) {
             $jn->addSimpleItem('p.domain_id', new DbField('i.domain_id'));
             $pdoDb->addToJoins($jn);
 
-            $pdoDb->addSimpleWhere('ii.domain_id', domain_id::get(), 'AND');
+            $pdoDb->addSimpleWhere('ii.domain_id', DomainId::get(), 'AND');
             $pdoDb->addSimpleWhere('p.status', ENABLED, 'AND');
             $pdoDb->addToWhere(new WhereItem(false, 'i.date', 'LIKE', "{$year}-{$month}", false));
 
@@ -134,7 +143,7 @@ while($year <= $this_year) {
             $jn->addSimpleItem('p.domain_id', new DbField('i.domain_id'));
             $pdoDb->addToJoins($jn);
 
-            $pdoDb->addSimpleWhere('ii.domain_id', domain_id::get(), 'AND');
+            $pdoDb->addSimpleWhere('ii.domain_id', DomainId::get(), 'AND');
             $pdoDb->addSimpleWhere('p.status', ENABLED, 'AND');
             $pdoDb->addToWhere(new WhereItem(false, 'i.date', 'LIKE', "{$year}-{$month}", false));
 

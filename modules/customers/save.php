@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\Customer;
+
 /*
  *  Script: save.php
  *      Customers save page
@@ -13,7 +16,8 @@
  *      GPL v3 or above
  *
  * Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $config, $smarty, $LANG;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed

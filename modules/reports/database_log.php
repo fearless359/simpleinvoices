@@ -1,5 +1,9 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 global $smarty;
+
 checkLogin();
 
 $smarty->assign('pageActive', 'report');
@@ -20,7 +24,7 @@ $sql = "SELECT l.*, u.email
           AND l.timestamp BETWEEN :start AND :end 
         ORDER BY l.timestamp";
 
-$sth = dbQuery($sql, ':start', $startdate, ':end', $enddate, ':domain_id', domain_id::get());
+$sth = dbQuery($sql, ':start', $startdate, ':end', $enddate, ':domain_id', DomainId::get());
 $sqls = null;
 $sqls = $sth->fetchAll();
 

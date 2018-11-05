@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Invoice;
+use Inc\Claz\WhereItem;
+
 /*
  *  Script:
  *      Sales by Representative report
@@ -50,7 +56,7 @@ if (isset($_POST['submit'])) {
 }
 
 $pdoDb->addToWhere(new WhereItem(false, "sales_representative", "<>", "", false, "AND"));
-$pdoDb->addSimpleWhere("domain_id", domain_id::get());
+$pdoDb->addSimpleWhere("domain_id", DomainId::get());
 $pdoDb->addToFunctions(new FunctionStmt("DISTINCT", "sales_representative"));
 $rows = $pdoDb->request("SELECT", "invoices");
 $sales_reps = array();

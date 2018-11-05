@@ -1,4 +1,15 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\Expense;
+use Inc\Claz\ExpenseAccount;
+use Inc\Claz\ExpenseTax;
+use Inc\Claz\Invoice;
+use Inc\Claz\Product;
+use Inc\Claz\SystemDefaults;
+use Inc\Claz\Taxes;
+
 global $smarty, $LANG;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed

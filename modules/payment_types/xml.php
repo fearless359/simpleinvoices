@@ -1,4 +1,9 @@
 <?php
+
+use Inc\Claz\CaseStmt;
+use Inc\Claz\DomainId;
+use Inc\Claz\WhereItem;
+
 header("Content-type: text/xml");
 
 function sql($type = '', $dir, $sort, $rp, $page, $domain_id) {
@@ -43,7 +48,7 @@ function sql($type = '', $dir, $sort, $rp, $page, $domain_id) {
 
 global $LANG;
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 // @formatter:off
 $dir   = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "A";

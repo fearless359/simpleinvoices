@@ -1,4 +1,12 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\MyFetcherLocalFile;
+use Inc\Claz\PdoDbException;
+use Inc\Claz\SiError;
+use Inc\Claz\SystemDefaults;
+use Inc\Claz\WhereItem;
+
 global $auth_session, $config, $dbh, $dbInfo;
 
 /**
@@ -144,7 +152,7 @@ function dbLogger($sqlQuery) {
         }
 
         // @formatter:off
-        $pdoDb_admin->setFauxPost(array("domain_id" => domain_id::get(),
+        $pdoDb_admin->setFauxPost(array("domain_id" => DomainId::get(),
                                         "userid"    => $auth_session->id,
                                         "sqlquerie" => trim($sqlQuery),
                                         "last_id"   => $last));
@@ -155,16 +163,20 @@ function dbLogger($sqlQuery) {
 /**
  * Load SI Extension information into $config->extension.
  * @param &array Reference to the extension names array.
- * @throws PdoDbException
  */
 function loadSiExtensions(&$ext_names) {
     global $config, $databaseBuilt, $patchCount, $pdoDb_admin;
 
     if ($databaseBuilt && $patchCount > "196") {
-        $pdoDb_admin->addSimpleWhere("domain_id", domain_id::get(), "OR");
-        $pdoDb_admin->addSimpleWhere("domain_id", 0);
-        $pdoDb_admin->setOrderBy("domain_id");
-        $rows = $pdoDb_admin->request("SELECT", "extensions");
+        $rows = array();
+        try {
+            $pdoDb_admin->addSimpleWhere("domain_id", DomainId::get(), "OR");
+            $pdoDb_admin->addSimpleWhere("domain_id", 0);
+            $pdoDb_admin->setOrderBy("domain_id");
+            $rows = $pdoDb_admin->request("SELECT", "extensions");
+        } catch (PdoDbException $pde) {
+            error_log("loadSiExtensions() - Error: " . $pde->getMessage());
+        }
         $extensions = array();
         foreach ($rows as $extension) {
             $extensions[$extension['name']] = $extension;
@@ -206,7 +218,7 @@ function loadSiExtensions(&$ext_names) {
  */
 function getCustomFieldLabels($domain_id = '', $noUndefinedLabels = FALSE) {
     global $LANG, $pdoDb_admin;
-    $domain_id = domain_id::get($domain_id);
+    $domain_id = DomainId::get($domain_id);
 
     $pdoDb_admin->addSimpleWhere("domain_id", $domain_id);
     $pdoDb_admin->setOrderBy("cf_custom_field");
@@ -257,7 +269,7 @@ function is_custom_flag_field($field) {
 function setStatusExtension($extension_id, $status = 2, $domain_id = '') {
     global $pdoDb_admin;
 
-    $domain_id = domain_id::get($domain_id);
+    $domain_id = DomainId::get($domain_id);
 
     // status=2 = toggle status
     if ($status == 2) {
@@ -289,7 +301,7 @@ function setStatusExtension($extension_id, $status = 2, $domain_id = '') {
 function getExtensionID($extension_name = "none") {
     global $pdoDb_admin;
 
-    $domain_id = domain_id::get();
+    $domain_id = DomainId::get();
 
     $pdoDb_admin->addSimpleWhere('name', $extension_name, 'AND');
     $pdoDb_admin->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
@@ -344,7 +356,7 @@ function sqlDateWithTime($in_date) {
  */
 function delete($module, $idField, $id, $domain_id = '') {
     global $dbh;
-    $domain_id = domain_id::get($domain_id);
+    $domain_id = DomainId::get($domain_id);
 
     $has_domain_id = false;
 
@@ -521,7 +533,6 @@ function pdfThis($html_to_pdf, $pdfname, $download) {
 
             global $g_pt_scale;
             $g_pt_scale = $g_px_scale * (72 / 96);
-            if ($g_pt_scale) {}; // to eliminate unused variable warning
 
             $pipeline->configure($g_config);
             $pipeline->data_filters[] = new DataFilterUTF8("");

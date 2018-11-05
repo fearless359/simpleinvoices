@@ -1,4 +1,9 @@
 <?php
+
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\OnClause;
+
 /*
  *  Script: delete.php
  *      Do the deletion of a cron record
@@ -23,7 +28,7 @@ $cron = "";
 if ($_GET['stage'] == 2) {
 $smarty->assign("index_id", $_POST['index_id']);
     $pdoDb->addSimpleWhere("id", $_GET['id'], "AND");
-    $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+    $pdoDb->addSimpleWhere("domain_id", DomainId::get());
     if ($pdoDb->request("DELETE", "cron")) {
         $saved = "true";
     } else {
@@ -33,7 +38,7 @@ $smarty->assign("index_id", $_POST['index_id']);
     $stage = '0';
 } else {
     $pdoDb->addSimpleWhere("cron.id", $_GET['id'], "AND");
-    $pdoDb->addSimpleWhere("cron.domain_id", domain_id::get());
+    $pdoDb->addSimpleWhere("cron.domain_id", DomainId::get());
 
     $oc = new OnClause();
     $oc->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");

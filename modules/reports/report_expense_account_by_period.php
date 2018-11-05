@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 /*
  * Script: report_sales_by_period.php
  *     Sales reports by period add page
@@ -13,12 +16,13 @@
  *     GPL v3
  *
  * Website:
- *     https://simpleinvoices.group */
+ *     https://simpleinvoices.group
+ */
 global $db, $smarty;
 
 checkLogin();
 
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 function firstOfMonth() {
     return date("Y-m-d", strtotime('01-'.date('m').'-'.date('Y').' 00:00:00'));

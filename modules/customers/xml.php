@@ -1,5 +1,7 @@
 <?php
 
+use Inc\Claz\Customer;
+
 global $LANG;
 
 header("Content-type: text/xml");

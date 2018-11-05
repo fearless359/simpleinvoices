@@ -52,7 +52,7 @@ if (isset($_POST['btnProcess'])){
   }
   else if(strtolower($ewayResponseFields["EWAYTRXNSTATUS"])=="true")
   {
-       // payment succesfully sent to gateway
+       // payment successfully sent to gateway
        // Payment succeeded get values returned
        $lblResult = " Result: " . $ewayResponseFields["EWAYTRXNSTATUS"] . "<br>";
        $lblResult .= " AuthCode: " . $ewayResponseFields["EWAYAUTHCODE"] . "<br>";
@@ -67,8 +67,8 @@ if (isset($_POST['btnProcess'])){
   }
   else
   {
-       // invalid response recieved from server.
-       $lblResult =  "Error: An invalid response was recieved from the payment gateway.";
+       // invalid response received from server.
+       $lblResult =  "Error: An invalid response was received from the payment gateway.";
        echo $lblResult;
   }
 

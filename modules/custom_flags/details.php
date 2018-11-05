@@ -13,7 +13,7 @@ if (empty($_GET['id'])) {
     $flg_id = $parts[1];
 }
 
-$cflg = CustomFlags::getCustomFlag($associated_table, $flg_id, domain_id::get());
+$cflg = CustomFlags::getCustomFlag($associated_table, $flg_id);
 
 $smarty->assign('cflg', $cflg);
 

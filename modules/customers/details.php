@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\Customer;
+use Inc\Claz\DomainId;
+use Inc\Claz\Invoice;
+use Inc\Claz\Payment;
+
 /*
  * Script: details.php
  * 	Customers details page
@@ -13,7 +19,8 @@
  *	    GPL v3 or above
  *
  * Website:
- * 	https://simpleinvoices.group */
+ * 	https://simpleinvoices.group
+ */
 global $smarty, $LANG, $config;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
@@ -27,7 +34,7 @@ jsEnd();
 
 // @formatter:off
 $cid = $_GET['id'];
-$domain_id = domain_id::get();
+$domain_id = DomainId::get();
 
 $customer = Customer::get($cid);
 $customer['wording_for_enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);

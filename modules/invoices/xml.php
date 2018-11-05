@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\Invoice;
+use Inc\Claz\SiLocal;
+
 header("Content-type: text/xml");
 global $auth_session, $LANG, $pdoDb;
 

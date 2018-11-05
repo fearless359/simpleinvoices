@@ -1,5 +1,9 @@
 <?php
+use Inc\Claz\ImportJson;
+use Inc\Claz\PdoDbException;
+
 global $databaseBuilt, $databasePopulated, $pdoDb;
+
 $menu = false;
 
 if ($databaseBuilt && !$databasePopulated) {

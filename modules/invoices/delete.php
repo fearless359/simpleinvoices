@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\Invoice;
+use Inc\Claz\Payment;
+use Inc\Claz\Preferences;
+use Inc\Claz\SystemDefaults;
+
 /*
  *  Script: delete.php
  *      Do the deletion of an invoice page
@@ -13,7 +19,8 @@
  *      GPL v3 or above
  *
  *  Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed

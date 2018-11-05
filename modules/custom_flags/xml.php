@@ -1,5 +1,9 @@
 <?php
 
+use Inc\Claz\CaseStmt;
+use Inc\Claz\DomainId;
+use Inc\Claz\WhereItem;
+
 function sql($type = '', $dir, $sort, $rp, $page) {
     global $LANG, $pdoDb;
 
@@ -11,7 +15,7 @@ function sql($type = '', $dir, $sort, $rp, $page) {
             $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
         }
     }
-    $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+    $pdoDb->addSimpleWhere("domain_id", DomainId::get());
 
     if($type == "count") {
         $pdoDb->addToFunctions("count(*) AS count");

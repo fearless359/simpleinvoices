@@ -1,7 +1,8 @@
 <?php
 global $module, $LANG, $acl;
+
+$checkPermission = "";
 try {
-    $checkPermission = "";
     $auth_session = new Zend_Session_Namespace('Zend_Auth');
 
     $acl_view = (isset($_GET['view']) ? $_GET['view'] : null);
@@ -38,6 +39,9 @@ try {
     }
     // @formatter:on
 } catch (Zend_Session_Exception $zse) {
-    $checkPermission == "denied";
+    $checkPermission = "denied";
 }
-$checkPermission == "denied" ? exit($LANG['denied_page']) : "";
+
+if ($checkPermission == "denied") {
+    exit($LANG['denied_page']);
+};

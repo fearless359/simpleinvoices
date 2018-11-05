@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\Preferences;
+use Inc\Claz\SystemDefaults;
+
 global $smarty, $LANG;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();

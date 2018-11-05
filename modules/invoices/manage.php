@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\Invoice;
+
 /*
  * Script: manage.php
  * Manage Invoices page
@@ -7,7 +10,8 @@
  * GPL v2 or above
  *
  * Website:
- * https://simpleinvoices.group */
+ * https://simpleinvoices.group
+ */
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed

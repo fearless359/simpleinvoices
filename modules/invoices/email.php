@@ -1,16 +1,25 @@
 <?php
+
+use Inc\Claz\Biller;
+use Inc\Claz\Customer;
+use Inc\Claz\Email;
+use Inc\Claz\Export;
+use Inc\Claz\Invoice;
+use Inc\Claz\Preferences;
+
 /*
  *  Script: email.php
-*      Email invoice page
-*
-*  Last Modified:
-*      2016-08-15
-*
-*  License:
-*      GPL v3 or above
-*
-*  Website:
-*      https://simpleinvoices.group*/
+ *      Email invoice page
+ *
+ *  Last Modified:
+ *      2016-08-15
+ *
+ *  License:
+ *      GPL v3 or above
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ */
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
@@ -22,11 +31,11 @@ $invoice     = Invoice::select($invoice_id);
 $preference  = Preferences::getPreference($invoice['preference_id']);
 $biller      = Biller::select($invoice['biller_id']);
 $customer    = Customer::get($invoice['customer_id']);
-error_log("biller - " . print_r($biller,true));
+
 $error = false;
 $message = "Unable to process email request.";
 if ($_GET['stage'] == 2 ) {
-    $export = new export();
+    $export = new Export();
     $export->format     = "pdf";
     $export->module     = 'invoice';
     $export->id         = $invoice_id;

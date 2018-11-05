@@ -1,4 +1,10 @@
 <?php
+
+use Inc\Claz\DbField;
+use Inc\Claz\Join;
+use Inc\Claz\SystemDefaults;
+use Inc\Claz\User;
+
 /*
  *  Script: login.php
  *      Login page
@@ -11,8 +17,6 @@
  */
 if (!function_exists('loginLogo')) {
     function loginLogo($smarty) {
-        global $pdoDb;
-
         $defaults = SystemDefaults::loadValues();
         // Not a post action so set up company logo and name to display on login screen.
         //<img src="extensions/user_security/images/{$defaults.company_logo}" alt="User Logo">

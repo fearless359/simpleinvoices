@@ -1,10 +1,13 @@
 <?php
+
+use Inc\Claz\DomainId;
+
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 function getExtensions() {
-    $domain_id = domain_id::get();
+    $domain_id = DomainId::get();
     
     $sql = "SELECT * FROM ".TB_PREFIX."extensions WHERE domain_id = 0 OR domain_id = :domain_id ORDER BY name";
 

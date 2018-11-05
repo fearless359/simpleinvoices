@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\PdoDbException;
+
 global $pdoDb, $smarty;
 
 // Deal with op and add some basic sanity checking
@@ -22,7 +26,7 @@ if (  $op === 'insert_preference' ) {
     // @formatter:off
     try {
         $pdoDb->setFauxPost(array(
-            "domain_id"                    => domain_id::get(),
+            "domain_id"                    => DomainId::get(),
             "pref_description"             => $_POST['p_description'],
             "pref_currency_sign"           => $_POST['p_currency_sign'],
             "currency_code"                => $_POST['currency_code'],

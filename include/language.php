@@ -1,4 +1,6 @@
 <?php
+use Inc\Claz\SystemDefaults;
+
 /*
  * Read language information
  * 1. reads default-language file

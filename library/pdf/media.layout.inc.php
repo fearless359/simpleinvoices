@@ -81,7 +81,7 @@ class Media {
   }
  
   // TODO: validity checking
-  function &predefined($name) {
+  public static function &predefined($name) {
     global $g_predefined_media;
 
     // Let's check if the chosen media defined
@@ -89,7 +89,7 @@ class Media {
       $media =  new Media($g_predefined_media[$name], array('top'=>0, 'bottom'=>0, 'left'=>0, 'right'=>0));
     } else {
       $media = null;
-    };
+    }
 
     return $media;
   }

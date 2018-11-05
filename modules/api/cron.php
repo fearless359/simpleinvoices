@@ -1,4 +1,6 @@
 <?php
+use Inc\Claz\Cron;
+use Inc\Claz\Encode;
 /*
  * Typical Cron Job to run each day:
  * #SimpleInvoices recurrence - run each day at 1AM
@@ -9,7 +11,7 @@
  */
 ini_set('max_execution_time', 600); // 600 seconds = 10 minutes
 
-// remove hardcoding for multi-domain usage
+// remove hard coding for multi-domain usage
 // $cron->domain_id=1;
 $message = Cron::run();
 try {
@@ -20,7 +22,7 @@ try {
     // xml
     ob_end_clean();
     header('Content-type: application/xml');
-    echo encode::xml($message);
+    echo Ecode::xml($message);
 } catch (Exception $e) {
     echo $e->getMessage();
 }
