@@ -13,7 +13,7 @@ class Log
     private static $file = null;
     private static $path = null;
 
-    public static function open(string $level = "EMERG", string $folder = "tmp/log/", string $file = "si.log") {
+    public static function open($level = "EMERG", $folder = "tmp/log/", $file = "si.log") {
         // Create log file if it doesn't exist
         if (preg_match('/^.*\/$/', $folder) == 1) {
             self::$folder = $folder;
@@ -89,7 +89,7 @@ class Log
      * @param string $msg
      * @param int $level one of: DEBUG, INFO, NOTICE, WARN, ERR, CRIT, ALERT, EMERG
      */
-    public static function out(string $msg, $level = Zend_Log::DEBUG) {
+    public static function out($msg, $level = Zend_Log::DEBUG) {
         self::$logger->log($msg, $level);
     }
 
