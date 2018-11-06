@@ -282,7 +282,7 @@ class ConfigLines
      * @param string $line from file to test
      * @return string "other", "section" or "pair"
      */
-    public static function line_type($line): string
+    public static function line_type($line)
     {
         $line = trim($line);
         if (preg_match('/^\[.*\]$/', $line) == 1) return 'section';
@@ -293,7 +293,7 @@ class ConfigLines
     /**
      * @return string section
      */
-    public function getSection(): string
+    public function getSection()
     {
         return $this->section;
     }
@@ -301,7 +301,7 @@ class ConfigLines
     /**
      * @return string key
      */
-    public function getKey(): string
+    public function getKey()
     {
         return $this->key;
     }
@@ -309,7 +309,7 @@ class ConfigLines
     /**
      * @return string Value
      */
-    public function getValue(): string
+    public function getValue()
     {
         return $this->value;
     }
