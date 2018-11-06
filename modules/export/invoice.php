@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\Export;
+
 /*
  *  Script: template.php
  *      invoice export page

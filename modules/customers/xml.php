@@ -13,8 +13,8 @@ $rp    = (isset($_POST['rp'])       ) ? $_POST['rp']        : "25";
 $page  = (isset($_POST['page'])     ) ? $_POST['page']      : "1";
 // @formatter:on
 
-$customers = Customer::sql('', $dir, $sort, $rp, $page);
-$count = Customer::sql('count', $dir, $sort, $rp, $page);
+$customers = Customer::xmlSql('', $dir, $sort, $rp, $page);
+$count = Customer::xmlSql('count', $dir, $sort, $rp, $page);
 
 $xml  = "";
 $xml .= "<rows>";

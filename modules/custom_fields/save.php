@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\PdoDbException;
+
 /*
  * Script: save.php
  *   Custom fields save page
@@ -15,10 +19,7 @@
  * Website:
  *   https://simpleinvoices.group
  */
-global $LANG,
-       $dbh,
-       $auth_session,
-       $smarty;
+global $LANG, $pdoDb, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
@@ -53,9 +54,20 @@ if ($op === 'edit_custom_field') {
         }
 
         if (!$error_found) {
-            // @formatter:off
-            $sql = "UPDATE " . TB_PREFIX . "custom_fields SET cf_custom_label = :label WHERE cf_id = :id AND domain_id = :domain_id";
-            if (dbQuery($sql, ':id', $_GET['id'], ':label', $_POST['cf_custom_label'], ':domain_id', $auth_session->domain_id)) {
+            $result = false;
+            try {
+                $pdoDb->addSimpleWhere('cf_id', $_GET['id'], 'AND');
+                $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+                $pdoDb->setFauxPost(array("cf_custom_label" => $_POST['cf_custom_label']));
+
+                $result = $pdoDb->request('UPDATE', 'custom_fields');
+            } catch (PdoDbException $pde) {
+                error_log("modules/custom_fields/save.php - error: " . $pde->getMessage());
+            }
+//            $sql = "UPDATE " . TB_PREFIX . "custom_fields SET cf_custom_label = :label WHERE cf_id = :id AND domain_id = :domain_id";
+//            if (dbQuery($sql, ':id', $_GET['id'], ':label', $_POST['cf_custom_label'], ':domain_id', $auth_session->domain_id)) {
+            if ($result) {
                 if ($clear_field) {
                     // Split the value of the field name into parts and use that data to build
                     // the sql statement to clear the field in the associated table.
@@ -68,10 +80,18 @@ if ($op === 'edit_custom_field') {
                         // The table name part of cf_custom_field doesn't contain the needed "s" except for biller.
                         $table = $parts[0] . (preg_match("/^(customer|product|invoice)$/", $parts[0]) ? 's' : '');
                         $field = "custom_field" . substr($parts[1], 2, 1);
-                        $sql = "UPDATE " . TB_PREFIX . $table . " SET " . $field . "= '' WHERE domain_id = :domain_id";
-                        if (!dbQuery($sql, ':domain_id', $auth_session->domain_id)) {
-                            error_log("dbQuery error: " . $dbh->errorInfo() . " for sql[$sql]");
+                        $result = false;
+                        try {
+                            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+                            $pdoDb->setFauxPost(array($field => ''));
+                            $result = $pdoDb->request('UPDATE', $table);
+                        } catch (PdoDbException $pde) {
+                            error_log("modules/custom_fields/save.php - error: " . $pde->getMessage());
                         }
+//                        $sql = "UPDATE " . TB_PREFIX . $table . " SET " . $field . "= '' WHERE domain_id = :domain_id";
+//                        if (!dbQuery($sql, ':domain_id', $auth_session->domain_id)) {
+//                            error_log("dbQuery error: " . $dbh->errorInfo() . " for sql[$sql]");
+//                        }
                     }
                 }
                 $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";

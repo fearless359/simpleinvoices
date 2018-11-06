@@ -9,7 +9,7 @@ global $smarty, $pdoDb;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-$customFieldLabel = getCustomFieldLabels('',true);
+$customFieldLabel = getCustomFieldLabels(true);
 $cflgs = CustomFlags::getCustomFlagsQualified('E');
 $taxes = Taxes::getActiveTaxes();
 // if valid then do save

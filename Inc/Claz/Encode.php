@@ -3,12 +3,17 @@ namespace Inc\Claz;
 
 class Encode
 {
+    /**
+     * @param $array
+     * @param int $level
+     * @return string
+     */
     public static function xml($array, $level=1) {
 
         $xml = '';
         if ($level==1) {
-            $xml .= '<?xml version="1.0" encoding="ISO-8859-1"?>'.
-                    "\n<array>\n";
+            $xml .= "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n".
+                    "<array>\n";
         }
         foreach ($array as $key=>$value) {
             $key = strtolower($key);
@@ -57,6 +62,11 @@ class Encode
         return $xml;
     }
 
+    /**
+     * @param $data
+     * @param string $format
+     * @return mixed
+     */
 	public static function json($data, $format='plain')
 	{
 		if( $format=='pretty' ) {
@@ -67,5 +77,5 @@ class Encode
         }
 	}
 
-} // end of class
+}
 

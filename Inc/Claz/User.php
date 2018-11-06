@@ -91,7 +91,6 @@ class User
      * @param string $username
      * @param $password
      * @return bool
-     * @throws PdoDbException
      */
     public static function verifyPassword($username, $password)
     {
@@ -118,13 +117,17 @@ class User
         // Use for old password hashes.
         $md5_pwd = MD5($password);
         if ($user_password == $md5_pwd) {
-            // Old password match. Update user with new password.
-            $pdoDb_admin->addSimpleWhere('username', $username);
-            $pdoDb_admin->setFauxPost(array('password' => $hash));
+            try {
+                // Old password match. Update user with new password.
+                $pdoDb_admin->addSimpleWhere('username', $username);
+                $pdoDb_admin->setFauxPost(array('password' => $hash));
 
-            $result = $pdoDb_admin->request('UPDATE', 'user');
-            if ($result) {
-                return true;
+                $result = $pdoDb_admin->request('UPDATE', 'user');
+                if ($result) {
+                    return true;
+                }
+            } catch (PdoDbException $pde) {
+                error_log("User::verifyPassword() - Error: " . $pde->getMessage());
             }
             error_log("User::verifyPassword() - Unable to update password hash for username[$username]");
         }

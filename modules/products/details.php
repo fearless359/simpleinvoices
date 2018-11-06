@@ -14,7 +14,7 @@ $product_id = $_GET['id'];
 
 $product = Product::select($product_id);
 
-$customFieldLabel = getCustomFieldLabels('',true);
+$customFieldLabel = getCustomFieldLabels(true);
 $cflgs = CustomFlags::getCustomFlagsQualified('E');
 
 $taxes = Taxes::getActiveTaxes();

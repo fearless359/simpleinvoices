@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\CustomFlags;
+
 /*
  *  Script: details.php
  *      Custom fields save page
@@ -22,17 +25,17 @@ $op = empty($_POST['op']) ? '' : $_POST['op'];
 
 if ($op === 'edit_custom_flag') {
     if (isset($_POST['save_custom_flag'])) {
-        $flg_id = $_POST['flg_id'];
-        try {
-            CustomFlags::updateCustomFlags(
+        $flg_id = intval($_POST['flg_id']);
+        $clear_field = (isset($_POST["clear_custom_flags_{$flg_id}"]) ? $_POST["clear_custom_flags_{$flg_id}"] : DISABLED);
+        if (CustomFlags::updateCustomFlags(
                 $_POST["associated_table"],
-                intval($flg_id),
+                $flg_id,
                 $_POST["field_label"],
                 $_POST["enabled"],
-                (isset($_POST["clear_custom_flags_$flg_id"]) ? $_POST["clear_custom_flags_$flg_id"] : DISABLED),
-                $_POST["field_help"]);
+                $clear_field,
+                $_POST["field_help"])) {
             $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";
-        } catch (PdoDbException $pdo) {
+        } else {
             $display_block = "<div class=\"si_message_error\">{$LANG['save_custom_field_failure\'']}</div>";
         }
     }

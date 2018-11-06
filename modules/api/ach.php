@@ -49,7 +49,7 @@ if ($_POST['pg_response_code'] == 'A01') {
         $email->notes = $body;
         $email->to = $biller['email'];
         $email->from = "simpleinvoices@localhost.localdomain";
-        $email->subject = 'PaymentsGateway.com -Instant Payment Notification - Recieved Payment';
+        $email->subject = 'PaymentsGateway.com -Instant Payment Notification - Received Payment';
         $email->send ();
         $xml_message = "+++++++++<br /><br />";
         $xml_message .= "Thank you for the payment, the details have been recorded and ". $biller['name'] ." has been notified via email.";

@@ -16,7 +16,8 @@ use Inc\Claz\Biller;
  *   GPL v2 or above
  *
  * Website:
- *   https://simpleinvoices.group */
+ *   https://simpleinvoices.group
+ */
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
@@ -30,7 +31,7 @@ $biller = Biller::select($biller_id);
 $files = getLogoList();
 // end logo stuff
 
-$customFieldLabel = getCustomFieldLabels('',true);
+$customFieldLabel = getCustomFieldLabels(true);
 $smarty->assign('biller', $biller);
 $smarty->assign('files', $files);
 $smarty->assign('customFieldLabel', $customFieldLabel);

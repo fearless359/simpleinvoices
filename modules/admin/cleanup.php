@@ -15,6 +15,5 @@
 * Website:
 * 	https://simpleinvoices.group */
 
-echo "should dele all files in the cache folder...";
+echo "should delete all files in the cache folder...";
 
-?>

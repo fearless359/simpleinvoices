@@ -93,4 +93,52 @@ class CustomFields {
         return $display_block;
     }
 
+    /**
+     * @param string $sort
+     * @param string $dir
+     * @param int $rp
+     * @param int $page
+     * @return array
+     */
+    public static function xmlSql($sort, $dir, $rp, $page)
+    {
+        global $pdoDb;
+
+        //SC: Safety checking values that will be directly subbed in
+        if (intval($page) != $page) {
+            $page = 0;
+        }
+        if (intval($rp) != $rp) {
+            $rp = 25;
+        }
+        if (!preg_match('/^(asc|desc)$/iD', $dir)) {
+            $dir = 'ASC';
+        }
+
+        $where = " WHERE domain_id = :domain_id";
+
+        /*Check that the sort field is OK*/
+        if (!in_array($sort, array('cf_id', 'cf_custom_label', 'enabled'))) {
+            $sort = "cf_id";
+        }
+
+        $rows = array();
+        try {
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+            $pdoDb->setOrderBy(array($sort, $dir));
+            $pdoDb->setLimit($rp, $page);
+            $rows = $pdoDb->request('SELECT', 'custom_fields');
+        } catch (PdoDbException $pde) {
+            error_log("modules/custom_fields/xml.php - error: " . $pde->getMessage());
+        }
+
+        $cfs = array();
+        foreach ($rows as $row) {
+            $row['field_name_nice'] = get_custom_field_name($row['cf_custom_field']);
+            $cfs[] = $row;
+        }
+
+        return $cfs;
+    }
+
 }

@@ -13,8 +13,8 @@ $rp        = (isset($_POST['rp']))        ? $_POST['rp']        : "25" ;
 $page      = (isset($_POST['page']))      ? $_POST['page']      : "1" ;
 $pdo_error = (isset($_POST['pdo_error'])) ? $_POST['pdo_error'] : "";
 
-$billers = Biller::sql('', $dir, $sort, $rp, $page);
-$count = Biller::sql('count',$dir, $sort, $rp, $page);
+$billers = Biller::xmlSql('', $dir, $sort, $rp, $page);
+$count = Biller::xmlSql('count',$dir, $sort, $rp, $page);
 
 $xml  = "";
 $xml .= $pdo_error;
@@ -25,24 +25,22 @@ $xml .= "<total>$count</total>";
 foreach ($billers as $row) {
     $xml .= "<row id='".$row['id']."'>";
     $xml .= "<cell><![CDATA[" .
-	        "<a class='index_table' title='$LANG[view] " . $row['name'] . "'" .
-	        "   href='index.php?module=billers&view=details&id=$row[id]&action=view'>" .
-            "  <img src='images/common/view.png' height='16' border='-5px' padding='-4px' valign='bottom' />" .
-            "</a>" .
-	        "<a class='index_table' title='$LANG[edit] " . $row['name'] . "'" .
-	        "   href='index.php?module=billers&view=details&id=$row[id]&action=edit'>" .
-	        "  <img src='images/common/edit.png' height='16' border='-5px' padding='-4px' valign='bottom' />" .
-	        "</a>" .
+	            "<a class='index_table' title='{$LANG['view']} {$row['name']}'" .
+	               "href='index.php?module=billers&amp;view=details&amp;id=$row[id]&amp;action=view'>" .
+                    "<img src='images/common/view.png' height='16' border='-5px' />" .
+                "</a>" .
+	            "<a class='index_table' title='{$LANG['edit']} {$row['name']}'" .
+	               "href='index.php?module=billers&amp;view=details&amp;id=$row[id]&amp;action=edit'>" .
+	                "<img src='images/common/edit.png' height='16' border='-5px' />" .
+	            "</a>" .
 	        "]]></cell>";
-    $xml .= "<cell><![CDATA[".$row['id']."]]></cell>";
-    $xml .= "<cell><![CDATA[".$row['name']."]]></cell>";
-    $xml .= "<cell><![CDATA[".$row['email']."]]></cell>";
+    $xml .= "<cell><![CDATA[{$row['id']}]]></cell>";
+    $xml .= "<cell><![CDATA[{$row['name']}]]></cell>";
+    $xml .= "<cell><![CDATA[{$row['email']}]]></cell>";
     if ($row['enabled']==$LANG['enabled']) {
-        $xml .= "<cell><![CDATA[<img src='images/common/tick.png' alt='" . $row['enabled'] . "' title='" .
-                         $row['enabled'] . "' />]]></cell>";
+        $xml .= "<cell><![CDATA[<img src='images/common/tick.png' alt='{$row['enabled']}' title='{$row['enabled']}' />]]></cell>";
     } else {
-        $xml .= "<cell><![CDATA[<img src='images/common/cross.png' alt='" . $row['enabled'] . "' title='" .
-                         $row['enabled'] . "' />]]></cell>";
+        $xml .= "<cell><![CDATA[<img src='images/common/cross.png' alt='{$row['enabled']}' title='{$row['enabled']}' />]]></cell>";
     }
     $xml .= "</row>";
 }

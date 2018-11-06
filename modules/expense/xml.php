@@ -12,8 +12,8 @@ $sort = (isset($_POST['sortname']))  ? $_POST['sortname']  : 'id'   ;
 $rp   = (isset($_POST['rp']))        ? $_POST['rp']        : '25'   ;
 $page = (isset($_POST['page']))      ? $_POST['page']      : '1'    ;
 
-$rows  = Expense::sql('', $dir, $sort, $rp, $page);
-$count = Expense::sql('count',$dir, $sort, $rp, $page);
+$rows  = Expense::xmlSql('', $dir, $sort, $rp, $page);
+$count = Expense::xmlSql('count',$dir, $sort, $rp, $page);
 
 $xml  = "";
 $xml .= "<rows>";

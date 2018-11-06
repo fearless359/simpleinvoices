@@ -208,21 +208,23 @@ function loadSiExtensions(&$ext_names) {
 
 /**
  * Get custom field labels.
- * @param string $domain_id Domain ID logged info.
  * @param boolean $noUndefinedLabels Defaults to <b>false</b>. When set to
  *        <b>true</b> custom fields that do not have a label defined will
  *        not a be assigned a default label so the undefined custom fields
  *        won't be displayed.
  * @return array Rows retrieved. Test for "=== false" to check for failure.
- * @throws PdoDbException
  */
-function getCustomFieldLabels($domain_id = '', $noUndefinedLabels = FALSE) {
+function getCustomFieldLabels($noUndefinedLabels = FALSE) {
     global $LANG, $pdoDb_admin;
-    $domain_id = DomainId::get($domain_id);
 
-    $pdoDb_admin->addSimpleWhere("domain_id", $domain_id);
-    $pdoDb_admin->setOrderBy("cf_custom_field");
-    $rows = $pdoDb_admin->request("SELECT", "custom_fields");
+    $rows = array();
+    try {
+        $pdoDb_admin->addSimpleWhere("domain_id", DomainId::get());
+        $pdoDb_admin->setOrderBy("cf_custom_field");
+        $rows = $pdoDb_admin->request("SELECT", "custom_fields");
+    } catch (PdoDbException $pde) {
+        error_log("getCustomFieldLabels() - Error: " . $pde->getMessage());
+    }
 
     $cfl = $LANG['custom_field'] . ' ';
     $customFields = array();
@@ -262,56 +264,67 @@ function is_custom_flag_field($field) {
 /**
  * @param $extension_id
  * @param int $status
- * @param string $domain_id
  * @return bool
- * @throws PdoDbException
  */
-function setStatusExtension($extension_id, $status = 2, $domain_id = '') {
+function setStatusExtension($extension_id, $status = 2) {
     global $pdoDb_admin;
 
-    $domain_id = DomainId::get($domain_id);
+    $domain_id = DomainId::get();
 
     // status=2 = toggle status
     if ($status == 2) {
-        $pdoDb_admin->setSelectList('enabled');
-        $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
-        $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
+        $rows = array();
+        try {
+            $pdoDb_admin->setSelectList('enabled');
+            $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
+            $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
 
-        $pdoDb_admin->setLimit(1);
+            $pdoDb_admin->setLimit(1);
 
-        $rows = $pdoDb_admin->request('SELECT', 'extensions');
-        $extension_info = $rows[0];
+            $rows = $pdoDb_admin->request('SELECT', 'extensions');
+        } catch (PdoDbException $pde) {
+            error_log("setStatusExtension() - Error: " . $pde->getMessage());
+        }
+        $extension_info = (empty($rows) ? $rows : $rows[0]);
         $status = 1 - $extension_info['enabled'];
     }
 
-    $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
-    $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
+    $result = false;
+    try {
+        $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
+        $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
 
-    $pdoDb_admin->setFauxPost(array("enabled" => $status));
+        $pdoDb_admin->setFauxPost(array("enabled" => $status));
 
-    $result = $pdoDb_admin->request("UPDATE", 'extensions');
+        $result = $pdoDb_admin->request("UPDATE", 'extensions');
+    } catch (PdoDbException $pde) {
+        error_log("setStatusExtension() - Error(2): " . $pde->getMessage());
+    }
     return $result;
 }
 
 /**
  * @param string $extension_name
  * @return int
- * @throws PdoDbException
  */
-function getExtensionID($extension_name = "none") {
+function getExtensionID($extension_name) {
     global $pdoDb_admin;
 
-    $domain_id = DomainId::get();
+    $rows = array();
+    try {
+        $pdoDb_admin->addSimpleWhere('name', $extension_name, 'AND');
+        $pdoDb_admin->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
+        $pdoDb_admin->addToWhere(new WhereItem(false, 'domain_id', '=', DomainId::get(), true));
 
-    $pdoDb_admin->addSimpleWhere('name', $extension_name, 'AND');
-    $pdoDb_admin->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
-    $pdoDb_admin->addToWhere(new WhereItem(false, 'domain_id', '=', $domain_id, true));
+        $pdoDb_admin->setOrderBy(array('domain_id', 'D'));
 
-    $pdoDb_admin->setOrderBy(array('domain_id', 'D'));
+        $pdoDb_admin->setLimit(1);
 
-    $pdoDb_admin->setLimit(1);
+        $rows = $pdoDb_admin->request('SELECT', 'extensions');
+    } catch (PdoDbException $pde) {
+        error_log("getExtensionID() - Error: " . $pde->getMessage());
+    }
 
-    $rows = $pdoDb_admin->request('SELECT', 'extensions');
     if (empty($rows)) {
         return -2;
     }

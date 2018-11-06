@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\ExpenseAccount;
+
 global $refresh_total, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed

@@ -174,7 +174,7 @@ class Export {
 
                     $customer          = Customer::get($payment['customer_id']);
                     $invoiceType       = Invoice::getInvoiceType($invoice['type_id']);
-                    $customFieldLabels = getCustomFieldLabels($this->domain_id, true);
+                    $customFieldLabels = getCustomFieldLabels(true);
                     $paymentType       = PaymentType::select($payment['ac_payment_type']);
                     $preference        = Preferences::getPreference($invoice['preference_id'], $this->domain_id);
 
@@ -218,7 +218,7 @@ class Export {
                     $logo = getLogo($this->biller);
                     $logo = str_replace(" ", "%20", trim($logo));
 
-                    $customFieldLabels = getCustomFieldLabels($this->domain_id, true);
+                    $customFieldLabels = getCustomFieldLabels(true);
 
                     $past_due_date = (date("Y-m-d", strtotime('-30 days')) . ' 00:00:00');
                     $past_due_amt  = CustomersPastDue::getCustomerPastDue($this->invoice['customer_id'], $this->id, $past_due_date);

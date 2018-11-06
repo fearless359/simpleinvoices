@@ -22,7 +22,7 @@ try {
     // xml
     ob_end_clean();
     header('Content-type: application/xml');
-    echo Ecode::xml($message);
+    echo Encode::xml($message);
 } catch (Exception $e) {
     echo $e->getMessage();
 }

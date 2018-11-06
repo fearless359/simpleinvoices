@@ -166,7 +166,7 @@ class Biller
      * @param string $page - Pages processed.
      * @return mixed - Count if 'count' requested, Rows selected from biller table.
      */
-    function sql($type, $dir, $sort, $rp, $page)
+    function xmlSql($type, $dir, $sort, $rp, $page)
     {
         global $LANG, $pdoDb;
 

@@ -30,7 +30,7 @@ $smarty->assign("domain_id", $domain_id);
 
 // Only load labels if they are defined. Screen will only
 // show what is loaded.
-$customFieldLabel = getCustomFieldLabels("", true);
+$customFieldLabel = getCustomFieldLabels(true);
 
 if (!empty($_POST['name'])) {
     include ("modules/billers/save.php");

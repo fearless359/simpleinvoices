@@ -48,7 +48,7 @@ $customer['total'] = Customer::calc_customer_total($customer['id']);
 $customer['paid' ] = Payment::calc_customer_paid($customer['id']);
 $customer['owing'] = $customer['total'] - $customer['paid'];
 
-$customFieldLabel = getCustomFieldLabels('',true);
+$customFieldLabel = getCustomFieldLabels(true);
 $invoices = Customer::getCustomerInvoices($cid);
 
 $parent_customers = Customer::get_all(true);

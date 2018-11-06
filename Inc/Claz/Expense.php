@@ -186,7 +186,7 @@ class Expense {
      *          Ignored if $type is "count".
      * @return mixed $rows for normal selection and calculated count for $type is 'count'.
      */
-    public static function sql($type, $dir, $sort, $rp, $page)
+    public static function xmlSql($type, $dir, $sort, $rp, $page)
     {
         global $LANG, $pdoDb;
 

@@ -57,7 +57,7 @@ $url_for_pdf = "index.php?module=export&view=pdf&id=" . $invoice['id'];
 
 $invoice['url_for_pdf'] = $url_for_pdf;
 
-$customFieldLabels = getCustomFieldLabels('',true);
+$customFieldLabels = getCustomFieldLabels(true);
 
 $customFields = array();
 for($i=1;$i<=4;$i++) {

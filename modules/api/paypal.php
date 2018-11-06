@@ -61,7 +61,7 @@ if ($p->validate_ipn ()) {
         $biller = Biller::select ( $invoice ['biller_id'] );
 
         // send email
-        $body = "A Paypal instant payment notification was successfully recieved\n";
+        $body = "A Paypal instant payment notification was successfully received\n";
         $body .= "from " . $p->ipn_data ['payer_email'] . " on " . date ( 'm/d/Y' );
         $body .= " at " . date ( 'g:i A' ) . "\n\nDetails:\n";
         $body .= $paypal_data;
@@ -73,7 +73,7 @@ if ($p->validate_ipn ()) {
         $email->subject = 'Instant Payment Notification - Received Payment';
         $email->send ();
 
-        $xml_message ['data'] .= $body;
+        $xml_message .= $body;
     }
 } else {
     $xml_message .= "Paypal validate failed";
@@ -82,9 +82,9 @@ if ($p->validate_ipn ()) {
 
 header ( 'Content-type: application/xml' );
 try {
-    $xml = new Encode ();
-    $xml->xml ( $xml_message );
-    echo $xml;
+    $xml = new Encode();
+    $xml_out = $xml->xml( $xml_message );
+    echo $xml_out;
 } catch ( Exception $e ) {
     echo $e->getMessage ();
 }

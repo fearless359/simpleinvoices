@@ -43,7 +43,7 @@ if ($_GET['stage'] == 2 ) {
     $export->preference = $preference;
     $export->biller     = $biller;
     $export->customer   = $customer;
-    $export->setDownload(false);;
+    $export->setDownload(false);
     $export->execute();
 
     $pdf_file_name = $export->file_name . '.pdf';

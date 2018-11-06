@@ -24,7 +24,7 @@ $acl->addResource('custom_flags');
 $acl->addResource('customers');
 // actions: customer_view, customer_edit
 $acl->addResource('documentation');
-$acl->addResource('Export');
+$acl->addResource('export');
 $acl->addResource('extensions');
 $acl->addResource('index');
 $acl->addResource('install');

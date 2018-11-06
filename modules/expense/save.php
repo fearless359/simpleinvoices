@@ -11,7 +11,7 @@ checkLogin ();
 $op = ! empty ( $_POST ['op'] ) ? addslashes ( $_POST ['op'] ) : NULL;
 
 $display_block = "<div class='si_message_error'>{$LANG['save_expense_failure']}</div>";
-$refresh_redirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=expense&view=manage" />';
+$refresh_redirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=expense&amp;view=manage" />';
 
 $saved = false;
 

@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\CustomFlags;
+
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
@@ -17,7 +20,7 @@ $cflg = CustomFlags::getCustomFlag($associated_table, $flg_id);
 
 $smarty->assign('cflg', $cflg);
 
-$enable_options = array(0 => 'Disabled', 1 => 'Enabled');
+$enable_options = array(DISABLED => 'Disabled', ENABLED => 'Enabled');
 $smarty->assign('enable_options', $enable_options);
 
 $smarty->assign('pageActive', 'custom_flags');

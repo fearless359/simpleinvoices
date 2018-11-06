@@ -7,20 +7,34 @@ class Payment {
      * @param string $filter
      * @param string $ol_pmt_id
      * @return string
-     * @throws PdoDbException
      */
     public static function count($filter, $ol_pmt_id) {
         global $pdoDb;
 
-        if ($filter == "online_payment_id") {
-            $pdoDb->addSimpleWhere("ap.online_payment_id", $ol_pmt_id, "AND");
+        $count = 0;
+        try {
+            if ($filter == "online_payment_id") {
+                $pdoDb->addSimpleWhere("ap.online_payment_id", $ol_pmt_id, "AND");
+            }
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $pdoDb->addToFunctions("COUNT(DISTINCT ap.id) AS count");
+            $rows = $pdoDb->request("SELECT", "payment", "ap");
+            if (!empty($rows)) {
+                $count = $rows[0]['count'];
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Payment::count() - Error: " . $pde->getMessage());
         }
-        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-        $pdoDb->addToFunctions("COUNT(DISTINCT ap.id) AS count");
-        $rows = $pdoDb->request("SELECT", "payment", "ap");
-        return $rows[0]['count'];
+        return $count;
     }
 
+    /**
+     * @param $start_date
+     * @param $end_date
+     * @param $filter
+     * @param $ol_pmt_id
+     * @return array|mixed
+     */
     public static function select_by_date($start_date, $end_date, $filter, $ol_pmt_id) {
         global $pdoDb;
 
@@ -248,23 +262,26 @@ class Payment {
      * Add payment type description to retrieved payment records.
      * @param array $payments Array of <i>Payment</i> object to update.
      * @return array <i>Payment</i> records with payment type description added.
-     * @throws PdoDbException
      */
     public static function progressPayments($payments) {
         global $pdoDb;
 
         $progressPayments = array();
-        foreach($payments as $payment) {
-            $pdoDb->addSimpleWhere("pt_id", $payment['ac_payment_type'], "AND");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-            $pdoDb->setSelectList("pt_description");
-            $result = $pdoDb->request("SELECT", "payment_types");
-            if (empty($result)) {
-                $payment['description'] = "";
-            } else {
-                $payment['description'] = $result[0]['pt_description'];
+        try {
+            foreach ($payments as $payment) {
+                $pdoDb->addSimpleWhere("pt_id", $payment['ac_payment_type'], "AND");
+                $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+                $pdoDb->setSelectList("pt_description");
+                $result = $pdoDb->request("SELECT", "payment_types");
+                if (empty($result)) {
+                    $payment['description'] = "";
+                } else {
+                    $payment['description'] = $result[0]['pt_description'];
+                }
+                $progressPayments[] = $payment;
             }
-            $progressPayments[] = $payment;
+        } catch (PdoDbException $pde) {
+            error_log("Payment::progressPayments() - Error: " . $pde->getMessage());
         }
         return $progressPayments;
     }
@@ -273,14 +290,18 @@ class Payment {
      * Insert a new payment record
      * @param array $list <i>Faux Post</i> list of record's values.
      * @return integer <b>ID</b> of record inserted. 0 if insert failed.
-     * @throws PdoDbException
      */
     public static function insert($list) {
         global $pdoDb;
 
-        $pdoDb->setExcludedFields(array("id" => 1));
-        $pdoDb->setFauxPost($list);
-        $result = $pdoDb->request("INSERT", "payment");
+        $result = 0;
+        try {
+            $pdoDb->setExcludedFields(array("id" => 1));
+            $pdoDb->setFauxPost($list);
+            $result = $pdoDb->request("INSERT", "payment");
+        } catch (PdoDbException $pde) {
+            error_log("Payment::insert() - Error: " . $pde->getMessage());
+        }
         return $result;
     }
 
@@ -288,16 +309,29 @@ class Payment {
      * Calculate amount paid on the specified invoice
      * @param integer $ac_inv_id Invoice ID to sum payments for.
      * @return float Total paid on the invoice.
-     * @throws PdoDbException
      */
     public static function calc_invoice_paid($ac_inv_id) {
         global $pdoDb;
-        $pdoDb->addSimpleWhere("ac_inv_id", $ac_inv_id); // domain_id not needed
-        $pdoDb->addToFunctions(new FunctionStmt("COALESCE", "SUM(ac_amount),0", "amount"));
-        $rows = $pdoDb->request("SELECT", "payment");
-        return $rows[0]['amount'];
+
+        $amount = 0;
+        try {
+            $pdoDb->addSimpleWhere("ac_inv_id", $ac_inv_id); // domain_id not needed
+            $pdoDb->addToFunctions(new FunctionStmt("COALESCE", "SUM(ac_amount),0", "amount"));
+            $rows = $pdoDb->request("SELECT", "payment");
+            if (!empty($rows)) {
+                $amount = $rows[0]['amount'];
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Payment::calc_invoice_paid() - Error: " . $pde->getMessage());
+        }
+        return $amount;
     }
 
+    /**
+     * @param $customer_id
+     * @param bool $isReal
+     * @return mixed
+     */
     public static function calc_customer_paid($customer_id, $isReal = false) {
         global $pdoDb;
 

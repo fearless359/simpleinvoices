@@ -150,4 +150,57 @@ class CustomFlags
         return true;
     }
 
+    /**
+     * @param string $type Set to 'count' if a count is needed for the list, otherwise not referenced.
+     * @param string $dir Sort direction "asc" or "desc";
+     * @param string $sort Field to sort (order) by.
+     * @param int $rp Number of lines to retrieve for the current page.
+     * @param int $page Page we are currently displaying
+     * @return array rows selected.
+     */
+    public static function xmlSql($type, $dir, $sort, $rp, $page) {
+        global $LANG, $pdoDb;
+
+        $rows = array();
+        try {
+            $query = isset($_POST['query']) ? $_POST['query'] : null;
+            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
+            if (!empty($qtype) && !empty($query)) {
+                $valid_search_fields = array('associated_table', 'flg_id', 'enabled');
+                if (in_array($qtype, $valid_search_fields)) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
+                }
+            }
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+
+            if ($type == "count") {
+                $pdoDb->addToFunctions("count(*) AS count");
+                $rows = $pdoDb->request("SELECT", "custom_flags");
+                return $rows[0]['count'];
+            }
+
+            $start = (($page - 1) * $rp);
+            $pdoDb->setLimit($rp, $start);
+
+            $validFields = array('associated_table', 'flg_id');
+            if (!in_array($sort, $validFields)) $sort = "associated_table";
+
+            $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
+            $pdoDb->setOrderBy(array($sort, $dir));
+
+            $ca = new CaseStmt("enabled", "wording_for_enabled");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $pdoDb->setSelectList(array("associated_table", "flg_id", "field_label", "enabled", "field_help"));
+
+            $rows = $pdoDb->request("SELECT", "custom_flags");
+        } catch (PdoDbException $pde) {
+            error_log("CustomFlags::xmlSql() - Error: " . $pde->getMessage());
+        }
+
+        return $rows;
+    }
+
 }

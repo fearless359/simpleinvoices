@@ -3,6 +3,7 @@
 use Inc\Claz\DbField;
 use Inc\Claz\DomainId;
 use Inc\Claz\OnClause;
+use Inc\Claz\PdoDbException;
 
 /*
  *  Script: delete.php
@@ -26,27 +27,38 @@ checkLogin();
 $err_message = "";
 $cron = "";
 if ($_GET['stage'] == 2) {
-$smarty->assign("index_id", $_POST['index_id']);
-    $pdoDb->addSimpleWhere("id", $_GET['id'], "AND");
-    $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-    if ($pdoDb->request("DELETE", "cron")) {
-        $saved = "true";
-    } else {
-        $saved = "false";
+    $smarty->assign("index_id", $_POST['index_id']);
+    $saved = false;
+    try {
+        $pdoDb->addSimpleWhere("id", $_GET['id'], "AND");
+        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+        if ($pdoDb->request("DELETE", "cron")) {
+            $saved = "true";
+        }
+    } catch (PdoDbException $pde) {
+        error_log("modules/cron/delete - error: " . $pde->getMessage());
+    }
+
+    if (!$saved) {
         $err_message = "Unable to delete the specified record.";
     }
     $stage = '0';
 } else {
-    $pdoDb->addSimpleWhere("cron.id", $_GET['id'], "AND");
-    $pdoDb->addSimpleWhere("cron.domain_id", DomainId::get());
+    $rows = array();
+    try {
+        $pdoDb->addSimpleWhere("cron.id", $_GET['id'], "AND");
+        $pdoDb->addSimpleWhere("cron.domain_id", DomainId::get());
 
-    $oc = new OnClause();
-    $oc->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");
-    $oc->addSimpleItem("cron.domain_id", new DbField("iv.domain_id"));
-    $pdoDb->addToJoins(array("LEFT", "invoices", "iv", $oc));
+        $oc = new OnClause();
+        $oc->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");
+        $oc->addSimpleItem("cron.domain_id", new DbField("iv.domain_id"));
+        $pdoDb->addToJoins(array("LEFT", "invoices", "iv", $oc));
 
-    $pdoDb->setSelectList(array("cron.*", "iv.index_id"));
-    $rows = $pdoDb->request("SELECT", "cron", "cron");
+        $pdoDb->setSelectList(array("cron.*", "iv.index_id"));
+        $rows = $pdoDb->request("SELECT", "cron", "cron");
+    } catch (PdoDbException $pde) {
+        error_log("modules/cron/delete - error(2): " . $pde->getMessage());
+    }
     if (empty($rows)) {
         $err_message = "Unable to find the requested record.";
     } else {

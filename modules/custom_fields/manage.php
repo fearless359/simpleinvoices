@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\DomainId;
+use Inc\Claz\PdoDbException;
+
 /*
  * Script: manage.php
  *     Custom fields manage page
@@ -7,25 +11,27 @@
  *     GPL v3 or above
  *
  * Website:
- *     https://simpleinvoices.group */
-global $auth_session, $dbh, $smarty;
+ *     https://simpleinvoices.group
+ */
+global $pdoDb, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-global $dbh;
+$rows = array();
+try {
+    $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+    $pdoDb->setOrderBy('cf_custom_field');
+    $pdoDb->setSelectAll(true);
+    $rows = $pdoDb->request('SELECT', 'custom_fields');
+} catch (PdoDbException $pde) {
+    error_log("modules/custom_fields/manager.php - error: " . $pde->getMessage());
+}
 
-$sql = "SELECT * FROM ".TB_PREFIX."custom_fields WHERE domain_id = :domain_id ORDER BY cf_custom_field";
-$sth = dbQuery($sql, ':domain_id', $auth_session->domain_id) or die(end($dbh->errorInfo()));
-
-$cfs = null;
-
-$number_of_rows = 0;
-if ($number_of_rows) {} // eliminates unused warning
-for($i=0; $cf = $sth->fetch();$i++) {
-    $cfs[$i] = $cf;
-    $cfs[$i]['filed_name'] = get_custom_field_name($cf['cf_custom_field']);
-    $number_of_rows = $i;
+$cfs = array();
+foreach ($rows as $row) {
+    $row['field_name'] = get_custom_field_name($row['cf_custom_field']);
+    $cfs[] = $row;
 }
 
 $smarty -> assign("cfs",$cfs);

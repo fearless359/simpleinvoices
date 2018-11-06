@@ -92,13 +92,7 @@ class SystemDefaults
     {
         global $pdoDb;
 
-        try {
-            $extension_id = getExtensionID($extension_name);
-        } catch (PdoDbException $pde) {
-            error_log("SystemDefaults::updateDefault(): SystemDefaults::updateDefault(): getExtensionID error - " . $pde->getMessage());
-            return false;
-        }
-
+        $extension_id = getExtensionID($extension_name);
         if (!($extension_id >= 0)) {
             error_log("SystemDefaults::updateDefault(): No such extension_name[$extension_name]");
             return false;

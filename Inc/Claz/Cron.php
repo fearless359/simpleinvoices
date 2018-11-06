@@ -18,6 +18,10 @@ class Cron {
         return $result;
     }
 
+    /**
+     * @param $id
+     * @return bool|mixed
+     */
     public static function update($id) {
         global $pdoDb;
         try {
@@ -32,10 +36,21 @@ class Cron {
         return $result;
     }
 
+    /**
+     * Not set up
+     */
     public static function delete() {
     }
 
-    public static function select_all($type, $sort, $dir, $rp, $page) {
+    /**
+     * @param $type
+     * @param $sort
+     * @param $dir
+     * @param $rp
+     * @param $page
+     * @return array|mixed
+     */
+    public static function xmlSql($type, $sort, $dir, $rp, $page) {
         global $pdoDb;
 
         $result = array();
@@ -103,11 +118,14 @@ class Cron {
 
             $result = $pdoDb->request("SELECT", "cron", "cron");
         } catch (PdoDbException $pde) {
-            error_log("Cron::select_all() - Error - " . $pde->getMessage());
+            error_log("Cron::xmlSql() - Error - " . $pde->getMessage());
         }
         return $result;
     }
 
+    /**
+     * @return array
+     */
     public static function select() {
         global $pdoDb;
 
@@ -140,6 +158,12 @@ class Cron {
         return (empty($rows) ? array() : $rows[0]);
     }
 
+    /**
+     * @param $src_array
+     * @param $customer_email
+     * @param $biller_email
+     * @return string
+     */
     private static function getEmailSendAddresses($src_array, $customer_email, $biller_email) {
         $email_to_addresses = Array ();
         if ($src_array['email_customer'] == ENABLED) $email_to_addresses[] = $customer_email;
@@ -147,6 +171,9 @@ class Cron {
         return implode(";", $email_to_addresses);
     }
 
+    /**
+     * @return array
+     */
     public static function run() {
         global $pdoDb;
         $result = array();
@@ -389,6 +416,9 @@ class Cron {
         return $result;
     }
 
+    /**
+     * @return array|mixed
+     */
     public static function select_crons_to_run() {
         global $config, $pdoDb;
 

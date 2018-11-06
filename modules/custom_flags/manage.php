@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\CustomFlags;
+
 /*
  * Script: manage.php
  * Custom flags manage page

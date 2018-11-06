@@ -223,32 +223,41 @@ class Customer {
     /**
      * @param $customer_id
      * @param bool $isReal
-     * @return array()
-     * @throws PdoDbException
+     * @return float total for customer.
      */
     public static function calc_customer_total($customer_id, $isReal = false) {
         global $pdoDb;
-        $pdoDb->addToFunctions(new FunctionStmt("COALESCE", "SUM(ii.total),0", "total"));
 
-        $jn = new Join("INNER", "invoices", "iv");
-        $jn->addSimpleItem("iv.id", new DbField("ii.invoice_id"), "AND");
-        $jn->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
-        $pdoDb->addToJoins($jn);
+        $total = 0;
+        try {
+            $pdoDb->addToFunctions(new FunctionStmt("COALESCE", "SUM(ii.total),0", "total"));
 
-        if ($isReal) {
-            $jn = new Join("LEFT", "preferences", "pr");
-            $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
-            $jn->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
+            $jn = new Join("INNER", "invoices", "iv");
+            $jn->addSimpleItem("iv.id", new DbField("ii.invoice_id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
             $pdoDb->addToJoins($jn);
 
-            $pdoDb->addSimpleWhere("pr.status", ENABLED, "AND");
+            if ($isReal) {
+                $jn = new Join("LEFT", "preferences", "pr");
+                $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
+                $jn->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
+                $pdoDb->addToJoins($jn);
+
+                $pdoDb->addSimpleWhere("pr.status", ENABLED, "AND");
+            }
+
+            $pdoDb->addSimpleWhere("iv.customer_id", $customer_id, "AND");
+            $pdoDb->addSimpleWhere("ii.domain_id", DomainId::get());
+
+            $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
+            if (!empty($rows)) {
+                $total = $rows[0]['total'];
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Customer::calc_customer_total() - error: " . $pde->getMessage());
         }
 
-        $pdoDb->addSimpleWhere("iv.customer_id", $customer_id, "AND");
-        $pdoDb->addSimpleWhere("ii.domain_id", DomainId::get());
-
-        $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
-        return $rows[0]['total'];
+        return $total;
     }
 
     /**
@@ -285,9 +294,9 @@ class Customer {
      * @param $sort
      * @param $rp
      * @param $page
-     * @return array|mixed
+     * @return array
      */
-    public static function sql($type, $dir, $sort, $rp, $page) {
+    public static function xmlSql($type, $dir, $sort, $rp, $page) {
         global $LANG, $pdoDb;
 
         try {
