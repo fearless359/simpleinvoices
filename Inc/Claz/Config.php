@@ -1,15 +1,19 @@
 <?php
+/**
+ * @name Config.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20181009
+ */
+
 namespace Inc\Claz;
 
 use Exception;
 
 /**
- * @name Config.php
- * @author fearl
- * @license GPL V3 or above
- * Created: 10/9/2018
+ * Class Config
+ * @package Inc\Claz
  */
-
 class Config
 {
     const CONFIG_FILE = "config/config.php";

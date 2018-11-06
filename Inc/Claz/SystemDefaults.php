@@ -166,6 +166,26 @@ class SystemDefaults
     }
 
     /**
+     * Delete a specific record from the system_defaults table.
+     * @param int $extension_id for record to delete.
+     * @return bool true if delete succeeded; otherwise false.
+     */
+    public static function delete($extension_id) {
+        global $pdoDb;
+
+        $result = false;
+        try {
+            $pdoDb->addSimpleWhere(extension_id, $extension_id, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+            $result = $pdoDb->request('DELETE', 'system_defaults');
+        } catch (PdoDbException $pde) {
+            error_log("SystemDefaults::delete() - extension_id[$extension_id] - error: " . $pde->getMessage());
+        }
+
+        return $result;
+    }
+    /**
      * Get "delete" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
      */

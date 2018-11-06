@@ -1,13 +1,17 @@
 <?php
+/**
+ * @name SiError.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20181009
+ */
+
 namespace Inc\Claz;
 
 /**
- * @name SiError.php
- * @author fearl
- * @license GPL V3 or above
- * Created: 10/9/2018
+ * Class SiError
+ * @package Inc\Claz
  */
-
 class SiError
 {
     /**

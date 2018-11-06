@@ -98,4 +98,58 @@ class ExpenseAccount {
         }
         return $result;
     }
+
+    /**
+     * @param string $type set to "count" if count of qualified records to be returned.
+     *          All other values cause selected rows to be returned.
+     * @param string $dir sort by direction (ASC/DESC)
+     * @param string $sort field to sort by
+     * @param int $rp report lines per page
+     * @param int $page of current page
+     * @return array/int If $type is count, the int count value is returned. Otherwise an
+     *          array of rows selected is returned.
+     */
+    public static function xmlSql($type, $dir, $sort, $rp, $page ) {
+        global $pdoDb;
+
+        $rows = array();
+        try {
+            $validFields = array('id', 'name');
+
+            // Set up WHERE clause which is needed for both count and data access modes.
+            if (!empty($_POST['qtype']) && !empty($_POST['query'])) {
+                $qtype = $_POST['qtype'];
+                if (in_array($qtype, $validFields)) {
+                    $query = $_POST['query'];
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, 'LIKE', "%$query%", false, "AND"));
+                }
+            }
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+
+            if ($type == "count") {
+                $pdoDb->addToFunctions("count(*) AS count");
+                $rows = $pdoDb->request("SELECT", "expense_account");
+                return (empty($rows) ? 0 : $rows[0]['count']);
+            }
+
+            if (!in_array($sort, $validFields)) $sort = "id";
+
+            // Set up start offset.
+            if (empty($page) || intval($page) != $page) $page = 1;
+
+            if (intval($rp) != $rp) $rp = 25;
+
+            $start = (($page - 1) * $rp);
+            $pdoDb->setLimit($rp, $start);
+
+            if (!preg_match('/^(asc|desc)$/iD', $dir)) $sort .= ' DESC';
+
+            $rows = $pdoDb->request("SELECT", "expense_account");
+        } catch (PdoDbException $pde) {
+            error_log("ExpenseAccount::xmlSql() - Error: " . $pde->getMessage());
+        }
+
+        return $rows;
+    }
+
 }

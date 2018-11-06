@@ -1,19 +1,25 @@
 <?php
 
-use Inc\Claz\DomainId;
+use Inc\Claz\Extensions;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-$domain_id = DomainId::get();
+$refresh_redirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=extensions&amp;view=manage" />';
 
+$display_block = "<div class=\"si_message_error\">{$LANG['failure']}</div>";
 if ($_POST['action'] == "register") {
-    $sql = "INSERT INTO ".TB_PREFIX."extensions (`id`,`name`,`description`,`domain_id`,`enabled`) VALUES ( NULL, :name ,  :description , :domain_id , '0');";
-    dbQuery($sql, ':name',$_POST['name'],':description',$_POST['description'],':domain_id', $domain_id);
+    if (Extensions::insert()) {
+        $display_block = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
+    }
 } elseif ($_POST['action'] == "unregister") {
-    $sql = "DELETE FROM ".TB_PREFIX."extensions WHERE id = :id AND domain_id = :domain_id; DELETE FROM ".TB_PREFIX."system_defaults WHERE extension_id = :id AND domain_id = :domain_id;";
-    dbQuery($sql, ':id', $_POST['id'],':domain_id', $domain_id);
+    $extension_id = $_POST['id'];
+    if (Extensions::delete($extension_id)) {
+        if (\Inc\Claz\SystemDefaults::delete($extension_id)) {
+            $display_block = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
+        }
+    }
 } else {
-    die("Dude, this action is unknown to me!");
+    $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
 }
 

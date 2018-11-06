@@ -1,16 +1,17 @@
 <?php
-
-use Inc\Claz\Biller;
-
 /**
  * @name BillerTest.php
- * @author fearl
+ * @author Richard Rowley
  * @license GPL V3 or above
- * Created: 11/3/2018
+ * Created: 20181103
  */
 
+use Inc\Claz\Biller;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class BillerTest
+ */
 class BillerTest extends TestCase
 {
     public  function setUp()

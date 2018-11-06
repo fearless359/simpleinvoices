@@ -2,6 +2,7 @@
 
 use Inc\Claz\DbField;
 use Inc\Claz\DomainId;
+use \Inc\Claz\Extensions;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\WhereItem;
 
@@ -10,12 +11,14 @@ global $LANG, $pdoDb;
 header("Content-type: text/xml");
 
 // @formatter:off
-$start = (isset($_POST['start'])     ? intval($_POST['start'])    : 0);
-$dir   = (isset($_POST['sortorder']) ?        $_POST['sortorder'] : "ASC");
-$sort  = (isset($_POST['sort'])      ?        $_POST['sort']      : "id");
-$rp    = (isset($_POST['rp'])        ? intval($_POST['rp'])       : 25);
-$page  = (isset($_POST['page'])      ? intval($_POST['page'])     : 1);
+$start = (isset($_POST['start'])     ? $_POST['start']     : 0);
+$dir   = (isset($_POST['sortorder']) ? $_POST['sortorder'] : "ASC");
+$sort  = (isset($_POST['sort'])      ? $_POST['sort']      : "id");
+$rp    = (isset($_POST['rp'])        ? $_POST['rp']        : 25);
+$page  = (isset($_POST['page'])      ? $_POST['page']      : 1);
 // @formatter:on
+
+$rows = Extensions::xmlSql('', $dir, $sort, $rp, $page);
 
 $extension_dir = 'extensions';
 $extension_entries = array_diff(scandir($extension_dir), Array(".","..")); // Skip entries starting with a dot from dir list
@@ -30,45 +33,6 @@ foreach($extension_entries as $entry) {
     
     $available_extensions[$entry] = array("name" => $entry,"enabled" => 0,"registered" => 0,"description" => $description,"id" => "");
 }
-
-if (!preg_match('/^(asc|desc)$/iD', $dir)) {
-    $dir = 'ASC';
-}
-if (!in_array($sort, array('id','name','description','enabled'))) {
-    $sort = 'id';
-}
-
-$rows = array();
-try {
-    $pdoDb->setOrderBy(array($sort, $dir));
-
-    $pdoDb->setLimit($rp, $start);
-
-    if (isset($_POST['query']) && isset($_POST['qtype'])) {
-        $query = $_POST['query'];
-        $qtype = $_POST['qtype'];
-        if (in_array($qtype, array('id', 'name', 'description'))) {
-            $pdoDb->addToWhere(new WhereItem(false, $qtype, 'LIKE', $query, false, 'AND'));
-        }
-    }
-    $pdoDb->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
-    $pdoDb->addToWhere(new WhereItem(false, 'domain_id', '=', DomainId::get(), true));
-
-    $pdoDb->setSelectList(array('id', 'name', 'description', 'enabled', new DbField('1', 'registered')));
-
-    $rows = $pdoDb->request('SELECT', 'extensions');
-} catch (PdoDbException $pde) {
-    error_log("modules/extensions/xml.php - error: " . $pde->getMessage());
-}
-
-//$sql = "SELECT id, name, description, 1 AS registered, enabled FROM  " . TB_PREFIX . "extensions
-//        WHERE (domain_id = 0 OR  domain_id = :domain_id) $where ORDER BY  $sort $dir $limit";
-//if (empty($query)) {
-//    $sth = dbQuery($sql, ':domain_id', DomainId::get());
-//} else {
-//    $sth = dbQuery($sql, ':domain_id', DomainId::get(), ':query', "%$query%");
-//}
-//$rows = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 // $rows (registered_extensions) have all extensions in the database
 // $available_extensions have all extensions in the distribution

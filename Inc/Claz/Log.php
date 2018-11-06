@@ -1,18 +1,19 @@
 <?php
+/**
+ * @name Log.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20181009
+ */
+
 namespace Inc\Claz;
 
 /**
- * @name Log.php
- * @author fearl
- * @license GPL V3 or above
- * Created: 10/9/2018
+ * Class Log
+ * @package Inc\Claz
  */
-
 class Log
 {
-    /**
-     * @var mixed
-     */
     private static $logger = null;
     private static $folder = null;
     private static $file = null;
