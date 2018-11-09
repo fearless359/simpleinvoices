@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Select
+ * @package Inc\Claz
+ */
 class Select {
     private $alias;
     private $list;

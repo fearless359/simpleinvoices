@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class NetIncomeReport
+ * @package Inc\Claz
+ */
 class NetIncomeReport
 {
     public $domain_id;
@@ -10,7 +14,6 @@ class NetIncomeReport
      * @param $stop_date
      * @param $exclude_custom_flag_items
      * @return array
-     * @throws PdoDbException
      */
     public function select_rpt_items($start_date, $stop_date, $exclude_custom_flag_items)
     {
@@ -33,11 +36,15 @@ class NetIncomeReport
         // Find all invoices that received payments in this reporting period.
         $iv_ids = array();
 
-        $pdoDb->setOrderBy("ac_inv_id");
-        $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
-        $pdoDb->addToWhere(new WhereItem(false, "ac_date", "BETWEEN", array($start_date, $stop_date), false));
-        $pv_recs = $pdoDb->request("SELECT", "payment");
-
+        $pv_recs = array();
+        try {
+            $pdoDb->setOrderBy("ac_inv_id");
+            $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
+            $pdoDb->addToWhere(new WhereItem(false, "ac_date", "BETWEEN", array($start_date, $stop_date), false));
+            $pv_recs = $pdoDb->request("SELECT", "payment");
+        } catch (PdoDbException $pde) {
+            error_log("Inc/Claz/NetIncomeReport.php - error(1): " . $pde->getMessage());
+        }
         $last_inv_id = 0;
         foreach ($pv_recs as $row) {
             $curr_inv_id = $row['ac_inv_id'];
@@ -50,16 +57,21 @@ class NetIncomeReport
         // Get all invoices that had payments made in the current reporting period.
         $invoices = array();
         foreach ($iv_ids as $id) {
-            $jn = new Join("INNER", "customers", "cu");
-            $jn->addSimpleItem("cu.id", new DbField("iv.customer_id"), "AND");
-            $jn->addSimpleItem("cu.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins($jn);
+            $iv_recs = array();
+            try {
+                $jn = new Join("INNER", "customers", "cu");
+                $jn->addSimpleItem("cu.id", new DbField("iv.customer_id"), "AND");
+                $jn->addSimpleItem("cu.domain_id", new DbField("iv.domain_id"));
+                $pdoDb->addToJoins($jn);
 
-            $pdoDb->addSimpleWhere("iv.id", $id, "AND");
-            $pdoDb->addSimpleWhere("iv.domain_id", $domain_id);
-            $pdoDb->setSelectList(array("iv.id", "iv.index_id AS iv_number", "iv.date AS iv_date", "cu.name AS customer"));
+                $pdoDb->addSimpleWhere("iv.id", $id, "AND");
+                $pdoDb->addSimpleWhere("iv.domain_id", $domain_id);
+                $pdoDb->setSelectList(array("iv.id", "iv.index_id AS iv_number", "iv.date AS iv_date", "cu.name AS customer"));
 
-            $iv_recs = $pdoDb->request("SELECT", "invoices", "iv");
+                $iv_recs = $pdoDb->request("SELECT", "invoices", "iv");
+            } catch (PdoDbException $pde) {
+                error_log("Inc/Claz/NetIncomeReport.php - error(3): " . $pde->getMessage());
+            }
 
             foreach ($iv_recs as $iv) {
 
@@ -74,37 +86,46 @@ class NetIncomeReport
                 // if any payments are left for the invoice, as well as have payment detail to
                 // include in the report.
                 // @formatter:off
-                $pdoDb->setOrderBy("ac_date");
-                $pdoDb->addSimpleWhere("ac_inv_id", $id, "AND");
-                $pdoDb->addSimpleWhere("domain_id", $domain_id);
-                $pdoDb->setSelectList(array("ac_amount", "ac_date"));
-                $py_recs = $pdoDb->request("SELECT", "payment");
+                $py_recs = array();
+                try {
+                    $pdoDb->setOrderBy("ac_date");
+                    $pdoDb->addSimpleWhere("ac_inv_id", $id, "AND");
+                    $pdoDb->addSimpleWhere("domain_id", $domain_id);
+                    $pdoDb->setSelectList(array("ac_amount", "ac_date"));
+                    $py_recs = $pdoDb->request("SELECT", "payment");
+                } catch (PdoDbException $pde) {
+                    error_log("Inc/Claz/NetIncomeReport.php - error(4): " . $pde->getMessage());
+                }
                 // @formatter:on
 
                 foreach ($py_recs as $py) {
-                    $in_period = ($start_date <= $py['ac_date'] &&
-                        $stop_date >= $py['ac_date']);
+                    $in_period = ($start_date <= $py['ac_date'] && $stop_date >= $py['ac_date']);
                     $invoice->addPayment($py['ac_amount'], $py['ac_date'], $in_period);
                 }
 
                 // Now get all the invoice items with the exception of those flagged
                 // as non-income items provided the option to exclude them was specified.
                 // @formatter:off
-                $pdoDb->setOrderBy("ii.invoice_id");
-                $pdoDb->setOrderBy("pr.description");
-                $pdoDb->addSimpleWhere("ii.invoice_id", $id, "AND");
-                $pdoDb->addSimpleWhere("ii.domain_id", $domain_id, "AND");
-                $list = array("ii.total AS amount", "pr.description AS description");
-                $pdoDb->addToWhere(new WhereItem(false, "pr.custom_flags", "REGEXP", $pattern, false));
-                $list[] = "pr.custom_flags";
+                $ii_recs = array();
+                try {
+                    $pdoDb->setOrderBy("ii.invoice_id");
+                    $pdoDb->setOrderBy("pr.description");
+                    $pdoDb->addSimpleWhere("ii.invoice_id", $id, "AND");
+                    $pdoDb->addSimpleWhere("ii.domain_id", $domain_id, "AND");
+                    $list = array("ii.total AS amount", "pr.description AS description");
+                    $pdoDb->addToWhere(new WhereItem(false, "pr.custom_flags", "REGEXP", $pattern, false));
+                    $list[] = "pr.custom_flags";
 
-                $join = new Join("INNER", "products", "pr");
-                $join->addSimpleItem("pr.id", new DbField("ii.product_id"), "AND");
-                $join->addSimpleItem("pr.domain_id", new DbField("ii.domain_id"));
-                $pdoDb->addToJoins($join);
-                $pdoDb->setSelectList($list);
+                    $join = new Join("INNER", "products", "pr");
+                    $join->addSimpleItem("pr.id", new DbField("ii.product_id"), "AND");
+                    $join->addSimpleItem("pr.domain_id", new DbField("ii.domain_id"));
+                    $pdoDb->addToJoins($join);
+                    $pdoDb->setSelectList($list);
 
-                $ii_recs = $pdoDb->request("SELECT", "invoice_items", "ii");
+                    $ii_recs = $pdoDb->request("SELECT", "invoice_items", "ii");
+                } catch (PdoDbException $pde) {
+                    error_log("Inc/Claz/NetIncomeReport.php - error(5): " . $pde->getMessage());
+                }
 
                 foreach ($ii_recs as $py) {
                     $invoice->addItem($py['amount'], $py['description'], $py['custom_flags']);

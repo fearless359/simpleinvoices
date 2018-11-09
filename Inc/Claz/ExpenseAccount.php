@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class ExpenseAccount
+ * @package Inc\Claz
+ */
 class ExpenseAccount {
 
     /**

@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class BackupDb
+ * @package Inc\Claz
+ */
 class BackupDb {
     private $output;
     private $pdoDb;

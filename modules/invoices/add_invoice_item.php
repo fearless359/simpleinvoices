@@ -14,6 +14,9 @@ use Inc\Claz\Product;
  *     https://simpleinvoices.group
  */
 // Added by RCR 20181014 to see if this is ever used.
+/**
+ * @deprecated 20181106 by Richard Rowley
+ */
 error_log("modules/invoices/add_invoice_item.php used. _POST: " . print_r($_POST,true));
 
 global $smarty;

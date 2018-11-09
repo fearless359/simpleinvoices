@@ -1,7 +1,10 @@
 <?php
 namespace Inc\Claz;
 
-
+/**
+ * Class Biller
+ * @package Inc\Claz
+ */
 class Biller
 {
     /**

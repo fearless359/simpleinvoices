@@ -29,7 +29,7 @@
         <td>{$LANG.customer_department}</td>
         <td colspan="2">{$customer.department|htmlsafe}</td>
         <td colspan="2"></td>
-        <td><a href="index.php?module=payments&view=manage&c_id={$customer.id|urlencode}">{$LANG.total_paid}</a></td>
+        <td><a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">{$LANG.total_paid}</a></td>
         <td style="text-align:right">{$customer.paid|siLocal_number}</td>
       </tr>
       <tr>

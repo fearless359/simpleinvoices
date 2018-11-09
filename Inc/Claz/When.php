@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class When
+ * @package Inc\Claz
+ */
 class When {
     const OPERATORS = '/^(=|!=|<>|<|>|<=|>=)$/';
 

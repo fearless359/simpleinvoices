@@ -27,7 +27,7 @@
 {if $smarty.get.stage == 1}
 <h3 style="text-align:center">Select <b>Delete</b> to remove this record:</h3>
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=cron&view=delete&id={$cron.id|urlencode}&stage=2" >
+      action="index.php?module=cron&amp;view=delete&amp;id={$cron.id|urlencode}&amp;stage=2" >
   <input type="hidden" name="index_id" value="{$cron.index_id}">
   <div class="si_form si_form_view">
     <table class="center">

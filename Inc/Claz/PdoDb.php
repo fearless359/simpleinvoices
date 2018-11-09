@@ -406,11 +406,10 @@ class PdoDb {
      * @param CaseStmt $caseStmt Object to build a <b>CASE</b> statement from.
      */
     public function addToCaseStmts(CaseStmt $caseStmt) {
-        if (isset($this->caseStmt)) {
-            $this->caseStmts[] = $caseStmt;
-        } else {
-            $this->caseStmts = array($caseStmt);
+        if (!isset($this->caseStmts)) {
+            $this->caseStmts = array();
         }
+        $this->caseStmts[] = $caseStmt;
     }
 
     /**
@@ -658,44 +657,32 @@ class PdoDb {
             if ($this->keyPairs != null) {
                 $values = ($this->keyPairs == null ? array() : $this->keyPairs);
                 // build a regular expression for each parameter
-echo print_r($this->keyPairs,true);
-echo "<br/>";
                 foreach ($this->keyPairs as $key => $value) {
-echo "key - " . print_r($key,true) . "<br/>";
-echo "value - " . print_r($value,true) . "<br/>";
                     // Add quotes around the named parameters and ? parameters.
                     if (is_string($key)) {
                         $keys[] = '/' . $key . '/';
                     } else {
                         $keys[] = '/[?]/';
                     }
-echo "667<br/>";
-echo "is " . (is_array($value) ? "array" : (is_object($value) ? "object" : "other")) . "<br/>";
+
                     // If the value for this is is an array, make it a character separated string.
                     if (is_array($value)) $values[$key] = implode(',', $value);
                     // If the value is NULL, make it a string value of "NULL".
-echo "671<br/>";
                     if (is_null($value)) $values[$key] = 'NULL';
                 }
-echo "674 - " . print_r($values, true) . "<br/>";
+
                 // Walk the array to see if we can add single-quotes to strings
                 // The $k == $k test is to remove an unused warning.
                 $count = null;
                 array_walk($values, function(&$v, $k) { if ($k == $k && $v != "NULL" && !is_numeric($v) && !is_array($v) && !is_object($v)) $v = "'".$v."'";});
-echo "683<br/>";
-echo print_r($keys,true) . "<br/>";
-echo print_r($values, true) . "<br/>";
-echo $sql . "<br/>";
                 $sql = preg_replace($keys, $values, $sql, 1, $count);
-echo "685<br/>";
+
                 // Compact query to be logged
                 $sql = preg_replace('/  +/', ' ', str_replace(PHP_EOL, '', $sql));
             }
-echo "debug: {$this->debug}<br/>";
+
             if ($this->debug) {
-echo "PdoDb debugger 683 sql: $sql<br/>";
                 error_log("PdoDb - debugger($this->debug_label): $sql");
-echo "PdoDb debugger 685 sql: $sql<br/>";
             }
 
             if ($this->saveLastCommand) {

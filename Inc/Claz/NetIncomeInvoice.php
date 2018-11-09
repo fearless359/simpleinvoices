@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class NetIncomeInvoice
+ * @package Inc\Claz
+ */
 class NetIncomeInvoice
 {
     public $customer;
@@ -13,6 +17,13 @@ class NetIncomeInvoice
     public $total_payments;
     public $total_period_payments;
 
+    /**
+     * NetIncomeInvoice constructor.
+     * @param $id
+     * @param $number
+     * @param $date
+     * @param $customer
+     */
     public function __construct($id, $number, $date, $customer)
     {
         $this->id = $id;
@@ -26,12 +37,22 @@ class NetIncomeInvoice
         $this->pymts = array();
     }
 
+    /**
+     * @param $amount
+     * @param $description
+     * @param $cflags
+     */
     public function addItem($amount, $description, $cflags)
     {
         $this->items[] = new NetIncomeItem($amount, $description, $cflags);
         $this->total_amount += $amount;
     }
 
+    /**
+     * @param $amount
+     * @param $date
+     * @param $in_period
+     */
     public function addPayment($amount, $date, $in_period)
     {
         $this->pymts[] = new NetIncomePayment($amount, $date);

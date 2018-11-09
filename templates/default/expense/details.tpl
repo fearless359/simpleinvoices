@@ -1,4 +1,4 @@
-<form name="frmpost" action="index.php?module=expense&view=save&id={$smarty.get.id}" method="post">
+<form name="frmpost" action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id}" method="post">
     {if $smarty.get.action== 'view' }
         <br/>
         <table class="center">
@@ -55,7 +55,7 @@
         </table>
         <br/>
         <div class="si_toolbar si_toolbar_form">
-            <a href="index.php?module=expense&view=details&id={$expense.id}&action=edit" class="positive">
+            <a href="index.php?module=expense&amp;view=details&amp;id={$expense.id}&amp;action=edit" class="positive">
                 <img src="images/famfam/add.png" alt=""/>
                 {$LANG.edit}
             </a>

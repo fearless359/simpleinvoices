@@ -48,7 +48,7 @@ function invoice_product_change(product,row_number, quantity, description){
       $('#gmail_loading').show();
     $.ajax({
         type: 'GET',
-        url: './index.php?module=invoices&view=product_ajax&id='+product+'&row='+row_number,
+        url: './index.php?module=invoices&amp;view=product_ajax&amp;id='+product+'&amp;row='+row_number,
         data: "id: "+product,
         dataType: "json",
         success: function(data){
@@ -105,7 +105,7 @@ function product_inventory_change(product,existing_cost){
     $('#gmail_loading').show();
     $.ajax({
         type: 'GET',
-        url: './index.php?module=invoices&view=product_inventory_ajax&id='+product,
+        url: './index.php?module=invoices&amp;view=product_inventory_ajax&amp;id='+product,
         data: "id: "+product,
         dataType: "json",
         success: function(data){
@@ -241,13 +241,13 @@ function export_invoice(row_number,spreadsheet,wordprocessor){
      $("#export_dialog").show();
         siLog('debug','export_dialog_show');
      $(".export_pdf").attr({
-          href: "index.php?module=export&view=invoice&id="+row_number+"&format=pdf"
+          href: "index.php?module=export&amp;view=invoice&amp;id="+row_number+"&amp;format=pdf"
      });
      $(".export_doc").attr({
-          href: "index.php?module=export&view=invoice&id="+row_number+"&format=file&filetype="+wordprocessor
+          href: "index.php?module=export&amp;view=invoice&amp;id="+row_number+"&amp;format=file&amp;filetype="+wordprocessor
      });
       $(".export_xls").attr({
-          href: "index.php?module=export&view=invoice&id="+row_number+"&format=file&filetype="+spreadsheet
+          href: "index.php?module=export&amp;view=invoice&amp;id="+row_number+"&amp;format=file&amp;filetype="+spreadsheet
      });
      $("#export_dialog").dialog({
          modal: true,

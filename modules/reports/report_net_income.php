@@ -1,4 +1,9 @@
 <?php
+
+use Inc\Claz\CustomFlags;
+use Inc\Claz\NetIncomeReport;
+use Inc\Claz\PdoDbException;
+
 /*
  * Script: net_income_wo_non_income.php Report income excluding non-income funds
  *
@@ -14,10 +19,16 @@ global $menu, $smarty;
 
 checkLogin();
 
+/**
+ * @return false|string
+ */
 function firstOfMonth() {
     return date('Y-m-d', strToTime('first day of this month'));
 }
 
+/**
+ * @return false|string
+ */
 function lastOfMonth() {
     return date('Y-m-d', strToTime('last day of this month'));
 }

@@ -21,7 +21,7 @@
     {$LANG.loading} ...
   </div>
   <form name="frmpost" method="POST" id="frmpost"
-        action="index.php?module=inventory&view=edit&id={$inventory.id|urlencode}" >
+        action="index.php?module=inventory&amp;view=edit&amp;id={$inventory.id|urlencode}" >
     <div class="si_form">
       <table>
         <tr>
@@ -72,7 +72,7 @@
           <img class="button_img" src="images/common/tick.png" alt="" />
           {$LANG.save}
         </button>
-        <a href="index.php?module=inventory&view=manage" class="negative">
+        <a href="index.php?module=inventory&amp;view=manage" class="negative">
           <img src="images/common/cross.png" alt="" />
           {$LANG.cancel}
         </a>

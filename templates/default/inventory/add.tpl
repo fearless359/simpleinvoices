@@ -19,7 +19,7 @@
     <img src="images/common/gmail-loader.gif" alt="{$LANG.loading} ..." />
     {$LANG.loading} ...
   </div>
-  <form name="frmpost" action="index.php?module=inventory&view=add" method="POST" id="frmpost">
+  <form name="frmpost" action="index.php?module=inventory&amp;view=add" method="POST" id="frmpost">
     <div class="si_form">
       <table>
         <tr>
@@ -63,7 +63,7 @@
           <img class="button_img" src="images/common/tick.png" alt="" />
           {$LANG.save}
         </button>
-        <a href="index.php?module=cron&view=manage" class="negative">
+        <a href="index.php?module=cron&amp;view=manage" class="negative">
           <img src="images/common/cross.png" alt="" />
           {$LANG.cancel}
         </a>

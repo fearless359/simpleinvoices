@@ -10,7 +10,7 @@
     percentage_width = grid_width / 100;
 
     $('#manageGrid').flexigrid({
-        url: 'index.php?module=extensions&amp;view=xml',
+        url: 'index.php?module=extensions&view=xml',
         dataType: 'xml',
         colModel : [
             {display: '{/literal}{$LANG.actions}{literal}'    , name : 'actions'    , width : 10 * percentage_width, sortable : false, align: 'center'},

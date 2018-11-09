@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Preferences
+ * @package Inc\Claz
+ */
 class Preferences {
 
     /**

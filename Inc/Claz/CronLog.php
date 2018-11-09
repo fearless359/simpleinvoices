@@ -1,10 +1,21 @@
 <?php
 namespace Inc\Claz;
 
-// Cronlog runs outside of sessions and triggered by Cron
-// Manually set the domain_id class member before using class methods
+/**
+ * Class CronLog
+ * @package Inc\Claz
+ * Cronlog runs outside of sessions and triggered by Cron
+ * Manually set the domain_id class member before using class methods
+ */
 class CronLog
 {
+    /**
+     * @param PdoDb $pdoDb
+     * @param $domain_id
+     * @param $cron_id
+     * @param $run_date
+     * @return mixed|string
+     */
     public static function insert(PdoDb $pdoDb, $domain_id, $cron_id, $run_date) {
         $id = '';
         try {
@@ -18,6 +29,13 @@ class CronLog
         return $id;
     }
 
+    /**
+     * @param PdoDb $pdoDb
+     * @param $domain_id
+     * @param $cron_id
+     * @param $run_date
+     * @return int
+     */
     public static function check(PdoDb $pdoDb, $domain_id, $cron_id, $run_date) {
         $rows = array();
         try {
@@ -32,6 +50,11 @@ class CronLog
         return (empty($rows) ? 0 : $rows[0]['count']);
     }
 
+    /**
+     * @param PdoDb $pdoDb
+     * @param $domain_id
+     * @return array|mixed
+     */
     public static function select(PdoDb $pdoDb, $domain_id) {
         $rows = array();
         try {

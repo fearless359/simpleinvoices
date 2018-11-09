@@ -53,7 +53,7 @@ if ($invoice['owing'] > 0 ) {
     $invoice_age ="";
 }
 
-$url_for_pdf = "index.php?module=export&view=pdf&id=" . $invoice['id'];
+$url_for_pdf = "index.php?module=export&amp;view=pdf&amp;id=" . $invoice['id'];
 
 $invoice['url_for_pdf'] = $url_for_pdf;
 

@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Eway
+ * @package Inc\Claz
+ */
 class Eway {
     public $biller;
     public $invoice;
@@ -9,10 +13,16 @@ class Eway {
     public $domain_id;
     public $message;
 
+    /**
+     * Eway constructor.
+     */
     public function __construct() {
         $this->domain_id = DomainId::get();
     }
 
+    /**
+     * @return string
+     */
     public function pre_check() {
         //set customer,biller and preference if not defined
         if(empty($this->customer)) {
@@ -35,6 +45,9 @@ class Eway {
         return 'false';
     }
 
+    /**
+     * @return string
+     */
     public function payment() {
         global $config;
 

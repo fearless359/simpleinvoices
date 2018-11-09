@@ -97,11 +97,11 @@ foreach ($preferences as $row) {
     $xml .= "<row id='$pref_id'>";
     $xml .= "<cell><![CDATA[
             <a class='index_table' title='$title'
-               href='index.php?module=preferences&view=details&id=$pref_id&action=view'>
+               href='index.php?module=preferences&amp;view=details&amp;id=$pref_id&amp;action=view'>
               <img src='images/common/view.png' height='16' border='-5px' padding='-4px' valign='bottom' />
             </a>
             <a class='index_table' title='$title'
-               href='index.php?module=preferences&view=details&id=$pref_id&action=edit'>
+               href='index.php?module=preferences&amp;view=details&amp;id=$pref_id&amp;action=edit'>
               <img src='images/common/edit.png' height='16' border='-5px' padding='-4px' valign='bottom' />
             </a>
             ]]></cell>";

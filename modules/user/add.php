@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\User;
+use Inc\Claz\UserSecurity;
+
 /*
  * Script: add.php
  *      User add page

@@ -1,14 +1,13 @@
 <script>
 {literal}
-var columns = 3;
-var padding = 12;
-var grid_width = $('.col').width();
+    var columns = 3;
+    var padding = 12;
+    var grid_width = $('.col').width();
 
-grid_width = grid_width - (columns * padding);
-percentage_width = grid_width / 100; 
-$('#manageGrid').flexigrid
-  (
-    {
+    grid_width = grid_width - (columns * padding);
+    percentage_width = grid_width / 100;
+
+    $('#manageGrid').flexigrid({
         url: "index.php?module=payment_types&view=xml",
         dataType: 'xml',
         colModel : [
@@ -34,7 +33,6 @@ $('#manageGrid').flexigrid
         showTableToggleBtn: false,
         width: 'auto',
         height: 'auto'
-    }
-  );
+    });
 {/literal}
 </script>

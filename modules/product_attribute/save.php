@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\ProductAttributes;
+
 global $smarty;
 
 // -Gates 5/5/2008 added domain_id to parameters 
@@ -6,84 +9,27 @@ global $smarty;
 checkLogin();
 
 # Deal with op and add some basic sanity checking
-
 $op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : NULL;
 
+$refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=product_attribute&amp;view=manage' />";
+$display_block = "<div class=\"si_message_error\">{$LANG['save_product_attributes_failure']}</div>";
 
 #insert invoice_preference
-if (  $op === 'insert_product_attribute' ) {
-
-    $sql = "INSERT into
-        ".TB_PREFIX."products_attributes
-    VALUES
-        (
-            NULL,
-            :name,
-            :type_id,
-            :enabled,
-            :visible
-         )";
-
-    if (dbQuery($sql,
-      ':name', $_POST['name'],
-      ':type_id', $_POST['type_id'],
-      ':enabled', $_POST['enabled'],
-      ':visible', $_POST['visible']
-      )) {
-        $display_block = "Successfully saved";
-    } else {
-        $display_block = "Error occurred with saving";
+if ($_POST['cancel_change'] == "Cancel") {
+    $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
+} else if (  $op === 'insert_product_attribute' ) {
+    if (ProductAttributes::insert() > 0) {
+        $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
     }
-
-    //header( 'refresh: 2; url=manage_preferences.php' );
-    $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=product_attribute&amp;view=manage' />";
-
-}
-
-#edit preference
-
-else if (  $op === 'edit_product_attribute' ) {
-
-    if (isset($_POST['save_product_attribute'])) {
-        $sql = "UPDATE
-                ".TB_PREFIX."products_attributes
-            SET
-                name = :name,
-                type_id = :type_id,
-                enabled = :enabled,
-                visible = :visible
-            WHERE
-                id = :id";
-
-        if (dbQuery($sql, 
-          ':name', $_POST['name'],
-          ':type_id', $_POST['type_id'],
-          ':enabled', $_POST['enabled'],
-          ':visible', $_POST['visible'],
-          ':id', $_GET['id']))
-        {
-            $display_block = "Successfully saved";
-        } else {
-            $display_block = "Error occurred with saving";
-        }
-
-        $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=product_attribute&amp;view=manage' />";
-
-        }
-
-    else if ($_POST[action] == "Cancel") {
-
-        //header( 'refresh: 0; url=manage_preferences.php' );
-        $refresh_total = "<meta http-equiv='refresh' content='0;url=index.php?module=product_attribute&amp;view=manage' />";
+}else if (  $op === 'edit_product_attribute' ) {
+    if (ProductAttributes::update()) {
+        $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
     }
 }
 
-
-$refresh_total = isset($refresh_total) ? $refresh_total : '&nbsp';
+$smarty -> assign('display_block',$display_block);
+$smarty -> assign('refresh_total',$refresh_total);
 
 $pageActive = "product_attribute_manage";
 $smarty->assign('pageActive', $pageActive);
 $smarty -> assign('active_tab', '#product');
-
-$smarty -> assign('display_block',$display_block); 
-$smarty -> assign('refresh_total',$refresh_total); 

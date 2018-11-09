@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Db
+ * @package Inc\Claz
+ */
 class Db {
     private $_db;
     private $_pdoAdapter;
@@ -37,8 +41,11 @@ class Db {
         }
     }
 
-    // Instantiate the class object if it isn't already instantiated.
-    // Otherwise return the existing instance.
+    /**
+     * Instantiate the class object if it isn't already instantiated.
+     * Otherwise return the existing instance.
+     * @return Db
+     */
     public static function getInstance() {
         if (!(self::$_instance instanceof self)) {
             self::$_instance = new self();
@@ -46,6 +53,10 @@ class Db {
         return self::$_instance;
     }
 
+    /**
+     * @param $sqlQuery
+     * @return bool|null|\PDOStatement
+     */
     public function query($sqlQuery) {
         try {
             $argc = func_num_args();

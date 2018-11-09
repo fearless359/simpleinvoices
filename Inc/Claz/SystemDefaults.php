@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class SystemDefaults
+ * @package Inc\Claz
+ */
 class SystemDefaults
 {
     protected static $values_arrays = array();

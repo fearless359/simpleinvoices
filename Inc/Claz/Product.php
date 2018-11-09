@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Product
+ * @package Inc\Claz
+ */
 class Product {
     /**
      * @return int count of product rows
@@ -87,7 +91,7 @@ class Product {
      * @param $page
      * @return array
      */
-    public static function xml_select($type, $dir, $sort, $rp, $page) {
+    public static function xmlSql($type, $dir, $sort, $rp, $page) {
         global $LANG, $pdoDb;
 
         $rows = array();
@@ -163,7 +167,7 @@ class Product {
 
             $rows = $pdoDb->request("SELECT", "products", "p");
         } catch (PdoDbException $pde) {
-            error_log("Product::xml_select() - error: " . $pde->getMessage());
+            error_log("Product::xmlSql() - error: " . $pde->getMessage());
         }
         return $rows;
     }
@@ -208,8 +212,8 @@ class Product {
         $result = 0;
         try {
             $description = (isset($_POST['description']) ? $_POST['description'] : "");
-            $unit_price = (isset($_POST['unit_price']) ? siLocal::dbStd($_POST['unit_price']) : "0");
-            $cost = (isset($_POST['cost']) ? siLocal::dbStd($_POST['cost']) : "0");
+            $unit_price = (isset($_POST['unit_price']) ? SiLocal::dbStd($_POST['unit_price']) : "0");
+            $cost = (isset($_POST['cost']) ? SiLocal::dbStd($_POST['cost']) : "0");
             $fauxPost = array(
                 'domain_id' => DomainId::get(),
                 'description' => $description,
@@ -270,8 +274,8 @@ class Product {
                 }
             }
 
-            $unit_price = (isset($_POST['unit_price']) ? siLocal::dbStd($_POST['unit_price']) : "0");
-            $cost       = (isset($_POST['cost'])       ? siLocal::dbStd($_POST['cost'])       : "0");
+            $unit_price = (isset($_POST['unit_price']) ? SiLocal::dbStd($_POST['unit_price']) : "0");
+            $cost       = (isset($_POST['cost'])       ? SiLocal::dbStd($_POST['cost'])       : "0");
             $fauxPost = array('description'          => (isset($_POST['description'])    ? $_POST['description']    : ""),
                               'enabled'              => (isset($_POST['enabled'])        ? $_POST['enabled']        : ""),
                               'notes'                => (isset($_POST['notes'])          ? $_POST['notes']          : ""),

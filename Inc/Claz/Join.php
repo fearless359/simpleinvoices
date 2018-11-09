@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Join
+ * @package Inc\Claz
+ */
 class Join {
     const PREFIX = '/^si_/'; // Chg to use TB_PREFIX when only PHP 5.6x and up supported
     const TYPE = '/^(INNER|LEFT|RIGHT|FULL)$/';
@@ -16,22 +20,22 @@ class Join {
      * @param string $type Join type, <b>INNER</b>, <b>LEFT</b>, <b>RIGHT</b> or <b>FULL</b>.
      * @param string $table Database table to join. If not present, the database prefix will be added.
      * @param string $tableAlias Alias for table to use for column name references.
-     * @throws PdoDbException if invalid values are passed.
      */
-    public function __construct($type, $table, $tableAlias = null) {
+    public function __construct($type, $table, $tableAlias = null)
+    {
         $this->type = strtoupper($type);
         if (preg_match(self::TYPE, $this->type) != 1) {
-            throw new PdoDbException("Join() - Invalid type, $type, specified.");
-        }
-
-        if (is_a($table, "Inc\Claz\Select")) {
-            $this->table = $table;
+            error_log("Join::__construct() - Invalid type, $type, specified.");
         } else {
-            $this->table = self::addPrefix($table);
+            if (is_a($table, "Inc\Claz\Select")) {
+                $this->table = $table;
+            } else {
+                $this->table = self::addPrefix($table);
+            }
+            $this->tableAlias = $tableAlias;
+            $this->groupBy = null;
+            $this->onClause = null;
         }
-        $this->tableAlias = $tableAlias;
-        $this->groupBy = null;
-        $this->onClause = null;
     }
 
     /**
@@ -55,7 +59,9 @@ class Join {
      * @throws PdoDbException
      */
     public function addSimpleItem($field, $value, $connector = null) {
-        if (!isset($this->onClause)) $this->onClause = new OnClause();
+        if (!isset($this->onClause)) {
+            $this->onClause = new OnClause();
+        }
         $this->onClause->addSimpleItem($field, $value, $connector);
     }
 

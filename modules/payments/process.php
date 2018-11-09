@@ -5,6 +5,7 @@ use Inc\Claz\Customer;
 use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
 use Inc\Claz\PaymentType;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
 
 global $smarty, $LANG, $pdoDb;
@@ -45,8 +46,13 @@ $today = date("Y-m-d");
 if(isset($_GET['id'])) {
     $invoice = Invoice::select($_GET['id']);
 } else {
-    $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-    $rows = $pdoDb->request("SELECT", "invoices");
+    $rows = array();
+    try {
+        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+        $rows = $pdoDb->request("SELECT", "invoices");
+    } catch (PdoDbException $pde) {
+        error_log("modules/payments/process.php - error(1): " . $pde->getMessage());
+    }
     $invoice = $rows[0];
 }
 
@@ -56,7 +62,11 @@ $biller   = Biller::select($invoice['biller_id']);
 $defaults = SystemDefaults::loadValues();
 
 // Presets value that will be used in the Invoice::select_all() method.
-$pdoDb->setHavings(Invoice::buildHavings("money_owed"));
+try {
+    $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
+} catch (PdoDbException $pde) {
+    error_log("modules/payments/process.php - error(2): " . $pde->getMessage());
+}
 $invoice_all = Invoice::select_all("count", "id", "", null, "", "", "");
 
 $smarty->assign('invoice_all',$invoice_all);

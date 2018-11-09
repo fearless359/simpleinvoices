@@ -120,7 +120,7 @@
                         </tr>
                         <tr>
                             <th>
-                                <a href="index.php?module=payments&view=manage&c_id={$customer.id|urlencode}">
+                                <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">
                                     {$LANG.total_paid}
                                 </a>
                             </th>
@@ -178,15 +178,15 @@
                                         <td class="first">
                                             <!--6 Payment -->
                                             <a title="{$LANG.process_payment_for} {$invoice.preference} {$invoice.id}"
-                                               href='index.php?module=payments&view=process&id={$invoice.id}&op=pay_selected_invoice'>
+                                               href='index.php?module=payments&amp;view=process&amp;id={$invoice.id}&amp;op=pay_selected_invoice'>
                                                 <img src='images/common/money_dollar.png' class='action'/>
                                             </a>
-                                            <a href="index.php?module=invoices&amp;view=quick_view&id={$invoice.id|urlencode}">
+                                            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
                                                 <img src='images/common/view.png' class='action'/>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="index.php?module=invoices&amp;view=quick_view&id={$invoice.id|urlencode}">
+                                            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
                                                 {$invoice.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}
                                             </a>
                                         </td>

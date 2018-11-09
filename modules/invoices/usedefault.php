@@ -76,7 +76,7 @@ if ($_GET ['action'] == 'update_template') {
         // NOTE: The combination of view/spec being details/template invokes logic
         // in the main index.php file that resolves direction to the correct screen.
         // This will result via usedefault.tpl, the input to index.php:
-        // .../index.php?module=invoices&view=itemised&template=[invoice::index_id]&customer_id=[customer_id]
+        // .../index.php?module=invoices&amp;view=itemised&amp;template=[invoice::index_id]&amp;customer_id=[customer_id]
         $smarty->assign("view"     , "itemised");
         $smarty->assign("attr1"    , "template");
         $smarty->assign("attr1_val", $invoice ['index_id']);

@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Email
+ * @package Inc\Claz
+ */
 class Email {
     public $attachment;
     // public $attachments;
@@ -20,7 +24,10 @@ class Email {
     public $subject;
     public $to;
 
-    function send() {
+    /**
+     * @return string
+     */
+    public function send() {
         global $config;
 
         // Create authentication with SMTP server
@@ -83,7 +90,7 @@ class Email {
 //        }
 //        $mail->addAttachment($attachment);
 
-        // Send e-mail through SMTP
+            // Send e-mail through SMTP
             if ($config->email->use_local_sendmail) {
                 $mail->send();
             } else {
@@ -130,6 +137,10 @@ class Email {
         return $message;
     }
 
+    /**
+     * @param string $type
+     * @return string
+     */
     public function set_subject($type = '') {
         switch ($type) {
             case "invoice_eway":
@@ -154,6 +165,9 @@ class Email {
         return $message;
     }
 
+    /**
+     * @return array|mixed
+     */
     public function getAdminEmail() {
         global $pdoDb;
 

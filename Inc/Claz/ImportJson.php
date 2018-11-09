@@ -25,21 +25,35 @@ class ImportJson {
         $this->replace = $replace;
     }
 
-    public function getFile() {
+    /**
+     * @return bool|string
+     */
+    private function getFile() {
         $json = file_get_contents($this->file, true);
         return $json;
     }
 
-    public function replace($string) {
+    /**
+     * @param $string
+     * @return mixed
+     */
+    private function replace($string) {
         $string_replaced = str_replace($this->find, $this->replace, $string);
         return $string_replaced;
     }
 
-    public function decode($json) {
+    /**
+     * @param $json
+     * @return mixed
+     */
+    private function decode($json) {
         $a = json_decode($json, true);
         return $a;
     }
 
+    /**
+     * @return string
+     */
     public function collate() {
         $json = $this->getFile();
         $replace = $this->replace($json);
@@ -47,7 +61,11 @@ class ImportJson {
         return $this->process($decode);
     }
 
-    public function process($a) {
+    /**
+     * @param $a
+     * @return string
+     */
+    private function process($a) {
         $sql = "";
         foreach($a as $k => $v) {
             $table = $k;

@@ -1,10 +1,11 @@
 <?php
 
 use Inc\Claz\CustomFlags;
+use Inc\CLaz\ProductAttributes;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
 
-global $smarty, $pdoDb;
+global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
@@ -22,8 +23,7 @@ if (!empty($_POST['description'])) {
     $smarty->assign('cflgs', $cflgs);
     $smarty->assign('taxes', $taxes);
 
-    $pdoDb->addSimpleWhere("enabled", ENABLED);
-    $attributes = $pdoDb->request("SELECT", "products_attributes");
+    $attributes = ProductAttributes::getAll(true);
 
     $smarty->assign("attributes", $attributes);
 

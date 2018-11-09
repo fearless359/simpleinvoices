@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class FunctionStmt
+ * @package Inc\Claz
+ */
 class FunctionStmt {
     const OPERATORS = '/^(\-|\+|\*|\/)$/';
     

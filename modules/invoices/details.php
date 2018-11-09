@@ -49,7 +49,6 @@ $defaults     = SystemDefaults::loadValues();
 $taxes        = Taxes::getTaxes ();
 $preferences  = Preferences::getActivePreferences ();
 $products     = Product::select_all ();
-// @formatter:on
 
 $customFields = array ();
 for ($i = 1; $i <= 4; $i++) {
@@ -146,7 +145,6 @@ foreach ($invoiceItems as $key => $value) {
         $invoiceItems[$key]['html'] = $html;
     }
 }
-// @formatter:on
 
 $smarty->assign ("invoice"     , $invoice);
 $smarty->assign ("defaults"    , $defaults);
@@ -163,4 +161,4 @@ $smarty->assign ("lines"       , count ($invoiceItems));
 $smarty->assign ('pageActive'   , 'invoice');
 $smarty->assign ('subPageActive', 'invoice_edit');
 $smarty->assign ('active_tab'   , '#money');
-// @formatter:off
+// @formatter:on

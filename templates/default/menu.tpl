@@ -6,15 +6,15 @@
         <div class="si_wrap">
             <!-- SECTION:help -->
             {$LANG.hello} {$smarty.session.Zend_Auth.username|htmlsafe} |
-            <a href="index.php?module=si_info&amp;view=index">{$LANG.about}</a> |
+            <a href="index.php?module=si_info&view=index">{$LANG.about}</a> |
             <a href="https://simpleinvoices.group" target="_blank" style="color:white;" title="SimpleInvoices Group">{$LANG.help}</a>
 
             <!-- SECTION:auth -->
             {if $config->authentication->enabled == 1} |
                 {if $smarty.session.Zend_Auth.id == null}
-                    <a href="index.php?module=auth&amp;view=login">{$LANG.login}</a>
+                    <a href="index.php?module=auth&view=login">{$LANG.login}</a>
                 {else}
-                    <a href="index.php?module=auth&amp;view=logout">{$LANG.logout}</a>
+                    <a href="index.php?module=auth&view=logout">{$LANG.logout}</a>
                     {if $smarty.session.Zend_Auth.domain_id != 1} | Domain: {$smarty.session.Zend_Auth.domain_id}{/if}
                 {/if}
             {/if}

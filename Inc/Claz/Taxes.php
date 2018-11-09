@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Taxes
+ * @package Inc\Claz
+ */
 class Taxes {
 
     /**
@@ -196,6 +200,71 @@ class Taxes {
             return (($tax['tax_percentage'] / 100) * $unit_price) * $quantity;
         }
         return $tax['tax_percentage'] * $quantity;
+    }
+
+    /**
+     * Select records for display on flexgrid list.
+     * @param string $type 'count' for count of qualified records, all other settings
+     *          for array of qualified rows.
+     * @param string $dir sort order direction ASC/DESC.
+     * @param string $sort field to order by.
+     * @param int $rp report lines per page.
+     * @param int $page being displayed.
+     * @return array/int of rows selected.
+     */
+    function xmlSql($type, $dir, $sort, $rp, $page ) {
+        global $LANG, $pdoDb;
+
+        $count = ($type == 'count');
+        $rows = array();
+        try {
+            if (intval($page) != $page) {
+                $page = 1;
+            }
+
+            if (intval($rp) != $rp) {
+                $rp = 25;
+            }
+
+            if (!$count) {
+                $start = (($page - 1) * $rp);
+                $pdoDb->setLimit($rp, $start);
+            }
+
+            if (!preg_match('/^(asc|desc)$/iD', $dir)) {
+                $dir = 'ASC';
+            }
+
+            if (!in_array($sort, array('tax_id', 'tax_description', 'tax_percentage', 'enabled'))) {
+                $sort = "tax_description";
+            }
+            $pdoDb->setOrderBy(array($sort, $dir));
+
+            $query = isset($_POST['query']) ? $_POST['query'] : null;
+            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
+            if (!empty($qtype) && !empty($query)) {
+                if (in_array($qtype, array('tax_id', 'tax_description', 'tax_percentage'))) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, 'LIKE', $query, false, 'AND'));
+            }
+            }
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+            $pdoDb->setSelectAll(true);
+
+            $ca = new CaseStmt("tax_enabled", "enabled");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $rows = $pdoDb->request('SELECT', 'tax');
+        } catch (PdoDbException $pde) {
+            error_log("Taxed::xmlSql() - Error: " . $pde->getMessage());
+        }
+
+        if ($count) {
+            return count($rows);
+        }
+        return $rows;
     }
 
 }

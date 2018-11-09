@@ -20,7 +20,7 @@
             {$LANG.save}
         </button>
     {/if}
-    <a href="index.php?module=system_defaults&view=manage" class="negative">
+    <a href="index.php?module=system_defaults&amp;view=manage" class="negative">
         <img src="images/common/cross.png" alt=""/>
         {$LANG.cancel}
     </a>

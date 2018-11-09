@@ -58,7 +58,7 @@ class Inventory {
      * @param $page
      * @return array|mixed
      */
-    public static function xml_select($type, $sort, $dir, $rp, $page) {
+    public static function xmlSql($type, $sort, $dir, $rp, $page) {
         global $pdoDb;
 
         $rows = array();
@@ -106,7 +106,7 @@ class Inventory {
 
             $rows = $pdoDb->request("SELECT", "products", "p");
         } catch (PdoDbException $pde) {
-            error_log("Inventory::xml_select() - Error: " . $pde->getMessage());
+            error_log("Inventory::xmlSql() - Error: " . $pde->getMessage());
         }
         return $rows;
     }
@@ -156,13 +156,13 @@ class Inventory {
      * @return array
      */
     public static function check_reorder_level() {
-        $rows = Product::xml_select('count',"","","","");
+        $rows = Product::xmlSql('count',"","","","");
         $result = array();
         $email_message = "";
         foreach ( $rows as $row ) {
             if ($row['quantity'] <= $row['reorder_level']) {
                 $message = "The quantity of Product: $row[description] is " .
-                           siLocal::number($row['quantity']) .
+                           SiLocal::number($row['quantity']) .
                            ", which is equal to or below its reorder level of $row[reorder_level]";
                 $result['row_$row[id]']['message'] = $message;
                 $email_message .= $message . "<br />\n";

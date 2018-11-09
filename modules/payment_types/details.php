@@ -1,10 +1,12 @@
 <?php
+
+use Inc\Claz\PaymentType;
+
 global $LANG, $smarty;
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
 checkLogin();
 
-//TODO
 jsBegin();
 jsFormValidationBegin("frmpost");
 jsValidateRequired("pt_description",$LANG['payment_type_description']);

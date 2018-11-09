@@ -248,16 +248,16 @@ if ($api_request || (!$databaseBuilt || !$databasePopulated)) {
 $smarty->assign('patchCount', $patchCount);
 
 try {
-    $smarty->registerPlugin('modifier', "siLocal_number", array("Inc\Claz\siLocal", "number"));
-    $smarty->registerPlugin('modifier', "siLocal_number_trim", array("Inc\Claz\siLocal", "number_trim"));
-    $smarty->registerPlugin('modifier', "siLocal_date", array("Inc\Claz\siLocal", "date"));
+    $smarty->registerPlugin('modifier', "siLocal_number"     , array("Inc\Claz\SiLocal", "number"));
+    $smarty->registerPlugin('modifier', "siLocal_number_trim", array("Inc\Claz\SiLocal", "number_trim"));
+    $smarty->registerPlugin('modifier', "siLocal_date"       , array("Inc\Claz\SiLocal", "date"));
 
-    $smarty->registerPlugin('modifier', 'htmlout', 'outhtml');
-    $smarty->registerPlugin('modifier', 'htmlsafe', 'htmlsafe');
-    $smarty->registerPlugin('modifier', 'outhtml', 'outhtml');
+    $smarty->registerPlugin('modifier', 'htmlout'  , 'outhtml');
+    $smarty->registerPlugin('modifier', 'htmlsafe' , 'htmlsafe');
+    $smarty->registerPlugin('modifier', 'outhtml'  , 'outhtml');
     $smarty->registerPlugin('modifier', 'urlencode', 'urlencode');
     $smarty->registerPlugin('modifier', 'urlescape', 'urlencode');
-    $smarty->registerPlugin('modifier', 'urlsafe', 'urlsafe');
+    $smarty->registerPlugin('modifier', 'urlsafe'  , 'urlsafe');
 } catch (SmartyException $se) {
     SiError::out('generic', 'SmartyException', $se->getMessage());
 }

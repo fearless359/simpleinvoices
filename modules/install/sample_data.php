@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\ImportJson;
+use Inc\Claz\PdoDbException;
+
 global $pdoDb, $smarty;
 
 $menu = false;

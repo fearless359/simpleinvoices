@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Export
+ * @package Inc\Claz
+ */
 class Export {
     public $biller;
     public $biller_id;
@@ -21,6 +25,9 @@ class Export {
 
     private $download;
 
+    /**
+     * Export constructor.
+     */
     public function __construct() {
         // @formatter:off
         $this->domain_id             = DomainId::get();
@@ -43,11 +50,17 @@ class Export {
         // @formatter:on
     }
 
+    /**
+     * @param $download
+     */
     public function setDownload($download) {
         $this->download = $download;
     }
 
-    public function showData($data) {
+    /**
+     * @param $data
+     */
+    private function showData($data) {
         if ($this->file_name == '' && $this->module == 'payment') {
             $this->file_name = 'payment' . $this->id;
         }
@@ -97,7 +110,10 @@ class Export {
         // @formatter:on
     }
 
-    public function getData() {
+    /**
+     * @return null|string
+     */
+    private function getData() {
         global $config, $smarty, $pdoDb, $siUrl;
 
         // @formatter:off
@@ -273,12 +289,19 @@ class Export {
         return $data;
     }
 
+    /**
+     * Execute the request by getting the data and the showing it.
+     */
     public function execute() {
         $this->showData($this->getData());
     }
 
-    // assign the language and set the locale from the preference
-    public function assignTemplateLanguage($preference) {
+    /**
+     * Assign the language and set the locale from the preference
+     * @param $preference
+     * @return mixed
+     */
+    private function assignTemplateLanguage($preference) {
         global $config;
 
         // get and assign the language file from the preference table

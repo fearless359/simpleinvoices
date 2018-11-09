@@ -4,7 +4,6 @@ namespace Inc\Claz;
 /**
  * UserSecurity class
  * @author Rich
- *
  */
 class UserSecurity {
 

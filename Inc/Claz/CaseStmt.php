@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class CaseStmt
+ * @package Inc\Claz
+ */
 class CaseStmt {
     private $field;
     private $when;

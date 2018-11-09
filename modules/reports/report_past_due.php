@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\CustomersPastDue;
+
 /*
  * Script: report_past_due.php collecting past due information.
  * Author: Richard Rowley

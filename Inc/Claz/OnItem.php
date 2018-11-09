@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class OnItem
+ * @package Inc\Claz
+ */
 class OnItem extends WhereItem {
     const OPERATORS = '/^(=|<>|<|>|<=|>=)$/';
 

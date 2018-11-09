@@ -1,7 +1,15 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class DomainId
+ * @package Inc\Claz
+ */
 class DomainId {
+    /**
+     * @param string $id
+     * @return mixed|string
+     */
     public static function get($id = "") {
         global $auth_session;
 

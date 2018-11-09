@@ -1,12 +1,8 @@
 <?php
 
-use Inc\Claz\DbField;
-use Inc\Claz\DomainId;
 use \Inc\Claz\Extensions;
-use Inc\Claz\PdoDbException;
-use Inc\Claz\WhereItem;
 
-global $LANG, $pdoDb;
+global $LANG;
 
 header("Content-type: text/xml");
 
@@ -18,7 +14,7 @@ $rp    = (isset($_POST['rp'])        ? $_POST['rp']        : 25);
 $page  = (isset($_POST['page'])      ? $_POST['page']      : 1);
 // @formatter:on
 
-$rows = Extensions::xmlSql('', $dir, $sort, $rp, $page);
+$rows = Extensions::xmlSql($dir, $sort, $rp, $page);
 
 $extension_dir = 'extensions';
 $extension_entries = array_diff(scandir($extension_dir), Array(".","..")); // Skip entries starting with a dot from dir list

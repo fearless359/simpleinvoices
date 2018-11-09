@@ -3,6 +3,7 @@
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 
 /*
  * Script: report_sales_by_period.php
@@ -23,10 +24,17 @@ use Inc\Claz\Invoice;
 global $menu, $pdoDb, $smarty;
 
 checkLogin ();
+
+/**
+ * @return string first of month date.
+ */
 function firstOfMonth() {
     return date ( "Y-m-d", strtotime ( '01-01-' . date ( 'Y' ) . ' 00:00:00' ) );
 }
 
+/**
+ * @return string end of month date.
+ */
 function lastOfMonth() {
     return date ( "Y-m-d", strtotime ( '31-12-' . date ( 'Y' ) . ' 00:00:00' ) );
 }
@@ -42,23 +50,26 @@ $invoices              = array();
 $statement             = array ("total" => 0, "owing" => 0, "paid" => 0);
 
 if (isset($_POST['submit'])) {
-    if (isset($_POST['do_not_filter_by_date'])) {
-        $do_not_filter_by_date = "yes";
-    } else {
-        $do_not_filter_by_date = "no";
-        $pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
+    try {
+        if (isset($_POST['do_not_filter_by_date'])) {
+            $do_not_filter_by_date = "yes";
+        } else {
+            $do_not_filter_by_date = "no";
+            $pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
+        }
+
+        if (isset($_POST['show_only_unpaid'])) {
+            $show_only_unpaid = "yes";
+            $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
+        } else {
+            $show_only_unpaid = "no";
+        }
+
+        if (!empty($biller_id)) $pdoDb->addSimpleWhere("biller_id", $biller_id, "AND");
+        if (!empty($customer_id)) $pdoDb->addSimpleWhere("customer_id", $customer_id, "AND");
+    } catch (PdoDbException $pde) {
+        error_log("modules/statement/index.php - error: " . $pde->getMessage());
     }
-
-    if (isset($_POST['show_only_unpaid'])) {
-        $show_only_unpaid = "yes";
-        $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
-    } else {
-        $show_only_unpaid = "no";
-    }
-
-    if (!empty($biller_id)  ) $pdoDb->addSimpleWhere("biller_id"  , $biller_id  , "AND");
-    if (!empty($customer_id)) $pdoDb->addSimpleWhere("customer_id", $customer_id, "AND");
-
     $invoices = Invoice::select_all("", "date", "D");
     foreach ( $invoices as $row ) {
         if ($row ['status'] > 0) {

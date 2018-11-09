@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\Inventory;
+
 /*
  *  Script: manage.php
  *      Manage Invoices page

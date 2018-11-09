@@ -10,11 +10,11 @@ global $smarty, $LANG;
 checkLogin();
 
 $display_block = "<div class='si_message_error'>$LANG[save_payment_failure]</div>";
-$refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=payments&view=manage' />";
+$refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=payments&amp;view=manage' />";
 
 if (isset($_POST['process_payment'])) {
     try {
-        $pymt_amt = siLocal::dbStd($_POST['ac_amount']);
+        $pymt_amt = SiLocal::dbStd($_POST['ac_amount']);
         $result = Payment::insert(array(
             "ac_inv_id"       => $_POST['invoice_id'],
             "ac_amount"       => $pymt_amt,

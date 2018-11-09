@@ -11,24 +11,49 @@ namespace Inc\Claz;
 class ProductAttributes {
 
     /**
-     * Get <i>products_attributes</i> information for a specified <b>id</b>.
+     * Get a specific products_attributes record plus the associated
+     * product_attributes_type name field (assigned field name of "type").
      * @param string $id ID of record to retrieve.
      * @return array Associative array for record retrieved.
      */
     public static function get($id) {
-        global $pdoDb;
+        global $LANG, $pdoDb;
 
-        $rows = array();
+        $row = array();
         try {
-            $pdoDb->setSelectList(array("pa.*", "pat.name AS type"));
+            $pdoDb->setSelectList(array(
+                new DbField('pa.id', 'id'),
+                new DbField('pa.name', 'name'),
+                new DbField('pa.type_id', 'type_id'),
+                new DbField('pa.enabled', 'enabled'),
+                new DbField('pa.visible', 'visible'),
+                new DbField('pat.name', 'type')
+            ));
+
             $pdoDb->addSimpleWhere("pa.id", $id);
-            $oc = new OnClause(new OnItem(false, "pa.type_id", "=", new DbField("pat.id"), false));
+
+            $oc = new OnClause(new OnItem(false, "type_id", "=", new DbField("pat.id"), false));
             $pdoDb->addToJoins(array("LEFT", "products_attribute_type", "pat", $oc));
-            $rows = $pdoDb->request("SELECT", "products_attributes", "pa");
+
+            $ca = new CaseStmt("visible", "wording_for_visible");
+            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $ca = new CaseStmt("enabled", "wording_for_enabled");
+            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $rows = $pdoDb->request("SELECT", "products_attributes", 'pa');
+            if (!empty($rows)) {
+                $row = $rows[0];
+            }
         } catch (PdoDbException $pde) {
             error_log("ProductAttributes::get() - id[$id] error: " . $pde->getMessage());
         }
-        return $rows;
+
+        return $row;
     }
 
     /**
@@ -72,30 +97,6 @@ class ProductAttributes {
     }
 
     /**
-     * Get the value for a specified product attribute and value ID.
-     * @param string $attribute_id Product attribute.
-     * @param string $value_id Product value ID.
-     * @return string If <b>attribute_id</b> is for a type, <i>list</i>, product,
-     *         return the value from the <i>products_values</i> record for the
-     *         specified <b>value_id</b>. Otherwise return the <b>value_id</b> parameter.
-     */
-    public static function getValue($attribute_id, $value_id) {
-        global $pdoDb;
-        $type = self::getType($attribute_id);
-        if ($type == 'list') {
-            try {
-                $pdoDb->addSimpleWhere("id", $value_id);
-                $pdoDb->setSelectList("value");
-                $attribute = $pdoDb->request("SELECT", "products_values");
-                return $attribute['value'];
-            } catch (PdoDbException $pde) {
-                error_log("ProductAttributes::getValue() - attribute_id[$attribute_id] value_id[$value_id] error: " . $pde->getMessage());
-            }
-        }
-        return $value_id;
-    }
-
-    /**
      * Determine if a <b>product_attribute</b> is flagged as visible.
      * @param string $id ID of record to check.
      * @return boolean <b>true</b> if record is visible; <b>false</b> if not.
@@ -116,12 +117,18 @@ class ProductAttributes {
 
     /**
      * Get all <b>products_attributes</b> records
+     * @param bool $enabled set to true to select only enabled records. Otherwise
+     *          set to false to select all records. Note the if not specified,
+     *          false is assumed.
      * @return array Rows from table.
      */
-    public static function getAll() {
+    public static function getAll($enabled=false) {
         global $pdoDb;
         $rows = array();
         try {
+            if ($enabled) {
+                $pdoDb->addSimpleWhere('enabled', ENABLED);
+            }
             $rows = $pdoDb->request("SELECT", "products_attributes");
         } catch (PdoDbException $pde) {
             error_log("ProductAttributes::getAll() - Error: " . $pde->getMessage());
@@ -153,5 +160,39 @@ class ProductAttributes {
             error_log("ProductAttributes::getMatrix() - Error: " . $pde->getMessage());
         }
         return $rows;
+    }
+
+    /**
+     * Insert a new product_attributes record using values from the $_POST global.
+     * Note: DO NOT include the 'id' field in the $_POST as it is auto assigned.
+     * @return int 0 if insert failed, otherwise the 'id' assigned to the new row.
+     */
+    public static function insert() {
+        global $pdoDb;
+
+        $result = 0;
+        try {
+            $result = $pdoDb->request('INSERT', 'products_attributes');
+        } catch (PdoDbException $pde) {
+            error_log('ProductAttributes::insert() - Error: ' . $pde->getMessage());
+        }
+        return $result;
+    }
+
+    /**
+     * Update the product_attributes record from values in $_POST global for
+     * the "id" in the $_GET['id'] global.
+     */
+    public static function update() {
+        global $pdoDb;
+
+        $result = false;
+        try {
+            $pdoDb->addSimpleWhere('id', $_GET['id']);
+            $result = $pdoDb->request('UPDATE', 'products_attributes');
+        } catch (PdoDbException $pde) {
+            error_log('ProductAttributes::update() - Error: ' . $pde->getMessage());
+        }
+        return $result;
     }
 }

@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class OnClause
+ * @package Inc\Claz
+ */
 class OnClause extends WhereClause {
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Product;
+use Inc\Claz\SiLocal;
 use Inc\Claz\SystemDefaults;
 
 header("Content-type: text/xml");
@@ -14,8 +15,8 @@ $page  = (isset($_POST['page']))      ? $_POST['page']      : "1" ;
 $defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults",$defaults);
 
-$products_all = Product::xml_select('', $dir, $sort, $rp, $page);
-$count = Product::xml_select('count',$dir, $sort, $rp, $page);
+$products_all = Product::xmlSql('', $dir, $sort, $rp, $page);
+$count = Product::xmlSql('count',$dir, $sort, $rp, $page);
 
 $xml  = "";
 $xml .= "<rows>";
@@ -29,19 +30,19 @@ foreach ($products_all as $row) {
     $xml .=
         "<cell><![CDATA[
            <a class='index_table' title='" . $LANG['view'] . " " . $row['description'] . "'
-              href='index.php?module=products&view=details&id=" . $row['id'] . "&action=view'>
-                 <img src='images/common/view.png' height='16' border='-5px' padding='-4px' valign='bottom' />
+              href='index.php?module=products&amp;view=details&amp;id=" . $row['id'] . "&amp;action=view'>
+                 <img src='images/common/view.png' height='16' border='-5px' />
                </a>
            <a class='index_table' title='" . $LANG['edit'] . " " . $row['description'] . "'
-              href='index.php?module=products&view=details&id=" . $row['id'] . "&action=edit'>
-                 <img src='images/common/edit.png' height='16' border='-5px' padding='-4px' valign='bottom' />
+              href='index.php?module=products&amp;view=details&amp;id=" . $row['id'] . "&amp;action=edit'>
+                 <img src='images/common/edit.png' height='16' border='-5px' />
                </a>
          ]]></cell>";
     $xml .= "<cell><![CDATA[" . $row['id']                          . "]]></cell>";
     $xml .= "<cell><![CDATA[" . $row['description']                 . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . siLocal::number($row['unit_price']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . SiLocal::number($row['unit_price']) . "]]></cell>";
     if($defaults['inventory'] == '1') {
-        $xml .= "<cell><![CDATA[" . siLocal::number_trim($row['quantity']) . "]]></cell>";
+        $xml .= "<cell><![CDATA[" . SiLocal::number_trim($row['quantity']) . "]]></cell>";
     }
 
     $xml .= "<cell><![CDATA[<img src='$image' alt='$row[enabled]' title='$row[enabled]' />]]></cell>";

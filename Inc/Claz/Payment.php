@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Payment
+ * @package Inc\Claz
+ */
 class Payment {
     /**
      * Count of optionally filtered payments
@@ -210,7 +214,7 @@ class Payment {
                 $payment = null;
             } else {
                 $payment = $rows[0];
-                $payment['date'] = siLocal::date($payment['ac_date']);
+                $payment['date'] = SiLocal::date($payment['ac_date']);
                 $payment['num_payment_recs'] = count($rows);
             }
         } catch (PdoDbException $pde) {

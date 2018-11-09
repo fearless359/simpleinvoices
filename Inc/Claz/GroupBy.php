@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class GroupBy
+ * @package Inc\Claz
+ */
 class GroupBy {
     private $fields;
 

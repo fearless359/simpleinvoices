@@ -13,7 +13,7 @@ function invoice_customer_change(customer_id) {
     $('#gmail_loading').show();
     $.ajax({
         type : 'GET',
-        url : './index.php?module=invoices&view=sub_customer_ajax&id='
+        url : './index.php?module=invoices&amp;view=sub_customer_ajax&amp;id='
                 + customer_id,
         // data: "id: "+product_code,
         dataType : "json",

@@ -6,6 +6,7 @@ use Inc\Claz\CustomFields;
 use Inc\Claz\Eway;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 
@@ -24,7 +25,7 @@ use Inc\Claz\SystemDefaults;
  *     
  * Website:
  *   https://simpleinvoices.group */
-global $config, $LANG, $pdoDb, $smarty;
+global $config, $LANG, $smarty;
 
 // @formatter:off
 checkLogin();
@@ -53,7 +54,7 @@ else {
     $invoice_age = "";
 }
 
-$url_for_pdf = "index.php?module=export&view=pdf&id=" . $invoice['id'];
+$url_for_pdf = "index.php?module=export&amp;view=pdf&id=" . $invoice['id'];
 
 $invoice['url_for_pdf'] = $url_for_pdf;
 
@@ -62,12 +63,18 @@ $customFieldLabels = getCustomFieldLabels(true);
 $customFields = array();
 for($i=1;$i<=4;$i++) {
     $customFields[$i] = CustomFields::showCustomField("invoice_cf$i", $invoice["custom_field$i"],
-                                                        "read"        , 'summary'                 ,
-                                                        ''            , ''                        ,
-                                                        5             , ':');
+                                                      "read", 'summary',
+                                                      '', '',
+                                                      5, ':');
 }
 
-$attributes = $pdoDb->request("SELECT", "products_attributes");
+$attributes = array();
+try {
+    $pdoDb->setSelectAll(true);
+    $attributes = $pdoDb->request("SELECT", "products_attributes");
+} catch (PdoDbException $pde) {
+    error_log("modules/invoices/quick_view.php - error: " . $pde->getMessage());
+}
 
 //Customer accounts sections
 $customerAccount = null;

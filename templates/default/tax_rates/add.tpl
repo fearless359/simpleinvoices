@@ -62,7 +62,7 @@
                 {$LANG.save}
             </button>
 
-            <a href="index.php?module=tax_rates&view=manage" class="negative">
+            <a href="index.php?module=tax_rates&amp;view=manage" class="negative">
                 <img src="images/common/cross.png" alt="" />
                 {$LANG.cancel}
             </a>

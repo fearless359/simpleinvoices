@@ -12,6 +12,14 @@ class CustInfo {
     public $owed;
     public $inv_info;
 
+    /**
+     * CustInfo constructor.
+     * @param $name
+     * @param $billed
+     * @param $paid
+     * @param $owed
+     * @param $inv_info
+     */
     public function __construct($name, $billed, $paid, $owed, $inv_info) {
         $this->name     = $name;
         $this->billed   = $billed;

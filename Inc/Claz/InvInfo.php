@@ -10,7 +10,14 @@ class InvInfo {
     public $billed;
     public $paid;
     public $owed;
-    
+
+    /**
+     * InvInfo constructor.
+     * @param $id
+     * @param $billed
+     * @param $paid
+     * @param $owed
+     */
     public function __construct($id, $billed, $paid, $owed) {
         $this->id     = $id;
         $this->billed = $billed;

@@ -119,7 +119,7 @@ class Having {
 
     /**
      * getter for class property
-     * @return 
+     * @return string
      */
     public function getValue() {
         return $this->value;

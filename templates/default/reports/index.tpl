@@ -254,7 +254,7 @@
 
     <h2>{$LANG.other}</h2>
     <div class="si_toolbar">
-        <a href="index.php?module=reports&amp;view=database_log" class="">
+        <a href="index.php?module=reports&amp;view=report_database_log" class="">
             <img src="images/famfam/database.png" alt=""/>
             {$LANG.database_log}
         </a>

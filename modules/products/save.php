@@ -11,30 +11,20 @@ $refresh_redirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=
 
 $op = (!empty ( $_POST ['op'] ) ? $_POST['op'] : NULL);
 if ($op === 'insert_product') {
-    try {
-        if (isset($_POST['save_product'])) {
-            if (Product::insertProduct() > 0) {
-                $display_message = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
-            } else {
-                $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
-            }
+    if (isset($_POST['save_product'])) {
+        if (Product::insertProduct() > 0) {
+            $display_message = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
+        } else {
+            $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
         }
-    } catch (\Exception $e) {
-        error_log("products save.php - error: " . $e->getMessage());
-        $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
     }
 } else if ($op === 'edit_product') {
-    try {
-        if (isset($_POST ['save_product'])) {
-            if (Product::updateProduct()) {
-                $display_message = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
-            } else {
-                $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
-            }
+    if (isset($_POST ['save_product'])) {
+        if (Product::updateProduct()) {
+            $display_message = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
+        } else {
+            $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
         }
-    } catch (\Exception $e) {
-        error_log("products save.php - error: " . $e->getMessage());
-        $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
     }
 }
 

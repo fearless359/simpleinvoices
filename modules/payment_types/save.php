@@ -1,6 +1,5 @@
 <?php
 
-use Inc\Claz\DomainId;
 use Inc\Claz\PaymentType;
 
 global $smarty;
@@ -14,7 +13,7 @@ $op = !empty($_POST['op']) ? addslashes($_POST['op']) : NULL;
 
 $saved = false;
 if ($op === 'insert_payment_type') {
-    if (PaymentType::insert(DomainId::get(), $_POST['pt_description'], $_POST['pt_enabled']) > 0) $saved = true;
+    if (PaymentType::insert($_POST['pt_description'], $_POST['pt_enabled']) > 0) $saved = true;
 } else if ($op === 'edit_payment_type') {
     if (isset($_POST['save_payment_type'])) {
         $saved = PaymentType::update($_GET['id'], $_POST['pt_description'], $_POST['pt_enabled']);

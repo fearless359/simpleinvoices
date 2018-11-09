@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Invoice
+ * @package Inc\Claz
+ */
 class Invoice {
 
     /**
@@ -494,17 +498,24 @@ class Invoice {
     /**
      * Calculate the number of invoices in the database
      * @return integer Count of invoices in the database
-     * @throws PdoDbException
      */
     public static function count() {
         global $pdoDb;
 
         DomainId::get();
 
-        $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
-        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-        $rows = $pdoDb->request("SELECT", "invoices");
-        return $rows[0]['count'];
+        $count = 0;
+        try {
+            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $rows = $pdoDb->request("SELECT", "invoices");
+            if (!empty($rows)) {
+                $count = $rows[0]['count'];
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::count() - Error: " . $pde->getMessage());
+        }
+        return $count;
     }
 
     /**
@@ -552,7 +563,7 @@ class Invoice {
 
             // @formatter:off
             $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-            $row['date']      = siLocal::date($row['date']);
+            $row['date']      = SiLocal::date($row['date']);
             $row['total']     = self::getInvoiceTotal($row['id']);
             $row['gross']     = self::getInvoiceGross($row['id']);
             $row['paid']      = Payment::calc_invoice_paid($row['id']);
@@ -592,7 +603,7 @@ class Invoice {
             $rows = self::select_all();
             foreach ($rows as $row) {
                 $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-                $row['date'] = siLocal::date($row['date']);
+                $row['date'] = SiLocal::date($row['date']);
                 $row['total'] = self::getInvoiceTotal($row['id']);
                 $row['paid'] = Payment::calc_invoice_paid($row['id']);
 

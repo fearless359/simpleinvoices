@@ -1,12 +1,22 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class NetIncomePayment
+ * @package Inc\Claz
+ */
 class NetIncomePayment
 {
     public $amount;
     public $cflags;
     public $date;
 
+    /**
+     * NetIncomePayment constructor.
+     * @param $amount
+     * @param $date
+     * @param null $cflags
+     */
     public function __construct($amount, $date, $cflags = null)
     {
         $this->amount = $amount;

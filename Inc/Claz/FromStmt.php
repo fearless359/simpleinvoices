@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class FromStmt
+ * @package Inc\Claz
+ */
 class FromStmt {
     private $table;
 

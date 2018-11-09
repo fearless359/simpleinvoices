@@ -12,7 +12,7 @@ class DbField {
 
     /**
      * Class constructor
-     * @param string $field Field name
+     * @param string/int $field Field name or integer constant.
      * @param string $alias (Optional) Alias for this field. Specify only if needed.
      */
     public function __construct($field, $alias="") {
@@ -28,7 +28,11 @@ class DbField {
      * @return string Field name encapsulated in back-tic for use in SQL statement.
      */
     public function genParm($aliasOnly=false) {
-        $result = PdoDb::formatField($this->field);
+        if (is_int($this->field)) {
+            $result = $this->field;
+        } else {
+            $result = PdoDb::formatField($this->field);
+        }
         if (!empty($this->alias)) {
             if ($aliasOnly) {
                 $result = $this->alias;

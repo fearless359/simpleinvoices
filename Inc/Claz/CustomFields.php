@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class CustomFields
+ * @package Inc\Claz
+ */
 class CustomFields {
 
     /**

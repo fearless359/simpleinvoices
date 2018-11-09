@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Cron
+ * @package Inc\Claz
+ */
 class Cron {
 
     /**

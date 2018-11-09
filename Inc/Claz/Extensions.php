@@ -1,11 +1,12 @@
 <?php
+namespace Inc\Claz;
+
 /**
  * @name Extensions.php
  * @author Richard Rowley
  * @license GPL V3 or above
  * Created: 20181106
  */
-namespace Inc\Claz;
 
 /**
  * Class Extensions
@@ -96,15 +97,13 @@ class Extensions
     }
 
     /**
-     * @param string $type if "count", a count of qualified records is return.
-     *          Otherwise array of rows selected per specified constraints.
      * @param string $dir order by direction (ASC/DESC).
      * @param string $sort field to order rows by.
      * @param int $rp Number of rows per page; default is 25.
      * @param int $page Page number that we are displaying.
      * @return array rows selected from the extensions table.
      */
-    public static function xmlSql($type, $dir, $sort, $rp, $page) {
+    public static function xmlSql($dir, $sort, $rp, $page) {
         global $pdoDb;
 
         if (intval($rp) != $rp) {
@@ -114,6 +113,8 @@ class Extensions
         if (intval($page) != $page) {
             $page = 1;
         }
+
+        $start = ($page - 1) * $rp;
 
         if (!preg_match('/^(asc|desc)$/iD', $dir)) {
             $dir = 'ASC';
@@ -126,9 +127,9 @@ class Extensions
         try {
             $pdoDb->setOrderBy(array($sort, $dir));
 
-            $pdoDb->setLimit($rp, $page);
+            $pdoDb->setLimit($rp, $start);
 
-            if (isset($_POST['query']) && isset($_POST['qtype'])) {
+            if (!empty($_POST['query']) && !empty($_POST['qtype'])) {
                 $query = $_POST['query'];
                 $qtype = $_POST['qtype'];
                 if (in_array($qtype, array('id', 'name', 'description'))) {
@@ -138,7 +139,7 @@ class Extensions
             $pdoDb->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
             $pdoDb->addToWhere(new WhereItem(false, 'domain_id', '=', DomainId::get(), true));
 
-            $pdoDb->setSelectList(array('id', 'name', 'description', 'enabled', new DbField('1', 'registered')));
+            $pdoDb->setSelectList(array('id', 'name', 'description', 'enabled', new DbField(1, 'registered')));
 
             $rows = $pdoDb->request('SELECT', 'extensions');
         } catch (PdoDbException $pde) {

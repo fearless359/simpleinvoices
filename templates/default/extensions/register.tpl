@@ -1,7 +1,7 @@
 <h2>About to <i>{$action|htmlsafe}</i>: {$name|htmlsafe}</h2>
 
 {* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
-<form name="frmpost" action="index.php?module=extensions&view=save" method="post" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" action="index.php?module=extensions&amp;view=save" method="post" onsubmit="return frmpost_Validator(this);">
     <div class="si_form">
         <table>
             <tr>
@@ -24,7 +24,7 @@
                 <img class="button_img" src="images/common/tick.png" alt="{$LANG.save}"/>{$LANG.save}
             </button>
 
-            <a href="index.php?module=extensions&view=manage" class="negative">
+            <a href="index.php?module=extensions&amp;view=manage" class="negative">
                 <img src="images/common/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}</a>
         </div>
     </div>

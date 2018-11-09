@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\User;
+
 /*
  *  Script: save.tpl
  *      User save template
@@ -18,7 +21,7 @@ global $LANG, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-$refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=user&view=manage' />";
+$refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=user&amp;view=manage' />";
 $display_block = "<div class='si_message_error'>{$LANG['save_user_failure']}</div>";
 
 // Deal with op and add some basic sanity checking

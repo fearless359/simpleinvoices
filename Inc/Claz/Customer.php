@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Customer
+ * @package Inc\Claz
+ */
 class Customer {
 
     /**
@@ -187,7 +191,7 @@ class Customer {
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
             foreach ($rows as $row) {
                 $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-                $row['date'] = siLocal::date($row['date']);
+                $row['date'] = SiLocal::date($row['date']);
                 $invoices[] = $row;
             }
         } catch (PdoDbException $pde) {

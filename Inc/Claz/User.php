@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class User
+ * @package Inc\Claz
+ */
 class User
 {
     private static $hash_algo = "sha256";
@@ -185,6 +189,91 @@ class User
             return array();
         }
         return (empty($rows) ? array() : $rows[0]);
+    }
+
+    /**
+     * Select records to display in the flexigrid list
+     * @param string $type if 'count', a count of qualified records is returned, otherwise
+     *          array of qualified rows from the table is returned.
+     * @param string $dir
+     * @param string $sort
+     * @param int $rp
+     * @param int $page
+     * @return array|int
+     */
+    public static function xmlSql($type, $dir, $sort, $rp, $page) {
+        global $LANG, $pdoDb;
+
+        $count = ($type == 'count');
+        $result = array();
+        try {
+            $query = isset($_REQUEST['query']) ? $_REQUEST['query'] : "";
+            $qtype = isset($_REQUEST['qtype']) ? $_REQUEST['qtype'] : "";
+            if (!empty($qtype) && !empty($query)) {
+                if (in_array($qtype, array('username', 'email', 'ur.name'))) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", $query, false, "AND"));
+                }
+            }
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+
+            if ($count) {
+                $pdoDb->addToFunctions("count(*) AS count");
+                $rows = $pdoDb->request("SELECT", "user");
+                return $rows[0]['count'];
+            }
+
+            $dir = (!preg_match('/^desc$/iD', $dir) ? "D" : "A");
+            if (!in_array($sort, array('username', 'email', 'role'))) $sort = "username";
+            $pdoDb->setOrderBy(array($sort, $dir));
+
+            if (intval($page) != $page) {
+                $page = 1;
+            }
+
+            if (intval($rp) != $rp) {
+                $rp = 25;
+            }
+            $start = (($page - 1) * $rp);
+            $pdoDb->setLimit($rp, $start);
+
+            $list = array("id", "username", "email", "user_id", "enabled", "ur.name AS role_name");
+            $pdoDb->setSelectList($list);
+
+            $caseStmt = new CaseStmt("u.enabled", "enabled");
+            $caseStmt->addWhen("=", ENABLED, $LANG['enabled']);
+            $caseStmt->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($caseStmt);
+
+            $join = new Join("LEFT", "user_role", "ur");
+            $join->addSimpleItem("ur.id", new DbField("role_id"));
+            $pdoDb->addToJoins($join);
+
+            $rows = $pdoDb->request("SELECT", "user", "u");
+
+            $result = array();
+            foreach ($rows as $row) {
+                if ($row['role_name'] == 'customer') {
+                    $cid = $row['user_id'];
+                    $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
+                    $pdoDb->addSimpleWhere("id", $cid);
+                    $cust = $pdoDb->request("SELECT", "customers");
+                    $uid = $cid . " - " . (empty($cust[0]['name']) ? "Unknown Customer" : $cust[0]['name']);
+                } else if ($row['role_name'] == 'biller') {
+                    $bid = $row['user_id'];
+                    $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
+                    $pdoDb->addSimpleWhere("id", $bid);
+                    $bilr = $pdoDb->request("SELECT", "biller");
+                    $uid = $bid . " - " . (empty($bilr[0]['name']) ? "Unknown Biller" : $bilr[0]['name']);
+                } else {
+                    $uid = "0 - Standard User";
+                }
+                $row['uid'] = $uid;
+                $result[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("User::xmlSql() - error: " . $pde->getMessage());
+        }
+        return ($count ? 0 : $result);
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\SiLocal;
 
 header("Content-type: text/xml");
@@ -22,11 +23,15 @@ $qtype  = (isset($_POST['qtype'])    ) ? $_POST['qtype']     : null;
 $read_only = ($auth_session->role_name == 'customer');
 
 if (!empty($having)) {
-    $pdoDb->setHavings(Invoice::buildHavings($having));
+    try {
+        $pdoDb->setHavings(Invoice::buildHavings($having));
+    } catch (PdoDbException $pde) {
+        error_log("modules/invoices/xml.php - error: " . $pde->getMessage());
+    }
 }
 
 // @formatter:off
-$invoices = Invoice::select_all(''     , $sort, $dir, $rp, $page, $qtype, $query);
+$invoices = Invoice::select_all('', $sort, $dir, $rp, $page, $qtype, $query);
 $invoice_count = count(Invoice::select_all('count', $sort, $dir, $rp, $page, $qtype, $query));
 
 $xml  = "";
@@ -42,7 +47,7 @@ foreach ($invoices as $row) {
                 $LANG['quick_view_tooltip'] . " " .
                 $row['preference'] . " " .
                 $row['index_id'] .
-                "' href='index.php?module=invoices&view=quick_view&id=" .
+                "' href='index.php?module=invoices&amp;view=quick_view&amp;id=" .
                 $row['id'] . "'>" .
                 "<img src='images/common/view.png' class='action' />" .
             "</a>";
@@ -52,7 +57,7 @@ foreach ($invoices as $row) {
                 $LANG['edit_view_tooltip'] . " " .
                 $row['preference'] . " " .
                 $row['index_id'] .
-                "' href='index.php?module=invoices&view=details&id=" .
+                "' href='index.php?module=invoices&amp;view=details&amp;id=" .
                 $row['id'] .
                 "&action=view'><img src='images/common/edit.png' class='action' />" .
             "</a>";
@@ -60,7 +65,7 @@ foreach ($invoices as $row) {
     $xml .= "<!--2 PRINT VIEW -->" .
              "<a class='index_table' title='" .
                 $LANG['print_preview_tooltip'] . " " . $row['preference'] . " " . $row['index_id'] .
-                "' href='index.php?module=export&view=invoice&id=" . $row['id'] . "&format=print'>".
+                "' href='index.php?module=export&amp;view=invoice&amp;id=" . $row['id'] . "&amp;format=print'>".
                 "<img src='images/common/printer.png' class='action' />" .
              "</a>" .
              "<!--3 EXPORT TO PDF DIALOG -->" .
@@ -81,7 +86,7 @@ foreach ($invoices as $row) {
                             $LANG['process_payment_for'] . " " .
                             $row['preference'] . " " .
                             $row['index_id'] .
-                            "' class='index_table' href='index.php?module=payments&view=process&id=" .
+                            "' class='index_table' href='index.php?module=payments&amp;view=process&amp;id=" .
                             $row['id'] .
                             "&op=pay_selected_invoice'>" .
                             "<img src='images/common/money_dollar.png' class='action' />" .
@@ -93,7 +98,7 @@ foreach ($invoices as $row) {
                             $LANG['process_payment_for'] . " " .
                             $row['preference'] . " " .
                             $row['index_id'] .
-                            "' class='index_table' href='index.php?module=payments&view=details&ac_inv_id=" .
+                            "' class='index_table' href='index.php?module=payments&amp;view=details&amp;ac_inv_id=" .
                             $row['id'] .
                             "&action=view'>" .
                             "<img src='images/common/money_dollar.png' class='action' />" .
@@ -107,7 +112,7 @@ foreach ($invoices as $row) {
                         $LANG['email'] . " " .
                         $row['preference'] . " " .
                         $row['index_id'] .
-                        "' class='index_table' href='index.php?module=invoices&view=email&stage=1&id=" .
+                        "' class='index_table' href='index.php?module=invoices&amp;view=email&amp;stage=1&amp;id=" .
                         $row['id'] . "'>" .
                         "<img src='images/common/mail-message-new.png' class='action' />" .
                     "</a>";
@@ -116,10 +121,10 @@ foreach ($invoices as $row) {
     $xml .= "<cell><![CDATA[" . $row['index_name']                     . "]]></cell>";
     $xml .= "<cell><![CDATA[" . $row['biller']                         . "]]></cell>";
     $xml .= "<cell><![CDATA[" . $row['customer']                       . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . siLocal::date($row['date'])            . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . siLocal::number($row['invoice_total']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . SiLocal::date($row['date'])            . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . SiLocal::number($row['invoice_total']) . "]]></cell>";
     if ($row['status']) {
-        $xml .= "<cell><![CDATA[" . siLocal::number($row['owing']) . "]]></cell>";
+        $xml .= "<cell><![CDATA[" . SiLocal::number($row['owing']) . "]]></cell>";
         $xml .= "<cell><![CDATA[" . $row['aging']                  . "]]></cell>";
     } else {
         $xml .= "<cell><![CDATA[&nbsp;]]></cell>";
@@ -130,5 +135,5 @@ foreach ($invoices as $row) {
 }
 $xml .= "</rows>";
 // @formatter:on
-
+error_log("xml[$xml]");
 echo $xml;

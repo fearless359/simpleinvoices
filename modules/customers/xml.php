@@ -31,13 +31,13 @@ foreach ($customers as $row) {
     $xml .= "<row id='{$row['CID']}'>";
     $xml .=
         "<cell><![CDATA[" .
-          "<a class='index_table' title='$vname' href='index.php?module=customers&view=details&id={$row['CID']}&action=view'>" .
+          "<a class='index_table' title='$vname' href='index.php?module=customers&amp;view=details&amp;id={$row['CID']}&amp;action=view'>" .
             "<img src='images/common/view.png' class='action' />" .
           "</a>" .
-          "<a class='index_table' title='$ename' href='index.php?module=customers&view=details&id={$row['CID']}&action=edit'>".
+          "<a class='index_table' title='$ename' href='index.php?module=customers&amp;view=details&amp;id={$row['CID']}&amp;action=edit'>".
             "<img src='images/common/edit.png' class='action' />" .
           "</a>" .
-          "<a class='index_table' title='$defaultinv' href='index.php?module=invoices&view=usedefault&customer_id={$row['CID']}&action=view'>" .
+          "<a class='index_table' title='$defaultinv' href='index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['CID']}&amp;action=view'>" .
             "<img src='images/common/add.png' class='action' />" .
           "</a>" .
     "]]></cell>";
@@ -48,9 +48,9 @@ foreach ($customers as $row) {
                               "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['last_inv_id']}'>{$row['last_invoice']}" .
                            "</a>" .
                     "]]></cell>";
-    $xml .= "<cell><![CDATA[" . siLocal::number($row['customer_total']) . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . siLocal::number($row['paid']) . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . siLocal::number($row['owing']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . SiLocal::number($row['customer_total']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . SiLocal::number($row['paid']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . SiLocal::number($row['owing']) . "]]></cell>";
     $xml .= "<cell><![CDATA[<img src='$image' alt='{$row['enabled_txt']}' title='{$row['enabled_txt']}' />]]></cell>";
     $xml .= "</row>";
 }

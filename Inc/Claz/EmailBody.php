@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class EmailBody
+ * @package Inc\Claz
+ */
 class EmailBody
 {
     public $email_type;
@@ -8,6 +12,9 @@ class EmailBody
     public $invoice_name;
     public $biller_name;
 
+    /**
+     * @return string
+     */
     public function create() {
         switch ($this->email_type) {
             case "cron_payment":

@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\PaymentType;
+
 global $smarty;
 
 // Stop the direct browsing to this file.

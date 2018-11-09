@@ -1,12 +1,12 @@
 <?php
+namespace Inc\Claz;
+
 /**
  * @name Log.php
  * @author Richard Rowley
  * @license GPL V3 or above
  * Created: 20181009
  */
-
-namespace Inc\Claz;
 
 /**
  * Class Log
@@ -19,6 +19,11 @@ class Log
     private static $file = null;
     private static $path = null;
 
+    /**
+     * @param string $level
+     * @param string $folder
+     * @param string $file
+     */
     public static function open(string $level = "EMERG", string $folder = "tmp/log/", string $file = "si.log") {
         // Create log file if it doesn't exist
         if (preg_match('/^.*\/$/', $folder) == 1) {

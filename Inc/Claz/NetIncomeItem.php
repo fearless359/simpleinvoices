@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class NetIncomeItem
+ * @package Inc\Claz
+ */
 class NetIncomeItem
 {
     public $amount;
@@ -8,6 +12,12 @@ class NetIncomeItem
     public $cflags;
     public $non_inc_amt;
 
+    /**
+     * NetIncomeItem constructor.
+     * @param $amount
+     * @param $description
+     * @param $cflags
+     */
     public function __construct($amount, $description, $cflags)
     {
         $this->amount = $amount;

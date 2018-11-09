@@ -18,7 +18,6 @@
 //stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-
 jsBegin();
 jsFormValidationBegin("frmpost");
 jsTextValidation("biller_id","Biller Name",1,1000000);
@@ -32,6 +31,5 @@ jsFormValidationEnd();
 jsEnd();
 
 $pageActive = "invoices";
-if ($pageActive) {}  // eliminate unused variable warning.
 
 include('./modules/invoices/invoice.php');

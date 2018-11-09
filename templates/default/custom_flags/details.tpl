@@ -40,7 +40,7 @@
                 <img src="images/famfam/report_edit.png" alt=""/>
                 {$LANG.edit}
             </a>
-            <a href="index.php?module=custom_flags&view=manage" class="negative">
+            <a href="index.php?module=custom_flags&amp;view=manage" class="negative">
                 <img src="images/common/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>

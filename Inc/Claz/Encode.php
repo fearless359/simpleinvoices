@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class Encode
+ * @package Inc\Claz
+ */
 class Encode
 {
     /**
@@ -70,10 +74,10 @@ class Encode
 	public static function json($data, $format='plain')
 	{
 		if( $format=='pretty' ) {
-            $message = Zend_Json::encode($data);
-            return Zend_Json::prettyPrint($message, array("format" => "html"));
+            $message = \Zend_Json::encode($data);
+            return \Zend_Json::prettyPrint($message, array("format" => "html"));
         } else {
-            return Zend_Json::encode($data);
+            return \Zend_Json::encode($data);
         }
 	}
 

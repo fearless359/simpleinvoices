@@ -137,22 +137,22 @@ foreach ($payments as $row) {
     $xml .= 
         "<cell><![CDATA[
            <a class='index_table' title='$LANG[view] $row[index_name]'
-              href='index.php?module=payments&view=details&id=$row[id]&action=view'>
-             <img src='images/common/view.png' height='16' border='-5px' padding='-4px' valign='bottom' />
+              href='index.php?module=payments&amp;view=details&amp;id=$row[id]&amp;action=view'>
+             <img src='images/common/view.png' height='16' border='-5px' />
            </a>
            <a class='index_table' title='$LANG[print_preview_tooltip] $row[id]'
-              href='index.php?module=payments&view=print&id=$row[id]'>
-             <img src='images/common/printer.png' height='16' border='-5px' padding='-4px' valign='bottom' />
+              href='index.php?module=payments&amp;view=print&amp;id=$row[id]'>
+             <img src='images/common/printer.png' height='16' border='-5px' />
            </a>
          ]]></cell>";
     $xml .= "<cell><![CDATA[$row[id]]]></cell>";
     $xml .= "<cell><![CDATA[$row[index_name]]]></cell>";
     $xml .= "<cell><![CDATA[$row[cname]]]></cell>";
     $xml .= "<cell><![CDATA[$row[bname]]]></cell>";
-    $xml .= "<cell><![CDATA[".siLocal::number($row['ac_amount'])."]]></cell>";
+    $xml .= "<cell><![CDATA[".SiLocal::number($row['ac_amount'])."]]></cell>";
     $xml .= "<cell><![CDATA[$notes]]></cell>";
     $xml .= "<cell><![CDATA[$row[type]]]></cell>";
-    $xml .= "<cell><![CDATA[".siLocal::date($row['date'])."]]></cell>";
+    $xml .= "<cell><![CDATA[".SiLocal::date($row['date'])."]]></cell>";
     $xml .= "</row>";
 }
 $xml .= "</rows>";

@@ -100,10 +100,10 @@ if ($_POST['action'] == "insert" ) {
                     if ($_POST["quantity$i"] != null) {
                         //new line item added in edit page
                         $item = (isset($_POST["line_item$i"]) ? $_POST["line_item$i"] : "");
-                        $qty = (isset($_POST["quantity$i"]) ? siLocal::dbStd($_POST["quantity$i"]) : "");
+                        $qty = (isset($_POST["quantity$i"]) ? SiLocal::dbStd($_POST["quantity$i"]) : "");
                         $product = (isset($_POST["products$i"]) ? $_POST["products$i"] : "");
                         $desc = (isset($_POST["description$i"]) ? $_POST["description$i"] : "");
-                        $price = (isset($_POST["unit_price$i"]) ? siLocal::dbStd($_POST["unit_price$i"]) : "");
+                        $price = (isset($_POST["unit_price$i"]) ? SiLocal::dbStd($_POST["unit_price$i"]) : "");
                         $attr = (isset($_POST["attribute$i"]) ? $_POST["attribute$i"] : "");
                         $tax_ids = (isset($_POST["tax_id"][$i]) ? $_POST["tax_id"][$i] : "");
 

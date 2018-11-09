@@ -1,4 +1,8 @@
 <?php
+
+use Inc\Claz\ProductAttributes;
+use Inc\Claz\ProductValues;
+
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
@@ -12,14 +16,15 @@ if (!empty($_POST['value'])) {
 #get the invoice id
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM ".TB_PREFIX."products_values WHERE id = :id";
-$sth =  dbQuery($sql, ':id', $id);
-$product_value = $sth->fetch();
-$smarty->assign("product_value", $product_value);
+$product_value = ProductValues::get($id);
 
-$sql_attr_sel = "SELECT * FROM ".TB_PREFIX."products_attributes WHERE id = ".$product_value['id'];
-$sth_attr_sel =  dbQuery($sql_attr_sel);
-$product_attribute = $sth_attr_sel->fetch();
+$product_attribute = ProductAttributes::get($product_value['attribute_id']);
+
+//$sql_attr_sel = "SELECT * FROM ".TB_PREFIX."products_attributes WHERE id = ".$product_value['id'];
+//$sth_attr_sel =  dbQuery($sql_attr_sel);
+//$product_attribute = $sth_attr_sel->fetch();
+
+$smarty->assign("product_value", $product_value);
 $smarty->assign("product_attribute", $product_attribute['name']);
 
 $pageActive = "product_value_manage";

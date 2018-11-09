@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+/**
+ * Class PaymentType
+ * @package Inc\Claz
+ */
 class PaymentType {
     /**
      * Get ID for payment type and set the type up if it doesn't exist.
@@ -49,7 +53,7 @@ class PaymentType {
             $pdoDb->addSimpleWhere('s.domain_id', DomainId::get());
 
             $jn = new Join("LEFT", 'payment_types', 'p');
-            $jn->addSimpleItem('p.pd_id', new DbField('s.value'), 'AND');
+            $jn->addSimpleItem('p.pt_id', new DbField('s.value'), 'AND');
             $jn->addSimpleItem('p.domain_id', new DbField('s.domain_id'));
             $pdoDb->addToJoins($jn);
 
@@ -122,6 +126,61 @@ class PaymentType {
             $rows = $pdoDb->request("SELECT", "payment_types");
         } catch (PdoDbException $pde) {
             error_log("PaymentType::select_all() - active[$active] - error: " . $pde->getMessage());
+        }
+        return $rows;
+    }
+
+    /**
+     * Get information for grid list.
+     * @param string $type
+     * @param string $dir
+     * @param string $sort
+     * @param int $rp
+     * @param int $page
+     * @return array|mixed
+     */
+    public static function xmlSql($type, $dir, $sort, $rp, $page) {
+        global $pdoDb, $LANG;
+
+        $rows = array();
+        try {
+            $query = isset($_POST['query']) ? $_POST['query'] : null;
+            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
+            if (!(empty($qtype) || empty($query))) {
+                if (in_array($qtype, array('pt_id', 'pt_description'))) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
+                }
+            }
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+
+            if ($type == "count") {
+                $pdoDb->addToFunctions("COUNT(*) AS count");
+                $rows = $pdoDb->request("SELECT", "payment_types");
+                return $rows[0]['count'];
+            }
+
+            // Check that the sort field is OK
+            if (!preg_match('/^(asc|desc|A|D)$/iD', $dir)) $dir = 'A';
+            if (!in_array($sort, array('pt_id', 'pt_description', 'enabled'))) {
+                $sort = "pt_description";
+                $dir = "A";
+            }
+            $pdoDb->setOrderBy(array($sort, $dir));
+
+            if (intval($rp) != $rp) $rp = 25;
+            $start = (($page - 1) * $rp);
+            $pdoDb->setLimit($rp, $start);
+
+            $oc = new CaseStmt("pt_enabled", "enabled");
+            $oc->addWhen("=", ENABLED, $LANG['enabled']);
+            $oc->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($oc);
+
+            $pdoDb->setSelectAll(true);
+
+            $rows = $pdoDb->request("SELECT", "payment_types");
+        } catch (PdoDbException $pde) {
+            error_log("modules/payment_types/xml.php - error: " . $pde->getMessage());
         }
         return $rows;
     }

@@ -7,6 +7,10 @@ namespace Inc\Claz;
  * Time: 8:16 AM
  */
 
+/**
+ * Class SqlPatchManager
+ * @package Inc\Claz
+ */
 class SqlPatchManager
 {
     // Note that array is zero based but patch ref is 1 based.

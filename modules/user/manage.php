@@ -1,4 +1,7 @@
 <?php
+
+use Inc\Claz\User;
+
 /*
  *  Script: manage.php
  *      Manage users page

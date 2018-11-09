@@ -16,15 +16,15 @@ $(function()
 
 for (var x = 0; x <= {/literal}{$dynamic_line_items}{literal}; x++)
    {
-        $('.product_select'+x).chainSelect('#attr1-'+x,'./index.php?module=invoices&view=ajax&search=attr1');
-        $('.product_select'+x).chainSelect('#attr2-'+x,'./index.php?module=invoices&view=ajax&search=attr2');
-/*        $('#attr1-'+x).chainSelect('#attr2-'+x,'./index.php?module=invoices&view=ajax&search=attr2');
-        $('.product_select'+x).chainSelect('#attr3-'+x,'./index.php?module=invoices&view=ajax&search=attr3');
-        $('#attr2-'+x).chainSelect('#attr3-'+x,'./index.php?module=invoices&view=ajax&search=attr3');
+        $('.product_select'+x).chainSelect('#attr1-'+x,'./index.php?module=invoices&amp;view=ajax&amp;search=attr1');
+        $('.product_select'+x).chainSelect('#attr2-'+x,'./index.php?module=invoices&amp;view=ajax&amp;search=attr2');
+/*        $('#attr1-'+x).chainSelect('#attr2-'+x,'./index.php?module=invoices&amp;view=ajax&amp;search=attr2');
+        $('.product_select'+x).chainSelect('#attr3-'+x,'./index.php?module=invoices&amp;view=ajax&amp;search=attr3');
+        $('#attr2-'+x).chainSelect('#attr3-'+x,'./index.php?module=invoices&amp;view=ajax&amp;search=attr3');
 */
 {/literal} 
 {if $number_of_attributes == "3"}
-        $('.product_select'+x).chainSelect('#attr3-'+x,'./index.php?module=invoices&view=ajax&search=attr3');
+        $('.product_select'+x).chainSelect('#attr3-'+x,'./index.php?module=invoices&amp;view=ajax&amp;search=attr3');
 {/if}
 {literal}
 	}
@@ -34,7 +34,7 @@ for (var x = 0; x <= {/literal}{$dynamic_line_items}{literal}; x++)
 {/literal}
 
 {* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
-<form name="frmpost" action="index.php?module=invoices&view=save" method="post" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" action="index.php?module=invoices&amp;view=save" method="post" onsubmit="return frmpost_Validator(this);">
 
 <h3>{$LANG.inv} {$LANG.inv_itemized}</h3>
 

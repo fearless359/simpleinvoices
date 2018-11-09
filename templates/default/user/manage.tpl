@@ -1,15 +1,13 @@
 {*
-/*
-* Script: manage.tpl
-* 	Biller manage template
-*
-*
-* License:
-*	 GPL v3 or above
-*/
-*}
+ * Script: manage.tpl
+ * 	Biller manage template
+ *
+ *
+ * License:
+ *	 GPL v3 or above
+ *}
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=user&view=add" class="">
+    <a href="index.php?module=user&amp;view=add" class="">
         <img src="images/common/add.png" alt=""/>
         {$LANG.user_add}
     </a>
@@ -20,5 +18,4 @@
 {else}
     <table id="manageGrid" style="display:none"></table>
     {include file='modules/user/manage.js.php' LANG=$LANG}
-
 {/if}

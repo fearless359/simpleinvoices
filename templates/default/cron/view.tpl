@@ -3,7 +3,7 @@
   <tr>
     <td class="details_screen">{$LANG.invoice}</td>
     <td>
-      <a href="index.php?module=invoices&view=quick_view&id={$cron.invoice_id|htmlsafe}">
+      <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlsafe}">
         {$cron.index_name|htmlsafe}
       </a>
     </td>
@@ -44,7 +44,7 @@
       <img class="button_img" src="images/famfam/report_edit.png" alt="" />
       {$LANG.edit}
     </button>
-    <a href="index.php?module=cron&view=manage" class="negative">
+    <a href="index.php?module=cron&amp;view=manage" class="negative">
       <img src="images/common/cross.png" alt="" />
       {$LANG.cancel}
     </a>

@@ -2,7 +2,8 @@
 namespace Inc\Claz;
 
 /**
- * @class CustomFlags
+ * Class CustomFlags
+ * @package Inc\Claz
  */
 class CustomFlags
 {
