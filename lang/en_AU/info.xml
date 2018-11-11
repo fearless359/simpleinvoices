@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<langfile version="1.0.0" type="language">
+	<name>Australian</name>
+	<shortname>en_AU</shortname>
+	<englishname>AU</englishname>
+	<version>1.0.0</version>
+	<creationDate>2004-09-20</creationDate>
+	<author>Matt Gilchrist</author>
+	<authorEmail>matt@it4doctors.com.au</authorEmail>
+</langfile>
