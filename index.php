@@ -59,6 +59,10 @@ $smarty->assign("config"   , $config);
 $smarty->assign("module"   , $module);
 $smarty->assign("view"     , $view);
 $smarty->assign("siUrl"    , $siUrl);
+
+// For showing total owed all invoices
+$TotalAllOwed = new TotalOwing();
+
 $smarty->assign("LANG"     , $LANG);
 $smarty->assign("enabled"  , array($LANG['disabled'],$LANG['enabled']));
 
@@ -382,6 +386,9 @@ Log::out("index.php - After main.tpl", Zend_Log::DEBUG);
 // **********************************************************
 // Main: Custom layout - END
 // **********************************************************
+
+// Helps show total owed all invoices
+$smarty->assign("TotalOfAllOwed",siLocal::Currency(TotalOwing::$Owing_total));
 
 // **********************************************************
 // Smarty template load - START
