@@ -1124,4 +1124,34 @@ class Invoice {
         return true;
     }
 
+     /**
+     * Calculate total owing for the customer
+     * 
+     * TODO: Add better comments!!.
+     */
+
+      private static function select_all_owing()
+      {
+         global $config;
+         $domain_id = domain_id::get($this->domain_id);
+                $sql ="SELECT sum(owing) as Sum_Owing FROM
+               (Select
+                    (SELECT coalesce(SUM(ii.total), 0) FROM " .
+                          TB_PREFIX . "invoice_items ii WHERE ii.invoice_id = iv.id AND ii.domain_id = " . $domain_id . ") AS invoice_total,
+                    (SELECT coalesce(SUM(ac_amount), 0) FROM " .
+                          TB_PREFIX . "payment ap WHERE ap.ac_inv_id = iv.id AND ap.domain_id = " . $domain_id . ") AS INV_PAID,
+                    (SELECT invoice_total - INV_PAID) As owing
+                  FROM " . TB_PREFIX . "invoices iv
+                     LEFT JOIN " . TB_PREFIX . "biller b       ON (b.id = iv.biller_id           AND b.domain_id  = iv.domain_id)
+                     LEFT JOIN " . TB_PREFIX . "customers c    ON (c.id = iv.customer_id         AND c.domain_id  = iv.domain_id)
+                     LEFT JOIN " . TB_PREFIX . "preferences pf ON (pf.pref_id = iv.preference_id AND pf.domain_id = iv.domain_id)
+                    WHERE iv.domain_id = " . $domain_id . "
+                    GROUP BY
+                         iv.id
+                    HAVING owing > 0)
+                    As Source";
+             $sth =  dbQuery($sql);
+             $result = $sth->fetch();
+        return $result['Sum_Owing'];
+    }
 }
