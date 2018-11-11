@@ -58,6 +58,9 @@ table.center {
     margin: 0 auto;
 }
 
+.bold {
+    font-weight: bold;
+}
 table.left {
   float:left;
   margin-left:auto;
@@ -679,7 +682,7 @@ a.cluetip:hover img {
 .si_form tbody th {
     text-align: left;
     white-space: nowrap;
-    font-weight: normal;
+    font-weight: bold;
     color: #777;
     padding-left: 5px;
     padding-right: 7px;

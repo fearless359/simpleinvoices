@@ -95,8 +95,6 @@
                 <li><a class="active active_subpage" href="#">{$LANG.payments_filtered} {$preference.pref_inv_wording|htmlsafe} {$smarty.get.id|htmlsafe}</a></li>{/if}
             {if $subPageActive == "payment_filter_customer"}
                 <li><a class="active active_subpage" href="#">{$LANG.payments_filtered_customer} '{$customer.name}'</a></li>{/if}
-            <!-- SECTION:sales_report -->
-            <li><a {if $pageActive== "report_sale"}class="active" {/if}href="index.php?module=reports&amp;view=report_sales_total">{$LANG.sales_report}</a></li>
         </ul>
     </div>
     <!-- SECTION:people -->

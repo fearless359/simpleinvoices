@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-11-05 - <b>2018.3.0</b>
+            <ul>
+                <li>Changed to use namespace for class autoloading and add phpunit test support.</li>
+            </ul>
+        </li>
         <li>2018-10-27 - <b>2018.2.5</b>
             <ul>
                 <li>Fixed issue of default invoice values not populating the new invoice.</li>

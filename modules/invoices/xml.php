@@ -43,23 +43,15 @@ foreach ($invoices as $row) {
     $xml .= "<row id='" . $row['id'] . "'>";
     $xml .=
         "<cell><![CDATA[" .
-            "<a class='index_table' title='" .
-                $LANG['quick_view_tooltip'] . " " .
-                $row['preference'] . " " .
-                $row['index_id'] .
-                "' href='index.php?module=invoices&amp;view=quick_view&amp;id=" .
-                $row['id'] . "'>" .
+            "<a class='index_table' title='{$LANG['quick_view_tooltip']} {$row['preference']} {$row['index_id']}' " .
+               "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}'>" .
                 "<img src='images/common/view.png' class='action' />" .
             "</a>";
     if (!$read_only) {
         $xml .=
-            "<a class='index_table' title='" .
-                $LANG['edit_view_tooltip'] . " " .
-                $row['preference'] . " " .
-                $row['index_id'] .
-                "' href='index.php?module=invoices&amp;view=details&amp;id=" .
-                $row['id'] .
-                "&action=view'><img src='images/common/edit.png' class='action' />" .
+            "<a class='index_table' title='{$LANG['edit_view_tooltip']} {$row['preference']} {$row['index_id']}' " .
+               "href='index.php?module=invoices&amp;view=details&amp;id={$row['id']}&amp;action=view'>" .
+                "<img src='images/common/edit.png' class='action' />" .
             "</a>";
     }
     $xml .= "<!--2 PRINT VIEW -->" .
@@ -69,38 +61,26 @@ foreach ($invoices as $row) {
                 "<img src='images/common/printer.png' class='action' />" .
              "</a>" .
              "<!--3 EXPORT TO PDF DIALOG -->" .
-             "<a title='" .
-                $LANG['export_tooltip'] . " " .
-                $row['preference'] . " " .
-                $row['index_id'] . "' class='invoice_export_dialog' href='#' rel='{$row['id']}' " .
-                                   "data_spreadsheet='{$config->export->spreadsheet}' " .
-                                   "data_wordprocessor='{$config->export->wordprocessor}'>" .
-                                   "<img src='images/common/page_white_acrobat.png' class='action' />" .
-                                   "</a>";
+             "<a title='{$LANG['export_tooltip']} {$row['preference']} {$row['index_id']}' " .
+                "class='invoice_export_dialog' href='#' rel='{$row['id']}' " .
+                "data_spreadsheet='{$config->export->spreadsheet}' " .
+                "data_wordprocessor='{$config->export->wordprocessor}'>" .
+                 "<img src='images/common/page_white_acrobat.png' class='action' />" .
+             "</a>";
     if (!$read_only) {
         // Alternatively: The Owing column can have the link on the amount instead of the payment icon code here
         if ($row['status'] && $row['owing'] > 0) {
             // Real Invoice Has Owing - Process payment
             $xml .= "<!--6 Payment -->" .
-                        "<a title='" .
-                            $LANG['process_payment_for'] . " " .
-                            $row['preference'] . " " .
-                            $row['index_id'] .
-                            "' class='index_table' href='index.php?module=payments&amp;view=process&amp;id=" .
-                            $row['id'] .
-                            "&op=pay_selected_invoice'>" .
+                        "<a title='{$LANG['process_payment_for']} {$row['preference']} {$row['index_id']}' " .
+                           "class='index_table' href='index.php?module=payments&amp;view=process&amp;id={$row['id']}&amp;op=pay_selected_invoice'>" .
                             "<img src='images/common/money_dollar.png' class='action' />" .
                         "</a>";
         } elseif ($row['status']) {
             // Real Invoice Payment Details if not Owing (get different color payment icon)
             $xml .= "<!--6 Payment -->" .
-                        "<a title='" .
-                            $LANG['process_payment_for'] . " " .
-                            $row['preference'] . " " .
-                            $row['index_id'] .
-                            "' class='index_table' href='index.php?module=payments&amp;view=details&amp;ac_inv_id=" .
-                            $row['id'] .
-                            "&action=view'>" .
+                        "<a title='{$LANG['process_payment_for']} {$row['preference']} {$row['index_id']}' " .
+                           "class='index_table' href='index.php?module=payments&amp;view=details&amp;ac_inv_id={$row['id']}&amp;action=view'>" .
                             "<img src='images/common/money_dollar.png' class='action' />" .
                         "</a>";
         } else {
@@ -108,12 +88,8 @@ foreach ($invoices as $row) {
             $xml .= "<!--6 Payment --><img src='images/common/money_dollar.png' class='action' />";
         }
         $xml .= "<!--7 Email -->" .
-                    "<a title='" .
-                        $LANG['email'] . " " .
-                        $row['preference'] . " " .
-                        $row['index_id'] .
-                        "' class='index_table' href='index.php?module=invoices&amp;view=email&amp;stage=1&amp;id=" .
-                        $row['id'] . "'>" .
+                    "<a title='{$LANG['email']} {$row['preference']} {$row['index_id']}' " .
+                       "class='index_table' href='index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$row['id']}'>" .
                         "<img src='images/common/mail-message-new.png' class='action' />" .
                     "</a>";
     }
@@ -135,5 +111,5 @@ foreach ($invoices as $row) {
 }
 $xml .= "</rows>";
 // @formatter:on
-error_log("xml[$xml]");
+
 echo $xml;

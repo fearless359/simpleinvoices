@@ -22,7 +22,7 @@ class NetIncomeReport
         $domain_id = DomainId::get($this->domain_id);
 
         if (isset($exclude_custom_flag_items) && $exclude_custom_flag_items > 0) {
-            // Make a regex string that tests for "0" in the specified position
+            // Make a regex string that Tests for "0" in the specified position
             $flgs = array('.', '.', '.', '.', '.', '.', '.', '.', '.', '.');
             $flgs[$exclude_custom_flag_items - 1] = '0';
             $pattern = '^';

@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Customer;
+use Inc\Claz\SiLocal;
 
 global $LANG;
 

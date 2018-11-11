@@ -20,99 +20,99 @@
   <div class="si_form si_form_view">
     <table>
       <tr>
-        <th>{$LANG.biller_name}</th>
+        <th>{$LANG.biller_name}: </th>
         <td>{$biller.name}</td>
       </tr>
       <tr>
-        <th>{$LANG.street}</th>
+        <th>{$LANG.street}: </th>
         <td>{$biller.street_address}</td>
       </tr>
       <tr>
-        <th>{$LANG.street2}</th>
+        <th>{$LANG.street2}: </th>
         <td>{$biller.street_address2}</td>
       </tr>
       <tr>
-        <th>{$LANG.city}</th>
+        <th>{$LANG.city}: </th>
         <td>{$biller.city}</td>
       </tr>
       <tr>
-        <th>{$LANG.zip}</th>
+        <th>{$LANG.zip}: </th>
         <td>{$biller.zip_code}</td>
       </tr>
       <tr>
-        <th>{$LANG.state}</th>
+        <th>{$LANG.state}: </th>
         <td>{$biller.state}</td>
       </tr>
       <tr>
-        <th>{$LANG.country}</th>
+        <th>{$LANG.country}: </th>
         <td>{$biller.country}</td>
       </tr>
       <tr>
-        <th>{$LANG.mobile_phone}</th>
+        <th>{$LANG.mobile_phone}: </th>
         <td>{$biller.mobile_phone}</td>
       </tr>
       <tr>
-        <th>{$LANG.phone}</th>
+        <th>{$LANG.phone}: </th>
         <td>{$biller.phone}</td>
       </tr>
       <tr>
-        <th>{$LANG.fax}</th>
+        <th>{$LANG.fax}: </th>
         <td>{$biller.fax}</td>
       </tr>
       <tr>
-        <th>{$LANG.email}</th>
+        <th>{$LANG.email}: </th>
         <td>{$biller.email}</td>
       </tr>
       <tr>
-      <th>{$LANG.signature}</th>
+      <th>{$LANG.signature}: </th>
       <td>{$biller.signature}</td>
     </tr>
     <tr>
-        <th>{$LANG.paypal_business_name}</th>
+        <th>{$LANG.paypal_business_name}: </th>
         <td>{$biller.paypal_business_name}</td>
       </tr>
       <tr>
-        <th>{$LANG.paypal_notify_url}</th>
+        <th>{$LANG.paypal_notify_url}: </th>
         <td>{$biller.paypal_notify_url}</td>
       </tr>
       <tr>
-        <th>{$LANG.paypal_return_url}</th>
+        <th>{$LANG.paypal_return_url}: </th>
         <td>{$biller.paypal_return_url}</td>
       </tr>
       <tr>
-        <th>{$LANG.eway_customer_id}</th>
+        <th>{$LANG.eway_customer_id}: </th>
         <td>{$biller.eway_customer_id}</td>
       </tr>
       <tr>
-        <th>{$LANG.paymentsgateway_api_id}</th>
+        <th>{$LANG.paymentsgateway_api_id}: </th>
         <td>{$biller.paymentsgateway_api_id}</td>
       </tr>
       {if !empty($customFieldLabel.biller_cf1)}
       <tr>
-        <th>{$customFieldLabel.biller_cf1|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf1|htmlsafe}: </th>
         <td>{$biller.custom_field1}</td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf2)}
       <tr>
-        <th>{$customFieldLabel.biller_cf2|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf2|htmlsafe}: </th>
         <td>{$biller.custom_field2}</td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf3)}
       <tr>
-        <th>{$customFieldLabel.biller_cf3|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf3|htmlsafe}: </th>
         <td>{$biller.custom_field3}</td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf4)}
       <tr>
-        <th>{$customFieldLabel.biller_cf4|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf4|htmlsafe}: </th>
         <td>{$biller.custom_field4}</td>
       </tr>
       {/if}
       <tr>
-        <th>{$LANG.logo_file}</th>
+        <th>{$LANG.logo_file}: </th>
         <!-- <td><a href="templates/invoices/logos/{$biller.logo}" target="new">{$biller.logo}</a></td> -->
         <td>
           {if $biller.logo != ''}
@@ -123,16 +123,16 @@
         </td>
       </tr>
       <tr>
-        <th>{$LANG.invoice_footer}</th>
+        <th>{$LANG.invoice_footer}: </th>
         <td>{$biller.footer}</td>
       </tr>
       <tr>
-        <th>{$LANG.notes}</th>
+        <th>{$LANG.notes}: </th>
         <td>{$biller.notes}</td>
       </tr>
       {* {showCustomFields categorieId="1" itemId=$smarty.get.id } *}
       <tr>
-        <th>{$LANG.enabled}</th>
+        <th>{$LANG.enabled}: </th>
         <td>{$biller.wording_for_enabled}</td>
       </tr>
     </table>

@@ -20,7 +20,7 @@
 <meta http-equiv="refresh" content="2;URL=index.php?module=cron&amp;view=manage" />
 <br />
 <br />
-<h1 style="font-weight: bold; font-color: red;text-align:center;">{$err_message|htmlsafe}</h1>
+<h1 style="font-weight: bold; color: red;text-align:center;">{$err_message|htmlsafe}</h1>
 <br />
 <br />
 {/if}

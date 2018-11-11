@@ -790,7 +790,6 @@ class Invoice {
             $expr_list = array(
                 "iv.id",
                 "iv.domain_id",
-                "iv.owing",
                 "iv.last_activity_date",
                 "iv.aging_date",
                 "iv.age_days",
@@ -811,10 +810,11 @@ class Invoice {
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
 
             foreach ($rows as $row) {
+                $row[owing] = $row['invoice_total'] - $row['INV_PAID'];
                 $age_list = self::calculate_age_days(
                     $row['id'],
                     $row['date'],
-                    $row['owing'],
+                    $row['invoice_total'] - $row['INV_PAID'], // force calculation of aging
                     $row['last_activity_date'],
                     $row['aging_date']);
                 // The merge will update fields that exist and append those that don't.

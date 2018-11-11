@@ -94,7 +94,7 @@
   </form>
 {else if $smarty.get.stage == 2}
   <meta http-equiv="refresh" content="2;URL=index.php?module=invoices&amp;view=manage" />
-  <div class="si_message">
+  <div class="si_message_ok">
     {$message|outhtml}
   </div>
 {/if}

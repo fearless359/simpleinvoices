@@ -41,8 +41,9 @@ class Log
              */
             if ($fp = fopen(self::$path, 'w') === false) {
                 SiError::out('notWritable', 'folder', self::$folder);
+            } else {
+                fclose($fp);
             }
-            fclose($fp);
         }
 
         // Assure file is writable
