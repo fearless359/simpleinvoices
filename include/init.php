@@ -55,6 +55,8 @@ global $environment;
 require_once ("include/class/db.php");
 require_once("include/class/PdoDb.php");
 
+include_once("include/class/Total_Owing.php");
+
 $config = Config::init($environment, $module);
 
 $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
