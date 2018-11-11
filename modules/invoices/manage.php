@@ -22,5 +22,9 @@ if (isset($_GET['having'])) {
 $url = 'index.php?module=invoices&view=xml' . $having;
 $smarty->assign('url', $url);
 
+// below lines added Allows total owing across all invoices
+$invoice = new invoice();
+$Total_Owed = $invoice->select_all_owing();
+
 $smarty->assign('pageActive', "invoice");
 $smarty->assign('active_tab', '#money');
