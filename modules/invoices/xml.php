@@ -113,9 +113,9 @@ foreach ($invoices as $row) {
     $xml .= "<cell><![CDATA[" . $row['biller']                         . "]]></cell>";
     $xml .= "<cell><![CDATA[" . $row['customer']                       . "]]></cell>";
     $xml .= "<cell><![CDATA[" . siLocal::date($row['date'])            . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . siLocal::number($row['invoice_total']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . siLocal::currency($row['invoice_total']) . "]]></cell>";
     if ($row['status']) {
-        $xml .= "<cell><![CDATA[" . siLocal::number($row['owing']) . "]]></cell>";
+        $xml .= "<cell><![CDATA[" . siLocal::currency($row['owing']) . "]]></cell>";
         $xml .= "<cell><![CDATA[" . $row['aging']                  . "]]></cell>";
     } else {
         $xml .= "<cell><![CDATA[&nbsp;]]></cell>";
