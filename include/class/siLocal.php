@@ -41,6 +41,10 @@ class siLocal {
     public static function currency($number,$locale="")
     {
         global $config;
+
+        if (empty($locale)) $locale = new Zend_Locale($config->local->locale);
+
+        if (empty($precision)) $precision = $config->local->precision;
         
         $locale == "" ? $locale = new Zend_Locale($config->local->locale) : $locale = $locale;
          $formatted_currency = New Zend_Currency($locale);
