@@ -21,8 +21,7 @@ $lcl_path = get_include_path() .
     PATH_SEPARATOR . "./library/" .
     PATH_SEPARATOR . "./library/pdf" .
     PATH_SEPARATOR . "./library/pdf/fpdf" .
-    PATH_SEPARATOR . "./include/" .
-    PATH_SEPARATOR . "./include/class";
+    PATH_SEPARATOR . "./include/";
 if (set_include_path($lcl_path) === false) {
     error_log("Error reported by set_include_path() for path: {$lcl_path}");
 }
