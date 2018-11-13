@@ -29,6 +29,26 @@ class siLocal {
         return $formatted_number;
     }
 
+    
+    /**
+     * Format number in default currency form.
+     * @param string $number Numeric value to be formatted.
+     * @param string $locale Locale to use for formatting the number. Optional, locale from $config file used if not specified.
+     * @return string Formatted string.
+     * @throws Zend_Locale_Exception (perhaps...I'm not sure)
+     */
+       /*Function: wrapper function for zend_locale_format::toCurrency*/
+    public static function currency($number,$locale="")
+    {
+        global $config;
+
+        if (empty($locale)) $locale = new Zend_Locale($config->local->locale);
+
+         $formatted_currency = New Zend_Currency($locale);
+        return $formatted_currency->toCurrency($number);
+    }
+
+
     /**
      * Format number in default form.
      * Note: Default form is without leading & trailing zeros, and locale decimal point (period or comma).
