@@ -37,8 +37,12 @@ class Invoice {
      * @param int $id of invoice to calculate age_days for.
      * @param string $invoice_date yyyy-mm-dd date invoice created.
      * @param float $owing on this invoice. Note: Set positive to force aging info recalculation.
+     *          Note: This field should always be what is currently in the invoice record as it
+     *          doesn't represent what is currently owning, but what was owing the last time the
+     *          aging days was calculated.
      * @param string $last_activity_date yyyy-mm-dd date of last activity on this invoice.
      * @param string $aging_date yyyy-mm-dd date of last calculation of age_days.
+     * @param int $pref_id - Calculate for type_id of 1 (Invoice) only.
      * @return array age_info - associative array with updated key value pairs for
      *              "last_activity_date",
      *              "owing" ,
@@ -46,36 +50,42 @@ class Invoice {
      *              "age_days"
      *              "aging" (aging is the wording such as 1-14).
      */
-    private static function calculate_age_days($id, $invoice_date, $owing, $last_activity_date, $aging_date) {
+    private static function calculate_age_days($id, $invoice_date, $owing, $last_activity_date, $aging_date, $pref_id) {
 
         // Don't recalculate $owing unless you have to because it involves DB reads.
         // Note that there is a time value in the dates so they are typically equal only when
         // an account is created.
-        if ($last_activity_date >= $aging_date || $owing > 0) {
+        if ($pref_id == 1 && ($last_activity_date >= $aging_date || $owing > 0)) {
             $total = self::getInvoiceTotal($id);
-            $paid = Payment::calc_invoice_paid($id);
+            $paid  = Payment::calc_invoice_paid($id);
             $owing = $total - $paid;
         }
 
         // We don't want create values here.
-        if ($owing < 0) $owing = 0;
+        if ($owing < 0 || $pref_id != 1) $owing = 0;
 
         $curr_dt = new \DateTime();
         // We have the last activity date and the last aging date. If the activity
         // date is greater than the aging date, set the invoice aging value.
         $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
 
-        $inv_dt = new \DateTime($invoice_date);
-        $date_diff = $curr_dt->diff($inv_dt);
-        $dys = $date_diff->days;
+        // @formatter:off
+        if ($pref_id == 1) {
+            $inv_dt    = new \DateTime($invoice_date);
+            $date_diff = $curr_dt->diff($inv_dt);
+            $dys = $date_diff->days;
+        } else {
+            $dys = 0;
+        }
 
         $age_info = array(
-            "owing" => $owing,
+            "owing"              => $owing,
             "last_activity_date" => $last_activity_date,
-            "aging_date" => $curr_dt_ymd_hms,
-            "age_days" => $dys,
-            "aging" => self::aging_wording($dys, $owing)
+            "aging_date"         => $curr_dt_ymd_hms,
+            "age_days"           => $dys,
+            "aging"              => self::aging_wording($dys, $owing)
         );
+        // @formatter:on
 
         return $age_info;
     }
@@ -89,7 +99,7 @@ class Invoice {
         global $pdoDb;
 
         try {
-            $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date'));
+            $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date', 'preference_id'));
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('id', $id);
             } else {
@@ -100,17 +110,21 @@ class Invoice {
 
             $pdoDb->begin();
             foreach ($rows as $row) {
-                $id = $row['id'];
-                $invoice_date = $row['date'];
+                // @formatter:off
+                $id                 = $row['id'];
+                $invoice_date       = $row['date'];
                 $last_activity_date = $row['last_activity_date'];
-                $owing = $row['owing'];
-                $aging_date = $row['aging_date'];
+                $owing              = $row['owing'];
+                $aging_date         = $row['aging_date'];
+                $pref_id            = $row['preference_id'];
+                // @formatter:on
                 $age_info = self::calculate_age_days(
                     $id,
                     $invoice_date,
                     $owing,
                     $last_activity_date,
-                    $aging_date);
+                    $aging_date,
+                    $pref_id);
 
                 try {
                     $pdoDb->setFauxPost(array(
@@ -464,7 +478,7 @@ class Invoice {
 
         $results = array();
         try {
-            $pdoDb->setSelectList("i.id as id");
+            $pdoDb->setSelectList(new DbField("i.id", "id"), new DbField('i.preference_id', 'preference_id'));
 
             $fn = new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id");
             $pdoDb->addToSelectStmts(new Select($fn, null, null, "index_name"));
@@ -485,7 +499,8 @@ class Invoice {
                     $row['date'],
                     $row['owing'],
                     $row['last_activity_date'],
-                    $row['aging_date']);
+                    $row['aging_date'],
+                    $row['preference_id']);
                 array_merge($row, $age_info);
                 $results[] = $row;
             }
@@ -552,6 +567,7 @@ class Invoice {
 
         $row = array();
         try {
+            $pdoDb->setSelectAll(true);
             $pdoDb->addSimpleWhere("id", $id, "AND");
             $pdoDb->addSimpleWhere("domain_id", $domain_id);
             $rows = $pdoDb->request("SELECT", "invoices");
@@ -571,9 +587,10 @@ class Invoice {
             $age_info = self::calculate_age_days(
                 $row['id'],
                 $row['date'],
-                $row['total'] - $row['paid'],
+                $row['owing'],
                 $row['last_activity_date'],
-                $row['aging_date']);
+                $row['aging_date'],
+                $row['preference_id']);
             array_merge($row, $age_info);
 
             // invoice total tax
@@ -610,9 +627,10 @@ class Invoice {
                 $age_info = self::calculate_age_days(
                     $row['id'],
                     $row['date'],
-                    $row['total'] - $row['paid'],
+                    $row['owing'],
                     $row['last_activity_date'],
-                    $row['aging_date']);
+                    $row['aging_date'],
+                    $row['preference_id']);
                 array_merge($row, $age_info);
 
                 $results[] = $row;
@@ -704,7 +722,11 @@ class Invoice {
      *
      * @param string $type Three setting:
      *        <ol>
-     *          <li><b>count</b> - Accessed for row count based on select criteria. Excludes <i>LIMIT</i> setting</li>
+     *          <li><b>count</b> - Get the count of all records.</li>
+     *          <li><b>owing</b> - Get the total amount owing on all invoices.</li>
+     *          <li><b>all</b> - Access all records. Same as 'count' except array of rows is returned.</li>
+     *          <li><b>count_owing</b> - Return array containing the result of "count" and "owing".
+     *              Indecies are "count" and "total_owing".</li>
      *          <li><b>&nbsp;&nbsp;</b> - All other settings are result in normal access of data based on specified criteria.</li>
      *        </ol>
      * @param string $sort Field to order results.
@@ -718,7 +740,9 @@ class Invoice {
     public static function select_all($type="", $sort="", $dir="", $rp=null, $page="", $qtype="", $query="") {
         global $auth_session, $pdoDb;
 
-        $results = array();
+        $results     = array();
+        $count       = 0;
+        $total_owing = 0;
         try {
             // If user role is customer or biller, then restrict invoices to those they have access to.
             if ($auth_session->role_name == 'customer') {
@@ -727,20 +751,23 @@ class Invoice {
                 $pdoDb->addSimpleWhere("b.id", $auth_session->user_id, "AND");
             }
 
-            $count_type = ($type == "count");
-
             if (empty($sort) ||
                 !in_array($sort, array('index_id', 'b.name', 'c.name', 'date', 'invoice_total', 'owing', 'aging'))) $sort = "index_id";
             if (empty($dir)) $dir = "DESC";
             $pdoDb->setOrderBy(array($sort, $dir));
 
             // If caller pass a null value, that mean there is no limit.
-            if (isset($rp) && !$count_type) {
+            // @formatter:off
+            $count      = ($type == 'count' || $type == "count_owing");
+            $calc_owing = ($type == 'owing' || $type == "count_owing");
+            $all        = ($type == 'all');
+            if (isset($rp) && !$count && !$calc_owing && !$all) {
                 if (empty($rp)) $rp = "25";
                 if (empty($page)) $page = "1";
                 $start = (($page - 1) * $rp);
                 $pdoDb->setLimit($rp, $start);
             }
+            // @formatter:on
 
             if (!(empty($query) || empty($qtype))) {
                 if (in_array($qtype, array('index_id', 'b.name', 'c.name', 'date', 'invoice_total', 'owing', 'aging'))) {
@@ -790,6 +817,7 @@ class Invoice {
             $expr_list = array(
                 "iv.id",
                 "iv.domain_id",
+                "iv.owing",
                 "iv.last_activity_date",
                 "iv.aging_date",
                 "iv.age_days",
@@ -799,6 +827,7 @@ class Invoice {
                 new DbField("iv.type_id", "type_id"),
                 new DbField("b.name", "biller"),
                 new DbField("c.name", "customer"),
+                new DbField("iv.preference_id", "preference_id"),
                 new DbField("pf.pref_description", "preference"),
                 new DbField("pf.status", "status"));
             $pdoDb->setSelectList($expr_list);
@@ -814,15 +843,41 @@ class Invoice {
                 $age_list = self::calculate_age_days(
                     $row['id'],
                     $row['date'],
-                    $row['invoice_total'] - $row['INV_PAID'], // force calculation of aging
+                    $row['owing'],
                     $row['last_activity_date'],
-                    $row['aging_date']);
+                    $row['aging_date'],
+                    $row['preference_id']);
+
+                $count ++;
+                $total_owing += $age_list['owing'];
+
                 // The merge will update fields that exist and append those that don't.
                 $results[] = array_merge($row, $age_list);
             }
         } catch (PdoDbException $pde) {
             error_log("Invoice::select_all() - Error: " . $pde->getMessage());
         }
+
+        // Return requested type.
+        switch($type) {
+            case 'count_owing':
+                // Array with indecies for 'count' and 'total_owing'
+                return array('count' => $count, 'total_owing' => $total_owing);
+            case 'count' :
+                // Count value.
+                return $count;
+            case 'calc_owing':
+                // Total owing value.
+                return $total_owing;
+            case 'all':
+                // All invoice rows, et al selected.
+                break;
+            default:
+                // All invoice rows, et al selected.
+                break;
+        }
+
+        // Return results for "all" or blank type.
         return $results;
     }
 

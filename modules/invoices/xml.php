@@ -31,13 +31,13 @@ if (!empty($having)) {
 }
 
 // @formatter:off
-$invoices = Invoice::select_all('', $sort, $dir, $rp, $page, $qtype, $query);
-$invoice_count = count(Invoice::select_all('count', $sort, $dir, $rp, $page, $qtype, $query));
+$invoices = Invoice::select_all(''     , $sort, $dir, $rp, $page, $qtype, $query);
+$count    = Invoice::select_all('count', $sort, $dir, $rp, $page, $qtype, $query);
 
 $xml  = "";
 $xml .= "<rows>";
 $xml .= "<page>$page</page>";
-$xml .= "<total>$invoice_count</total>";
+$xml .= "<total>$count</total>";
 
 foreach ($invoices as $row) {
     $xml .= "<row id='" . $row['id'] . "'>";

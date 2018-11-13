@@ -86,6 +86,31 @@ class SiLocal
     }
 
     /**
+     * Format number in default currency form.
+     * @param string $number Numeric value to be formatted.
+     * @param string $locale Locale to use for formatting the number. Optional, locale from $config file used if not specified.
+     * @return string Formatted string.
+     * @throws Zend_Locale_Exception (perhaps...I'm not sure)
+     */
+    public static function currency($number, $locale = "")
+    {
+        global $config;
+
+
+        if (empty($locale)) {
+            try {
+                $locale = new \Zend_Locale($config->local->locale);
+            } catch (\Zend_Locale_Exception $zle) {
+                error_log("SiLocal::number_trim() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage());
+            }
+        }
+
+        $formatted_currency = New \Zend_Currency($locale);
+
+        return $formatted_currency->toCurrency($number);
+    }
+
+    /**
      * Convert a localized number back to the format stored in the database.
      * @param string $number
      * @return string Number formatted for database storage (ex: 12.345,67 converts to 12345.67)

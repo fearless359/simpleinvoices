@@ -17,7 +17,15 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
 
-$smarty->assign("number_of_invoices", Invoice::count());
+// Combine access of values to minimize overhead.
+$results = Invoice::select_all('count_owing');
+$count = $results['count'];
+$_POST['count'] = $count;
+
+$total_owing = $results['total_owing'];
+
+$smarty->assign('number_of_invoices', $count);
+$smarty->assign('total_owing', $total_owing);
 
 $having = "";
 if (isset($_GET['having'])) {

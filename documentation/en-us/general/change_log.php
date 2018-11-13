@@ -13,9 +13,16 @@
   </div>
   <div id="left">
     <ul>
-        <li>2018-11-05 - <b>2018.3.0</b>
+        <li>2018-11-13 - <b>2018.3.0</b>
             <ul>
                 <li>Changed to use namespace for class autoloading and add phpunit test support.</li>
+            </ul>
+        </li>
+        <li>2018-11-12 - <b>2018.2.6</b>
+            <ul>
+                <li>Added options to the "type" parameter of the Invoices::select_all() method to
+                    provide a total owing by itself or combined with the count of invoices. The
+                    combined feature is to minimize the data access overhead.</li>
             </ul>
         </li>
         <li>2018-10-27 - <b>2018.2.5</b>

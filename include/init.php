@@ -250,6 +250,7 @@ $smarty->assign('patchCount', $patchCount);
 try {
     $smarty->registerPlugin('modifier', "siLocal_number"     , array("Inc\Claz\SiLocal", "number"));
     $smarty->registerPlugin('modifier', "siLocal_number_trim", array("Inc\Claz\SiLocal", "number_trim"));
+    $smarty->registerPlugin('modifier', "siLocal_currency"   , array("Inc\Claz\SiLocal", "currency"));
     $smarty->registerPlugin('modifier', "siLocal_date"       , array("Inc\Claz\SiLocal", "date"));
 
     $smarty->registerPlugin('modifier', 'htmlout'  , 'outhtml');

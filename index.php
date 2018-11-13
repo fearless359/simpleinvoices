@@ -481,6 +481,7 @@ if ($extensionTemplates == 0) {
 $smarty->assign("extension_insertion_files"   , $extension_insertion_files);
 $smarty->assign("perform_extension_insertions", $perform_extension_insertions);
 $smarty->assign("path"                        , $path);
+Log::out("index.php - my_tpl_path[$my_tpl_path]", \Zend_Log::DEBUG);
 $smarty->$smarty_output($my_tpl_path);
 Log::out("index.php - After output my_tpl_path[$my_tpl_path]", \Zend_Log::DEBUG);
 
