@@ -30,7 +30,7 @@ class Biller
 
             $billers = $pdoDb->request("SELECT", "biller");
         } catch (PdoDbException $pde) {
-            error_log("Biller::get_all() database error thrown. " . $pde->getMessage());
+            error_log("Biller::get_all() error: " . $pde->getMessage());
         }
         return $billers;
     }
@@ -39,43 +39,51 @@ class Biller
      * Retrieve a specified biller record.
      * @param string $id ID of the biller to retrieve.
      * @return array Associative array for record retrieved.
-     * @throws PdoDbException
      */
     public static function select($id)
     {
         global $LANG, $pdoDb;
 
-        $pdoDb->addSimpleWhere("domain_id", domain_id::get(), "AND");
-        $pdoDb->addSimpleWhere("id", $id);
+        try {
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get(), "AND");
+            $pdoDb->addSimpleWhere("id", $id);
 
-        $ca = new CaseStmt("enabled", "wording_for_enabled");
-        $ca->addWhen("=", ENABLED, $LANG['enabled']);
-        $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-        $pdoDb->addToCaseStmts($ca);
+            $ca = new CaseStmt("enabled", "wording_for_enabled");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
 
-        $pdoDb->setSelectAll(true);
+            $pdoDb->setSelectAll(true);
 
-        $rows = $pdoDb->request("SELECT", "biller");
-        return (empty($rows) ? $rows : $rows[0]);
+            $rows = $pdoDb->request("SELECT", "biller");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::select(): id[$id] error: " . $pde->getMessage());
+        }
+        return (empty($rows) ? array() : $rows[0]);
     }
 
     /**
      * Get a default biller name.
-     * @return string Default biller name
-     * @throws PdoDbException
+     * @return array Default biller name
      */
     public static function getDefaultBiller()
     {
         global $pdoDb;
-        $pdoDb->addSimpleWhere("s.name", "biller", "AND");
-        $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
-        $jn = new Join('LEFT', 'biller', 'b');
-        $jn->addSimpleItem("b.id", new DbField("s.value"), "AND");
-        $jn->addSimpleItem("b.domain_id", new DbField("s.domain_id"));
-        $pdoDb->addToJoins($jn);
-        $rows = $pdoDb->request("SELECT", "system_defaults", "s");
-        if (empty($rows)) return $rows;
-        return $rows[0];
+
+        try {
+            $pdoDb->addSimpleWhere("s.name", "biller", "AND");
+            $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
+
+            $jn = new Join('LEFT', 'biller', 'b');
+            $jn->addSimpleItem("b.id", new DbField("s.value"), "AND");
+            $jn->addSimpleItem("b.domain_id", new DbField("s.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $rows = $pdoDb->request("SELECT", "system_defaults", "s");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::getDefaultBiller(): error: " . $pde->getMessage());
+        }
+        return (empty($rows) ? array("name" => '') : $rows[0]);
     }
 
     /**
@@ -98,7 +106,7 @@ class Biller
             $pdoDb->setExcludedFields("id");
             $id = $pdoDb->request("INSERT", "biller");
         } catch (PdoDbException $pde) {
-            error_log("Biller::insertBiller() - PdoDbException thrown: " . $pde->getMessage());
+            error_log("Biller::insertBiller() - error: " . $pde->getMessage());
         }
         return $id;
     }
@@ -106,18 +114,24 @@ class Biller
     /**
      * Update <b>biller</b> table record.
      * @return boolean <b>true</b> if update successful
-     * @throws PdoDbException
      */
     public static function updateBiller()
     {
         global $pdoDb;
-        // The fields to be update must be in the $_POST array indexed by their
-        // actual field name.
-        $pdoDb->setExcludedFields(array("id", "domain_id"));
-        $pdoDb->addSimpleWhere("id", $_GET['id'], 'AND');
-        $pdoDb->addSimpleWhere('domain_id', domain_id::get());
 
-        $result = $pdoDb->request("UPDATE", "biller");
+        $result = false;
+        try {
+            // The fields to be update must be in the $_POST array indexed by their
+            // actual field name.
+            $pdoDb->setExcludedFields(array("id", "domain_id"));
+
+            $pdoDb->addSimpleWhere("id", $_GET['id'], 'AND');
+            $pdoDb->addSimpleWhere('domain_id', domain_id::get());
+
+            $result = $pdoDb->request("UPDATE", "biller");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::updateBiller() - error: " . $pde->getMessage());
+        }
         return $result;
     }
 
@@ -129,16 +143,14 @@ class Biller
     {
         global $pdoDb;
 
-        domain_id::get();
-
+        $count = 0;
         try {
             $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
             $pdoDb->addSimpleWhere("domain_id", domain_id::get());
             $rows = $pdoDb->request("SELECT", "biller");
             $count = $rows[0]['count'];
         } catch(PdoDbException $pde) {
-            error_log("Biller::count() - Error: " . $pde->getMessage());
-            return 0;
+            error_log("Biller::count() - error: " . $pde->getMessage());
         }
         return $count;
     }

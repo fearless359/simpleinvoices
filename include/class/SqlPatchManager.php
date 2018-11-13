@@ -3290,6 +3290,40 @@ class SqlPatchManager
         );
         self::makePatch('304', $patch);
 
+        $ud = $pdoDb_admin->checkTableExists( 'expense');
+        $patch = array(
+            'name' => 'Add expense tables to the database.',
+            'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'expense';" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('expense', 0, $domain_id, 1) ;" :
+                              "CREATE TABLE `" . TB_PREFIX . "expense` (id INT(11) NOT NULL AUTO_INCREMENT UNIQUE KEY, " .
+                                                                       "domain_id INT(11) NOT NULL, " .
+                                                                       "amount DECIMAL(25,6) NOT NULL, " .
+                                                                       "expense_account_id INT(11) NOT NULL, " .
+                                                                       "biller_id INT(11) NOT NULL, " .
+                                                                       "customer_id INT(11) NOT NULL, " .
+                                                                       "invoice_id INT(11) NOT NULL, " .
+                                                                       "product_id INT(11) NOT NULL, " .
+                                                                       "date DATE NOT NULL, " .
+                                                                       "note TEXT NOT NULL) ENGINE = InnoDb;" .
+                              "ALTER TABLE `" . TB_PREFIX . "expense` ADD PRIMARY KEY (domain_id, id);" .
+                              "CREATE TABLE `" . TB_PREFIX . "expense_account` (id INT(11) NOT NULL AUTO_INCREMENT UNIQUE KEY, " .
+                                                                               "domain_id INT(11) NOT NULL, " .
+                                                                               "name VARCHAR(255) NOT NULL) ENGINE = InnoDb;" .
+                              "ALTER TABLE `" . TB_PREFIX . "expense_account` ADD PRIMARY KEY (domain_id, id);" .
+                              "CREATE TABLE `" . TB_PREFIX . "expense_item_tax` (id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, " .
+                                                                                "expense_id INT(11) NOT NULL, " .
+                                                                                "tax_id INT(11) NOT NULL, " .
+                                                                                "tax_type VARCHAR(1) NOT NULL, " .
+                                                                                "tax_rate DECIMAL(25, 6) NOT NULL, " .
+                                                                                "tax_amount DECIMAL(25, 6) NOT NULL) ENGINE = MYISAM;" .
+                              "ALTER TABLE `" . TB_PREFIX . "expense` ADD status TINYINT(1) NOT NULL;" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('expense', 0, $domain_id, 1) ;" .
+                              "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'expense';"),
+            'date' => "20181027",
+            'source' => 'fearless359'
+        );
+        self::makePatch('305', $patch);
+
         // @formatter:on
     }
 

@@ -166,6 +166,21 @@
         </tr>
 
         <tr>
+            <th>{$LANG.expense}
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.expense} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=help_expense">
+                    <img src="{$help_image_path}help-small.png" alt=""/>
+                </a>
+            </th>
+            <td>
+                <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=expense'>
+                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                </a>
+            </td>
+            <td>{if $defaultExpense == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+        </tr>
+
+        <tr>
             <th>{$LANG.inventory}
                 <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.inventory} {$LANG.setting}"
                    rel="index.php?module=documentation&amp;view=view&amp;page=help_inventory">
@@ -177,7 +192,7 @@
                     <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td>{if defaultInventory == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td>{if $defaultInventory == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>

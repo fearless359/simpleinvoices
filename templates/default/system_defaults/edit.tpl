@@ -12,6 +12,7 @@
         </tr>
     </table>
 </div>
+<br />
 <div class="si_toolbar si_toolbar_form">
     {if $default != null}
         <button type="submit" class="positive" name="submit" value="{$LANG.save}">

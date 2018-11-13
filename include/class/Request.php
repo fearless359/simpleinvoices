@@ -156,7 +156,7 @@ class Request {
      * clause but are to be excluded from the <i>INSERT</i> or </i>UPDATE</i> fields. Typically
      * excluded fields are the unique identifier for the record which cannot be updated. However,
      * any field may be specified for exclusion..
-     * @param array $excludedFields Can be one of the following:
+     * @param mixed $excludedFields Can be one of the following:
      *        <ol>
      *          <li>A string with <i><u>one</u> field name</i> in it. Ex: <b>"name"</b>.</li>
      *          <li>An ordered array of <i>field names</i>. Ex: <b>array("id", "user_id")</b></li>

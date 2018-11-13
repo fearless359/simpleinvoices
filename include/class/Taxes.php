@@ -91,21 +91,24 @@ class Taxes {
     /**
      * Get a default tax record.
      * @return array Default tax record.
-     * @throws PdoDbException
      */
     public static function getDefaultTax() {
         global $pdoDb;
 
-        $pdoDb->addSimpleWhere("s.name", "tax", "AND");
-        $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
+        try {
+            $pdoDb->addSimpleWhere("s.name", "tax", "AND");
+            $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
 
-        $jn = new Join("LEFT", "tax", "t");
-        $jn->addSimpleItem("t.tax_id", new DbField("s.value"));
-        $pdoDb->addToJoins($jn);
+            $jn = new Join("LEFT", "tax", "t");
+            $jn->addSimpleItem("t.tax_id", new DbField("s.value"));
+            $pdoDb->addToJoins($jn);
 
-        $pdoDb->setSelectAll(true);
-        $rows = $pdoDb->request("SELECT", "system_defaults", "s");
-        return $rows[0];
+            $pdoDb->setSelectAll(true);
+            $rows = $pdoDb->request("SELECT", "system_defaults", "s");
+        } catch (PdoDbException $pde) {
+            error_log("Taxes::getDefaultTax() - error: " . $pde->getMessage());
+        }
+        return (empty($rows) ? array() : $rows[0]);
     }
 
     /**

@@ -2445,242 +2445,221 @@
       "sql_release": "20181020",
       "sql_statement": "ALTER TABLE `si_customers` ADD `default_invoice` INT(10) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Invoice index_id value to use as the default template' AFTER `notes`;",
       "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "305",
+      "sql_patch": "Add expense tables to the database.",
+      "sql_release": "20181027",
+      "sql_statement": "CREATE TABLE `si_expense` (id INT(11) NOT NULL AUTO_INCREMENT UNIQUE KEY, domain_id INT(11) NOT NULL, amount DECIMAL(25,6) NOT NULL, expense_account_id INT(11) NOT NULL, biller_id INT(11) NOT NULL, customer_id INT(11) NOT NULL, invoice_id INT(11) NOT NULL, product_id INT(11) NOT NULL, date DATE NOT NULL, note TEXT NOT NULL) ENGINE = InnoDb;",
+      "source": "fearless359"
     }
   ],
   "si_system_defaults": [
     {
-      "id": "1",
       "name": "biller",
       "value": "",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "2",
       "name": "company_logo",
       "value": "simple_invoices_logo.png",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "3",
       "name": "company_name",
       "value": "SimpleInvoices",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "4",
       "name": "company_name_item",
       "value": "SimpleInvoices",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "5",
       "name": "customer",
       "value": "",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "6",
       "name": "dateformate",
       "value": "Y-m-d",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "7",
       "name": "delete",
       "value": "N",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "8",
       "name": "emailhost",
       "value": "localhost",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "9",
       "name": "emailpassword",
       "value": "",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "10",
       "name": "emailusername",
       "value": "",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "11",
+      "name": "expense",
+      "value": "0",
+      "domain_id": "DOMAIN-ID",
+      "extension_id": "1"
+    },
+    {
       "name": "inventory",
       "value": "0",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "12",
       "name": "language",
       "value": "en_US",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "13",
       "name": "line_items",
       "value": "3",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "14",
       "name": "logging",
       "value": "0",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "15",
       "name": "password_lower",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "16",
       "name": "password_min_length",
       "value": "8",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "17",
       "name": "password_number",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "18",
       "name": "password_special",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "19",
       "name": "password_upper",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "20",
       "name": "payment_type",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "21",
       "name": "pdfbottommargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "22",
       "name": "pdfleftmargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "23",
       "name": "pdfpapersize",
       "value": "A4",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "24",
       "name": "pdfrightmargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "25",
       "name": "pdfscreensize",
       "value": "800",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "26",
       "name": "pdftopmargin",
       "value": "15",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "27",
       "name": "preference",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "28",
       "name": "product_attributes",
       "value": "0",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "29",
       "name": "session_timeout",
       "value": "60",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "30",
       "name": "spreadsheet",
       "value": "xls",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "31",
       "name": "tax",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "32",
       "name": "tax_per_line_item",
       "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "33",
       "name": "template",
       "value": "default",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "id": "34",
       "name": "wordprocessor",
       "value": "doc",
       "domain_id": "DOMAIN-ID",

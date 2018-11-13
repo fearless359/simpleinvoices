@@ -318,7 +318,7 @@ class PdoDb {
 
     /**
      * Add a <b>Join</b> object to this request.
-     * @param Join $join Parameter can take several forms:
+     * @param Join/array $join Parameter can take several forms:
      *        <ol>
      *          <li><b>Join class object</b></li>
      *          <li><b>Array with 4 values</b>. The values are:

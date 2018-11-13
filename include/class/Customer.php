@@ -194,23 +194,25 @@ class Customer {
     /**
      * Get a default customer name.
      * @return array Default customer row
-     * @throws PdoDbException
      */
     public static function getDefaultCustomer() {
         global $pdoDb;
 
-        $pdoDb->addSimpleWhere("s.name", "customer", "AND");
-        $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
+        try {
+            $pdoDb->addSimpleWhere("s.name", "customer", "AND");
+            $pdoDb->addSimpleWhere("s.domain_id", domain_id::get());
 
-        $jn = new Join("LEFT", "customers", "c");
-        $jn->addSimpleItem("c.id", new DbField("s.value"), "AND");
-        $jn->addSimpleItem("c.domain_id", new DbField("s.domain_id"));
-        $pdoDb->addToJoins($jn);
+            $jn = new Join("LEFT", "customers", "c");
+            $jn->addSimpleItem("c.id", new DbField("s.value"), "AND");
+            $jn->addSimpleItem("c.domain_id", new DbField("s.domain_id"));
+            $pdoDb->addToJoins($jn);
 
-        $pdoDb->setSelectList(array("c.name AS name", "s.value AS id"));
-        $rows = $pdoDb->request("SELECT", "system_defaults", "s");
-        if (empty($rows)) return $rows;
-        return $rows[0];
+            $pdoDb->setSelectList(array("c.name AS name", "s.value AS id"));
+            $rows = $pdoDb->request("SELECT", "system_defaults", "s");
+        } catch (PdoDbException $pde) {
+            error_log("Customer::getDefaultCustomer() - error: " . $pde->getMessage());
+        }
+        return (empty($rows) ? array() : $rows[0]);
     }
 
     /**

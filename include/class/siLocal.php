@@ -1,8 +1,10 @@
 <?php
+
 /**
  * siLocal class for value formatting.
  */
-class siLocal {
+class siLocal
+{
     const DATE_FORMAT_PARAMETER = "/(full|long|date_short|short|month|month_short|medium)/";
 
     /**
@@ -13,16 +15,29 @@ class siLocal {
      * @param string $locale Locale the number is to be formatted for.
      * @param string $symbol Currency symbol. Defaults to no symbol used.
      * @return string Formatted number.
-     * @throws Zend_Locale_Exception
      */
-    public static function number($number, $precision = "", $locale = "", $symbol = "") {
+    public static function number($number, $precision = "", $locale = "", $symbol = "")
+    {
         global $config;
 
-        if (empty($locale)) $locale = new Zend_Locale($config->local->locale);
+        if (empty($locale)) {
+            try {
+                $locale = new Zend_Locale($config->local->locale);
+            } catch (Zend_Locale_Exception $zle) {
+                error_log("siLocal::number_trim() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage());
+            }
+        }
 
-        if (empty($precision)) $precision = $config->local->precision;
+        if (empty($precision)) {
+            $precision = $config->local->precision;
+        }
 
-        $formatted_number = Zend_Locale_Format::toNumber($number, array ('precision' => $precision, 'locale' => $locale));
+        $formatted_number = $number;
+        try {
+            $formatted_number = Zend_Locale_Format::toNumber($number, array('precision' => $precision, 'locale' => $locale));
+        } catch (Zend_Locale_Exception $zle) {
+            error_log("siLocal::number() - locale[{$config->local->locale}] (input number returned) error: " . $zle->getMessage());
+        }
 
         if (!empty($symbol)) $formatted_number = $symbol . $formatted_number;
 
@@ -57,16 +72,22 @@ class siLocal {
      * @param string $locale Locale to use for formatting the number. Optional, locale from $config file used if not specified.
      * @param string $symbol Currency symbol to use. Optional, specify if want included in formatted number.
      * @return string Formatted string.
-     * @throws Zend_Locale_Exception
      */
-    public static function number_trim($number, $precision = "", $locale = "", $symbol = "") {
+    public static function number_trim($number, $precision = "", $locale = "", $symbol = "")
+    {
         global $config;
 
-        if (empty($locale)) $locale = new Zend_Locale($config->local->locale);
+        if (empty($locale)) {
+            try {
+                $locale = new Zend_Locale($config->local->locale);
+            } catch (Zend_Locale_Exception $zle) {
+                error_log("siLocal::number_trim() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage());
+            }
+        }
 
         if (empty($precision)) $precision = $config->local->precision;
 
-        $formatted_number = self::number( $number, $precision, $locale, $symbol );
+        $formatted_number = self::number($number, $precision, $locale, $symbol);
 
         // Calculate the decimal point right offset.
         $position = ($precision + 1) * (-1);
@@ -77,7 +98,7 @@ class siLocal {
         // are non-zero characters following the decimal point. (ex: 1.10 won't trim).
         $chr = substr($formatted_number, $position, 1);
         if ($chr == '.' || $chr == ',') {
-            $formatted_number = rtrim (trim($formatted_number, '0'), '.,');
+            $formatted_number = rtrim(trim($formatted_number, '0'), '.,');
         }
 
         return $formatted_number;
@@ -87,14 +108,20 @@ class siLocal {
      * Convert a localized number back to the format stored in the database.
      * @param string $number
      * @return string Number formatted for database storage (ex: 12.345,67 converts to 12345.67)
-     * @throws Zend_Locale_Exception
      */
-    public static function dbStd($number) {
+    public static function dbStd($number)
+    {
         global $config;
 
-        $locale = new Zend_Locale($config->local->locale);
-        $new_number = (empty($number) ? "0" : $number);
-        $new_number = Zend_Locale_Format::getNumber($new_number, ['locale' => $locale, 'precision' => $config->local->precision]);
+        $new_number = $number;
+        try {
+            $locale = new Zend_Locale($config->local->locale);
+            $new_number = (empty($number) ? "0" : $number);
+            $new_number = Zend_Locale_Format::getNumber($new_number, ['locale' => $locale, 'precision' => $config->local->precision]);
+        } catch (Zend_Locale_Exception $zle) {
+            error_log("siLocal::number_trim() - locale[{$config->local->locale}] (input number returned) error: " . $zle->getMessage());
+        }
+
         return $new_number;
     }
 
@@ -120,7 +147,8 @@ class siLocal {
      *        Ex: en_US.
      * @return string <b>$date</b> formatted per option settings.
      */
-    public static function date($date, $date_format = "medium", $locale = "") {
+    public static function date($date, $date_format = "medium", $locale = "")
+    {
         global $config;
 
         if (!preg_match(self::DATE_FORMAT_PARAMETER, $date_format)) {
@@ -129,7 +157,9 @@ class siLocal {
         }
 
         try {
-            if (!empty($locale)) $locale = new Zend_Locale($config->local->locale);
+            if (!empty($locale)) {
+                $locale = new Zend_Locale($config->local->locale);
+            }
 
             $temp_date = new Zend_Date($date, 'yyyy-MM-dd');
         } catch (Zend_Locale_Exception $zle) {

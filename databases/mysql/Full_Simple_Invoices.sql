@@ -146,6 +146,55 @@ INSERT INTO `si_customers` (`id`, `domain_id`, `attention`, `name`, `department`
 ,(2, 1, 'Mr Burns', 'Springfield Power Plant', '', '4 Power Plant Drive', '', 'Springfield', 'NY', '90210', '', '04 1235 5698', '', '04 5678 7899', 'mburns@spp.com', '', '', '', '', '<p><strong>Springfield Nuclear Power Plant</strong> is a fictional electricity generating facility in the <a href=&#39;http://en.wikipedia.org/wiki/Television&#39; title=&#39;Television&#39;>television</a> <a href=&#39;http://en.wikipedia.org/wiki/Animated_cartoon&#39; title=&#39;Animated cartoon&#39;>animated cartoon</a> series <em><a href=&#39;http://en.wikipedia.org/wiki/The_Simpsons&#39; title=&#39;The Simpsons&#39;>The Simpsons</a></em>. The plant has a <a href=&#39;http://en.wikipedia.org/wiki/Monopoly&#39; title=&#39;Monopoly&#39;>monopoly</a> on the city of <a href=&#39;http://en.wikipedia.org/wiki/Springfield_%28The_Simpsons%29&#39; title=&#39;Springfield (The Simpsons)&#39;>Springfield&#39;s</a> energy supply, but is sometimes mismanaged and endangers much of the town with its presence.</p> <p>Based on the plant&#39;s appearance and certain episode plots, it likely houses only a single &quot;unit&quot; or reactor (although, judging from the number of <a href=&#39;http://en.wikipedia.org/wiki/Containment_building&#39; title=&#39;Containment building&#39;>containment buildings</a> and <a href=&#39;http://en.wikipedia.org/wiki/Cooling_tower&#39; title=&#39;Cooling tower&#39;>cooling towers</a>, there is a chance it may have two). In one episode an emergency occurs and Homer resorts to the manual, which begins &quot;Congratulations on your purchase of a Fissionator 1952 Slow-Fission Reactor&quot;.</p> <p>The plant is poorly maintained, largely due to owner Montgomery Burns&#39; miserliness. Its <a href=&#39;http://en.wikipedia.org/wiki/Nuclear_safety&#39; title=&#39;Nuclear safety&#39;>safety record</a> is appalling, with various episodes showing luminous rats in the bowels of the building, pipes and drums leaking radioactive waste, the disposal of waste in a children&#39;s playground, <a href=&#39;http://en.wikipedia.org/wiki/Plutonium&#39; title=&#39;Plutonium&#39;>plutonium</a> used as a paperweight, cracked cooling towers (fixed in one episode using a piece of <a href=&#39;http://en.wikipedia.org/wiki/Chewing_gum&#39; title=&#39;Chewing gum&#39;>Chewing gum</a>), dangerously high <a href=&#39;http://en.wikipedia.org/wiki/Geiger_counter&#39; title=&#39;Geiger counter&#39;>Geiger counter</a> readings around the perimeter of the plant, and even a giant spider. In the opening credits a bar of some <a href=&#39;http://en.wikipedia.org/wiki/Radioactive&#39; title=&#39;Radioactive&#39;>radioactive</a> substance is trapped in Homer&#39;s overalls and later disposed of in the street.</p>', '13245-789798', '', '', '', '1')
 ,(3, 1, 'Kath Day-Knight', 'Kath and Kim Pty Ltd', '', '82 Fountain Drive', '', 'Fountain Lakes', 'VIC', '3567', 'Australia', '03 9658 7456', '', '03 9658 7457', 'kath@kathandkim.com.au', '', '', '', '', 'Kath Day-Knight (<a href=&#39;http://en.wikipedia.org/wiki/Jane_Turner&#39; title=&#39;Jane Turner&#39;>Jane Turner</a>) is an &#39;empty nester&#39; divorc&eacute;e who wants to enjoy time with her &quot;hunk o&#39; spunk&quot; Kel Knight (<a href=&#39;http://en.wikipedia.org/wiki/Glenn_Robbins&#39; title=&#39;Glenn Robbins&#39;>Glenn Robbins</a>), a local &quot;purveyor of fine meats&quot;, but whose lifestyle is often cramped by the presence of her self-indulgent and spoilt rotten twenty-something daughter Kim Craig <a href=&#39;http://en.wikipedia.org/wiki/List_of_French_phrases_used_by_English_speakers#I_.E2.80.93_Q&#39; title=&#39;List of French phrases used by English speakers&#39;>n&eacute;e</a> Day (<a href=&#39;http://en.wikipedia.org/wiki/Gina_Riley&#39; title=&#39;Gina Riley&#39;>Gina Riley</a>). Kim enjoys frequent and lengthy periods of spiteful estrangement from her forgiving husband Brett Craig (<a href=&#39;http://en.wikipedia.org/wiki/Peter_Rowsthorn&#39; title=&#39;Peter Rowsthorn&#39;>Peter Rowsthorn</a>) for imagined slights and misdemeanors, followed by loving reconciliations with him. During Kim and Brett&#39;s frequent rough patches Kim usually seeks solace from her servile &quot;second best friend&quot; Sharon Strzelecki (<a href=&#39;http://en.wikipedia.org/wiki/Magda_Szubanski&#39; title=&#39;Magda Szubanski&#39;>Magda Szubanski</a>), screaming abuse at Sharon for minor infractions while issuing her with intricately-instructed tasks, such as stalking Brett. Kim and Brett had a baby in the final episode of the second series whom they named Epponnee-Raelene Kathleen Darlene Charlene Craig, shortened to Epponnee-Rae.', '13245-789798', '', '', '', '1');
 
+CREATE TABLE `si_expense` (
+  `id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
+  `amount` decimal(25,6) NOT NULL,
+  `expense_account_id` int(11) NOT NULL,
+  `biller_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `note` text COLLATE utf8_unicode_ci NOT NULL,
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `si_expense`
+  ADD PRIMARY KEY (`domain_id`,`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+ALTER TABLE `si_expense`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `si_expense_account` (
+  `id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `si_expense_account`
+  ADD PRIMARY KEY (`domain_id`,`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+ALTER TABLE `si_expense_account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `si_expense_item_tax` (
+  `id` int(11) NOT NULL,
+  `expense_id` int(11) NOT NULL,
+  `tax_id` int(11) NOT NULL,
+  `tax_type` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_rate` decimal(25,6) NOT NULL,
+  `tax_amount` decimal(25,6) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `si_expense_item_tax`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `si_expense_item_tax`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 CREATE TABLE IF NOT EXISTS `si_extensions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain_id` int(11) NOT NULL,
@@ -721,7 +770,8 @@ INSERT INTO `si_sql_patchmanager`(`sql_patch_ref`,`sql_patch`,`sql_release`,`sql
 ,(301,'Add last_activity_date, aging_date and aging_value to invoices.','20181012','ALTER TABLE `si_invoices` ADD `last_activity_date` DATE NULL COMMENT "Date last activity update to the invoice", ADD `aging_date` DATE NULL COMMENT "Date aging was last calculated", ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT "Age of invoice balance"','fearless359')
 ,(302,'Added owing to invoices table','20181017','ALTER TABLE `si_invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT "Amount owing as of aging-date" AFTER "note"; UPDATE `si_invoices` SET owing = 1;', 'fearless359')
 ,(303,'Add invoice custom field report extension to standard application and add sales_representative field.','20181018','ALTER TABLE `si_invoices` ADD `sales_representative` VARCHAR(50) DEFAULT "" NOT NULL;', 'fearless359')
-,(304,'Add default_invoice field to the customers table.','20181020','ALTER TABLE `si_customers` ADD `default_invoice` INT(10) UNSIGNED DEFAULT 0 NOT NULL COMMENT "Invoice index_id value to use as the default template" AFTER `notes`;', 'fearless359');
+,(304,'Add default_invoice field to the customers table.','20181020','ALTER TABLE `si_customers` ADD `default_invoice` INT(10) UNSIGNED DEFAULT 0 NOT NULL COMMENT "Invoice index_id value to use as the default template" AFTER `notes`;', 'fearless359')
+,(305,'Add expense tables to the database.','20181027','CREATE TABLE `si_expense` (id INT(11) NOT NULL AUTO_INCREMENT UNIQUE KEY, domain_id INT(11) NOT NULL, amount DECIMAL(25,6) NOT NULL, expense_account_id INT(11) NOT NULL, biller_id INT(11) NOT NULL, customer_id INT(11) NOT NULL, invoice_id INT(11) NOT NULL, product_id INT(11) NOT NULL, date DATE NOT NULL, note TEXT NOT NULL) ENGINE = InnoDb;','fearless359');
 
 CREATE TABLE IF NOT EXISTS `si_system_defaults` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -733,41 +783,42 @@ CREATE TABLE IF NOT EXISTS `si_system_defaults` (
   UNIQUE KEY `UnqNameInDomain` (`domain_id`, `name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `si_system_defaults` (`id`, `name`, `value`, `domain_id`, `extension_id`) VALUES
- ('1','biller','','1','1')
-,('2','company_logo','simple_invoices_logo.png','1','1')
-,('3','company_name','SimpleInvoices','1','1')
-,('4','company_name_item','SimpleInvoices','1','1')
-,('5','customer','','1','1')
-,('6','dateformate','Y-m-d','1','1')
-,('7','delete','N','1','1')
-,('8','emailhost','localhost','1','1')
-,('9','emailpassword','','1','1')
-,('10','emailusername','','1','1')
-,('11','inventory','0','1','1')
-,('12','language','en_US','1','1')
-,('13','line_items','5','1','1')
-,('14','logging','0','1','1')
-,('15','password_lower','1','1','1')
-,('16','password_min_length','8','1','1')
-,('17','password_number','1','1','1')
-,('18','password_special','1','1','1')
-,('19','password_upper','1','1','1')
-,('20','payment_type','1','1','1')
-,('21','pdfbottommargin','15','1','1')
-,('22','pdfleftmargin','15','1','1')
-,('23','pdfpapersize','A4','1','1')
-,('24','pdfrightmargin','15','1','1')
-,('25','pdfscreensize','800','1','1')
-,('26','pdftopmargin','15','1','1')
-,('27','preference','1','1','1')
-,('28','product_attributes','0','1','1')
-,('29','session_timeout','60','1','1')
-,('30','spreadsheet','xls','1','1')
-,('31','tax','1','1','1')
-,('32','tax_per_line_item','1','1','1')
-,('33','template','default','1','1')
-,('34','wordprocessor','doc','1','1');
+INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES
+ ('biller','','1','1')
+,('company_logo','simple_invoices_logo.png','1','1')
+,('company_name','SimpleInvoices','1','1')
+,('company_name_item','SimpleInvoices','1','1')
+,('customer','','1','1')
+,('dateformate','Y-m-d','1','1')
+,('delete','N','1','1')
+,('emailhost','localhost','1','1')
+,('emailpassword','','1','1')
+,('emailusername','','1','1')
+,('expense','','1','1')
+,('inventory','0','1','1')
+,('language','en_US','1','1')
+,('line_items','5','1','1')
+,('logging','0','1','1')
+,('password_lower','1','1','1')
+,('password_min_length','8','1','1')
+,('password_number','1','1','1')
+,('password_special','1','1','1')
+,('password_upper','1','1','1')
+,('payment_type','1','1','1')
+,('pdfbottommargin','15','1','1')
+,('pdfleftmargin','15','1','1')
+,('pdfpapersize','A4','1','1')
+,('pdfrightmargin','15','1','1')
+,('pdfscreensize','800','1','1')
+,('pdftopmargin','15','1','1')
+,('preference','1','1','1')
+,('product_attributes','0','1','1')
+,('session_timeout','60','1','1')
+,('spreadsheet','xls','1','1')
+,('tax','1','1','1')
+,('tax_per_line_item','1','1','1')
+,('template','default','1','1')
+,('wordprocessor','doc','1','1');
 
 CREATE TABLE IF NOT EXISTS `si_tax` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,

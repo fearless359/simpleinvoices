@@ -443,37 +443,40 @@ class Invoice {
     /**
      * Get all the invoice records with associated information.
      * @return array invoice records.
-     * @throws PdoDbException
      */
     public static function get_all() {
         global $pdoDb;
 
-        $pdoDb->setSelectList(new DbField("i.id", "id"), new DbField('i.preference_id', 'preference_id'));
-
-        $fn = new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id");
-        $pdoDb->addToSelectStmts(new Select($fn, null, null, "index_name"));
-
-        $jn = new Join("LEFT", "preferences", "p");
-        $jn->addSimpleItem("i.preference_id", new DbField("p.pref_id"), "AND");
-        $jn->addSimpleItem("i.domain_id", new DbField("p.domain_id"));
-        $pdoDb->addToJoins($jn);
-
-        $pdoDb->addSimpleWhere("i.domain_id", domain_id::get());
-
-        $pdoDb->setOrderBy("index_name");
-
-        $rows = $pdoDb->request("SELECT", "invoices", "i");
         $results = array();
-        foreach($rows as $row) {
-            $age_info = self::calculate_age_days(
-                $row['id'],
-                $row['date'],
-                $row['owing'],
-                $row['last_activity_date'],
-                $row['aging_date'],
-                $row['preference_id']);
-            array_merge($row, $age_info);
-            $results[] = $row;
+        try {
+            $pdoDb->setSelectList("i.id as id");
+
+            $fn = new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id");
+            $pdoDb->addToSelectStmts(new Select($fn, null, null, "index_name"));
+
+            $jn = new Join("LEFT", "preferences", "p");
+            $jn->addSimpleItem("i.preference_id", new DbField("p.pref_id"), "AND");
+            $jn->addSimpleItem("i.domain_id", new DbField("p.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $pdoDb->addSimpleWhere("i.domain_id", domain_id::get());
+
+            $pdoDb->setOrderBy("index_name");
+
+            $rows = $pdoDb->request("SELECT", "invoices", "i");
+            foreach ($rows as $row) {
+                $age_info = self::calculate_age_days(
+                    $row['id'],
+                    $row['date'],
+                    $row['owing'],
+                    $row['last_activity_date'],
+                    $row['aging_date'],
+                    $row['preference_id']);
+                array_merge($row, $age_info);
+                $results[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::get_all() - error: " . $pde->getMessage());
         }
         return $results;
     }

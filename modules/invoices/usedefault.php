@@ -27,10 +27,14 @@ try {
     exit("Database access error(1). See error log.");
 }
 
+// NOTE: The customer record default_invoice field contains the index_id for the invoice NOT the id.
 if ($_GET ['action'] == 'update_template') {
+    // This section is executed when the refresh default_invoice button is selected
+    // on the invoice quick_view screen.
     // Update the default template for this customer
+    $invoice = Invoice::getInvoiceByIndexId($_GET['index_id']);
     try {
-        $pdoDb->setFauxPost(array("default_invoice" => $_GET ['id']));
+        $pdoDb->setFauxPost(array("default_invoice" => $invoice['index_id']));
         $pdoDb->addSimpleWhere("id", $master_customer_id, 'AND');
         $pdoDb->addSimpleWhere("domain_id", domain_id::get());
         $pdoDb->request("UPDATE", "customers");
@@ -38,9 +42,11 @@ if ($_GET ['action'] == 'update_template') {
         error_log("modules/invoices/usedefault.php error: " . $pde->getMessage());
         exit("Database access error(2). See error log.");
     }
-    $smarty->assign("view", "quick_view");
-    $smarty->assign("spec", "id");
-    $smarty->assign("id", $_GET['id']);
+
+    // Set up to redisplay the quick_view for the invoice last accessed
+    $smarty->assign("view"     , "quick_view");
+    $smarty->assign("attr1"    , "id");
+    $smarty->assign("attr1_val", $invoice['id']);
 } else {
     // Set the template to use. If there is a customer specified invoice,
     // use it. Otherwise, use the application default invoice.
@@ -61,16 +67,18 @@ if ($_GET ['action'] == 'update_template') {
     $invoice = Invoice::getInvoiceByIndexId($default_invoice_index_id);
     if (empty($invoice)) {
         // No default template defined.
-        $smarty->assign("view", "itemised");
-        $smarty->assign("spec", "customer_id");
-        $smarty->assign("id"  , $master_customer_id);
+        $smarty->assign("view"     , "itemised");
+        $smarty->assign("attr1"    , "customer_id");
+        $smarty->assign("attr1_val", $master_customer_id);
     } else {
         // NOTE: The combination of view/spec being details/template invokes logic
         // in the main index.php file that resolves direction to the correct screen.
-        $smarty->assign("view", "itemised");
-        $smarty->assign("spec", "template");
-        $smarty->assign("id"  , $invoice ['index_id']);
-        $smarty->assign('spec2', "customer_id");
-        $smarty->assign("CID", $master_customer_id);
+        // This will result via usedefault.tpl, the input to index.php:
+        // .../index.php?module=invoices&view=itemised&template=[invoice::index_id]&customer_id=[customer_id]
+        $smarty->assign("view"     , "itemised");
+        $smarty->assign("attr1"    , "template");
+        $smarty->assign("attr1_val", $invoice ['index_id']);
+        $smarty->assign('attr2'    , "customer_id");
+        $smarty->assign("attr2_val", $master_customer_id);
     }
 }

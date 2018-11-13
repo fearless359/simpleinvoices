@@ -179,6 +179,15 @@ class SystemDefaults
     }
 
     /**
+     * Get "expense" entry from the system_defaults table.
+     * @return string "Enabled" or "Disabled"
+     */
+    public static function getDefaultExpense()
+    {
+        return self::getValue('expense');
+    }
+
+    /**
      * Get "inventory" entry from the system_defaults table.
      * @return string "Enabled" or "Disabled"
      */

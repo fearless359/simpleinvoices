@@ -57,6 +57,7 @@ table {
 table.center {
     margin: 0 auto;
 }
+
 table.left {
   float:left;
   margin-left:auto;
@@ -196,6 +197,22 @@ h2 {
 
 h1, h2, h3 {
     color:#4B7296;
+}
+
+/* @end */
+
+/* invoice sections ------------------------*/
+
+tr.invoice th {
+    font-weight:bold;
+}
+
+tr.biller th {
+    font-weight:bold;
+}
+
+tr.customer th {
+    font-weight:bold;
 }
 
 /* @end */
