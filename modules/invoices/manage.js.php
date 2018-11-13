@@ -5,7 +5,7 @@
     var action_menu = 140;
     var grid_width = $('.col').width();
 
-    grid_width = grid_width - (columns * padding) - action_menu;
+    grid_width = grid_width - ((columns -.05) * padding) - action_menu;
     percentage_width = grid_width / 100;
 
     $("#manageGrid").flexigrid
