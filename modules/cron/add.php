@@ -11,7 +11,6 @@ if (!empty($_POST['op']) && $_POST['op'] =='add' && !empty($_POST['invoice_id'])
     $smarty->assign('saved'      , $saved);
 }
 
-//$invoices = Invoice::select_all("no_age", "id", "", "", "", "", "");
 $invoices = Invoice::select_all("", "id", "", "", "", "", "");
 
 $smarty->assign('invoice_all', $invoices);

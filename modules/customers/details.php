@@ -60,9 +60,8 @@ $query  = (isset($_REQUEST['query']) ? $_REQUEST['query'] : "");
 $qtype  = (isset($_REQUEST['qtype']) ? $_REQUEST['qtype'] : "");
 
 $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
-
-//$invoices_owing = Invoice::select_all($type, $sort, $dir, $rp, $page, $query, $qtype);
 $invoices_owing = Invoice::select_all("", $sort, $dir, $rp, $page, $query, $qtype);
+
 $subPageActive  = ($_GET['action'] == "view"  ? "customer_view" : "customer_edit");
 
 $smarty->assign('customer'        , $customer);
