@@ -44,7 +44,7 @@ class siLocal {
 
         if (empty($locale)) $locale = new Zend_Locale($config->local->locale);
 
-         $formatted_currency = New Zend_Currency($locale);
+        $formatted_currency = New Zend_Currency($locale);
         return $formatted_currency->toCurrency($number);
     }
 
