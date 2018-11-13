@@ -705,9 +705,11 @@ class Invoice {
         $pdoDb->setOrderBy(array($sort, $dir));
 
         // If caller pass a null value, that mean there is no limit.
-        $count = ($type == 'count' || $type == "count_owing");
+        // @formatter:off
+        $count      = ($type == 'count' || $type == "count_owing");
         $calc_owing = ($type == 'owing' || $type == "count_owing");
-        $all = ($type == 'all');
+        $all        = ($type == 'all');
+        // @formatter:on
         if (isset($rp) && !$count && !$calc_owing && !$all) {
             if (empty($rp  )) $rp    = "25";
             if (empty($page)) $page  = "1";
@@ -784,8 +786,8 @@ class Invoice {
 
         $rows = $pdoDb->request("SELECT", "invoices", "iv");
 
-        $results = array();
-        $count = 0;
+        $results     = array();
+        $count       = 0;
         $total_owing = 0;
         foreach($rows as $row) {
             $age_list = self::calculate_age_days(
@@ -813,7 +815,7 @@ class Invoice {
                 // Count value.
                 return $count;
 
-            case 'calc_owing':
+            case 'owing':
                 // Total owing value.
                 return $total_owing;
 
