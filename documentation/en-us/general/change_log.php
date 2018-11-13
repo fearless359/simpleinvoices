@@ -13,6 +13,14 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-11-12 - <b>2018.2.6</b>
+            <ul>
+                <li>Added options to the "type" parameter of the Invoices::select_all() method to
+                    provide a total owing by itself or combined with the count of invoices. The
+                    combined feature is to minimize the data access overhead.</li>
+            </ul>
+        </li>
+
         <li>2018-10-27 - <b>2018.2.5</b>
             <ul>
                 <li>Fixed issue of default invoice values not populating the new invoice.</li>

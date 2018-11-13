@@ -47,9 +47,8 @@ $customer = Customer::get($invoice['customer_id']);
 $biller   = Biller::select($invoice['biller_id']);
 $defaults = SystemDefaults::loadValues();
 
-// Presets value that will be used in the Invoice::select_all() method.
 $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
-$invoice_all = Invoice::select_all("count", "id", "", null, "", "", "");
+$invoice_all = Invoice::select_all("all", "id", "", null, "", "", "");
 
 $smarty->assign('invoice_all',$invoice_all);
 

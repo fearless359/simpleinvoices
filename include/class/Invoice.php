@@ -37,6 +37,7 @@ class Invoice {
      * @param float $owing on this invoice. Note: Set positive to force aging info recalculation.
      * @param string $last_activity_date yyyy-mm-dd date of last activity on this invoice.
      * @param string $aging_date yyyy-mm-dd date of last calculation of age_days.
+     * @param int $pref_id - Calculate for type_id of 1 (Invoice) only.
      * @return array age_info - associative array with updated key value pairs for
      *              "last_activity_date",
      *              "owing" ,
@@ -45,28 +46,32 @@ class Invoice {
      *              "aging" (aging is the wording such as 1-14).
      * @throws PdoDbException
      */
-    private static function calculate_age_days($id, $invoice_date, $owing, $last_activity_date, $aging_date) {
+    private static function calculate_age_days($id, $invoice_date, $owing, $last_activity_date, $aging_date, $pref_id) {
 
         // Don't recalculate $owing unless you have to because it involves DB reads.
         // Note that there is a time value in the dates so they are typically equal only when
         // an account is created.
-        if ($last_activity_date >= $aging_date || $owing > 0) {
+        if ($pref_id == 1 && ($last_activity_date >= $aging_date || $owing > 0)) {
             $total = self::getInvoiceTotal($id);
             $paid = Payment::calc_invoice_paid($id);
             $owing = $total - $paid;
         }
 
         // We don't want create values here.
-        if ($owing < 0) $owing = 0;
+        if ($owing < 0 || $pref_id != 1) $owing = 0;
 
         $curr_dt = new DateTime();
         // We have the last activity date and the last aging date. If the activity
         // date is greater than the aging date, set the invoice aging value.
         $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
 
-        $inv_dt = new DateTime($invoice_date);
-        $date_diff = $curr_dt->diff($inv_dt);
-        $dys = $date_diff->days;
+        if ($pref_id == 1) {
+            $inv_dt = new DateTime($invoice_date);
+            $date_diff = $curr_dt->diff($inv_dt);
+            $dys = $date_diff->days;
+        } else {
+            $dys = 0;
+        }
 
         $age_info = array(
             "owing" => $owing,
@@ -88,7 +93,7 @@ class Invoice {
     public static function updateAging($id = null) {
         global $pdoDb;
 
-        $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date'));
+        $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date', 'preference_id'));
         if (isset($id)) {
             $pdoDb->addSimpleWhere('id', $id);
         } else {
@@ -104,12 +109,14 @@ class Invoice {
             $last_activity_date = $row['last_activity_date'];
             $owing = $row['owing'];
             $aging_date = $row['aging_date'];
+            $pref_id = $row['preference_id'];
             $age_info = self::calculate_age_days(
                 $id,
                 $invoice_date,
                 $owing,
                 $last_activity_date,
-                $aging_date);
+                $aging_date,
+                $pref_id);
 
             try {
                 $pdoDb->setFauxPost(array(
@@ -463,7 +470,8 @@ class Invoice {
                     $row['date'],
                     $row['owing'],
                     $row['last_activity_date'],
-                    $row['aging_date']);
+                    $row['aging_date'],
+                    $row['preference_id']);
                 array_merge($row, $age_info);
                 $results[] = $row;
             }
@@ -523,6 +531,7 @@ class Invoice {
 
         $row = array();
         try {
+            $pdoDb->setSelectAll(true);
             $pdoDb->addSimpleWhere("id", $id, "AND");
             $pdoDb->addSimpleWhere("domain_id", $domain_id);
             $rows = $pdoDb->request("SELECT", "invoices");
@@ -542,9 +551,10 @@ class Invoice {
             $age_info = self::calculate_age_days(
                 $row['id'],
                 $row['date'],
-                $row['total'] - $row['paid'],
+                $row['owing'],
                 $row['last_activity_date'],
-                $row['aging_date']);
+                $row['aging_date'],
+                $row['preference_id']);
             array_merge($row, $age_info);
 
             // invoice total tax
@@ -572,20 +582,12 @@ class Invoice {
     public static function getInvoices($q) {
         $results = array();
         if (isset($q)) {
-            $rows = self::select_all();
+            $rows = self::select_all('all');
             foreach ($rows as $row) {
                 $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
                 $row['date'] = siLocal::date($row['date']);
                 $row['total'] = self::getInvoiceTotal($row['id']);
                 $row['paid'] = Payment::calc_invoice_paid($row['id']);
-
-                $age_info = self::calculate_age_days(
-                    $row['id'],
-                    $row['date'],
-                    $row['total'] - $row['paid'],
-                    $row['last_activity_date'],
-                    $row['aging_date']);
-                array_merge($row, $age_info);
 
                 $results[] = $row;
 
@@ -671,7 +673,11 @@ class Invoice {
      *
      * @param string $type Three setting:
      *        <ol>
-     *          <li><b>count</b> - Accessed for row count based on select criteria. Excludes <i>LIMIT</i> setting</li>
+     *          <li><b>count</b> - Get the count of all records.</li>
+     *          <li><b>owing</b> - Get the total amount owing on all invoices.</li>
+     *          <li><b>all</b> - Access all records. Same as 'count' except array of rows is returned.</li>
+     *          <li><b>count_owing</b> - Return array containing the result of "count" and "owing".
+     *              Indecies are "count" and "total_owing".</li>
      *          <li><b>&nbsp;&nbsp;</b> - All other settings are result in normal access of data based on specified criteria.</li>
      *        </ol>
      * @param string $sort Field to order results.
@@ -693,15 +699,16 @@ class Invoice {
             $pdoDb->addSimpleWhere("b.id", $auth_session->user_id, "AND");
         }
 
-        $count_type = ($type == "count");
-
         if (empty($sort) ||
             !in_array($sort, array('index_id', 'b.name', 'c.name', 'date', 'invoice_total', 'owing', 'aging'))) $sort = "index_id";
         if (empty($dir)) $dir = "DESC";
         $pdoDb->setOrderBy(array($sort, $dir));
 
         // If caller pass a null value, that mean there is no limit.
-        if (isset($rp) && !$count_type) {
+        $count = ($type == 'count' || $type == "count_owing");
+        $calc_owing = ($type == 'owing' || $type == "count_owing");
+        $all = ($type == 'all');
+        if (isset($rp) && !$count && !$calc_owing && !$all) {
             if (empty($rp  )) $rp    = "25";
             if (empty($page)) $page  = "1";
             $start = (($page - 1) * $rp);
@@ -766,6 +773,7 @@ class Invoice {
             new DbField("iv.type_id", "type_id"),
             new DbField("b.name", "biller"),
             new DbField("c.name", "customer"),
+            new DbField("iv.preference_id", "preference_id"),
             new DbField("pf.pref_description", "preference"),
             new DbField("pf.status", "status"));
         $pdoDb->setSelectList($expr_list);
@@ -777,16 +785,48 @@ class Invoice {
         $rows = $pdoDb->request("SELECT", "invoices", "iv");
 
         $results = array();
+        $count = 0;
+        $total_owing = 0;
         foreach($rows as $row) {
             $age_list = self::calculate_age_days(
                 $row['id'],
                 $row['date'],
                 $row['owing'],
                 $row['last_activity_date'],
-                $row['aging_date']);
+                $row['aging_date'],
+                $row['preference_id']);
+
+            $count++;
+            $total_owing += $age_list['owing'];
+
             // The merge will update fields that exist and append those that don't.
-            $results[] = array_merge($row,$age_list);
+            $results[] = array_merge($row, $age_list);
         }
+
+        // Return requested type.
+        switch($type) {
+            case 'count_owing':
+                // Array with indecies for 'count' and 'total_owing'
+                return array('count' => $count, 'total_owing' => $total_owing);
+
+            case 'count' :
+                // Count value.
+                return $count;
+
+            case 'calc_owing':
+                // Total owing value.
+                return $total_owing;
+
+            case 'all':
+                // All invoice rows, et al selected.
+                break;
+
+            default:
+                // All invoice rows, et al selected.
+                break;
+        }
+
+        // Return results for "all" or blank type.
         return $results;
     }
 

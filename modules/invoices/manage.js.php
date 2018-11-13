@@ -5,7 +5,7 @@
     var action_menu = 140;
     var grid_width = $('.col').width();
 
-    grid_width = grid_width - (columns * padding) - action_menu;
+    grid_width = grid_width - ((columns -.05) * padding) - action_menu;
     percentage_width = grid_width / 100;
 
     $("#manageGrid").flexigrid
@@ -35,7 +35,7 @@
             sortname: "{/literal}{$smarty.get.sortname|default:'index_id'}{literal}",
             sortorder: "{/literal}{$smarty.get.sortorder|default:'desc'}{literal}",
             usepager: true,
-            pagestat: '{/literal}{$LANG.displaying_items}{literal}',
+            pagestat: '{/literal}{$LANG.displaying_items} - <b>{$LANG.total_owing}: {$total_owing|siLocal_currency}</b>{literal}',
             procmsg: '{/literal}{$LANG.processing}{literal}',
             nomsg: '{/literal}{$LANG.no_items}{literal}',
             pagemsg: '{/literal}{$LANG.page}{literal}',

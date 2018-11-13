@@ -11,7 +11,6 @@ if (isset($_POST['op']) && $_POST['op'] =='edit' && !empty($_POST['invoice_id'])
     $smarty->assign('saved', $saved);
 }
 
-//$invoice_all = Invoice::select_all('noage', 'id');
 $invoice_all = Invoice::select_all('', 'id');
 
 $cron = Cron::select();
