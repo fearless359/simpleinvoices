@@ -20,7 +20,6 @@
                     combined feature is to minimize the data access overhead.</li>
             </ul>
         </li>
-
         <li>2018-10-27 - <b>2018.2.5</b>
             <ul>
                 <li>Fixed issue of default invoice values not populating the new invoice.</li>

@@ -44,7 +44,6 @@ class siLocal
         return $formatted_number;
     }
 
-    
     /**
      * Format number in default currency form.
      * @param string $number Numeric value to be formatted.
@@ -52,17 +51,16 @@ class siLocal
      * @return string Formatted string.
      * @throws Zend_Locale_Exception (perhaps...I'm not sure)
      */
-       /*Function: wrapper function for zend_locale_format::toCurrency*/
-    public static function currency($number,$locale="")
+    public static function currency($number, $locale = "")
     {
         global $config;
 
         if (empty($locale)) $locale = new Zend_Locale($config->local->locale);
 
         $formatted_currency = New Zend_Currency($locale);
+
         return $formatted_currency->toCurrency($number);
     }
-
 
     /**
      * Format number in default form.
