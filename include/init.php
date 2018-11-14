@@ -346,4 +346,4 @@ $siUrl = getURL();
  * appended to the config array, instead of replacing it
  * (NOTE: NOT TESTED!)
  * *************************************************************/
-include_once ("include/class/BackupDb.php");
+//include_once ("include/class/BackupDb.php");
