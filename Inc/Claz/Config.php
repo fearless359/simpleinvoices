@@ -8,8 +8,6 @@
 
 namespace Inc\Claz;
 
-use Exception;
-
 /**
  * Class Config
  * @package Inc\Claz
@@ -25,14 +23,14 @@ class Config
 
     /**
      * Make sure we have a custom.config.php file that is consistent with the config.php file.
-     * @param $environment
-     * @param $module
+     * @param string $environment
+     * @param bool $updateCustomConfig
      * @return mixed
      * @throws Exception
      */
-    public static function init($environment, $module) {
+    public static function init($environment, $updateCustomConfig) {
         try {
-            if (empty($module)) {
+            if ($updateCustomConfig) {
                 self::makeCustomConfig();
                 self::updateConfig();
             }

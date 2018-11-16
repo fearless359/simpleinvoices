@@ -19,6 +19,10 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         array (
             'Webmozart\\Assert\\' => 17,
         ),
+        'I' => 
+        array (
+            'Inc\\Claz\\' => 9,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -36,6 +40,10 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'Inc\\Claz\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Inc/Claz',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

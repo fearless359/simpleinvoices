@@ -6,6 +6,7 @@ use Inc\Claz\DbInfo;
 use Inc\Claz\Log;
 use Inc\Claz\PdoDb;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Setup;
 use Inc\Claz\SiError;
 use Inc\Claz\SqlPatchManager;
 use Inc\Claz\SystemDefaults;
@@ -14,7 +15,7 @@ use Inc\Claz\SystemDefaults;
  * Zend framework init - start
  * *************************************************************/
 
-global $api_request, $config;
+global $api_request, $config, $module, $pdoDb_admin;
 if (!isset($api_request)) $api_request = false;
 
 $lcl_path = get_include_path() .
@@ -61,74 +62,81 @@ if (!is_writable('tmp/cache')) {
 }
 
 include_once ('config/define.php');
-global $environment;
-
 try {
-    $config = Config::init($environment, $module);
-} catch (Exception $e) {
-    echo "<h1 style='font-weight:bold;color:red;'>";
-    echo "  " . $e->getMessage() . " (Error code: {$e->getCode()})";
-    echo "</h1>";
-}
-
-$logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
-Log::open($logger_level);
-Log::out("init.php - logger has been setup", \Zend_Log::DEBUG);
-
-try {
-    $dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, "production");
-
-    $pdoDb = new PdoDb($dbInfo);
-    $pdoDb->clearAll(); // to eliminate never used warning.
-
-    // For use by admin functions only. This avoids issues of
-    // concurrent use with user app object, <i>$pdoDb</i>.
-    $pdoDb_admin = new PdoDb($dbInfo);
-    $pdoDb_admin->clearAll();
+    $updateCustomConfig = empty($module);
+    Setup::init($updateCustomConfig);
 } catch (PdoDbException $pde) {
-    if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
-        echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
-        echo "<ol>";
-        echo "  <li>Make a mySQL compatible database with a user that has full access to it.</li>";
-        echo "  <li>In the \"config\" directory, copy the <b>config.php</b> file to <b>custom.config.php</b></li>";
-        echo "  <li>Modify the database settings in the <b>custom.config.php</b> file for the database made in step 1.";
-        echo "    <ul>";
-        echo "      <li>Set <b>database.params.dbname</b> to the name of the database.";
-        echo "      <li>Set <b>database.params.username</b> to the username of the database administrator.</li>";
-        echo "      <li>Set <b>database.params.password</b> to the database administrator password. Note you might need to include this in single quotes.</li>";
-        echo "    </ul>";
-        echo "  </li>";
-        echo "  <li>In your browser, execute the command to access SI again and follow the instructions.</li>";
-        echo "</ol>";
-    } else {
-        echo "<h1 style='font-weight:bold;color:red;'>";
-        echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode()})";
-        echo "</h1>";
-    }
+    // Error already reported so simply exit.
     exit();
 }
 
+//try {
+//    $noModule = empty($module);
+//    $config = Config::init(CONFIG_SECTION, $noModule);
+//} catch (Exception $e) {
+//    echo "<h1 style='font-weight:bold;color:red;'>";
+//    echo "  " . $e->getMessage() . " (Error code: {$e->getCode()})";
+//    echo "</h1>";
+//}
+
+//$logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
+//Log::open($logger_level);
+//Log::out("init.php - logger has been setup", \Zend_Log::DEBUG);
+//
+//try {
+//    $dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX);
+//
+//    $pdoDb = new PdoDb($dbInfo);
+//    $pdoDb->clearAll(); // to eliminate never used warning.
+//
+//    // For use by admin functions only. This avoids issues of
+//    // concurrent use with user app object, <i>$pdoDb</i>.
+//    $pdoDb_admin = new PdoDb($dbInfo);
+//    $pdoDb_admin->clearAll();
+//} catch (PdoDbException $pde) {
+//    if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
+//        echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
+//        echo "<ol>";
+//        echo "  <li>Make a mySQL compatible database with a user that has full access to it.</li>";
+//        echo "  <li>In the \"config\" directory, copy the <b>config.php</b> file to <b>custom.config.php</b></li>";
+//        echo "  <li>Modify the database settings in the <b>custom.config.php</b> file for the database made in step 1.";
+//        echo "    <ul>";
+//        echo "      <li>Set <b>database.params.dbname</b> to the name of the database.";
+//        echo "      <li>Set <b>database.params.username</b> to the username of the database administrator.</li>";
+//        echo "      <li>Set <b>database.params.password</b> to the database administrator password. Note you might need to include this in single quotes.</li>";
+//        echo "    </ul>";
+//        echo "  </li>";
+//        echo "  <li>In your browser, execute the command to access SI again and follow the instructions.</li>";
+//        echo "</ol>";
+//    } else {
+//        echo "<h1 style='font-weight:bold;color:red;'>";
+//        echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode()})";
+//        echo "</h1>";
+//    }
+//    exit();
+//}
+
 // set up app with relevant php setting
-date_default_timezone_set($config->phpSettings->date->timezone);
-error_reporting($config->debug->error_reporting);
-
-ini_set('display_startup_errors', $config->phpSettings->display_startup_errors);
-ini_set('display_errors',         $config->phpSettings->display_errors);
-ini_set('log_errors',             $config->phpSettings->log_errors);
-ini_set('error_log',              $config->phpSettings->error_log);
-
-try {
-    // @formatter:off
-    $zendDb = Zend_Db::factory($config->database->adapter,
-                               array('host'     => $dbInfo->getHost(),
-                                     'username' => $dbInfo->getUsername(),
-                                     'password' => $dbInfo->getPassword(),
-                                     'dbname'   => $dbInfo->getDbname(),
-                                     'port'     => $dbInfo->getPort()));
-    // @formatter:on
-} catch (Zend_Db_Exception $zde) {
-    SiError::out('generic', 'Zend_Db_Exception', $zde->getMessage());
-}
+//date_default_timezone_set($config->phpSettings->date->timezone);
+//error_reporting($config->debug->error_reporting);
+//
+//ini_set('display_startup_errors', $config->phpSettings->display_startup_errors);
+//ini_set('display_errors',         $config->phpSettings->display_errors);
+//ini_set('log_errors',             $config->phpSettings->log_errors);
+//ini_set('error_log',              $config->phpSettings->error_log);
+//
+//try {
+//    // @formatter:off
+//    $zendDb = Zend_Db::factory($config->database->adapter,
+//                               array('host'     => $dbInfo->getHost(),
+//                                     'username' => $dbInfo->getUsername(),
+//                                     'password' => $dbInfo->getPassword(),
+//                                     'dbname'   => $dbInfo->getDbname(),
+//                                     'port'     => $dbInfo->getPort()));
+//    // @formatter:on
+//} catch (Zend_Db_Exception $zde) {
+//    SiError::out('generic', 'Zend_Db_Exception', $zde->getMessage());
+//}
 
 // It's possible that we are in the initial install mode. If so, set
 // a flag so we won't terminate on an "Unknown database" error later.

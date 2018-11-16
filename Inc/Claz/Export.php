@@ -115,7 +115,7 @@ class Export {
      */
     private function getData() {
         global $config, $smarty, $pdoDb, $siUrl;
-
+Log::out("In Export.php getData()", \Zend_Log::DEBUG);
         // @formatter:off
         $data = null;
         switch ($this->module) {
@@ -293,6 +293,7 @@ class Export {
      * Execute the request by getting the data and the showing it.
      */
     public function execute() {
+Log::out("In Export.php execute()", \Zend_Log::DEBUG);
         $this->showData($this->getData());
     }
 

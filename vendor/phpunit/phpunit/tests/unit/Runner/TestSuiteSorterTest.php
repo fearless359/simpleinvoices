@@ -28,7 +28,7 @@ class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
-        $sorter = new TestSuiteSorter();
+        $sorter = new TestSuiteSorter;
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED, or TestSuiteSorter::ORDER_DURATION');
@@ -39,7 +39,7 @@ class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
-        $sorter = new TestSuiteSorter();
+        $sorter = new TestSuiteSorter;
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('$orderDefects must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST');
@@ -68,7 +68,7 @@ class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
-        $sorter = new TestSuiteSorter();
+        $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFAULT);
 
@@ -79,7 +79,7 @@ class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
-        $sorter = new TestSuiteSorter();
+        $sorter = new TestSuiteSorter;
 
         \mt_srand(54321);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, false, TestSuiteSorter::ORDER_DEFAULT);
@@ -91,7 +91,7 @@ class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
-        $sorter = new TestSuiteSorter();
+        $sorter = new TestSuiteSorter;
 
         \mt_srand(54321);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, true, TestSuiteSorter::ORDER_DEFAULT);
@@ -108,7 +108,7 @@ class TestSuiteSorterTest extends TestCase
 
         $suite->addTestSuite(\MultiDependencyTest::class);
 
-        $sorter = new TestSuiteSorter();
+        $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite(
             $suite,
@@ -155,10 +155,10 @@ class TestSuiteSorterTest extends TestCase
 
         $suite->addTestSuite(\MultiDependencyTest::class);
 
-        $cache = new TestResultCache();
+        $cache = new TestResultCache;
 
         foreach ($testTimes as $testName => $time) {
-            $cache->setTime($testName, $time);
+            $cache->setTime(\MultiDependencyTest::class . '::' . $testName, $time);
         }
 
         $sorter = new TestSuiteSorter($cache);
@@ -255,11 +255,11 @@ class TestSuiteSorterTest extends TestCase
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
 
-        $cache = new TestResultCache();
+        $cache = new TestResultCache;
 
         foreach ($runState as $testName => $data) {
-            $cache->setState($testName, $data['state']);
-            $cache->setTime($testName, $data['time']);
+            $cache->setState(\MultiDependencyTest::class . '::' . $testName, $data['state']);
+            $cache->setTime(\MultiDependencyTest::class . '::' . $testName, $data['time']);
         }
 
         $sorter  = new TestSuiteSorter($cache);
@@ -460,7 +460,7 @@ class TestSuiteSorterTest extends TestCase
         $suite = new TestSuite;
         $suite->addTestSuite(\EmptyTestCaseTest::class);
 
-        $sorter = new TestSuiteSorter();
+        $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFAULT);
 

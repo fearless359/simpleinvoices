@@ -81,7 +81,7 @@ if (isset($_POST['submit'])) {
 }
 
 // @formatter:off
-$billers          = Biller::get_all(true);
+$billers          = Biller::getAll(true);
 $biller_count     = count($billers);
 $customers        = Customer::get_all(true);
 $customer_count   = count($customers);

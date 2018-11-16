@@ -758,10 +758,10 @@ class Invoice {
 
             // If caller pass a null value, that mean there is no limit.
             // @formatter:off
-            $count      = ($type == 'count' || $type == "count_owing");
+            $count_type = ($type == 'count' || $type == "count_owing");
             $calc_owing = ($type == 'owing' || $type == "count_owing");
             $all        = ($type == 'all');
-            if (isset($rp) && !$count && !$calc_owing && !$all) {
+            if (isset($rp) && !$count_type && !$calc_owing && !$all) {
                 if (empty($rp)) $rp = "25";
                 if (empty($page)) $page = "1";
                 $start = (($page - 1) * $rp);
@@ -838,6 +838,7 @@ class Invoice {
 
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
 
+            $inv_count = count($rows);
             foreach ($rows as $row) {
                 $row[owing] = $row['invoice_total'] - $row['INV_PAID'];
                 $age_list = self::calculate_age_days(
@@ -847,8 +848,6 @@ class Invoice {
                     $row['last_activity_date'],
                     $row['aging_date'],
                     $row['preference_id']);
-
-                $count ++;
                 $total_owing += $age_list['owing'];
 
                 // The merge will update fields that exist and append those that don't.
@@ -862,10 +861,10 @@ class Invoice {
         switch($type) {
             case 'count_owing':
                 // Array with indecies for 'count' and 'total_owing'
-                return array('count' => $count, 'total_owing' => $total_owing);
+                return array('count' => $inv_count, 'total_owing' => $total_owing);
             case 'count' :
                 // Count value.
-                return $count;
+                return $inv_count;
             case 'calc_owing':
                 // Total owing value.
                 return $total_owing;
@@ -921,6 +920,7 @@ class Invoice {
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoiceItems() - id[$id] error: " . $pde->getMessage());
         }
+error_log("invoicesItems - " . print_r($invoiceItems,true));
         return $invoiceItems;
     }
 

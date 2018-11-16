@@ -20,8 +20,7 @@ class Requests {
      * @throws PdoDbException
      */
     public function __construct() {
-        global $environment;
-        $this->pdoDb = new PdoDb(new DbInfo(Config::CUSTOM_CONFIG_FILE, $environment, "database"));
+        $this->pdoDb = new PdoDb(new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX));
         $this->reset();
     }
 

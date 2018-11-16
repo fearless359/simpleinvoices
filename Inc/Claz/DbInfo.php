@@ -13,6 +13,7 @@ class DbInfo {
     private $host;
     private $password;
     private $port;
+    private $prefix;
     private $sectionname;
     private $username;
 
@@ -27,7 +28,7 @@ class DbInfo {
      *        field with a prefix of <i>database</i>.
      * @throws PdoDbException
      */
-    public function __construct($filepath, $sectionname, $prefix=null) {
+    public function __construct($filepath, $sectionname, $prefix) {
         $this->adapter  = "mysql";
         $this->dbname   = null;
         $this->host     = null;
@@ -48,88 +49,94 @@ class DbInfo {
      * @throws PdoDbException If unable to open the file and file the section name and data to decrypt.
      */
     public function loadSectionInfo($filepath, $sectionname, $prefix) {
-        global $site_id;
-
         $this->filepath = $filepath;
-        $this->sectionname = (is_string($sectionname) ? $sectionname : $site_id);
+        $this->sectionname = $sectionname;
+        $this->prefix = $prefix;
         if (($secure_info = file($this->filepath, FILE_USE_INCLUDE_PATH)) === false) {
             throw new PdoDbException("DbInfo loadSectionInfo(): Unable to open the secure information file, $this->filepath");
         }
 
         $found = false;
-        $i = 0;
+        $lines = array();
 
-        // Find the section to use
-        while(!$found && $i < count($secure_info)) {
-            $line = trim($secure_info[$i]);
+        // Find the section to use and capture lines within that section
+        foreach($secure_info as $line) {
+            $line = trim($line);
             // Search for pattern (sans quotes): "   [xA0_ -.]". Ex: "   [Section_A 1]"
-            if (preg_match('/^ *\[[a-zA-Z0-9_ \-\.]+\]/', $line) === 1) {
+            if (preg_match('/^\[[a-zA-Z0-9_ :\-\.]+\]/', $line) === 1) {
+
+                // If section found previously, we can terminate loop on load of another section.
+                if ($found) {
+                    break;
+                }
+                // This is a section line. Look to see if the one we are looking for.
                 $beg = strpos($line, '[') + 1;
                 $len = strpos($line, ']') - $beg;
                 $section = substr($line, $beg, $len);
                 $found = ($section == $this->sectionname);
             }
-            $i++;
+
+            if ($found) {
+                $lines[] = $line;
+            }
         }
 
+//echo "found[$found] lines - " . print_r($lines,true);
         if (!$found) {
             throw new PdoDbException("DbInfo loadSectionInfo(): Section, $this->sectionname, not found.");
         }
 
-        while($i < count($secure_info)) {
-            $line = trim($secure_info[$i]);
-            if (strstr($line,"=") === false) break;
-
-            $parts = explode("=", $line);
-            if (count($parts) != 2) break;
-
-            $pieces = self::unjoin($line, $prefix);
-            if (preg_match('/^(adapter|dbname|host|password|port|username)$/', $pieces[0])) {
-                if (strlen($pieces[1]) < 60) {
-                    $decrypt = preg_replace('/\'/', '', $pieces[1]);
-                } else {
-                    throw new PdoDbException("DbInfo::loadSectionInfo - Attempt to use deleted MyCrypt class");
-                }
-
-                switch ($pieces[0]) {
-                    case 'adapter':
-                        if (preg_match('/^pdo_/', $decrypt) == 1) {
-                            $this->adapter = substr($decrypt, 4);
+        // Loop through lines for the section and find the database info in it.
+        foreach ($lines as $line) {
+            if (strstr($line,"=") !== false) {
+                $parts = explode("=", $line);
+                if (count($parts) == 2) {
+                    $pieces = self::unjoin($line, $prefix);
+                    if (preg_match('/^(adapter|dbname|host|password|port|username)$/', $pieces[0])) {
+                        if (strlen($pieces[1]) < 60) {
+                            $decrypt = preg_replace('/\'/', '', $pieces[1]);
                         } else {
-                            $this->adapter = $decrypt;
+                            throw new PdoDbException("DbInfo::loadSectionInfo - Attempt to use deleted MyCrypt class");
                         }
-                        break;
 
-                    case 'dbname':
-                        $this->dbname = $decrypt;
-                        break;
+                        switch ($pieces[0]) {
+                            case 'adapter':
+                                if (preg_match('/^pdo_/', $decrypt) == 1) {
+                                    $this->adapter = substr($decrypt, 4);
+                                } else {
+                                    $this->adapter = $decrypt;
+                                }
+                                break;
 
-                    case 'host':
-                        $this->host = $decrypt;
-                        break;
+                            case 'dbname':
+                                $this->dbname = $decrypt;
+                                break;
 
-                    case 'password':
-                        $this->password = $decrypt;
-                        break;
+                            case 'host':
+                                $this->host = $decrypt;
+                                break;
 
-                    case 'port':
-                        $this->port = $decrypt;
-                        break;
+                            case 'password':
+                                $this->password = $decrypt;
+                                break;
 
-                    case 'username':
-                        $this->username = $decrypt;
-                        break;
+                            case 'port':
+                                $this->port = $decrypt;
+                                break;
+
+                            case 'username':
+                                $this->username = $decrypt;
+                                break;
+                        }
+                    }
                 }
             }
-            $i++;
+//            $i++;
         }
 
-        if (empty($this->host)) {
-            $this->host = "localhost";
-        }
-
-        if (empty($this->dbname) || empty($this->password) || empty($this->username)) {
-            throw new PdoDbException("DbInfo loadSectionInfo(): Missing one or more of dbname, password and username.");
+        // Make sure we got the minimum info
+        if (empty($this->host) || empty($this->dbname) || empty($this->password) || empty($this->username)) {
+            throw new PdoDbException("DbInfo loadSectionInfo(): Missing one or more of host, dbname, password and username.");
         }
     }
 

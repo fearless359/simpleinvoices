@@ -2,6 +2,16 @@
 
 All notable changes of the PHPUnit 7.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.4.4] - 2018-11-14
+
+### Fixed
+
+* Fixed [#3379](https://github.com/sebastianbergmann/phpunit/issues/3379): Dependent test of skipped test has status `-1`
+* Fixed [#3394](https://github.com/sebastianbergmann/phpunit/issues/3394): Process Isolation does not work when PHPUnit is used as PHAR
+* Fixed [#3398](https://github.com/sebastianbergmann/phpunit/pull/3398): Bug when replacing placeholders in `@testdox` annotation using an associative array
+* Fixed [#3401](https://github.com/sebastianbergmann/phpunit/pull/3401): Test re-ordering edge cases
+* Fixed [#3402](https://github.com/sebastianbergmann/phpunit/pull/3402): Listening to the tests in reverse revealed evil hidden messages
+
 ## [7.4.3] - 2018-10-23
 
 ### Changed
@@ -31,6 +41,7 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 * Implemented [#3284](https://github.com/sebastianbergmann/phpunit/issues/3284): Ability to reorder tests based on execution time
 * Implemented [#3290](https://github.com/sebastianbergmann/phpunit/issues/3290): Ability to load a PHP script before any code of PHPUnit itself is loaded
 
+[7.4.4]: https://github.com/sebastianbergmann/phpunit/compare/7.4.3...7.4.4
 [7.4.3]: https://github.com/sebastianbergmann/phpunit/compare/7.4.2...7.4.3
 [7.4.2]: https://github.com/sebastianbergmann/phpunit/compare/7.4.1...7.4.2
 [7.4.1]: https://github.com/sebastianbergmann/phpunit/compare/7.4.0...7.4.1

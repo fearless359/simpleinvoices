@@ -44,7 +44,7 @@ if ($default_template_set) {
 $invoiceItems = Invoice::getInvoiceItems ( $master_invoice_id );
 $customers    = Customer::get_all(true, $invoice['customer_id']);
 $preference   = Preferences::getPreference( $invoice ['preference_id'] );
-$billers      = Biller::get_all(true);
+$billers      = Biller::getAll(true);
 $defaults     = SystemDefaults::loadValues();
 $taxes        = Taxes::getTaxes ();
 $preferences  = Preferences::getActivePreferences ();

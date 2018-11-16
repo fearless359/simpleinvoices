@@ -305,6 +305,7 @@ if ($extensionPhpFile == 0 && ($my_path = getCustomPath("$module/$view", 'module
 // Include php file for the requested page section - END
 // **********************************************************
 if ($module == "export" || $view == "export") {
+    Log::out("index.php - Before export exit", \Zend_Log::DEBUG);
     exit(0);
 }
 Log::out("index.php - After export/export exit", \Zend_Log::DEBUG);

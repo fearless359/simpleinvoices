@@ -241,13 +241,13 @@ function export_invoice(row_number,spreadsheet,wordprocessor){
      $("#export_dialog").show();
         siLog('debug','export_dialog_show');
      $(".export_pdf").attr({
-          href: "index.php?module=export&amp;view=invoice&amp;id="+row_number+"&amp;format=pdf"
+          href: "index.php?module=export&view=invoice&id="+row_number+"&format=pdf"
      });
      $(".export_doc").attr({
-          href: "index.php?module=export&amp;view=invoice&amp;id="+row_number+"&amp;format=file&amp;filetype="+wordprocessor
+          href: "index.php?module=export&view=invoice&id="+row_number+"&format=file&filetype="+wordprocessor
      });
       $(".export_xls").attr({
-          href: "index.php?module=export&amp;view=invoice&amp;id="+row_number+"&amp;format=file&amp;filetype="+spreadsheet
+          href: "index.php?module=export&view=invoice&id="+row_number+"&format=file&filetype="+spreadsheet
      });
      $("#export_dialog").dialog({
          modal: true,

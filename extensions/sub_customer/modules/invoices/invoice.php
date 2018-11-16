@@ -30,7 +30,7 @@ global $smarty;
 checkLogin();
 
 // @formatter:off
-$billers     = Biller::get_all(true);
+$billers     = Biller::getAll(true);
 $customers   = Customer::get_all(true);
 $taxes       = Taxes::getActiveTaxes();
 $products    = Product::select_all();

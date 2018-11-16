@@ -34,7 +34,7 @@ $get_val = (empty($_GET['submit']) ? '' : trim($_GET['submit']));
 switch ($get_val) {
     case "biller":
         $default = "biller";
-        $billers = Biller::get_all(true);
+        $billers = Biller::getAll(true);
         if (empty($billers)) {
             $value = "<p><em>{$LANG['no_billers']}</em></p>" . "\n";
         } else {

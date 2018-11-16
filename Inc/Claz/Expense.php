@@ -52,7 +52,7 @@ class Expense {
         $add_info = array();
         $add_info['expense_accounts'] = ExpenseAccount::getAll();
         $add_info['customers']        = Customer::get_all(true);
-        $add_info['billers']          = Biller::get_all();
+        $add_info['billers']          = Biller::getAll();
         $add_info['invoices']         = Invoice::get_all();
         $add_info['products']         = Product::select_all();
         // @formatter:on
@@ -87,7 +87,7 @@ class Expense {
         $detail_info = array();
         $detail_info['expense_accounts'] = ExpenseAccount::getAll();
         $detail_info['customers']        = Customer::get_all(true);
-        $detail_info['billers']          = Biller::get_all();
+        $detail_info['billers']          = Biller::getAll();
         $detail_info['invoices']         = Invoice::get_all();
         $detail_info['products']         = Product::select_all();
         // @formatter:on

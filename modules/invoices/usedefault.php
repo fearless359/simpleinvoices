@@ -4,6 +4,7 @@ use Inc\Claz\Customer;
 use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\SystemDefaults;
 
 /*
  *  Script: usedefault.php
@@ -21,7 +22,7 @@ use Inc\Claz\PdoDbException;
  *  Website:
  *      https://simpleinvoices.group
  */
-global $defaults, $pdoDb, $smarty;
+global $databaseBuilt, $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin ();
@@ -53,6 +54,7 @@ if ($_GET ['action'] == 'update_template') {
     // Set the template to use. If there is a customer specified invoice,
     // use it. Otherwise, use the application default invoice.
     if (empty($customer['default_invoice'])) {
+        $defaults = SystemDefaults::loadValues($databaseBuilt);
         if (empty($defaults['default_invoice'])) {
             // No default specified. Use the last invoice generated for this user. Sans that,
             // use the last invoice generated.
