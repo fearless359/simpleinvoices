@@ -17,10 +17,8 @@ class PdoDbExceptionTest extends TestCase
         $msg = "This is the test message";
         $code = 3;
         $pde = new PdoDbException($msg, $code);
-        $this->assertTrue($pde->getMessage() == $msg,
-            "PdoDbExceptionTest::test_construct() - Failed getMessage() test.");
-        $this->assertTrue($pde->getCode() == $code,
-            "PdoDbExceptionTest::test_construct() - Failed getCode() test.");
+        $this->assertEquals($pde->getMessage(), $msg);
+        $this->assertEquals($pde->getCode(), $code);
     }
 
     public function test__toString()
@@ -29,8 +27,7 @@ class PdoDbExceptionTest extends TestCase
         $msg = "This is the test message";
         $code = 3;
         $pde = new PdoDbException($msg, $code);
-        $this->assertTrue($pde->__toString() == $str,
-            "PdoDbExceptionTest::test_toString() - Found[{$pde->__toString()}], expected[{$str}]");
+        $this->assertEquals($pde->__toString(), $str);
     }
 
 }

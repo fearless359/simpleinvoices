@@ -21,42 +21,37 @@ class DbInfoTest extends TestCase
 
     public function setUp()
     {
+        // Using config.php rather than custom.config.php so value are known.
         $this->dbInfo = new DbInfo(Config::CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX);
     }
 
     public function testGetPort()
     {
-        $this->assertTrue($this->dbInfo->getPort() == 3306,
-            "DbInfoTest::testGetPort() - expected 3306 found {$this->dbInfo->getPort()}");
+        $this->assertEquals($this->dbInfo->getPort(), 3306);
     }
 
     public function testGetHost()
     {
-        $this->assertTrue($this->dbInfo->getHost() == 'localhost',
-            "DbInfoTest::testGetHost() - expected 'localhost' found '{$this->dbInfo->getHost()}'");
+        $this->assertEquals($this->dbInfo->getHost(), 'localhost');
     }
 
     public function testGetPassword()
     {
-        $this->assertTrue($this->dbInfo->getPassword() == 'password',
-            "DbInfoTest::testGetPassword() - expected 'password' found '{$this->dbInfo->getPassword()}'");
+        $this->assertEquals($this->dbInfo->getPassword(), 'password');
     }
 
     public function testGetSectionname()
     {
-        $this->assertTrue($this->dbInfo->getSectionname() == CONFIG_SECTION,
-            "DbInfoTest::testGetSectionname() - expected '" . CONFIG_SECTION . "' found '{$this->dbInfo->getSectionname()}'");
+        $this->assertEquals($this->dbInfo->getSectionname(), CONFIG_SECTION);
     }
 
     public function testGetDbname()
     {
-        $this->assertTrue($this->dbInfo->getDbName() == 'simple_invoices',
-            "DbInfoTest::testGetDbName() - expected 'simple_invoices' found '{$this->dbInfo->getDbName()}'");
+        $this->assertEquals($this->dbInfo->getDbName(), 'simple_invoices');
     }
 
     public function testGetUsername()
     {
-        $this->assertTrue($this->dbInfo->getUserName() == 'root',
-            "DbInfoTest::testGetUserName() - expected 'root' found '{$this->dbInfo->getUserName()}'");
+        $this->assertEquals($this->dbInfo->getUserName(), 'root');
     }
 }

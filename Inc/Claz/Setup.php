@@ -26,17 +26,6 @@ class Setup
         if (set_include_path($lcl_path) === false) {
             error_log("Error reported by set_include_path() for path: {$lcl_path}");
         }
-
-        require_once 'Zend/Loader/Autoloader.php';
-
-        global $autoloader;
-
-        /* *************************************************************
-         * Zend framework init - beg
-         * *************************************************************/
-        $autoloader = \Zend_Loader_Autoloader::getInstance();
-        $autoloader->setFallbackAutoloader(true);
-
     }
 
     /**

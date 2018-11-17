@@ -65,6 +65,13 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         ),
     );
 
+    public static $fallbackDirsPsr0 = array (
+        0 => __DIR__ . '/../..' . '/library',
+        1 => __DIR__ . '/../..' . '/library/pdf',
+        2 => __DIR__ . '/../..' . '/library/pdf/fpdf',
+        3 => __DIR__ . '/../..' . '/include',
+    );
+
     public static $classMap = array (
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -616,6 +623,7 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
             $loader->prefixLengthsPsr4 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$classMap;
 
         }, null, ClassLoader::class);

@@ -5,6 +5,7 @@
  * @license GPL V3 or above
  * Created: 20181110
  */
+namespace test\Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
@@ -79,8 +80,7 @@ class BillerTest extends TestCase
     public function testGetAll()
     {
         $rows = Biller::getAll();
-        $this->assertTrue(!empty($rows),
-            "BillerTest::testGetAll() - failed. No records found.");
+        $this->assertNotEmpty($rows);
     }
 
     public function testGetDefaultBiller()
@@ -89,8 +89,7 @@ class BillerTest extends TestCase
         $default_biller = $defaults['biller'];
 
         $row = Biller::getDefaultBiller();
-        $this->assertTrue($default_biller == $row['id'],
-            "BillerTest::testGetDefaultBiller() - failed. Expected {$default_biller}, found {$row['id']}");
+        $this->assertEquals($default_biller, $row['id']);
     }
 
     public function testInsertBiller()
