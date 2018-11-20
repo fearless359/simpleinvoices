@@ -297,7 +297,7 @@ switch ($get_val) {
         break;
 
     case "product_attributes":
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
+        $array       = array(DISABLED => $LANG['disabled'], ENABLED => $LANG['enabled']);
         $default     = "product_attributes";
         $description = $LANG['product_attributes'];
         $value       = dropDown($array, $defaults[$default]);

@@ -22,7 +22,7 @@ if (!empty($id)) {
         $name = $row['name'];
         $description = $row['description'];
     }
-    $count = SystemDefaults::extensionCount($extension_id);
+    $count = SystemDefaults::extensionCount($id);
 }
 
 // @formatter:off

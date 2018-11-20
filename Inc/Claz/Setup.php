@@ -8,6 +8,7 @@
 
 namespace Inc\Claz;
 
+include_once 'vendor/autoload.php';
 include_once 'config/define.php';
 
 class Setup

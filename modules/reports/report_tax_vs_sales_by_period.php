@@ -30,10 +30,6 @@ checkLogin();
 $domain_id = DomainId::get();
 
 // Get earliest invoice date
-
-//$sql = "SELECT MIN(date) AS date FROM " . TB_PREFIX . "invoices WHERE domain_id = :domain_id";
-//$sth = dbQuery($sql, ':domain_id', $domain_id);
-//$invoice_start_array = $sth->fetch();
 $rows = array();
 try {
     $pdoDb->addToFunctions(new FunctionStmt("MIN", new DbField("date"), 'date'));
@@ -67,17 +63,6 @@ while($year <= $this_year) {
         } else {
             $month = $i;
         }
-
-//          $total_month_sales_sql = "SELECT SUM(iit.tax_amount) AS month_total
-//          FROM " . TB_PREFIX . "invoice_item_tax iit
-//          LEFT JOIN " . TB_PREFIX . "invoice_items ii ON (iit.invoice_item_id = ii.id)
-//          LEFT JOIN " . TB_PREFIX . "invoices i ON (i.id = ii.invoice_id AND i.domain_id = ii.domain_id)
-//          LEFT JOIN " . TB_PREFIX . "preferences p ON (i.preference_id = p.pref_id AND i.domain_id = p.domain_id)
-//          WHERE ii.domain_id = :domain_id
-//            AND p.status = '1'
-//            AND i.date LIKE '$year-$month%'";
-//         $sth = dbQuery($total_month_sales_sql, ':domain_id', $domain_id);
-//         $total_month_sales_array = $sth->fetch();
 
         try {
             $pdoDb->addToFunctions(new FunctionStmt('SUM', new DbField('iit.tax_amount'), 'month_total'));
@@ -115,15 +100,6 @@ while($year <= $this_year) {
         if (empty($total_sales[$year][$month])) {
             $total_sales[$year][$month] = "-";
         }
-
-//        $total_month_payments_sql = "SELECT SUM(et.tax_amount) AS month_total_payments
-//            FROM " . TB_PREFIX . "expense_item_tax et
-//            LEFT JOIN " . TB_PREFIX . "expense e ON (e.id = et.expense_id)
-//            WHERE e.domain_id = :domain_id
-//              AND e.date LIKE '$year-$month%'";
-//
-//        $total_month_payments = dbQuery($total_month_payments_sql, ':domain_id', $domain_id);
-//        $total_month_payments_array = $total_month_payments->fetch();
 
         // Payment
         try {
@@ -164,17 +140,6 @@ while($year <= $this_year) {
         }
     }
 
-//    $sql = "SELECT SUM(iit.tax_amount) AS year_total
-//            FROM " . TB_PREFIX . "invoice_item_tax iit
-//            LEFT JOIN " . TB_PREFIX . "invoice_items ii ON (iit.invoice_item_id = ii.id)
-//            LEFT JOIN " . TB_PREFIX . "invoices i ON (i.id = ii.invoice_id AND i.domain_id = ii.domain_id)
-//            LEFT JOIN " . TB_PREFIX . "preferences p ON (i.preference_id = p.pref_id AND i.domain_id = p.domain_id)
-//            WHERE ii.domain_id = :domain_id
-//              AND p.status = '1'
-//              AND i.date LIKE '$year%'";
-//    $sth = dbQuery($sql, ':domain_id', $domain_id);
-//    $row = $sth->fetch();
-
     // Sales
     try {
         $pdoDb->addToFunctions(new FunctionStmt('SUM', new DbField('iit.tax_amount'), 'year_total'));
@@ -208,14 +173,6 @@ while($year <= $this_year) {
     if (empty($total_sales[$year]['Total'])) {
         $total_sales[$year]['Total'] = "-";
     }
-    
-//    $sql = "SELECT SUM(et.tax_amount) AS year_total_payments
-//            FROM " . TB_PREFIX . "expense_item_tax et
-//            LEFT JOIN " . TB_PREFIX . "expense e ON (e.id = et.expense_id)
-//            WHERE e.domain_id = :domain_id
-//              AND e.date LIKE '$year%'";
-//    $sth = dbQuery($sql, ':domain_id', $domain_id);
-//    $row = $sth->fetch();
 
     // Payment
     try {

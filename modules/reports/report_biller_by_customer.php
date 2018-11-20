@@ -1,48 +1,72 @@
 <?php
 
-  $sql = "
-SELECT 
-      b.name  AS Biller
-	, c.name AS Customer 
-	, SUM(ii.total) AS SUM_TOTAL
-FROM ".TB_PREFIX."biller b 
-    INNER JOIN ".TB_PREFIX."invoices iv ON (b.id = iv.biller_id AND b.domain_id = iv.domain_id)
-    INNER JOIN ".TB_PREFIX."invoice_items ii ON (ii.invoice_id = iv.id AND ii.domain_id = iv.domain_id)
-    INNER JOIN ".TB_PREFIX."preferences pr ON (pr.pref_id = iv.preference_id AND pr.domain_id = iv.domain_id)
-	INNER JOIN ".TB_PREFIX."customers c ON (c.id = iv.customer_id AND c.domain_id = iv.domain_id)
-WHERE
-	    pr.status ='1'
-	AND b.domain_id = :domain_id
-GROUP BY 
-	b.name, c.name
-";
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
+use Inc\Claz\PdoDb;
 
-	$customer_result = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+/**
+ * @var PdoDb $pdoDb
+ */
+global $pdoDb;
 
-	$billers = array();
-	$total_sales = 0;
+$pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('b.domain_id', DomainId::get());
 
-	while($customer = $customer_result->fetch()) {
-	  $c = array();
-	  $c['name'] = $customer['Customer'];
-	  $c['sum_total'] = $customer['SUM_TOTAL'];
+$pdoDb->setSelectList(array(new DbField('b.name', 'Biller'), new DbField('c.name', 'Customer')));
 
-	  $billers[$customer['Biller']]['name'] = $customer['Biller'];
+$pdoDb->setGroupBy(array('b.name', 'c.name'));
 
-	  if (!array_key_exists('customers', $billers[$customer['Biller']])) {
-	     $billers[$customer['Biller']]['customers'] = array();
-	  }
+$fn = new FunctionStmt('SUM', new DbField('ii.total'), 'SUM_TOTAL');
+$pdoDb->addToFunctions($fn);
 
-	  array_push($billers[$customer['Biller']]['customers'], $c);
+$jn = new Join('INNER', 'invoices', 'iv');
+$jn->addSimpleItem('b.id', new DbField('iv.biller_id'), 'AND');
+$jn->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
 
-	  $billers[$customer['Biller']]['total_sales'] += $customer['SUM_TOTAL'];
+$jn = new Join('INNER', 'invoice_items', 'ii');
+$jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+$jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
 
-	  $total_sales += $customer['SUM_TOTAL'];
-	}
+$jn = new Join('INNER', 'preferences', 'pr');
+$jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
 
-	$smarty -> assign('data', $billers);
-	$smarty -> assign('total_sales', $total_sales);
+$jn = new Join('INNER', 'customers', 'c');
+$jn->addSimpleItem('c.id', new DbField('iv.customer_id'), 'AND');
+$jn->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
 
-	$smarty -> assign('pageActive', 'report');
-	$smarty -> assign('active_tab', '#home');
+$rows = $pdoDb->request('SELECT', 'biller', 'b');
+
+$total_sales = 0;
+$billers = array();
+foreach ($rows as $row) {
+    $customer = array();
+    $customer['name'] = $row['Customer'];
+    $customer['sum_total'] = $row['SUM_TOTAL'];
+
+    $biller = $row['Biller'];
+    $billers[$biller]['name'] = $biller;
+
+    if (!array_key_exists('customers', $billers[$biller])) {
+        $billers[$biller]['customers'] = array();
+    }
+
+    array_push($billers[$biller]['customers'], $customer);
+
+    $billers[$biller]['total_sales'] += $row['SUM_TOTAL'];
+
+    $total_sales += $row['SUM_TOTAL'];
+}
+
+$smarty->assign('data', $billers);
+$smarty->assign('total_sales', $total_sales);
+
+$smarty->assign('pageActive', 'report');
+$smarty->assign('active_tab', '#home');
 

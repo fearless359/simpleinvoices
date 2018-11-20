@@ -5,14 +5,14 @@
     <div class="si_form">
         <table>
             <tr>
-                <td>{$LANG.name}</td>
+                <th>{$LANG.name}</th>
                 <td>
                     <input type="text" name="name" readonly="readonly" value="{$name|htmlsafe}"/>
                     <input type="text" size="3" name="id" value="{$id|htmlsafe}" readonly="readonly"/>
                 </td>
             </tr>
             <tr>
-                <td>{$LANG.description}</td>
+                <th>{$LANG.description}</th>
                 <td>
                     <input type="text" name="description" size="40" value="{$description|htmlsafe}"/>
                 </td>
@@ -20,12 +20,14 @@
         </table>
 
         <div class="si_toolbar si_toolbar_form">
-            <button type="submit" class="positive" name="submit" value="{$LANG.save}">
-                <img class="button_img" src="images/common/tick.png" alt="{$LANG.save}"/>{$LANG.save}
+            <button type="submit" class="positive" name="save_extension" value="{$LANG.save}">
+                <img class="button_img" src="images/common/tick.png" alt=""/>
+                {$LANG.save}
             </button>
-
-            <a href="index.php?module=extensions&amp;view=manage" class="negative">
-                <img src="images/common/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}</a>
+            <button type="submit" class="negative" name="cancel" value="{$LANG.cancel}">
+                <img class="button_img" src="images/common/cross.png" alt=""/>
+                {$LANG.cancel}
+            </button>
         </div>
     </div>
 

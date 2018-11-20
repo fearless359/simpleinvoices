@@ -130,7 +130,6 @@
         <th>{$LANG.notes}: </th>
         <td>{$biller.notes}</td>
       </tr>
-      {* {showCustomFields categorieId="1" itemId=$smarty.get.id } *}
       <tr>
         <th>{$LANG.enabled}: </th>
         <td>{$biller.wording_for_enabled}</td>
@@ -326,7 +325,6 @@
         <th>{$LANG.enabled}</th>
         <td>{html_options name=enabled options=$enabled selected=$biller.enabled}</td>
       </tr>
-      {* {showCustomFields categorieId="1" itemId=$smarty.get.id} *}
     </table>
     <div class="si_toolbar si_toolbar_form">
       <button type="submit" class="positive" name="save_biller" value="{$LANG.save_biller}">

@@ -95,7 +95,7 @@ if ($_POST['action'] == "insert" ) {
             $i = 0;
             while ($i <= $_POST['max_items']) {
                 if ($_POST["delete$i"] == "yes") {
-                    delete('invoice_items', 'id', $_POST["line_item$i"]);
+                    Invoice::delete('invoice_items', 'id', $_POST["line_item$i"]);
                 } else {
                     if ($_POST["quantity$i"] != null) {
                         //new line item added in edit page

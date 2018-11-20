@@ -58,8 +58,8 @@ global $smarty,
 
 Log::out("index.php - After init.php - module($module] view[$view]", \Zend_Log::DEBUG);
 foreach ($ext_names as $ext_name) {
-    if (file_exists("extensions/$ext_name/include/init.php")) {
-        require_once ("extensions/$ext_name/include/init.php");
+    if (file_exists("Extensions/$ext_name/include/init.php")) {
+        require_once ("Extensions/$ext_name/include/init.php");
     }
 }
 Log::out("index.php - After processing init.php for extensions", \Zend_Log::DEBUG);
@@ -198,8 +198,8 @@ Log::out("index.php - After invoices/template", \Zend_Log::DEBUG);
 if (strstr($module, "api") || (strstr($view, "xml") || (strstr($view, "ajax")))) {
     $extensionXml = 0;
     foreach ($ext_names as $ext_name) {
-        if (file_exists("extensions/$ext_name/modules/$module/$view.php")) {
-            include ("extensions/$ext_name/modules/$module/$view.php");
+        if (file_exists("Extensions/$ext_name/modules/$module/$view.php")) {
+            include ("Extensions/$ext_name/modules/$module/$view.php");
             $extensionXml++;
         }
     }
@@ -222,10 +222,10 @@ Log::out("index.php - After api/xml or ajax", \Zend_Log::DEBUG);
 // TODO: fix the javascript or move datapicker to extjs to fix this hack - not nice
 $extension_jquery_files = "";
 foreach ($ext_names as $ext_name) {
-    if (file_exists("extensions/$ext_name/include/jquery/$ext_name.jquery.ext.js")) {
+    if (file_exists("Extensions/$ext_name/include/jquery/$ext_name.jquery.ext.js")) {
         // @formatter:off
         $extension_jquery_files .=
-            '<script type="text/javascript" src="extensions/' .
+            '<script type="text/javascript" src="Extensions/' .
                      $ext_name . '/include/jquery/' .
                      $ext_name . '.jquery.ext.js">' .
             '</script>';
@@ -238,8 +238,8 @@ Log::out("index.php - After extension_jquery_files", \Zend_Log::DEBUG);
 
 // Load any hooks that are defined for extensions
 foreach ($ext_names as $ext_name) {
-    if (file_exists("extensions/$ext_name/templates/default/hooks.tpl")) {
-        $smarty->$smarty_output("extensions/$ext_name/templates/default/hooks.tpl");
+    if (file_exists("Extensions/$ext_name/templates/default/hooks.tpl")) {
+        $smarty->$smarty_output("Extensions/$ext_name/templates/default/hooks.tpl");
     }
 }
 // Load standard hooks file. Note that any module hooks loaded will not be
@@ -251,8 +251,8 @@ Log::out("index.php - after custom/hooks.tpl", \Zend_Log::DEBUG);
 if (!in_array($module . "_" . $view, $early_exit)) {
     $extensionHeader = 0;
     foreach ($ext_names as $ext_name) {
-        if (file_exists("extensions/$ext_name/templates/default/header.tpl")) {
-            $smarty->$smarty_output("extensions/$ext_name/templates/default/header.tpl");
+        if (file_exists("Extensions/$ext_name/templates/default/header.tpl")) {
+            $smarty->$smarty_output("Extensions/$ext_name/templates/default/header.tpl");
             $extensionHeader++;
         }
     }
@@ -277,7 +277,7 @@ $extension_php_insert_files = array();
 $perform_extension_php_insertions = (($module == 'system_defaults' && $view == 'edit'));
 $extensionPhpFile = 0;
 foreach ($ext_names as $ext_name) {
-    $phpfile = "extensions/$ext_name/modules/$module/$view.php";
+    $phpfile = "Extensions/$ext_name/modules/$module/$view.php";
     if (file_exists($phpfile)) {
         // If $perform_extension_php_insertions is true, then the extension php
         // file content is to be included in the standard php file. Otherwise,
@@ -316,8 +316,8 @@ Log::out("index.php - After export/export exit", \Zend_Log::DEBUG);
 // use script load for the .php file.
 // **********************************************************
 foreach ($ext_names as $ext_name) {
-    if (file_exists("extensions/$ext_name/include/jquery/$ext_name.post_load.jquery.ext.js.tpl")) {
-        $smarty->$smarty_output("extensions/$ext_name/include/jquery/$ext_name.post_load.jquery.ext.js.tpl");
+    if (file_exists("Extensions/$ext_name/include/jquery/$ext_name.post_load.jquery.ext.js.tpl")) {
+        $smarty->$smarty_output("Extensions/$ext_name/include/jquery/$ext_name.post_load.jquery.ext.js.tpl");
     }
 }
 
@@ -387,8 +387,8 @@ Log::out("index.php - After menutpl processed", \Zend_Log::DEBUG);
 if (!in_array($module . "_" . $view, $early_exit)) {
     $extensionMain = 0;
     foreach ($ext_names as $ext_name) {
-        if (file_exists("extensions/$ext_name/templates/default/main.tpl")) {
-            $smarty->$smarty_output("extensions/$ext_name/templates/default/main.tpl");
+        if (file_exists("Extensions/$ext_name/templates/default/main.tpl")) {
+            $smarty->$smarty_output("Extensions/$ext_name/templates/default/main.tpl");
             $extensionMain++;
         }
     }
@@ -426,7 +426,7 @@ $perform_extension_insertions = (($module == 'reports'         && $view == 'inde
                                  ($module == 'system_defaults' && $view == 'manage'));
 
 foreach ($ext_names as $ext_name) {
-    $tpl_file = "extensions/$ext_name/templates/default/$module/$view.tpl";
+    $tpl_file = "Extensions/$ext_name/templates/default/$module/$view.tpl";
     if (file_exists($tpl_file)) {
         // If $perform_extension_insertions is true, the $path and
         // $extensionTemplates are not set/incremented intentionally.
@@ -460,7 +460,7 @@ foreach ($ext_names as $ext_name) {
             $extension_insertion_files[] = $vals;
             // @formatter:on
         } else {
-            $path = "extensions/$ext_name/templates/default/$module/";
+            $path = "Extensions/$ext_name/templates/default/$module/";
             $my_tpl_path = $tpl_file;
             $extensionTemplates++;
         }
@@ -500,8 +500,8 @@ if ($extensionTemplates == 0) {
 if (!in_array($module . "_" . $view, $early_exit)) {
     $extensionFooter = 0;
     foreach ($ext_names as $ext_name) {
-        if (file_exists("extensions/$ext_name/templates/default/footer.tpl")) {
-            $smarty->$smarty_output("extensions/$ext_name/templates/default/footer.tpl");
+        if (file_exists("Extensions/$ext_name/templates/default/footer.tpl")) {
+            $smarty->$smarty_output("Extensions/$ext_name/templates/default/footer.tpl");
             $extensionFooter++;
         }
     }

@@ -71,6 +71,3 @@
         </table>
     </td>
 </tr>
-{*TODO: CustomFields are normaly stored for a product.
-        Here it needs to be added to the invoices Item -> categorie 5 *}
-{* {showCustomFields categorieId="3" itemId=$invoiceItem.productId} *}

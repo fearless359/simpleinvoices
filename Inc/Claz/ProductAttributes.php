@@ -195,4 +195,79 @@ class ProductAttributes {
         }
         return $result;
     }
+
+    /**
+     * @param string $type 'count' if count of qualified rows requests. All other settings
+     *          cause array of qualified rows is returned.
+     * @param string $dir
+     * @param string $sort
+     * @param int $rp limit of rows to return if not type 'count'.
+     * @param int $page of rows to return if not type 'count'.
+     * @return array|int if $type is 'count', count of qualified rows returned, otherwise
+     *          array of qualified rows returned.
+     */
+    public static function xmlSql($type, $dir, $sort, $rp, $page) {
+        /**
+         * @var PdoDb $pdoDb
+         */
+        global $pdoDb;
+
+        $count_type = ($type == 'count');
+
+        if (!$count_type) {
+            if (intval($page) != $page) {
+                $page = 1;
+            }
+
+            if (intval($rp) != $rp) {
+                $rp = 25;
+            }
+
+            $start = (($page - 1) * $rp);
+            $pdoDb->setLimit($rp, $start);
+        }
+
+        $rows = array();
+        try {
+            $query = isset($_POST['query']) ? $_POST['query'] : null;
+            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
+            if (!empty($qtype) && !empty($query)) {
+                if (in_array($qtype, array('id', 'name'))) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, 'LIKE', $query, false));
+                }
+            }
+
+            if (!preg_match('/^(asc|desc)$/iD', $dir)) {
+                $dir = 'DESC';
+            }
+
+            if (!in_array($sort, array('id', 'name', 'enabled', 'visible'))) {
+                $sort = "id";
+            }
+
+            $pdoDb->setOrderBy(array($sort, $dir));
+
+            $pdoDb->setSelectList(array('id', 'name', 'enabled', 'visible'));
+
+            $rows = $pdoDb->request('SELECT', 'products_attributes');
+        } catch (PdoDbException $pde) {
+            error_log('ProductAtributes::xmlSql() - Error: ' . $pde->getMessage());
+        }
+        if ($count_type) {
+            return count($rows);
+        }
+        return $rows;
+
+//        $sql = "SELECT id, name, enabled, visible FROM " . TB_PREFIX . "products_attributes
+//                WHERE 1 $where
+//                ORDER BY $sort $dir
+//                LIMIT $start, $limit";
+//        if (empty($query)) {
+//            $sth = dbQuery($sql);
+//        } else {
+//            $sth = dbQuery($sql, ':query', "%$query%");
+//        }
+//        $customers = $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

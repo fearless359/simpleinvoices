@@ -246,6 +246,8 @@ class SqlPatchManager
                     self::patch303();
                 } else if ($id == 304) {
                     self::patch304();
+                } else if ($id == 306) {
+                    self::patch306();
                 }
             }
         } catch (PdoDbException $pde) {
@@ -623,6 +625,36 @@ class SqlPatchManager
         // Delete extension record if present (enabled or not)
         $pdoDb_admin->addSimpleWhere('name', 'default_invoice');
         $pdoDb_admin->request('DELETE', 'extensions');
+    }
+
+    /**
+     * Special handling for patch #306
+     * @throws PdoDbException
+     */
+    private static function patch306()
+    {
+        /**
+         * @var PdoDb $pdoDb_admin
+         */
+        global $pdoDb_admin;
+
+        try {
+            $rows = $pdoDb_admin->request('SELECT', 'extensions');
+            foreach ($rows as $row) {
+                $parts = explode('_', $row['name']);
+                $name = '';
+                foreach ($parts as $part) {
+                    $name .= ucwords($part);
+                }
+
+                $pdoDb_admin->addSimpleWhere(id, $row['id']);
+                $pdoDb_admin->setFauxPost(array('name' => $name));
+                $pdoDb_admin->request('UPDATE', 'extensions');
+            }
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::patch306() - Error: " . $pde->getMessage());
+            throw new PdoDbException("SqlPatchManager::patch303() - " . $pde->getMessage());
+        }
     }
 
     /**
@@ -3328,6 +3360,14 @@ class SqlPatchManager
             'source' => 'fearless359'
         );
         self::makePatch('305', $patch);
+
+        $patch = array(
+            'name' => "Change extensions naming convention",
+            'patch' => "SELECT 1+1",
+            'date' => "20181120",
+            'source' => 'fearless359'
+        );
+        self::makePatch('306', $patch);
 
         // @formatter:on
     }

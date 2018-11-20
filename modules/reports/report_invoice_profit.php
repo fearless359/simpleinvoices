@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
 use Inc\Claz\Invoice;
 
 /*
@@ -21,12 +22,9 @@ function lastOfMonth() {
     return date("Y-m-d", strtotime('-1 second', strtotime('+1 month', strtotime('01-' . date('m') . '-' . date('Y') . ' 00:00:00'))));
 }
 
-$domain_id = DomainId::get();
-
 isset($_POST['start_date']) ? $start_date = $_POST['start_date'] : $start_date = firstOfMonth();
 isset($_POST['end_date']) ? $end_date = $_POST['end_date'] : $end_date = lastOfMonth();
 
-// @formatter:off
 // Select invoice date between range for real invoices.
 $pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
 $pdoDb->setHavings(Invoice::buildHavings("real"));
@@ -35,28 +33,31 @@ $invoices = Invoice::select_all();
 $invoice_totals = array();
 foreach($invoices as $k=>$v) {
     //get list of all products
-    $sql = "SELECT DISTINCT(product_id) FROM ".TB_PREFIX."invoice_items WHERE invoice_id = :id AND domain_id = :domain_id";
-    $sth = dbQuery($sql, ':id',$v['id'], ':domain_id', $domain_id);
+    $pdoDb->addToFunctions('DISTINCT(product_id)');
+    $pdoDb->addSimpleWhere('invoice_id', $v['id'], 'AND');
+    $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+    $products = $pdoDb->request('SELECT', 'invoice_items');
 
-    $products = $sth->fetchAll();
     $invoice_total_cost = "0";
-
     foreach($products as $pv) {
         $quantity="";
         $cost="";
         $product_total_cost="";
 
-        $sqlp="SELECT SUM(quantity) FROM ".TB_PREFIX."invoice_items WHERE product_id = :product_id and invoice_id = :invoice_id AND domain_id = :domain_id";
-        $sthp = dbQuery($sqlp, ':product_id',$pv['product_id'], ':invoice_id',$v['id'], ':domain_id', $domain_id);
-        $quantity = $sthp->fetchColumn();
+        $pdoDb->addToFunctions(new FunctionStmt('SUM', 'quantity'));
+        $pdoDb->addSimpleWhere('product_id', $pv['product_id'], 'AND');
+        $pdoDb->addSimpleWhere('invoice_id', $v['id'], 'AND');
+        $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+        $rows = $pdoDb->request('SELECT', 'invoice_items');
+        $quantity = (empty($rows) ? 0 : $rows[0]['quantity']);
 
-        #$sqlc="select (SELECT sum(cost) / sum(quantity)) as avg_cost  from si_inventory where product_id = :product_id";
-        $sqlc="select (SELECT (SUM(cost * quantity) / SUM(quantity))) AS avg_cost FROM ".TB_PREFIX."inventory WHERE product_id = :product_id AND domain_id = :domain_id";
-        $sthp = dbQuery($sqlc, ':product_id',$pv['product_id'], ':domain_id', $domain_id);
-        $cost = $sthp->fetchColumn();
+        $pdoDb->addToFunctions('(SUM(cost * quantity) / SUM(quantity)) AS avg_cost');
+        $pdoDb->addSimpleWhere('product_id', $pv['product_id'], 'AND');
+        $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+        $rows = $pdoDb->request('SELECT', 'inventory');
+        $cost = (empty($rows) ? 0 : $rows[0]['avg_cost']);
 
         $product_total_cost = $quantity * $cost;
-
         $invoice_total_cost += $product_total_cost;
     }
     $invoices[$k]['cost'  ] =  $invoice_total_cost;
@@ -74,4 +75,3 @@ $smarty->assign('end_date'      , $end_date);
 
 $smarty->assign('pageActive', 'report');
 $smarty->assign('active_tab', '#home');
-// @formatter:on

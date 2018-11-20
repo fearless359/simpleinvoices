@@ -53,8 +53,8 @@ class Funcs {
 
         try {
             foreach ($ext_names as $ext_name) {
-                if (file_exists("extensions/$ext_name/templates/default/menu.tpl")) {
-                    $menu_extension = $smarty->fetch("extensions/$ext_name/templates/default/menu.tpl");
+                if (file_exists("Extensions/$ext_name/templates/default/menu.tpl")) {
+                    $menu_extension = $smarty->fetch("Extensions/$ext_name/templates/default/menu.tpl");
                     $ext_sects = preg_split('/<!\-\- BEFORE:/', $menu_extension, -1, PREG_SPLIT_NO_EMPTY);
                     foreach ($ext_sects as $sect) {
                         $parts = preg_split('/ *-->/', $sect);

@@ -60,7 +60,6 @@
 <!--Actions heading - start-->
 <!-- #PDF end -->
 {include file="$path/quick_view_invoice_view.tpl"}
-{* {showCustomFields categorieId="2" itemId=$customer.id } *}
 {if $invoice.type_id == TOTAL_INVOICE}
 <table class='si_invoice_view'>
     <tr class="tr_head">

@@ -1,15 +1,34 @@
 <?php
-  $sql = "
-SELECT SUM(ii.tax_amount) AS sum_tax_total 
-FROM ".TB_PREFIX."invoice_items ii 
-	INNER JOIN ".TB_PREFIX."invoices iv ON (ii.invoice_id = iv.id AND ii.domain_id = iv.domain_id)
-	INNER JOIN ".TB_PREFIX."preferences pr ON (pr.pref_id = iv.preference_id AND pr.domain_id = iv.domain_id)
-WHERE pr.status = 1 AND ii.domain_id = :domain_id
-";
 
-  $sth = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
+use Inc\Claz\PdoDb;
 
-  $smarty->assign('total_taxes', $sth->fetchColumn());
-	$smarty -> assign('pageActive', 'report');
-	$smarty -> assign('active_tab', '#home');
-?>
+/**
+ * @var PdoDb $pdoDb
+ */
+global $pdoDb, $smarty;
+
+$pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('ii.domain_id', DomainId::get());
+
+$pdoDb->addToFunctions(new FunctionStmt('SUM', 'ii.tax_amount', 'sum_tax_total'));
+
+$jn = new Join('INNER', 'invoices', 'iv');
+$jn->addSimpleItem('iv.id', new DbField('ii.invoice_id'), 'AND');
+$jn->addSimpleItem('iv.domain_id', new DbField('ii.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$jn = new Join('INNER', 'preferences', 'pr');
+$jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$rows = $pdoDb->request('SELECT', 'invoice_items', 'ii');
+
+$smarty->assign('total_taxes', $rows);
+
+$smarty -> assign('pageActive', 'report');
+$smarty -> assign('active_tab', '#home');

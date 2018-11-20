@@ -81,7 +81,6 @@ class DbInfo {
             }
         }
 
-//echo "found[$found] lines - " . print_r($lines,true);
         if (!$found) {
             throw new PdoDbException("DbInfo loadSectionInfo(): Section, $this->sectionname, not found.");
         }
@@ -94,44 +93,43 @@ class DbInfo {
                     $pieces = self::unjoin($line, $prefix);
                     if (preg_match('/^(adapter|dbname|host|password|port|username)$/', $pieces[0])) {
                         if (strlen($pieces[1]) < 60) {
-                            $decrypt = preg_replace('/\'/', '', $pieces[1]);
+                            $value = preg_replace('/\'/', '', $pieces[1]);
                         } else {
                             throw new PdoDbException("DbInfo::loadSectionInfo - Attempt to use deleted MyCrypt class");
                         }
 
                         switch ($pieces[0]) {
                             case 'adapter':
-                                if (preg_match('/^pdo_/', $decrypt) == 1) {
-                                    $this->adapter = substr($decrypt, 4);
+                                if (preg_match('/^pdo_/', $value) == 1) {
+                                    $this->adapter = substr($value, 4);
                                 } else {
-                                    $this->adapter = $decrypt;
+                                    $this->adapter = $value;
                                 }
                                 break;
 
                             case 'dbname':
-                                $this->dbname = $decrypt;
+                                $this->dbname = $value;
                                 break;
 
                             case 'host':
-                                $this->host = $decrypt;
+                                $this->host = $value;
                                 break;
 
                             case 'password':
-                                $this->password = $decrypt;
+                                $this->password = $value;
                                 break;
 
                             case 'port':
-                                $this->port = $decrypt;
+                                $this->port = $value;
                                 break;
 
                             case 'username':
-                                $this->username = $decrypt;
+                                $this->username = $value;
                                 break;
                         }
                     }
                 }
             }
-//            $i++;
         }
 
         // Make sure we got the minimum info

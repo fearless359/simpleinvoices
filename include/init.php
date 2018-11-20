@@ -11,11 +11,9 @@ use Inc\Claz\SiError;
 use Inc\Claz\SqlPatchManager;
 use Inc\Claz\SystemDefaults;
 
-/* *************************************************************
- * Zend framework init - start
- * *************************************************************/
+include_once 'vendor/autoload.php';
+include_once 'config/define.php';
 
-global $api_request, $config, $module, $pdoDb_admin;
 if (!isset($api_request)) $api_request = false;
 
 $lcl_path = get_include_path() .
@@ -27,31 +25,17 @@ if (set_include_path($lcl_path) === false) {
     error_log("Error reported by set_include_path() for path: {$lcl_path}");
 }
 
-require_once 'smarty/libs/Smarty.class.php';
-require_once 'Zend/Loader/Autoloader.php';
-
-/* *************************************************************
- * Zend framework init - beg
- * *************************************************************/
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->setFallbackAutoloader(true);
-
 try {
-    Zend_Session::start();
-    $auth_session = new Zend_Session_Namespace('Zend_Auth');
-} catch (Zend_Session_Exception $zse) {
+    \Zend_Session::start();
+    $auth_session = new \Zend_Session_Namespace('Zend_Auth');
+} catch (\Zend_Session_Exception $zse) {
     SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
 }
-/* *************************************************************
- * Zend framework init - end
- * *************************************************************/
 
-/* *************************************************************
- * Smarty init - start
- * *************************************************************/
-require_once ("library/paypal/paypal.class.php");
-require_once ('library/HTMLPurifier/HTMLPurifier.standalone.php');
-include_once ('include/functions.php');
+require_once 'smarty/libs/Smarty.class.php';
+require_once 'library/paypal/paypal.class.php';
+require_once 'library/HTMLPurifier/HTMLPurifier.standalone.php';
+include_once 'include/functions.php';
 
 if (!is_writable('./tmp')) {
     SiError::out('notWritable', 'directory', './tmp');
@@ -61,7 +45,6 @@ if (!is_writable('tmp/cache')) {
     SiError::out('notWritable', 'file', './tmp/cache');
 }
 
-include_once ('config/define.php');
 try {
     $updateCustomConfig = empty($module);
     Setup::init($updateCustomConfig);
@@ -69,74 +52,6 @@ try {
     // Error already reported so simply exit.
     exit();
 }
-
-//try {
-//    $noModule = empty($module);
-//    $config = Config::init(CONFIG_SECTION, $noModule);
-//} catch (Exception $e) {
-//    echo "<h1 style='font-weight:bold;color:red;'>";
-//    echo "  " . $e->getMessage() . " (Error code: {$e->getCode()})";
-//    echo "</h1>";
-//}
-
-//$logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
-//Log::open($logger_level);
-//Log::out("init.php - logger has been setup", \Zend_Log::DEBUG);
-//
-//try {
-//    $dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX);
-//
-//    $pdoDb = new PdoDb($dbInfo);
-//    $pdoDb->clearAll(); // to eliminate never used warning.
-//
-//    // For use by admin functions only. This avoids issues of
-//    // concurrent use with user app object, <i>$pdoDb</i>.
-//    $pdoDb_admin = new PdoDb($dbInfo);
-//    $pdoDb_admin->clearAll();
-//} catch (PdoDbException $pde) {
-//    if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
-//        echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
-//        echo "<ol>";
-//        echo "  <li>Make a mySQL compatible database with a user that has full access to it.</li>";
-//        echo "  <li>In the \"config\" directory, copy the <b>config.php</b> file to <b>custom.config.php</b></li>";
-//        echo "  <li>Modify the database settings in the <b>custom.config.php</b> file for the database made in step 1.";
-//        echo "    <ul>";
-//        echo "      <li>Set <b>database.params.dbname</b> to the name of the database.";
-//        echo "      <li>Set <b>database.params.username</b> to the username of the database administrator.</li>";
-//        echo "      <li>Set <b>database.params.password</b> to the database administrator password. Note you might need to include this in single quotes.</li>";
-//        echo "    </ul>";
-//        echo "  </li>";
-//        echo "  <li>In your browser, execute the command to access SI again and follow the instructions.</li>";
-//        echo "</ol>";
-//    } else {
-//        echo "<h1 style='font-weight:bold;color:red;'>";
-//        echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode()})";
-//        echo "</h1>";
-//    }
-//    exit();
-//}
-
-// set up app with relevant php setting
-//date_default_timezone_set($config->phpSettings->date->timezone);
-//error_reporting($config->debug->error_reporting);
-//
-//ini_set('display_startup_errors', $config->phpSettings->display_startup_errors);
-//ini_set('display_errors',         $config->phpSettings->display_errors);
-//ini_set('log_errors',             $config->phpSettings->log_errors);
-//ini_set('error_log',              $config->phpSettings->error_log);
-//
-//try {
-//    // @formatter:off
-//    $zendDb = Zend_Db::factory($config->database->adapter,
-//                               array('host'     => $dbInfo->getHost(),
-//                                     'username' => $dbInfo->getUsername(),
-//                                     'password' => $dbInfo->getPassword(),
-//                                     'dbname'   => $dbInfo->getDbname(),
-//                                     'port'     => $dbInfo->getPort()));
-//    // @formatter:on
-//} catch (Zend_Db_Exception $zde) {
-//    SiError::out('generic', 'Zend_Db_Exception', $zde->getMessage());
-//}
 
 // It's possible that we are in the initial install mode. If so, set
 // a flag so we won't terminate on an "Unknown database" error later.
@@ -168,7 +83,7 @@ if ($api_request || $timeout <= 0) {
 
 try {
     $auth_session->setExpirationSeconds($timeout * 60);
-} catch (Zend_Session_Exception $zse) {
+} catch (\Zend_Session_Exception $zse) {
     SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
 }
 
@@ -183,15 +98,15 @@ $backendOptions = array('cache_dir' => './tmp/'); // Directory where to put the 
 
 // getting a Zend_Cache_Core object
 try {
-    $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-} catch (Zend_Cache_Exception $zce) {
+    $cache = \Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+} catch (\Zend_Cache_Exception $zce) {
     SiError::out('generic', 'Zend_Cache_Exception', $zce->getMessage());
 }
 
 // required for some servers
 try {
-    Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
-} catch (Zend_Date_Exception $zde) {
+    \Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
+} catch (\Zend_Date_Exception $zde) {
     SiError::out('generic', 'Zend_Date_Exception', $zde->getMessage());
 }
 
@@ -200,8 +115,8 @@ try {
  * *************************************************************/
 
 $smarty = new Smarty();
-$smarty->assign("config_file_path", Config::CUSTOM_CONFIG_FILE);
 
+// Should be false in production. Set to true to test new smarty update only.
 $smarty->debugging = false;
 $smarty->setConfigDir("config")
        ->setTemplateDir("templates")
@@ -276,7 +191,7 @@ loadSiExtensions($ext_names);
 // point to extension plugin directories if present.
 $plugin_dirs = array();
 foreach ($ext_names as $ext_name) {
-    $dir_tmp = "extensions/$ext_name/include/smarty_plugins";
+    $dir_tmp = "Extensions/$ext_name/include/smarty_plugins";
     if (is_dir($dir_tmp)) {
         $plugin_dirs[] = $dir_tmp;
     }
@@ -315,8 +230,8 @@ if ($config->authentication->enabled == ENABLED) {
     include_once ("include/acl.php");
     // if authentication enabled then do acl check etc..
     foreach ($ext_names as $ext_name) {
-        if (file_exists("extensions/$ext_name/include/acl.php")) {
-            require_once ("extensions/$ext_name/include/acl.php");
+        if (file_exists("Extensions/$ext_name/include/acl.php")) {
+            require_once ("Extensions/$ext_name/include/acl.php");
         }
     }
     include_once ("include/check_permission.php");

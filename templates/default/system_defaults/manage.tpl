@@ -267,7 +267,7 @@
                     <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td>{if defaultProductAttributes == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td>{if $defaultProductAttributes == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>

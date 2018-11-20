@@ -184,7 +184,6 @@
           <th>{$LANG.enabled}</th>
           <td>{html_options name=enabled options=$enabled selected=1 tabindex=210}</td>
         </tr>
-        {* {showCustomFields categorieId="2"} *}
       </table>
       <div class="si_toolbar si_toolbar_form">
         <button type="submit" class="positive" name="id" value="{$LANG.save}" tabindex="220">

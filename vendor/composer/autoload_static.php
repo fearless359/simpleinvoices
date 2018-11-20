@@ -23,6 +23,10 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         array (
             'Inc\\Claz\\' => 9,
         ),
+        'E' => 
+        array (
+            'Extensions\\SubCustomer\\Inc\\Claz\\' => 32,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -44,6 +48,10 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         'Inc\\Claz\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Inc/Claz',
+        ),
+        'Extensions\\SubCustomer\\Inc\\Claz\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Extensions/SubCustomer/Inc/Claz',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

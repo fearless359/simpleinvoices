@@ -198,7 +198,6 @@
         <th>{$LANG.enabled}</th>
         <td>{html_options name=enabled options=$enabled selected=1}</td>
       </tr>
-      {* {showCustomFields categorieId="1" itemId=""} *}
     </table>
     <div class="si_toolbar si_toolbar_form">
       <button type="submit" class="positive" name="submit" value="{$LANG.insert_biller}">

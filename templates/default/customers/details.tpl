@@ -475,7 +475,6 @@
                         <textarea name="notes" class="editor" rows="8" cols="50" tabindex="210">{$customer.notes|outhtml}</textarea>
                     </td>
                 </tr>
-                {* {showCustomFields categorieId="2" itemId=$smarty.get.customer } *}
                 <tr>
                     <th>{$LANG.enabled}</th>
                     <td>{html_options name=enabled options=$enabled selected=$customer.enabled tabindex=220}</td>

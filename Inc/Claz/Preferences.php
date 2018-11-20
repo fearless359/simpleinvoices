@@ -56,17 +56,17 @@ class Preferences {
 
         $rows = array();
         try {
-        $pdoDb->addSimpleWhere("domain_id", $domain_id);
-        $pdoDb->setOrderBy("pref_description");
+            $pdoDb->addSimpleWhere("domain_id", $domain_id);
+            $pdoDb->setOrderBy("pref_description");
 
-        $ca = new CaseStmt("pref_enabled", "enabled");
-        $ca->addWhen( "=", ENABLED, $LANG['enabled']);
-        $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-        $pdoDb->addToCaseStmts($ca);
+            $ca = new CaseStmt("pref_enabled", "enabled");
+            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
 
-        $pdoDb->setSelectAll(true);
+            $pdoDb->setSelectAll(true);
 
-        $rows = $pdoDb->request("SELECT", "preferences");
+            $rows = $pdoDb->request("SELECT", "preferences");
         } catch (PdoDbException $pde) {
             error_log("Preferences::getPreferences() - Error: " . $pde->getMessage());
         }
@@ -115,6 +115,65 @@ class Preferences {
         }
 
         return (empty($rows) ? $rows : $rows[0]);
+    }
+
+    /**
+     * @param string $type If 'count', return the count of records in the table.
+     *          Otherwise, select the next page of rows to display.
+     * @param string $dir Sort direction 'ASC' or 'DESC'. Defaults to ASC.
+     * @param string $sort Field to sort by. Defaults to 'pref_description'. Allowed
+     *          values are: 'pref_id', 'pref_description', 'enabled'.
+     * @param int $rp Record per page. Defaults to 25.
+     * @param int $page Page of rows to display.
+     * @return array/int If $type is 'count', the int count value is returned.
+     *          Otherwise the selected rows are returned.
+     */
+    public static function xmlSql($type, $dir, $sort, $rp, $page) {
+        global $pdoDb, $LANG;
+
+        if (intval($rp) != $rp) $rp = 25;
+        $start = (($page - 1) * $rp);
+
+        $count_type = ($type == 'count');
+        if (!$count_type) {
+            $pdoDb->setLimit($rp, $start);
+        }
+
+        $rows = array();
+        try {
+            $query = isset($_POST['query']) ? $_POST['query'] : null;
+            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
+            if (!empty($qtype) && !empty($query)) {
+                if (in_array($qtype, array('pref_id', 'pref_description'))) {
+                    $pdoDb->addToWhere(new WhereItem(false, $qtype, 'LIKE', $query, false));
+                }
+            }
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+            if (!preg_match('/^(asc|desc)$/iD', $dir)) $dir = 'ASC';
+            if (!in_array($sort, array('pref_id', 'pref_description', 'enabled'))) {
+                $sort = "pref_description";
+            }
+            $pdoDb->setOrderBy(array($sort, $dir));
+
+            $pdoDb->setSelectList(array('pref_id', 'pref_description', 'locale', 'language'));
+
+            $ca = new CaseStmt('pref_enabled', 'enabled');
+            $ca->addWhen('=', ENABLED, $LANG['enabled']);
+            $ca->addWhen('!=', ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $rows = $pdoDb->request('SELECT', 'preferences');
+        } catch (PdoDbException $pde) {
+            error_log("Preferences::xmlSql() - type[$type] - error: " . $pde->getMessage());
+        }
+
+        if ($count_type) {
+            $count = count($rows);
+            return $count;
+        }
+
+        return $rows;
     }
 
 }

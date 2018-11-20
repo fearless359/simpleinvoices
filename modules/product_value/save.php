@@ -15,7 +15,7 @@ $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=pro
 $display_block = "<div class=\"si_message_error\">{$LANG['save_product_value_failure']}</div>";
 
 #insert invoice_preference
-if ($_POST['cancel_change'] == "Cancel") {
+if ($_POST['cancel'] == "Cancel") {
     $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
 } else if (  $op === 'insert_product_value' ) {
     if (ProductValues::insert() > 0) {

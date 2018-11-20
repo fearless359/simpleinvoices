@@ -1,0 +1,136 @@
+<?php
+
+namespace Extensions\SubCustomer\Inc\Claz;
+
+use Inc\Claz\DomainId;
+use Inc\Claz\PdoDbException;
+
+class SubCustomers {
+    /**
+     * Add extension database field if not present.
+     * @return boolean true if no DB error; otherwise false.
+     */
+    public static function addParentCustomerId() {
+        global $pdoDb;
+
+        if ($pdoDb->checkFieldExists("customers", "parent_customer_id")) return true;
+
+        try {
+            $pdoDb->addTableConstraints('parent_customer_id', 'ADD ~ INT(11) NULL AFTER `custom_field4`');
+            if (!$pdoDb->request('ALTER TABLE', 'customers')) {
+                throw new PdoDbException('Unable to add "parent_customer_id" column to customeres.');
+            }
+        } catch (PdoDbException $pde) {
+            error_log("SubCustomers::addParentCustomerId() - Error: " . $pde->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Add a new <b>si_customers</b> record.
+     * @return int ID for new record. 0 if insert failed.
+     * @throws PdoDbException
+     */
+    public static function insertCustomer() {
+        global $config, $pdoDb;
+
+        $pdoDb->addSimpleWhere("name", $_POST['name'], "AND");
+        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+        $rows = $pdoDb->request("SELECT", "customers");
+        if (!empty($rows)) {
+            error_log("The specified customer name[{$_POST['name']}) already exists.");
+            return false;
+        }
+
+        try {
+            $excludeFields = array("id");
+            if (empty($_POST['credit_card_number'])) {
+                $excludeFields[] = 'credit_card_number';
+            } else {
+                $key = $config->encryption->default->key;
+                $enc = new Encryption();
+                $_POST['credit_card_number'] = $enc->encrypt($key, $_POST['credit_card_number']);
+            }
+
+            $pdoDb->setExcludedFields($excludeFields);
+            $pdoDb->request('INSERT', 'customers');
+        } catch (Exception $e) {
+            error_log("SubCustomers::insertCustomer(): Unable to add the new customer record. Error: " . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Update an existing <b>si_customers</b> record.
+     * @return boolean <b>true</b> if update is successful; otherwise <b>false</b>.
+     */
+    public static function updateCustomer() {
+        global $config, $pdoDb;
+
+        try {
+            $excludedFields = array('id', 'domain_id');
+            if (empty($_POST['credit_card_number'])) {
+                $excludedFields[] = 'credit_card_number';
+            } else {
+                $key = $config->encryption->default->key;
+                $enc = new Encryption();
+                $_POST['credit_card_number'] = $enc->encrypt($key, $_POST['credit_card_number']);
+            }
+
+            $pdoDb->setExcludedFields($excludedFields);
+            $pdoDb->addSimpleWhere("id", $_GET['id']);
+            $pdoDb->request('UPDATE', 'customers');
+        } catch (Exception $e) {
+            error_log("SubCustomers::updateCustomer(): Unable to update the customer record. Error: " . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Get a <b>sub-customer</b> records associated with a specific <b>parent_customer_id</b>.
+     * @param number $parent_id ID of parent to which sub-customers are associated. 
+     * @return array <b>si_customer</b> records retrieved.
+     */
+    public static function getSubCustomers($parent_id) {
+        global $pdoDb;
+        try {
+            $pdoDb->addSimpleWhere("parent_customer_id", $parent_id, "AND");
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $rows = $pdoDb->request("SELECT", "customers");
+        } catch (PdoDbException $pde) {
+            $str = "SubCustomers::getSubCustomers(): " . $pde->getMessage();
+            error_log($str);
+            return array();
+        }
+        return $rows;
+    }
+
+
+    public static function getSubCustomer($parent_customer_id = '') {
+        global $pdoDb;
+
+        $rows = array();
+        try {
+            $pdoDb->addSimpleWhere('parent_customer_id', $parent_customer_id, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+            $pdoDb->setSelectAll(true);
+
+            $rows = $pdoDb->request('SELECT', 'customers');
+        } catch (PdoDbException $pde) {
+            error_log("SubCustomers::getSubCustomer() - Error: " . $pde->getMessage());
+        }
+
+        $output = "<option value=''></option>";
+        foreach($rows as $row) {
+            $output .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+        }
+        echo json_encode($output);
+
+        exit();
+    }
+
+}

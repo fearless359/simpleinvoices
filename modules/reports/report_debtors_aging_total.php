@@ -1,39 +1,130 @@
 <?php
-global $auth_session, $smarty;
 
-$sql = "SELECT
-SUM(COALESCE(ii.total, 0)) AS inv_total
-, COALESCE(ap.inv_paid, 0) AS inv_paid
-, SUM(COALESCE(ii.total, 0)) - COALESCE(ap.inv_paid, 0) AS inv_owing
-, (CASE WHEN DATEDIFF(NOW(),DATE) <= '14 days' THEN '0-14'
-      WHEN DATEDIFF(NOW(),DATE) <= '30 days' THEN '15-30'
-      WHEN DATEDIFF(NOW(),DATE) <= '60 days' THEN '31-60'
-      WHEN DATEDIFF(NOW(),DATE) <= '90 days' THEN '61-90'
-      ELSE '90+'
-  END) AS aging
-FROM ".TB_PREFIX."invoice_items ii
-LEFT JOIN ".TB_PREFIX."invoices iv ON (ii.invoice_id = iv.id AND ii.domain_id = iv.domain_id)
-LEFT JOIN ".TB_PREFIX."preferences pr ON (iv.preference_id = pr.pref_id AND pr.domain_id = iv.domain_id)
-LEFT JOIN (SELECT ap1.domain_id, SUM(COALESCE(ap1.ac_amount, 0)) AS inv_paid FROM  ".TB_PREFIX."payment ap1
-  LEFT JOIN ".TB_PREFIX."invoices iv1 ON (ap1.ac_inv_id = iv1.id AND ap1.domain_id = iv1.domain_id)
-  LEFT JOIN ".TB_PREFIX."preferences pr1 ON (pr1.pref_id = iv1.preference_id AND pr1.domain_id = iv1.domain_id)
-  WHERE pr1.status = 1 
-  GROUP BY ap1.domain_id) ap ON (ap.domain_id = iv.domain_id)
-WHERE pr.status   = 1
-  AND ii.domain_id = :domain_id
-GROUP BY aging;";
+use Inc\Claz\CaseStmt;
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
+use Inc\Claz\PdoDb;
+use Inc\Claz\Select;
 
-$results = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+/**
+ * @var PdoDb $pdoDb
+ */
+global $pdoDb, $smarty;
 
+/************************************************************************
+/*  Get paid by aging period
+ ************************************************************************/
+$pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ap.ac_amount,0)', 'inv_paid'));
+
+$pdoDb->addSimpleWhere('pr.pref_id', '1', 'AND');
+$pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('ap.domain_id', DomainId::get());
+
+$pdoDb->setGroupBy('aging');
+$pdoDb->setOrderBy('aging');
+
+$fn = new FunctionStmt("IF", "(DateDiff(now(), iv.date) < 0), 0, DateDiff(now(), iv.date)");
+$se = new Select($fn, null, null, "Age");
+$pdoDb->addToSelectStmts($se);
+
+$ca = new CaseStmt("Age");
+$ca->addWhen("<=", "14", "0-14" );
+$ca->addWhen("<=", "30", "15-30" );
+$ca->addWhen("<=", "60", "31-60" );
+$ca->addWhen("<=", "90", "61-90" );
+$ca->addWhen(">" , "90", "90+", true);
+$pdoDb->addToSelectStmts(new Select($ca, null, null, "aging"));
+
+$jn = new Join('LEFT', 'invoices', 'iv');
+$jn->addSimpleItem('ap.ac_inv_id', new DbField('iv.id'), 'AND');
+$jn->addSimpleItem('ap.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$jn = new Join('LEFT', 'preferences', 'pr');
+$jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$inv_paid = $pdoDb->request('SELECT', 'payment', 'ap');
+
+/************************************************************************
+/*  Get total billed by aging period
+ ************************************************************************/
+$pdoDb->addSimpleWhere('pr.pref_id', '1', 'AND');
+$pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('ii.domain_id', DomainId::get());
+
+$pdoDb->setGroupBy('aging');
+$pdoDb->setOrderBy('aging');
+
+$pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total, 0)', 'inv_total'));
+
+$fn = new FunctionStmt("IF", "(DateDiff(now(), iv.date) < 0), 0, DateDiff(now(), iv.date)");
+$se = new Select($fn, null, null, "Age");
+$pdoDb->addToSelectStmts($se);
+
+$ca = new CaseStmt("Age");
+$ca->addWhen("<=", "14", "0-14" );
+$ca->addWhen("<=", "30", "15-30" );
+$ca->addWhen("<=", "60", "31-60" );
+$ca->addWhen("<=", "90", "61-90" );
+$ca->addWhen(">" , "90", "90+", true);
+$pdoDb->addToSelectStmts(new Select($ca, null, null, "aging"));
+
+$jn = new Join('LEFT', 'invoices', 'iv');
+$jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+$jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$jn = new Join('LEFT', 'preferences', 'pr');
+$jn->addSimpleItem('iv.preference_id', new DbField('pr.pref_id'), 'AND');
+$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$inv_total = $pdoDb->request('SELECT', 'invoice_items', 'ii');
+
+/************************************************************************
+/*  Set up results with paid and then total billed
+ ************************************************************************/
+$results = array();
+foreach ($inv_paid as $paid) {
+    $results[$paid['aging']] = array(
+        'total' => '0',
+        'paid' => $paid['inv_paid'],
+        'owing' => 0);
+}
+
+foreach ($inv_total as $total) {
+    if (isset($results[$total['aging']])) {
+        $results[$total['aging']]['total'] = $total['inv_total'];
+    } else {
+        $results[$total['aging']] = array(
+            'total' => $total['aging'],
+            'paid' => 0,
+            'owing' => 0);
+    }
+}
+
+/************************************************************************
+/*  Calculate amount owing. If amount owing then include in summations
+ *  and in the data array.
+ ************************************************************************/
 $sum_total = 0;
 $sum_paid = 0;
 $sum_owing = 0;
 $periods = array();
-while($period = $results->fetch(PDO::FETCH_ASSOC)) {
-    $sum_total += $period['inv_total'];
-    $sum_paid  += $period['inv_paid'];
-    $sum_owing += $period['inv_owing'];
-    array_push($periods, $period);
+foreach ($results as $key => $value) {
+    $owing = $value['total'] - $value['paid'];
+    if ($owing > 0) {
+        $sum_owing += $owing;
+        $sum_total += $value['total'];
+        $sum_paid += $value['paid'];
+        $value['owing'] = $owing;
+        $value['aging'] = $key;
+        $periods[] = $value;
+    }
 }
 
 $smarty -> assign('data', $periods);

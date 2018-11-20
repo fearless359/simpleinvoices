@@ -65,8 +65,7 @@ if ($op === 'edit_custom_field') {
             } catch (PdoDbException $pde) {
                 error_log("modules/custom_fields/save.php - error: " . $pde->getMessage());
             }
-//            $sql = "UPDATE " . TB_PREFIX . "custom_fields SET cf_custom_label = :label WHERE cf_id = :id AND domain_id = :domain_id";
-//            if (dbQuery($sql, ':id', $_GET['id'], ':label', $_POST['cf_custom_label'], ':domain_id', $auth_session->domain_id)) {
+
             if ($result) {
                 if ($clear_field) {
                     // Split the value of the field name into parts and use that data to build
@@ -88,10 +87,6 @@ if ($op === 'edit_custom_field') {
                         } catch (PdoDbException $pde) {
                             error_log("modules/custom_fields/save.php - error: " . $pde->getMessage());
                         }
-//                        $sql = "UPDATE " . TB_PREFIX . $table . " SET " . $field . "= '' WHERE domain_id = :domain_id";
-//                        if (!dbQuery($sql, ':domain_id', $auth_session->domain_id)) {
-//                            error_log("dbQuery error: " . $dbh->errorInfo() . " for sql[$sql]");
-//                        }
                     }
                 }
                 $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";

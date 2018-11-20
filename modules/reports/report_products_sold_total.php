@@ -1,33 +1,49 @@
-<?php 
+<?php
 
-  $sql = "
-SELECT 
-	  p.description
-	, SUM(ii.quantity) AS sum_quantity
-FROM ".TB_PREFIX."invoice_items ii 
-	INNER JOIN ".TB_PREFIX."invoices iv    ON (ii.invoice_id = iv.id AND iv.domain_id = ii.domain_id) 
-	INNER JOIN ".TB_PREFIX."products p     ON (p.id = ii.product_id  AND p.domain_id = ii.domain_id)
-	INNER JOIN ".TB_PREFIX."preferences pr ON (pr.pref_id = iv.preference_id AND pr.domain_id = iv.domain_id)
-WHERE 	p.visible 
-    AND pr.status = 1
-    AND p.domain_id = :domain_id
-GROUP BY
-	p.description
-";
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
+use Inc\Claz\PdoDb;
 
-  $product_sales = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+/**
+ * @var PdoDb $pdoDb
+ */
+global $pdoDb, $smarty;
 
-  $total_quantity = 0;
-  $products = array();
+$pdoDb->addSimpleWhere('p.visible', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('p.domain_id', DomainId::get());
 
-  while($product = $product_sales->fetch()) {
-    $total_quantity += $product['sum_quantity'];
-    array_push($products, $product);
-  }
+$pdoDb->setGroupBy('p.description');
 
-  $smarty -> assign('data', $products);
-  $smarty -> assign('total_quantity', $total_quantity);
+$pdoDb->setSelectList('p.description');
+$pdoDb->addToFunctions(new FunctionStmt('SUM', 'ii.quantity', 'sum_quantity'));
 
-	$smarty -> assign('pageActive', 'report');
-	$smarty -> assign('active_tab', '#home');
-?>
+$jn = new Join('INNER', 'invoices', 'iv');
+$jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+$jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$jn = new Join('INNER', 'products', 'p');
+$jn->addSimpleItem('p.id', new DbField('ii.product_id'), 'AND');
+$jn->addSimpleItem('p.domain_id', new DbField('ii.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$jn = new Join('INNER', 'preferences', 'pr');
+$jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$rows = $pdoDb->request('SELECT', 'invoice_items', 'ii');
+
+$total_quantity = 0;
+foreach ($rows as $row) {
+    $total_quantity += $row['sum_quantity'];
+}
+
+$smarty->assign('data', $rows);
+$smarty->assign('total_quantity', $total_quantity);
+
+$smarty->assign('pageActive', 'report');
+$smarty->assign('active_tab', '#home');

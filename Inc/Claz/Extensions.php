@@ -30,6 +30,7 @@ class Extensions
         } catch (PdoDbException $pde) {
             error_log("Extensions::get(): id[$id] - error: " . $pde->getMessage());
         }
+
         return (empty($rows) ? $rows : $rows[0]);
     }
 

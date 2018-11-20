@@ -52,7 +52,6 @@
 	{$customFields.2}
 	{$customFields.3}
 	{$customFields.4}
-	{showCustomFields categorieId="4"}
 
 
 

@@ -21,7 +21,7 @@ use Inc\Claz\SystemDefaults;
  *  Website:
  *      https://simpleinvoices.group
  */
-global $smarty;
+global $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 checkLogin();
@@ -47,42 +47,42 @@ if ($defaults['delete'] == 'N') {
 }
 
 if (($_GET['stage'] == 2) && ($_POST['doDelete'] == 'y')) {
-    global $dbh;
-
-    $dbh->beginTransaction();
-    $error = false;
-
-    // delete line item taxes
-
     $invoice_line_items = Invoice::getInvoiceItems($id);
 
+    $pdoDb->begin(); // Start transaction
+    $error = false;
+
     foreach($invoice_line_items as $key => $value) {
-        delete('invoice_item_tax', 'invoice_item_id', $invoice_line_items[$key]['id']);
+        Invoice::delete('invoice_item_tax', 'invoice_item_id', $invoice_line_items[$key]['id']);
     }
 
     // Start by deleting the line items
-    if (!delete('invoice_items', 'invoice_id', $id)) {
+    if (!$error && !Invoice::delete('invoice_items', 'invoice_id', $id)) {
         $error = true;
     }
 
     // delete products from products table for total style
-    if ($invoice['type_id'] == TOTAL_INVOICE) {
-        if ($error || !delete('products', 'id', $invoiceItems['0']['product']['id'])) {
+    if (!$error && $invoice['type_id'] == TOTAL_INVOICE) {
+        if (!Invoice::delete('products', 'id', $invoiceItems['0']['product']['id'])) {
             $error = true;
         }
     }
 
     // delete the info from the invoice table
-    if ($error || !delete('invoices', 'id', $id)) {
+    if (!$error && !Invoice::delete('invoices', 'id', $id)) {
         $error = true;
     }
     if ($error) {
-        $dbh->rollBack();
+        $pdoDb->rollback();
+        $display_block = "<div class='si_message_error'>{$LANG['delete_failed']}</div>";
     } else {
-        $dbh->commit();
+        $display_block = "<div class='si_message_ok'>{$LANG['delete_success']}</div>";
+        $pdoDb->commit();
     }
     // TODO - what about the stuff in the products table for the total style invoices?
-    echo "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
+    $refresh_redirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
+    $smarty->assign('refresh_redirect', $refresh_redirect);
+    $smarty->assign('display_block', $display_block);
 }
 
 $smarty->assign('pageActive', 'invoice');

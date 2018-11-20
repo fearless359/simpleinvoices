@@ -365,6 +365,132 @@ class Invoice {
     }
 
     /**
+     * Attempts to delete rows from the database.
+     * Currently allows for deletion of invoices, invoice_items, and products entries.
+     * All other $module values will fail. $idField is also checked on a per-table
+     * basis, i.e. invoice_items can be either "id" or "invoice_id" while products
+     * can only be "id". Invalid $module or $idField values return false, as do
+     * calls that would fail foreign key checks.
+     * @param string $module Table a row
+     * @param string  $idField
+     * @param integer $id
+     * @return bool true if delete processed, false if not.
+     */
+    public static function delete($module, $idField, $id) {
+        /**
+         * @var PdoDb $pdoDb;
+         */
+        global $pdoDb;
+
+        $has_domain_id = false;
+
+        $lcltable = strtolower($module);
+        switch ($lcltable) {
+            case 'invoice_item_tax':
+                // Not required by any FK relationships
+                if ($idField != 'invoice_item_id') {
+                    return false; // Fail, invalid ID field
+                }
+
+                $s_idField = $idField;
+                break;
+
+            case 'invoice_items':
+                // Not required by any FK relationships
+                if ($idField != 'id' && $idField !=  'invoice_id') {
+                    return false; // Fail, invalid ID field
+                }
+
+                $s_idField = $idField;
+                break;
+
+            case 'products':
+                if ($idField != 'id') {
+                    return false;
+                }
+
+                $rows = array();
+                try {
+                    // Check for use of product
+                    $pdoDb->addSimpleWhere('product_id', $id, 'AND');
+                    $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+                    $pdoDb->setSelectList('product_id');
+
+                    $rows = $pdoDb->request('SELECT', 'invoice_items');
+                } catch (PdoDbException $pde) {
+                    error_log('Invoice::delete() - Failed products - error: ' . $pde->getMessage());
+                }
+
+                if (count($rows) > 0) {
+                    return false; // product still in use
+                }
+
+                $has_domain_id = true;
+                $s_idField = $idField;
+                break;
+
+            case 'invoices':
+                // Check for existing payments and line items
+                $rows = array();
+                try {
+                    $pdoDb->addSimpleWhere('invoice_id', $id, 'AND');
+                    $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+                    $pdoDb->setSelectList('invoice_id');
+                    $rows = $pdoDb->request('SELECT', 'invoice_items');
+                } catch (PdoDbException $pde) {
+                    error_log('Invoice::delete() - Failed invoices(1) - error: ' . $pde->getMessage());
+                }
+                $count = count($rows);
+
+                $rows = array();
+                try {
+                    $pdoDb->addSimpleWhere('ac_inv_id', $id, 'AND');
+                    $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+                    $pdoDb->setSelectList('ac_inv_id');
+                    $rows = $pdoDb->request('SELECT', 'payment');
+                } catch (PdoDbException $pde) {
+                    error_log('Invoice::delete() - Failed invoices(1) - error: ' . $pde->getMessage());
+                }
+
+                $count += count($rows);
+
+                // Fail if line items or payments still exist, or and invoice id field specified.
+                if ($count > 0 || $idField != 'id') {
+                    return false;
+                }
+
+                $has_domain_id = true;
+                $s_idField = $idField;
+                break;
+
+            default:
+                $s_idField = ''; // Fail, no checks for this table exist yet
+                break;
+        }
+
+        if ($s_idField == '') {
+            return false; // Fail, column whitelisting not performed
+        }
+
+        $result = false;
+        try {
+            if ($has_domain_id) {
+                $pdoDb->addSimpleWhere('domain_id', DomainId::get(), 'AND');
+            }
+
+            $pdoDb->addSimpleWhere($s_idField, $id);
+            $result = $pdoDb->request('DELETE', $module);
+        } catch (PdoDbException $pde) {
+            error_log('Invoice::delete() - Failed delete - error: ' . $pde->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
      * Insert/update the multiple taxes for a invoice line item.
      * @param int $invoice_item_id
      * @param int $line_item_tax_ids
@@ -795,9 +921,8 @@ class Invoice {
             $fn = new FunctionStmt("DATE_FORMAT", "date, '%Y-%m-%d'", "date");
             $pdoDb->addToFunctions($fn);
 
-            $fn = new FunctionStmt("CONCAT", "pf.pref_inv_wording, ' ', iv.index_id");
-            $se = new Select($fn, null, null, "index_name");
-            $pdoDb->addToSelectStmts($se);
+            $fn = new FunctionStmt("CONCAT", "pf.pref_inv_wording, ' ', iv.index_id", 'index_name');
+            $pdoDb->addToFunctions($fn);
 
             $jn = new Join("LEFT", "biller", "b");
             $jn->addSimpleItem("b.id", new DbField("iv.biller_id"), 'AND');
@@ -920,7 +1045,7 @@ class Invoice {
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoiceItems() - id[$id] error: " . $pde->getMessage());
         }
-error_log("invoicesItems - " . print_r($invoiceItems,true));
+
         return $invoiceItems;
     }
 

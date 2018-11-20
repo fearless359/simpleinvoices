@@ -68,11 +68,6 @@
 	{$customFields.2}
 	{$customFields.3}
 	{$customFields.4}
-	{* 
-		{showCustomFields categorieId="4"}
-	*}
-
-
 
 <tr>
         <td colspan="3" class="details_screen">{$LANG.notes}</td>
