@@ -1,14 +1,17 @@
 <?php
 
-/*
-* Script: auto_complete_search.php
-*     Do the autocomplete of invoice id in the process payment page
-*
-* License:
-*     GPL v3 or above
-*/
+use Inc\Claz\Util;
 
-if (!defined("BROWSE")) define("BROWSE","browse");
+/*
+ * Script: auto_complete_search.php
+ *     Do the autocomplete of invoice id in the process payment page
+ *
+ * License:
+ *     GPL v3 or above
+ */
+
+Util::allowDirectAccess();
+
 //if this page has error with auth remove the above line and figure out how to do it right
 
 $lines = array();

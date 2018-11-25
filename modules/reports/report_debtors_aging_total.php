@@ -26,7 +26,7 @@ $pdoDb->setGroupBy('aging');
 $pdoDb->setOrderBy('aging');
 
 $fn = new FunctionStmt("IF", "(DateDiff(now(), iv.date) < 0), 0, DateDiff(now(), iv.date)");
-$se = new Select($fn, null, null, "Age");
+$se = new Select($fn, null, null, null, "Age");
 $pdoDb->addToSelectStmts($se);
 
 $ca = new CaseStmt("Age");
@@ -35,7 +35,7 @@ $ca->addWhen("<=", "30", "15-30" );
 $ca->addWhen("<=", "60", "31-60" );
 $ca->addWhen("<=", "90", "61-90" );
 $ca->addWhen(">" , "90", "90+", true);
-$pdoDb->addToSelectStmts(new Select($ca, null, null, "aging"));
+$pdoDb->addToSelectStmts(new Select($ca, null, null, null, "aging"));
 
 $jn = new Join('LEFT', 'invoices', 'iv');
 $jn->addSimpleItem('ap.ac_inv_id', new DbField('iv.id'), 'AND');
@@ -62,7 +62,7 @@ $pdoDb->setOrderBy('aging');
 $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total, 0)', 'inv_total'));
 
 $fn = new FunctionStmt("IF", "(DateDiff(now(), iv.date) < 0), 0, DateDiff(now(), iv.date)");
-$se = new Select($fn, null, null, "Age");
+$se = new Select($fn, null, null, null, "Age");
 $pdoDb->addToSelectStmts($se);
 
 $ca = new CaseStmt("Age");
@@ -71,7 +71,7 @@ $ca->addWhen("<=", "30", "15-30" );
 $ca->addWhen("<=", "60", "31-60" );
 $ca->addWhen("<=", "90", "61-90" );
 $ca->addWhen(">" , "90", "90+", true);
-$pdoDb->addToSelectStmts(new Select($ca, null, null, "aging"));
+$pdoDb->addToSelectStmts(new Select($ca, null, null, null, "aging"));
 
 $jn = new Join('LEFT', 'invoices', 'iv');
 $jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');

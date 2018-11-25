@@ -4,6 +4,7 @@ use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
 /*
  *  Script: delete.php
@@ -24,7 +25,7 @@ use Inc\Claz\SystemDefaults;
 global $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // @formatter:off
 $id           = $_GET['id'];

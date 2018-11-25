@@ -4,11 +4,12 @@ use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\Preferences;
+use Inc\Claz\Util;
 
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // @formatter:off
 $payments   = array();
@@ -36,8 +37,6 @@ if (!empty($_GET['id'])) {
     $payments = Payment::select_all();
     $subPageActive = "payment_manage";
 }
-
-$payments = Payment::progressPayments($payments);
 
 $smarty->assign("payments"  , $payments);
 $smarty->assign("preference", $preference);

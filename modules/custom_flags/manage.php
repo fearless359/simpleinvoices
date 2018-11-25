@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\CustomFlags;
+use Inc\Claz\Util;
 
 /*
  * Script: manage.php
@@ -18,7 +19,7 @@ use Inc\Claz\CustomFlags;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $cflgs = CustomFlags::getCustomFlags();
 $smarty->assign('cflgs', $cflgs);

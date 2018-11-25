@@ -9,11 +9,12 @@ use Inc\Claz\Invoice;
 use Inc\Claz\Product;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 global $smarty, $LANG;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // @formatter:off
 $expense_id  = $_GET['id'];

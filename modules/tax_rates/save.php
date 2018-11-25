@@ -1,11 +1,12 @@
 <?php
 
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $display_block = "";
 $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=manage' />";

@@ -3,7 +3,10 @@
 use Extensions\SubCustomer\Inc\Claz\SubCustomers;
 
 use Inc\Claz\Customer;
+use Inc\Claz\CustomFields;
+use Inc\Claz\Extensions;
 use Inc\Claz\Payment;
+use Inc\Claz\Util;
 
 /*
  *  Script: details.php
@@ -24,7 +27,7 @@ use Inc\Claz\Payment;
 global $smarty, $LANG, $config;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // @formatter:off
 $cid = $_GET['id'];
@@ -38,7 +41,7 @@ if (empty($customer['credit_card_number'])) {
         $key = $config->encryption->default->key;
         $enc = new Encryption();
         $credit_card_number = $enc->decrypt($key, $customer['credit_card_number']);
-        $customer['credit_card_number_masked'] = maskValue($credit_card_number);
+        $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($credit_card_number);
     } catch (Exception $e) {
         throw new Exception("details.php - Unable to decrypt credit card for Customer, " .
                             $cid . ". " . $e->getMessage());
@@ -50,7 +53,7 @@ $customer['total'] = Customer::calc_customer_total($customer['id']);
 $customer['paid' ] = Payment::calc_customer_paid($customer['id']);
 $customer['owing'] = $customer['total'] - $customer['paid'];
 
-$customFieldLabel = getCustomFieldLabels(true);
+$customFieldLabel = CustomFields::getLabels(true);
 $invoices = Customer::getCustomerInvoices($cid);
 
 $parent_customers = Customer::get_all(true);

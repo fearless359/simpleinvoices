@@ -4,6 +4,7 @@ use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\Email;
 use Inc\Claz\Export;
+use Inc\Claz\Util;
 
 /*
  *  Script: email.php
@@ -18,7 +19,7 @@ use Inc\Claz\Export;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $error = false;
 $message = "Unable to process email request.";

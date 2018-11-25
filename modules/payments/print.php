@@ -2,14 +2,17 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
+use Inc\Claz\CustomFields;
+use Inc\Claz\Extensions;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\PaymentType;
 use Inc\Claz\Preferences;
+use Inc\Claz\Util;
 
 global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // @formatter:off
 $menu    = false;
@@ -20,11 +23,10 @@ $invoice           = Invoice::getInvoice($payment['ac_inv_id']);
 $biller            = Biller::select($payment['biller_id']);
 $customer          = Customer::get($payment['customer_id']);
 $invoiceType       = Invoice::getInvoiceType($invoice['type_id']);
-$customFieldLabels = getCustomFieldLabels(true);
+$customFieldLabels = CustomFields::getLabels(true);
 $paymentType       = PaymentType::select($payment['ac_payment_type']);
 $preference        = Preferences::getPreference($invoice['preference_id']);
-$logo              = getLogo($biller);
-$logo              = str_replace(" ", "%20", $logo);
+$logo              = str_replace(" ", "%20", Util::getLogo($biller));
 
 $biller_info = array();
 $biller_info[] = array($LANG['name'].':',$biller['name']);

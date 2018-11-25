@@ -1,11 +1,12 @@
 <?php
 
 use Inc\Claz\ProductAttributes;
+use Inc\Claz\Util;
 
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $rows = ProductAttributes::getAll();
 $number_of_rows = count($rows);

@@ -1,7 +1,7 @@
 {
   "autoload": {
     "psr-0": {
-      "": ["library", "library/pdf", "library/pdf/fpdf", "include"]
+      "": ["library", "library/pdf", "library/pdf/fpdf"]
     },
     "psr-4": {
       "Inc\\Claz\\": "Inc/Claz/",

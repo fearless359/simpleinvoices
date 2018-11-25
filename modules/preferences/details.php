@@ -2,10 +2,11 @@
 
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
 global $smarty, $LANG;
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 //if valid then do save
 if (isset($_POST['p_description']) && $_POST['p_description'] != "" ) {
@@ -20,7 +21,7 @@ $index_group = Preferences::getPreference($preference['index_group']);
 $preferences = Preferences::getActivePreferences();
 $defaults = SystemDefaults::loadValues();
 $status = array(array('id'=>'0','status'=>$LANG['draft']), array('id'=>'1','status'=>$LANG['real']));
-$localelist = Zend_Locale::getLocaleList();
+$localelist = \Zend_Locale::getLocaleList();
 
 $smarty->assign('preference',$preference);
 $smarty->assign('defaults',$defaults);

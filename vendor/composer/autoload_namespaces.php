@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
-    '' => array($baseDir . '/library', $baseDir . '/library/pdf', $baseDir . '/library/pdf/fpdf', $baseDir . '/include'),
+    '' => array($baseDir . '/library', $baseDir . '/library/pdf', $baseDir . '/library/pdf/fpdf'),
 );

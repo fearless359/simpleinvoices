@@ -1,10 +1,11 @@
 <?php
 
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
 global $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 
 $display_block = "<div class='si_message_error'>$LANG[save_defaults_failure]</div>";
 $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=system_defaults&amp;view=manage' />";

@@ -3,6 +3,7 @@
 use Inc\Claz\CustomFlags;
 use Inc\Claz\NetIncomeReport;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 
 /*
  * Script: net_income_wo_non_income.php Report income excluding non-income funds
@@ -17,7 +18,7 @@ use Inc\Claz\PdoDbException;
  */
 global $menu, $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 
 /**
  * @return false|string

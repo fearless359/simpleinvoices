@@ -4,11 +4,12 @@ use Inc\Claz\DbField;
 use Inc\Claz\DomainId;
 use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
 global $pdoDb, $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 
 /**
  * @return string Beginning date for selection.

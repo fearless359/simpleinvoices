@@ -1,8 +1,12 @@
 <?php
 
+use Inc\Claz\Acl;
+use Inc\Claz\ApiAuth;
+use Inc\Claz\CheckPermission;
 use Inc\Claz\Config;
 use Inc\Claz\Db;
 use Inc\Claz\DbInfo;
+use Inc\Claz\Extensions;
 use Inc\Claz\Log;
 use Inc\Claz\PdoDb;
 use Inc\Claz\PdoDbException;
@@ -10,48 +14,13 @@ use Inc\Claz\Setup;
 use Inc\Claz\SiError;
 use Inc\Claz\SqlPatchManager;
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
-include_once 'vendor/autoload.php';
-include_once 'config/define.php';
-
-if (!isset($api_request)) $api_request = false;
-
-$lcl_path = get_include_path() .
-    PATH_SEPARATOR . "./library/" .
-    PATH_SEPARATOR . "./library/pdf" .
-    PATH_SEPARATOR . "./library/pdf/fpdf" .
-    PATH_SEPARATOR . "./include/";
-if (set_include_path($lcl_path) === false) {
-    error_log("Error reported by set_include_path() for path: {$lcl_path}");
-}
-
-try {
-    \Zend_Session::start();
-    $auth_session = new \Zend_Session_Namespace('Zend_Auth');
-} catch (\Zend_Session_Exception $zse) {
-    SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
-}
+global $auth_session;
 
 require_once 'smarty/libs/Smarty.class.php';
 require_once 'library/paypal/paypal.class.php';
 require_once 'library/HTMLPurifier/HTMLPurifier.standalone.php';
-include_once 'include/functions.php';
-
-if (!is_writable('./tmp')) {
-    SiError::out('notWritable', 'directory', './tmp');
-}
-
-if (!is_writable('tmp/cache')) {
-    SiError::out('notWritable', 'file', './tmp/cache');
-}
-
-try {
-    $updateCustomConfig = empty($module);
-    Setup::init($updateCustomConfig);
-} catch (PdoDbException $pde) {
-    // Error already reported so simply exit.
-    exit();
-}
 
 // It's possible that we are in the initial install mode. If so, set
 // a flag so we won't terminate on an "Unknown database" error later.
@@ -77,6 +46,8 @@ if ($api_request) {
         }
     }
 }
+
+// Force api request timeout to 60 seconds.
 if ($api_request || $timeout <= 0) {
     $timeout = 60;
 }
@@ -94,7 +65,7 @@ Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), \Zend
  * Zend Framework cache section - start
  * -- must come after the tmp dir writable check
  * *************************************************************/
-$backendOptions = array('cache_dir' => './tmp/'); // Directory where to put the cache files
+$backendOptions = array('cache_dir' => './tmp/cache'); // Directory where to put the cache files
 
 // getting a Zend_Cache_Core object
 try {
@@ -124,8 +95,8 @@ $smarty->setConfigDir("config")
        ->setCacheDir("tmp/cache")
        ->setPluginsDir(array("library/smarty/libs/plugins", "include/smarty_plugins"));
 
-if (!is_writable($smarty->compile_dir)) {
-    SiError::out("notWritable", 'folder', $smarty->compile_dir);
+if (!is_writable($smarty->getCompileDir())) {
+    SiError::out("notWritable", 'folder', $smarty->getCompileDir());
 }
 
 // add stripslashes smarty function
@@ -148,8 +119,6 @@ $install_path = htmlsafe($path['dirname']);
 // if the configuration user, password, etc. are set correctly.
 $db = ($databaseBuilt ? Db::getInstance() : NULL);
 
-require_once ("include/sql_queries.php");
-
 $patchCount = 0;
 if ($databaseBuilt) {
     // Set these global variables.
@@ -170,10 +139,12 @@ if ($api_request || (!$databaseBuilt || !$databasePopulated)) {
 $smarty->assign('patchCount', $patchCount);
 
 try {
-    $smarty->registerPlugin('modifier', "siLocal_number"     , array("Inc\Claz\SiLocal", "number"));
-    $smarty->registerPlugin('modifier', "siLocal_number_trim", array("Inc\Claz\SiLocal", "number_trim"));
-    $smarty->registerPlugin('modifier', "siLocal_currency"   , array("Inc\Claz\SiLocal", "currency"));
-    $smarty->registerPlugin('modifier', "siLocal_date"       , array("Inc\Claz\SiLocal", "date"));
+    $smarty->registerPlugin('modifier', "siLocal_number"         , array("Inc\Claz\SiLocal", "number"));
+    $smarty->registerPlugin('modifier', "siLocal_number_trim"    , array("Inc\Claz\SiLocal", "number_trim"));
+    $smarty->registerPlugin('modifier', "siLocal_currency"       , array("Inc\Claz\SiLocal", "currency"));
+    $smarty->registerPlugin('modifier', "siLocal_date"           , array("Inc\Claz\SiLocal", "date"));
+    $smarty->registerPlugin('modifier', "siLocal_truncateStr"    , array("Inc\Claz\SiLocal", "truncateStr"));
+    $smarty->registerPlugin('modifier', "siLocal_sqlDataWithTime", array("Inc\Claz\SiLocal", "sqlDateWithTime"));
 
     $smarty->registerPlugin('modifier', 'htmlout'  , 'outhtml');
     $smarty->registerPlugin('modifier', 'htmlsafe' , 'htmlsafe');
@@ -186,7 +157,7 @@ try {
 }
 
 global $ext_names;
-loadSiExtensions($ext_names);
+Extensions::loadSiExtensions($ext_names, $config, $databaseBuilt, $patchCount);
 
 // point to extension plugin directories if present.
 $plugin_dirs = array();
@@ -220,21 +191,29 @@ if (isset($defaults['company_name'])) {
 }
 
 if (!$api_request) {
-    include ('include/include_auth.php');
+    ApiAuth::authenticate($module, $auth_session);
 }
 
-include_once ('include/manageCustomFields.php');
+// Functions that dynamically build javascript for the tpl files.
 include_once ("include/validation.php");
 
 if ($config->authentication->enabled == ENABLED) {
-    include_once ("include/acl.php");
+    $acl = null;
+    Acl::init($acl);
+
     // if authentication enabled then do acl check etc..
     foreach ($ext_names as $ext_name) {
-        if (file_exists("Extensions/$ext_name/include/acl.php")) {
-            require_once ("Extensions/$ext_name/include/acl.php");
+        $fileName = $ext_name . "Acl.php";
+        $filePath = "Extensions/$ext_name/Inc/Claz/" . $fileName;
+        if (file_exists($filePath)) {
+            include_once($filePath);
+            // In the Acl.php file for your extension, have a getResource() method
+            // that returns each resource to add to the default.
+            Acl::addResource($fileName::getResources(), $acl);
         }
     }
-    include_once ("include/check_permission.php");
+
+    CheckPermission::isAllowed($module, $acl);
 }
 
 /* *************************************************************
@@ -262,11 +241,4 @@ switch ($module) {
 }
 
 // get the url - used for templates / pdf
-$siUrl = getURL();
-
-/* *************************************************************
- * If using the following line, the DB settings should be
- * appended to the config array, instead of replacing it
- * (NOTE: NOT TESTED!)
- * *************************************************************/
-include_once ("include/class/BackupDb.php");
+$siUrl = Util::getURL();

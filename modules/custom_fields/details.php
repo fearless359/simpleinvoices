@@ -1,7 +1,9 @@
 <?php
 
+use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 
 /*
  * Script: details.php
@@ -15,7 +17,7 @@ use Inc\Claz\PdoDbException;
 global $pdoDb, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 //get the invoice id
 $cf_id = $_GET["id"];
@@ -33,7 +35,7 @@ if (empty(rows)) {
     $cf = array();
 } else {
     $cf = $rows[0];
-    $cf['name'] = get_custom_field_name($cf['cf_custom_field']);
+    $cf['name'] = CustomFields::getCustomFieldName($cf['cf_custom_field']);
 }
 
 $subPageActive = $_GET['action'] =="view"  ? "custom_fields_view" : "custom_fields_edit" ;

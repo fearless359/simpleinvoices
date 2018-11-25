@@ -1,11 +1,12 @@
 <?php
 
 use Inc\Claz\CustomFlags;
+use Inc\Claz\Util;
 
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 if (empty($_GET['id'])) {
     $associated_table = $_GET['associated_table'];

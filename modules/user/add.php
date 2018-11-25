@@ -2,6 +2,7 @@
 
 use Inc\Claz\User;
 use Inc\Claz\UserSecurity;
+use Inc\Claz\Util;
 
 /*
  * Script: add.php
@@ -22,7 +23,7 @@ use Inc\Claz\UserSecurity;
  */
 global $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 
 $roles = User::getUserRoles();
 

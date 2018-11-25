@@ -2,6 +2,7 @@
 
 use Inc\Claz\DomainId;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 
 /*
  * Script: save.php
@@ -23,7 +24,7 @@ global $LANG, $pdoDb, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
@@ -91,7 +92,7 @@ if ($op === 'edit_custom_field') {
                 }
                 $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";
             } else {
-                $display_block = "<div class=\"si_message_warning\">{$LANG['save_custom_field_failure']}" . end($dbh->errorInfo()) . "</div>";
+                $display_block = "<div class=\"si_message_warning\">{$LANG['save_custom_field_failure']}</div>";
             }
         }
     }

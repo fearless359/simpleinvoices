@@ -6,6 +6,7 @@ use Inc\Claz\PaymentType;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 global $LANG,
        $smarty,
@@ -13,7 +14,7 @@ global $LANG,
        $perform_extension_php_insertions;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 /**
  * Help function for sorting the language array by name
@@ -181,21 +182,21 @@ switch ($get_val) {
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
         $default     = "delete";
         $description = $LANG['delete'];
-        $value       = dropDown($array, $defaults['delete']);
+        $value       = Util::dropDown($array, $defaults['delete']);
         break;
 
     case "expense":
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
         $default     = "expense";
         $description = $LANG['expense'];
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
     case "inventory":
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
         $default     = "inventory";
         $description = $LANG['inventory'];
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
     case "language":
@@ -231,7 +232,7 @@ switch ($get_val) {
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
         $default     = "logging";
         $description = $LANG['logging'];
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
     case 'password_min_length':
@@ -246,7 +247,7 @@ switch ($get_val) {
         $default     = $get_val;
         $description = "{$LANG[$default]}";
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         $found       = true;
         break;
 
@@ -254,7 +255,7 @@ switch ($get_val) {
         $default     = $get_val;
         $description = "{$LANG[$default]}";
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         $found       = true;
         break;
 
@@ -262,7 +263,7 @@ switch ($get_val) {
         $default     = $get_val;
         $description = "{$LANG[$default]}";
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         $found       = true;
         break;
 
@@ -270,7 +271,7 @@ switch ($get_val) {
         $default     = $get_val;
         $description = "{$LANG[$default]}";
         $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         $found       = true;
         break;
 
@@ -300,7 +301,7 @@ switch ($get_val) {
         $array       = array(DISABLED => $LANG['disabled'], ENABLED => $LANG['enabled']);
         $default     = "product_attributes";
         $description = $LANG['product_attributes'];
-        $value       = dropDown($array, $defaults[$default]);
+        $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
     case "session_timeout":

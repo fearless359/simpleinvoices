@@ -3,11 +3,12 @@
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\PaymentType;
+use Inc\Claz\Util;
 
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 /*validation code*/
 jsBegin();

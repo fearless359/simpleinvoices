@@ -7,11 +7,12 @@ use Inc\Claz\Invoice;
 use Inc\Claz\PaymentType;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
 global $smarty, $LANG, $pdoDb;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $paymentTypes = PaymentType::select_all(true);
 $chk_pt = 0;

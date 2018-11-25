@@ -130,7 +130,7 @@ class PdoDb {
         $this->fieldPrefix      = null;
         $this->functions        = null;
         $this->groupBy          = null;
-        $this->havings          = new Havings();
+        $this->havings          = null;
         $this->joinStmts        = null;
         $this->keyPairs         = null;
         $this->lastCommand      = "";
@@ -510,17 +510,20 @@ class PdoDb {
      * @throws PdoDbException
      */
     public function setSimpleHavings($field, $operator, $value, $connector="") {
-        $this->havings[] = new Having($field, $operator, $value, $connector);
+        $having = new Having(false, $field, $operator, $value, false, $connector);
+        $this->setHavings($having);
     }
 
     /**
      * Set the <b>HAVING</b> statement object generate when the next <b>request</b> is performed.
      * Note: This method can be called multiple times to add additional values.
-     * @param havings $havings <b>HAVING</b> or <b>HAVINGS</b> object to add.
+     * @param Having/Havings $havings <b>HAVING</b> or <b>HAVINGS</b> object to add.
      * @throws PdoDbException If parameter is not valid.
      */
     public function setHavings($havings) {
-        if (!isset($this->havings)) $this->havings = new Havings();
+        if (!isset($this->havings)) {
+            $this->havings = new Havings();
+        }
         if (is_a($havings,"Inc\Claz\Having") || is_a($havings, "Inc\Claz\Havings")) {
             $this->havings->addHavings($havings);
         } else {

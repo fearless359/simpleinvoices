@@ -8,6 +8,78 @@ namespace Inc\Claz;
 class CustomFields {
 
     /**
+     * Used by manage_custom_fields to get the name of the custom field and which section it relates to (ie,
+     * biller/product/customer)
+     *
+     * @param string $field - The custom field in question
+     * @return mixed $custom field name or false if undefined entry in $field.
+     */
+    public static function getCustomFieldName($field) {
+        global $LANG;
+
+        // grab the first character of the field variable
+        $get_cf_letter = $field[0];
+        // grab the last character of the field variable
+        $get_cf_number = $field[strlen($field) - 1];
+
+        // function to return false if invalid custom_field
+        switch ($get_cf_letter) {
+            case "b":
+                $custom_field_name = $LANG['biller'];
+                break;
+            case "c":
+                $custom_field_name = $LANG['customer'];
+                break;
+            case "i":
+                $custom_field_name = $LANG['invoice'];
+                break;
+            case "p":
+                $custom_field_name = $LANG['products'];
+                break;
+            default:
+                $custom_field_name = false;
+        }
+
+        // Append the rest of the string
+        $custom_field_name .= " :: " . $LANG["custom_field"] . " " . $get_cf_number;
+        return $custom_field_name;
+    }
+
+    /**
+     * Get custom field labels.
+     * @param boolean $noUndefinedLabels Defaults to <b>false</b>. When set to
+     *        <b>true</b> custom fields that do not have a label defined will
+     *        not a be assigned a default label so the undefined custom fields
+     *        won't be displayed.
+     * @return array Rows retrieved. Test for "=== false" to check for failure.
+     */
+    function getLabels($noUndefinedLabels = FALSE) {
+        global $LANG, $pdoDb_admin;
+
+        $rows = array();
+        try {
+            $pdoDb_admin->addSimpleWhere("domain_id", DomainId::get());
+            $pdoDb_admin->setOrderBy("cf_custom_field");
+            $rows = $pdoDb_admin->request("SELECT", "custom_fields");
+        } catch (PdoDbException $pde) {
+            error_log("CustomFields::::getLabels() - Error: " . $pde->getMessage());
+        }
+
+        $cfl = $LANG['custom_field'] . ' ';
+        $customFields = array();
+        $i = 0;
+        foreach($rows as $row) {
+            // @formatter:off
+            $customFields[$row['cf_custom_field']] =
+                (empty($row['cf_custom_label']) ? ($noUndefinedLabels ? "" : $cfl . (($i % 4) + 1)) :
+                                                  $row['cf_custom_label']);
+            $i++;
+            // @formatter:on
+        }
+        return $customFields;
+    }
+
+    /**
      * @param string $field The custom field in question
      * @return string
      */
@@ -138,7 +210,7 @@ class CustomFields {
 
         $cfs = array();
         foreach ($rows as $row) {
-            $row['field_name_nice'] = get_custom_field_name($row['cf_custom_field']);
+            $row['field_name_nice'] = self::getCustomFieldName($row['cf_custom_field']);
             $cfs[] = $row;
         }
 

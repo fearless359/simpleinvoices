@@ -1,36 +1,91 @@
 <?php
-global $auth_session, $smarty;
 
-$sql = "SELECT c.id AS cid,
-               c.name AS customer,
-               SUM(COALESCE(ii.total, 0)) AS inv_total,
-               COALESCE(ap.inv_paid, 0) AS inv_paid,
-               SUM(COALESCE(ii.total, 0)) - COALESCE(ap.inv_paid, 0) AS inv_owing
-        FROM ".TB_PREFIX."customers c 
-        LEFT JOIN ".TB_PREFIX."invoices iv      ON (iv.customer_id = c.id AND iv.domain_id = c.domain_id)
-        LEFT JOIN ".TB_PREFIX."invoice_items ii ON (ii.invoice_id = iv.id AND ii.domain_id = iv.domain_id)
-        LEFT JOIN ".TB_PREFIX."preferences pr   ON (iv.preference_id = pr.pref_id AND pr.domain_id = iv.domain_id)
-        LEFT JOIN (SELECT iv1.customer_id, ap1.domain_id, SUM(COALESCE(ap1.ac_amount, 0)) AS inv_paid 
-                   FROM  ".TB_PREFIX."payment ap1
-                   LEFT JOIN ".TB_PREFIX."invoices iv1   ON (ap1.ac_inv_id = iv1.id AND ap1.domain_id = iv1.domain_id)
-                   LEFT JOIN ".TB_PREFIX."preferences pr1 ON (pr1.pref_id = iv1.preference_id AND pr1.domain_id = iv1.domain_id)
-                   WHERE pr1.status = 1
-                   GROUP BY iv1.customer_id, ap1.domain_id) ap ON (ap.customer_id = c.id AND ap.domain_id = c.domain_id)
-        WHERE pr.status   = 1
-          AND c.domain_id = :domain_id
-       GROUP BY c.id;";
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FromStmt;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\GroupBy;
+use Inc\Claz\Join;
+use Inc\Claz\OnClause;
+use Inc\Claz\PdoDbException;
+use Inc\Claz\Select;
+use Inc\Claz\WhereClause;
 
-$customer_results = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+global $pdoDb, $smarty;
 
-$total_owed = 0;
-$customers = array();
+$rows = array();
+try {
+    $pdoDb->setSelectList(array(
+        new DbField('c.id', 'cid'),
+        new DbField('c.name', 'customer')
+    ));
+    $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total,0)', 'inv_total'));
+    $pdoDb->addToFunctions(new FunctionStmt('COALESCE', 'ap.inv_paid, 0', 'inv_paid'));
 
-while($customer = $customer_results->fetch()) {
-    $total_owed += $customer['inv_owing'];
-    array_push($customers, $customer);
+    $fn = new FunctionStmt('SUM', 'COALESCE(ii.total, 0)', 'inv_owing');
+    $fn->addPart('-', 'COALESCE(ap.inv_paid, 0)');
+    $pdoDb->addToFunctions($fn);
+
+    $jn = new Join('LEFT', 'invoices', 'iv');
+    $jn->addSimpleItem('iv.customer_id', new DbField('c.id'), 'AND');
+    $jn->addSimpleItem('iv.domain_id', new DbField('c.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'invoice_items', 'ii');
+    $jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+    $jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'preferences', 'pr');
+    $jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+    $jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    /*******************************************************************
+     * Begin -Build the LEFT JOIN containing a complex SELECT clause
+     *******************************************************************/
+    $ls = array(new DbField('ivl.customer_id'), new DbField('apl.domain_id'));
+    $ls[] = new FunctionStmt("SUM", "COALESCE(apl.ac_amount, 0)", "inv_paid");
+    $fr = new FromStmt("payment", 'apl');
+    $wh = new WhereClause();
+    $wh->addSimpleItem('prl.status', ENABLED);
+    $gr = new GroupBy(array('ivl.customer_id', 'apl.domain_id'));
+    $se = new Select($ls, $fr, $wh, $gr, "ap");
+
+    $jn = new Join("LEFT", 'invoices', 'ivl');
+    $jn->addSimpleItem("apl.ac_inv_id", new DbField("ivl.id"), "AND");
+    $jn->addSimpleItem("apl.domain_id", new DbField("ivl.domain_id"));
+    $se->addJoin($jn);
+
+    $jn = new Join("LEFT", 'preferences', 'prl');
+    $jn->addSimpleItem("prl.pref_id", new DbField("ivl.preference_id"), "AND");
+    $jn->addSimpleItem("prl.domain_id", new DbField("ivl.domain_id"));
+    $se->addJoin($jn);
+
+    $jn = new Join('LEFT', $se);
+    $jn->addSimpleItem('ap.customer_id', new DbField('c.id'), 'AND');
+    $jn->addSimpleItem('ap.domain_id', new DbField('c.domain_id'));
+    $pdoDb->addToJoins($jn);
+    /*******************************************************************
+     * End - Build the LEFT JOIN
+     *******************************************************************/
+
+    $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+    $pdoDb->addSimpleWhere('c.domain_id', DomainId::get());
+
+    $pdoDb->setGroupBy('c.id');
+
+    $rows = $pdoDb->request('SELECT', 'customers', 'c');
+} catch (PdoDbException $pde) {
+    error_log('report_debtors_by_amount - error: ' . $pde->getMessage());
 }
 
-$smarty -> assign('data', $customers);
+$total_owed = 0;
+foreach ($rows as $row) {
+    $total_owed += $row['inv_owing'];
+}
+
+$smarty -> assign('data', $rows);
 $smarty -> assign('total_owed', $total_owed);   
 
 $smarty -> assign('pageActive', 'report');

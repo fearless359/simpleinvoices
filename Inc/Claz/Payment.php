@@ -105,27 +105,37 @@ class Payment {
 
         $rows = array();
         try {
-            $oc = new OnClause();
-            $oc->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
-            $oc->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "payment", "ap", $oc));
+            $pdoDb->setSelectList(array(
+                "ap.*",
+                new DbField('c.name', 'cname'),
+                new DbField('b.name', 'bname'),
+                new DbField('pt.pt_description', 'description')
+            ));
 
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "customers", "c", $oc));
+            $jn = new Join('LEFT', 'payment', 'ap');
+            $jn->addSimpleItem('ap.ac_inv_id', new DbField('iv.id'), 'AND');
+            $jn->addSimpleItem('ap.domain_id', new DbField('iv.domain_id'));
+            $pdoDb->addToJoins($jn);
 
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "biller", "b", $oc));
+            $jn = new Join('LEFT', 'customers', 'c');
+            $jn->addSimpleItem('iv.customer_id', new DbField('c.id'), 'AND');
+            $jn->addSimpleItem('iv.domain_id', new DbField('c.domain_id'));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'biller', 'b');
+            $jn->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'payment_types', 'pt');
+            $jn->addSimpleItem('pt.pt_id', new DbField('ap.ac_payment_type'), 'AND');
+            $jn->addSimpleItem('pt.domain_id', new DbField('ap.domain_id'));
+            $pdoDb->addToJoins($jn);
 
             $pdoDb->addSimpleWhere("iv.id", $id, "AND");
             $pdoDb->addSimpleWhere("iv.domain_id", DomainId::get());
 
             $pdoDb->setOrderBy(array("ap.id", "D"));
-
-            $pdoDb->setSelectList(array("ap.*", "c.name AS cname", "b.name AS bname"));
 
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
         } catch (PdoDbException $pde) {
@@ -144,27 +154,37 @@ class Payment {
 
         $rows = array();
         try {
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "invoices", "iv", $oc));
+            $pdoDb->setSelectList(array(
+                'ap.*',
+                new DbField('c.name', 'cname'),
+                new DbField('b.name', 'bname'),
+                new DbField('pt.pt_description', 'description')
+            ));
 
-            $oc = new OnClause();
-            $oc->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
-            $oc->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "payment", "ap", $oc));
+            $jn = new Join('LEFT', 'invoices', 'iv');
+            $jn->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
+            $pdoDb->addToJoins($jn);
 
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "biller", "b", $oc));
+            $jn = new Join('LEFT', 'payment', 'ap');
+            $jn->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
+            $jn->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'biller', 'b');
+            $jn->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'payment_types', 'pt');
+            $jn->addSimpleItem('pt.pt_id', new DbField('ap.ac_payment_type'), 'AND');
+            $jn->addSimpleItem('pt.domain_id', new DbField('ap.domain_id'));
+            $pdoDb->addToJoins($jn);
 
             $pdoDb->addSimpleWhere("c.id", $id, "AND");
             $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get());
 
             $pdoDb->setOrderBy(array("ap.id", "D"));
-
-            $pdoDb->setSelectList(array("ap.*", "c.name AS cname", "b.name AS bname"));
 
             $rows = $pdoDb->request("SELECT", "customers", "c");
         } catch (PdoDbException $pde) {
@@ -233,26 +253,36 @@ class Payment {
 
         $rows = array();
         try {
-            $oc = new OnClause();
-            $oc->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
-            $oc->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "invoices", "iv", $oc));
+            $pdoDb->setSelectList(array(
+                'ap.*',
+                new DbField('c.name', 'cname'),
+                new DbField('b.name', 'bname'),
+                new DbField('pt.pt_description', 'description')
+            ));
 
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "customers", "c", $oc));
+            $jn = new Join('LEFT', 'invoices', 'iv');
+            $jn->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
+            $jn->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
+            $pdoDb->addToJoins($jn);
 
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "biller", "b", $oc));
+            $jn = new Join('LEFT', 'customers', 'c');
+            $jn->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'biller', 'b');
+            $jn->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'payment_types', 'pt');
+            $jn->addSimpleItem('pt.pt_id', new DbField('ap.ac_payment_type'), 'AND');
+            $jn->addSimpleItem('pt.domain_id', new DbField('ap.domain_id'));
+            $pdoDb->addToJoins($jn);
 
             $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get());
 
             $pdoDb->setOrderBy(array("ap.id", "D"));
-
-            $pdoDb->setSelectList(array("ap.*", "c.name AS cname", "b.name AS bname"));
 
             $rows = $pdoDb->request("SELECT", "payment", "ap");
         } catch (PdoDbException $pde) {
@@ -275,12 +305,12 @@ class Payment {
             foreach ($payments as $payment) {
                 $pdoDb->addSimpleWhere("pt_id", $payment['ac_payment_type'], "AND");
                 $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-                $pdoDb->setSelectList("pt_description");
+                $pdoDb->setSelectList("pt_description", 'description');
                 $result = $pdoDb->request("SELECT", "payment_types");
                 if (empty($result)) {
                     $payment['description'] = "";
                 } else {
-                    $payment['description'] = $result[0]['pt_description'];
+                    $payment['description'] = $result[0]['description'];
                 }
                 $progressPayments[] = $payment;
             }

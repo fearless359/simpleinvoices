@@ -143,7 +143,7 @@ class Customer {
             $wh = new WhereClause();
             $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), "AND");
             $wh->addSimpleItem("ii.domain_id", new DbField("iv.domain_id"));
-            $se = new Select($fn, $fr, $wh, "invd");
+            $se = new Select($fn, $fr, $wh, null, "invd");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("SUM", "COALESCE(ap.ac_amount, 0)");
@@ -151,19 +151,19 @@ class Customer {
             $wh = new WhereClause();
             $wh->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
             $wh->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-            $se = new Select($fn, $fr, $wh, "pmt");
+            $se = new Select($fn, $fr, $wh, null, "pmt");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("COALESCE", "invd, 0");
-            $se = new Select($fn, null, null, "total");
+            $se = new Select($fn, null, null, null, "total");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("COALESCE", "pmt, 0");
-            $se = new Select($fn, null, null, "paid");
+            $se = new Select($fn, null, null, null, "paid");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("", "total - paid");
-            $se = new Select($fn, null, null, "owing");
+            $se = new Select($fn, null, null, null, "owing");
             $pdoDb->addToSelectStmts($se);
 
             $pdoDb->setSelectList(array("iv.id", "iv.index_id", "iv.date", "iv.type_id",
@@ -292,6 +292,23 @@ class Customer {
     }
 
     /**
+     * Mask a string with specified string of characters exposed.
+     * @param string $value Value to be masked.
+     * @param string $chr Character to replace masked characters.
+     * @param int $num_to_show Number of characters to leave exposed.
+     * @return string Masked value.
+     */
+    public static function maskCreditCardNumber($value, $chr='x', $num_to_show=4) {
+        $len = strlen($value);
+        if ($len <= $num_to_show) return $value;
+        $mask_len = $len - $num_to_show;
+        $masked_value = "";
+        for ($i=0; $i<$mask_len; $i++) $masked_value .= $chr;
+        $masked_value .= substr($value, $mask_len);
+        return $masked_value;
+    }
+
+    /**
      * Select records for the flexigrid list
      * @param $type
      * @param $dir
@@ -368,7 +385,7 @@ class Customer {
             $wh = new WhereClause();
             $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
             $wh->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
-            $se = new Select($fn, $fr, $wh, "customer_total");
+            $se = new Select($fn, $fr, $wh, null, "customer_total");
             $se->addJoin($jn);
             $pdoDb->addToSelectStmts($se);
 
@@ -377,7 +394,7 @@ class Customer {
             $wh = new WhereClause();
             $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
             $wh->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-            $se = new Select($fn, $fr, $wh, "last_inv_id");
+            $se = new Select($fn, $fr, $wh, null, "last_inv_id");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("COALESCE", "SUM(ap.ac_amount), 0", "amount");
@@ -390,13 +407,13 @@ class Customer {
             $wh = new WhereClause();
             $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
             $wh->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
-            $se = new Select($fn, $fr, $wh, "paid");
+            $se = new Select($fn, $fr, $wh, null, "paid");
             $se->addJoin($jn);
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt(null, "customer_total");
             $fn->addPart("-", "paid");
-            $se = new Select($fn, null, null, "owing");
+            $se = new Select($fn, null, null, null, "owing");
             $pdoDb->addToSelectStmts($se);
 
             $validFields = array('CID', 'name', 'department', 'customer_total', 'paid', 'owing', 'enabled');

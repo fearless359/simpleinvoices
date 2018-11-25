@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Invoice;
+use Inc\Claz\Util;
 
 /*
  * Script: manage.php
@@ -15,7 +16,7 @@ use Inc\Claz\Invoice;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // Combine access of values to minimize overhead.
 $results = Invoice::select_all('count_owing');

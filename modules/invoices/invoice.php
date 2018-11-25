@@ -8,6 +8,7 @@ use Inc\Claz\Preferences;
 use Inc\Claz\Product;
 use Inc\Claz\ProductAttributes;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 /*
  * Script: invoice.php
@@ -27,7 +28,7 @@ use Inc\Claz\Taxes;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // @formatter:off
 $billers           = Biller::getAll(true);

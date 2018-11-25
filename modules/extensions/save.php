@@ -2,9 +2,10 @@
 
 use Inc\Claz\Extensions;
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $refresh_redirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=extensions&amp;view=manage" />';
 $display_block = "<div class=\"si_message_error\">{$LANG['failure']}</div>";

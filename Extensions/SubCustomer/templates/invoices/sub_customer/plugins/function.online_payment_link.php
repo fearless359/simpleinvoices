@@ -1,12 +1,13 @@
 <?php
 
 use Inc\Claz\DomainId;
+use Inc\Claz\Util;
 
 function smarty_function_online_payment_link($params, &$smarty) {
 	global $LANG;
 	$domain_id = DomainId::get($params['domain_id']);
 
-	$url = getURL();
+	$url = Util::getURL();
         if (in_array("paypal",explode(",", $params['type'])))
 	{
 

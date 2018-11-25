@@ -3,11 +3,12 @@
 use Inc\Claz\DomainId;
 use Inc\Claz\Payment;
 use Inc\Claz\SiLocal;
+use Inc\Claz\Util;
 
 global $smarty, $LANG;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $display_block = "<div class='si_message_error'>$LANG[save_payment_failure]</div>";
 $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
@@ -19,7 +20,7 @@ if (isset($_POST['process_payment'])) {
             "ac_inv_id"       => $_POST['invoice_id'],
             "ac_amount"       => $pymt_amt,
             "ac_notes"        => $_POST['ac_notes'],
-            "ac_date"         => sqlDateWithTime($_POST['ac_date']),
+            "ac_date"         => SiLocal::sqlDateWithTime($_POST['ac_date']),
             "ac_payment_type" => $_POST['ac_payment_type'],
             "domain_id"       => DomainId::get(),
             "ac_check_number" => $_POST['ac_check_number']));

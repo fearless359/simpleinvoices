@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\CustomFlags;
+use Inc\Claz\Util;
 
 /*
  *  Script: details.php
@@ -15,7 +16,7 @@ use Inc\Claz\CustomFlags;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $refresh_redirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=custom_flags&amp;view=manage' />";

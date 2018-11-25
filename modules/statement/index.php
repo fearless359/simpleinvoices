@@ -4,6 +4,7 @@ use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 
 /*
  * Script: report_sales_by_period.php
@@ -23,7 +24,7 @@ use Inc\Claz\PdoDbException;
  */
 global $menu, $pdoDb, $smarty;
 
-checkLogin ();
+Util::directAccessAllowed();
 
 /**
  * @return string first of month date.

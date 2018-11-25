@@ -117,7 +117,7 @@ class Cron {
             $pdoDb->setGroupBy($expr_list);
 
             $fn = new FunctionStmt("CONCAT", "pf.pref_description, ' ', iv.index_id");
-            $se = new Select($fn, null, null, "index_name");
+            $se = new Select($fn, null, null, null, "index_name");
             $pdoDb->addToSelectStmts($se);
 
             $result = $pdoDb->request("SELECT", "cron", "cron");
@@ -147,7 +147,7 @@ class Cron {
             $pdoDb->addToJoins(array("INNER", "preferences", "pf", $oc));
 
             $fn = new FunctionStmt("CONCAT", "pf.pref_description, ' ', iv.index_id");
-            $se = new Select($fn, null, null, "index_name");
+            $se = new Select($fn, null, null, null, "index_name");
             $pdoDb->addToSelectStmts($se);
 
             $pdoDb->addSimpleWhere("cron.id", $_GET['id'], "AND");
@@ -443,7 +443,7 @@ class Cron {
             $pdoDb->addToJoins($jn);
 
             $fn = new FunctionStmt("CONCAT", "pf.pref_description, ' ', iv.index_id");
-            $se = new Select($fn, null, null, "index_name");
+            $se = new Select($fn, null, null, null, "index_name");
             $pdoDb->addToSelectStmts($se);
 
             $dtm = new \DateTime(null, new \DateTimeZone($timezone));

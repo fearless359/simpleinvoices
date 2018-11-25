@@ -4,6 +4,7 @@ use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
 use Inc\Claz\Product;
 use Inc\Claz\SiLocal;
+use Inc\Claz\Util;
 
 /*
  * Script: save.php
@@ -19,7 +20,7 @@ use Inc\Claz\SiLocal;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 global $smarty, $pdoDb;
 
-checkLogin();
+Util::directAccessAllowed();
 
 $smarty -> assign('pageActive', 'invoice_new');
 $smarty -> assign('active_tab', '#money');

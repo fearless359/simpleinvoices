@@ -1,11 +1,12 @@
 <?php
 
 use Inc\Claz\ExpenseAccount;
+use Inc\Claz\Util;
 
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $expense_account = ExpenseAccount::select($_GET['id']);
 

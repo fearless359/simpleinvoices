@@ -2,11 +2,12 @@
 
 use Inc\Claz\ProductAttributes;
 use Inc\Claz\ProductValues;
+use Inc\Claz\Util;
 
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 //if valid then do save
 if (!empty($_POST['value'])) {
@@ -16,18 +17,17 @@ if (!empty($_POST['value'])) {
 #get the invoice id
 $id = $_GET['id'];
 
-$product_value = ProductValues::get($id);
+// @formatter:off
+$product_value      = ProductValues::get($id);
+$product_attribute  = ProductAttributes::get($product_value['attribute_id']);
+$product_attributes = ProductAttributes::getAll();
 
-$product_attribute = ProductAttributes::get($product_value['attribute_id']);
-
-$smarty->assign("product_value", $product_value);
-$smarty->assign("product_attribute", $product_attribute['name']);
+$smarty->assign("product_value"     , $product_value);
+$smarty->assign("product_attribute" , $product_attribute['name']);
+$smarty->assign("product_attributes", $product_attributes);
+// @formatter:on
 
 $pageActive = "product_value_manage";
 $smarty->assign('pageActive', $pageActive);
 $smarty->assign('active_tab', '#product');
 
-$sql_attr = "select * from ".TB_PREFIX."products_attributes";
-$sth_attr =  dbquery($sql_attr);
-$product_attributes = $sth_attr->fetchall();
-$smarty->assign("product_attributes", $product_attributes);

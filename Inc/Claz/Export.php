@@ -61,9 +61,19 @@ class Export {
      * @param $data
      */
     private function showData($data) {
+        if (!isset($data)) {
+            Log::out("Export::showData() - No data to report.", \Zend_Log::DEBUG);
+            error_log("Export::showData() - No data to report.");
+            echo "<div class='si_message_error'>Export process terminated. No data to report.</div>";
+            echo "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
+            return;
+        }
+
         if ($this->file_name == '' && $this->module == 'payment') {
             $this->file_name = 'payment' . $this->id;
         }
+
+        Log::out("Export::showData() format:[{$this->format}]", \Zend_Log::DEBUG);
 
         // @formatter:off
         switch ($this->format) {
@@ -115,7 +125,8 @@ class Export {
      */
     private function getData() {
         global $config, $smarty, $pdoDb, $siUrl;
-Log::out("In Export.php getData()", \Zend_Log::DEBUG);
+        Log::out("Export::getData() module:[{$this->module}]", \Zend_Log::DEBUG);
+
         // @formatter:off
         $data = null;
         switch ($this->module) {
@@ -185,12 +196,12 @@ Log::out("In Export.php getData()", \Zend_Log::DEBUG);
                     $invoice = Invoice::getInvoice($payment['ac_inv_id']);
                     $biller  = Biller::select($payment['biller_id']);
 
-                    $logo = getLogo($biller);
+                    $logo = Util::getLogo($biller);
                     $logo = str_replace(" ", "%20", trim($logo));
 
                     $customer          = Customer::get($payment['customer_id']);
                     $invoiceType       = Invoice::getInvoiceType($invoice['type_id']);
-                    $customFieldLabels = getCustomFieldLabels(true);
+                    $customFieldLabels = CustomFields::getLabels(true);
                     $paymentType       = PaymentType::select($payment['ac_payment_type']);
                     $preference        = Preferences::getPreference($invoice['preference_id'], $this->domain_id);
 
@@ -218,7 +229,9 @@ Log::out("In Export.php getData()", \Zend_Log::DEBUG);
 
             case "invoice":
                 try {
-                    if (!isset($this->invoice)) $this->invoice = Invoice::select($this->id);
+                    if (empty($this->invoice)) {
+                        $this->invoice = Invoice::select($this->id);
+                    }
 
                     $this->file_name = str_replace(" ", "_", $this->invoice['index_name']);
 
@@ -231,10 +244,10 @@ Log::out("In Export.php getData()", \Zend_Log::DEBUG);
 
                     $defaults = SystemDefaults::loadValues();
 
-                    $logo = getLogo($this->biller);
+                    $logo = Util::getLogo($this->biller);
                     $logo = str_replace(" ", "%20", trim($logo));
 
-                    $customFieldLabels = getCustomFieldLabels(true);
+                    $customFieldLabels = CustomFields::getLabels(true);
 
                     $past_due_date = (date("Y-m-d", strtotime('-30 days')) . ' 00:00:00');
                     $past_due_amt  = CustomersPastDue::getCustomerPastDue($this->invoice['customer_id'], $this->id, $past_due_date);
@@ -283,6 +296,10 @@ Log::out("In Export.php getData()", \Zend_Log::DEBUG);
                     error_log("Export::getData() - invoice - error: " . $e->getMessage());
                 }
                 break;
+
+            default:
+                error_log("ExportKLgetData() - Undefined module[{$this->module}]");
+                break;
         }
         // @formatter:on
 
@@ -293,7 +310,6 @@ Log::out("In Export.php getData()", \Zend_Log::DEBUG);
      * Execute the request by getting the data and the showing it.
      */
     public function execute() {
-Log::out("In Export.php execute()", \Zend_Log::DEBUG);
         $this->showData($this->getData());
     }
 

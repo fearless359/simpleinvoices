@@ -1,16 +1,19 @@
 <?php
 
+use Inc\Claz\CustomFields;
 use Inc\Claz\CustomFlags;
-use Inc\CLaz\ProductAttributes;
+use Inc\Claz\Extensions;
+use Inc\Claz\ProductAttributes;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
-$customFieldLabel = getCustomFieldLabels(true);
+$customFieldLabel = CustomFields::getLabels(true);
 $cflgs = CustomFlags::getCustomFlagsQualified('E');
 $taxes = Taxes::getActiveTaxes();
 // if valid then do save
@@ -24,7 +27,6 @@ if (!empty($_POST['description'])) {
     $smarty->assign('taxes', $taxes);
 
     $attributes = ProductAttributes::getAll(true);
-
     $smarty->assign("attributes", $attributes);
 
     $smarty->assign('pageActive', 'product_add');

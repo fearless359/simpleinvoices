@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Biller;
+use Inc\Claz\Util;
 
 /*
  * Script: manage.php
@@ -22,7 +23,7 @@ global $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $number_of_rows = Biller::count();
 

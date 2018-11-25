@@ -1,6 +1,9 @@
 <?php
 
 use Inc\Claz\Biller;
+use Inc\Claz\CustomFields;
+use Inc\Claz\Extensions;
+use Inc\Claz\Util;
 
 /*
  * Script: details.php
@@ -21,17 +24,17 @@ use Inc\Claz\Biller;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 //get the invoice id
 $biller_id = $_GET['id'];
 $biller = Biller::select($biller_id);
 
 // Drop down list code for invoice logo
-$files = getLogoList();
+$files = Util::getLogoList();
 // end logo stuff
 
-$customFieldLabel = getCustomFieldLabels(true);
+$customFieldLabel = CustomFields::getLabels(true);
 $smarty->assign('biller', $biller);
 $smarty->assign('files', $files);
 $smarty->assign('customFieldLabel', $customFieldLabel);

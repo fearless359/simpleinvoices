@@ -7,11 +7,12 @@ namespace Inc\Claz;
  */
 class Select {
     private $alias;
-    private $list;
     private $fromStmt;
-    private $whereClause;
+    private $groupBy;
     private $joins;
+    private $list;
     private $token_cnt;
+    private $whereClause;
 
     /**
      * Class constructor
@@ -23,10 +24,11 @@ class Select {
      *        </ol>
      * @param FromStmt $fromStmt (Optional) Table being selected from.
      * @param WhereClause $whereClause (Optional - can be a WhereItem object). Constraints for the selection.
+     * @param GroupBy $groupBy (Optional) GroupBy object.
      * @param string $alias (Optional) Alias to assign to the select statement.
      * @throws PdoDbException if invalid parameter types are submitted.
      */
-    public function __construct($list, $fromStmt = null, $whereClause = null, $alias = null) {
+    public function __construct($list, $fromStmt = null, $whereClause = null, $groupBy = null, $alias = null) {
         if (empty($list) || (!is_array($list) && !is_a($list, "Inc\Claz\FunctionStmt") && !is_a($list, "Inc\Claz\CaseStmt"))) {
             $str = "Select - __construct(): \$list parameter is not a non-empty, array or FunctionStmt object. ";
             error_log($str . print_r($list, true));
@@ -48,9 +50,16 @@ class Select {
             $whereClause = new WhereClause($whereClause);
         }
 
+        if (isset($groupBy) && !is_a($groupBy, "Inc\Claz\GroupBy")) {
+            $str = "Select - __construct(): \$groupBy parameter is not a non-empty, GroupBy object. ";
+            error_log($str . print_r($fromStmt, true));
+            throw new PdoDbException($str);
+        }
+
         $this->list = $list;
         $this->fromStmt = $fromStmt;
         $this->whereClause = $whereClause;
+        $this->groupBy = $groupBy;
         $this->joins = null;
         $this->alias = $alias;
         $this->token_cnt = 0;
@@ -92,39 +101,48 @@ class Select {
         if (is_array($this->list)) {
             $first = true;
             foreach ($this->list as $item) {
-                if ($first) $first = false;
-                else $select .= ", ";
-                if (is_object($item)) {
-                    if (get_class($item) == "WhereClause") {
-                        $select .= $item->build($keyPairs);
-
-                    } else {
-                        $select .= $item->build();
-                     }
+                if ($first) {
+                    $first = false;
                 } else {
-                    $select .= $item;
+                    $select .= ", ";
+                }
+
+                if (is_object($item)) {
+                    if (is_a($item, "Inc\Claz\DbField")) {
+                            $select .= $item->genParm();
+                    } else {
+                        $select .= $item->build($keyPairs);
+                    }
+                } else {
+                    $select .= PdoDb::formatField($item);
                 }
             }
         } else {
             $select .= $this->list->build($keyPairs);
         }
 
-        if (!empty($this->fromStmt)) $select .= " " . $this->fromStmt->build();
+        if (!empty($this->fromStmt)) {
+            $select .= " " . $this->fromStmt->build();
+        }
 
         if (!empty($this->joins)) {
             foreach ($this->joins as $join) {
                 $select .= " " . $join->build($keyPairs);
             }
         }
-
         if (!empty($this->whereClause)) {
             $select .= " " . $this->whereClause->build($keyPairs);
             $this->token_cnt += $this->whereClause->getTokenCnt();
-
         }
 
+        if (!empty($this->groupBy)) {
+            $select .= " " . $this->groupBy->build();
+        }
         $select .= ")";
-        if (!empty($this->alias)) $select .= " AS " . $this->alias;
+
+        if (!empty($this->alias)) {
+            $select .= " AS " . $this->alias;
+        }
 
         return $select;
     }

@@ -1,21 +1,24 @@
 <?php
 
+use Inc\Claz\CustomFields;
 use Inc\Claz\CustomFlags;
+use Inc\Claz\Extensions;
 use Inc\Claz\Product;
 use Inc\Claz\ProductAttributes;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $product_id = $_GET['id'];
 
 $product = Product::select($product_id);
 
-$customFieldLabel = getCustomFieldLabels(true);
+$customFieldLabel = CustomFields::getLabels(true);
 $cflgs = CustomFlags::getCustomFlagsQualified('E');
 
 $taxes = Taxes::getActiveTaxes();

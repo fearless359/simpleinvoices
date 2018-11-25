@@ -4,11 +4,12 @@ use Inc\Claz\DomainId;
 use Inc\Claz\Expense;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin ();
+Util::directAccessAllowed();
 
 // @formatter:off
 $expense_add = Expense::addInfo ();

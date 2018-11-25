@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Inventory;
+use Inc\Claz\Util;
 
 /*
  *  Script: manage.php
@@ -10,11 +11,12 @@ use Inc\Claz\Inventory;
  *      GPL v3 or above
  *
  *  Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $number_of_rows = Inventory::count();
 $smarty->assign("number_of_rows",$number_of_rows);

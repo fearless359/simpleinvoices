@@ -257,17 +257,6 @@ class ProductAttributes {
             return count($rows);
         }
         return $rows;
-
-//        $sql = "SELECT id, name, enabled, visible FROM " . TB_PREFIX . "products_attributes
-//                WHERE 1 $where
-//                ORDER BY $sort $dir
-//                LIMIT $start, $limit";
-//        if (empty($query)) {
-//            $sth = dbQuery($sql);
-//        } else {
-//            $sth = dbQuery($sql, ':query', "%$query%");
-//        }
-//        $customers = $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

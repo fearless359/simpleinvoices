@@ -2,11 +2,12 @@
 
 use Inc\Claz\CronLog;
 use Inc\Claz\DomainId;
+use Inc\Claz\Util;
 
 global $pdoDb, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $cronlogs = CronLog::select($pdoDb, DomainId::get());
 $smarty -> assign("cronlogs",$cronlogs);

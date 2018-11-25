@@ -1,11 +1,12 @@
 <?php
 
 use Inc\Claz\PaymentType;
+use Inc\Claz\Util;
 
 global $LANG, $smarty;
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 jsBegin();
 jsFormValidationBegin("frmpost");

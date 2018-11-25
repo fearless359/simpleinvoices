@@ -8,6 +8,26 @@ namespace Inc\Claz;
 class CustomFlags
 {
     /**
+     * Test for custom flag field.
+     * @param $field
+     * @return bool
+     */
+    public static function isCustomFlagField($field) {
+        global $smarty;
+        $useit  = false;
+        $result = false;
+        if (!empty($field)) {
+            if (preg_match('/flag:/i',$field) == 1) {
+                $useit = true;
+            } else {
+                $result = true;
+            }
+        }
+        $smarty->assign('useit', $useit);
+        return $result;
+    }
+
+    /**
      * Get the custom flag labels
      * @return array Custom flag labels
      */

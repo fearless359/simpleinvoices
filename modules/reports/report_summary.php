@@ -9,6 +9,7 @@ use Inc\Claz\Invoice;
 use Inc\Claz\Join;
 use Inc\Claz\Payment;
 use Inc\Claz\Select;
+use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
 /*
@@ -29,7 +30,7 @@ use Inc\Claz\WhereItem;
  */
 global $LANG, $smarty, $pdoDb;
 
-checkLogin();
+Util::directAccessAllowed();
 
 $domain_id = DomainId::get();
 
@@ -49,11 +50,11 @@ $pdoDb->setSelectList(array("e.amount AS expense", "e.status AS status", "ea.nam
 $fn = new FunctionStmt("SUM", "tax_amount");
 $fr = new FromStmt("expense_item_tax");
 $wh = new WhereItem(false, "expense_id", "=", new DbField("e.id"), false);
-$se = new Select($fn, $fr, $wh, "tax");
+$se = new Select($fn, $fr, $wh, null, "tax");
 $pdoDb->addToSelectStmts($se);
 
 $fn = new FunctionStmt("", "tax + e.amount");
-$se = new Select($fn, null, null, "total");
+$se = new Select($fn, null, null, null, "total");
 $pdoDb->addToSelectStmts($se);
 
 $ca = new CaseStmt(status, "status_wording");

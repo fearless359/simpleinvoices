@@ -77,7 +77,6 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         0 => __DIR__ . '/../..' . '/library',
         1 => __DIR__ . '/../..' . '/library/pdf',
         2 => __DIR__ . '/../..' . '/library/pdf/fpdf',
-        3 => __DIR__ . '/../..' . '/include',
     );
 
     public static $classMap = array (

@@ -11,6 +11,7 @@ use Inc\Claz\Preferences;
 use Inc\Claz\Product;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 /*
  *  Script: details.php
@@ -31,7 +32,7 @@ use Inc\Claz\Taxes;
 global $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin ();
+Util::directAccessAllowed();
 
 // See if we are generating this from a default_invoice template
 $default_template_set = (!empty($_GET['template']));

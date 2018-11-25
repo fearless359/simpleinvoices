@@ -166,7 +166,7 @@ class Invoice {
         $curr_date = new \DateTime();
         $last_activity_date = $curr_date->format('Y-m-d h:i:s');
 
-        $lcl_list['date'] = sqlDateWithTime($lcl_list['date']);
+        $lcl_list['date'] = SiLocal::sqlDateWithTime($lcl_list['date']);
         $lcl_list['last_activity_date'] = $last_activity_date;
         $lcl_list['owing'] = 1; // force update of aging info
         $lcl_list['aging_date'] = $lcl_list['last_activity_date'];
@@ -297,7 +297,7 @@ class Invoice {
                 'biller_id' => $_POST['biller_id'],
                 'customer_id' => $_POST['customer_id'],
                 'preference_id' => $_POST['preference_id'],
-                'date' => sqlDateWithTime($_POST['date']),
+                'date' => SiLocal::sqlDateWithTime($_POST['date']),
                 'note' => trim($_POST['note']),
                 'last_activity_date' => $last_activity_date,
                 'owing' => '1', // force update of aging information
@@ -560,7 +560,7 @@ class Invoice {
                           new DbField("p.pref_inv_wording", "preference"),
                           new DbField("p.status"));
             $pdoDb->setSelectList($list);
-            $se = new Select(new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id"), null, null, "index_name");
+            $se = new Select(new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id"), null, null, null, "index_name");
             $pdoDb->addToSelectStmts($se);
 
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "ii.tax_amount", "total_tax"));
@@ -592,6 +592,7 @@ class Invoice {
         } catch (PdoDbException $pde) {
             error_log("Invoice::select() - id[$id] error: " . $pde->getMessage());
         }
+
         return $invoice;
     }
 
@@ -607,7 +608,7 @@ class Invoice {
             $pdoDb->setSelectList(new DbField("i.id", "id"), new DbField('i.preference_id', 'preference_id'));
 
             $fn = new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id");
-            $pdoDb->addToSelectStmts(new Select($fn, null, null, "index_name"));
+            $pdoDb->addToSelectStmts(new Select($fn, null, null, null, "index_name"));
 
             $jn = new Join("LEFT", "preferences", "p");
             $jn->addSimpleItem("i.preference_id", new DbField("p.pref_id"), "AND");
@@ -907,7 +908,7 @@ class Invoice {
             $wh = new WhereClause();
             $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), 'AND');
             $wh->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
-            $se = new Select($fn, $fr, $wh, "invoice_total");
+            $se = new Select($fn, $fr, $wh, null, "invoice_total");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("COALESCE", "SUM(ac_amount),0");
@@ -915,7 +916,7 @@ class Invoice {
             $wh = new WhereClause();
             $wh->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), 'AND');
             $wh->addSimpleItem('ap.domain_id', new DbField('iv.domain_id'));
-            $se = new Select($fn, $fr, $wh, "INV_PAID");
+            $se = new Select($fn, $fr, $wh, null, "INV_PAID");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("DATE_FORMAT", "date, '%Y-%m-%d'", "date");

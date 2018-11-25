@@ -1,7 +1,10 @@
 <?php
 
 use Inc\Claz\Customer;
+use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
+use Inc\Claz\Extensions;
+use Inc\Claz\Util;
 
 /*
  * Script: add.php
@@ -22,9 +25,9 @@ use Inc\Claz\DomainId;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
-$customFieldLabel = getCustomFieldLabels(true);
+$customFieldLabel = CustomFields::getLabels(true);
 
 //if valid then do save
 if (!empty($_POST['name'])) {

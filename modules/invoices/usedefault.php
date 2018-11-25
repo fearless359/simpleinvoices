@@ -5,6 +5,7 @@ use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
 /*
  *  Script: usedefault.php
@@ -25,7 +26,7 @@ use Inc\Claz\SystemDefaults;
 global $databaseBuilt, $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin ();
+Util::directAccessAllowed();
 
 $master_customer_id = $_GET ['customer_id'];
 $customer = Customer::get($master_customer_id);

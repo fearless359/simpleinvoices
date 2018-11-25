@@ -39,10 +39,11 @@ class Log
             /**
              * @var mixed $fp
              */
-            if ($fp = fopen(self::$path, 'w') === false) {
-                SiError::out('notWritable', 'folder', self::$folder);
-            } else {
+            $fp = fopen(self::$path, 'w');
+            if (is_resource($fp)) {
                 fclose($fp);
+            } else {
+                SiError::out('notWritable', 'folder', self::$folder);
             }
         }
 
@@ -105,6 +106,10 @@ class Log
      * @param int $level one of: DEBUG, INFO, NOTICE, WARN, ERR, CRIT, ALERT, EMERG
      */
     public static function out(string $msg, $level = \Zend_Log::DEBUG) {
+        if (!isset(self::$logger)) {
+            self::open('DEBUG');
+            self::$logger->log("Log::out() - log file was not open. Opened for DEBUG");
+        }
         self::$logger->log($msg, $level);
     }
 

@@ -1,4 +1,6 @@
 <?php
+use Inc\Claz\Util;
+
 /*
  *  Script: consulting.php
  *      consulting invoice page
@@ -13,11 +15,12 @@
  *      GPL v3 or above
  *
  *  Website:
- *      https://simpleinvoices.group */
+ *      https://simpleinvoices.group
+ */
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 
 jsBegin();

@@ -6,11 +6,12 @@ use Inc\Claz\PaymentType;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
+use Inc\Claz\Util;
 
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 // gets the long language name out of the short name
 $lang = SystemDefaults::getDefaultLanguage();

@@ -98,8 +98,12 @@ class Join {
         } else {
             $join .= "`" . $this->table . "` ";
         }
-        $join .= "AS " . $this->tableAlias . " ";
-        $join .= $this->onClause->build($keypairs);
+        if (!empty($this->tableAlias)) {
+            $join .= "AS " . $this->tableAlias . " ";
+        }
+        if (!empty($this->onClause)) {
+            $join .= $this->onClause->build($keypairs);
+        }
         if (isset($this->groupBy)) {
             $join .= " " . $this->groupBy->build($keypairs);
         }

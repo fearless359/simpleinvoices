@@ -5,6 +5,7 @@ use Inc\Claz\DomainId;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
 /*
@@ -25,7 +26,7 @@ use Inc\Claz\WhereItem;
  * 	https://simpleinvoices.group
  */
 
-checkLogin();
+Util::directAccessAllowed();
 
 $max_years = 10;
 $domain_id = DomainId::get();

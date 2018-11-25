@@ -4,11 +4,13 @@ use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\Eway;
+use Inc\Claz\Extensions;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
+use Inc\Claz\Util;
 
 /*
  * Script: quick_view.php
@@ -28,7 +30,7 @@ use Inc\Claz\SystemDefaults;
 global $config, $LANG, $smarty;
 
 // @formatter:off
-checkLogin();
+Util::directAccessAllowed();
 
 $invoice_id = $_GET['id'];
 
@@ -58,7 +60,7 @@ $url_for_pdf = "index.php?module=export&amp;view=pdf&id=" . $invoice['id'];
 
 $invoice['url_for_pdf'] = $url_for_pdf;
 
-$customFieldLabels = getCustomFieldLabels(true);
+$customFieldLabels = CustomFields::getLabels(true);
 
 $customFields = array();
 for($i=1;$i<=4;$i++) {

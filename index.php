@@ -5,8 +5,12 @@ use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
 use Inc\Claz\Funcs;
 use Inc\Claz\Log;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Product;
+use Inc\Claz\Setup;
+use Inc\Claz\SiError;
 use Inc\Claz\SqlPatchManager;
+use Inc\Claz\Util;
 
 /*
  * Script: index.php
@@ -14,26 +18,61 @@ use Inc\Claz\SqlPatchManager;
  * License:
  * GPL v3 or above
  */
-// stop browsing to files directly - all viewing to be handled by index.php
-// if browse not defined then the page will exit
-if (!defined("BROWSE")) define("BROWSE", "browse");
 
 // **********************************************************
 // The include configs and requirements stuff section - START
 // **********************************************************
-
-// Load stuff required before init.php
-//require_once "include/init_pre.php";
-function filenameEscape($str)
-{
-    // Returns an escaped value.
-    $safe_str = preg_replace('/[^a-z0-9\-_\.]/i','_',$str);
-    return $safe_str;
+$lcl_path = get_include_path() .
+    PATH_SEPARATOR . "./library/" .
+    PATH_SEPARATOR . "./library/pdf" .
+    PATH_SEPARATOR . "./library/pdf/fpdf" .
+    PATH_SEPARATOR . "./include/";
+if (set_include_path($lcl_path) === false) {
+    echo "<h1>Unable to set include path. Request terminated.</h1>";
+    exit();
 }
 
-$module = isset($_GET['module']) ? filenameEscape($_GET['module']) : null;
-$view   = isset($_GET['view'])   ? filenameEscape($_GET['view'])   : null;
-$action = isset($_GET['case'])   ? filenameEscape($_GET['case'])   : null;
+require_once 'vendor/autoload.php';
+
+Util::allowDirectAccess();
+
+$module = isset($_GET['module']) ? Util::filenameEscape($_GET['module']) : null;
+$view   = isset($_GET['view'])   ? Util::filenameEscape($_GET['view'])   : null;
+$action = isset($_GET['case'])   ? Util::filenameEscape($_GET['case'])   : null;
+
+$api_request = ($module == 'api');
+
+require_once 'config/define.php';
+
+/***********************************************************************
+ * Make sure the tmp directories exist and are writeable.
+ ***********************************************************************/
+if (!is_writable('./tmp')) {
+    SiError::out('notWritable', 'directory', './tmp');
+}
+
+if (!is_writable('tmp/cache')) {
+    SiError::out('notWritable', 'file', './tmp/cache');
+}
+
+if (!is_writable('tmp/log')) {
+    SiError::out('notWritable', 'file', './tmp/cache');
+}
+
+try {
+    $updateCustomConfig = empty($module);
+    Setup::init($updateCustomConfig, $config, $dbInfo, $pdoDb, $pdoDb_admin, $zendDb);
+} catch (PdoDbException $pde) {
+    // Error already reported so simply exit.
+    exit();
+}
+
+try {
+    \Zend_Session::start();
+    $auth_session = new \Zend_Session_Namespace('Zend_Auth');
+} catch (\Zend_Session_Exception $zse) {
+    SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
+}
 
 // globals set in the init.php logic
 $databaseBuilt     = false;
@@ -43,18 +82,14 @@ $databasePopulated = false;
 $ext_names = array();
 $help_image_path = "images/common/";
 
-$config = null;
-// Note: include/functions.php and include/sql_queries.php loaded by this include.
-require_once "include/init.php";
+include_once "include/functions.php";
+include_once "include/init.php";
 global $smarty,
        $smarty_output,
        $menu,
        $LANG,
        $siUrl,
-       $config,
-       $auth_session,
-       $early_exit,
-       $pdoDb;
+       $early_exit;
 
 Log::out("index.php - After init.php - module($module] view[$view]", \Zend_Log::DEBUG);
 foreach ($ext_names as $ext_name) {
@@ -65,10 +100,10 @@ foreach ($ext_names as $ext_name) {
 Log::out("index.php - After processing init.php for extensions", \Zend_Log::DEBUG);
 
 $smarty->assign("help_image_path", $help_image_path);
-
 // **********************************************************
 // The include configs and requirements stuff section - END
 // **********************************************************
+
 $smarty->assign("ext_names", $ext_names);
 $smarty->assign("config"   , $config);
 $smarty->assign("module"   , $module);
@@ -78,7 +113,9 @@ $smarty->assign("LANG"     , $LANG);
 $smarty->assign("enabled"  , array($LANG['disabled'],$LANG['enabled']));
 
 // Menu - hide or show menu
-$menu = (isset($menu) ? $menu : true);
+if (!isset($menu)) {
+    $menu = true;
+}
 
 // Check for any unapplied SQL patches when going home
 // TODO - redo this code
@@ -121,7 +158,7 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
                 }
                 $menu = false;
             } else {
-                Log::out("index.php - module: " . print_r($module,true), \Zend_Log::DEBUG);
+                Log::out("index.php - module - " . print_r($module,true), \Zend_Log::DEBUG);
                 // All patches have been applied. Now check to see if the database has been set up.
                 // It is considered setup when there is at least one biller, one customer and one product.
                 // If it has not been set up, allow the user to add a biller, customer, product or to
@@ -185,7 +222,7 @@ Log::out("index.php - module[" . (empty($module) ? "" : $module) .
 // is used to make the new invoice.
 if (($module == "invoices") && (strstr($view, "template"))) {
     // Get the default module path php if their aren't any for enabled extensions.
-    $my_path = getCustomPath("invoices/template", 'module');
+    $my_path = Util::getCustomPath("invoices/template", 'module');
     Log::out("index.php - default invoice template path[$my_path]");
     if (!empty($my_path)) {
         include_once ($my_path);
@@ -205,7 +242,7 @@ if (strstr($module, "api") || (strstr($view, "xml") || (strstr($view, "ajax"))))
     }
 
     // Load default if none found for enabled extensions.
-    if ($extensionXml == 0 && $my_path = getCustomPath("$module/$view", 'module')) {
+    if ($extensionXml == 0 && $my_path = Util::getCustomPath("$module/$view", 'module')) {
         include ($my_path);
     }
     exit(0);
@@ -258,7 +295,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
     }
 
     if ($extensionHeader == 0) {
-        $my_path = getCustomPath('header');
+        $my_path = Util::getCustomPath('header');
         $smarty->$smarty_output($my_path);
     }
 }
@@ -297,7 +334,7 @@ foreach ($ext_names as $ext_name) {
 }
 Log::out("index.php - After extension_php_insert_files, etc.", \Zend_Log::DEBUG);
 
-if ($extensionPhpFile == 0 && ($my_path = getCustomPath("$module/$view", 'module'))) {
+if ($extensionPhpFile == 0 && ($my_path = Util::getCustomPath("$module/$view", 'module'))) {
     Log::out("index.php - my_path[$my_path]", \Zend_Log::DEBUG);
     include $my_path;
 }
@@ -365,7 +402,7 @@ if ($menu) {
     // <!~- SECTION:tax_rates -->
     //
     // If no matching section is found, the file will NOT be inserted.
-    $my_path = getCustomPath('menu');
+    $my_path = Util::getCustomPath('menu');
     Log::out("index.php - menu my_path[$my_path]", \Zend_Log::DEBUG);
 
     $menutpl = $smarty->fetch($my_path);
@@ -394,7 +431,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
     }
 
     if ($extensionMain == "0") {
-        $smarty->$smarty_output(getCustomPath('main'));
+        $smarty->$smarty_output(Util::getCustomPath('main'));
     }
 }
 Log::out("index.php - After main.tpl", \Zend_Log::DEBUG);
@@ -473,7 +510,7 @@ Log::out("index.php - After $module/$view.tpl", \Zend_Log::DEBUG);
 // changes implemented in this file for them. Similar changes should be implemented for
 // other templates as needed.
 if ($extensionTemplates == 0) {
-    if ($my_tpl_path = getCustomPath("$module/$view")) {
+    if ($my_tpl_path = Util::getCustomPath("$module/$view")) {
         $path = dirname($my_tpl_path) . '/';
         $extensionTemplates++;
     }
@@ -507,7 +544,7 @@ if (!in_array($module . "_" . $view, $early_exit)) {
     }
 
     if ($extensionFooter == 0) {
-        $smarty->$smarty_output(getCustomPath('footer'));
+        $smarty->$smarty_output(Util::getCustomPath('footer'));
     }
 }
 Log::out("index.php - At END\n\n", \Zend_Log::DEBUG);

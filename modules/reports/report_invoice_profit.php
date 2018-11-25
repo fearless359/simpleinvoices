@@ -3,6 +3,7 @@
 use Inc\Claz\DomainId;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\Invoice;
+use Inc\Claz\Util;
 
 /*
  * Script: report_sales_by_period.php
@@ -14,7 +15,7 @@ use Inc\Claz\Invoice;
  */
 global $pdoDb, $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 function firstOfMonth() {
     return date("Y-m-d", strtotime('01-' . date('m') . '-' . date('Y') . ' 00:00:00'));
 }

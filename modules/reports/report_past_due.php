@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\CustomersPastDue;
+use Inc\Claz\Util;
 
 /*
  * Script: report_past_due.php collecting past due information.
@@ -8,7 +9,7 @@ use Inc\Claz\CustomersPastDue;
  */
 global $menu, $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 $language = $smarty->tpl_vars['defaults']->language;
 
 $cust_info = CustomersPastDue::getCustInfo($language);

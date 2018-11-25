@@ -1,39 +1,84 @@
 <?php
-global $auth_session, $smarty;
 
-$sql = "SELECT iv.id, 
-               iv.index_id,
-               pr.pref_inv_wording,
-               b.name AS biller, 
-               c.name AS customer, 
-               SUM(COALESCE(ii.total, 0)) AS inv_total,
-               COALESCE(ap.inv_paid, 0) AS inv_paid,
-               SUM(COALESCE(ii.total, 0)) - COALESCE(ap.inv_paid, 0) AS inv_owing,
-               `date`
-FROM ".TB_PREFIX."invoices iv  
-LEFT JOIN ".TB_PREFIX."invoice_items ii ON (ii.invoice_id = iv.id         AND ii.domain_id = iv.domain_id)  
-LEFT JOIN ".TB_PREFIX."preferences pr   ON (pr.pref_id = iv.preference_id AND pr.domain_id = iv.domain_id)  
-LEFT JOIN ".TB_PREFIX."biller b         ON (iv.biller_id =  b.id          AND  b.domain_id = iv.domain_id)
-LEFT JOIN ".TB_PREFIX."customers c      ON (iv.customer_id =  c.id        AND  c.domain_id = iv.domain_id)
-LEFT JOIN (SELECT ac_inv_id, domain_id, SUM(COALESCE(ac_amount, 0)) AS inv_paid 
-           FROM ".TB_PREFIX."payment 
-           GROUP BY ac_inv_id, domain_id) ap ON (ap.ac_inv_id = iv.id AND ap.domain_id = iv.domain_id)
-WHERE pr.status = 1
-    AND iv.domain_id = :domain_id
-GROUP BY iv.id
-ORDER BY inv_owing DESC;";
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FromStmt;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\GroupBy;
+use Inc\Claz\Join;
+use Inc\Claz\OnClause;
+use Inc\Claz\PdoDbException;
+use Inc\Claz\Select;
+use Inc\Claz\WhereClause;
 
-$invoice_results = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+global $pdoDb, $smarty;
 
-$total_owed = 0;
-$invoices = array();
+$rows = array();
+try {
+    $pdoDb->setSelectList(array(
+        'iv.id',
+        'iv.domain_id',
+        'iv.index_id',
+        'pr.pref_inv_wording',
+        'iv.date',
+        new DbField('b.name', 'biller'),
+        new DbField('c.name', 'customer')
+    ));
+    $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total,0)', 'inv_total'));
+    $pdoDb->addToFunctions(new FunctionStmt('COALESCE', 'ap.inv_paid, 0', 'inv_paid'));
 
-while($invoice = $invoice_results->fetch()) {
-    $total_owed += $invoice['inv_owing'];
-    array_push($invoices, $invoice);
+    $fn = new FunctionStmt('SUM', 'COALESCE(ii.total, 0)', 'inv_owing');
+    $fn->addPart('-', 'COALESCE(ap.inv_paid, 0)');
+    $pdoDb->addToFunctions($fn);
+
+    $jn = new Join('LEFT', 'invoice_items', 'ii');
+    $jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+    $jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'preferences', 'pr');
+    $jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+    $jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'biller', 'b');
+    $jn->addSimpleItem('b.id', new DbField('iv.biller_id'), 'AND');
+    $jn->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'customers', 'c');
+    $jn->addSimpleItem('c.id', new DbField('iv.customer_id'), 'AND');
+    $jn->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $ls = array('ac_inv_id', 'domain_id');
+    $ls[] = new FunctionStmt("SUM", "COALESCE(ac_amount, 0)", "inv_paid");
+    $fr = new FromStmt("payment");
+    $gr = new GroupBy(array('ac_inv_id', 'domain_id'));
+    $se = new Select($ls, $fr, null, $gr, "ap");
+    $jn = new Join("LEFT", $se);
+    $jn->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
+    $jn->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
+    $pdoDb->addToJoins($jn);
+
+    $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+    $pdoDb->addSimpleWhere('iv.domain_id', DomainId::get());
+
+    $pdoDb->setGroupBy('iv.id');
+
+    $pdoDb->setOrderBy(array('inv_owing', 'DESC'));
+
+    $rows = $pdoDb->request('SELECT', 'invoices', 'iv');
+} catch (PdoDbException $pde) {
+    error_log('report_debtors_by_amount - error: ' . $pde->getMessage());
 }
 
-$smarty -> assign('data', $invoices);
+$total_owed = 0;
+foreach ($rows as $row) {
+    $total_owed += $row['inv_owing'];
+}
+
+$smarty -> assign('data', $rows);
 $smarty -> assign('total_owed', $total_owed);   
 
 $smarty -> assign('pageActive', 'report');

@@ -32,12 +32,15 @@ class Setup
     /**
      * @param bool $updateCustomConfig true if you want custom.config.php updated with new
      *              values from config.php. false if it should not be updated.
+     * @param object &$config
+     * @param DbInfo &$dbInfo
+     * @param PdoDb &$pdoDb
+     * @param PdoDb &$pdoDb_admin
+     * @param Zend_Db &$zendDb
      * @throws PdoDbException
      */
-    public static function init($updateCustomConfig)
+    public static function init($updateCustomConfig, &$config, &$dbInfo, &$pdoDb, &$pdoDb_admin, &$zendDb)
     {
-        global $config, $dbInfo, $pdoDb, $pdoDb_admin, $zendDb;
-
         try {
             $config = Config::init(CONFIG_SECTION, $updateCustomConfig);
         } catch (\Exception $e) {
@@ -48,7 +51,7 @@ class Setup
 
         $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
         Log::open($logger_level);
-        Log::out("init.php - logger has been setup", \Zend_Log::DEBUG);
+        Log::out("Setup::init() - logger has been setup", \Zend_Log::DEBUG);
 
         try {
             $dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX);
@@ -104,7 +107,6 @@ class Setup
         } catch (\Zend_Db_Exception $zde) {
             SiError::out('generic', 'Zend_Db_Exception', $zde->getMessage());
         }
-
     }
 
 }

@@ -1,29 +1,45 @@
-<?php 
+<?php
 
-  $sql = "SELECT c.name, SUM(ii.total) AS sum_total
-    FROM 
-        ".TB_PREFIX."customers c
-		INNER JOIN ".TB_PREFIX."invoices iv ON (c.id = iv.customer_id AND c.domain_id = iv.domain_id) 
-        INNER JOIN ".TB_PREFIX."invoice_items ii ON (iv.id = ii.invoice_id AND iv.domain_id = ii.domain_id) 
-        INNER JOIN ".TB_PREFIX."preferences pr ON (pr.pref_id = iv.preference_id AND pr.domain_id = iv.domain_id) 
-    WHERE
-           pr.status = '1'
-       AND c.domain_id = :domain_id
-    GROUP BY c.name;";
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
 
-  $customer_sales = dbQuery($sql, ':domain_id', $auth_session->domain_id) or die(htmlsafe(end($dbh->errorInfo())));
+global $pdoDb, $smarty;
 
-  $total_sales = 0;
-  $customers = array();
+$pdoDb->setSelectList('c.name');
+$pdoDb->addToFunctions(new FunctionStmt('SUM', 'ii.total', 'sum_total'));
 
-  while($customer = $customer_sales->fetch()) {
-    $total_sales += $customer['sum_total'];
-    array_push($customers, $customer);
-  }
+$jn = new Join('INNER', 'invoices', 'iv');
+$jn->addSimpleItem('c.id', new DbField('iv.customer_id'), 'AND');
+$jn->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
 
-  $smarty -> assign('data', $customers);
-  $smarty -> assign('total_sales', $total_sales);
+$jn = new Join('INNER', 'invoice_items', 'ii');
+$jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+$jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
 
-  $smarty -> assign('pageActive', 'report');
-  $smarty -> assign('active_tab', '#home');
-?>
+$jn = new Join('INNER', 'preferences', 'pr');
+$jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('c.domain_id', DomainId::get());
+
+$pdoDb->setGroupBy('c.name');
+
+$rows = $pdoDb->request('SELECT', 'customers', 'c');
+
+$total_sales = 0;
+foreach ($rows as $row) {
+    $total_sales += $row['sum_total'];
+}
+
+$smarty->assign('data', $rows);
+$smarty->assign('total_sales', $total_sales);
+
+$smarty->assign('pageActive', 'report');
+$smarty->assign('active_tab', '#home');
+

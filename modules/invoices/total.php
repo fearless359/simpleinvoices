@@ -1,4 +1,6 @@
 <?php
+use Inc\Claz\Util;
+
 /*
  * Script: total.php
  * 	total invoice page
@@ -13,12 +15,13 @@
  *	 GPL v2 or above
  *
  * Website:
- * 	https://simpleinvoices.group */
+ * 	https://simpleinvoices.group
+ */
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 
-checkLogin();
+Util::directAccessAllowed();
 
 $pageActive = "invoices";
 $smarty->assign('pageActive', $pageActive);

@@ -3,6 +3,7 @@
 use Inc\Claz\DomainId;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\Invoice;
+use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
 /*
@@ -23,7 +24,7 @@ use Inc\Claz\WhereItem;
  */
 global $menu, $pdoDb, $smarty;
 
-checkLogin ();
+Util::directAccessAllowed();
 
 function firstOfMonth() {
     return date("Y-m-d", strtotime('01-01-' . date('Y') . ' 00:00:00'));

@@ -1,32 +1,45 @@
 <?php
-  $sql = "
-SELECT 
-    b.name 
-  , SUM(ii.total) AS sum_total
-FROM ".TB_PREFIX."biller b 
-    INNER JOIN ".TB_PREFIX."invoices iv ON (b.id = iv.biller_id AND b.domain_id = iv.domain_id)
-    INNER JOIN ".TB_PREFIX."invoice_items ii ON (ii.invoice_id = iv.id AND ii.domain_id = iv.domain_id)
-    INNER JOIN ".TB_PREFIX."preferences pr ON (pr.pref_id = iv.preference_id AND pr.domain_id = iv.domain_id)
-WHERE
-	    pr.status ='1'
-	AND b.domain_id = :domain_id
-GROUP BY 
-	b.name
-";
 
-  $biller_sales = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\Join;
 
-  $total_sales = 0;
-  $billers = array();
+global $pdoDb, $smarty;
 
-  while($biller = $biller_sales->fetch()) {
-    $total_sales += $biller['sum_total'];
-    array_push($billers, $biller);
-  }
+$pdoDb->setSelectList('b.name');
 
-  $smarty -> assign('data', $billers);
-  $smarty -> assign('total_sales', $total_sales);
+$pdoDb->addToFunctions(new FunctionStmt('SUM', 'ii.total', 'sum_total'));
 
-  $smarty -> assign('pageActive', 'report');
-  $smarty -> assign('active_tab', '#home');
-?>
+$jn = new Join('INNER', 'invoices', 'iv');
+$jn->addSimpleItem('b.id', new DbField('iv.biller_id'), 'AND');
+$jn->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$jn = new Join('INNER', 'invoice_items', 'ii');
+$jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+$jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$jn = new Join('INNER', 'preferences', 'pr');
+$jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+$pdoDb->addToJoins($jn);
+
+$pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+$pdoDb->addSimpleWhere('b.domain_id', DomainId::get());
+
+$pdoDb->setGroupBy('b.name');
+
+$rows = $pdoDb->request('SELECT', 'biller', 'b');
+
+$total_sales = 0;
+foreach ($rows as $row) {
+    $total_sales += $row['sum_total'];
+}
+
+$smarty -> assign('data', $rows);
+$smarty -> assign('total_sales', $total_sales);
+
+$smarty -> assign('pageActive', 'report');
+$smarty -> assign('active_tab', '#home');

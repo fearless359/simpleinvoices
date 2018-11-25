@@ -5,6 +5,7 @@ use Extensions\SubCustomer\Inc\Claz\SubCustomers;
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\Product;
+use Inc\Claz\Util;
 
 /*
  *  Script: manage.php
@@ -22,7 +23,7 @@ use Inc\Claz\Product;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin();
+Util::directAccessAllowed();
 
 $biller_count   = Biller::count();
 $customer_count = Customer::count();

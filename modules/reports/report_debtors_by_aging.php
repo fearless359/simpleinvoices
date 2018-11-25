@@ -1,52 +1,91 @@
 <?php
-global $auth_session, $smarty;
 
-$sql = "SELECT iv.id, 
-               iv.index_id,
-               pr.pref_inv_wording,
-               b.name AS biller, 
-               c.name AS customer, 
-               --COUNT(ii.invoice_id) AS items,
-               SUM(COALESCE(ii.total, 0)) AS inv_total,
-               COALESCE(ap.inv_paid, 0) AS inv_paid,
-               --inv_total - inv_paid AS inv_owing,
-               SUM(COALESCE(ii.total, 0)) - COALESCE(ap.inv_paid, 0) AS inv_owing,
-               DATE_FORMAT(`date`,'%Y-%m-%e') AS `date`,
-               (SELECT DATEDIFF(NOW(),`date`)) AS age,
-               (CASE WHEN DATEDIFF(NOW(),`date`) <= 14 THEN '0-14'
-                     WHEN DATEDIFF(NOW(),`date`) <= 30 THEN '15-30'
-                     WHEN DATEDIFF(NOW(),`date`) <= 60 THEN '31-60'
-                     WHEN DATEDIFF(NOW(),`date`) <= 90 THEN '61-90'
-                     ELSE '90+'
-                     END ) AS Aging
-        FROM ".TB_PREFIX."invoices iv  
-        LEFT JOIN ".TB_PREFIX."invoice_items ii ON (ii.invoice_id    = iv.id      AND ii.domain_id = iv.domain_id)  
-        LEFT JOIN ".TB_PREFIX."biller b         ON (iv.biller_id     = b.id       AND  b.domain_id = iv.domain_id)
-        LEFT JOIN ".TB_PREFIX."customers c      ON (iv.customer_id   = c.id       AND  c.domain_id = iv.domain_id)
-        LEFT JOIN ".TB_PREFIX."preferences pr   ON (iv.preference_id = pr.pref_id AND pr.domain_id = iv.domain_id)
-        LEFT JOIN (SELECT ac_inv_id, domain_id, SUM(COALESCE(ac_amount, 0)) AS inv_paid 
-                   FROM ".TB_PREFIX."payment 
-                   GROUP BY ac_inv_id, domain_id) ap ON (ap.ac_inv_id = iv.id AND ap.domain_id = iv.domain_id)
-        WHERE pr.status    = 1
-          AND iv.domain_id = :domain_id
-        GROUP BY iv.id
-        HAVING inv_owing > 0
-        ORDER BY age DESC;";
+use Inc\Claz\CaseStmt;
+use Inc\Claz\DbField;
+use Inc\Claz\DomainId;
+use Inc\Claz\FromStmt;
+use Inc\Claz\FunctionStmt;
+use Inc\Claz\GroupBy;
+use Inc\Claz\Join;
+use Inc\Claz\PdoDb;
+use Inc\Claz\PdoDbException;
+use Inc\Claz\Select;
 
-$invoice_results = dbQuery($sql, ':domain_id', $auth_session->domain_id);
+/**
+ * @var PdoDb $pdoDb
+ */
+global $pdoDb, $smarty;
+
+$rows = array();
+try {
+    $pdoDb->setSelectList(array('iv.id', 'iv.index_id', 'pr.pref_inv_wording',
+        new DbField('iv.aging', 'Aging'),
+        new DbField('iv.owing', 'inv_owing'),
+        new DbField('iv.age_days', 'age'),
+        new DbField('b.name', 'biller'),
+        new DbField('c.name', 'customer')));
+
+    $pdoDb->addToFunctions(new FunctionStmt("--COUNT", 'ii.invoice_id', 'items'));
+    $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ap.inv_paid, 0)', 'inv_total'));
+    $pdoDb->addToFunctions(new FunctionStmt('COALESCE', 'ap.inv_paid,0', 'inv_paid'));
+
+    $pdoDb->addToFunctions(new FunctionStmt('DATE_FORMAT', 'date, "%Y-%m-%e"', 'date'));
+
+    $jn = new Join('LEFT', 'invoice_items', 'ii');
+    $jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+    $jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'biller', 'b');
+    $jn->addSimpleItem('b.id', new DbField('iv.biller_id'), 'AND');
+    $jn->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'customers', 'c');
+    $jn->addSimpleItem('c.id', new DbField('iv.customer_id'), 'AND');
+    $jn->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $jn = new Join('LEFT', 'preferences', 'pr');
+    $jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+    $jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
+
+    $ls = array('ac_inv_id', 'domain_id');
+    $ls[] = new FunctionStmt("SUM", "COALESCE(ac_amount, 0)", "inv_paid");
+    $fr = new FromStmt("payment");
+    $gr = new GroupBy(array('ac_inv_id', 'domain_id'));
+    $se = new Select($ls, $fr, null, $gr, "ap");
+    $jn = new Join("LEFT", $se);
+    $jn->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
+    $jn->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
+    $pdoDb->addToJoins($jn);
+
+    $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+    $pdoDb->addSimpleWhere('iv.domain_id', DomainId::get());
+
+    $pdoDb->setGroupBy('iv.id');
+
+    $pdoDb->setSimpleHavings('inv_owing', '>', '0');
+
+    $pdoDb->setOrderBy(array('age', 'DESC'));
+
+    $rows = $pdoDb->request('SELECT', 'invoices', 'iv');
+} catch (PdoDbException $pde) {
+    error_log("report_debtors_by_aging - error: " . $pde->getMessage());
+}
 
 $total_owed = 0;
 $periods = array();
-
-while($invoice = $invoice_results->fetch()) {
-    $periods[$invoice['Aging']]['name'] = $invoice['Aging'];
-    if (!array_key_exists('invoices', $periods[$invoice['Aging']])) {
-        $periods[$invoice['Aging']]['invoices'] = array();
+foreach ($rows as $row) {
+    $periods[$row['Aging']]['name'] = $row['Aging'];
+    if (!array_key_exists('invoices', $periods[$row['Aging']])) {
+        $periods[$row['Aging']]['invoices'] = array();
     }
 
-    array_push($periods[$invoice['Aging']]['invoices'], $invoice);
-    $periods[$invoice['Aging']]['sum_total'] += $invoice['inv_owing'];
-    $total_owed += $invoice['inv_owing'];
+    array_push($periods[$row['Aging']]['invoices'], $row);
+    $periods[$row['Aging']]['sum_total'] += $row['inv_owing'];
+    $total_owed += $row['inv_owing'];
 }
 
 $smarty -> assign('data', $periods);

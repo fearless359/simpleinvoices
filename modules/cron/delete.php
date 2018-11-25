@@ -4,6 +4,7 @@ use Inc\Claz\DbField;
 use Inc\Claz\DomainId;
 use Inc\Claz\OnClause;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 
 /*
  *  Script: delete.php
@@ -23,7 +24,7 @@ use Inc\Claz\PdoDbException;
  */
 global $pdoDb, $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 $err_message = "";
 $cron = "";
 if ($_GET['stage'] == 2) {

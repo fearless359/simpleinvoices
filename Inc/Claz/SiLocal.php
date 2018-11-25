@@ -191,4 +191,39 @@ class SiLocal
         // @formatter:on
         return $temp_date->get(\Zend_Date::DATE_MEDIUM, $locale);
     }
+
+    /**
+     * Truncate a given string
+     *
+     * @param $string - the string to truncate
+     * @param $max - the max length in characters to truncate the string to
+     * @param $rep - characters to be added at end of truncated string
+     * @return string truncated to specified length.
+     */
+    public static function truncateStr($string, $max = 20, $rep = '') {
+        if (strlen($string) <= ($max + strlen($rep))) {
+            return $string;
+        }
+        $leave = $max - strlen($rep);
+        return substr_replace($string, $rep, $leave);
+    }
+
+    /**
+     * Ensure that there is a time value in the datetime object.
+     *
+     * @param string $in_date Datetime string in the format, "YYYY/MM/DD HH:MM:SS".
+     *        Note: If time part is "00:00:00" it will be set to the current time.
+     * @return string Datetime string with time set.
+     */
+    public static function sqlDateWithTime($in_date) {
+        $parts = explode(' ', $in_date);
+        $date  = (isset($parts[0]) ? $parts[0] : "");
+        $time  = (isset($parts[1]) ? $parts[1] : "00:00:00");
+        if (!$time || $time == '00:00:00') {
+            $time = date('H:i:s');
+        }
+        $out_date = "$date $time";
+        return $out_date;
+    }
+
 }

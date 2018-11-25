@@ -139,7 +139,7 @@ class Product {
             $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), "AND");
             $wh->addSimpleItem("iv.preference_id", new DbField("pr.pref_id"), "AND");
             $wh->addSimpleItem("pr.status", ENABLED);
-            $se = new Select($fn, $fr, $wh, "qty_out");
+            $se = new Select($fn, $fr, $wh, null, "qty_out");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("COALESCE", "SUM(inv.quantity),0");
@@ -147,16 +147,16 @@ class Product {
             $wc = new WhereClause();
             $wc->addSimpleItem("inv.product_id", new DbField("p.id"), "AND");
             $wc->addSimpleItem("inv.domain_id" , new DbField("p.domain_id"));
-            $se = new Select($fn, $fr, $wc, "qty_in");
+            $se = new Select($fn, $fr, $wc, null, "qty_in");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("COALESCE", "p.reorder_level,0");
-            $se = new Select($fn, null, null, "reorder_level");
+            $se = new Select($fn, null, null, null, "reorder_level");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("", "qty_in");
             $fn->addPart("-",  "qty_out");
-            $se = new Select($fn, null, null, "quantity");
+            $se = new Select($fn, null, null, null, "quantity");
             $pdoDb->addToSelectStmts($se);
 
             $ca = new CaseStmt("p.enabled", "enabled");

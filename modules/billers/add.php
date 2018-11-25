@@ -1,6 +1,9 @@
 <?php
 
+use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
+use Inc\Claz\Extensions;
+use Inc\Claz\Util;
 
 /*
  *  Script: add.php
@@ -20,9 +23,9 @@ use Inc\Claz\DomainId;
  */
 global $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 
-$files = getLogoList();
+$files = Util::getLogoList();
 $smarty->assign("files", $files);
 
 $domain_id = DomainId::get();
@@ -30,7 +33,7 @@ $smarty->assign("domain_id", $domain_id);
 
 // Only load labels if they are defined. Screen will only
 // show what is loaded.
-$customFieldLabel = getCustomFieldLabels(true);
+$customFieldLabel = CustomFields::getLabels(true);
 
 if (!empty($_POST['name'])) {
     include ("modules/billers/save.php");

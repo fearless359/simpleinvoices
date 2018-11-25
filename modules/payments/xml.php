@@ -103,7 +103,7 @@ function sql($type = '', $dir, $sort, $rp, $page) {
     $pdoDb->setOrderBy($oc);
 
     $fn = new FunctionStmt("DATE_FORMAT", "ac_date,'%Y-%m-%d'");
-    $se = new Select($fn, null, null, "date");
+    $se = new Select($fn, null, null, null, "date");
     $pdoDb->addToSelectStmts($se);
 
     $list = array("ap.*", "c.name as cname", "b.name as bname", "pt.pt_description AS description",
@@ -111,11 +111,11 @@ function sql($type = '', $dir, $sort, $rp, $page) {
     $pdoDb->setSelectList($list);
     
     $fn = new FunctionStmt("CONCAT", "pr.pref_inv_wording,' ',iv.index_id");
-    $se = new Select($fn, null, null, "index_name");
+    $se = new Select($fn, null, null, null, "index_name");
     $pdoDb->addToSelectStmts($se);
 
     $fn = new FunctionStmt("CONCAT", "description,' ',ac_check_number");
-    $se = new Select($fn, null, null, "type");
+    $se = new Select($fn, null, null, null, "type");
     $pdoDb->addToSelectStmts($se);
 
     $result = $pdoDb->request("SELECT", "payment", "ap");
@@ -132,7 +132,7 @@ $xml .= "<page>$page</page>";
 $xml .= "<total>$count</total>";
 
 foreach ($payments as $row) {
-    $notes = si_truncate($row['notes'],'13','...');
+    $notes = SiLocal::truncateStr($row['notes'],'13','...');
     $xml .= "<row id='$row[id]'>";
     $xml .= 
         "<cell><![CDATA[

@@ -1,9 +1,10 @@
 <?php
 use Inc\Claz\Product;
+use Inc\Claz\Util;
 
 global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
-checkLogin ();
+Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $display_message = "<div class='si_message_warning'>{$LANG['cancelled']}</div>";

@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\DomainId;
+use Inc\Claz\Util;
 
 /*
  * Script: report_sales_by_period.php
@@ -20,7 +21,7 @@ use Inc\Claz\DomainId;
  */
 global $db, $smarty;
 
-checkLogin();
+Util::directAccessAllowed();
 
 $domain_id = DomainId::get();
 
