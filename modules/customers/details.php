@@ -3,6 +3,7 @@
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
+use Inc\Claz\DynamicJs;
 use Inc\Claz\Extensions;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
@@ -28,13 +29,13 @@ use Inc\Claz\Util;
 global $smarty, $LANG, $config;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
-jsBegin();
-jsFormValidationBegin("frmpost");
-jsValidateIfEmail("email", "true");
-jsFormValidationEnd();
-jsEnd();
+DynamicJs::begin();
+DynamicJs::formValidationBegin("frmpost");
+DynamicJs::validateIfEmail("email", "true");
+DynamicJs::formValidationEnd();
+DynamicJs::end();
 
 // @formatter:off
 $cid = $_GET['id'];

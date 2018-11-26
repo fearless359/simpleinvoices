@@ -17,7 +17,7 @@ class Util
      * So all other php files should check this function to prevent a user from
      * trying to access that file directly.
      */
-    public static function directAccessAllowed() {
+    public static function isAccessAllowed() {
         $allowDirectAccess = (isset($GLOBALS['allow_direct_access']) ? $GLOBALS['allow_direct_access'] : false);
         if (!$allowDirectAccess) {
             header("HTTP/1.0 404 Not Found");
@@ -30,7 +30,7 @@ class Util
      * in the index.php file. Then all other php file access while processing the
      * request process normally. If an attempt is made to access a php file other
      * than one that first calls this method, the process will terminate either
-     * due to no autoloader defined or the Util::directAccessAllowed() method rejects
+     * due to no autoloader defined or the Util::isAccessAllowed() method rejects
      * the request.;
      */
     public static function allowDirectAccess() {
@@ -46,8 +46,8 @@ class Util
     public static function dropDown($choiceArray, $defVal) {
         $line = "<select name='value'>\n";
         foreach ($choiceArray as $key => $value) {
-            $key_parm = htmlsafe($key) . "' " . ($key == $defVal ? "selected style='font-weight: bold'" : "");
-            $val_parm = htmlsafe($value);
+            $key_parm = Util::htmlsafe($key) . "' " . ($key == $defVal ? "selected style='font-weight: bold'" : "");
+            $val_parm = Util::htmlsafe($value);
             $line .= "<option value='{$key_parm}'>{$val_parm}</option>\n";
         }
         $line .= "</select>\n";
@@ -212,6 +212,43 @@ class Util
             substr($_SERVER['FULL_URL'], -1, 1) != '/') $_SERVER['FULL_URL'] .= '/';
 
         return $_SERVER['FULL_URL'];
+    }
+
+    /**
+     * @param $str
+     * @return string
+     */
+    public static function htmlsafe($str) {
+        return htmlentities($str, ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * @param $str
+     * @return bool|null|string|string[]
+     */
+    public static function urlsafe($str) {
+        $str = preg_replace('/[^a-zA-Z0-9@;:%_\+\.~#\?\/\=\&\/\-]/', '', $str);
+        if (preg_match('/^\s*javascript/i', $str)) {
+            return false;  // no javascript urls
+        }
+        $str = self::htmlsafe($str);
+        return $str;
+    }
+
+    /**
+     * @param $html
+     * @return string Purified HTML
+     * @throws HTMLPurifier_Exception
+     */
+    function outhtml($html) {
+        $config = HTMLPurifier_Config::createDefault();
+
+        // configuration goes here:
+        $config->set('Core.Encoding', 'UTF-8'); // replace with your encoding
+        $config->set('HTML.Doctype', 'XHTML 1.0 Strict'); // replace with your doctype
+
+        $purifier = new HTMLPurifier($config);
+        return $purifier->purify($html);
     }
 
 }

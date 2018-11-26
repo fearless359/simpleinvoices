@@ -137,7 +137,7 @@ class Acl
 
     /**
      * For extensions to add one or more resources to the list.
-     * Make Extensions/<yourextname>/Inc/Claz/Acl.php wi
+     * Make extensions/<yourextname>/Inc/Claz/Acl.php wi
      * @param $resources
      */
     public static function addResource($resources, &$acl) {

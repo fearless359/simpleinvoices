@@ -14,7 +14,7 @@ use Inc\Claz\Util;
 global $smarty, $LANG;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // @formatter:off
 $expense_id  = $_GET['id'];

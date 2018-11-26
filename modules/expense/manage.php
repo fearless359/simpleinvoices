@@ -7,7 +7,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $add_button_link = "index.php?module=expense&amp;view=add";
 $add_button_msg = $LANG['add_new_expense'];

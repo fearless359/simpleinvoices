@@ -11,7 +11,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // gets the long language name out of the short name
 $lang = SystemDefaults::getDefaultLanguage();

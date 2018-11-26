@@ -24,7 +24,7 @@ global $LANG, $pdoDb, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";

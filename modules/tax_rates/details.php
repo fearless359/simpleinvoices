@@ -1,19 +1,20 @@
 <?php
 
+use Inc\Claz\DynamicJs;
 use Inc\Claz\Taxes;
 use Inc\Claz\Util;
 
 global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
-jsBegin();
-jsFormValidationBegin("frmpost");
-jsValidateRequired("tax_description",$LANG['tax_description']);
-jsValidateIfNum("tax_percentage",$LANG['tax_percentage']);
-jsFormValidationEnd();
-jsEnd();
+DynamicJs::begin();
+DynamicJs::formValidationBegin("frmpost");
+DynamicJs::validateRequired("tax_description",$LANG['tax_description']);
+DynamicJs::validateIfNum("tax_percentage",$LANG['tax_percentage']);
+DynamicJs::formValidationEnd();
+DynamicJs::end();
 
 //get the invoice id
 $tax_rate_id = $_GET['id'];

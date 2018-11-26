@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 
 global $smarty, $LANG;
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 //if valid then do save
 if (isset($_POST['p_description']) && $_POST['p_description'] != "" ) {

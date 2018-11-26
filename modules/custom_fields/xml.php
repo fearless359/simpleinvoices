@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\CustomFields;
+use Inc\Claz\Util;
 
 global $LANG, $pdoDb;
 
@@ -21,8 +22,8 @@ $xml .= "<page>$page</page>";
 $xml .= "<total>$count</total>";
 
 foreach ($cfs as $row) {
-    $cfn_nice = $LANG['custom_field'] . htmlsafe($row['field_name_nice']);
-    $xml .= "<row id='".htmlsafe($row['cf_id'])."'>";
+    $cfn_nice = $LANG['custom_field'] . Util::htmlsafe($row['field_name_nice']);
+    $xml .= "<row id='".Util::htmlsafe($row['cf_id'])."'>";
     $xml .=
         "<cell><![CDATA[" .
             "<a class='index_table' title='{$LANG['view']} {$cfn_nice}' " .
@@ -34,9 +35,9 @@ foreach ($cfs as $row) {
                 "<img src='images/common/edit.png' height='16' border='-5px' />" .
             "</a>" .
         "]]></cell>";
-    $xml .= "<cell><![CDATA[".htmlsafe($row['cf_id'])."]]></cell>";
-    $xml .= "<cell><![CDATA[".htmlsafe($row['field_name_nice'])."]]></cell>";
-    $xml .= "<cell><![CDATA[".htmlsafe($row['cf_custom_label'])."]]></cell>";
+    $xml .= "<cell><![CDATA[".Util::htmlsafe($row['cf_id'])."]]></cell>";
+    $xml .= "<cell><![CDATA[".Util::htmlsafe($row['field_name_nice'])."]]></cell>";
+    $xml .= "<cell><![CDATA[".Util::htmlsafe($row['cf_custom_label'])."]]></cell>";
     $xml .= "</row>";
 }
 $xml .= "</rows>";

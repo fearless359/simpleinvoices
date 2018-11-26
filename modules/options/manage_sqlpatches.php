@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // Allow thrown error to be passed up to the user.
 $smarty -> assign("patches", SqlPatchManager::sqlPatches());

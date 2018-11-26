@@ -16,7 +16,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $number_of_rows = Inventory::count();
 $smarty->assign("number_of_rows",$number_of_rows);

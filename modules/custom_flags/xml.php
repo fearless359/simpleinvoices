@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\CustomFlags;
+use Inc\Claz\Util;
 
 global $LANG;
 
@@ -19,7 +20,7 @@ $xml  = "<rows>";
 $xml .= "<page>$page</page>";
 $xml .= "<total>$count</total>";
 foreach ($cflgs as $row) {
-    $id = htmlsafe($row['associated_table'] . ':' . $row['flg_id']);
+    $id = Util::htmlsafe($row['associated_table'] . ':' . $row['flg_id']);
     if ($row['enabled'] == ENABLED) {
         $enabled = $LANG['enabled'];
         $image = 'images/common/tick.png';
@@ -40,11 +41,11 @@ foreach ($cflgs as $row) {
                 "<img src='images/common/edit.png' height='16' border='-5px' />" .
             "</a>" .
         "]]></cell>";
-    $xml .= "<cell><![CDATA[" . htmlsafe($row['associated_table']) . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . htmlsafe($row['flg_id'])           . "]]></cell>";
-    $xml .= "<cell><![CDATA[" . htmlsafe($row['field_label'])      . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . Util::htmlsafe($row['associated_table']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . Util::htmlsafe($row['flg_id'])           . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . Util::htmlsafe($row['field_label'])      . "]]></cell>";
     $xml .= "<cell><![CDATA[<img src='{$image}' alt='{$enabled}' title='{$enabled}' />]]></cell>";
-    $xml .= "<cell><![CDATA[" . htmlsafe($row['field_help']) . "]]></cell>";
+    $xml .= "<cell><![CDATA[" . Util::htmlsafe($row['field_help']) . "]]></cell>";
     $xml .= "</row>";
 }
 // @formatter:on

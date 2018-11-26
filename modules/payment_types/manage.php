@@ -7,7 +7,7 @@ global $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed.
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $paymentTypes = PaymentType::select_all();
 

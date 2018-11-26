@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Biller;
+use Inc\Claz\Util;
 
 global $LANG;
 
@@ -25,11 +26,11 @@ $xml .= "<total>$count</total>";
 foreach ($billers as $row) {
     $xml .= "<row id='".$row['id']."'>";
     $xml .= "<cell><![CDATA[" .
-	            "<a class='index_table' title='{$LANG['view']} " . htmlsafe($row['name']) . "'" .
+	            "<a class='index_table' title='{$LANG['view']} " . Util::htmlsafe($row['name']) . "'" .
 	               "href='index.php?module=billers&amp;view=details&amp;id=$row[id]&amp;action=view'>" .
                     "<img src='images/common/view.png' height='16' border='-5px' />" .
                 "</a>" .
-	            "<a class='index_table' title='{$LANG['edit']} " . htmlsafe($row['name']) . "'" .
+	            "<a class='index_table' title='{$LANG['edit']} " . Util::htmlsafe($row['name']) . "'" .
 	               "href='index.php?module=billers&amp;view=details&amp;id=$row[id]&amp;action=edit'>" .
 	                "<img src='images/common/edit.png' height='16' border='-5px' />" .
 	            "</a>" .

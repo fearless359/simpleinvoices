@@ -7,7 +7,7 @@ global $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed.
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $op = !empty($_POST['op']) ? addslashes($_POST['op']) : NULL;

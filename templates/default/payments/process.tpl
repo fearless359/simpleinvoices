@@ -1,4 +1,4 @@
-{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
 <form name="frmpost" action="index.php?module=payments&amp;view=save"
       method="post" onsubmit="return frmpost_Validator(this);">
     <div class="si_form">

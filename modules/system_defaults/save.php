@@ -5,7 +5,7 @@ use Inc\Claz\Util;
 
 global $smarty;
 
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $display_block = "<div class='si_message_error'>$LANG[save_defaults_failure]</div>";
 $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=system_defaults&amp;view=manage' />";

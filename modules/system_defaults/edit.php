@@ -2,6 +2,7 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
+use Inc\Claz\DynamicJs;
 use Inc\Claz\PaymentType;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
@@ -14,7 +15,7 @@ global $LANG,
        $perform_extension_php_insertions;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 /**
  * Help function for sorting the language array by name
@@ -44,7 +45,7 @@ switch ($get_val) {
 
             foreach ($billers as $biller) {
                 $selected = $biller['id'] == $defaults['biller'] ? "selected style='font-weight: bold'" : "";
-                $escaped  = htmlsafe($biller['name']);
+                $escaped  = Util::htmlsafe($biller['name']);
                 $value   .= '<option ' . $selected . ' value="' . $biller['id'] . '">' . $escaped . '</option>' . "\n";
             }
             $value .= "</select>" . "\n";
@@ -56,7 +57,7 @@ switch ($get_val) {
     case "company_logo":
         $default     = $get_val;
         $description = "{$LANG[$default]}";
-        $attribute   = htmlsafe($defaults[$default]);
+        $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='60' name='value' value='$attribute' required />\n";
         $found       = true;
         break;
@@ -64,7 +65,7 @@ switch ($get_val) {
     case "company_name_item":
         $default     = $get_val;
         $description = "{$LANG['company_name_item_label']}";
-        $attribute   = htmlsafe($defaults[$default]);
+        $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='60' name='value' value='$attribute' required />\n";
         $found       = true;
         break;
@@ -81,7 +82,7 @@ switch ($get_val) {
 
             foreach ($customers as $customer) {
                 $selected = $customer['id'] == $defaults['customer'] ? "selected style='font-weight: bold'" : "";
-                $escaped  = htmlsafe($customer['name']);
+                $escaped  = Util::htmlsafe($customer['name']);
                 $value   .= '<option ' . $selected . ' value="' . $customer['id'] . '">' . $escaped . '</option>' . "\n";
             }
             $value .= "</select>" . "\n";
@@ -112,14 +113,14 @@ switch ($get_val) {
         closedir($handle);
         sort($files);
 
-        $escaped = htmlsafe($defaults['template']);
+        $escaped = Util::htmlsafe($defaults['template']);
         $value = '<select name="value">' . "\n";
         $value .= '  <option selected value="' . $escaped . '" style="font-weight:bold;" >';
         $value .= '    ' . $escaped;
         $value .= '  </option>' . "\n";
 
         foreach ($files as $var) {
-            $var = htmlsafe($var);
+            $var = Util::htmlsafe($var);
             $value .= '  <option value="' . $var . '" >';
             $value .= '    ' . $var;
             $value .= '  </option> . "\n"';
@@ -133,11 +134,11 @@ switch ($get_val) {
         /****************************************************************
          * Validation section - start
          ****************************************************************/
-        jsBegin();
-        jsFormValidationBegin("frmpost");
-        jsValidateRequired("def_inv_template", "{$LANG['default_inv_template']}");
-        jsFormValidationEnd();
-        jsEnd();
+        DynamicJs::begin();
+        DynamicJs::formValidationBegin("frmpost");
+        DynamicJs::validateRequired("def_inv_template", "{$LANG['default_inv_template']}");
+        DynamicJs::formValidationEnd();
+        DynamicJs::end();
         /****************************************************************
          * Validation section - end
          ****************************************************************/
@@ -156,7 +157,7 @@ switch ($get_val) {
 
             foreach ($payments as $payment) {
                 $selected = $payment['pt_id'] == $defaults['payment_type'] ? " selected style='font-weight: bold'" : "";
-                $escaped = htmlsafe($payment['pt_description']);
+                $escaped = Util::htmlsafe($payment['pt_description']);
                 $value .= '  <option' . $selected . ' value="' . $payment['pt_id'] . '}">' . "\n";
                 $value .= '    ' . $escaped . "\n";
                 $value .= '  </option>' . "\n";
@@ -167,14 +168,14 @@ switch ($get_val) {
         break;
 
     case "default_invoice":
-        jsBegin();
-        jsFormValidationBegin("frmpost");
-        jsValidateifNum("default_invoice", $LANG['default_invoice']);
-        jsFormValidationEnd();
-        jsEnd();
+        DynamicJs::begin();
+        DynamicJs::formValidationBegin("frmpost");
+        DynamicJs::validateifNum("default_invoice", $LANG['default_invoice']);
+        DynamicJs::formValidationEnd();
+        DynamicJs::end();
 
         $default = "default_invoice";
-        $value = '<input type="text" size="10" name="value" value="' . htmlsafe($defaults['default_invoice']) . '">';
+        $value = '<input type="text" size="10" name="value" value="' . Util::htmlsafe($defaults['default_invoice']) . '">';
         $description = "{$LANG['default_invoice']}";
         break;
 
@@ -209,22 +210,22 @@ switch ($get_val) {
         $value        = "<select name='value'>";
         foreach ($languages as $language) {
             $selected = ($language->shortname == $lang ? " selected" : '');
-            $value   .= '  <option' . $selected . ' value="' . htmlsafe($language->shortname) . '">' . "\n";
-            $value   .= '    ' . htmlsafe("$language->name ($language->englishname) ($language->shortname)") . "\n";
+            $value   .= '  <option' . $selected . ' value="' . Util::htmlsafe($language->shortname) . '">' . "\n";
+            $value   .= '    ' . Util::htmlsafe("$language->name ($language->englishname) ($language->shortname)") . "\n";
             $value   .= '  </option>' . "\n";
         }
         $value       .= '</select>' . "\n";
         break;
 
     case "line_items":
-        jsBegin();
-        jsFormValidationBegin("frmpost");
-        jsValidateifNum("def_num_line_items", "Default number of line items");
-        jsFormValidationEnd();
-        jsEnd();
+        DynamicJs::begin();
+        DynamicJs::formValidationBegin("frmpost");
+        DynamicJs::validateifNum("def_num_line_items", "Default number of line items");
+        DynamicJs::formValidationEnd();
+        DynamicJs::end();
 
         $default = "line_items";
-        $value = '<input type="text" size="25" name="value" value="' . htmlsafe($defaults['line_items']) . '">';
+        $value = '<input type="text" size="25" name="value" value="' . Util::htmlsafe($defaults['line_items']) . '">';
         $description = "{$LANG['default_number_items']}";
         break;
 
@@ -238,7 +239,7 @@ switch ($get_val) {
     case 'password_min_length':
         $default     = $get_val;
         $description = "{$LANG[$default]}";
-        $attribute   = htmlsafe($defaults[$default]);
+        $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='2' name='value' value='$attribute' required min='6' max='16' />\n";
         $found       = true;
         break;
@@ -287,7 +288,7 @@ switch ($get_val) {
 
             foreach ($preferences as $preference) {
                 $selected = ($preference['pref_id'] == $defaults['preference'] ? ' selected style="font-weight:bold"' : '');
-                $escaped = htmlsafe($preference['pref_description']);
+                $escaped = Util::htmlsafe($preference['pref_description']);
                 $value .= '  <option' . $selected . ' value="' . $preference['pref_id'] . '">' . "\n";
                 $value .= '    ' . $escaped . "\n";
                 $value .= '  </option>' . "\n";
@@ -309,7 +310,7 @@ switch ($get_val) {
         // edit template for this extension value.
         $default     = $get_val;
         $description = "{$LANG[$default]}";
-        $attribute   = htmlsafe($defaults[$default]);
+        $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='4' name='value' value='$attribute' min='15' max='999' />\n";
         $found       = true;
         break;
@@ -325,7 +326,7 @@ switch ($get_val) {
 
             foreach ($taxes as $tax) {
                 $selected = $tax['tax_id'] == $defaults['tax'] ? "selected style='font-weight: bold'" : "";
-                $escaped = htmlsafe($tax['tax_description']);
+                $escaped = Util::htmlsafe($tax['tax_description']);
                 $value .= '<option ' . $selected . ' value="' . $tax['tax_id'] . '">' . $escaped . '</option>' . "\n";
             }
         }
@@ -335,7 +336,7 @@ switch ($get_val) {
 
     case "tax_per_line_item":
         $default = "tax_per_line_item";
-        $value = '<input type="text" size="25" name="value" value="' . htmlsafe($defaults['tax_per_line_item']) . '">' . "\n";
+        $value = '<input type="text" size="25" name="value" value="' . Util::htmlsafe($defaults['tax_per_line_item']) . '">' . "\n";
         $description = "{$LANG['number_of_taxes_per_line_item']}";
         break;
 

@@ -201,8 +201,8 @@ class SqlPatchManager
     private static function runSqlPatch($id, $patch) {
         global $pdoDb_admin;
 
-        $escaped_id = htmlsafe($id);
-        $patch_name = htmlsafe($patch['name']);
+        $escaped_id = Util::htmlsafe($id);
+        $patch_name = Util::htmlsafe($patch['name']);
 
         $smarty_row = array();
         try {
@@ -345,8 +345,8 @@ class SqlPatchManager
         $i = 0;
         foreach(self::$patchLines as $patch) {
             $i++;
-            $patch_name = htmlsafe($patch['name']);
-            $patch_date = htmlsafe($patch['date']);
+            $patch_name = Util::htmlsafe($patch['name']);
+            $patch_date = Util::htmlsafe($patch['date']);
             if (self::checkIfSqlPatchApplied($i)) {
                 if ($i < self::$numberToBeginPatchListAt) {
                     if ($i == 1) {

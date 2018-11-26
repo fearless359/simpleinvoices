@@ -144,7 +144,7 @@ class CustomFields {
 
         $display_block = "";
         if (!empty($custom_field_value) || ($write_mode && !empty($cf_label))) {
-            $custom_label_value = htmlsafe(self::getCustomFieldLabel($custom_field));
+            $custom_label_value = Util::htmlsafe(self::getCustomFieldLabel($custom_field));
             if ($write_mode) {
                 $display_block =
                     "<tr>\n" .

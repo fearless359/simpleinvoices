@@ -31,7 +31,7 @@
   </a>
 </div>
 {else}
-{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
 <form name="frmpost" method="post" onsubmit="return frmpost_Validator(this)"
       action="index.php?module=payment_types&amp;view=save&amp;id={$smarty.get.id|htmlsafe}">
   <div class="si_form">

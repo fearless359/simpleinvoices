@@ -80,7 +80,6 @@ try {
 } catch (\Zend_Date_Exception $zde) {
     SiError::out('generic', 'Zend_Date_Exception', $zde->getMessage());
 }
-
 /* *************************************************************
  * Zend Framework cache section - end
  * *************************************************************/
@@ -113,7 +112,7 @@ try {
 
 $path = pathinfo($_SERVER['REQUEST_URI']);
 // SC: Install path handling will need changes if used in non-HTML contexts
-$install_path = htmlsafe($path['dirname']);
+$install_path = Util::htmlsafe($path['dirname']);
 
 // With the database built, a connection should be able to be made
 // if the configuration user, password, etc. are set correctly.
@@ -146,12 +145,10 @@ try {
     $smarty->registerPlugin('modifier', "siLocal_truncateStr"    , array("Inc\Claz\SiLocal", "truncateStr"));
     $smarty->registerPlugin('modifier', "siLocal_sqlDataWithTime", array("Inc\Claz\SiLocal", "sqlDateWithTime"));
 
-    $smarty->registerPlugin('modifier', 'htmlout'  , 'outhtml');
-    $smarty->registerPlugin('modifier', 'htmlsafe' , 'htmlsafe');
-    $smarty->registerPlugin('modifier', 'outhtml'  , 'outhtml');
-    $smarty->registerPlugin('modifier', 'urlencode', 'urlencode');
-    $smarty->registerPlugin('modifier', 'urlescape', 'urlencode');
-    $smarty->registerPlugin('modifier', 'urlsafe'  , 'urlsafe');
+    $smarty->registerPlugin('modifier', 'htmlsafe' , array('Inc\Claz\Util', 'htmlsafe'));
+    $smarty->registerPlugin('modifier', 'outhtml'  , array('Inc\Claz\Util', 'outhtml'));
+    $smarty->registerPlugin('modifier', 'urlencode', 'urlencode'); // PHP function
+    $smarty->registerPlugin('modifier', 'urlsafe'  , array('Inc\Claz\Util', 'urlsafe'));
 } catch (SmartyException $se) {
     SiError::out('generic', 'SmartyException', $se->getMessage());
 }
@@ -162,7 +159,7 @@ Extensions::loadSiExtensions($ext_names, $config, $databaseBuilt, $patchCount);
 // point to extension plugin directories if present.
 $plugin_dirs = array();
 foreach ($ext_names as $ext_name) {
-    $dir_tmp = "Extensions/$ext_name/include/smarty_plugins";
+    $dir_tmp = "extensions/$ext_name/include/smarty_plugins";
     if (is_dir($dir_tmp)) {
         $plugin_dirs[] = $dir_tmp;
     }
@@ -189,13 +186,36 @@ if (isset($defaults['company_name'])) {
 } else {
     $LANG['company_name'] = 'SimpleInvoices';
 }
-
 if (!$api_request) {
-    ApiAuth::authenticate($module, $auth_session);
-}
+    Log::out("init.php - authentication-enabled[{$config->authentication->enabled}] fake_auth[{$auth_session->fake_auth}]", \Zend_Log::DEBUG);
 
-// Functions that dynamically build javascript for the tpl files.
-include_once ("include/validation.php");
+    // if user logged into SimpleInvoices with authentication set to false,
+    // then use the fake authentication, killing the session that was started.
+    if (($config->authentication->enabled == ENABLED) && ($auth_session->fake_auth == "1")) {
+        Zend_Session::start();
+        Zend_Session::destroy(true);
+        header('Location: .');
+    }
+
+    if ($config->authentication->enabled == ENABLED) {
+        // TODO - this needs to be fixed !!
+        if ($auth_session->domain_id == null) {
+            $auth_session->domain_id = "1";
+        }
+        ApiAuth::authenticate($module, $auth_session);
+    } else {
+        // If auth not on - use default domain and user id of 1
+        // Chuck the user details sans password into the Zend_auth session
+        $auth_session->id = "1";
+        $auth_session->domain_id = "1";
+        $auth_session->username = "demo";
+        $auth_session->email = "demo@simpleinvoices.group";
+        // fake_auth is identifier to say that user logged in with auth off
+        $auth_session->fake_auth = "1";
+        // No Customer login as logins disabled
+        $auth_session->user_id = "0";
+    }
+}
 
 if ($config->authentication->enabled == ENABLED) {
     $acl = null;
@@ -204,7 +224,7 @@ if ($config->authentication->enabled == ENABLED) {
     // if authentication enabled then do acl check etc..
     foreach ($ext_names as $ext_name) {
         $fileName = $ext_name . "Acl.php";
-        $filePath = "Extensions/$ext_name/Inc/Claz/" . $fileName;
+        $filePath = "extensions/$ext_name/Inc/Claz/" . $fileName;
         if (file_exists($filePath)) {
             include_once($filePath);
             // In the Acl.php file for your extension, have a getResource() method

@@ -17,9 +17,9 @@ Util::allowDirectAccess();
 $lines = array();
 $invoices = Invoice::getInvoices($_GET["q"]);
 foreach($invoices as $invoice) {
-    $total = htmlsafe(number_format($row['total'],2));
-    $paid  = htmlsafe(number_format($row['paid'],2));
-    $owing = htmlsafe(number_format($row['owing'],2));
+    $total = Util::htmlsafe(number_format($row['total'],2));
+    $paid  = Util::htmlsafe(number_format($row['paid'],2));
+    $owing = Util::htmlsafe(number_format($row['owing'],2));
     $lines[] = "$invoice[id]|" .
                   "<table>" .
                     "<tr>" .

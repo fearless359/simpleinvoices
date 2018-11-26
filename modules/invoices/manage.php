@@ -16,7 +16,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // Combine access of values to minimize overhead.
 $results = Invoice::select_all('count_owing');

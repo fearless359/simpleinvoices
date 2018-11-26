@@ -26,7 +26,7 @@ use Inc\Claz\WhereItem;
  * 	https://simpleinvoices.group
  */
 
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $max_years = 10;
 $domain_id = DomainId::get();

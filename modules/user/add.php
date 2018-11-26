@@ -23,7 +23,7 @@ use Inc\Claz\Util;
  */
 global $smarty;
 
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $roles = User::getUserRoles();
 

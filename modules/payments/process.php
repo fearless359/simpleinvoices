@@ -2,6 +2,7 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
+use Inc\Claz\DynamicJs;
 use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
 use Inc\Claz\PaymentType;
@@ -12,7 +13,7 @@ use Inc\Claz\Util;
 global $smarty, $LANG, $pdoDb;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $paymentTypes = PaymentType::select_all(true);
 $chk_pt = 0;
@@ -24,10 +25,10 @@ foreach ($paymentTypes as $paymentType) {
 }
 
 // Generate form validation script
-jsBegin();
-jsFormValidationBegin("frmpost");
-jsValidateIfNum("ac_amount",$LANG['amount']);
-jsValidateIfNum("ac_date",$LANG['date']);
+DynamicJs::begin();
+DynamicJs::formValidationBegin("frmpost");
+DynamicJs::validateIfNum("ac_amount",$LANG['amount']);
+DynamicJs::validateIfNum("ac_date",$LANG['date']);
 echo "if(theForm.ac_payment_type.value=='$chk_pt') {\n";
 echo "    var cknum = theForm.ac_check_number.value;\n";
 echo "    cknum = cknum.toUpperCase();\n";
@@ -38,8 +39,8 @@ echo "        return (false);\n";
 echo "    };\n";
 echo "    theForm.ac_check_number.value = cknum;\n";
 echo "}\n";
-jsFormValidationEnd();
-jsEnd();
+DynamicJs::formValidationEnd();
+DynamicJs::end();
 // end validation generation
 
 $today = date("Y-m-d");

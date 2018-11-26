@@ -76,8 +76,8 @@ class Db {
         } catch (\Exception $e) {
             echo $e->getMessage();
             echo "Not sure what happened with your query?:<br /><br /> " .
-                  htmlsafe($sqlQuery) . "<br />" .
-                  htmlsafe(end($this->_db->errorInfo()));
+                  Util::htmlsafe($sqlQuery) . "<br />" .
+                  Util::htmlsafe(end($this->_db->errorInfo()));
             $sth = NULL;
         }
         return $sth;

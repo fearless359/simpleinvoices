@@ -4,7 +4,7 @@ use Inc\Claz\Util;
 
 global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $display_message = "<div class='si_message_warning'>{$LANG['cancelled']}</div>";

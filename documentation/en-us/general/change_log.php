@@ -16,6 +16,8 @@
         <li>2018-11-13 - <b>2018.3.0</b>
             <ul>
                 <li>Changed to use namespace for class autoloading and add phpunit test support.</li>
+                <li>Eliminated "htmlout" template function. Use "outhtml" instead.</li>
+                <li>Moved all global functions to classes. Many are in the Util class.</li>
             </ul>
         </li>
         <li>2018-11-12 - <b>2018.2.6</b>

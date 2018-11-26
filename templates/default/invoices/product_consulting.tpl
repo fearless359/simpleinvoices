@@ -1,22 +1,20 @@
 {*
-/*
-* Script: consulting.tpl
-* 	 Consulting invoice type template
-*
-* Authors:
-*	 Justin Kelly, Nicolas Ruflin
-*
-* Last edited:
-* 	 2007-07-18
-*
-* License:
-*	 GPL v2 or above
-*
-* Website:
-*	https://simpleinvoices.group
-*/
-*}
-{* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+ * Script: consulting.tpl
+ * 	 Consulting invoice type template
+ *
+ * Authors:
+ *	 Justin Kelly, Nicolas Ruflin
+ *
+ * Last edited:
+ * 	 2007-07-18
+ *
+ * License:
+ *	 GPL v2 or above
+ *
+ * Website:
+ *	https://simpleinvoices.group
+ *}
+{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
 <form name="frmpost" action="index.php?module=invoices&amp;view=save"
 	  method="post" onsubmit="return frmpost_Validator(this);">
 

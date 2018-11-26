@@ -23,7 +23,7 @@ global $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $number_of_rows = Biller::count();
 

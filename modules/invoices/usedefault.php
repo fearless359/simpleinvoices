@@ -26,7 +26,7 @@ use Inc\Claz\Util;
 global $databaseBuilt, $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $master_customer_id = $_GET ['customer_id'];
 $customer = Customer::get($master_customer_id);

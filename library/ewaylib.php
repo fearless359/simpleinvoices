@@ -1,4 +1,5 @@
 <?php
+use Inc\Claz\Util;
 
 $eWAY_CustomerID = "87654321";    // Set this to your eWAY Customer ID
 $eWAY_PaymentMethod = REAL_TIME;  // Set this to the payment gatway you would like to use (REAL_TIME, REAL_TIME_CVN or GEO_IP_ANTI_FRAUD)
@@ -110,7 +111,7 @@ class Ewaylib {
     //"CardHoldersName", "CardNumber", "CardExpiryMonth", "CardExpiryYear", "TrxnNumber", "Option1", "Option2", "Option3", "CVN", "CustomerIPAddress", "CustomerBillingCountry"
     function setTransactionData($field, $value) {
         //if ($field=="TotalAmount") $value = round($value*100);
-        $this->myTransactionData["eway" . $field] = htmlsafe(trim($value));
+        $this->myTransactionData["eway" . $field] = Util::htmlsafe(trim($value));
     }
 
     //receive special preferences for Curl

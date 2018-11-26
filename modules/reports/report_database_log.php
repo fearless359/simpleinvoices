@@ -9,7 +9,7 @@ use Inc\Claz\WhereItem;
 
 global $pdoDb, $smarty;
 
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 /**
  * @return string Beginning date for selection.
@@ -60,7 +60,7 @@ $inserts = array();
 $updates = array();
 $payments = array();
 foreach($rows as $row) {
-    $user = htmlsafe($row['email']) . ' (id ' . htmlsafe($row['userid']) . ')';
+    $user = Util::htmlsafe($row['email']) . ' (id ' . Util::htmlsafe($row['userid']) . ')';
     $match = array();
     if (preg_match($patterns['insert'], $row['sqlquerie'])) {
          $inserts[] = array(

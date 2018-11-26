@@ -18,7 +18,7 @@ use Inc\Claz\Util;
  */
 global $menu, $smarty;
 
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 /**
  * @return false|string

@@ -3,10 +3,11 @@
 use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\SiLocal;
+use Inc\Claz\Util;
 
 global $pdoDb, $auth_session;
 
-$row_id = htmlsafe($_GET['row']);
+$row_id = Util::htmlsafe($_GET['row']);
 $id = $_GET['id'];
 if (!empty($id)) {
     $output = array();

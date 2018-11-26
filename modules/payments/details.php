@@ -1,5 +1,6 @@
 <?php
 
+use Inc\Claz\DynamicJs;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\PaymentType;
@@ -8,14 +9,14 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 /*validation code*/
-jsBegin();
-jsFormValidationBegin("frmpost");
-jsValidateRequired("name","Biller name");
-jsFormValidationEnd();
-jsEnd();
+DynamicJs::begin();
+DynamicJs::formValidationBegin("frmpost");
+DynamicJs::validateRequired("name","Biller name");
+DynamicJs::formValidationEnd();
+DynamicJs::end();
 /*end validation code*/
 
 // If the invoice ID is present, access payments for it but only first.

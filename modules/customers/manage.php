@@ -21,7 +21,7 @@ use Inc\Claz\Util;
 global $smarty, $pdoDb;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $biller_count   = Biller::count();
 $customer_count = Customer::count();

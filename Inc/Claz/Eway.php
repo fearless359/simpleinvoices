@@ -68,7 +68,7 @@ class Eway {
 
         //Eway only accepts amount in cents - so times 100
         $value = $this->invoice['total'] * 100;
-        $eway_invoice_total = htmlsafe(trim($value));
+        $eway_invoice_total = Util::htmlsafe(trim($value));
         Log::out("eway total: " . $eway_invoice_total, \Zend_Log::INFO);
 
         try {

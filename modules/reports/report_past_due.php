@@ -9,7 +9,7 @@ use Inc\Claz\Util;
  */
 global $menu, $smarty;
 
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 $language = $smarty->tpl_vars['defaults']->language;
 
 $cust_info = CustomersPastDue::getCustInfo($language);

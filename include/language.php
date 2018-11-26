@@ -42,8 +42,8 @@ function getLanguageArray($lang = '') {
     }
 
     foreach ($ext_names as $ext_name) {
-        if (file_exists("Extensions/$ext_name/lang/$language/lang.php")) {
-            include_once ("Extensions/$ext_name/lang/$language/lang.php");
+        if (file_exists("extensions/$ext_name/lang/$language/lang.php")) {
+            include_once ("extensions/$ext_name/lang/$language/lang.php");
         }
     }
 

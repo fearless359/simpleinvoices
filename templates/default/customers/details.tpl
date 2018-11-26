@@ -252,7 +252,7 @@
         </div>
     </div>
 {elseif $smarty.get.action == 'edit' }
-    {* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
+    {* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
     <form name="frmpost" action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}"
           method="post" id="frmpost" onsubmit="return frmpost_Validator(this);">
         <input type="hidden" name="op" value="edit_customer"/>

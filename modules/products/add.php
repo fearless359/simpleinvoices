@@ -11,7 +11,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 $customFieldLabel = CustomFields::getLabels(true);
 $cflgs = CustomFlags::getCustomFlagsQualified('E');

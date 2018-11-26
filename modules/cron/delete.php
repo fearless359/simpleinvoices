@@ -24,7 +24,7 @@ use Inc\Claz\Util;
  */
 global $pdoDb, $smarty;
 
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 $err_message = "";
 $cron = "";
 if ($_GET['stage'] == 2) {

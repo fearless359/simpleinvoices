@@ -32,7 +32,7 @@ use Inc\Claz\Util;
 global $pdoDb, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::directAccessAllowed();
+Util::isAccessAllowed();
 
 // See if we are generating this from a default_invoice template
 $default_template_set = (!empty($_GET['template']));
