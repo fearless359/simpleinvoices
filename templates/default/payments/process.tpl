@@ -36,7 +36,7 @@
                 <tr>
                     <th>{$LANG.date_formatted}</th>
                     <td colspan="5">
-                        <input type="text" class="date-picker" name="ac_date" id="date1" value="{$today|htmlsafe}"/>
+                        <input type="text" class="date-picker" name="ac_date" id="date1" value="{if isset($today)}{$today|htmlsafe}{/if}"/>
                     </td>
                 </tr>
             {elseif $smarty.get.op === "pay_invoice"}
@@ -46,7 +46,7 @@
                         <select name="invoice_id" class="validate[required]">
                             <option value=''></option>
                             {foreach from=$invoice_all item=invoice}
-                                <option value="{$invoice.id|htmlsafe}">
+                                <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}">
                                     {$invoice.index_name|htmlsafe}
                                     ({$invoice.biller|htmlsafe},
                                     {$invoice.customer|htmlsafe},
@@ -64,7 +64,7 @@
                 <tr>
                     <th>{$LANG.date_formatted}</th>
                     <td colspan="3">
-                        <input type="text" class="date-picker" name="ac_date" id="date1" value="{$today|htmlsafe}"/>
+                        <input type="text" class="date-picker" name="ac_date" id="date1" value="{if isset($today)}{$today|htmlsafe}{/if}"/>
                     </td>
                 </tr>
             {/if}
@@ -76,7 +76,7 @@
                     {else}
                         <select name="ac_payment_type" id="pymt_type1">
                             {foreach from=$paymentTypes item=paymentType}
-                                <option value="{$paymentType.pt_id|htmlsafe}" {if $paymentType.pt_id==$defaults.payment_type}selected{/if}>{$paymentType.pt_description|htmlsafe}</option>
+                                <option value="{if isset($paymentType.pt_id)}{$paymentType.pt_id|htmlsafe}{/if}" {if $paymentType.pt_id==$defaults.payment_type}selected{/if}>{$paymentType.pt_description|htmlsafe}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -100,7 +100,7 @@
             </a>
         </div>
         {if $smarty.get.op == 'pay_selected_invoice'}
-            <input type="hidden" name="invoice_id" value="{$invoice.id|htmlsafe}"/>
+            <input type="hidden" name="invoice_id" value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}"/>
         {/if}
     </div>
 </form>

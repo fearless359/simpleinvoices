@@ -20,10 +20,12 @@ checkLogin();
 $biller_count   = Biller::count();
 $customer_count = Customer::count();
 $product_count  = Product::count();
+
+$first_run_wizard = false;
 if ($biller_count == 0 || $customer_count == 0 || $product_count == 0) {
     $first_run_wizard =true;
-    $smarty->assign("first_run_wizard",$first_run_wizard);
 }
+$smarty->assign("first_run_wizard",$first_run_wizard);
 
 $path1 = './extensions/sub_customers/include';
 $curr_path = get_include_path();

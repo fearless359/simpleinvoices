@@ -1,16 +1,19 @@
 <?php
 
-require_once(HTML2PS_DIR.'value.generic.percentage.php');
+require_once(HTML2PS_DIR . 'value.generic.percentage.php');
 
-class ValueMaxHeight extends CSSValuePercentage {
-  function fromString($value) {
-    $valueMaxHeight = new ValueMaxHeight();
-    return CSSValuePercentage::_fromString($value, $valueMaxHeight);
-  }
+class ValueMaxHeight extends CSSValuePercentage
+{
+    public static function fromString($value)
+    {
+        $valueMaxHeight = new ValueMaxHeight();
+        return CSSValuePercentage::_fromString($value, $valueMaxHeight);
+    }
 
-  function &copy() {
-    $valueMaxHeight = new ValueMaxHeight();
-    $value =& parent::_copy($valueMaxHeight);
-    return $value;
-  }
+    function &copy()
+    {
+        $valueMaxHeight = new ValueMaxHeight();
+        $value =& parent::_copy($valueMaxHeight);
+        return $value;
+    }
 }

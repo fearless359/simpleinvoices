@@ -90,7 +90,6 @@
             <td colspan="5">{$biller.custom_field4|htmlsafe}</td>
         </tr>
     {/if}
-    {* {showCustomFields categorieId="1" itemId=$biller.id } *}
     <tr>
         <td colspan="6"><br/></td>
     </tr>

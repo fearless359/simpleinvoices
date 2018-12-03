@@ -244,6 +244,7 @@ class export {
                     if (!is_array($plugins_dirs)) $plugins_dirs = array($plugins_dirs);
                     $plugins_dirs[] = $template_plugins_dir;
                     $smarty->setPluginsDir($plugins_dirs);
+                    Log::out("export.php: plugins_dirs - " . print_r($plugins_dirs,true));
                 }
 
                 $data = $smarty->fetch($templatePath);

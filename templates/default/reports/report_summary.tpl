@@ -3,7 +3,7 @@
 <table class="center">
     <tr>
         <td>Start date (YYYY-MM-DD)
-                <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{$start_date}' />   
+                <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{if isset($start_date)}{$start_date}{/if}' />
          </td>
         <td>
             &nbsp;
@@ -13,7 +13,7 @@
             &nbsp;
         </td>
         <td>End date (YYYY-MM-DD)
-          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{$end_date}' />   
+          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{if isset($end_date)}{$end_date}{/if}' />
         </td>
     </tr>
 </table>
@@ -30,7 +30,7 @@
     </tr>
 </table>
 </form>
-<div id="top"><h3>Expense account summary for the period {$start_date} to {$end_date}</h3></div>
+<div id="top"><h3>Expense account summary for the period {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}</h3></div>
 
 <table class="center">
     <tr>
@@ -109,7 +109,7 @@
  {/foreach}
  </table>
 
-<div id="top"><h3>Invoice/Quote summary for the period {$start_date} to {$end_date}</h3></div>
+<div id="top"><h3>Invoice/Quote summary for the period {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}</h3></div>
 
 <table class="center">
     <tr>
@@ -146,7 +146,7 @@
         <tr><td><br /></td></tr>
     {/if}
     <tr>
-        <td class="details_screen">{$index}
+        <td class="details_screen">{if isset($index)}{$index}{/if}
             {$invoices[invoice].preference}
             {$invoices[invoice].index_id}
         </td>
@@ -179,7 +179,7 @@
  </table>
 
 
-<div id="top"><h3>Payment summary for the period {$start_date} to {$end_date}</h3></div>
+<div id="top"><h3>Payment summary for the period {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}</h3></div>
 
 <table class="center">
     <tr>

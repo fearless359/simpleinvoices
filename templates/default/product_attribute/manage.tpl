@@ -14,7 +14,7 @@
 */
 *}
 <div class="si_toolbar si_toolbar_top">
-  <a href="index.php?module=product_attribute&view=add" class="">
+  <a href="index.php?module=product_attribute&amp;view=add" class="">
     <img src="images/common/add.png" alt="" />
     {$LANG.add_product_attribute}
   </a>

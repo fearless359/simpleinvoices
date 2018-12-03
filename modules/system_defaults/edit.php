@@ -148,7 +148,7 @@ switch ($get_val) {
             foreach ($payments as $payment) {
                 $selected = $payment['pt_id'] == $defaults['payment_type'] ? " selected style='font-weight: bold'" : "";
                 $escaped = htmlsafe($payment['pt_description']);
-                $value .= '  <option' . $selected . ' value="' . $payment['pt_id'] . '}">' . "\n";
+                $value .= '  <option' . $selected . ' value="' . $payment['pt_id'] . '">' . "\n";
                 $value .= '    ' . $escaped . "\n";
                 $value .= '  </option>' . "\n";
             }

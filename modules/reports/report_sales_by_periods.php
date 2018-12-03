@@ -1,20 +1,21 @@
 <?php
 /*
-* Script: report_sales_by_period.php
-* 	Sales reports by period add page
-*
-* Authors:
-*	 Justin Kelly
-*	Francois Dechery, aka Soif
-*
-* Last edited:
-* 	 2008-05-13
-*
-* License:
-*	 GPL v3
-*
-* Website:
-* 	https://simpleinvoices.group*/
+ *  Script: report_sales_by_period.php
+ * 	    Sales reports by period add page
+ *
+ *  Authors:
+ *	    Justin Kelly
+ *	    Francois Dechery, aka Soif
+ *
+ *  Last edited:
+ * 	    2018-12-01 by Richard Rowley
+ *
+ *  License:
+ *	    GPL v3
+ *
+ *  Website:
+ * 	    https://simpleinvoices.group
+ */
 
 checkLogin();
 
@@ -84,7 +85,10 @@ while($year <= $this_year) {
         $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
 
         $data['sales']['months'     ][$month][$year] = $rows[0]['month_total'];
-        $data['sales']['months_rate'][$month][$year] = _myRate($data['sales']['months'][$month][$year], $data['sales']['months'][$month][$year - 1]);
+//error_log("month($month] year[$year] data - " . print_r($data,true));
+        $data['sales']['months_rate'][$month][$year] =
+            _myRate($data['sales']['months'][$month][$year],
+                (isset($data['sales']['months'][$month][$year - 1]) ? $data['sales']['months'][$month][$year - 1] : null));
 
         // Monthly Payment ----------------------------
         $pdoDb->addToFunctions(new FunctionStmt("SUM", new DbField("ac_amount"), "month_total_payments"));
@@ -94,7 +98,9 @@ while($year <= $this_year) {
         $rows = $pdoDb->request("SELECT", "payment");
 
         $data['payments']['months'     ][$month][$year] = $rows[0]['month_total_payments'];
-        $data['payments']['months_rate'][$month][$year] = _myRate($data['payments']['months'][$month][$year], $data['payments']['months'][$month][$year - 1]);
+        $data['payments']['months_rate'][$month][$year] =
+            _myRate($data['payments']['months'][$month][$year],
+                    isset($data['payments']['months'][$month][$year - 1]) ? $data['payments']['months'][$month][$year - 1] : null);
 
         $month++;
     }
@@ -118,7 +124,9 @@ while($year <= $this_year) {
     $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
 
     $data['sales']['total'     ][$year] = $rows[0]['year_total'];
-    $data['sales']['total_rate'][$year] = _myRate($data['sales']['total'][$year], $data['sales']['total'][$year - 1]);
+    $data['sales']['total_rate'][$year] =
+        _myRate($data['sales']['total'][$year],
+                isset($data['sales']['total'][$year - 1]) ? $data['sales']['total'][$year - 1] : null);
 
     // Total Annual Payment ----------------------------
     $pdoDb->addToFunctions(new FunctionStmt("SUM", "ac_amount", "year_total_payments"));
@@ -127,7 +135,9 @@ while($year <= $this_year) {
     $rows = $pdoDb->request("SELECT", "payment");
 
     $data['payments']['total'     ][$year] = $rows[0]['year_total_payments'];
-    $data['payments']['total_rate'][$year] = _myRate($data['payments']['total'][$year], $data['payments']['total'][$year - 1]);
+    $data['payments']['total_rate'][$year] =
+        _myRate($data['payments']['total'][$year],
+                isset($data['payments']['total'][$year - 1]) ? $data['payments']['total'][$year - 1] : null);
 
     $years[] = $year;
     $year++;

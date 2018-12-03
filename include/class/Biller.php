@@ -3,6 +3,26 @@
 class Biller
 {
     /**
+     * Calculate the number of invoices in the database
+     * @return integer Count of invoices in the database
+     */
+    public static function count()
+    {
+        global $pdoDb;
+
+        $count = 0;
+        try {
+            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
+            $rows = $pdoDb->request("SELECT", "biller");
+            $count = $rows[0]['count'];
+        } catch(PdoDbException $pde) {
+            error_log("Biller::count() - error: " . $pde->getMessage());
+        }
+        return $count;
+    }
+
+    /**
      * Get all biller records.
      * @param boolean $active_only Set to <b>true</b> to get active billers only.
      *        Set to <b>false</b> or don't specify anything if you want all billers.
@@ -33,33 +53,6 @@ class Biller
             error_log("Biller::get_all() error: " . $pde->getMessage());
         }
         return $billers;
-    }
-
-    /**
-     * Retrieve a specified biller record.
-     * @param string $id ID of the biller to retrieve.
-     * @return array Associative array for record retrieved.
-     */
-    public static function select($id)
-    {
-        global $LANG, $pdoDb;
-
-        try {
-            $pdoDb->addSimpleWhere("domain_id", domain_id::get(), "AND");
-            $pdoDb->addSimpleWhere("id", $id);
-
-            $ca = new CaseStmt("enabled", "wording_for_enabled");
-            $ca->addWhen("=", ENABLED, $LANG['enabled']);
-            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($ca);
-
-            $pdoDb->setSelectAll(true);
-
-            $rows = $pdoDb->request("SELECT", "biller");
-        } catch (PdoDbException $pde) {
-            error_log("Biller::select(): id[$id] error: " . $pde->getMessage());
-        }
-        return (empty($rows) ? array() : $rows[0]);
     }
 
     /**
@@ -112,6 +105,33 @@ class Biller
     }
 
     /**
+     * Retrieve a specified biller record.
+     * @param string $id ID of the biller to retrieve.
+     * @return array Associative array for record retrieved.
+     */
+    public static function select($id)
+    {
+        global $LANG, $pdoDb;
+
+        try {
+            $pdoDb->addSimpleWhere("domain_id", domain_id::get(), "AND");
+            $pdoDb->addSimpleWhere("id", $id);
+
+            $ca = new CaseStmt("enabled", "wording_for_enabled");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $pdoDb->setSelectAll(true);
+
+            $rows = $pdoDb->request("SELECT", "biller");
+        } catch (PdoDbException $pde) {
+            error_log("Biller::select(): id[$id] error: " . $pde->getMessage());
+        }
+        return (empty($rows) ? array() : $rows[0]);
+    }
+
+    /**
      * Update <b>biller</b> table record.
      * @return boolean <b>true</b> if update successful
      */
@@ -136,26 +156,6 @@ class Biller
     }
 
     /**
-     * Calculate the number of invoices in the database
-     * @return integer Count of invoices in the database
-     */
-    public static function count()
-    {
-        global $pdoDb;
-
-        $count = 0;
-        try {
-            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
-            $pdoDb->addSimpleWhere("domain_id", domain_id::get());
-            $rows = $pdoDb->request("SELECT", "biller");
-            $count = $rows[0]['count'];
-        } catch(PdoDbException $pde) {
-            error_log("Biller::count() - error: " . $pde->getMessage());
-        }
-        return $count;
-    }
-
-    /**
      * Selection of record for the xml list screen
      * @param string $type - 'count' if only count of records desired, otherwise selection of records to display.
      * @param string $dir - Sort order (ASC or DESC)
@@ -164,7 +164,7 @@ class Biller
      * @param string $page - Pages processed.
      * @return mixed - Count if 'count' requested, Rows selected from biller table.
      */
-    function sql($type, $dir, $sort, $rp, $page)
+    public static function sql($type, $dir, $sort, $rp, $page)
     {
         global $LANG, $pdoDb;
 

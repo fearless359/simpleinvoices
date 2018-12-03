@@ -1,78 +1,91 @@
 <?php
 
-class CSSSubProperty extends CSSPropertyHandler {
-  var $_owner;
+class CSSSubProperty extends CSSPropertyHandler
+{
+    var $_owner;
 
-  function __construct(&$owner) {
-    $this->_owner =& $owner;
-  }
+    public function __construct(&$owner)
+    {
+        $this->_owner =& $owner;
+    }
 
-  function &get(&$state) {
-    $owner =& $this->owner();
-    $value =& $owner->get($state);
-    $subvalue =& $this->getValue($value);
-    return $subvalue;
-  }
+    public function &get(&$state)
+    {
+        $owner =& $this->owner();
+        $value =& $owner->get($state);
+        $subvalue =& $this->getValue($value);
+        return $subvalue;
+    }
 
-  function is_subproperty() { 
-    return true; 
-  }
+    public static function is_subproperty()
+    {
+        return true;
+    }
 
-  function &owner() { 
-    return $this->_owner; 
-  }
- 
-  function default_value() { 
-  }
+    function &owner()
+    {
+        return $this->_owner;
+    }
 
-  function inherit($old_state, &$new_state) { 
-  }
+// Commented out by RCR 20181129
+//    function default_value()
+//    {
+//    }
 
-  function inherit_text($old_state, &$new_state) { 
-  }
+    public function inherit($old_state, &$new_state)
+    {
+    }
 
-  function replace_array($value, &$state_array) {
-    $owner =& $this->owner();
+    public function inherit_text($old_state, &$new_state)
+    {
+    }
 
-    $owner_value = $state_array[$owner->getPropertyCode()];
+    public function replace_array($value, &$state_array)
+    {
+        $owner =& $this->owner();
 
-    if (is_object($owner_value)) {
-      $owner_value = $owner_value->copy();
-    };
+        $owner_value = $state_array[$owner->getPropertyCode()];
 
-    if (is_object($value)) {
-      $this->setValue($owner_value, $value->copy());
-    } else {
-      $this->setValue($owner_value, $value);
-    };
+        if (is_object($owner_value)) {
+            $owner_value = $owner_value->copy();
+        }
 
-    $state_array[$owner->getPropertyCode()] = $owner_value;
-  }
+        if (is_object($value)) {
+            $this->setValue($owner_value, $value->copy());
+        } else {
+            $this->setValue($owner_value, $value);
+        }
 
-  function replace($value, &$state) { 
-    $owner =& $this->owner();
-    $owner_value = $owner->get($state->getState());
+        $state_array[$owner->getPropertyCode()] = $owner_value;
+    }
 
-    if (is_object($owner_value)) {
-      $owner_value =& $owner_value->copy();
-    };
+    public function replace($value, &$state)
+    {
+        $owner =& $this->owner();
+        $owner_value = $owner->get($state->getState());
 
-    if (is_object($value)) {
-      $value_copy =& $value->copy();
-      $this->setValue($owner_value, $value_copy);
-    } else {
-      $this->setValue($owner_value, $value);
-    };
+        if (is_object($owner_value)) {
+            $owner_value =& $owner_value->copy();
+        }
 
-    $owner->replaceDefault($owner_value, $state);
-    $state->setPropertyDefaultFlag($this->getPropertyCode(), false);
-  }
+        if (is_object($value)) {
+            $value_copy =& $value->copy();
+            $this->setValue($owner_value, $value_copy);
+        } else {
+            $this->setValue($owner_value, $value);
+        }
 
-  function setValue(&$owner_value, &$value) {
-    error_no_method('setValue', get_class($this));
-  }
+        $owner->replaceDefault($owner_value, $state);
+        $state->setPropertyDefaultFlag($this->getPropertyCode(), false);
+    }
 
-  function &getValue(&$owner_value) {
-    error_no_method('getValue', get_class($this));
-  }
+    public function setValue(&$owner_value, &$value)
+    {
+        error_no_method('setValue', get_class($this));
+    }
+
+    public function &getValue(&$owner_value)
+    {
+        error_no_method('getValue', get_class($this));
+    }
 }

@@ -25,7 +25,8 @@ class Log
 
         // Create file if it doesn't exist.
         if (!is_file(self::$path)) {
-            if ($fp = fopen(self::$path, 'w') === false) {
+            $fp = fopen(self::$path, 'w');
+            if ($fp === false) {
                 SiError::out('notWritable', 'folder', self::$folder);
             } else {
                 fclose($fp);

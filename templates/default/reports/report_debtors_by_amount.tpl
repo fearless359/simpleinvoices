@@ -7,7 +7,6 @@
 			<th colspan="7">{$LANG.debtors_by_amount_owed}</th>
 		</tr>
 		<tr>
-			<th>{$LANG.invoice_id}</th>
 			<th>{$LANG.invoice}</th>
 			<th>{$LANG.biller}</th>
 			<th>{$LANG.customer}</th>
@@ -25,8 +24,9 @@
 	<tbody>
 	{foreach item=invoice from=$data}
 		<tr>
-			<td>{$invoice.id|htmlsafe}</td>
-			<td>{$invoice.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}</td>
+			<td style="text-align:right;">
+				<a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id}&amp;action=view">{$invoice.index_id|htmlsafe}</a>
+			</td>
 			<td>{$invoice.biller|htmlsafe}</td>
 			<td>{$invoice.customer|htmlsafe}</td>
 			<td>{$invoice.inv_total|siLocal_number:'2'|default:'0'}</td>

@@ -12,9 +12,6 @@
 *}
 
 <form name="frmpost" action="index.php?module=invoices&amp;view=save" method="POST">
-    <!--
-<h3>{$LANG.inv} {$LANG.inv_total}</h3>
--->
     <div class="si_invoice_form">
         {include file="$path/header.tpl" }
         <table id="itemtable" class="si_invoice_items">
@@ -23,7 +20,7 @@
             </tr>
             <tr>
                 <td class="si_invoice_notes">
-                    <textarea class="editor" name="description" rows="10" cols="100%">{$defaultInvoice.note}</textarea>
+                    <textarea class="editor" name="description" rows="10" cols="100%">{if isset($defaultInvoice.note)}{$defaultInvoice.note}{/if}</textarea>
                 </td>
             </tr>
         </table>
@@ -38,8 +35,8 @@
 
             <tr class="si_invoice_total">
                 <td><input type="text" class="si_right validate[required]" name="unit_price" id="unit_price0" size="15"
-                    value="{if $defaultInvoiceItems[0].unit_price}{$defaultInvoiceItems[0].unit_price|siLocal_number}{/if}"/></td>
-                {if $taxes == null }
+                    value="{if isset($defaultInvoiceItems[0].unit_price)}{$defaultInvoiceItems[0].unit_price|siLocal_number}{/if}"/></td>
+                {if !isset($taxes) }
                     <td><p><em>{$LANG.no_taxes}</em></p></td>
                 {else}
                     {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
@@ -49,7 +46,7 @@
                                     name="tax_id[{$smarty.section.line.index|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
                                 <option value=""></option>
                                 {foreach from=$taxes item=tax}
-                                    <option value="{$tax.tax_id|htmlsafe}"
+                                    <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}"
                                             {if $tax.tax_id == $defaultInvoiceItems[0].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlsafe}</option>
                                 {/foreach}
                             </select>
@@ -62,12 +59,12 @@
             <tr class=""si_invoice_total">
                 <th class="">{$LANG.inv_pref}</th>
                 <td>
-                    {if $preferences == null }
+                    {if !isset($preferences) }
                         <p><em>{$LANG.no_preferences}</em></p>
                     {else}
                         <select name="preference_id">
                             {foreach from=$preferences item=preference}
-                                <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{$preference.pref_id|htmlsafe}">
+                                <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">
                                     {$preference.pref_description|htmlsafe}
                                 </option>
                             {/foreach}
@@ -77,7 +74,7 @@
                 <th>{$LANG.sales_representative}</th>
                 <td>
                     <input id="sales_representative}" name="sales_representative" size="30"
-                           value="{$defaultInvoice.sales_representative|htmlsafe}" />
+                           value="{if  isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlsafe}{/if}" />
                 </td>
             </tr>
 
@@ -106,6 +103,6 @@
             </a>
         </div>
     </div>
-    <input type="hidden" name="max_items" value="{$smarty.section.line.index|htmlsafe}"/>
+    <input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlsafe}{/if}"/>
     <input type="hidden" name="type" value="1"/>
 </form>

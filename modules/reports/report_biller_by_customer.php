@@ -35,6 +35,9 @@ GROUP BY
 
 	  array_push($billers[$customer['Biller']]['customers'], $c);
 
+	  if (!isset($customer['Biller']['total_sales'])) {
+          $billers[$customer['Biller']]['total_sales'] = 0;
+	  }
 	  $billers[$customer['Biller']]['total_sales'] += $customer['SUM_TOTAL'];
 
 	  $total_sales += $customer['SUM_TOTAL'];

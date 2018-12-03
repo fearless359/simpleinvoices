@@ -20,99 +20,99 @@
   <div class="si_form si_form_view">
     <table>
       <tr>
-        <th>{$LANG.biller_name}</th>
+        <th>{$LANG.biller_name}: </th>
         <td>{$biller.name}</td>
       </tr>
       <tr>
-        <th>{$LANG.street}</th>
+        <th>{$LANG.street}: </th>
         <td>{$biller.street_address}</td>
       </tr>
       <tr>
-        <th>{$LANG.street2}</th>
+        <th>{$LANG.street2}: </th>
         <td>{$biller.street_address2}</td>
       </tr>
       <tr>
-        <th>{$LANG.city}</th>
+        <th>{$LANG.city}: </th>
         <td>{$biller.city}</td>
       </tr>
       <tr>
-        <th>{$LANG.zip}</th>
+        <th>{$LANG.zip}: </th>
         <td>{$biller.zip_code}</td>
       </tr>
       <tr>
-        <th>{$LANG.state}</th>
+        <th>{$LANG.state}: </th>
         <td>{$biller.state}</td>
       </tr>
       <tr>
-        <th>{$LANG.country}</th>
+        <th>{$LANG.country}: </th>
         <td>{$biller.country}</td>
       </tr>
       <tr>
-        <th>{$LANG.mobile_phone}</th>
+        <th>{$LANG.mobile_phone}: </th>
         <td>{$biller.mobile_phone}</td>
       </tr>
       <tr>
-        <th>{$LANG.phone}</th>
+        <th>{$LANG.phone}: </th>
         <td>{$biller.phone}</td>
       </tr>
       <tr>
-        <th>{$LANG.fax}</th>
+        <th>{$LANG.fax}: </th>
         <td>{$biller.fax}</td>
       </tr>
       <tr>
-        <th>{$LANG.email}</th>
+        <th>{$LANG.email}: </th>
         <td>{$biller.email}</td>
       </tr>
       <tr>
-      <th>{$LANG.signature}</th>
+      <th>{$LANG.signature}: </th>
       <td>{$biller.signature}</td>
     </tr>
     <tr>
-        <th>{$LANG.paypal_business_name}</th>
+        <th>{$LANG.paypal_business_name}: </th>
         <td>{$biller.paypal_business_name}</td>
       </tr>
       <tr>
-        <th>{$LANG.paypal_notify_url}</th>
+        <th>{$LANG.paypal_notify_url}: </th>
         <td>{$biller.paypal_notify_url}</td>
       </tr>
       <tr>
-        <th>{$LANG.paypal_return_url}</th>
+        <th>{$LANG.paypal_return_url}: </th>
         <td>{$biller.paypal_return_url}</td>
       </tr>
       <tr>
-        <th>{$LANG.eway_customer_id}</th>
+        <th>{$LANG.eway_customer_id}: </th>
         <td>{$biller.eway_customer_id}</td>
       </tr>
       <tr>
-        <th>{$LANG.paymentsgateway_api_id}</th>
+        <th>{$LANG.paymentsgateway_api_id}: </th>
         <td>{$biller.paymentsgateway_api_id}</td>
       </tr>
       {if !empty($customFieldLabel.biller_cf1)}
       <tr>
-        <th>{$customFieldLabel.biller_cf1|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf1|htmlsafe}: </th>
         <td>{$biller.custom_field1}</td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf2)}
       <tr>
-        <th>{$customFieldLabel.biller_cf2|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf2|htmlsafe}: </th>
         <td>{$biller.custom_field2}</td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf3)}
       <tr>
-        <th>{$customFieldLabel.biller_cf3|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf3|htmlsafe}: </th>
         <td>{$biller.custom_field3}</td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf4)}
       <tr>
-        <th>{$customFieldLabel.biller_cf4|htmlsafe}</th>
+        <th>{$customFieldLabel.biller_cf4|htmlsafe}: </th>
         <td>{$biller.custom_field4}</td>
       </tr>
       {/if}
       <tr>
-        <th>{$LANG.logo_file}</th>
+        <th>{$LANG.logo_file}: </th>
         <!-- <td><a href="templates/invoices/logos/{$biller.logo}" target="new">{$biller.logo}</a></td> -->
         <td>
           {if $biller.logo != ''}
@@ -123,16 +123,15 @@
         </td>
       </tr>
       <tr>
-        <th>{$LANG.invoice_footer}</th>
+        <th>{$LANG.invoice_footer}: </th>
         <td>{$biller.footer}</td>
       </tr>
       <tr>
-        <th>{$LANG.notes}</th>
+        <th>{$LANG.notes}: </th>
         <td>{$biller.notes}</td>
       </tr>
-      {* {showCustomFields categorieId="1" itemId=$smarty.get.id } *}
       <tr>
-        <th>{$LANG.enabled}</th>
+        <th>{$LANG.enabled}: </th>
         <td>{$biller.wording_for_enabled}</td>
       </tr>
     </table>
@@ -147,7 +146,7 @@
   {* ######################################################################################### *}
   {if $smarty.get.action== 'edit' }
   <div class="si_form">
-  <input type="hidden" name="domain_id" value="{$biller.domain_id}" />
+  <input type="hidden" name="domain_id" value="{if isset($biller.domain_id)}{$biller.domain_id}{/if}" />
     <table>
       <tr>
         <th>{$LANG.biller_name}
@@ -158,13 +157,13 @@
           </a>
         </th>
         <td><input type="text" name="name"
-                   value="{$biller.name|htmlsafe}" size="50" id="name"
+                   value="{if isset($biller.name)}{$biller.name|htmlsafe}{/if}" size="50" id="name"
                    class="validate[required]" /></td>
       </tr>
       <tr>
         <th>{$LANG.street}</th>
         <td><input type="text" name="street_address"
-                   value="{$biller.street_address|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.street_address)}{$biller.street_address|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.street2}
@@ -175,47 +174,47 @@
           </a>
         </th>
         <td><input type="text" name="street_address2"
-                   value="{$biller.street_address2|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.street_address2)}{$biller.street_address2|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.city}</th>
         <td><input type="text" name="city"
-                   value="{$biller.city|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.city)}{$biller.city|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.zip}</th>
         <td><input type="text" name="zip_code"
-                   value="{$biller.zip_code|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.zip_code)}{$biller.zip_code|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.state}</th>
         <td><input type="text" name="state"
-                   value="{$biller.state|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.state)}{$biller.state|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.country}</th>
         <td><input type="text" name="country"
-                   value="{$biller.country|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.country)}{$biller.country|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.mobile_phone}</th>
         <td><input type="text" name="mobile_phone"
-                   value="{$biller.mobile_phone|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.mobile_phone)}{$biller.mobile_phone|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.phone}</th>
         <td><input type="text" name="phone"
-                   value="{$biller.phone|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.phone)}{$biller.phone|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.fax}</th>
         <td><input type="text" name="fax"
-                   value="{$biller.fax|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.fax)}{$biller.fax|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.email}</th>
         <td><input type="text" name="email"
-                   value="{$biller.email|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.signature}
@@ -230,27 +229,27 @@
       <tr>
         <th>{$LANG.paypal_business_name}</th>
         <td><input type="text" name="paypal_business_name"
-                   value="{$biller.paypal_business_name|htmlsafe}" size="25" /></td>
+                   value="{if isset($biller.paypal_business_name)}{$biller.paypal_business_name|htmlsafe}{/if}" size="25" /></td>
       </tr>
       <tr>
         <th>{$LANG.paypal_notify_url}</th>
         <td><input type="text" name="paypal_notify_url"
-                   value="{$biller.paypal_notify_url|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.paypal_notify_url)}{$biller.paypal_notify_url|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.paypal_return_url}</th>
         <td><input type="text" name="paypal_return_url"
-                   value="{$biller.paypal_return_url|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.paypal_return_url)}{$biller.paypal_return_url|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.eway_customer_id}</th>
         <td><input type="text" name="eway_customer_id"
-                   value="{$biller.eway_customer_id|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.eway_customer_id)}{$biller.eway_customer_id|htmlsafe}{/if}" size="50" /></td>
       </tr>
       <tr>
         <th>{$LANG.paymentsgateway_api_id}</th>
         <td><input type="text" name="paymentsgateway_api_id"
-                   value="{$biller.paymentsgateway_api_id|htmlsafe}" size="50" /></td>
+                   value="{if isset($biller.paymentsgateway_api_id)}{$biller.paymentsgateway_api_id|htmlsafe}{/if}" size="50" /></td>
       </tr>
       {if !empty($customFieldLabel.biller_cf1)}
       <tr>
@@ -262,7 +261,7 @@
           </a>
         </th>
         <td><input type="text" name="custom_field1"
-                   value="{$biller.custom_field1|htmlsafe}" size="50"></td>
+                   value="{if isset($biller.custom_field1)}{$biller.custom_field1|htmlsafe}{/if}" size="50"></td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf2)}
@@ -275,7 +274,7 @@
           </a>
         </th>
         <td><input type="text" name="custom_field2"
-                   value="{$biller.custom_field2}" size="50"></td>
+                   value="{if isset($biller.custom_field2)}{$biller.custom_field2}{/if}" size="50"></td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf3)}
@@ -288,7 +287,7 @@
           </a>
         </th>
         <td><input type="text" name="custom_field3"
-                   value="{$biller.custom_field3|htmlsafe}" size="50"></td>
+                   value="{if isset($biller.custom_field3)}{$biller.custom_field3|htmlsafe}{/if}" size="50"></td>
       </tr>
       {/if}
       {if !empty($customFieldLabel.biller_cf4)}
@@ -301,7 +300,7 @@
           </a>
         </th>
         <td><input type="text" name="custom_field4"
-                   value="{$biller.custom_field4|htmlsafe}" size="50"></td>
+                   value="{if isset($biller.custom_field4)}{$biller.custom_field4|htmlsafe}{/if}" size="50"></td>
       </tr>
       {/if}
       <tr>
@@ -326,7 +325,6 @@
         <th>{$LANG.enabled}</th>
         <td>{html_options name=enabled options=$enabled selected=$biller.enabled}</td>
       </tr>
-      {* {showCustomFields categorieId="1" itemId=$smarty.get.id} *}
     </table>
     <div class="si_toolbar si_toolbar_form">
       <button type="submit" class="positive" name="save_biller" value="{$LANG.save_biller}">

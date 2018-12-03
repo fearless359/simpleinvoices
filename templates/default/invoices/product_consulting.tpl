@@ -1,21 +1,19 @@
 {*
-/*
-* Script: consulting.tpl
-* 	 Consulting invoice type template
-*
-* Authors:
-*	 Justin Kelly, Nicolas Ruflin
-*
-* Last edited:
-* 	 2007-07-18
-*
-* License:
-*	 GPL v2 or above
-*
-* Website:
-*	https://simpleinvoices.group
-*/
-*}
+ * Script: consulting.tpl
+ * 	 Consulting invoice type template
+ *
+ * Authors:
+ *	 Justin Kelly, Nicolas Ruflin
+ *
+ * Last edited:
+ * 	 2018-12-01 by Richard Rowley
+ *
+ * License:
+ *	 GPL v2 or above
+ *
+ * Website:
+ *	https://simpleinvoices.group
+ *}
 {* Note that frmpost_Validator() is generated at runtime using the jsFormValidationBegin() function*}
 <form name="frmpost" action="index.php?module=invoices&amp;view=save"
 	  method="post" onsubmit="return frmpost_Validator(this);">
@@ -39,7 +37,6 @@
 				<td><input type="text" name="description{$smarty.section.line.index|htmlsafe}" size="50" /></td>
 				<td><input type="text" name="price{$smarty.section.line.index|htmlsafe}" size="50" /></td>
             </tr>
-                
 			<tr class="text{$smarty.section.line.index|htmlsafe} hide">
         		<td colspan="3" >
 					<textarea class="detail"  name='notes{$smarty.section.line.index|htmlsafe}' rows="3" cols="80"
@@ -52,7 +49,6 @@
 	{$customFields.2}
 	{$customFields.3}
 	{$customFields.4}
-	{showCustomFields categorieId="4"}
 
 
 
@@ -63,15 +59,16 @@
 <tr>
         <td colspan="2"><textarea class="editor" name="note" rows="5" cols="70"></textarea></td>
 </tr>
-
-<tr><td class="details_screen">{$LANG.tax}</td><td><input type="text" name="tax" size="15" />
-
-{if $taxes == null }
+<tr>
+    <td class="details_screen">{$LANG.tax}</td>
+    <td>
+        <input type="text" name="tax" size="15" />
+        {if !isset($taxes) }
 	<p><em>{$LANG.no_taxes}</em></p>
 {else}
 	<select name="tax_id">
 	{foreach from=$taxes item=tax}
-		<option {if $tax.tax_id == $defaults.tax} selected {/if} value="{$tax.tax_id|htmlsafe}">{$tax.tax_description|htmlsafe}</option>
+		<option {if $tax.tax_id == $defaults.tax} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
 	{/foreach}
 	</select>
 {/if}
@@ -81,13 +78,12 @@
 
 <tr>
 <td class="details_screen">{$LANG.inv_pref}</td><td><input type="text" name="preference_id" />
-
-{if $preferences == null }
+    {if !isset($preferences) }
 	<p><em>{$LANG.no_preferences}</em></p>
 {else}
 	<select name="preference_id">
 	{foreach from=$preferences item=preference}
-		<option {if $preference.pref_id == $defaults.preference} selected {/if} value="{$preference.pref_id|htmlsafe}">{$preference.pref_description|htmlsafe}</option>
+		<option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
 	{/foreach}
 	</select>
 {/if}
@@ -99,17 +95,9 @@
 		<a class="cluetip" href="#"	rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}"><img src="{$help_image_path}help-small.png" alt="" /> {$LANG.want_more_fields}</a>
 	</td>
 </tr>
-<!--Add more line items while in an itemeised invoice - Get style - has problems- wipes the current values of the existing rows - not good
-<tr>
-<td>
-<a href="?get_num_line_items=10">Add 5 more line items<a>
-</tr>
--->
-</table>
-<!-- </div> -->
 <hr />
 <div style="text-align:center;">
-	<input type="hidden" name="max_items" value="{$smarty.section.line.index|htmlsafe}" />
+	<input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlsafe}{/if}" />
 	<input type="submit" name="submit" value="{$LANG.save_invoice}" />
 	<input type="hidden" name="type" value="4" />
 </div>

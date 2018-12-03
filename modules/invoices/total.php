@@ -13,18 +13,15 @@
  *	 GPL v2 or above
  *
  * Website:
- * 	https://simpleinvoices.group */
+ * 	https://simpleinvoices.group
+ */
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-
 checkLogin();
-
-$pageActive = "invoices";
-$smarty->assign('pageActive', $pageActive);
 
 include('./modules/invoices/invoice.php');
 
-$smarty -> assign('pageActive', 'invoice_new');
-$smarty -> assign('subPageActive', 'invoice_new_total');
-$smarty -> assign('active_tab', '#money');
+$smarty->assign('pageActive', 'invoice_new');
+$smarty->assign('subPageActive', 'invoice_new_total');
+$smarty->assign('active_tab', '#money');

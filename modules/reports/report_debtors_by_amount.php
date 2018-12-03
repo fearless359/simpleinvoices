@@ -21,7 +21,7 @@ LEFT JOIN (SELECT ac_inv_id, domain_id, SUM(COALESCE(ac_amount, 0)) AS inv_paid
 WHERE pr.status = 1
     AND iv.domain_id = :domain_id
 GROUP BY iv.id
-ORDER BY inv_owing DESC;";
+ORDER BY inv_owing DESC, iv.index_id DESC;";
 
 $invoice_results = dbQuery($sql, ':domain_id', $auth_session->domain_id);
 

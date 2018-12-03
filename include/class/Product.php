@@ -5,11 +5,14 @@ class Product {
      */
     public static function count() {
         global $pdoDb;
+        $count = 0;
         try {
             $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
             $pdoDb->addSimpleWhere("domain_id", domain_id::get());
             $rows = $pdoDb->request("SELECT", "products");
-            $count = (empty($rows) ? 0 : $rows[0]['count']);
+            if (!empty($rows)) {
+                $count = $rows[0]['count'];
+            }
         } catch (PdoDbException $pde) {
             error_log("Product::count() - error: " . $pde->getMessage());
             $count = 0;
@@ -172,7 +175,6 @@ class Product {
      *        visible or DISABLED (0) for not visible.
      * @return int New ID if insert OK. 0 if insert failed.
      * @throws PdoDbException
-     * @throws Zend_Locale_Exception
      */
     public static function insertProduct($enabled=ENABLED, $visible=ENABLED) {
         global $pdoDb;

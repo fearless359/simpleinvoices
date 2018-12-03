@@ -1,4 +1,4 @@
-{if $payment == null}
+{if !isset($payment)}
   <meta http-equiv="refresh" content="5;URL=index.php?module=invoices&amp;view=manage" />
   <div class='si_message_error'>{$LANG['zero_invoice_amt']}</div>
 {else}
@@ -44,7 +44,7 @@
       </tr>
     </table>
     <div class="si_toolbar si_toolbar_form">
-      <a href="index.php?module=payments&view=manage" class="negative"><img src="images/common/cross.png" alt="" />{$LANG.cancel}</a>
+      <a href="index.php?module=payments&amp;view=manage" class="negative"><img src="images/common/cross.png" alt="" />{$LANG.cancel}</a>
     </div>
   </div>
 {/if}

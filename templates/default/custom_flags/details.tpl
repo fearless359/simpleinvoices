@@ -21,7 +21,7 @@
                     <td>{$cflg.flg_id|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.field_label}</th>
+                    <th>{$LANG.field_label_upper}</th>
                     <td>{$cflg.field_label|htmlsafe}</td>
                 </tr>
                 <tr>
@@ -29,7 +29,7 @@
                     <td>{$cflg.wording_for_enabled|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.field_help}</th>
+                    <th>{$LANG.field_help_upper}</th>
                     <td>{$cflg.field_help|htmlsafe}</td>
                 </tr>
             </table>
@@ -40,7 +40,7 @@
                 <img src="images/famfam/report_edit.png" alt=""/>
                 {$LANG.edit}
             </a>
-            <a href="index.php?module=custom_flags&view=manage" class="negative">
+            <a href="index.php?module=custom_flags&amp;view=manage" class="negative">
                 <img src="images/common/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>

@@ -83,7 +83,7 @@
 	<table class="center">
 	<tr>
 		<td class="details_screen">{$LANG.product_description}</td>
-		<td><input type="text" name="description" size="50" value="{$product.description}" id="description" class="required" onblur="checkField(this);"/></td>
+		<td><input type="text" name="description" size="50" value="{if isset($product.description)}{$product.description}{/if}" id="description" class="required" onblur="checkField(this);"/></td>
 	</tr>
 	<tr>
 		<td class="details_screen">{$LANG.product_unit_price}</td>
@@ -94,7 +94,7 @@
 		<td>
 		<select name="default_tax_id">
 			{foreach from=$taxes item=tax}
-            <option value="{$tax.tax_id}" {if $tax.tax_id == $product.default_tax_id}selected{/if}>
+            <option value="{if isset($tax.tax_id)}{$tax.tax_id}{/if}" {if $tax.tax_id == $product.default_tax_id}selected{/if}>
               {$tax.tax_description}
             </option>
 			{/foreach}
@@ -113,7 +113,7 @@
 		<select name="custom_field1">
 				<option value=""></option>
 			{foreach from=$product_group item=pg}
-				<option value="{$pg.name}" {if $pg.name == $product.custom_field1}selected{/if}>{$pg.name}</option>
+				<option value="{if isset($pg.name)}{$pg.name}{/if}" {if $pg.name == $product.custom_field1}selected{/if}>{$pg.name}</option>
 			{/foreach}
 		</select>
 		</td>
@@ -127,7 +127,7 @@
           <img src="{$help_image_path}help-small.png" alt="" />
         </a>
 		</td>
-		<td><input type="text" name="custom_field2" size="50" value="{$product.custom_field2}" /></td>
+		<td><input type="text" name="custom_field2" size="50" value="{if isset($product.custom_field2)}{$product.custom_field2}{/if}" /></td>
 	</tr>
     {/if}
     {if !empty($customFieldLabel.product_cf3)}
@@ -138,7 +138,7 @@
 		  <img src="{$help_image_path}help-small.png" alt="" />
         </a>
 		</td>
-		<td><input type="text" name="custom_field3" size="50" value="{$product.custom_field3}" /></td>
+		<td><input type="text" name="custom_field3" size="50" value="{if isset($product.custom_field3)}{$product.custom_field3}{/if}" /></td>
 	</tr>
     {/if}
     {if !empty($customFieldLabel.product_cf4)}
@@ -149,7 +149,7 @@
           <img src="{$help_image_path}help-small.png" alt="" />
         </a>
 		</td>
-		<td><input type="text" name="custom_field4" size="50" value="{$product.custom_field4}" /></td>
+		<td><input type="text" name="custom_field4" size="50" value="{if isset($product.custom_field4)}{$product.custom_field4}{/if}" /></td>
 	</tr>
     {/if}
 	{*	{showCustomFields categorieId="3" itemId=$smarty.get.id } *}

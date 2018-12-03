@@ -3,12 +3,11 @@
  * Script: report_past_due.php collecting past due information.
  * Author: Richard Rowley
  */
-global $menu, $smarty;
+global $config, $menu, $smarty;
 
 checkLogin();
-$language = $smarty->tpl_vars['defaults']->language;
 
-$cust_info = CustomersPastDue::getCustInfo($language);
+$cust_info = CustomersPastDue::getCustInfo($config->local->locale);
 $smarty->assign('cust_info', $cust_info);
 
 $smarty->assign('pageActive', 'report');

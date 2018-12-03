@@ -7,7 +7,7 @@
       {/if}
       </th>
       {foreach item=year from=$years}
-        <th><b>{$year|htmlsafe}</b></th>
+        <th><b>{if isset($year)}{$year|htmlsafe}{/if}</b></th>
         {if $show_rates}<th class="rate"></th>{/if}
       {/foreach}
     </tr>

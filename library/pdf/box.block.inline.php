@@ -18,7 +18,7 @@ class InlineBlockBox extends GenericContainerBox {
      * @see InlineBlockBox::InlineBlockBox()
      * @see GenericContainerBox::create_content()
      */
-    public function &create(&$root, &$pipeline) {
+    public static function &create(&$root, &$pipeline) {
         $box = new InlineBlockBox();
         $box->readCSS($pipeline->getCurrentCSSState());
         $box->create_content($root, $pipeline);

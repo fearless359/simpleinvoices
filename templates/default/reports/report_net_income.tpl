@@ -20,7 +20,7 @@
             <td>
                 <input type="text"
                        class="validate[required,custom[date],length[0,10]] date-picker"
-                       size="10" name="start_date" id="date1" value='{$start_date}'/>
+                       size="10" name="start_date" id="date1" value='{if isset($start_date)}{$start_date}{/if}'/>
             </td>
         </tr>
         <tr style="margin: 0 auto; width: 100%;">
@@ -30,7 +30,7 @@
             <td>
                 <input type="text"
                        class="validate[required,custom[date],length[0,10]] date-picker"
-                       size="10" name="end_date" id="date2" value='{$end_date}'/>
+                       size="10" name="end_date" id="date2" value='{if isset($end_date)}{$end_date}{/if}'/>
             </td>
         </tr>
         <tr>
@@ -53,7 +53,7 @@
         <tr>
             <td class="details_screen">Display Detail</td>
             <td><input type="checkbox" name="display_detail"
-                        {if $smarty.post.display_detail == "yes"} checked {/if} value="yes"/>
+                        {if isset($smarty.post.display_detail) && $smarty.post.display_detail == "yes"} checked {/if} value="yes"/>
             </td>
         </tr>
         <tr>
@@ -74,15 +74,15 @@
     </table>
     <br/>
     <br/>
-    {if $smarty.post.submit == null}
+    {if !isset($smarty.post.submit)}
         <br/>
         <br/>
     {/if}
 </form>
-{if $smarty.post.submit != null OR $view == export}
+{if isset($smarty.post.submit) || $view == export}
     <div style="text-align: center;">
         <strong>
-            {$LANG.total_income}&nbsp;{$LANG.for_the_period_upper}:&nbsp;&#36;{$tot_income|siLocal_number}
+            {$LANG.total_income}&nbsp;{$LANG.for_the_period_upper}:&nbsp;&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}
         </strong>
     </div>
     <br/>
@@ -106,7 +106,7 @@
         {section name=idx loop=$invoices}
             <tr>
                 <td class="details_screen" style="text-align:right;">
-                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoices[idx]->number}&amp;action=view">
+                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoices[idx]->id}&amp;action=view">
                         {$invoices[idx]->number}
                     </a>
                 </td>
@@ -143,7 +143,7 @@
 
         <tr>
             <td colspan="10">&nbsp;</td>
-            <td class="details_screen" style="text-align:right;">&#36;{$tot_income|siLocal_number}</td>
+            <td class="details_screen" style="text-align:right;">&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}</td>
         </tr>
 
         </tbody>

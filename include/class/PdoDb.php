@@ -34,15 +34,30 @@ class PdoDb {
     private $fieldPrefix;
     private $functions;
     private $groupBy;
+    /**
+     * @var Havings
+     */
     private $havings;
+    /**
+     * @var Join
+     */
     private $joinStmts;
     private $keyPairs;
     private $lastCommand;
     private $limit;
     private $noErrorLog;
     private $onDuplicateKey;
+    /**
+     * @var OrderBy
+     */
     private $orderBy;
+    /**
+     * @var PdoDb
+     */
     private $pdoDb;
+    /**
+     * @var PdoDb
+     */
     private $pdoDb2;
     private $saveLastCommand;
     private $selectAll;
@@ -54,6 +69,9 @@ class PdoDb {
     private $table_schema;
     private $transaction;
     private $usePost;
+    /**
+     * @var WhereClause
+     */
     private $whereClause;
 
     /**
@@ -121,7 +139,7 @@ class PdoDb {
         $this->fieldPrefix      = null;
         $this->functions        = null;
         $this->groupBy          = null;
-        $this->havings          = new Havings();
+        $this->havings          = null;
         $this->joinStmts        = null;
         $this->keyPairs         = null;
         $this->lastCommand      = "";
@@ -138,7 +156,11 @@ class PdoDb {
         $this->usePost          = true;
         $this->whereClause      = null;
         if ($clearTran && $this->transaction) {
+            try {
             $this->rollback();
+            } catch (PdoDbException $pde) {
+                error_log("PdoDb::clearAll() - Error: " . $pde->getMessage());
+            }
         }
         // @formatter:on
     }
@@ -266,7 +288,7 @@ class PdoDb {
 
     /**
      * Set the <b>WHERE</b> clause object to generate when the next request is performed.
-     * @param Object $where Either an instance of <i>WhereItem</i> or <i>WhereClause</i>.
+     * @param WhereClause/WhereItem $where Either an instance of <i>WhereItem</i> or <i>WhereClause</i>.
      *        Note: If a <i>WhereItem</i> is submitted, it will be added to the <i>WhereClause</i>.
      *        If a <i>WhereClause</i> is submitted, it will be set as the initial value replacing
      *        any previously set values.
@@ -282,6 +304,8 @@ class PdoDb {
         } else if (is_a($where, "WhereClause")) {
             $this->whereClause = $where;
         } else {
+            error_log("PdoDb::addToWhere() - where - " . print_r($where,true));
+            error_log(print_r(debug_backtrace(),true));
             throw new PdoDbException("PdoDb.php - addToWhere(): Item must be an object of WhereItem or WhereClause");
         }
     }
@@ -391,11 +415,10 @@ class PdoDb {
      * @param CaseStmt $caseStmt Object to build a <b>CASE</b> statement from.
      */
     public function addToCaseStmts(CaseStmt $caseStmt) {
-        if (isset($this->caseStmt)) {
-            $this->caseStmts[] = $caseStmt;
-        } else {
-            $this->caseStmts = array($caseStmt);
+        if (!isset($this->caseStmts)) {
+            $this->caseStmts = array();
         }
+        $this->caseStmts[] = $caseStmt;
     }
 
     /**
@@ -496,17 +519,20 @@ class PdoDb {
      * @throws PdoDbException
      */
     public function setSimpleHavings($field, $operator, $value, $connector="") {
-        $this->havings[] = new Having($field, $operator, $value, $connector);
+        $having = new Having(false, $field, $operator, $value, false, $connector);
+        $this->setHavings($having);
     }
 
     /**
      * Set the <b>HAVING</b> statement object generate when the next <b>request</b> is performed.
      * Note: This method can be called multiple times to add additional values.
-     * @param havings $havings <b>HAVING</b> or <b>HAVINGS</b> object to add.
+     * @param Having/Havings $havings <b>HAVING</b> or <b>HAVINGS</b> object to add.
      * @throws PdoDbException If parameter is not valid.
      */
     public function setHavings($havings) {
-        if (!isset($this->havings)) $this->havings = new Havings();
+        if (!isset($this->havings)) {
+            $this->havings = new Havings();
+        }
         if (is_a($havings,"Having") || is_a($havings, "Havings")) {
             $this->havings->addHavings($havings);
         } else {
@@ -616,9 +642,11 @@ class PdoDb {
      */
     public function setSelectList($selectList) {
         if (!isset($this->selectList)) $this->selectList = array();
-        if (is_array($selectList)) {
+        if (is_a($selectList, "DbField")) {
+            $this->selectList[] = $selectList;
+        } else if (is_array($selectList)) {
             $this->selectList = array_merge($this->selectList, $selectList);
-        } else if (is_string($selectList) || is_a($selectList, "DbField")) {
+        } else if (is_string($selectList)) {
             $this->selectList[] = $selectList;
         } else {
             $str = "PdoDb setSelectList(): Invalid parameter type. " . print_r($selectList, true);
@@ -658,7 +686,7 @@ class PdoDb {
                 // Walk the array to see if we can add single-quotes to strings
                 // The $k == $k test is to remove an unused warning.
                 $count = null;
-                array_walk($values, function(&$v, $k) { if ($k == $k && !is_numeric($v) && $v!="NULL") $v = "'".$v."'";});
+                array_walk($values, function(&$v, $k) { if ($k == $k && $v != "NULL" && !is_numeric($v) && !is_array($v) && !is_object($v)) $v = "'".$v."'";});
                 $sql = preg_replace($keys, $values, $sql, 1, $count);
 
                 // Compact query to be logged
@@ -975,7 +1003,7 @@ class PdoDb {
                         $constraint = preg_replace('/~/', $column, $constraint);
                     }
 
-                    $sql .= "ALTER TABLE `$table` $constraint;";
+                    $sql .= "ALTER TABLE `$table` {$constraint};";
                 }
             } else if ($request == "CREATE TABLE") {
                 foreach ($this->table_columns as $column => $structure) {
@@ -1054,11 +1082,11 @@ class PdoDb {
                 break;
 
             case "CREATE TABLE":
-                $sql = "CREATE TABLE `$table` $sql";
+                $sql = "CREATE TABLE `{$table}` $sql";
                 break;
 
             case "DROP":
-                $sql = "DROP TABLE IF EXISTS `$table` $sql";
+                $sql = "DROP TABLE IF EXISTS `{$table}` $sql";
                 break;
 
             case "SELECT":
@@ -1123,15 +1151,15 @@ class PdoDb {
                 break;
 
             case "INSERT":
-                $sql  = "INSERT INTO `$table` \n";
+                $sql  = "INSERT INTO `{$table}` \n";
                 break;
 
             case "UPDATE":
-                $sql  = "UPDATE `$table` SET \n";
+                $sql  = "UPDATE `{$table}` SET \n";
                 break;
 
             case "DELETE":
-                $sql  = "DELETE FROM `$table` \n";
+                $sql  = "DELETE FROM `{$table}` \n";
                 break;
 
             default:

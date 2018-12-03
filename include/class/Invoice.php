@@ -279,9 +279,9 @@ class Invoice {
                                   'customer_id'        => $_POST['customer_id'],
                                   'preference_id'      => $_POST['preference_id'],
                                   'date'               => sqlDateWithTime($_POST['date']),
-                                  'note'               => trim($_POST['note']),
                                   'last_activity_date' => $last_activity_date,
                                   'owing'              => '1', // force update of aging information
+                                  'note'               => (empty($_POST['note']         ) ? "" : trim($_POST['note'])   ),
                                   'custom_field1'      => (isset($_POST['custom_field1']) ? $_POST['custom_field1'] : ''),
                                   'custom_field2'      => (isset($_POST['custom_field2']) ? $_POST['custom_field2'] : ''),
                                   'custom_field3'      => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ''),

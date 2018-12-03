@@ -11,10 +11,11 @@ $taxes       = Taxes::getTaxes();
 $products    = Product::select_all();
 $preferences = Preferences::getPreferences();
 
+$first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
     $first_run_wizard =true;
-    $smarty->assign("first_run_wizard",$first_run_wizard);
 }
+$smarty->assign("first_run_wizard",$first_run_wizard);
 
 $smarty->assign("billers"    , $billers);
 $smarty->assign("customers"  , $customers);

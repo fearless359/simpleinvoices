@@ -17,7 +17,6 @@
    $product_result = dbQuery($sql, ':domain_id', $auth_session->domain_id);
 
    $customers = array();
-
    while($product = $product_result->fetch()) {
       $p = array();
       $p['description'] = $product['description'];
@@ -31,6 +30,9 @@
 
       array_push($customers[$product['name']]['products'], $p);
 
+      if (!isset($customers[$product['name']]['total_quantity'])) {
+          $customers[$product['name']]['total_quantity'] = 0;
+      }
       $customers[$product['name']]['total_quantity'] += $product['sum_quantity'];
    }
 
@@ -38,4 +40,3 @@
 
    $smarty -> assign('pageActive', 'report');
    $smarty -> assign('active_tab', '#home');
-?>

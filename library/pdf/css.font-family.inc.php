@@ -1,50 +1,57 @@
 <?php
 
-class CSSFontFamily extends CSSSubFieldProperty {
-  function default_value() {
-    return 'times';
-  }
-
-  function parse($value) {
-    if ($value == 'inherit') {
-      return CSS_PROPERTY_INHERIT;
+class CSSFontFamily extends CSSSubFieldProperty
+{
+    public static function default_value()
+    {
+        return 'times';
     }
 
-    $subvalues = preg_split("/\s*,\s*/",$value);
+    public static function parse($value)
+    {
+        if ($value == 'inherit') {
+            return CSS_PROPERTY_INHERIT;
+        }
 
-    foreach ($subvalues as $subvalue) {
-      $subvalue = trim(strtolower($subvalue));   
-    
-      // Check if current subvalue is not empty (say, in case of 'font-family:;' or 'font-family:family1,,family2;')
-      if ($subvalue !== "") {
+        $subvalues = preg_split("/\s*,\s*/", $value);
 
-        // Some multi-word font family names can be enclosed in quotes; remove them
-        if ($subvalue{0} == "'") {
-          $subvalue = substr($subvalue,1,strlen($subvalue)-2);
-        } elseif ($subvalue{0} == '"') {
-          $subvalue = substr($subvalue,1,strlen($subvalue)-2);
-        };
-      
-        global $g_font_resolver;
-        if ($g_font_resolver->have_font_family($subvalue)) { return $subvalue; };
+        foreach ($subvalues as $subvalue) {
+            $subvalue = trim(strtolower($subvalue));
 
-        global $g_font_resolver_pdf;
-        if ($g_font_resolver_pdf->have_font_family($subvalue)) { return $subvalue; };
-      };
-    };
+            // Check if current subvalue is not empty (say, in case of 'font-family:;' or 'font-family:family1,,family2;')
+            if ($subvalue !== "") {
 
-    // Unknown family type
-    return "times";
-  }
+                // Some multi-word font family names can be enclosed in quotes; remove them
+                if ($subvalue{0} == "'") {
+                    $subvalue = substr($subvalue, 1, strlen($subvalue) - 2);
+                } elseif ($subvalue{0} == '"') {
+                    $subvalue = substr($subvalue, 1, strlen($subvalue) - 2);
+                }
 
-  function getPropertyCode() {
-    return CSS_FONT_FAMILY;
-  }
+                global $g_font_resolver;
+                if ($g_font_resolver->have_font_family($subvalue)) {
+                    return $subvalue;
+                }
 
-  function getPropertyName() {
-    return 'font-family';
-  }
+                global $g_font_resolver_pdf;
+                if ($g_font_resolver_pdf->have_font_family($subvalue)) {
+                    return $subvalue;
+                }
+            }
+        }
+
+        // Unknown family type
+        return "times";
+    }
+
+    public static function getPropertyCode()
+    {
+        return CSS_FONT_FAMILY;
+    }
+
+    public static function getPropertyName()
+    {
+        return 'font-family';
+    }
 
 }
-
-?>

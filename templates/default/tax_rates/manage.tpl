@@ -15,13 +15,13 @@
 *}
 
 	<div class="si_toolbar si_toolbar_top">
-            <a href="index.php?module=tax_rates&view=add" class="">
+            <a href="index.php?module=tax_rates&amp;view=add" class="">
                 <img src="images/common/add.png" alt="" />
                 {$LANG.add_new_tax_rate}
             </a>
 	</div>
 
-{if $taxes == null}
+{if !isset($taxes)}
 
 	<div class="si_message">{$LANG.no_tax_rates}</div>
 

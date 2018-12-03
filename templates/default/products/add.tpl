@@ -1,16 +1,16 @@
 {* if product is updated or saved.*}
-{if $smarty.post.description != null && $smarty.post.description != '' }
+{if isset($smarty.post.description) && !empty($smarty.post.description) }
   {include file="templates/default/products/save.tpl"}
 {else}
   {* Verify the a description was entered. *} 
-  {if $smarty.post.description != null && $smarty.post.description != ''}
+  {if isset($smarty.post.description) && !empty($smarty.post.description)}
     <div class="validation_alert">
       <img src="images/common/important.png" alt="" />
       {$LANG.product_description_prompt}
     </div>
     <hr />
   {/if}
-  <form name="frmpost" action="index.php?module=products&view=add"
+  <form name="frmpost" action="index.php?module=products&amp;view=add"
         method="POST" id="frmpost" onsubmit="return checkForm(this);">
     <div class="si_form">
       <div id="tabs_customer">
@@ -32,7 +32,7 @@
             </th>
             <td>
               <input type="text" name="description"
-                     value="{$smarty.post.description|htmlsafe}" size="50"
+                     value="{if isset($smarty.post.description)}{$smarty.post.description|htmlsafe}{/if}" size="50"
                      id="description" class="validate[required]" />
             </td>
           </tr>
@@ -40,7 +40,7 @@
             <th>{$LANG.unit_price}</th>
             <td>
               <input type="text" class="edit" name="unit_price"
-                     value="{$smarty.post.unit_price|htmlsafe}" size="25" />
+                     value="{if isset($smarty.post.unit_price)}{$smarty.post.unit_price|htmlsafe}{/if}" size="25" />
             </td>
           </tr>
           {if $defaults.inventory == '1'}
@@ -54,14 +54,14 @@
             </th>
             <td>
               <input type="text" class="edit" name="cost"
-                     value="{$smarty.post.cost|htmlsafe}" size="25" />
+                     value="{if isset($smarty.post.cost)}{$smarty.post.cost|htmlsafe}{/if}" size="25" />
             </td>
           </tr>
           <tr>
             <th>{$LANG.reorder_level}</th>
             <td>
               <input type="text" class="edit" name="reorder_level"
-                     value="{$smarty.post.reorder_level|htmlsafe}" size="25" />
+                     value="{if isset($smarty.post.reorder_level)}{$smarty.post.reorder_level|htmlsafe}{/if}" size="25" />
             </td>
           </tr>
           {/if}
@@ -71,7 +71,7 @@
               <select name="default_tax_id">
                 <option value=''></option>
                 {foreach from=$taxes item=tax}
-                <option value="{$tax.tax_id|htmlsafe}">{$tax.tax_description|htmlsafe}</option>
+                <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
                 {/foreach}
               </select>
             </td>
@@ -94,7 +94,7 @@
               </a>
             </th>
             <td><input type="text" class="edit" name="custom_field1"
-                       value="{$smarty.post.custom_field1|htmlsafe}" size="50" /></td>
+                       value="{if isset($smarty.post.custom_field1)}{$smarty.post.custom_field1|htmlsafe}{/if}" size="50" /></td>
           </tr>
           {/if}
           {if !empty($customFieldLabel.product_cf2)}
@@ -107,7 +107,7 @@
               </a>
             </th>
             <td><input type="text" class="edit" name="custom_field2"
-                       value="{$smarty.post.custom_field2|htmlsafe}" size="50" /></td>
+                       value="{if isset($smarty.post.custom_field2)}{$smarty.post.custom_field2|htmlsafe}{/if}" size="50" /></td>
           </tr>
           {/if} {if !empty($customFieldLabel.product_cf3)}
           <tr>
@@ -119,7 +119,7 @@
               </a>
             </th>
             <td><input type="text" class="edit" name="custom_field3"
-                       value="{$smarty.post.custom_field3|htmlsafe}" size="50" /></td>
+                       value="{if isset($smarty.post.custom_field3)}{$smarty.post.custom_field3|htmlsafe}{/if}" size="50" /></td>
           </tr>
           {/if}
           {if !empty($customFieldLabel.product_cf4)}
@@ -132,7 +132,7 @@
               </a>
             </th>
             <td><input type="text" class="edit" name="custom_field4"
-                       value="{$smarty.post.custom_field4|htmlsafe}" size="50" /></td>
+                       value="{if isset($smarty.post.custom_field4)}{$smarty.post.custom_field4|htmlsafe}{/if}" size="50" /></td>
           </tr>
           {/if}
           {foreach from=$cflgs item=cflg}
@@ -172,9 +172,7 @@
           <tr>
             <th>{$LANG.notes}</th>
             <td>
-              <textarea class="editor" name='notes' rows="8" cols="50" wrap="soft" >
-                {$smarty.post.notes|unescape}
-              </textarea>
+              <textarea class="editor" name='notes' rows="8" cols="50" wrap="soft" >{if isset($smarty.post.notes)}{$smarty.post.notes|unescape}{/if}</textarea>
             </td>
           </tr>
           <tr>

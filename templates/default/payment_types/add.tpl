@@ -17,45 +17,42 @@
 *}
 <form name="frmpost" action="index.php?module=payment_types&amp;view=save" method="post">
 
-<div class="si_form">
+    <div class="si_form">
 
-	<table>
-		<tr>
-			<th>Payment type description 
-				<a 
-					class="cluetip"
-					href="#"
-					rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
-					title="{$LANG.required_field}"
-				>
-				<img src="{$help_image_path}required-small.png" alt="" /></a>			
-			</th>
-			<td><input class="validate[required]" type="text" name="pt_description" size="30" /></td>
-		</tr>
-		<tr>
-			<th>{$LANG.enabled}</th>
-			<td>
-				<select name="pt_enabled">
-					<option value="1" selected>{$LANG.enabled}</option>
-					<option value="0">{$LANG.disabled}</option>
-				</select>
-			</td>
-		</tr>
-	</table>
+        <table>
+            <tr>
+                <th>Payment type description
+                    <a class="cluetip" href="#" title="{$LANG.required_field}"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
+                        <img src="{$help_image_path}required-small.png" alt=""/>
+                    </a>
+                </th>
+                <td><input class="validate[required]" type="text" name="pt_description" size="30"/></td>
+            </tr>
+            <tr>
+                <th>{$LANG.enabled}</th>
+                <td>
+                    <select name="pt_enabled">
+                        <option value="1" selected>{$LANG.enabled}</option>
+                        <option value="0">{$LANG.disabled}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
 
-	<div class="si_toolbar si_toolbar_form">
-				<button type="submit" class="positive" name="insert_preference" value="{$LANG.save}">
-					<img class="button_img" src="images/common/tick.png" alt="" /> 
-					{$LANG.save}
-				</button>
-			
-				<a href="index.php?module=payment_types&amp;view=manage" class="negative">
-					<img src="images/common/cross.png" alt="" />
-					{$LANG.cancel}
-				</a>
-	</div>
+        <div class="si_toolbar si_toolbar_form">
+            <button type="submit" class="positive" name="insert_preference" value="{$LANG.save}">
+                <img class="button_img" src="images/common/tick.png" alt=""/>
+                {$LANG.save}
+            </button>
 
-</div>
+            <a href="index.php?module=payment_types&amp;view=manage" class="negative">
+                <img src="images/common/cross.png" alt=""/>
+                {$LANG.cancel}
+            </a>
+        </div>
 
-<input type="hidden" name="op" value="insert_payment_type" />
+    </div>
+
+    <input type="hidden" name="op" value="insert_payment_type"/>
 </form>

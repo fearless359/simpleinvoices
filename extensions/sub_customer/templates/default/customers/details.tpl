@@ -29,7 +29,7 @@
         <td>{$LANG.customer_department}</td>
         <td colspan="2">{$customer.department|htmlsafe}</td>
         <td colspan="2"></td>
-        <td><a href="index.php?module=payments&view=manage&c_id={$customer.id|urlencode}">{$LANG.total_paid}</a></td>
+        <td><a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">{$LANG.total_paid}</a></td>
         <td style="text-align:right">{$customer.paid|siLocal_number}</td>
       </tr>
       <tr>
@@ -237,7 +237,7 @@
       action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}"
       method="post" id="frmpost" onsubmit="return checkForm(this);">
   <input type="hidden" name="op" value="edit_customer"/>
-  <input type="hidden" name="domain_id" value="{$customer.domain_id}"/>
+  <input type="hidden" name="domain_id" value="{if isset($customer.domain_id)}{$customer.domain_id}{/if}"/>
   <div class="si_form" id="si_form_cust_edit">
     <table class="center">
       <tr>
@@ -248,14 +248,14 @@
           </a>
         </th>
         <td>
-          <input type="text" name="name" value="{$customer.name|htmlsafe}" size="50"
+          <input type="text" name="name" value="{if isset($customer.name)}{$customer.name|htmlsafe}{/if}" size="50"
                  id="name" class="validate[required]" tabindex="10"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.customer_department}</th>
         <td>
-          <input type="text" name="department" value="{$customer.department|htmlsafe}" size="50" id="department"
+          <input type="text" name="department" value="{if isset($customer.department)}{$customer.department|htmlsafe}{/if}" size="50" id="department"
                  tabindex="15" />
         </td>
       </tr>
@@ -266,13 +266,13 @@
             <img src="{$help_image_path}help-small.png" alt=""/></a>
         </th>
         <td>
-          <input type="text" name="attention" value="{$customer.attention|htmlsafe}" size="50" tabindex="20"/>
+          <input type="text" name="attention" value="{if isset($customer.attention)}{$customer.attention|htmlsafe}{/if}" size="50" tabindex="20"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.street}</th>
         <td>
-          <input type="text" name="street_address" value="{$customer.street_address|htmlsafe}" size="50" tabindex="30"/>
+          <input type="text" name="street_address" value="{if isset($customer.street_address)}{$customer.street_address|htmlsafe}{/if}" size="50" tabindex="30"/>
         </td>
       </tr>
       <tr>
@@ -283,61 +283,61 @@
           </a>
         </th>
         <td>
-          <input type="text" name="street_address2" value="{$customer.street_address2|htmlsafe}" size="50" tabindex="40"/>
+          <input type="text" name="street_address2" value="{if isset($customer.street_address2)}{$customer.street_address2|htmlsafe}{/if}" size="50" tabindex="40"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.city}</th>
         <td>
-          <input type="text" name="city" value="{$customer.city|htmlsafe}" size="50" tabindex="50"/>
+          <input type="text" name="city" value="{if isset($customer.city)}{$customer.city|htmlsafe}{/if}" size="50" tabindex="50"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.zip}</th>
         <td>
-          <input type="text" name="zip_code" value="{$customer.zip_code|htmlsafe}" size="50" tabindex="50"/>
+          <input type="text" name="zip_code" value="{if isset($customer.zip_code)}{$customer.zip_code|htmlsafe}{/if}" size="50" tabindex="50"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.state}</th>
         <td>
-          <input type="text" name="state" value="{$customer.state|htmlsafe}" size="50" tabindex="60"/>
+          <input type="text" name="state" value="{if isset($customer.state)}{$customer.state|htmlsafe}{/if}" size="50" tabindex="60"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.country}</th>
         <td>
-          <input type="text" name="country" value="{$customer.country|htmlsafe}" size="50" tabindex="70"/>
+          <input type="text" name="country" value="{if isset($customer.country)}{$customer.country|htmlsafe}{/if}" size="50" tabindex="70"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.phone}</th>
         <td>
-          <input type="text" name="phone" value="{$customer.phone|htmlsafe}" size="50" tabindex="80"/>
+          <input type="text" name="phone" value="{if isset($customer.phone)}{$customer.phone|htmlsafe}{/if}" size="50" tabindex="80"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.mobile_phone}</th>
         <td>
-          <input type="text" name="mobile_phone" value="{$customer.mobile_phone|htmlsafe}" size="50" tabindex="90"/>
+          <input type="text" name="mobile_phone" value="{if isset($customer.mobile_phone)}{$customer.mobile_phone|htmlsafe}{/if}" size="50" tabindex="90"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.fax}</th>
         <td>
-          <input type="text" name="fax" value="{$customer.fax|htmlsafe}" size="50" tabindex="100"/>
+          <input type="text" name="fax" value="{if isset($customer.fax)}{$customer.fax|htmlsafe}{/if}" size="50" tabindex="100"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.email}</th>
         <td>
-          <input type="text" name="email" value="{$customer.email|htmlsafe}" size="50" tabindex="110"/>
+          <input type="text" name="email" value="{if isset($customer.email)}{$customer.email|htmlsafe}{/if}" size="50" tabindex="110"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.credit_card_holder_name}</th>
         <td>
-          <input type="text" name="credit_card_holder_name" value="{$customer.credit_card_holder_name|htmlsafe}"
+          <input type="text" name="credit_card_holder_name" value="{if isset($customer.credit_card_holder_name)}{$customer.credit_card_holder_name|htmlsafe}{/if}"
                  size="25" tabindex="120"/>
         </td>
       </tr>
@@ -355,27 +355,27 @@
       <tr>
         <th>{$LANG.credit_card_expiry_month}</th>
         <td>
-          <input type="text" name="credit_card_expiry_month" value="{$customer.credit_card_expiry_month|htmlsafe}"
+          <input type="text" name="credit_card_expiry_month" value="{if isset($customer.credit_card_expiry_month)}{$customer.credit_card_expiry_month|htmlsafe}{/if}"
                  size="5" tabindex="140"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.credit_card_expiry_year}</th>
         <td>
-          <input type="text" name="credit_card_expiry_year" value="{$customer.credit_card_expiry_year|htmlsafe}"
+          <input type="text" name="credit_card_expiry_year" value="{if isset($customer.credit_card_expiry_year)}{$customer.credit_card_expiry_year|htmlsafe}{/if}"
                  size="5" tabindex="150"/>
         </td>
       </tr>
       <tr>
         <th>{$LANG.parent_customer}</th>
         <td>
-        {if $parent_customers == null }
+        {if !isset($parent_customers) }
           <em>{$LANG.no_customers}</em>
         {else}
           <select name="parent_customer_id" tabindex="160">
             <option value=''></option>
             {foreach from=$parent_customers item=c}
-            <option {if $c.id == $customer.parent_customer_id}selected{/if} value="{$c.id|htmlsafe}">{$c.name|htmlsafe}</option>
+            <option {if $c.id == $customer.parent_customer_id}selected{/if} value="{if isset($c.id)}{$c.id|htmlsafe}{/if}">{$c.name|htmlsafe}</option>
             {/foreach}
           </select>
         {/if}
@@ -390,7 +390,7 @@
           </a>
         </th>
         <td>
-          <input type="text" name="custom_field1" value="{$customer.custom_field1|htmlsafe}" size="50" tabindex="170"/>
+          <input type="text" name="custom_field1" value="{if isset($customer.custom_field1)}{$customer.custom_field1|htmlsafe}{/if}" size="50" tabindex="170"/>
         </td>
       </tr>
       {/if}
@@ -403,7 +403,7 @@
           </a>
         </th>
         <td>
-          <input type="text" name="custom_field2" value="{$customer.custom_field2|htmlsafe}" size="50" tabindex="180"/>
+          <input type="text" name="custom_field2" value="{if isset($customer.custom_field2)}{$customer.custom_field2|htmlsafe}{/if}" size="50" tabindex="180"/>
         </td>
       </tr>
       {/if}
@@ -416,7 +416,7 @@
            </a>
          </th>
          <td>
-           <input type="text" name="custom_field3" value="{$customer.custom_field3|htmlsafe}" size="50" tabindex="190"/>
+           <input type="text" name="custom_field3" value="{if isset($customer.custom_field3)}{$customer.custom_field3|htmlsafe}{/if}" size="50" tabindex="190"/>
          </td>
       </tr>
       {/if}
@@ -429,7 +429,7 @@
           </a>
         </th>
         <td>
-          <input type="text" name="custom_field4" value="{$customer.custom_field4|htmlsafe}" size="50" tabindex="200"/>
+          <input type="text" name="custom_field4" value="{if isset($customer.custom_field4)}{$customer.custom_field4|htmlsafe}{/if}" size="50" tabindex="200"/>
         </td>
       </tr>
       {/if}

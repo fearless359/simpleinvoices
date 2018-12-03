@@ -1,9 +1,9 @@
 {* if bill is updated or saved. *}
-{if $smarty.post.expense_account_id != "" && $smarty.post.id != null }
+{if !empty($smarty.post.expense_account_id) && isset($smarty.post.id) }
     {include file="templates/default/expense/save.tpl"}
 {else}
     {* if  name was inserted *}
-    {if $smarty.post.id != null}
+    {if isset($smarty.post.id)}
         <div class="validation_alert"><img src="images/common/important.png" alt=""/>
             You must enter a description for the product
         </div>
@@ -11,7 +11,7 @@
     {/if}
     <form name="frmpost" action="index.php?module=expense&amp;view=add" method="POST" id="frmpost">
         <input type="hidden" name="op" value="add"/>
-        <input type="hidden" name="domain_id" value="{$domain_id}"/>
+        <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
         <table class="left" width="100%">
             <tr>
                 <th class="left">{$LANG.amount}</th>
@@ -23,7 +23,7 @@
                     <select name="expense_account_id" class="validate[required]">
                         <option value=''></option>
                         {foreach from=$expense_add.expense_accounts item=expense_account}
-                            <option value="{$expense_account.id}">{$expense_account.name}</option>
+                            <option value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -40,7 +40,7 @@
                     <select name="biller_id" class="validate[required]">
                         <option value=''></option>
                         {foreach from=$expense_add.billers item=biller}
-                            <option {if $biller.id == $defaults.biller} selected {/if} value="{$biller.id}">{$biller.name}</option>
+                            <option {if isset($biller.id) && $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -51,7 +51,7 @@
                     <select name="customer_id">
                         <option value=''></option>
                         {foreach from=$expense_add.customers item=customer}
-                            <option {if $biller.id == $defaults.customer} selected {/if} value="{$customer.id}">{$customer.name}</option>
+                            <option {if isset($customer.id) && $customer.id == $defaults.customer} selected {/if} value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -73,7 +73,7 @@
                     <select name="product_id">
                         <option value=''></option>
                         {foreach from=$expense_add.products item=product}
-                            <option value="{$product.id}">{$product.description}</option>
+                            <option value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -88,7 +88,7 @@
                                 name="tax_id[0][{$smarty.section.tax.index}]">
                             <option value=""></option>
                             {foreach from=$taxes item=tax}
-                                <option {if $tax.tax_id == $defaults.tax AND $smarty.section.tax.index == 0} selected {/if} value="{$tax.tax_id}">{$tax.tax_description}</option>
+                                <option {if $tax.tax_id == $defaults.tax AND $smarty.section.tax.index == 0} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id}{/if}">{$tax.tax_description}</option>
                             {/foreach}
                         </select>
                     </td>
@@ -107,7 +107,7 @@
                 <th class="left" colspan="2">{$LANG.notes}</th>
             </tr>
             <tr>
-                <td colspan="2"><textarea class="editor" name='note' rows="4" cols="40">{$smarty.post.notes|unescape}</textarea></td>
+                <td colspan="2"><textarea class="editor" name='note' rows="4" cols="40">{if isset($smarty.post.notes)}{$smarty.post.notes|unescape}{/if}</textarea></td>
             </tr>
         </table>
         <div class="si_toolbar si_toolbar_form">

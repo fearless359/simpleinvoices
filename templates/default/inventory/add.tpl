@@ -19,7 +19,7 @@
     <img src="images/common/gmail-loader.gif" alt="{$LANG.loading} ..." />
     {$LANG.loading} ...
   </div>
-  <form name="frmpost" action="index.php?module=inventory&view=add" method="POST" id="frmpost">
+    <form name="frmpost" action="index.php?module=inventory&amp;view=add" method="POST" id="frmpost">
     <div class="si_form">
       <table>
         <tr>
@@ -28,7 +28,7 @@
             <select name="product_id" class="validate[required] product_inventory_change">
               <option value=''></option>
               {foreach from=$product_all item=product}
-              <option value="{$product.id|htmlsafe}">{$product.description|htmlsafe}</option>
+              <option value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
               {/foreach}
             </select>
           </td>
@@ -52,9 +52,7 @@
         <tr>
           <th>{$LANG.notes}</th>
           <td>
-            <textarea name="note" class="editor" rows="8" cols="50">
-              {$customer.notes|outhtml}
-            </textarea>
+                        <textarea name="note" class="editor" rows="8" cols="50">{if (isset($customer.notes)}{$customer.notes|outhtml}{/if}</textarea>
           </td>
         </tr>
       </table>
@@ -63,13 +61,13 @@
           <img class="button_img" src="images/common/tick.png" alt="" />
           {$LANG.save}
         </button>
-        <a href="index.php?module=cron&view=manage" class="negative">
+                <a href="index.php?module=cron&amp;view=manage" class="negative">
           <img src="images/common/cross.png" alt="" />
           {$LANG.cancel}
         </a>
       </div>
     </div>
-    <input type="hidden" name="op" value="add" /> <input type="hidden"
-           name="domain_id" value="{$domain_id}" />
+    <input type="hidden" name="op" value="add" />
+    <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}" />
   </form>
 {/if}

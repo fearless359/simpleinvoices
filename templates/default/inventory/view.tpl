@@ -27,7 +27,7 @@
      class="positive"> <img src="images/famfam/report_edit.png" alt="" />
     {$LANG.edit}
   </a>
-  <a href="index.php?module=inventory&view=manage"
+  <a href="index.php?module=inventory&amp;view=manage"
      class="negative"> <img src="images/common/cross.png" alt="" />
     {$LANG.cancel}
   </a>

@@ -1,9 +1,9 @@
 {* if bill is updated or saved.*}
-{if $smarty.post.name != "" }
+{if !empty($smarty.post.name) }
     {include file="templates/default/expense_account/save.tpl"}
 {else}
     {* if name was inserted *}
-    {if $smarty.post.name !=null}
+    {if isset($smarty.post.name)}
         <div class="validation_alert">
             <img src="images/common/important.png" alt=""/> You must enter a name for the account
         </div>
@@ -11,7 +11,7 @@
     {/if}
     <form name="frmpost" action="index.php?module=expense_account&amp;view=add" method="POST">
         <input type="hidden" name="op" value="insert"/>
-        <input type="hidden" name="domain_id" value="{$domain_id}"/>
+        <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
         <br/>
         <table class="center">
             <tr>
@@ -23,7 +23,7 @@
                     &nbsp;
                 </td>
                 <td>
-                    <input type="text" name="name" value="{$smarty.post.name}" size="50" id="name"
+                    <input type="text" name="name" value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}" size="50" id="name"
                            class="validate[required]"/>
                 </td>
             </tr>

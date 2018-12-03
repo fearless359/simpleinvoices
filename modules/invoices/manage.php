@@ -26,6 +26,8 @@ $smarty->assign('total_owing', $total_owing);
 $having = "";
 if (isset($_GET['having'])) {
     $having = "&having=" . $_GET['having'];
+} else {
+    $_GET['having'] = '';
 }
 $url = 'index.php?module=invoices&view=xml' . $having;
 $smarty->assign('url', $url);

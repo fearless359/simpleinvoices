@@ -15,7 +15,7 @@ class SystemDefaults
      * @return array with system_defaults values or values with extension_id per
      *      parameter settings. Can be empty array if database not built.
      */
-    public static function loadValues(bool $databaseBuilt = true, bool $valuesOnly = true)
+    public static function loadValues($databaseBuilt = true, $valuesOnly = true)
     {
         global $pdoDb_admin;
         if (self::$initialized) {
@@ -51,7 +51,7 @@ class SystemDefaults
             // Logic for patch count > 198
             // Why the overlap, I don't know. But items duplicate with ones
             // found previously will be overloaded. (RCR 20181004)
-            $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+            $pdoDb_admin->setSelectList(array('def.name', 'def.value', 'def.domain_id', 'def.extension_id'));
 
             $jn = new Join('INNER', 'extensions', 'ext');
             $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
@@ -130,11 +130,13 @@ class SystemDefaults
      * @param bool $ret_string true if failed flag to return as 'DISABLED' string, false returns 0.
      * @return mixed Value of system_defaults row for specified name.
      */
-    public static function getValue(string $name, $extension_id = null, $ret_string = true)
+    public static function getValue($name, $extension_id = null, $ret_string = true)
     {
         global $LANG;
 
-        $failed = ($ret_string ? $LANG['disabled'] : 0);
+        // This needed as function called before $LANG has been set.
+        $disabled = (empty($LANG['disabled']) ? 'Disabled' : $LANG['disabled']);
+        $failed = ($ret_string ? $disabled : 0);
         if (empty(self::$values)) {
             return $failed;
         }

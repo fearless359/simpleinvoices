@@ -20,7 +20,7 @@
             </a>
 	</div>
 
-{if $preferences == null}
+{if !isset($preferences)}
 	
 	<div class="si_message">{$LANG.no_preferences}</div>
 	

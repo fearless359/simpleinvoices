@@ -1,5 +1,4 @@
 {*
-/*
  *  Script: save.tpl
  * 	    Custom flags save page
  *
@@ -7,11 +6,10 @@
  *      Richard Rowley
  *
  *  Last edited:
- *      2018-09-23
+ *      2018-11-20
  *
  *  License:
  *      GPL v3 or above
- */
  *}
-<div class="{$display_class}">{$display_message}</div>
+{$display_block}
 {$refresh_redirect}

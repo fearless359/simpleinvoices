@@ -16,7 +16,7 @@
 		{foreach item=period from=$data}
 			<tr>
 				<th>{$LANG.aging}:</th>
-				<td colspan="9">{$period.name|htmlsafe}</td>
+				<td colspan="9">{if isset($period.name)}{$period.name|htmlsafe}{/if}</td>
 			</tr>
 			<tr>
 				<th>{$LANG.invoice_id|htmlsafe}</th>
@@ -33,14 +33,14 @@
 
 			{foreach item=invoice from=$period.invoices}
 			<tr>
-				<td>{$invoice.id|htmlsafe}</td>
-				<td>{$invoice.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}</td>
-				<td>{$invoice.biller|htmlsafe}</td>
-				<td>{$invoice.customer|htmlsafe}</td>
+				<td>{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}</td>
+				<td>{if isset($invoice.pref_inv_wording)}{$invoice.pref_inv_wording|htmlsafe}{/if} {if isset($invoice.index_id)}{$invoice.index_id|htmlsafe}{/if}</td>
+				<td>{if isset($invoice.biller)}{$invoice.biller|htmlsafe}{/if}</td>
+				<td>{if isset($invoice.customer)}{$invoice.customer|htmlsafe}{/if}</td>
 				<td>{$invoice.inv_total|siLocal_number:'2'|default:'-'}</td>
 				<td>{$invoice.inv_paid|siLocal_number:'2'|default:'-'}</td>
 				<td>{$invoice.inv_owing|siLocal_number:'2'|default:'-'}</td>
-				<td>{$invoice.date|htmlsafe}</td>
+				<td>{if isset($invoice.date)}{$invoice.date|htmlsafe}{/if}</td>
 				<td>{$invoice.age|htmlsafe}</td>
 				<td>{$invoice.Aging|htmlsafe}</td>
 			</tr>

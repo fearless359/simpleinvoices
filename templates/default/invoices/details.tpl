@@ -28,7 +28,7 @@
             </tr>
             <tr>
                 <th>{$LANG.date_formatted}</th>
-                {if $invoice.id == null}
+                {if !isset($invoice.id)}
                     <td>
                         <input type="text" size="10" class="date-picker" name="date" id="date1"
                                value="{$smarty.now|date_format:'%Y-%m-%d'}"/>
@@ -36,20 +36,20 @@
                 {else}
                     <td>
                         <input type="text" size="10" class="date-picker" name="date" id="date1"
-                               value="{$invoice.calc_date|htmlsafe}"/>
+                               value="{if isset($invoice.calc_date)}{$invoice.calc_date|htmlsafe}{/if}"/>
                     </td>
                 {/if}
             </tr>
             <tr>
                 <th>{$LANG.biller}</th>
                 <td>
-                    {if $billers == null }
+                    {if !isset($billers) }
                         <em>{$LANG.no_billers}</em>
                     {else}
                         <select name="biller_id">
                             {foreach from=$billers item=biller}
                                 <option {if $biller.id == $invoice.biller_id} selected {/if}
-                                        value="{$biller.id|htmlsafe}">{$biller.name|htmlsafe}</option>
+                                        value="{if isset($biller.id)}{$biller.id|htmlsafe}{/if}">{$biller.name|htmlsafe}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -58,13 +58,13 @@
             <tr>
                 <th>{$LANG.customer}</th>
                 <td>
-                    {if $customers == null}
+                    {if !isset($customers)}
                         <em>{$LANG.no_customers}</em>
                     {else}
                         <select name="customer_id">
                             {foreach from=$customers item=customer}
                                 <option {if $customer.id == $invoice.customer_id} selected {/if}
-                                        value="{$customer.id|htmlsafe}">{$customer.name|htmlsafe}</option>
+                                        value="{if isset($customer.id)}{$customer.id|htmlsafe}{/if}">{$customer.name|htmlsafe}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -117,7 +117,7 @@
                                         {assign var="index" value=$smarty.section.tax.index}
                                         {foreach from=$taxes item=tax}
                                             <option {if $tax.tax_id === $invoiceItems[0].tax.$index} selected {/if}
-                                                    value="{$tax.tax_id|htmlsafe}">{$tax.tax_description|htmlsafe}</option>
+                                                    value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
                                         {/foreach}
                                     </select>
                                 </td>
@@ -130,17 +130,16 @@
             {$customFields.2}
             {$customFields.3}
             {$customFields.4}
-            {* {showCustomFields categorieId="4" itemId=$smarty.get.invoice} *}
             <tr>
                 <th>{$LANG.inv_pref}</th>
                 <td>
-                    {if $preferences == null }
+                    {if !isset($preferences) }
                         <em>{$LANG.no_preferences}</em>
                     {else}
                         <select name="preference_id">
                             {foreach from=$preferences item=preference}
                                 <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
-                                        value="{$preference.pref_id|htmlsafe}">{$preference.pref_description|htmlsafe}</option>
+                                        value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -148,7 +147,7 @@
                 <th>{$LANG.sales_representative}</th>
                 <td>
                     <input id="sales_representative}" name="sales_representative" size="30"
-                           value="{$invoice.sales_representative|htmlsafe}"/>
+                           value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
                 </td>
             </tr>
         </table>
@@ -171,7 +170,7 @@
                 <tr class="tr_{cycle name="rows" values="A,B"}">
                     <input type="hidden" id="delete{$line|htmlsafe}" name="delete{$line|htmlsafe}" size="3"/>
                     <input type="hidden" name="line_item{$line|htmlsafe}" id="line_item{$line|htmlsafe}"
-                           value="{$invoiceItem.id|htmlsafe}"/>
+                           value="{if isset($invoiceItem.id)}{$invoiceItem.id|htmlsafe}{/if}"/>
                     <td>
                         <a id="trash_link_edit{$line|htmlsafe}" class="trash_link_edit"
                            title="{$LANG.delete_line_item}" href="#" style="display:inline;"
@@ -185,14 +184,14 @@
                                value='{$invoiceItem.quantity|siLocal_number_trim}' size="5"/>
                     </td>
                     <td>
-                        {if $products == null }
+                        {if !isset($products) }
                             <em>{$LANG.no_products}</em>
                         {else}
                             <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}" style="width:100%;"
                                     rel="{$line|htmlsafe}" class="product_change" data_description="{$LANG.description}">
                                 {foreach from=$products item=product}
                                     <option {if $product.id == $invoiceItem.product_id} selected {/if}
-                                            value="{$product.id|htmlsafe}">{$product.description|htmlsafe}</option>
+                                            value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
                                 {/foreach}
                             </select>
                         {/if}
@@ -205,7 +204,7 @@
                                 {assign var="index" value=$smarty.section.tax.index}
                                 {foreach from=$taxes item=tax}
                                     <option {if $tax.tax_id === $invoiceItem.tax.$index} selected {/if}
-                                            value="{$tax.tax_id|htmlsafe}">{$tax.tax_description|htmlsafe}</option>
+                                            value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
                                 {/foreach}
                             </select>
                         </td>
@@ -254,13 +253,13 @@
             <tr>
                 <th>{$LANG.inv_pref}</th>
                 <td>
-                    {if $preferences == null }
+                    {if !isset($preferences) }
                         <em>{$LANG.no_preferences}</em>
                     {else}
                         <select name="preference_id">
                             {foreach from=$preferences item=preference}
                                 <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
-                                        value="{$preference.pref_id|htmlsafe}">{$preference.pref_description|htmlsafe}</option>
+                                        value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -268,7 +267,7 @@
                 <th>{$LANG.sales_representative}</th>
                 <td>
                     <input id="sales_representative}" name="sales_representative" size="30"
-                           value="{$invoice.sales_representative|htmlsafe}"/>
+                           value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
                 </td>
             </tr>
         </table>
@@ -285,18 +284,18 @@
         </div>
     </div>
     <div>
-        {if $invoice.id == null}
+        {if !isset($invoice.id)}
             <input type="hidden" name="action" value="insert"/>
         {else}
-            <input type="hidden" name="id" value="{$invoice.id|htmlsafe}"/>
+            <input type="hidden" name="id" value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}"/>
             <input type="hidden" name="action" value="edit"/>
         {/if}
         {if $invoice.type_id == TOTAL_INVOICE }
             <input id="quantity0" type="hidden" size="10" value="1.00" name="quantity0"/>
             <input id="line_item0" type="hidden" value="{$invoiceItems[0].id|htmlsafe}" name="line_item0"/>
         {/if}
-        <input type="hidden" name="type" value="{$invoice.type_id|htmlsafe}"/>
+        <input type="hidden" name="type" value="{if isset($invoice.type_id)}{$invoice.type_id|htmlsafe}{/if}"/>
         <input type="hidden" name="op" value="insert_preference"/>
-        <input type="hidden" id="max_items" name="max_items" value="{$lines|htmlsafe}"/>
+        <input type="hidden" id="max_items" name="max_items" value="{if isset($lines)}{$lines|htmlsafe}{/if}"/>
     </div>
 </form>

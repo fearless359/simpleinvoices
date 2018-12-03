@@ -17,11 +17,11 @@
 {if $smarty.get.stage == 1 }
   <br />
   {if $invoicePaid == 0}
+        <div class="si_message_warning">
     {$LANG.confirm_delete}
     {$preference.pref_inv_wording|htmlsafe}
     {$invoice.index_id|htmlsafe}
-    <br />
-    <br />
+        </div>
     <form name="frmpost" method="post"
           action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}" >
       <table class="center">
@@ -53,9 +53,6 @@
     <br />
   {/if}
 {elseif $smarty.get.stage == 2 }
-  <br />
-  <br />
-  {$preference.pref_inv_wording|htmlsafe} {$id|htmlsafe} {$LANG.deleted}
-  <br />
-  <br />
+    {$display_block}
+    {$refresh_redirect}
 {/if}

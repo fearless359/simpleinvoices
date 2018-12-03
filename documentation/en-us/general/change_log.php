@@ -13,6 +13,17 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-12-01 - <b>2018.2.7</b>
+            <ul>
+                <li>Cleaned up all PDF and SI errors and warnings issued when E_ALL error
+                    mode is set. There is an exceptions for Smarty OPTIONS and CYCLE commands
+                    (and possibly others) that attempt to find these functions in the compiled
+                    (sysplugins) directory but they are not compiled and are in the plugins
+                    directory. This warning is issued when the template using them is first
+                    accessed and compiled. Subsequent access does not report an error. Issue
+                    reported to Smarty team for hopeful cleanup in a future version.</li>
+            </ul>
+        </li>
         <li>2018-11-12 - <b>2018.2.6</b>
             <ul>
                 <li>Added options to the "type" parameter of the Invoices::select_all() method to

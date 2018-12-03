@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTTYPE html>
+<html>
 <head>
 	<title>SimpleInvoices</title>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
@@ -18,11 +16,22 @@
 	<link rel="stylesheet" type="text/css" href="include/jquery/jquery.plugins.css" title="default" media="screen" />
 	<style type="text/css">
 	{literal}
-			body[dir=rtl] #iHeader .iTab {margin-left:40px;margin-right:15px }
-			#iHeader .iTab {margin-right:55px}
+        body[dir=rtl] #iHeader .iTab {
+            margin-left: 40px;
+            margin-right: 15px
+        }
 
-			.iTab li { width:33%}
-			.iTab li:first-child { width:34%}
+        #iHeader .iTab {
+            margin-right: 55px
+        }
+
+        .iTab li {
+            width: 33%
+        }
+
+        .iTab li:first-child {
+            width: 34%
+        }
 
 			.msg {
 				background-color:#080;
@@ -40,10 +49,8 @@
 				-webkit-border-radius:4px;
 				margin:8px;
 			}
-			
 		</style>
-		<script type="text/javascript">
-
+    <script>
 			function tabs(s) {
 				WA.Header(!s, "tab1");
 				return false;
@@ -52,7 +59,8 @@
 	</script>
 </head>
 
-<body -dir="rtl"><div id="WebApp">
+<body -dir="rtl">
+<div id="WebApp">
 <div id="loader" class="iItem" style="padding:10px 5px;font-weight:bold;font-size:12px;text-align:center;">
 	<div style="font-size:20px">
 		<a href="#" style="display:block;border-width: 0 12px;line-height:45px;-webkit-border-image: url(library/WebApp/Design/Img/button-b-black.png) 0 12 0 12;margin:10px;color:white;text-decoration:none;text-align:center;text-shadow:#000 1px -1px 0;font-weight:bold">Test</a>

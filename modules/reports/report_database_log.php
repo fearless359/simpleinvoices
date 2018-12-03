@@ -27,7 +27,7 @@ $sqls = $sth->fetchAll();
 echo <<<EOD
         <div style="text-align:left;">
         <br /><br />
-        <form action="index.php?module=reports&amp;view=database_log" method="post">
+        <form action="index.php?module=reports&amp;view=report_database_log" method="post">
         <input type="text" class="date-picker" name="startdate" id="date1" value='$startdate' /><br /><br />
         <input type="text" class="date-picker" name="enddate" id="date2" value='$enddate' /><br /><br />
         <input type="submit" value="Show">

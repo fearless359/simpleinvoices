@@ -17,7 +17,7 @@
             {$LANG.custom_flags_upper}
         </a>
 
-        <a href="index.php?module=extensions&view=manage" class="">
+        <a href="index.php?module=extensions&amp;view=manage" class="">
             <img src="images/common/brick_edit.png" alt=""/>
             {$LANG.extensions}
         </a>

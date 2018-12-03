@@ -12,12 +12,8 @@
 		</tr>
 		<tr>
 			<th>{$LANG.rate}
-				<a 
-					class="cluetip"
-					href="#"
-					rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign"
-					title="{$LANG.tax_rate}"
-				>
+				<a class="cluetip"	href="#" title="{$LANG.tax_rate}"
+					rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign" >
 				<img src="{$help_image_path}help-small.png" />
 				</a>
 			</th>
@@ -49,16 +45,12 @@
 	<table>
 		<tr>
 			<th>{$LANG.description}</th>
-			<td><input type="text" name="tax_description" value="{$tax.tax_description|htmlsafe}"  class="validate[required]" size="25" /></td>
+			<td><input type="text" name="tax_description" value="{if isset($tax.tax_description)}{$tax.tax_description|htmlsafe}{/if}"  class="validate[required]" size="25" /></td>
 		</tr>
 		<tr>
 			<th>{$LANG.rate}
-			<a 
-				class="cluetip"
-				href="#"
-				rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign"
-				title="{$LANG.tax_rate}"
-			>
+			<a class="cluetip" href="#" title="{$LANG.tax_rate}"
+			   rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign" >
 				<img src="{$help_image_path}help-small.png" />
 			</a>
 			</th>
@@ -71,7 +63,7 @@
 			<th>{$LANG.enabled} </th>
 			<td>
 				<select name="tax_enabled">
-					<option value="{$tax.tax_enabled|htmlsafe}" selected style="font-weight: bold">{$tax.enabled|htmlsafe}</option>
+					<option value="{if isset($tax.tax_enabled)}{$tax.tax_enabled|htmlsafe}{/if}" selected style="font-weight: bold">{$tax.enabled|htmlsafe}</option>
 					<option value="1">{$LANG.enabled}</option>
 					<option value="0">{$LANG.disabled}</option>
 				</select>
@@ -85,7 +77,7 @@
                 {$LANG.save}
             </button>
 
-            <a href="index.php?module=tax_rates&view=manage" class="negative">
+            <a href="index.php?module=tax_rates&amp;view=manage" class="negative">
                 <img src="images/common/cross.png" alt="" />
                 {$LANG.cancel}
             </a>

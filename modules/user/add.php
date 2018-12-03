@@ -20,17 +20,13 @@ global $smarty;
 
 checkLogin();
 
-$roles = User::getUserRoles();
-
 if (!empty($_POST['username'])) {
     include ("modules/user/save.php");
+} else {
+    $smarty->assign('username_pattern', User::$username_pattern);
+    $smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
+
+    $smarty->assign('pageActive', 'user');
+    $smarty->assign('subPageActive', 'user_add');
+    $smarty->assign('active_tab', '#people');
 }
-
-$smarty->assign('username_pattern', User::$username_pattern);
-$smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
-
-$smarty->assign('roles', $roles);
-
-$smarty->assign('pageActive', 'user');
-$smarty->assign('subPageActive', 'user_add');
-$smarty->assign('active_tab', '#people');

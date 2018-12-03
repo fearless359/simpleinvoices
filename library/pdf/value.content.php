@@ -1,63 +1,69 @@
 <?php
 
-require_once(HTML2PS_DIR.'value.content.item.php');
+require_once(HTML2PS_DIR . 'value.content.item.php');
 
-class ValueContent {
-  var $_items;
+class ValueContent
+{
+    var $_items;
 
-  function __construct() {
-    $this->set_items(array());
-  }
+    public function __construct()
+    {
+        $this->set_items(array());
+    }
 
-  function add_item(&$item) {
-    $this->_items[] =& $item;
-  }
+    public function add_item(&$item)
+    {
+        $this->_items[] =& $item;
+    }
 
-  function &copy() {
-    $copy =  new ValueContent();
+    public function &copy()
+    {
+        $copy = new ValueContent();
 
-    foreach ($this->_items as $item) {
-      $copy->add_item($item->copy());
-    };
+        foreach ($this->_items as $item) {
+            $copy->add_item($item->copy());
+        }
 
-    return $copy;
-  }
+        return $copy;
+    }
 
-  function doInherit(&$state) {
-    
-  }
+    public function doInherit(&$state)
+    {
 
-  function &parse($string) {
-    $value =  new ValueContent();
+    }
 
-    while ($string !== '') {
-      $result = ValueContentItem::parse($string);
-      $item =& $result['item'];
-      $rest = $result['rest'];
+    public static function &parse($string)
+    {
+        $value = new ValueContent();
 
-      $string = $rest;
+        while ($string !== '') {
+            $result = ValueContentItem::parse($string);
+            $item =& $result['item'];
+            $rest = $result['rest'];
 
-      if (is_null($item)) {
-        break;
-      };
+            $string = $rest;
 
-      $value->add_item($item);
-    };
+            if (is_null($item)) {
+                break;
+            }
 
-    return $value;
-  }
+            $value->add_item($item);
+        }
 
-  function render(&$counters) {
-    $content = array();
-    foreach ($this->_items as $item) {
-      $content[] = $item->render($counters);
-    };
-    return join('', $content);
-  }
+        return $value;
+    }
 
-  function set_items($value) {
-    $this->_items = $value;
-  }
+    public function render(&$counters)
+    {
+        $content = array();
+        foreach ($this->_items as $item) {
+            $content[] = $item->render($counters);
+        }
+        return join('', $content);
+    }
+
+    public function set_items($value)
+    {
+        $this->_items = $value;
+    }
 }
-
-?>

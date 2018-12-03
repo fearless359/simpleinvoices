@@ -30,18 +30,19 @@ $defaultCustomer   = Customer::getDefaultCustomer();
 $defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
+$first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
     $first_run_wizard = true;
-    $smarty->assign("first_run_wizard", $first_run_wizard);
 }
+$smarty->assign("first_run_wizard", $first_run_wizard);
 
 $defaults['biller']     = (isset($_GET['biller'])    ) ? $_GET['biller']     : $defaults['biller'];
 $defaults['customer']   = (isset($_GET['customer'])  ) ? $_GET['customer']   : $defaults['customer'];
 $defaults['preference'] = (isset($_GET['preference'])) ? $_GET['preference'] : $defaults['preference'];
-if (!empty($_GET['line_items'])) {
-    $dynamic_line_items = $_GET['line_items'];
-} else {
+if (empty($_GET['line_items'])) {
     $dynamic_line_items = $defaults['line_items'];
+} else {
+    $dynamic_line_items = $_GET['line_items'];
 }
 
 $customFields = array();

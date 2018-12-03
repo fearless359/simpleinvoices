@@ -155,9 +155,9 @@ Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), Zend_
 
 /* *************************************************************
  * Zend Framework cache section - start
- * -- must come after the tmp dir writable check
+ * -- must come after the tmp/cache dir writable check
  * *************************************************************/
-$backendOptions = array('cache_dir' => './tmp/'); // Directory where to put the cache files
+$backendOptions = array('cache_dir' => './tmp/cache'); // Directory where to put the cache files
 
 // getting a Zend_Cache_Core object
 try {
@@ -258,6 +258,7 @@ foreach ($ext_names as $ext_name) {
     $dir_tmp = "extensions/$ext_name/include/smarty_plugins";
     if (is_dir($dir_tmp)) {
         $plugin_dirs[] = $dir_tmp;
+        Log::out("init.php - plugin dir_tmp[$dir_tmp]", Zend_Log::DEBUG);
     }
 }
 

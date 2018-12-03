@@ -15,7 +15,7 @@
   {/if}
 {/if}
 {if !isset($saved) || $saved == 'false'}
-  <form name="frmpost" action="index.php?module=cron&view=add" method="POST" id="frmpost">
+  <form name="frmpost" action="index.php?module=cron&amp;view=add" method="POST" id="frmpost">
     <table class="center">
       <tr>
         <td class="details_screen">{$LANG.invoice}</td>
@@ -82,12 +82,12 @@
         <img class="button_img" src="images/common/tick.png" alt="" />
         {$LANG.save}
       </button>
-      <a href="index.php?module=cron&view=manage" class="negative">
+      <a href="index.php?module=cron&amp;view=manage" class="negative">
         <img src="images/common/cross.png" alt="" />
         {$LANG.cancel}
       </a>
     </div>
-    <input type="hidden" name="domain_id" value={$domain_id} />
+    <input type="hidden" name="domain_id" value={if isset($domain_id)}{$domain_id}{/if} />
     <input type="hidden" name="op" value="add" />
   </form>
 {/if}

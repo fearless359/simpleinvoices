@@ -28,10 +28,11 @@ $preferences = Preferences::getActivePreferences();
 $defaults    = SystemDefaults::loadValues();
 $matrix      = ProductAttributes::getMatrix();
 
+$first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
     $first_run_wizard = true;
-    $smarty->assign("first_run_wizard", $first_run_wizard);
 }
+$smarty->assign("first_run_wizard", $first_run_wizard);
 
 $defaults['biller']     = (isset($_GET['biller']))     ? $_GET['biller']     : $defaults['biller'];
 $defaults['customer']   = (isset($_GET['customer']))   ? $_GET['customer']   : $defaults['customer'];

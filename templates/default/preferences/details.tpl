@@ -170,7 +170,7 @@
 					<img src="{$help_image_path}help-small.png" alt="" />
 				</a>
 			</th>
-			<td><input type="text" class="validate[required]" name='pref_description' value="{$preference.pref_description|htmlsafe}" size="50" /></td>
+			<td><input type="text" class="validate[required]" name='pref_description' value="{if isset($preference.pref_description)}{$preference.pref_description|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Currency sign 
@@ -178,7 +178,7 @@
 				<img src="{$help_image_path}help-small.png" alt="" /> </a>
 			</th>
 			<td>
-                <input type="text" name='pref_currency_sign' value="{$preference.pref_currency_sign}" size="15" />
+                <input type="text" name='pref_currency_sign' value="{if isset($preference.pref_currency_sign)}{$preference.pref_currency_sign}{/if}" size="15" />
                 <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_currency_sign" title="{$LANG.currency_sign}">
                    {$LANG.currency_sign_non_dollar}
                     <img src="{$help_image_path}help-small.png" alt="" /> 
@@ -191,7 +191,7 @@
 				<img src="{$help_image_path}help-small.png" alt="" /> </a>
 			</th>
 			<td>
-                <input type="text" name='currency_code' value="{$preference.currency_code}" size="15" />
+                <input type="text" name='currency_code' value="{if isset($preference.currency_code)}{$preference.currency_code}{/if}" size="15" />
             </td>
 		</tr>
 		<tr>
@@ -199,28 +199,28 @@
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_heading" title="{$LANG.invoice_heading}">
 				<img src="{$help_image_path}help-small.png" alt="" /> </a>
 			</th>
-			<td><input type="text" name='pref_inv_heading' value="{$preference.pref_inv_heading|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_heading' value="{if isset($preference.pref_inv_heading)}{$preference.pref_inv_heading|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Invoice wording 
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_wording" title="{$LANG.invoice_wording}">
 				<img src="{$help_image_path}help-small.png" alt="" /> </a> 
 			</th>
-			<td><input type="text" name='pref_inv_wording' value="{$preference.pref_inv_wording|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_wording' value="{if isset($preference.pref_inv_wording)}{$preference.pref_inv_wording|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Invoice detail heading 
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_heading" title="{$LANG.invoice_detail_heading}">
 				<img src="{$help_image_path}help-small.png" alt="" /> </a>
 			</th>
-			<td><input type="text" name='pref_inv_detail_heading' value="{$preference.pref_inv_detail_heading|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_detail_heading' value="{if isset($preference.pref_inv_detail_heading)}{$preference.pref_inv_detail_heading|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Invoice detail line 
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_line" title="{$LANG.invoice_detail_line}">
 				<img src="{$help_image_path}help-small.png" alt="" /></a>
 			</th>
-			<td><input type="text" name='pref_inv_detail_line' value="{$preference.pref_inv_detail_line|htmlsafe}" size="75" /></td>
+			<td><input type="text" name='pref_inv_detail_line' value="{if isset($preference.pref_inv_detail_line)}{$preference.pref_inv_detail_line|htmlsafe}{/if}" size="75" /></td>
 		</tr>
 		<tr>
 			<th>{$LANG.include_online_payment}
@@ -238,35 +238,35 @@
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_payment_method" title="{$LANG.invoice_payment_method}">
 				<img src="{$help_image_path}help-small.png" alt="" /></a>
 			</th>
-			<td><input type="text" name='pref_inv_payment_method' value="{$preference.pref_inv_payment_method|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_payment_method' value="{if isset($preference.pref_inv_payment_method)}{$preference.pref_inv_payment_method|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Invoice payment line1 name 
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line1_name" title="{$LANG.invoice_payment_line_1_name}">
 				<img src="{$help_image_path}help-small.png" alt="" /></a>
 			</th>
-			<td><input type="text" name='pref_inv_payment_line1_name' value="{$preference.pref_inv_payment_line1_name|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_payment_line1_name' value="{if isset($preference.pref_inv_payment_line1_name)}{$preference.pref_inv_payment_line1_name|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Invoice payment line1 value 
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line1_value" title="{$LANG.invoice_payment_line_1_value}">
 				<img src="{$help_image_path}help-small.png" alt="" /></a>
 			</th>
-			<td><input type="text" name='pref_inv_payment_line1_value' value="{$preference.pref_inv_payment_line1_value|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_payment_line1_value' value="{if isset($preference.pref_inv_payment_line1_value)}{$preference.pref_inv_payment_line1_value|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Invoice payment line2 name 
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line2_name" title="{$LANG.invoice_payment_line_2_name}">
 				<img src="{$help_image_path}help-small.png" alt="" /></a>
 			</th>
-			<td><input type="text" name='pref_inv_payment_line2_name' value="{$preference.pref_inv_payment_line2_name|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_payment_line2_name' value="{if isset($preference.pref_inv_payment_line2_name)}{$preference.pref_inv_payment_line2_name|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>Invoice payment line2 value 
 				<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line2_value" title="{$LANG.invoice_payment_line_2_value}">
 				<img src="{$help_image_path}help-small.png" alt="" /></a>
 			</th>
-			<td><input type="text" name='pref_inv_payment_line2_value' value="{$preference.pref_inv_payment_line2_value|htmlsafe}" size="50" /></td>
+			<td><input type="text" name='pref_inv_payment_line2_value' value="{if isset($preference.pref_inv_payment_line2_value)}{$preference.pref_inv_payment_line2_value|htmlsafe}{/if}" size="50" /></td>
 		</tr>
 		<tr>
 			<th>{$LANG.status} 
@@ -276,7 +276,7 @@
 			<td>
 				<select name="status">
                 {foreach from=$status item=s}
-                    <option {if $s.id == $preference.status} selected {/if} value="{$s.id}">{$s.status}</option>
+                    <option {if $s.id == $preference.status} selected {/if} value="{if isset($s.id)}{$s.id}{/if}">{$s.status}</option>
                 {/foreach}
 				</select>
 			</td>
@@ -287,12 +287,12 @@
 				<img src="{$help_image_path}help-small.png" alt="" /></a>
 			</th>
             <td class="details_screen">
-            {if $preferences == null }
+            {if !isset($preferences) }
                 <p><em>{$LANG.no_preferences}</em></p>
             {else}
                 <select name="index_group">
                 {foreach from=$preferences item=p}
-                    <option {if $p.pref_id == $preference.index_group} selected {/if} value="{$p.pref_id|htmlsafe}">{$p.pref_description|htmlsafe}</option>
+                    <option {if $p.pref_id == $preference.index_group} selected {/if} value="{if isset($p.pref_id)}{$p.pref_id|htmlsafe}{/if}">{$p.pref_description|htmlsafe}</option>
                 {/foreach}
                 </select>
             {/if}
@@ -306,7 +306,7 @@
 			</th>
 			<td>
 				<select name="pref_enabled">
-				<option value="{$preference.pref_enabled|htmlsafe}" selected
+				<option value="{if isset($preference.pref_enabled)}{$preference.pref_enabled|htmlsafe}{/if}" selected
 				style="font-weight: bold;">{$preference.enabled|htmlsafe}</option>
 				<option value="1">{$LANG.enabled}</option>
 				<option value="0">{$LANG.disabled}</option>
@@ -321,7 +321,7 @@
 			<td>
                 <select name="language">
                 {foreach from=$localelist key=language item=value}
-                    <option {if $language == $preference.language} selected {/if} value="{$language|htmlsafe}">{$language|htmlsafe}</option>
+                    <option {if $language == $preference.language} selected {/if} value="{if isset($language)}{$language|htmlsafe}{/if}">{$language|htmlsafe}</option>
                 {/foreach}
                 </select>
 			</td>
@@ -334,7 +334,7 @@
 			<td>
                 <select name="locale">
                 {foreach from=$localelist key=locale item=value}
-                    <option {if $locale == $preference.locale} selected {/if} value="{$locale|htmlsafe}">{$locale|htmlsafe}</option>
+                    <option {if $locale == $preference.locale} selected {/if} value="{if isset($locale)}{$locale|htmlsafe}{/if}">{$locale|htmlsafe}</option>
                 {/foreach}
                 </select>
 			</td>

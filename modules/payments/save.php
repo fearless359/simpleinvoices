@@ -5,7 +5,7 @@ global $smarty, $LANG;
 checkLogin();
 
 $display_block = "<div class='si_message_error'>$LANG[save_payment_failure]</div>";
-$refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=payments&view=manage' />";
+$refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&view=manage' />";
 
 if (isset($_POST['process_payment'])) {
     try {

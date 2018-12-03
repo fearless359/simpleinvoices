@@ -27,11 +27,8 @@
         You must select an invoice</div>
         <hr />
     {/if}
-
-
-<form name="frmFpost" action="index.php?module=payments&view=eway" method="POST" id="frmpost">
+    <form name="frmpost" action="index.php?module=payments&amp;view=eway" method="POST" id="frmpost">
 <br />
-
 <table class="center">
 <tr>
 <td class="details_screen">{$LANG.invoice}</td>
@@ -39,7 +36,7 @@
 <select name="invoice_id" class="validate[required]">
 <option value=''></option>
 {foreach from=$invoice_all item=invoice}
-<option value="{$invoice.id|htmlsafe}" {if $smarty.get.id == $invoice.id} selected {/if} >{$invoice.index_name|htmlsafe}</option>
+                        <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}" {if $smarty.get.id == $invoice.id} selected {/if} >{$invoice.index_name|htmlsafe}</option>
 {/foreach}
 </select>
 </td>
@@ -62,8 +59,7 @@
 </button>
 
 <input type="hidden" name="op" value="add" />
-
-<a href="index.php?module=cron&view=manage" class="negative">
+                    <a href="index.php?module=cron&amp;view=manage" class="negative">
 <img src="images/common/cross.png" alt="" />
 {$LANG.cancel}
 </a>

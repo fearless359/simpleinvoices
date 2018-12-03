@@ -45,14 +45,14 @@
                         <td class="details_screen">{$LANG.id}</td><td>{$product_attribute.id}</td>
                 </tr>
                 <tr>
-                        <td class="details_screen">{$LANG.name}</td><td><input type="text" name="name" value="{$product_attribute.name}" size="50" /></td>
+                        <td class="details_screen">{$LANG.name}</td><td><input type="text" name="name" value="{if isset($product_attribute.name)}{$product_attribute.name}{/if}" size="50" /></td>
                 </tr>
 		<tr>
 			<th>{$LANG.type}</th>
 			<td>
                 <select name="type_id">
                     {foreach from=$types key=k item=v}
-        				<option value="{$v.id}" {if $product_attribute.type_id == $v.id} selected {/if}>{$LANG[$v.name]}</option>
+        				<option value="{if isset($v.id)}{$v.id}{/if}" {if $product_attribute.type_id == $v.id} selected {/if}>{$LANG[$v.name]}</option>
                     {/foreach}
                 </select>
 			</td>
