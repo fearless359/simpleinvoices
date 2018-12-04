@@ -32,7 +32,7 @@
 				{display: '{/literal}{$LANG.date_upper}{literal}', name : 'date', width :15 * percentage_width, sortable : true, align: 'center'},
 				{display: '{/literal}{$LANG.product}{literal}', name : 'description', width :35 * percentage_width, sortable : true, align: 'left'},
 				{display: '{/literal}{$LANG.quantity}{literal}', name : 'quantity', width :15 * percentage_width, sortable : true, align: 'right'},
-				{display: '{/literal}{$LANG.cost_price}{literal}', name : 'cost', width :15 * percentage_width, sortable : true, align: 'right'},
+				{display: '{/literal}{$LANG.cost}{literal}', name : 'cost', width :15 * percentage_width, sortable : true, align: 'right'},
 				{display: '{/literal}{$LANG.total_cost}{literal}', name : 'total_cost', width :20 * percentage_width, sortable : true, align: 'right'}
 				
 				],
@@ -47,7 +47,7 @@
 				{display: '{/literal}{$LANG.product}{literal}', name : 'p.description', isdefault: true},
 				{display: '{/literal}{$LANG.date_upper}{literal}', name : 'iv.date'},
 				{display: '{/literal}{$LANG.quantity}{literal}', name : 'iv.quantity'},
-				{display: '{/literal}{$LANG.cost_price}{literal}', name : 'iv.cost'},
+				{display: '{/literal}{$LANG.cost}{literal}', name : 'iv.cost'},
 				{display: '{/literal}{$LANG.total_cost}{literal}', name : 'iv.quantity * iv.cost'}
 				],
 			sortname: "id",

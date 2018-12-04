@@ -2,7 +2,7 @@
   {if $saved == 'true' }
     <meta http-equiv="refresh" content="2;URL=index.php?module=inventory&amp;view=manage" />
     <div class="si_message_ok">{$LANG.save_inventory_success}</div>
-  {else if $saved == 'false' }
+  {elseif $saved == 'false' }
     <meta http-equiv="refresh" content="2;URL=index.php?module=inventory&amp;view=manage" />
     <div class="si_message_error">{$LANG.save_inventory_failure}</div>
     {if $smarty.post.op == 'add' && $smarty.post.product_id == ''}
@@ -52,7 +52,7 @@
         <tr>
           <th>{$LANG.notes}</th>
           <td>
-                        <textarea name="note" class="editor" rows="8" cols="50">{if (isset($customer.notes)}{$customer.notes|outhtml}{/if}</textarea>
+                        <textarea name="note" class="editor" rows="8" cols="50">{if isset($customer.notes)}{$customer.notes|outhtml}{/if}</textarea>
           </td>
         </tr>
       </table>

@@ -449,7 +449,14 @@ class Invoice {
 
         $results = array();
         try {
-            $pdoDb->setSelectList("i.id as id");
+            $pdoDb->setSelectList(array(
+                new DbField("i.id", "id"),
+                new DbField('i.preference_id', 'preference_id'),
+                new DbField('i.date', 'date'),
+                new DbField('i.owing', 'owing'),
+                new DbField('i.last_activity_date', 'last_activity_date'),
+                new DbField('i.aging_date', 'aging_date')
+            ));
 
             $fn = new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id");
             $pdoDb->addToSelectStmts(new Select($fn, null, null, "index_name"));
