@@ -21,12 +21,12 @@
     <tr>
         <td class="details_screen">{$LANG.biller}</td>
         <td><input type="text" name="biller_block" size="25"/>
-            {if $billers == null }
+            {if !isset($billers) }
                 <p><em>{$LANG.no_billers}</em></p>
             {else}
                 <select name="biller_id">
                     {foreach from=$billers item=biller}
-                        <option {if $biller.id == $defaults.biller} selected {/if} value="{$biller.id}">{$biller.name}</option>
+		<option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
                     {/foreach}
                 </select>
             {/if}
@@ -36,12 +36,12 @@
         <td class="details_screen">{$LANG.customer}</td>
         <td>
             <input type="text" name="customer_block" size="25"/>
-            {if $customers == null }
+            {if !isset($customers) }
                 <p><em>{$LANG.no_customers}</em></p>
             {else}
                 <select name="customer_id">
                     {foreach from=$customers item=customer}
-                        <option {if $customer.id == $defaultCustomerID} selected {/if} value="{$customer.id}">{$customer.name}</option>
+		<option {if $customer.id == $defaultCustomerID} selected {/if} value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
                     {/foreach}
                 </select>
             {/if}

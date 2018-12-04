@@ -3,7 +3,7 @@
 <table class="center">
     <tr>
         <td>Start date (YYYY-MM-DD)
-          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{$start_date|htmlsafe}' />   
+          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlsafe}{/if}' />
         </td>
         <td>
             &nbsp;
@@ -13,7 +13,7 @@
             &nbsp;
         </td>
         <td>End date (YYYY-MM-DD)
-          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{$end_date|htmlsafe}' />   
+          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlsafe}{/if}' />
         </td>
     </tr>
 </table>
@@ -31,7 +31,7 @@
 </table>
 </form>
 
-<div id="top"><h3>Profit per Invoice based on average product cost summary for the period {$start_date|htmlsafe} to {$end_date|htmlsafe}</h3></div>
+<div id="top"><h3>Profit per Invoice based on average product cost summary for the period {if isset($start_date)}{$start_date|htmlsafe}{/if} to {if isset($end_date)}{$end_date|htmlsafe}{/if}</h3></div>
 
 <table class="center">
     <tr>
@@ -82,7 +82,7 @@
         <tr><td><br /></td></tr>
     {/if}
     <tr>
-        <td class="details_screen">{$index|htmlsafe}
+        <td class="details_screen">{if isset($index)}{$index|htmlsafe}{/if}
             {$invoices[invoice].preference|htmlsafe}
             {$invoices[invoice].index_id|htmlsafe}
         </td>

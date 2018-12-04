@@ -8,7 +8,7 @@
     </tr>
     <tr>
         <td class='si_invoice_notes' colspan="2">
-            <textarea class="editor" name="note" rows="5" cols="100%">{$defaultInvoice.note}</textarea>
+            <textarea class="editor" name="note" rows="5" cols="100%">{if isset($defaultInvoice.note)}{$defaultInvoice.note}{/if}</textarea>
         </td>
     </tr>
     <tr>
@@ -17,12 +17,12 @@
     </tr>
     <tr>
         <td>
-            {if $preferences == null }
+            {if !isset($preferences) }
                 <em>{$LANG.no_preferences}</em>
             {else}
                 <select name="preference_id">
                     {foreach from=$preferences item=preference}
-                        <option {if $preference.pref_id == $defaults.preference}selected {/if}value="{$preference.pref_id|htmlsafe}">
+                        <option {if $preference.pref_id == $defaults.preference}selected {/if}value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">
                             {$preference.pref_description|htmlsafe}
                         </option>
                     {/foreach}
@@ -31,7 +31,7 @@
         </td>
         <td>
             <input id="sales_representative}" name="sales_representative" size="30"
-                   value="{$defaultInvoice.sales_representative|htmlsafe}" />
+                   value="{if isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlsafe}{/if}" />
         </td>
     </tr>
 </table>

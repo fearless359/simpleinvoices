@@ -16,7 +16,7 @@ Util::isAccessAllowed();
 
 $product_id = $_GET['id'];
 
-$product = Product::select($product_id);
+$product = Product::get($product_id);
 
 $customFieldLabel = CustomFields::getLabels(true);
 $cflgs = CustomFlags::getCustomFlagsQualified('E');

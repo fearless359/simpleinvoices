@@ -1,4 +1,4 @@
-{if $payment == null}
+{if !isset($payment)}
   <meta http-equiv="refresh" content="5;URL=index.php?module=invoices&amp;view=manage" />
   <div class='si_message_error'>{$LANG['zero_invoice_amt']}</div>
 {else}

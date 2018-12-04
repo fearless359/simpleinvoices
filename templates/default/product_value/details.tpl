@@ -9,11 +9,11 @@
             </tr>
             <tr>
                 <th class="left">{$LANG.attribute}: </th>
-                <td><input type="text" name="attribute" value="{$product_value.attribute|htmlsafe}" readonly /></td>
+                <td><input type="text" name="attribute" value="{if isset($product_value.attribute)}{$product_value.attribute|htmlsafe}{/if}" readonly /></td>
             </tr>
             <tr>
                 <th class="left">{$LANG.value}: </th>
-                <td><input type="text" name="value" value="{$product_value.value|htmlsafe}" readonly /></td>
+                <td><input type="text" name="value" value="{if isset($product_value.value)}{$product_value.value|htmlsafe}{/if}" readonly /></td>
             </tr>
             <tr>
                 <th class="left">{$LANG.enabled}: </th>
@@ -40,13 +40,13 @@
                     <select name="attribute_id">
                         {foreach $product_attributes as $product_attribute}
                             <option {if $product_attributes == $product_value.attribute_id}selected{/if}
-                                    value="{$product_attribute.id}">{$product_attribute.name}</option>
+                                    value="{if isset($product_attribute.id)}{$product_attribute.id}{/if}">{$product_attribute.name}</option>
                         {/foreach}
                     </select>
                 </td>
             <tr>
                 <th style="text-align:left;">{$LANG.value}:&nbsp;</th>
-                <td><input type="text" name="value" value="{$product_value.value}" size="50"/></td>
+                <td><input type="text" name="value" value="{if isset($product_value.value)}{$product_value.value}{/if}" size="50"/></td>
             </tr>
             <tr>
                 <th style="text-align:left;">{$LANG.status}:&nbsp;</th>

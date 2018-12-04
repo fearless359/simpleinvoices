@@ -30,7 +30,7 @@ class BlockBox extends GenericContainerBox {
      *
      * @see GenericContainerBox::create_content()
      */
-    public function &create(&$root, &$pipeline) {
+    public static function &create(&$root, &$pipeline) {
         $box = new BlockBox();
         $box->readCSS($pipeline->getCurrentCSSState());
         $box->create_content($root, $pipeline);
@@ -397,6 +397,7 @@ class BlockBox extends GenericContainerBox {
      * and only in that case attempt to move box
      *
      * @param OutputDriver $driver The output device driver object
+     * @return mixed
      */
     public function show_fixed(&$driver) {
         $position = $this->getCSSProperty(CSS_POSITION);
@@ -439,8 +440,7 @@ class BlockBox extends GenericContainerBox {
                 }
             } elseif (!$right->isAuto()) {
                 if ($right->isPercentage()) {
-                    $horizontal_offset = $driver->getPageWidth() * (100 - $right->getPercentage()) / 100 -
-                                     $this->get_width();
+                    $horizontal_offset = $driver->getPageWidth() * (100 - $right->getPercentage()) / 100 - $this->get_width();
                 } else {
                     $horizontal_offset = $driver->getPageWidth() - $right->getPoints() - $this->get_width();
                 }

@@ -1,7 +1,7 @@
 <?php
 // $Header: /cvsroot/html2ps/css.bottom.inc.php,v 1.6 2006/11/11 13:43:52 Konstantin Exp $
 
-require_once(HTML2PS_DIR.'value.bottom.php');
+require_once(HTML2PS_DIR . 'value.bottom.php');
 
 /**
  * 'bottom'
@@ -23,32 +23,38 @@ require_once(HTML2PS_DIR.'value.bottom.php');
  * elements whose containing block  is based on a block-level element,
  * this property is an offset from the padding edge of that element.
  */
+class CSSBottom extends CSSPropertyHandler
+{
+    function __construct()
+    {
+        parent::__construct(false, false);
+        $this->_autoValue = ValueBottom::fromString('auto');
+    }
 
-class CSSBottom extends CSSPropertyHandler {
-  function __construct() {
-    parent::__construct(false, false);
-    $this->_autoValue = ValueBottom::fromString('auto');
-  }
+    function _getAutoValue()
+    {
+        return $this->_autoValue->copy();
+    }
 
-  function _getAutoValue() {
-    return $this->_autoValue->copy();
-  }
+    function default_value()
+    {
+        return $this->_getAutoValue();
+    }
 
-  function default_value() { 
-    return $this->_getAutoValue();
-  }
+    public static function getPropertyCode()
+    {
+        return CSS_BOTTOM;
+    }
 
-  function getPropertyCode() {
-    return CSS_BOTTOM;
-  }
+    public static function getPropertyName()
+    {
+        return 'bottom';
+    }
 
-  function getPropertyName() {
-    return 'bottom';
-  }
-
-  function parse($value) { 
-    return ValueBottom::fromString($value);
-  }
+    function parse($value)
+    {
+        return ValueBottom::fromString($value);
+    }
 }
 
 $css_bottom_inc_reg1 = new CSSBottom();

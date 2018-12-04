@@ -1,12 +1,12 @@
 
 {* if customer is updated or saved.*}
 {if $smarty.post.cancel ||
-    ($smarty.post.name != "" && $smarty.post.submit != null) }
+    (!empty($smarty.post.name) && isset($smarty.post.submit)) }
     {$display_block}
     {$refresh_redirect}
 {else}
     {* if  name was inserted *}
-    {if $smarty.post.submit !=null}
+    {if isset($smarty.post.submit)}
         <div class="validation_alert"><img src="images/common/important.png" alt=""/>
             You must enter a name for the product attribute
         </div>
@@ -18,14 +18,14 @@
         <table class="center">
             <tr>
                 <th class="left">{$LANG.name}</th>
-                <td><input type="text" name="name" value="{$smarty.post.name}" size="25"/></td>
+                <td><input type="text" name="name" value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}" size="25"/></td>
             </tr>
             <tr>
                 <th class="left">{$LANG.type}</th>
                 <td>
                     <select name="type_id">
                         {foreach from=$types key=k item=v}
-                            <option value="{$v.id}">{$LANG[$v.name]}</option>
+                            <option value="{if isset($v.id)}{$v.id}{/if}">{$LANG[$v.name]}</option>
                         {/foreach}
                     </select>
                 </td>

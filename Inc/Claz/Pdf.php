@@ -85,7 +85,7 @@ class Pdf
         $g_pt_scale = $g_px_scale * (72 / 96);
 
         $pipeline->configure($g_config);
-        $pipeline->data_filters[] = new DataFilterUTF8("");
+        $pipeline->data_filters[] = new \DataFilterUTF8("");
         $pipeline->destination = new $destination($pdfname);
         $pipeline->process($baseurl, $media);
     }

@@ -238,17 +238,21 @@ class Util
     /**
      * @param $html
      * @return string Purified HTML
-     * @throws HTMLPurifier_Exception
      */
-    function outhtml($html) {
-        $config = HTMLPurifier_Config::createDefault();
+    public static function outhtml($html) {
+        try {
+            $config = \HTMLPurifier_Config::createDefault();
 
-        // configuration goes here:
-        $config->set('Core.Encoding', 'UTF-8'); // replace with your encoding
-        $config->set('HTML.Doctype', 'XHTML 1.0 Strict'); // replace with your doctype
+            // configuration goes here:
+            $config->set('Core.Encoding', 'UTF-8'); // replace with your encoding
+            $config->set('HTML.Doctype', 'XHTML 1.0 Strict'); // replace with your doctype
 
-        $purifier = new HTMLPurifier($config);
-        return $purifier->purify($html);
+            $purifier = new \HTMLPurifier($config);
+            return $purifier->purify($html);
+        } catch (\Exception $e) {
+            error_log("Util::outhtml() - Error: " . $e->getMessage());
+        }
+        return '';
     }
 
 }

@@ -1,93 +1,108 @@
 <?php
-class DOMTree {
-  var $domelement;
-  var $content;
-  
-  function __construct($domelement) {
-    $this->domelement = $domelement;
-    $this->content = $domelement->textContent;
-  }
 
-  function &document_element() { 
-    return $this; 
-  }
+class DOMTree
+{
+    var $domelement;
+    var $content;
 
-  function &first_child() {
-    if ($this->domelement->firstChild) {
-      $child =  new DOMTree($this->domelement->firstChild);
-      return $child;
-    } else {
-      $null = false;
-      return $null;
-    };
-  }
+    function __construct($domelement)
+    {
+        $this->domelement = $domelement;
+        $this->content = $domelement->textContent;
+    }
 
-  function &from_DOMDocument($domdocument) { 
-    $tree =  new DOMTree($domdocument->documentElement); 
-    return $tree;
-  }
+    function &document_element()
+    {
+        return $this;
+    }
 
-  function get_attribute($name) { 
-    return $this->domelement->getAttribute($name); 
-  }
+    function &first_child()
+    {
+        if ($this->domelement->firstChild) {
+            $child = new DOMTree($this->domelement->firstChild);
+            return $child;
+        } else {
+            $null = false;
+            return $null;
+        }
+    }
 
-  function get_content() { 
-    return $this->domelement->textContent; 
-  }
+    public static function &from_DOMDocument($domdocument)
+    {
+        $tree = new DOMTree($domdocument->documentElement);
+        return $tree;
+    }
 
-  function has_attribute($name) { 
-    return $this->domelement->hasAttribute($name); 
-  }
+    function get_attribute($name)
+    {
+        return $this->domelement->getAttribute($name);
+    }
 
-  function &last_child() {
-    $child =& $this->first_child();
+    function get_content()
+    {
+        return $this->domelement->textContent;
+    }
 
-    if ($child) {
-      $sibling =& $child->next_sibling();
-      while ($sibling) {
-        $child =& $sibling;
-        $sibling =& $child->next_sibling();
-      };
-    };
+    function has_attribute($name)
+    {
+        return $this->domelement->hasAttribute($name);
+    }
 
-    return $child;
-  }
+    function &last_child()
+    {
+        $child =& $this->first_child();
 
-  function &next_sibling() {
-    if ($this->domelement->nextSibling) {
-      $child =  new DOMTree($this->domelement->nextSibling);
-      return $child;
-    } else {
-      $null = false;
-      return $null;
-    };
-  }
-  
-  function node_type() { 
-    return $this->domelement->nodeType; 
-  }
+        if ($child) {
+            $sibling =& $child->next_sibling();
+            while ($sibling) {
+                $child =& $sibling;
+                $sibling =& $child->next_sibling();
+            }
+        }
 
-  function &parent() {
-    if ($this->domelement->parentNode) {
-      $parent =  new DOMTree($this->domelement->parentNode);
-      return $parent;
-    } else {
-      $null = false;
-      return $null;
-    };
-  }
+        return $child;
+    }
 
-  function &previous_sibling() {
-    if ($this->domelement->previousSibling) {
-      $sibling =  new DOMTree($this->domelement->previousSibling);
-      return $sibling;
-    } else {
-      $null = false;
-      return $null;
-    };
-  }
+    function &next_sibling()
+    {
+        if ($this->domelement->nextSibling) {
+            $child = new DOMTree($this->domelement->nextSibling);
+            return $child;
+        } else {
+            $null = false;
+            return $null;
+        }
+    }
 
-  function tagname() { 
-    return $this->domelement->localName; 
-  }
+    function node_type()
+    {
+        return $this->domelement->nodeType;
+    }
+
+    function &parent()
+    {
+        if ($this->domelement->parentNode) {
+            $parent = new DOMTree($this->domelement->parentNode);
+            return $parent;
+        } else {
+            $null = false;
+            return $null;
+        }
+    }
+
+    function &previous_sibling()
+    {
+        if ($this->domelement->previousSibling) {
+            $sibling = new DOMTree($this->domelement->previousSibling);
+            return $sibling;
+        } else {
+            $null = false;
+            return $null;
+        }
+    }
+
+    function tagname()
+    {
+        return $this->domelement->localName;
+    }
 }

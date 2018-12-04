@@ -11,7 +11,7 @@
     <img src="images/famfam/add.png" alt="" /> {$LANG.add_new_biller}
   </a>
 </div>
-{if $number_of_rows.count == 0}
+{if $number_of_rows == 0}
   <div class="si_message">{$LANG.no_billers}</div>
 {else}
   <table id="manageGrid" style="display: none"></table>

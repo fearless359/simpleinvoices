@@ -3,7 +3,7 @@
 <table width="100%">
     {foreach item=year from=$years}
         <tr>
-            <td class="details_screen"><b>{$year}</b></td>
+            <td class="details_screen"><b>{if isset($year)}{$year}{/if}</b></td>
         <tr>
             <td></td>
             <td class="details_screen">
@@ -14,8 +14,8 @@
             </td>
             {foreach key=key item=item_sales from=$total_sales.$year}
                 <td class="details_screen">
-                    <b>{$key}</b>
-                    <br/>{$item_sales|siLocal_number_trim}&nbsp;
+                    <b>{if isset($key)}{$key}{/if}</b>
+                    <br/>{if isset($item_sales|siLocal_number_trim)}{$item_sales|siLocal_number_trim}{/if}&nbsp;
                     <br/>{$total_payments.$year.$key|siLocal_number_trim}&nbsp;
                     <br/>{$tax_summary.$year.$key|siLocal_number_trim}&nbsp;
                 </td>

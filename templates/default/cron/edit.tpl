@@ -23,7 +23,7 @@
           <select name="invoice_id" class="validate[required]">
             <option value=''></option>
             {foreach from=$invoice_all item=invoice}
-            <option value="{$invoice.id|htmlsafe}" {if $invoice.id == $cron.invoice_id}selected{/if} >
+            <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if} >
               Inv#{$invoice.index_id}: ({$invoice.biller|htmlsafe}, {$invoice.customer|htmlsafe}, {$invoice.invoice_total|siLocal_number})
             </option>
             {/foreach}
@@ -85,7 +85,7 @@
         {$LANG.cancel}
       </a>
     </div>
-    <input type="hidden" name="domain_id" value={$domain_id} />
+    <input type="hidden" name="domain_id" value={if isset($domain_id)}{$domain_id}{/if} />
     <input type="hidden" name="op" value="edit" />
   </form>
 {/if}

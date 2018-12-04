@@ -11,7 +11,7 @@
  * License:
  *   GPL v2 or above
  *}
-{if $exts == null}
+{if !isset($exts)}
   <p><em>No extensions registered</em></p>
 {else}
   <table id="manageGrid" style="display:none"></table>

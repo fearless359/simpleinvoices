@@ -27,11 +27,16 @@ $biller_count   = Biller::count();
 $customer_count = Customer::count();
 $product_count  = Product::count();
 
+
+$first_run_wizard = false;
 if ($biller_count == 0 || $customer_count == 0 || $product_count == 0) {
     $first_run_wizard =true;
-    $smarty->assign("first_run_wizard",$first_run_wizard);
 }
+$smarty->assign("first_run_wizard",$first_run_wizard);
 
+$smarty->assign('number_of_billers', $biller_count);
 $smarty->assign('number_of_customers', $customer_count);
+$smarty->assign('number_of_products', $product_count);
+
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('active_tab', '#people');

@@ -129,7 +129,7 @@
                         <th>{$LANG.product_description}</th>
                         <td>
                             <input type="text" name="description" size="50"
-                                   value="{$product.description|htmlsafe}" id="description"
+                                   value="{if isset($product.description)}{$product.description|htmlsafe}{/if}" id="description"
                                    class="validate[required]"/>
                         </td>
                     </tr>
@@ -158,7 +158,7 @@
                             <th>{$LANG.reorder_level}</th>
                             <td>
                                 <input type="text" class="edit" name="reorder_level"
-                                       value="{$product.reorder_level|htmlsafe}" size="25"/>
+                                       value="{if isset($product.reorder_level)}{$product.reorder_level|htmlsafe}{/if}" size="25"/>
                             </td>
                         </tr>
                     {/if}
@@ -167,7 +167,7 @@
                         <td>
                             <select name="default_tax_id">
                                 {foreach from=$taxes item=tax}
-                                    <option value="{$tax.tax_id|htmlsafe}"
+                                    <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}"
                                             {if $tax.tax_id==$product.default_tax_id}selected{/if}>
                                         {$tax.tax_description|htmlsafe}
                                     </option>
@@ -190,7 +190,7 @@
                             </th>
                             <td>
                                 <input type="text" name="custom_field1" size="50"
-                                       value="{$product.custom_field1|htmlsafe}"/>
+                   value="{if isset($product.custom_field1)}{$product.custom_field1|htmlsafe}{/if}" />
                             </td>
                         </tr>
                     {/if}
@@ -205,7 +205,7 @@
                             </th>
                             <td>
                                 <input type="text" name="custom_field2" size="50"
-                                       value="{$product.custom_field2|htmlsafe}"/>
+                   value="{if isset($product.custom_field2)}{$product.custom_field2|htmlsafe}{/if}" />
                             </td>
                         </tr>
                     {/if}
@@ -220,7 +220,7 @@
                             </th>
                             <td>
                                 <input type="text" name="custom_field3" size="50"
-                                       value="{$product.custom_field3|htmlsafe}"/>
+                   value="{if isset($product.custom_field3)}{$product.custom_field3|htmlsafe}{/if}" />
                             </td>
                         </tr>
                     {/if}
@@ -235,7 +235,7 @@
                             </th>
                             <td>
                                 <input type="text" name="custom_field4" size="50"
-                                       value="{$product.custom_field4|htmlsafe}"/>
+                   value="{if isset($product.custom_field4)}{$product.custom_field4|htmlsafe}{/if}" />
                             </td>
                         </tr>
                     {/if}

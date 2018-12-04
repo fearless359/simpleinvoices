@@ -39,11 +39,11 @@ if ($_POST['action'] == "insert" ) {
                   'type_id'       => $type,
                   'preference_id' => $_POST['preference_id'],
                   'date'          => $_POST['date'],
-                  'note'          => trim($_POST['note']),
-                  'custom_field1' => $_POST['custom_field1'],
-                  'custom_field2' => $_POST['custom_field2'],
-                  'custom_field3' => $_POST['custom_field3'],
-                  'custom_field4' => $_POST['custom_field4'],
+                  'note'          => (empty($_POST['note']         ) ? "" : trim($_POST['note'])   ),
+                  'custom_field1' => (empty($_POST['custom_field1']) ? "" : $_POST['custom_field1']),
+                  'custom_field2' => (empty($_POST['custom_field2']) ? "" : $_POST['custom_field2']),
+                  'custom_field3' => (empty($_POST['custom_field3']) ? "" : $_POST['custom_field3']),
+                  'custom_field4' => (empty($_POST['custom_field4']) ? "" : $_POST['custom_field4']),
                   'sales_representative' => $_POST['sales_representative']);
     try {
         $id = Invoice::insert($list);
@@ -85,7 +85,8 @@ if ($_POST['action'] == "insert" ) {
     try {
         if (Invoice::updateInvoice($id)) {
             if ($type == TOTAL_INVOICE) {
-                $pdoDb->setFauxPost(array("unit_price" => $_POST['unit_price'], "description" => $_POST['description0']));
+                $unit_price = (empty($_POST['unit_price']) ? 0 : $_POST['unit_price']);
+                $pdoDb->setFauxPost(array("unit_price" => $unit_price, "description" => $_POST['description0']));
                 $pdoDb->addSimpleWhere("id", $_POST['products0'], "AND");
                 $pdoDb->addSimpleWhere("domain_id", DomainId::get());
                 if (!$pdoDb->request("UPDATE", "products")) {
@@ -95,10 +96,10 @@ if ($_POST['action'] == "insert" ) {
 
             $i = 0;
             while ($i <= $_POST['max_items']) {
-                if ($_POST["delete$i"] == "yes") {
+                if (isset($_POST["delete$i"]) && $_POST["delete$i"] == "yes") {
                     Invoice::delete('invoice_items', 'id', $_POST["line_item$i"]);
                 } else {
-                    if ($_POST["quantity$i"] != null) {
+                    if (isset($_POST["quantity$i"]) && $_POST["quantity$i"] != null) {
                         //new line item added in edit page
                         $item = (isset($_POST["line_item$i"]) ? $_POST["line_item$i"] : "");
                         $qty = (isset($_POST["quantity$i"]) ? SiLocal::dbStd($_POST["quantity$i"]) : "");

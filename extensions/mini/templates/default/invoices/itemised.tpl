@@ -45,14 +45,15 @@
                 <td>
                     <input type="text" id="quantity{$smarty.section.line.index}" name="quantity{$smarty.section.line.index}" size="5"/></td>
                 <td>
-                    {if $products == null }
+                    {if !isset($products) }
                         <p><em>{$LANG.no_products}</em></p>
                     {else}
-                        <select class="product_select{$smarty.section.line.index}" name="products{$smarty.section.line.index}"
+                        <select class="product_select{$smarty.section.line.index}"
+                                name="products{$smarty.section.line.index}"
                                 onchange="invoice_product_change_price($(this).val(), {$smarty.section.line.index}, jQuery('#quantity{$smarty.section.line.index}').val() );" >
                             <option value=""></option>
                             {foreach from=$products item=product}
-                                <option {if $product.id == $defaults.product} selected {/if} value="{$product.id}">{$product.description}</option>
+					<option {if $product.id == $defaults.product} selected {/if} value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -87,12 +88,12 @@
         <tr>
             <td class="details_screen">{$LANG.tax}</td>
             <td>
-                {if $taxes == null }
+                {if !isset($taxes) }
                     <p><em>{$LANG.no_taxes}</em></p>
                 {else}
                     <select name="tax_id">
                         {foreach from=$taxes item=tax}
-                            <option {if $tax.tax_id == $defaults.tax} selected {/if} value="{$tax.tax_id}">{$tax.tax_description}</option>
+                            <option {if $tax.tax_id == $defaults.tax} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id}{/if}">{$tax.tax_description}</option>
                         {/foreach}
                     </select>
                 {/if}
@@ -102,12 +103,12 @@
             <td class="details_screen">{$LANG.inv_pref}</td>
             <td>
                 <input type="text" name="preference_id"/>
-                {if $preferences == null }
+                {if !isset($preferences) }
                     <p><em>{$LANG.no_preferences}</em></p>
                 {else}
                     <select name="preference_id">
                         {foreach from=$preferences item=preference}
-                            <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{$preference.pref_id}">{$preference.pref_description}</option>
+		<option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id}{/if}">{$preference.pref_description}</option>
                         {/foreach}
                     </select>
                 {/if}
@@ -122,7 +123,7 @@
     <!-- </div> -->
     <hr/>
     <div style="text-align:center;">
-        <input type="hidden" name="max_items" value="{$smarty.section.line.index}"/>
+	<input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index}{/if}" />
         <input type="submit" name="submit" value="{$LANG.save_invoice}"/>
         <input type="hidden" name="type" value="2"/>
     </div>

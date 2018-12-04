@@ -1,7 +1,9 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {if isset($css)}
   <link rel="stylesheet" type="text/css" href="{$css|urlsafe}" media="all">
+    {/if}
   <title>{$preference.pref_inv_wording|htmlsafe} {$LANG.number_short|htmlsafe}: {$invoice.id|htmlsafe}</title>
 </head>
 <body>
@@ -290,14 +292,14 @@
       <td colspan="6"><br /></td>
     </tr>
     {* hide notes if from an online payment *}
-    {if $payment.ac_notes != "" AND $preference.include_online_payment ==""}
+        {if $payment.ac_notes != "" && $preference.include_online_payment ==""}
       <tr>
         <td class='tbl1-bottom col1'>{$LANG.notes}:</td>
         <td></td>
       </tr>
     {/if}
   </table>
-  {if $payment.ac_notes != "" AND $preference.include_online_payment ==""}
+    {if $payment.ac_notes != "" && $preference.include_online_payment ==""}
     <table>
       <tr>
         <td colspan="2">{$payment.ac_notes|outhtml}</td>

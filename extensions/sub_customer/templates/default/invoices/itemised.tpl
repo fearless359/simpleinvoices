@@ -9,8 +9,8 @@
  *      2018-10-06 by Richard Rowley
  *
  *  Website:
- *      https://simpleinvoices.group*/
-*}
+ *      https://simpleinvoices.group
+ *}
 {* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
 <form name="frmpost" action="index.php?module=invoices&amp;view=save" method="post" onsubmit="return frmpost_Validator(this);">
     <div id="gmail_loading" class="gmailLoader si_hide" style="float:right;">
@@ -115,7 +115,7 @@
                                                 {if $smarty.get.quantity.$lineNumber}value="{$smarty.get.quantity.$lineNumber}"{/if} />
                                     </td>
                                     <td>
-                                        {if $products == null }
+                                        {if !isset($products) }
                                             <p><em>{$LANG.no_products}</em></p>
                                         {else}
                                             <select id="products{$smarty.section.line.index|htmlsafe}" name="products{$smarty.section.line.index|htmlsafe}"
@@ -205,12 +205,12 @@
                         {$LANG.inv_pref}&nbsp;&nbsp;
                     </th>
                     <td class="details_screen">
-                        {if $preferences == null }
+                        {if !isset($preferences) }
                             <p><em>{$LANG.no_preferences}</em></p>
                         {else}
                             <select name="preference_id">
                                 {foreach from=$preferences item=preference}
-                                    <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{$preference.pref_id|htmlsafe}">
+                                    <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">
                                         {$preference.pref_description|htmlsafe}
                                     </option>
                                 {/foreach}
@@ -220,7 +220,7 @@
                     <th>{$LANG.sales_representative}</th>
                     <td>
                         <input id="sales_representative}" name="sales_representative" size="30"
-                               value="{$invoice.sales_representative|htmlsafe}" />
+                               value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}" />
                     </td>
                 </tr>
                 <tr>
@@ -247,7 +247,7 @@
                                 </button>
                             </td>
                             <td>
-                                <input type="hidden" id="max_items" name="max_items" value="{$smarty.section.line.index|htmlsafe}"/>
+                                <input type="hidden" id="max_items" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlsafe}{/if}"/>
                                 <input type="hidden" name="type" value="2"/>
                                 <a href="index.php?module=invoices&amp;view=manage" class="negative">
                                     <img src="images/common/cross.png" alt=""/>

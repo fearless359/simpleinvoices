@@ -43,7 +43,7 @@
         </div>
         {include file="$path/itemised_invoice_bot.tpl" }
         <br/>
-        <input type="hidden" id="max_items" name="max_items" value="{$smarty.section.line.index|htmlsafe}"/>
+        <input type="hidden" id="max_items" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlsafe}{/if}"/>
         <input type="hidden" name="type" value="2"/>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="invoice_save" name="submit" value="{$LANG.save}">

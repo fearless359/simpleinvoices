@@ -82,7 +82,7 @@ class Export {
                 break;
 
             case "pdf":
-                pdfThis($data, $this->file_name, $this->download);
+                Pdf::pdfThis($data, $this->file_name, $this->download);
                 if ($this->download) exit(); // stop script execution after download
                 break; // continue script execution
 
@@ -285,9 +285,9 @@ class Export {
                         $plugins_dirs[] = $template_plugins_dir;
                         $smarty->setPluginsDir($plugins_dirs);
                     }
-Log::out("templatePath[$templatePath]", \Zend_Log::DEBUG);
+
                     $data = $smarty->fetch($templatePath);
-Log::out("line 290", \Zend_Log::DEBUG);
+
                     // Restore configured locale
                     if (!empty($orig_locale)) {
                         $config->local->locale = $orig_locale;

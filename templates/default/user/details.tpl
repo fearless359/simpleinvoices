@@ -46,7 +46,7 @@
     </script>
 {/literal}
 <form name="frmpost"
-      action="index.php?module=user&amp;view=save&amp;username={$smarty.get.username|urlencode}"
+      action="index.php?module=user&amp;view=save&amp;username={$user.username|urlencode}"
       method="post" id="frmpost" onsubmit="return checkForm(this);">
     {if $smarty.get.action== 'view' }
         <div class="si_form si_form_view">
@@ -88,11 +88,11 @@
             </a>
         </div>
     {elseif $smarty.get.action== 'edit' }
-        <input type="hidden" name="cust" id="cust1" value="{$cust}" />
-        <input type="hidden" name="bilr" id="bilr1" value="{$bilr}" />
-        <input type="hidden" name="origrole" id="origrole1" value="{$orig_role_name}" />
-        <input type="hidden" name="currrole" id="currrole1" value="{$orig_role_name}" />
-        <input type="hidden" name="origuserid" id="origuserid1" value="{$orig_user_id}" />
+        <input type="hidden" name="cust" id="cust1" value="{if isset($cust)}{$cust}{/if}" />
+        <input type="hidden" name="bilr" id="bilr1" value="{if isset($bilr)}{$bilr}{/if}" />
+        <input type="hidden" name="origrole" id="origrole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}" />
+        <input type="hidden" name="currrole" id="currrole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}" />
+        <input type="hidden" name="origuserid" id="origuserid1" value="{if isset($orig_user_id)}{$orig_user_id}{/if}" />
         <div class="si_form">
             <table>
                 <tr>
@@ -105,7 +105,7 @@
                     </th>
                     <td>
                         <input type="text" name="username" autocomplete="off" tabindex="10"
-                               value="{$user.username|htmlsafe}" size="35" id="username"
+                               value="{if isset($user.username)}{$user.username|htmlsafe}{/if}" size="35" id="username"
                                pattern="{$username_pattern}" title="See help for details."
                                class="validate[required]" autofocus />
                     </td>
@@ -134,7 +134,7 @@
                     </th>
                     <td>
                         <input type="password" name="confirm_password" id="confirm_pwd_id"
-                               size="20" tabindex="30" pattern="{$pattern}"
+                               size="20" tabindex="30" pattern="{$pwd_pattern}"
                                title="See help for details"/>
                     </td>
                 </tr>
@@ -148,7 +148,7 @@
                     </th>
                     <td>
                         <input type="text" name="email" autocomplete="off" tabindex="40"
-                               value="{$user.email|htmlsafe}" size="35" id="email"
+                               value="{if isset($user.email)}{$user.email|htmlsafe}{/if}" size="35" id="email"
                                class="validate[required]" title="See help for details" />
                     </td>
                 </tr>
@@ -164,7 +164,7 @@
                         <select name="role_id" id="role_id1" tabindex="50" onchange="setuseridlist();"
                                 title="See help for details">
                             {foreach from=$roles item=role}
-                                <option {if $role.id == $user.role_id}selected{/if} value="{$role.id|htmlsafe}">
+                                <option {if $role.id == $user.role_id}selected{/if} value="{if isset($role.id)}{$role.id|htmlsafe}{/if}">
                                     {$role.name|htmlsafe}
                                 </option>
                             {/foreach}
@@ -184,23 +184,23 @@
                             {if $user.role_name == "customer"}
                                 {assign var="ids" value="~"|explode:$cust}
                                 {foreach from=$ids item=id}
-                                    {assign var="pts" value="-"|explode:$id}
+                                    {assign var="pts" value=" - "|explode:$id}
                                     {assign var="uid" value=$pts[0]-1}
-                                    <option {if $user.user_id == trim($pts[0])}selected{/if} value="{$uid|htmlsafe}">
-                                        {$id|htmlsafe}
+                                    <option {if $user.user_id == trim($pts[0])}selected{/if} value="{if isset($uid)}{$uid|htmlsafe}{/if}">
+                                        {if isset($id)}{$id|htmlsafe}{/if}
                                     </option>
                                 {/foreach}
                             {elseif $user.role_name == "biller"}
                                 {assign var="ids" value="~"|explode:$bilr}
                                 {foreach from=$ids item=id}
-                                    {assign var="pts" value="-"|explode:$id}
+                                    {assign var="pts" value=" - "|explode:$id}
                                     {assign var="uid" value=$pts[0]-1}
-                                    <option {if $user.user_id == trim($pts[0])}selected{/if} value="{$uid|htmlsafe}">
-                                        {$id|htmlsafe}
+                                    <option {if $user.user_id == trim($pts[0])}selected{/if} value="{if isset($uid)}{$uid|htmlsafe}{/if}">
+                                        {if isset($id)}{$id|htmlsafe}{/if}
                                     </option>
                                 {/foreach}
                             {else}
-                                <option selected value="0">{$user_id_desc|htmlsafe}</option>
+                                <option selected value="0">{if isset($user_id_desc)}{$user_id_desc|htmlsafe}{/if}</option>
                             {/if}
                         </select>
                     </td>
@@ -228,7 +228,7 @@
             </div>
         </div>
         <input type="hidden" name="op" value="edit_user" />
-        <input type="hidden" name="id" value="{$user.id|htmlsafe}" />
-        <input type="hidden" name="domain_id" value="{$user.domain_id|htmlsafe}" />
+        <input type="hidden" name="id" value="{if isset($user.id)}{$user.id|htmlsafe}{/if}" />
+        <input type="hidden" name="domain_id" value="{if isset($user.domain_id)}{$user.domain_id|htmlsafe}{/if}" />
     {/if}
 </form>

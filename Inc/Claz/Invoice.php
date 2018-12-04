@@ -1,6 +1,10 @@
 <?php
 namespace Inc\Claz;
 
+use \DateTime;
+use \DateTimeZone;
+use \Exception;
+
 /**
  * Class Invoice
  * @package Inc\Claz
@@ -64,17 +68,21 @@ class Invoice {
         // We don't want create values here.
         if ($owing < 0 || $pref_id != 1) $owing = 0;
 
-        $curr_dt = new \DateTime();
-        // We have the last activity date and the last aging date. If the activity
-        // date is greater than the aging date, set the invoice aging value.
-        $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
+        try {
+            $curr_dt = new DateTime();
+            // We have the last activity date and the last aging date. If the activity
+            // date is greater than the aging date, set the invoice aging value.
+            $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
 
-        // @formatter:off
-        if ($pref_id == 1) {
-            $inv_dt    = new \DateTime($invoice_date);
-            $date_diff = $curr_dt->diff($inv_dt);
-            $dys = $date_diff->days;
-        } else {
+            // @formatter:off
+            if ($pref_id == 1) {
+                $inv_dt    = new DateTime($invoice_date);
+                $date_diff = $curr_dt->diff($inv_dt);
+                $dys = $date_diff->days;
+            } else {
+                $dys = 0;
+            }
+        } catch (Exception $e) {
             $dys = 0;
         }
 
@@ -163,7 +171,11 @@ class Invoice {
         $pref_group = Preferences::getPreference($lcl_list['preference_id'], $lcl_list['domain_id']);
         $lcl_list['index_id'] = Index::next('invoice', $pref_group['index_group'], $lcl_list['domain_id']);
 
-        $curr_date = new \DateTime();
+        try {
+            $curr_date = new DateTime();
+        } catch (Exception $e) {
+            $curr_date = '';
+        }
         $last_activity_date = $curr_date->format('Y-m-d h:i:s');
 
         $lcl_list['date'] = SiLocal::sqlDateWithTime($lcl_list['date']);
@@ -287,24 +299,28 @@ class Invoice {
 
         // Note that this will make the last activity date greater than the aging_date which will force the
         // aging information to be recalculated.
-        $curr_datetime = new \DateTime();
-        $last_activity_date = $curr_datetime->format('Y-m-d h:i:s');
+        try {
+            $curr_DateTime = new DateTime();
+        } catch (Exception $e) {
+            $curr_DateTime = '';
+        }
+        $last_activity_date = $curr_DateTime->format('Y-m-d h:i:s');
 
         $result = false;
         try {
             $pdoDb->addSimpleWhere("id", $invoice_id);
             $pdoDb->setFauxPost(array('index_id' => $index_id,
-                'biller_id' => $_POST['biller_id'],
-                'customer_id' => $_POST['customer_id'],
-                'preference_id' => $_POST['preference_id'],
-                'date' => SiLocal::sqlDateWithTime($_POST['date']),
-                'note' => trim($_POST['note']),
-                'last_activity_date' => $last_activity_date,
-                'owing' => '1', // force update of aging information
-                'custom_field1' => (isset($_POST['custom_field1']) ? $_POST['custom_field1'] : ''),
-                'custom_field2' => (isset($_POST['custom_field2']) ? $_POST['custom_field2'] : ''),
-                'custom_field3' => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ''),
-                'custom_field4' => (isset($_POST['custom_field4']) ? $_POST['custom_field4'] : ''),
+                'biller_id'            => $_POST['biller_id'],
+                'customer_id'          => $_POST['customer_id'],
+                'preference_id'        => $_POST['preference_id'],
+                'date'                 => SiLocal::sqlDateWithTime($_POST['date']),
+                'last_activity_date'   => $last_activity_date,
+                'owing'                => '1', // force update of aging information
+                'note'                 => (empty($_POST['note']         ) ? "" : trim($_POST['note'])   ),
+                'custom_field1'        => (isset($_POST['custom_field1']) ? $_POST['custom_field1'] : ''),
+                'custom_field2'        => (isset($_POST['custom_field2']) ? $_POST['custom_field2'] : ''),
+                'custom_field3'        => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ''),
+                'custom_field4'        => (isset($_POST['custom_field4']) ? $_POST['custom_field4'] : ''),
                 'sales_representative' => (isset($_POST['sales_representative']) ? $_POST['sales_representative'] : '')));
             $pdoDb->setExcludedFields(array("id", "domain_id"));
             $result = $pdoDb->request("UPDATE", "invoices");
@@ -600,12 +616,18 @@ class Invoice {
      * Get all the invoice records with associated information.
      * @return array invoice records.
      */
-    public static function get_all() {
+    public static function getAll() {
         global $pdoDb;
 
         $results = array();
         try {
-            $pdoDb->setSelectList(new DbField("i.id", "id"), new DbField('i.preference_id', 'preference_id'));
+            $pdoDb->setSelectList(array(
+                new DbField("i.id", "id"),
+                new DbField('i.preference_id', 'preference_id'),
+                new DbField('i.date', 'date'),
+                new DbField('i.owing', 'owing'),
+                new DbField('i.last_activity_date', 'last_activity_date'),
+                new DbField('i.aging_date', 'aging_date')));
 
             $fn = new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id");
             $pdoDb->addToSelectStmts(new Select($fn, null, null, null, "index_name"));
@@ -632,7 +654,7 @@ class Invoice {
                 $results[] = $row;
             }
         } catch (PdoDbException $pde) {
-            error_log("Invoice::get_all() - error: " . $pde->getMessage());
+            error_log("Invoice::getAll() - error: " . $pde->getMessage());
         }
         return $results;
     }
@@ -868,7 +890,7 @@ class Invoice {
         global $auth_session, $pdoDb;
 
         $results     = array();
-        $count       = 0;
+        $inv_count   = 0;
         $total_owing = 0;
         try {
             // If user role is customer or biller, then restrict invoices to those they have access to.
@@ -966,7 +988,7 @@ class Invoice {
 
             $inv_count = count($rows);
             foreach ($rows as $row) {
-                $row[owing] = $row['invoice_total'] - $row['INV_PAID'];
+                $row['owing'] = $row['invoice_total'] - $row['INV_PAID'];
                 $age_list = self::calculate_age_days(
                     $row['id'],
                     $row['date'],
@@ -1248,10 +1270,14 @@ class Invoice {
     public static function recur($invoice_id) {
         global $config;
 
-        $timezone = $config->phpSettings->date->timezone;
-        $tz = new \DateTimeZone($timezone);
-        $dtm = new \DateTime('now', $tz);
-        $dt_tm = $dtm->format("Y-m-d H:i:s");
+        try {
+            $timezone = $config->phpSettings->date->timezone;
+            $tz = new DateTimeZone($timezone);
+            $dtm = new DateTime('now', $tz);
+            $dt_tm = $dtm->format("Y-m-d H:i:s");
+        } catch (Exception $e) {
+            $dt_tm = '';
+        }
 
         $invoice = self::select($invoice_id);
         // @formatter:off

@@ -53,7 +53,7 @@ class CustomFields {
      *        won't be displayed.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    function getLabels($noUndefinedLabels = FALSE) {
+    public static function getLabels($noUndefinedLabels = FALSE) {
         global $LANG, $pdoDb_admin;
 
         $rows = array();

@@ -5,7 +5,7 @@ class BodyBox extends BlockBox {
         parent::__construct();
     }
 
-    public function &create(&$root, &$pipeline) {
+    public static function &create(&$root, &$pipeline) {
         $box = new BodyBox();
         $box->readCSS($pipeline->getCurrentCSSState());
         $box->create_content($root, $pipeline);

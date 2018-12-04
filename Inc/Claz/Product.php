@@ -29,7 +29,7 @@ class Product {
      * @param int $id of product record to select.
      * @return array select row or empty array if row not found.
      */
-    public static function select($id) {
+    public static function get($id) {
         global $pdoDb, $LANG;
 
         $row = array();
@@ -47,7 +47,7 @@ class Product {
             $rows = $pdoDb->request("SELECT", "products");
             $row = (empty($rows) ? $rows : $rows[0]);
         } catch (PdoDbException $pde) {
-            error_log("Product::select for id[$id] - error: " . $pde->getMessage());
+            error_log("Product::get for id[$id] - error: " . $pde->getMessage());
         }
         return $row;
     }
@@ -57,7 +57,7 @@ class Product {
      *              false if all rows should be selected.
      * @return array Product rows selected or empty array if none.
      */
-    public static function select_all($enabled = true) {
+    public static function getAll($enabled = true) {
         global $pdoDb, $LANG;
 
         try {
@@ -77,7 +77,7 @@ class Product {
 
             $rows = $pdoDb->request("SELECT", "products");
         } catch (PdoDbException $pde) {
-            error_log("Product::select_all() - error: " . $pde->getMessage());
+            error_log("Product::getAll() - error: " . $pde->getMessage());
             $rows = array();
         }
         return $rows;

@@ -54,7 +54,7 @@ $customer['owing'] = $customer['total'] - $customer['paid'];
 $customFieldLabel = CustomFields::getLabels(true);
 $invoices = Customer::getCustomerInvoices($cid);
 
-$parent_customers = Customer::get_all(true);
+$parent_customers = Customer::getAll(true);
 $smarty->assign('parent_customers', $parent_customers);
 
 $smarty->assign('customer',$customer);

@@ -15,6 +15,13 @@
     <ul>
         <li>2018-11-13 - <b>2018.3.0</b>
             <ul>
+                <li>Cleaned up all PDF and SI errors and warnings issued when E_ALL error
+                    mode is set. There is an exceptions for Smarty OPTIONS and CYCLE commands
+                    (and possibly others) that attempt to find these functions in the compiled
+                    (sysplugins) directory but they are not compiled and are in the plugins
+                    directory. This warning is issued when the template using them is first
+                    accessed and compiled. Subsequent access does not report an error. Issue
+                    reported to Smarty team for hopeful cleanup in a future version.</li>
                 <li>Changed to use namespace for class autoloading and add phpunit test support.</li>
                 <li>Eliminated "htmlout" template function. Use "outhtml" instead.</li>
                 <li>Moved all global functions to classes. Many are in the Util class.</li>

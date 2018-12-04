@@ -1,4 +1,4 @@
-<h1 style="position: relative; margin: 0 auto; text-align: center;">Past Due Report</h1>
+<h1 style="position: relative; margin: 0 auto; text-align: center;">30 Days or More Past Due Report</h1>
 <hr />
 <form name="frmpost"
       action="index.php?module=reports&amp;view=report_past_due"
@@ -7,7 +7,7 @@
     <tr>
       <td class="details_screen">Display Detail</td>
       <td><input type="checkbox" name="display_detail"
-                 {if $smarty.post.display_detail == "yes"} checked {/if} value="yes" />
+                 {if isset($smarty.post.display_detail) && $smarty.post.display_detail == "yes"} checked {/if} value="yes" />
       </td>
     </tr>
     <tr>
@@ -51,35 +51,38 @@
       {/if}
     {/foreach}
     <tr>
-      <td class="details_screen">{$name}</td>
-      {if $smarty.post.display_detail == 'yes'}
+      <td class="details_screen">{if isset($name)}{$name}{/if}</td>
+      {if isset($smarty.post.display_detail) && $smarty.post.display_detail == 'yes'}
         <td colspan="6">&nbsp;</td>
       {else}
         <td>&nbsp;</td>
-        <td class="details_screen" style="text-align: right;">{$billed}</td>
+        <td class="details_screen" style="text-align: right;">{if isset($billed)}{$billed}{/if}</td>
         <td>&nbsp;</td>
-        <td class="details_screen" style="text-align: right;">{$paid}</td>
+        <td class="details_screen" style="text-align: right;">{if isset($paid)}{$paid}{/if}</td>
         <td>&nbsp;</td>
-        <td class="details_screen" style="text-align: right;">{$owed}</td>
+        <td class="details_screen" style="text-align: right;">{if isset($owed)}{$owed}{/if}</td>
       {/if}
     </tr>
-    {if $smarty.post.display_detail == 'yes'}
+    {if isset($smarty.post.display_detail) && $smarty.post.display_detail == 'yes'}
       {foreach name=loop2 item=info2 from=$inv_info}
         {foreach name=loop3 item=info3 key=key3 from=$info2}
-          {if     $key3=='id'    }{assign var=id     value=$info3}
-          {elseif $key3=='billed'}{assign var=billed value=$info3}
-          {elseif $key3=='paid'  }{assign var=paid   value=$info3}
-          {elseif $key3=='owed'  }{assign var=owed   value=$info3}
+          {if     $key3=='id'      }{assign var=id       value=$info3}
+          {elseif $key3=='index_id'}{assign var=index_id value=$info3}
+          {elseif $key3=='billed'  }{assign var=billed   value=$info3}
+          {elseif $key3=='paid'    }{assign var=paid     value=$info3}
+          {elseif $key3=='owed'    }{assign var=owed     value=$info3}
           {/if}
         {/foreach}    
         <tr>
-          <td class="details_screen" style="float:left;margin-left:20%;">Invoice&nbsp;#{$id}</td>
+          <td class="details_screen" style="float:left;margin-left:20%;">
+            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$id}&amp;action=view">Invoice&nbsp;#{$index_id}</a>
+          </td>
           <td>&nbsp;</td>
-          <td class="details_screen" style="float:right;margin-right:auto;">{$billed}</td>
+          <td class="details_screen" style="float:right;margin-right:auto;">{if isset($billed)}{$billed}{/if}</td>
           <td>&nbsp;</td>
-          <td class="details_screen" style="float:right;margin-right:auto;">{$paid}</td>
+          <td class="details_screen" style="float:right;margin-right:auto;">{if isset($paid)}{$paid}{/if}</td>
           <td>&nbsp;</td>
-          <td class="details_screen" style="float:right;margin-right:auto;">{$owed}</td>
+          <td class="details_screen" style="float:right;margin-right:auto;">{if isset($owed)}{$owed}{/if}</td>
           <td>&nbsp;</td>
         </tr>
       {/foreach}

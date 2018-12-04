@@ -31,7 +31,7 @@
             </a>
           </th>
           <td>
-            <input type="text" name="email_from" size="50" value="{$biller.email|htmlsafe}" tabindex="10"
+            <input type="text" name="email_from" size="50" value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}" tabindex="10"
                    class="validate[required]" />
           </td>
         </tr>
@@ -43,7 +43,7 @@
             </a>
           </th>
           <td>
-            <input type="text" name="email_to" size="50" value="{$customer.email|htmlsafe}" tabindex="20"
+            <input type="text" name="email_to" size="50" value="{if isset($customer.email)}{$customer.email|htmlsafe}{/if}" tabindex="20"
                    class="validate[required]" />
           </td>
         </tr>
@@ -54,7 +54,7 @@
               <img src="{$help_image_path}help-small.png" alt="" />
             </a>
           </th>
-          <td><input type="text" name="email_bcc" size="50" value="{$biller.email|htmlsafe}" tabindex="30" /></td>
+          <td><input type="text" name="email_bcc" size="50" value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}" tabindex="30" /></td>
         </tr>
         <tr>
           <th>{$LANG.subject}

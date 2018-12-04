@@ -1,7 +1,7 @@
 <div class="si_center"><h2>Statement of Invoices</h2></div>
 {if $menu}
   <form name="frmpost" action="index.php?module=statement&amp;view=index" method="post">
-    <div class="si_form si_form_search{if $smarty.post.submit == null} si_form_search_null{/if}">
+    <div class="si_form si_form_search{if !isset($smarty.post.submit)} si_form_search_null{/if}">
       <table>
         <tr style="margin: 0 auto; width: 100%;">
           <td style="text-align: left; padding-right: 10px; white-space: nowrap; width: 47%;">
@@ -10,7 +10,7 @@
           <td>
             <input type="text" tabindex="10"
                    class="validate[required,custom[date],length[0,10]] date-picker"
-                   size="10" name="start_date" id="date1" value='{$start_date|htmlsafe}' />
+                   size="10" name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlsafe}{/if}' />
           </td>
         </tr>
         <tr style="margin: 0 auto; width: 100%;">
@@ -20,7 +20,7 @@
           <td>
             <input type="text" tabindex="20"
                    class="validate[required,custom[date],length[0,10]] date-picker"
-                   size="10" name="end_date" id="date1" value='{$end_date|htmlsafe}' />
+                   size="10" name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlsafe}{/if}' />
           </td>
         </tr>
         <tr>
@@ -31,7 +31,7 @@
               <option value=""></option>
               {/if}
               {foreach from=$billers item=list_biller}
-              <option {if $list_biller.id==$biller_id} selected {/if} value="{$list_biller.id|htmlsafe}">
+              <option {if $list_biller.id==$biller_id} selected {/if} value="{if isset($list_biller.id)}{$list_biller.id|htmlsafe}{/if}">
                 {$list_biller.name|htmlsafe}
               </option>
               {/foreach}
@@ -46,7 +46,7 @@
               <option value=""></option>
               {/if}
               {foreach from=$customers item=list_customer}
-              <option {if $list_customer.id== $customer_id} selected {/if} value="{$list_customer.id|htmlsafe}">
+              <option {if $list_customer.id== $customer_id} selected {/if} value="{if isset($list_customer.id)}{$list_customer.id|htmlsafe}{/if}">
                 {$list_customer.name|htmlsafe}
               </option>
               {/foreach}
@@ -79,31 +79,31 @@
   </form>
   {if isset($smarty.post.submit)}
   <div class="si_toolbar si_toolbar_top">
-    <a title="{$LANG.print_preview_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.id|htmlsafe}"
+    <a title="{$LANG.print_preview}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=print">
       <img src='images/common/printer.png' class='action' />&nbsp;{$LANG.print_preview}
     </a>
     <!-- EXPORT TO PDF -->
-    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.id|htmlsafe} {$LANG.export_pdf_tooltip}"
+    <a title="{$LANG.export_pdf}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=pdf">
       <img src='images/common/page_white_acrobat.png' class='action' />&nbsp;{$LANG.export_pdf}
     </a>
-    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.id|htmlsafe} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet} {$LANG.format_tooltip}"
+    <a title="{$LANG.export_tooltip} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet} {$LANG.format_tooltip}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file&amp;filetype={$config->export->spreadsheet}">
        <img src='images/common/page_white_excel.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->spreadsheet}
     </a>
-    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.id|htmlsafe} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor} {$LANG.format_tooltip}"
+    <a title="{$LANG.export_tooltip} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor} {$LANG.format_tooltip}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file&amp;filetype={$config->export->wordprocessor}">
        <img src='images/common/page_white_word.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->wordprocessor}
     </a>
-    <a title="{$LANG.email} {$preference.pref_inv_wording|htmlsafe} {$invoice.id|htmlsafe}"
+    <a title="{$LANG.email}"
        href="index.php?module=statement&amp;view=email&amp;stage=1&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file">
        <img src='images/common/mail-message-new.png' class='action' />&nbsp;{$LANG.email}
     </a>
   </div>
   {/if}
 {/if}
-{if $smarty.post.submit != null || $view == export}
+{if isset($smarty.post.submit) || $view == export}
   {if !$menu}
   <hr />
   {/if}
@@ -139,7 +139,7 @@
   </div>
   {if $do_not_filter_by_date != "yes"}
   <div>
-    <strong>{$LANG.statement_for_the_period} {$start_date|htmlsafe} {$LANG.to_lowercase} {$end_date|htmlsafe}</strong>
+    <strong>{$LANG.statement_for_the_period} {if isset($start_date)}{$start_date|htmlsafe}{/if} {$LANG.to_lowercase} {if isset($end_date)}{$end_date|htmlsafe}{/if}</strong>
   </div>
   <br />
   {/if}
@@ -157,18 +157,17 @@
         </tr>
       </thead>
       <tbody>
-      {assign var=i value=-1}
+      {assign var=i value=0}
       {section name=invoice loop=$invoices}
-{* Don't know why this doesn't work.
-        {if $invoices[invoice].preference != $invoices[invoice.index_prev].preference && $smarty.section.invoice.index != 0}
- *}
         {if $invoices[invoice].preference != $invoices[$i].preference && $smarty.section.invoice.index != 0}
-        <tr><td><br /></td></tr>
+        <tr>
+          <td><br /></td>
+        </tr>
         {/if}
         {assign var=i value=$i+1}
         <tr>
           <td class="si_right">
-            {$index|htmlsafe}
+            {$i|htmlsafe}
             {$invoices[invoice].preference|htmlsafe}
             {$invoices[invoice].index_id|htmlsafe}
           </td>

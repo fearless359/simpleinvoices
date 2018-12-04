@@ -132,7 +132,7 @@
                     <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td>{$defaultPaymentType.pt_description}</td>
+            <td>{$defaultPaymentType}</td>
         </tr>
 
         <tr>

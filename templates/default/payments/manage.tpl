@@ -16,21 +16,21 @@
     <img src="images/famfam/add.png" alt=""/>
     {$LANG.process_payment}
   </a>
-  {if $smarty.get.id }
+{if isset($smarty.get.id)}
   <a href="index.php?module=payments&amp;view=process&amp;id={$smarty.get.id|urlencode}&amp;op=pay_selected_invoice" class="">
     <img src="images/famfam/money.png" alt=""/>
     {$LANG.payments_filtered_invoice}
   </a>
 </div>
-    {if $payments == null}
+    {if !isset($payments)}
 <div class="si_message">{$LANG.no_payments_invoice}</div>
     {else}
 <table id="manageGrid" style="display:none"></table>
   {include file='modules/payments/manage.js.php' get=$smarty.get}
     {/if}
-  {elseif $smarty.get.c_id }
+{elseif isset($smarty.get.c_id) }
 </div>
-    {if $payments == null}
+    {if !isset($payments)}
 <div class="si_message">{$LANG.no_payments_customer}</div>
     {else}
 <table id="manageGrid" style="display:none"></table>
@@ -38,7 +38,7 @@
     {/if}
   {else}
 </div>
-    {if $payments == null}
+    {if !isset($payments)}
       <div class="si_message">{$LANG.no_payments}</div>
     {else}
       <table id="manageGrid" style="display:none"></table>

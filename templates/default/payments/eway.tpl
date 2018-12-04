@@ -35,7 +35,7 @@
                     <select name="invoice_id" class="validate[required]">
                         <option value=''></option>
                         {foreach from=$invoice_all item=invoice}
-                        <option value="{$invoice.id|htmlsafe}" {if $smarty.get.id == $invoice.id} selected {/if} >{$invoice.index_name|htmlsafe}</option>
+                        <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}" {if $smarty.get.id == $invoice.id} selected {/if} >{$invoice.index_name|htmlsafe}</option>
                         {/foreach}
                     </select>
                 </td>

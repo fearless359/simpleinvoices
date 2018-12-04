@@ -4,7 +4,7 @@
     <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.unit_price|siLocal_number}</td>
     <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.gross_total|siLocal_number}</td>
 </tr>
-{if $invoiceItem.attribute != null}
+{if isset($invoiceItem.attribute_json)}
     <tr class="si_product_attribute">
         <td></td>
         <td>
@@ -24,7 +24,7 @@
         </td>
     </tr>
 {/if}
-{if $invoiceItem.description != null}
+{if isset($invoiceItem.description)}
     <tr class="show-itemised tr_desc">
         <td></td>
         <td colspan="5" class="">

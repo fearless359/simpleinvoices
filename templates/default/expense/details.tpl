@@ -63,7 +63,7 @@
     {elseif $smarty.get.action== 'edit' }
         <br/>
         <input type="hidden" name="op" value="edit"/>
-        <input type="hidden" name="domain_id" value="{$expense.domain_id}"/>
+        <input type="hidden" name="domain_id" value="{if isset($expense.domain_id)}{$expense.domain_id}{/if}"/>
         <table class="left" width="100%">
             <tr>
                 <th class="left">{$LANG.amount}</th>
@@ -78,7 +78,7 @@
                         <option value=''></option>
                         {foreach from=$detail.expense_accounts item=expense_account}
                             <option {if $expense_account.id == $expense.expense_account_id}selected{/if}
-                                    value="{$expense_account.id}">{$expense_account.name}</option>
+                                    value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -97,7 +97,7 @@
                         <option value=''></option>
                         {foreach from=$detail.billers item=biller}
                             <option {if $biller.id == $expense.biller_id} selected {/if}
-                                    value="{$biller.id}">{$biller.name}</option>
+                                    value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -109,7 +109,7 @@
                         <option value=''></option>
                         {foreach from=$detail.customers item=customer}
                             <option {if $customer.id == $expense.customer_id} selected {/if}
-                                    value="{$customer.id}">{$customer.name}</option>
+                                    value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -133,7 +133,7 @@
                         <option value=''></option>
                         {foreach from=$detail.products item=product}
                             <option {if $product.id == $expense.product_id} selected {/if}
-                                    value="{$product.id}">{$product.description}</option>
+                                    value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -151,7 +151,7 @@
                                         {assign var="index" value=$smarty.section.tax.index}
                                         {foreach from=$taxes item=tax}
                                             <option {if $tax.tax_id === $detail.expense_tax.$index.tax_id} selected {/if}
-                                                    value="{$tax.tax_id}">{$tax.tax_description}</option>
+                                                    value="{if isset($tax.tax_id)}{$tax.tax_id}{/if}">{$tax.tax_description}</option>
                                         {/foreach}
                                     </select>
                                 </td>
@@ -166,7 +166,7 @@
                 <td>
                     {* enabled block *}
                     <select name="status">
-                        <option value="{$expense.status}" selected style="font-weight: bold;">{$detail.status_wording}</option>
+                        <option value="{if isset($expense.status)}{$expense.status}{/if}" selected style="font-weight: bold;">{$detail.status_wording}</option>
                         <option value="1">{$LANG.paid}</option>
                         <option value="0">{$LANG.not_paid}</option>
                     </select>

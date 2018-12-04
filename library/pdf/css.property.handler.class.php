@@ -1,99 +1,118 @@
 <?php
 
-class CSSPropertyHandler {
-  var $_inheritable;
-  var $_inheritable_text;
+class CSSPropertyHandler
+{
+    var $_inheritable;
+    var $_inheritable_text;
 
-  function css($value, &$pipeline) { 
-    $css_state =& $pipeline->getCurrentCSSState();
+    public function __construct($inheritable, $inheritable_text)
+    {
+        $this->_inheritable = $inheritable;
+        $this->_inheritable_text = $inheritable_text;
+    }
 
-    if ($this->applicable($css_state)) {
-      $this->replace($this->parse($value, $pipeline), $css_state); 
-    };
-  }
+    public function css($value, &$pipeline)
+    {
+        $css_state =& $pipeline->getCurrentCSSState();
 
-  function applicable($css_state) {
-    return true;
-  }
+        if ($this->applicable($css_state)) {
+            $this->replace($this->parse($value, $pipeline), $css_state);
+        }
+    }
 
-  function clearDefaultFlags(&$state) {
-    $state->setPropertyDefaultFlag($this->getPropertyCode(), false);
-  }
+    public static function applicable($css_state)
+    {
+        return true;
+    }
 
-  function __construct($inheritable, $inheritable_text) {
-    $this->_inheritable = $inheritable;
-    $this->_inheritable_text = $inheritable_text;
-  }
+    public function clearDefaultFlags(&$state)
+    {
+        $state->setPropertyDefaultFlag($this->getPropertyCode(), false);
+    }
 
-  /**
-   * Optimization: this function is called very often, so 
-   * we minimize the overhead by calling $this->getPropertyCode()
-   * once per property handler object instead of calling in every
-   * CSSPropertyHandler::get() call.
-   */
-  function &get(&$state) { 
-    static $property_code = null;
-    if (is_null($property_code)) {
-      $property_code = $this->getPropertyCode();
-    };
+    /**
+     * Optimization: this function is called very often, so
+     * we minimize the overhead by calling $this->getPropertyCode()
+     * once per property handler object instead of calling in every
+     * CSSPropertyHandler::get() call.
+     * @param &$state
+     * @return mixed
+     */
+    public function &get(&$state)
+    {
+        static $property_code = null;
+        if (is_null($property_code)) {
+            $property_code = $this->getPropertyCode();
+        }
 
-    if (!isset($state[$property_code])) {
-      $null = null;
-      return $null;
-    };
+        if (!isset($state[$property_code])) {
+            $null = null;
+            return $null;
+        }
 
-    return $state[$property_code];
-  }
+        return $state[$property_code];
+    }
 
-  function inherit($old_state, &$new_state) { 
-    $code = $this->getPropertyCode();
-    $new_state[$code] = ($this->_inheritable ? 
-                         $old_state[$code] : 
-                         $this->default_value());
-  }
+    public function inherit($old_state, &$new_state)
+    {
+        $code = $this->getPropertyCode();
+        $new_state[$code] = ($this->_inheritable ?
+            $old_state[$code] :
+            $this->default_value());
+    }
 
-  function isInheritableText() { 
-    return $this->_inheritable_text;
-  }
+    public function isInheritableText()
+    {
+        return $this->_inheritable_text;
+    }
 
-  function isInheritable() {
-    return $this->_inheritable;
-  }
+    public function isInheritable()
+    {
+        return $this->_inheritable;
+    }
 
-  function inherit_text($old_state, &$new_state) { 
-    $code = $this->getPropertyCode();
+    public function inherit_text($old_state, &$new_state)
+    {
+        $code = $this->getPropertyCode();
 
-    if ($this->_inheritable_text) {
-      $new_state[$code] = $old_state[$code];
-    } else {
-      $new_state[$code] = $this->default_value();
-    };
-  }
+        if ($this->_inheritable_text) {
+            $new_state[$code] = $old_state[$code];
+        } else {
+            $new_state[$code] = $this->default_value();
+        }
+    }
 
-  function is_default($value) { 
-    if (is_object($value)) {
-      return $value->is_default();
-    } else {
-      return $this->default_value() === $value; 
-    };
-  }
+    public function is_default($value)
+    {
+        if (is_object($value)) {
+            return $value->is_default();
+        } else {
+            return $this->default_value() === $value;
+        }
+    }
 
-  function is_subproperty() { return false; }
+    public static function is_subproperty()
+    {
+        return false;
+    }
 
-  function replace($value, &$state) { 
-    $state->setProperty($this->getPropertyCode(), $value);
-  }
+    public function replace($value, &$state)
+    {
+        $state->setProperty($this->getPropertyCode(), $value);
+    }
 
-  function replaceDefault($value, &$state) { 
-    $state->setPropertyDefault($this->getPropertyCode(), $value);
-  }
+    public function replaceDefault($value, &$state)
+    {
+        $state->setPropertyDefault($this->getPropertyCode(), $value);
+    }
 
-  function replace_array($value, &$state) {
-    static $property_code = null;
-    if (is_null($property_code)) {
-      $property_code = $this->getPropertyCode();
-    };
+    public function replace_array($value, &$state)
+    {
+        static $property_code = null;
+        if (is_null($property_code)) {
+            $property_code = $this->getPropertyCode();
+        }
 
-    $state[$property_code] = $value;
-  }
+        $state[$property_code] = $value;
+    }
 }

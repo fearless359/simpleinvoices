@@ -48,7 +48,7 @@ function invoice_product_change(product,row_number, quantity, description){
       $('#gmail_loading').show();
     $.ajax({
         type: 'GET',
-        url: './index.php?module=invoices&amp;view=product_ajax&amp;id='+product+'&amp;row='+row_number,
+        url: './index.php?module=invoices&view=product_ajax&id='+product+'&row='+row_number,
         data: "id: "+product,
         dataType: "json",
         success: function(data){
@@ -105,7 +105,7 @@ function product_inventory_change(product,existing_cost){
     $('#gmail_loading').show();
     $.ajax({
         type: 'GET',
-        url: './index.php?module=invoices&amp;view=product_inventory_ajax&amp;id='+product,
+        url: './index.php?module=invoices&view=product_inventory_ajax&id='+product,
         data: "id: "+product,
         dataType: "json",
         success: function(data){

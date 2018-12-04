@@ -246,8 +246,8 @@ class SqlPatchManager
                     self::patch303();
                 } else if ($id == 304) {
                     self::patch304();
-                } else if ($id == 306) {
-                    self::patch306();
+//                } else if ($id == 306) {
+//                    self::patch306();
                 }
             }
         } catch (PdoDbException $pde) {
@@ -626,36 +626,36 @@ class SqlPatchManager
         $pdoDb_admin->addSimpleWhere('name', 'default_invoice');
         $pdoDb_admin->request('DELETE', 'extensions');
     }
-
-    /**
-     * Special handling for patch #306
-     * @throws PdoDbException
-     */
-    private static function patch306()
-    {
-        /**
-         * @var PdoDb $pdoDb_admin
-         */
-        global $pdoDb_admin;
-
-        try {
-            $rows = $pdoDb_admin->request('SELECT', 'extensions');
-            foreach ($rows as $row) {
-                $parts = explode('_', $row['name']);
-                $name = '';
-                foreach ($parts as $part) {
-                    $name .= ucwords($part);
-                }
-
-                $pdoDb_admin->addSimpleWhere(id, $row['id']);
-                $pdoDb_admin->setFauxPost(array('name' => $name));
-                $pdoDb_admin->request('UPDATE', 'extensions');
-            }
-        } catch (PdoDbException $pde) {
-            error_log("SqlPatchManager::patch306() - Error: " . $pde->getMessage());
-            throw new PdoDbException("SqlPatchManager::patch303() - " . $pde->getMessage());
-        }
-    }
+//
+//    /**
+//     * Special handling for patch #306
+//     * @throws PdoDbException
+//     */
+//    private static function patch306()
+//    {
+//        /**
+//         * @var PdoDb $pdoDb_admin
+//         */
+//        global $pdoDb_admin;
+//
+//        try {
+//            $rows = $pdoDb_admin->request('SELECT', 'extensions');
+//            foreach ($rows as $row) {
+//                $parts = explode('_', $row['name']);
+//                $name = '';
+//                foreach ($parts as $part) {
+//                    $name .= ucwords($part);
+//                }
+//
+//                $pdoDb_admin->addSimpleWhere(id, $row['id']);
+//                $pdoDb_admin->setFauxPost(array('name' => $name));
+//                $pdoDb_admin->request('UPDATE', 'extensions');
+//            }
+//        } catch (PdoDbException $pde) {
+//            error_log("SqlPatchManager::patch306() - Error: " . $pde->getMessage());
+//            throw new PdoDbException("SqlPatchManager::patch303() - " . $pde->getMessage());
+//        }
+//    }
 
     /**
      * Load all patches to be processed.
@@ -1657,57 +1657,64 @@ class SqlPatchManager
         );
         self::makePatch('115', $patch);
 
+        $def_biller = (empty($defaults['def_biller']) ? "" : $defaults['def_biller']);
         $patch = array(
             'name' => "System defaults conversion patch - set default biller",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_biller] where name = 'biller'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_biller where name = 'biller'",
             'date' => "20070523",
             'source' => 'original'
         );
         self::makePatch('116', $patch);
 
+        $def_customer = (empty($defaults['def_customer']) ? "" : $defaults['def_customer']);
         $patch = array(
             'name' => "System defaults conversion patch - set default customer",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_customer] where name = 'customer'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_customer where name = 'customer'",
             'date' => "20070523",
             'source' => 'original'
         );
         self::makePatch('117', $patch);
 
+        $def_tax = (empty($defaults['def_tax']) ? "" : $defaults['def_tax']);
         $patch = array(
             'name' => "System defaults conversion patch - set default tax",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_tax] where name = 'tax'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_tax where name = 'tax'",
             'date' => "20070523",
             'source' => 'original'
         );
         self::makePatch('118', $patch);
 
+        $def_inv_preference = (empty($defaults['def_inv_preference']) ? "" : $defaults['def_inv_preference']);
         $patch = array(
             'name' => "System defaults conversion patch - set default invoice reference",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_inv_preference] where name = 'preference'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_inv_preference where name = 'preference'",
             'date' => "20070523",
             'source' => 'original'
         );
         self::makePatch('119', $patch);
 
+        $def_number_line_items = (empty($defaults['def_number_line_items']) ? "" : $defaults['def_number_line_items']);
         $patch = array(
             'name' => "System defaults conversion patch - set default number of line items",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_number_line_items] where name = 'line_items'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_number_line_items where name = 'line_items'",
             'date' => "20070523",
             'source' => 'original'
         );
         self::makePatch('120', $patch);
 
+        $def_inv_template = (empty($defaults['def_inv_template']) ? "" : $defaults['def_inv_template']);
         $patch = array(
             'name' => "System defaults conversion patch - set default invoice template",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$defaults[def_inv_template]' where name = 'template'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_inv_template where name = 'template'",
             'date' => "20070523",
             'source' => 'original'
         );
         self::makePatch('121', $patch);
 
+        $def_payment_type = (empty($defaults['def_payment_type']) ? "" : $defaults['def_payment_type']);
         $patch = array(
             'name' => "System defaults conversion patch - set default paymemt type",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $defaults[def_payment_type] where name = 'payment_type'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_payment_type where name = 'payment_type'",
             'date' => "20070523",
             'source' => 'original'
         );
@@ -1716,35 +1723,40 @@ class SqlPatchManager
         $patch = array(
             'name' => "Add option to delete invoices into the system_defaults table",
             'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` (`id`, `name`, `value`) VALUES (NULL, 'delete', 'N');",
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('123', $patch);
 
         $patch = array(
             'name' => "Set default language in new lang system",
             'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = 'en-gb' where name ='language';",
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('124', $patch);
 
         $patch = array(
             'name' => "Change log table that usernames are also possible as id",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "log` CHANGE `userid` `userid` VARCHAR( 40 ) NOT NULL DEFAULT '0'",
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('125', $patch);
 
         $patch = array(
             'name' => "Add visible attribute to the products table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD  `visible` BOOL NOT NULL DEFAULT  '1';",
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('126', $patch);
 
         $patch = array(
             'name' => "Add last_id to logging table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "log` ADD  `last_id` INT NULL ;",
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('127', $patch);
 
@@ -1761,7 +1773,8 @@ class SqlPatchManager
                                                                                           `user_domain` varchar(255) NOT NULL,
                                                                                           `user_password` varchar(255) NOT NULL,
                                             PRIMARY KEY(`user_id`)) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"),
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('128', $patch);
         unset($u);
@@ -1771,7 +1784,8 @@ class SqlPatchManager
             'name' => "Fill user table with default values",
             'patch' => "INSERT INTO `" . TB_PREFIX . "users` (`user_id`, `user_email`, `user_name`, `user_group`, `user_domain`, `user_password`)
                         VALUES (NULL, 'demo@simpleinvoices.group', 'demo', '1', '1', MD5('demo'))",
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('129', $patch);
 
@@ -1781,14 +1795,16 @@ class SqlPatchManager
             'patch' => ($ac ? "SELECT * FROM " . TB_PREFIX . "auth_challenges" :
                               "CREATE TABLE IF NOT EXISTS `" . TB_PREFIX . "auth_challenges` (`challenges_key` int(11) NOT NULL,
                                                                                               `challenges_timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP);"),
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('130', $patch);
 
         $patch = array(
             'name' => "Make tax field 3 decimal places",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "tax` CHANGE `tax_percentage` `tax_percentage` DECIMAL (10,3)  NULL",
-            'date' => "200709"
+            'date' => "20070930",
+            'source' => 'original'
         );
         self::makePatch('131', $patch);
 
@@ -1828,56 +1844,64 @@ class SqlPatchManager
             'name' => "Create domain mapping table",
             'patch' => "CREATE TABLE `" . TB_PREFIX . "user_domain` (`id` int(11) NOT NULL auto_increment  PRIMARY KEY,
                                                                      `name` varchar(255) UNIQUE NOT NULL) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('136', $patch);
 
         $patch = array(
             'name' => "Insert default domain",
             'patch' => "INSERT INTO `" . TB_PREFIX . "user_domain` (name) VALUES ('default');",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('137', $patch);
 
         $patch = array(
             'name' => "Add domain_id to payment_types table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "payment_types` ADD `domain_id` INT  NOT NULL AFTER `pt_id` ;",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('138', $patch);
 
         $patch = array(
             'name' => "Add domain_id to preferences table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD `domain_id` INT  NOT NULL AFTER `pref_id`;",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('139', $patch);
 
         $patch = array(
             'name' => "Add domain_id to products table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "products` ADD `domain_id` INT  NOT NULL AFTER `id` ;",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('140', $patch);
 
         $patch = array(
             'name' => "Add domain_id to billers table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "biller` ADD `domain_id` INT  NOT NULL AFTER `id` ;",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('141', $patch);
 
         $patch = array(
             'name' => "Add domain_id to invoices table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD `domain_id` INT NOT NULL AFTER `id` ;",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('142', $patch);
 
         $patch = array(
             'name' => "Add domain_id to customers table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "customers` ADD `domain_id` INT NOT NULL AFTER `id` ;",
-            'date' => "200712"
+            'date' => "20071231",
+            'source' => 'original'
         );
         self::makePatch('143', $patch);
 
@@ -2457,10 +2481,11 @@ class SqlPatchManager
         self::makePatch('212', $patch);
 
         $max_invoice = Invoice::maxIndexId();
+        $preference = (empty($defaults['preference']) ? "" : $defaults['preference']);
         $patch = array(
             'name' => "Update the index table with max invoice id - if required",
             'patch' => ($max_invoice > "0" ? "INSERT INTO `" . TB_PREFIX . "index` (id, node, sub_node, domain_id) " .
-                                             "VALUES (" . $max_invoice . ", 'invoice', '" . $defaults['preference'] . "','1');" :
+                                             "VALUES (" . $max_invoice . ", 'invoice', '$preference','1');" :
                                              "SELECT 1+1;"),
             'date' => "20090902",
             'source' => 'original'
@@ -3360,14 +3385,14 @@ class SqlPatchManager
             'source' => 'fearless359'
         );
         self::makePatch('305', $patch);
-
-        $patch = array(
-            'name' => "Change extensions naming convention",
-            'patch' => "SELECT 1+1",
-            'date' => "20181120",
-            'source' => 'fearless359'
-        );
-        self::makePatch('306', $patch);
+//
+//        $patch = array(
+//            'name' => "Change extensions naming convention",
+//            'patch' => "SELECT 1+1",
+//            'date' => "20181120",
+//            'source' => 'fearless359'
+//        );
+//        self::makePatch('306', $patch);
 
         // @formatter:on
     }

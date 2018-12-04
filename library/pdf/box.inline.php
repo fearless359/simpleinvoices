@@ -29,7 +29,7 @@ class LineBox {
         $this->right += $dx;
     }
 
-    public function create(&$box) {
+    public static function create(&$box) {
         $lbox = new LineBox();
         $lbox->top = $box->get_top();
         $lbox->right = $box->get_right();
@@ -76,6 +76,7 @@ class LineBox {
         return $fake_box;
     }
 }
+
 class InlineBox extends GenericInlineBox {
     public $_lines;
 
@@ -86,7 +87,7 @@ class InlineBox extends GenericInlineBox {
         $this->_lines = array();
     }
 
-    public function &create(&$root, &$pipeline) {
+    public static function &create(&$root, &$pipeline) {
         // Create contents of this inline box
         if ($root->node_type() == XML_TEXT_NODE) {
             $css_state = & $pipeline->getCurrentCSSState();
@@ -123,7 +124,7 @@ class InlineBox extends GenericInlineBox {
         return $box;
     }
 
-    public function &create_from_text($text, $white_space, &$pipeline) {
+    public static function &create_from_text($text, $white_space, &$pipeline) {
         $box = new InlineBox();
         $box->readCSS($pipeline->getCurrentCSSState());
 

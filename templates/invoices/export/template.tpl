@@ -30,25 +30,25 @@
         <td colspan="3">{$invoice.date|htmlsafe}</td>
       </tr>
       <!-- Show the Invoice Custom Fields if valid -->
-      {if !empty($customFieldLabels.invoice_cf1) && $invoice.custom_field1 != null}
+      {if !empty($customFieldLabels.invoice_cf1) && isset($invoice.custom_field1)}
       <tr>
         <td nowrap>{$customFieldLabels.invoice_cf1|htmlsafe}:</td>
         <td colspan="3">{$invoice.custom_field1|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.invoice_cf2) && $invoice.custom_field2 != null}
+      {if !empty($customFieldLabels.invoice_cf2) && isset($invoice.custom_field2)}
       <tr>
         <td nowrap>{$customFieldLabels.invoice_cf2|htmlsafe}:</td>
         <td colspan="3">{$invoice.custom_field2|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.invoice_cf3) && $invoice.custom_field3 != null}
+      {if !empty($customFieldLabels.invoice_cf3) && isset($invoice.custom_field3)}
       <tr>
         <td nowrap>{$customFieldLabels.invoice_cf3|htmlsafe}:</td>
         <td colspan="3">{$invoice.custom_field3|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.invoice_cf4) && $invoice.custom_field4 != null}
+      {if !empty($customFieldLabels.invoice_cf4) && isset($invoice.custom_field4)}
       <tr>
         <td nowrap>{$customFieldLabels.invoice_cf4|htmlsafe}:</td>
         <td colspan="3">{$invoice.custom_field4|htmlsafe}</td>
@@ -74,20 +74,20 @@
         <td><b>{$LANG.biller}:</b></td>
         <td colspan="3">{$biller.name|htmlsafe}</td>
       </tr>
-      {if $biller.street_address != null}
+      {if isset($biller.street_address)}
       <tr>
         <td>{$LANG.address}:</td>
         <td align="left" colspan="3">{$biller.street_address|htmlsafe}</td>
       </tr>
       {/if}
-      {if $biller.street_address2 != null }
-        {if $biller.street_address == null }
+      {if isset($biller.street_address2) }
+        {if !isset($biller.street_address) }
         <tr>
           <td>{$LANG.address}:</td>
           <td align="left" colspan="3">{$biller.street_address2|htmlsafe}</td>
         </tr>
         {/if}
-        {if $biller.street_address != null}
+        {if isset($biller.street_address)}
         <tr>
           <td></td>
           <td align="left" colspan="3">{$biller.street_address2|htmlsafe}</td>
@@ -97,55 +97,55 @@
       {merge_address field1=$biller.city field2=$biller.state field3=$biller.zip_code
                      street1=$biller.street_address street2=$biller.street_address2
                      class1="" class2="" colspan="3"}
-      {if $biller.country != null }
+      {if isset($biller.country) }
       <tr>
         <td></td>
         <td colspan="3">{$biller.country|htmlsafe}</td>
       </tr>
       {/if}
-      {if $biller.phone != null }
+      {if isset($biller.phone) }
       <tr>
         <td>{$LANG.phone_short}:</td>
         <td colspan="3">{$biller.phone|htmlsafe}</td>
       </tr>
       {/if}
-      {if $biller.fax != null }
+      {if isset($biller.fax) }
       <tr>
         <td>{$LANG.fax}:</td>
         <td colspan="3">{$biller.fax|htmlsafe}</td>
       </tr>
       {/if}
-      {if $biller.mobile_phone != null }
+      {if isset($biller.mobile_phone) }
       <tr>
         <td>{$LANG.mobile_short}:</td>
         <td colspan="3">{$biller.mobile_phone|htmlsafe}</td>
       </tr>
       {/if}
-      {if $biller.email != null }
+      {if isset($biller.email) }
       <tr>
         <td>{$LANG.email}:</td>
         <td colspan="3">{$biller.email|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.biller_cf1) && $biller.custom_field1 != null}
+      {if !empty($customFieldLabels.biller_cf1) && isset($biller.custom_field1)}
       <tr>
         <td>{$customFieldLabels.biller_cf1|htmlsafe}:</td>
         <td colspan="3">{$biller.custom_field1|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.biller_cf2) && $biller.custom_field2 != null}
+      {if !empty($customFieldLabels.biller_cf2) && isset($biller.custom_field2)}
       <tr>
         <td>{$customFieldLabels.biller_cf2|htmlsafe}:</td>
         <td colspan="3">{$biller.custom_field2|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.biller_cf3) && $biller.custom_field3 != null}
+      {if !empty($customFieldLabels.biller_cf3) && isset($biller.custom_field3)}
       <tr>
         <td>{$customFieldLabels.biller_cf3|htmlsafe}:</td>
         <td colspan="3">{$biller.custom_field3|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.biller_cf4) && $biller.custom_field4 != null}
+      {if !empty($customFieldLabels.biller_cf4) && isset($biller.custom_field4)}
       <tr>
         <td>{$customFieldLabels.biller_cf4|htmlsafe}:</td>
         <td colspan="3">{$biller.custom_field4|htmlsafe}</td>
@@ -165,26 +165,26 @@
         <td><b>{$LANG.customer}:</b></td>
         <td colspan="3">{$customer.name|htmlsafe}</td>
       </tr>
-      {if $customer.attention != null}
+      {if isset($customer.attention)}
       <tr>
         <td>{$LANG.attention_short}:</td>
         <td align="left" colspan="3">{$customer.attention|htmlsafe}</td>
       </tr>
       {/if}
-      {if $customer.street_address != null }
+      {if isset($customer.street_address) }
       <tr>
         <td>{$LANG.address}:</td>
         <td align="left" colspan="3">{$customer.street_address|htmlsafe}</td>
       </tr>
       {/if}
-      {if $customer.street_address2 != null }
-        {if $customer.street_address == null }
+      {if isset($customer.street_address2) }
+        {if !isset($customer.street_address) }
         <tr>
           <td>{$LANG.address}:</td>
           <td align="left" colspan="3">{$customer.street_address2|htmlsafe}</td>
         </tr>
         {/if}
-        {if $customer.street_address != null}
+        {if isset($customer.street_address)}
         <tr>
           <td></td>
           <td align="left" colspan="3">{$customer.street_address2|htmlsafe}</td>
@@ -194,55 +194,55 @@
       {merge_address field1=$customer.city field2=$customer.state field3=$customer.zip_code
                      street1=$customer.street_address street2=$customer.street_address2
                      class1="" class2="" colspan="3"}
-      {if $customer.country != null }
+      {if isset($customer.country) }
       <tr>
         <td></td>
         <td colspan="3">{$customer.country|htmlsafe}</td>
       </tr>
       {/if}
-      {if $customer.phone != null }
+      {if isset($customer.phone) }
       <tr>
         <td>{$LANG.phone_short}:</td>
         <td colspan="3">{$customer.phone|htmlsafe}</td>
       </tr>
       {/if}
-      {if $customer.fax != null }
+      {if isset($customer.fax) }
       <tr>
         <td>{$LANG.fax}:</td>
         <td colspan="3">{$customer.fax|htmlsafe}</td>
       </tr>
       {/if}
-      {if $customer.mobile_phone != null }
+      {if isset($customer.mobile_phone) }
       <tr>
         <td>{$LANG.mobile_short}:</td>
         <td colspan="3">{$customer.mobile_phone|htmlsafe}</td>
       </tr>
       {/if}
-      {if $customer.email != null }
+      {if isset($customer.email) }
       <tr>
         <td>{$LANG.email}:</td>
         <td colspan="3">{$customer.email|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.customer_cf1) && $customer.custom_field1 != null}
+      {if !empty($customFieldLabels.customer_cf1) && isset($customer.custom_field1)}
       <tr>
         <td>{$customFieldLabels.customer_cf1|htmlsafe}:</td>
         <td colspan="3">{$customer.custom_field1|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.customer_cf2) && $customer.custom_field2 != null}
+      {if !empty($customFieldLabels.customer_cf2) && isset($customer.custom_field2)}
       <tr>
         <td>{$customFieldLabels.customer_cf2|htmlsafe}:</td>
         <td colspan="3">{$customer.custom_field2|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.customer_cf3) && $customer.custom_field3 != null}
+      {if !empty($customFieldLabels.customer_cf3) && isset($customer.custom_field3)}
       <tr>
         <td>{$customFieldLabels.customer_cf3|htmlsafe}:</td>
         <td colspan="3">{$customer.custom_field3|htmlsafe}</td>
       </tr>
       {/if}
-      {if !empty($customFieldLabels.customer_cf4) && $customer.custom_field4 != null}
+      {if !empty($customFieldLabels.customer_cf4) && isset($customer.custom_field4)}
       <tr>
         <td>{$customFieldLabels.customer_cf4|htmlsafe}:</td>
         <td colspan="3">{$customer.custom_field4|htmlsafe}</td>

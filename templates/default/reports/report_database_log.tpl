@@ -10,12 +10,12 @@
         <tr>
             <td>Start date (YYYY-MM-DD)
                 <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-                       size="10" name="start_date" id="date1" value="{$start_date}"/>
+                       size="10" name="start_date" id="date1" value="{if isset($start_date)}{$start_date}{/if}"/>
             </td>
             <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
             <td>End date (YYYY-MM-DD)
                 <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-                       size="10" name="end_date" id="date2" value="{$end_date}"/>
+                       size="10" name="end_date" id="date2" value="{if isset($end_date)}{$end_date}{/if}"/>
             </td>
         </tr>
         <tr>

@@ -26,7 +26,7 @@
 			<td>{$period.total|siLocal_currency|default:'-'}</td>
 			<td>{$period.paid|siLocal_currency|default:'-'}</td>
 			<td>{$period.owing|siLocal_currency|default:'-'}</td>
-			<td>{$period.aging}</td>
+			<td>{if isset($period.aging)}{$period.aging}{/if}</td>
 		</tr>
 	{/foreach}
 	</tbody>

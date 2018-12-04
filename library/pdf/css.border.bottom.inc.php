@@ -1,21 +1,29 @@
 <?php
 // $Header: /cvsroot/html2ps/css.border.bottom.inc.php,v 1.1 2006/09/07 18:38:13 Konstantin Exp $
 
-class CSSBorderBottom extends CSSSubFieldProperty {
-  function getPropertyCode() {
-    return CSS_BORDER_BOTTOM;
-  }
+class CSSBorderBottom extends CSSSubFieldProperty
+{
+    public static function getPropertyCode()
+    {
+        return CSS_BORDER_BOTTOM;
+    }
 
-  function getPropertyName() {
-    return 'border-bottom';
-  }
+    public static function getPropertyName()
+    {
+        return 'border-bottom';
+    }
 
-  function parse($value) {
-    if ($value == 'inherit') {
-      return CSS_PROPERTY_INHERIT;
-    };
+    public static function parse($value)
+    {
+        if ($value == 'inherit') {
+            return CSS_PROPERTY_INHERIT;
+        }
 
-    $border = CSSBorder::parse($value);
-    return $border->bottom;
-  }
+        $border = CSSBorder::parse($value);
+        return $border->bottom;
+    }
+
+    public static function default_value()
+    {
+    }
 }

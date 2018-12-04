@@ -958,6 +958,7 @@ class Pipeline {
      * processed one-after-one.
      * @param array $data_id_array Array of page identifiers to be processed (usually URLs or files paths)
      * @param Media $media Object describing the media to render for (size, margins, orientaiton & resolution)
+     * @return bool
      */
     public function process_batch($data_id_array, &$media) {
         $this->clear_box_id_map();
@@ -1016,7 +1017,7 @@ class Pipeline {
 
         foreach ($this->_footnotes as $footnote) {
             // Note that footnote area for current page have been already defined,
-            // as show_foonote is called after note-call boxes were placed.
+            // as show_footnote is called after note-call boxes were placed.
             if ($this->output_driver->contains($footnote->_note_call_box)) {
                 $footnotes_found = true;
                 $footnote_y = $footnote->show_footnote($this->output_driver, $footnote_x, $footnote_y);

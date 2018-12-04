@@ -254,7 +254,7 @@ Log::out("index.php - After api/xml or ajax", \Zend_Log::DEBUG);
 // **********************************************************
 
 // To remove the js error due to multiple document.ready.function()
-// in jquery.datePicker.js, jquery.autocomplete.conf.js and jquery.accordian.js
+// in jquery.datePicker.js, jquery.autocomplete.conf.js
 // without instances in manage pages - Ap.Muthu
 // TODO: fix the javascript or move datapicker to extjs to fix this hack - not nice
 $extension_jquery_files = "";
@@ -288,6 +288,7 @@ Log::out("index.php - after custom/hooks.tpl", \Zend_Log::DEBUG);
 if (!in_array($module . "_" . $view, $early_exit)) {
     $extensionHeader = 0;
     foreach ($ext_names as $ext_name) {
+        $phpfile = "extensions/$ext_name/templates/default/header.tpl";
         if (file_exists("extensions/$ext_name/templates/default/header.tpl")) {
             $smarty->$smarty_output("extensions/$ext_name/templates/default/header.tpl");
             $extensionHeader++;
@@ -327,7 +328,6 @@ foreach ($ext_names as $ext_name) {
             $extension_php_insert_files[$ext_name] = $vals;
             // @formatter:on
         } else {
-Log::out("phpfile[$phpfile]", Zend_Log::DEBUG);
             include $phpfile;
             $extensionPhpFile++;
         }

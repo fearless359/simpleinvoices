@@ -9,7 +9,7 @@
                         <select name="sales_rep">
                             <option value="">Unassigned</option>
                             {foreach from=$sales_reps item=list_sales_rep}
-                                <option {if $list_sales_rep == $sales_rep}selected{/if} value="{$list_sales_rep}">
+                                <option {if $list_sales_rep == $sales_rep}selected{/if} value="{if isset($list_sales_rep)}{$list_sales_rep}{/if}">
                                     {$list_sales_rep}
                                 </option>
                             {/foreach}
@@ -26,12 +26,12 @@
                 </tr>
                 <tr>
                     <th>{$LANG.start_date}
-                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{$start_date|htmlsafe}'/>
+                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlsafe}{/if}'/>
                     </th>
                     <td>&nbsp;&nbsp;</td>
                     <td>&nbsp;&nbsp;</td>
                     <th>{$LANG.end_date}
-                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{$end_date|htmlsafe}'/>
+                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlsafe}{/if}'/>
                     </th>
                 </tr>
                 <tr>
@@ -52,7 +52,7 @@
             </table>
         </form>
     </div>
-    {if !$smarty.post.submit && $view != export}
+    {if !isset($smarty.post.submit) && $view != export}
         <br/>
         <br/>
         <br/>
@@ -63,20 +63,20 @@
         <br/>
     {/if}
 {/if}
-{if $smarty.post.submit != null || $view == export}
+{if isset($smarty.post.submit) || $view == export}
     {if !$menu}
         <hr/>
         <br/>
     {/if}
     <br/>
     {if $filter_by_date == "yes"}
-        <div class="align_left"><strong>{$LANG.selection_period} {$start_date} {$LANG.to_lowercase} {$end_date}</strong></div>
+        <div class="align_left"><strong>{$LANG.selection_period} {if isset($start_date)}{$start_date}{/if} {$LANG.to_lowercase} {if isset($end_date)}{$end_date}{/if}</strong></div>
         <br/>
     {/if}
     <table width="100%">
         <tr>
             <td width="75%" align="left">
-                <strong>{$LANG.sales_representative}:</strong> {$sales_rep}
+                <strong>{$LANG.sales_representative}:</strong> {if isset($sales_rep)}{$sales_rep}{/if}
                 <br/>
                 <br/>
             </td>
@@ -101,7 +101,7 @@
             <td class="details_screen"><b>{$LANG.total}</b></td>
         </tr>
         {section name=invoice loop=$invoices}
-            {if $invoices[invoice].preference != $invoices[$invoice.index_prev].preference && $smarty.section.invoice.index != 0}
+            {if $smarty.section.invoice.index != 0 && $invoices[invoice].preference != $invoices[$smarty.section.invoice.index_prev].preference}
                 <tr>
                     <td><br/></td>
                 </tr>

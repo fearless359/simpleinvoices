@@ -28,7 +28,7 @@
           <td class="details_screen">{$LANG.date_upper}</td>
           <td>
             <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-                   size="10" name="date" id="date" value="{$inventory.date|htmlsafe}" />
+                   size="10" name="date" id="date" value="{if isset($inventory.date)}{$inventory.date|htmlsafe}{/if}" />
           </td>
         </tr>
         <tr>
@@ -37,7 +37,7 @@
             <select name="product_id" class="validate[required] product_inventory_change">
               <option value=''></option>
               {foreach from=$product_all item=product}
-              <option value="{$product.id|htmlsafe}" {if $product.id == $inventory.product_id}selected{/if} >
+              <option value="{if isset($product.id)}{$product.id|htmlsafe}{/if}" {if $product.id == $inventory.product_id}selected{/if} >
 	            {$product.description|htmlsafe}
 	          </option>
               {/foreach}

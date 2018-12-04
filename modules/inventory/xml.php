@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Inventory;
+use Inc\Claz\SiLocal;
 
 global $LANG;
 

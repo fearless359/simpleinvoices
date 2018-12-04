@@ -7,8 +7,8 @@
     <link rel="Stylesheet" href="library/WebApp/Design/Render.css"/>
     <script type="text/javascript" src="library/WebApp/Action/Logic.js"></script>
     <!-- jQuery Files -->
-    <script type="text/javascript" src="include/jquery/jquery-1.2.6.min.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.flexigrid.1.0b3.pack.js"></script>
+    <script type="text/javascript" src="include/jquery/jquery.3.3.1.js"></script>
+    <script type="text/javascript" src="include/jquery/flexigrid.js"></script>
     {$extension_jquery_files }
     <script type="text/javascript" src="include/jquery/jquery.plugins.js"></script>
     <script type="text/javascript" src="include/jquery/jquery.conf.js"></script>

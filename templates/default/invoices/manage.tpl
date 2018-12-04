@@ -22,23 +22,23 @@
         <span class='si_filters_title'>{$LANG.filters}:</span>
         <span class='si_filters_links'>
     <a href="index.php?module=invoices&amp;view=manage"
-       class="first{if $smarty.get.having==''} selected{/if}">
+       class="first{if $get_having==''} selected{/if}">
       {$LANG.all}
     </a>
     <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed"
-       class="{if $smarty.get.having=='money_owed'}selected{/if}">
+       class="{if $get_having=='money_owed'}selected{/if}">
       {$LANG.due}
     </a>
     <a href="index.php?module=invoices&amp;view=manage&amp;having=paid"
-       class="{if $smarty.get.having=='paid'}selected{/if}">
+       class="{if $get_having=='paid'}selected{/if}">
       {$LANG.paid}
     </a>
     <a href="index.php?module=invoices&amp;view=manage&amp;having=draft"
-       class="{if $smarty.get.having=='draft'}selected{/if}">
+       class="{if $get_having=='draft'}selected{/if}">
       {$LANG.draft}
     </a>
     <a href="index.php?module=invoices&amp;view=manage&amp;having=real"
-       class="{if $smarty.get.having=='real'}selected{/if}">
+       class="{if $get_having=='real'}selected{/if}">
       {$LANG.real}
     </a>
   </span>

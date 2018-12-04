@@ -1,8 +1,8 @@
-{if $smarty.post.value != "" && $smarty.post.submit != null }
+{if !empty($smarty.post.value) && isset($smarty.post.submit) }
     {include file="templates/default/product_value/save.tpl"}
 {else}
     {* if  name was inserted *}
-    {if $smarty.post.submit != null}
+    {if isset($smarty.post.submit)}
         <div class="validation_alert"><img src="images/common/important.png" alt=""/>
             You must enter a value
         </div>
@@ -10,7 +10,7 @@
     {/if}
     <form name="frmpost" action="index.php?module=product_value&amp;view=add" method="post">
         <input type="hidden" name="op" value="insert_product_value"/>
-        <input type="hidden" name="domain_id" value="{$domain_id}"/>
+        <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
         <div class="si_center"><h2>{$LANG.add_product_value}</h2></div>
         <table class="center">
             <tr>
@@ -18,14 +18,14 @@
                 <td>
                     <select name="attribute_id">
                         {foreach from=$product_attributes item=product_attribute}
-                            <option value="{$product_attribute.id}">{$product_attribute.name}</option>
+                            <option value="{if isset($product_attribute.id)}{$product_attribute.id}{/if}">{$product_attribute.name}</option>
                         {/foreach}
                     </select>
                 </td>
             </tr>
             <tr>
                 <th class="left">{$LANG.value}: </th>
-                <td><input type="text" name="value" value="{$smarty.post.value}" size="25"/></td>
+                <td><input type="text" name="value" value="{if isset($smarty.post.value)}{$smarty.post.value}{/if}" size="25"/></td>
             </tr>
             <tr>
                 <th class="left">{$LANG.enabled}: </th>

@@ -33,6 +33,7 @@ if (isset($_GET['having'])) {
     $having = "&having=" . $_GET['having'];
 }
 $url = 'index.php?module=invoices&view=xml' . $having;
+$smarty->assign('get_having', $having);
 $smarty->assign('url', $url);
 
 $smarty->assign('pageActive', "invoice");

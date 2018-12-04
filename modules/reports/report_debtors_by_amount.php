@@ -66,7 +66,7 @@ try {
 
     $pdoDb->setGroupBy('iv.id');
 
-    $pdoDb->setOrderBy(array('inv_owing', 'DESC'));
+    $pdoDb->setOrderBy(array(array('inv_owing', 'DESC'), array('iv.index_id', 'DESC')));
 
     $rows = $pdoDb->request('SELECT', 'invoices', 'iv');
 } catch (PdoDbException $pde) {

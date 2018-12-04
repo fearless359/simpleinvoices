@@ -35,7 +35,7 @@ if (!empty($_POST['name'])) {
 }
 $smarty->assign('customFieldLabel',$customFieldLabel);
 
-$parent_customers = Customer::get_all(true);
+$parent_customers = Customer::getAll(true);
 $smarty->assign('parent_customers', $parent_customers);
 
 $smarty->assign('pageActive'      , 'customer');

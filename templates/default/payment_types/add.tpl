@@ -22,13 +22,10 @@
 	<table>
 		<tr>
 			<th>Payment type description 
-				<a 
-					class="cluetip"
-					href="#"
-					rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
-					title="{$LANG.required_field}"
-				>
-				<img src="{$help_image_path}required-small.png" alt="" /></a>			
+				<a class="cluetip" href="#" title="{$LANG.required_field}"
+					rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
+				    <img src="{$help_image_path}required-small.png" alt="" />
+                </a>
 			</th>
 			<td><input class="validate[required]" type="text" name="pt_description" size="30" /></td>
 		</tr>

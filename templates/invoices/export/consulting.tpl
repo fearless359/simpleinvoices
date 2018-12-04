@@ -66,7 +66,7 @@
     </td>
   </tr>
 {/foreach}
-{if ( $invoice.note != null ) }
+{if ( isset($invoice.note) ) }
   <tr>
     <td class="tbl1-left tbl1-right" colspan="6"><br /></td>
   </tr>

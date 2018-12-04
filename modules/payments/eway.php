@@ -7,7 +7,7 @@ global $smarty;
 
 $saved = false;
 
-$invoice_all = Invoice::get_all();
+$invoice_all = Invoice::getAll();
 
 if (($_POST ['op'] == 'add') && (! empty ( $_POST ['invoice_id'] ))) {
     $invoice = Invoice::select ( $_POST ['invoice_id'] );

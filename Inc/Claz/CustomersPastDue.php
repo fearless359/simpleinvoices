@@ -1,6 +1,8 @@
 <?php
 namespace Inc\Claz;
 
+use \Exception;
+
 /**
  * Class for customer's past due calculation
  * @author Rich
@@ -32,7 +34,7 @@ class CustomersPastDue {
                 $cid = $cust_row['cid'];
                 $name = $cust_row['name'];
 
-                $pdoDb->addToFunctions("SUM(IF(pr.status = 1, COALESCE(p.ac_amount, 0), 0)) AS paid");
+                $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(p.ac_amount, 0)', 'paid'));
 
                 $jn = new Join("LEFT", "preferences", "pr");
                 $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
@@ -44,6 +46,7 @@ class CustomersPastDue {
                 $jn->addSimpleItem("p.domain_id", new DbField("iv.domain_id"));
                 $pdoDb->addToJoins($jn);
 
+                $pdoDb->addSimpleWhere('pr.status', '1', 'AND');
                 $pdoDb->addSimpleWhere("iv.customer_id", $cid, "AND");
                 $pdoDb->addSimpleWhere("iv.domain_id", $domain_id, "AND");
                 $pdoDb->addToWhere(new WhereItem(false, "iv.date", "<", $past_due_date, false));
@@ -59,7 +62,7 @@ class CustomersPastDue {
                     $payments[$row['id']] = doubleval($row['paid']);
                 }
 
-                $pdoDb->addToFunctions("SUM(IF(pr.status = 1, COALESCE(ii.total, 0), 0)) AS billed");
+                $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total, 0)', 'billed'));
 
                 $jn = new Join("LEFT", "preferences", "pr");
                 $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
@@ -71,13 +74,14 @@ class CustomersPastDue {
                 $jn->addSimpleItem("ii.domain_id", new DbField("iv.domain_id"));
                 $pdoDb->addToJoins($jn);
 
+                $pdoDb->addSimpleWhere('pr.status', '1', 'AND');
                 $pdoDb->addSimpleWhere("iv.customer_id", $cid, "AND");
                 $pdoDb->addSimpleWhere("iv.domain_id", $domain_id, "AND");
                 $pdoDb->addToWhere(new WhereItem(false, "iv.date", "<", $past_due_date, false));
 
                 $pdoDb->setGroupBy("invoice_id");
 
-                $pdoDb->setSelectList(new DbField("iv.id", "id"));
+                $pdoDb->setSelectList(array(new DbField("iv.id", "id"), 'index_id'));
 
                 $rows = $pdoDb->request("SELECT", "invoices", "iv");
 
@@ -86,6 +90,7 @@ class CustomersPastDue {
                 $inv_info = array();
                 foreach ($rows as $row) {
                     $id = $row['id'];
+                    $index_id = $row['index_id'];
                     $billed = doubleval($row['billed']);
                     $paid = (empty($payments[$id]) ? 0.00 : $payments[$id]);
                     $owed = $billed - $paid;
@@ -94,7 +99,7 @@ class CustomersPastDue {
                         $fmtd_paid = $currency->toCurrency(doubleval($paid));
                         $fmtd_owed = $currency->toCurrency(doubleval($owed));
 
-                        $inv_info[] = new InvInfo($id, $fmtd_billed, $fmtd_paid, $fmtd_owed);
+                        $inv_info[] = new InvInfo($id, $index_id, $fmtd_billed, $fmtd_paid, $fmtd_owed);
 
                         $tot_billed += $billed;
                         $tot_paid += $paid;
@@ -110,7 +115,7 @@ class CustomersPastDue {
                     $cust_info[$cid] = new CustInfo($name, $fmtd_billed, $fmtd_paid, $fmtd_owed, $inv_info);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             error_log("CustomersPastDue::getCustInfo() - Error: " . $e->getMessage());
         }
         return $cust_info;

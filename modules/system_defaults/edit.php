@@ -72,7 +72,7 @@ switch ($get_val) {
 
     case "customer":
         $default = "customer";
-        $customers = Customer::get_all(true);
+        $customers = Customer::getAll(true);
 
         if (empty($customers)) {
             $value  = "<p><em>{$LANG['no_customers']}</em></p>" . "\n";
@@ -158,7 +158,7 @@ switch ($get_val) {
             foreach ($payments as $payment) {
                 $selected = $payment['pt_id'] == $defaults['payment_type'] ? " selected style='font-weight: bold'" : "";
                 $escaped = Util::htmlsafe($payment['pt_description']);
-                $value .= '  <option' . $selected . ' value="' . $payment['pt_id'] . '}">' . "\n";
+                $value .= '  <option' . $selected . ' value="' . $payment['pt_id'] . '">' . "\n";
                 $value .= '    ' . $escaped . "\n";
                 $value .= '  </option>' . "\n";
             }

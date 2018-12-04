@@ -1,18 +1,20 @@
 <?php
-require_once(HTML2PS_DIR.'pipeline.class.php');
-require_once(HTML2PS_DIR.'fetcher.url.class.php');
+require_once(HTML2PS_DIR . 'pipeline.class.php');
+require_once(HTML2PS_DIR . 'fetcher.url.class.php');
 
-class PipelineFactory {
-  public static function &create_default_pipeline($encoding, $filename) {
-    $pipeline = new Pipeline();
+class PipelineFactory
+{
+    public static function &create_default_pipeline($encoding, $filename)
+    {
+        $pipeline = new Pipeline();
 
-    if (isset($GLOBALS['g_config'])) {
-      $pipeline->configure($GLOBALS['g_config']);
-    } else {
-      $pipeline->configure(array());
-    }
+        if (isset($GLOBALS['g_config'])) {
+            $pipeline->configure($GLOBALS['g_config']);
+        } else {
+            $pipeline->configure(array());
+        }
 
-    // @formatter:off
+        // @formatter:off
     $pipeline->fetchers[]        = new FetcherURL();
     $pipeline->data_filters[]    = new DataFilterDoctype();
     $pipeline->data_filters[]    = new DataFilterUTF8($encoding);
@@ -23,10 +25,10 @@ class PipelineFactory {
     $pipeline->post_tree_filters = array();
     $pipeline->output_driver     = new OutputDriverFPDF();
     $pipeline->output_filters    = array();
+    // Changed to use one parameter by RCR 20181129
+    //    $pipeline->destination       = new DestinationDownload($filename, ContentType::pdf());
     $pipeline->destination       = new DestinationDownload($filename);
-// Changed to using a single parameter by Rich Rowley 20181104
-//    $pipeline->destination       = new DestinationDownload($filename, ContentType::pdf());
     // @formatter:on
-    return $pipeline;
-  }
+        return $pipeline;
+    }
 }

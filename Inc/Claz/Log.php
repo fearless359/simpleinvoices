@@ -40,10 +40,10 @@ class Log
              * @var mixed $fp
              */
             $fp = fopen(self::$path, 'w');
-            if (is_resource($fp)) {
-                fclose($fp);
-            } else {
+            if ($fp === false) {
                 SiError::out('notWritable', 'folder', self::$folder);
+            } else {
+                fclose($fp);
             }
         }
 

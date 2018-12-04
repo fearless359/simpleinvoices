@@ -43,13 +43,13 @@ if ($default_template_set) {
 }
 // @formatter:off
 $invoiceItems = Invoice::getInvoiceItems ( $master_invoice_id );
-$customers    = Customer::get_all(true, $invoice['customer_id']);
+$customers    = Customer::getAll(true, $invoice['customer_id']);
 $preference   = Preferences::getPreference( $invoice ['preference_id'] );
 $billers      = Biller::getAll(true);
 $defaults     = SystemDefaults::loadValues();
 $taxes        = Taxes::getTaxes ();
 $preferences  = Preferences::getActivePreferences ();
-$products     = Product::select_all ();
+$products     = Product::getAll ();
 
 $customFields = array ();
 for ($i = 1; $i <= 4; $i++) {
@@ -61,7 +61,7 @@ for ($i = 1; $i <= 4; $i++) {
 
 foreach ($invoiceItems as $key => $value) {
     // get list of attributes
-    $prod = Product::select ($value['product_id']);
+    $prod = Product::get ($value['product_id']);
     $json_att = json_decode ($prod['attribute']);
     if ($json_att !== null) {
         $html = "<tr id='json_html{$key}'><td></td><td colspan='5'><table><tr>";

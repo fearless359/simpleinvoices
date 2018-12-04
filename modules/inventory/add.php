@@ -16,7 +16,7 @@ if (!empty($_POST['op']) && $_POST['op'] =='add' && !empty($_POST['product_id'])
     $smarty->assign('saved', $saved);
 }
 
-$product_all = Product::select_all();
+$product_all = Product::getAll();
 
 $smarty->assign('product_all', $product_all);
 $smarty->assign("domain_id"  , DomainId::get());

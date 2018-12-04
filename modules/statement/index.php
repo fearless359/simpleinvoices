@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
 // @formatter:off
 $billers          = Biller::getAll(true);
 $biller_count     = count($billers);
-$customers        = Customer::get_all(true);
+$customers        = Customer::getAll(true);
 $customer_count   = count($customers);
 $biller_details   = Biller::select($biller_id);
 $customer_details = Customer::get($customer_id);

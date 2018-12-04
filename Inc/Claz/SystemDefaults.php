@@ -57,7 +57,11 @@ class SystemDefaults
             // Logic for patch count > 198
             // Why the overlap, I don't know. But items duplicate with ones
             // found previously will be overloaded. (RCR 20181004)
-            $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+            $pdoDb_admin->setSelectList(array(
+                'def.name',
+                'def.value',
+                'def.extension_id',
+                'def.domain_id'));
 
             $jn = new Join('INNER', 'extensions', 'ext');
             $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
@@ -134,7 +138,11 @@ class SystemDefaults
     {
         global $LANG;
 
-        $failed = ($ret_string ? $LANG['disabled'] : 0);
+        // This is needed as getDefaultLangauge is called in the language.php file
+        // before the $LANG global has been set up. If $LANG is set up, use it so
+        // a local language is reported.
+        $disabled = (empty($LANG['disabled']) ? "Disabled" : $LANG['disabled']);
+        $failed = ($ret_string ? $disabled : 0);
         if (empty(self::$values)) {
             return $failed;
         }

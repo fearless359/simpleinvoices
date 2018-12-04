@@ -59,7 +59,7 @@
                 <tr>
                     <th>{$LANG.custom_label}</th>
                     <td><input type="text" name="cf_custom_label" id="cf_custom_label_maint" size="25" autofocus
-                               value="{$cf.cf_custom_label|htmlsafe}"/></td>
+                               value="{if isset($cf.cf_custom_label)}{$cf.cf_custom_label|htmlsafe}{/if}"/></td>
                 </tr>
                 <tr>
                     <th>

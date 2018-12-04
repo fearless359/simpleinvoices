@@ -1,70 +1,85 @@
 <?php
 
-class PHP4DOMTree {
-  var $_element;
-  
-  function __construct($domelement) {
-    $this->_element = $domelement;
-    $this->content = $domelement->get_content();
-  }
+class PHP4DOMTree
+{
+    var $_element;
+    private $content;
 
-  function &document_element() { 
-    $element = $this->_element->document_element();
-    return $element;
-  }
+    function __construct($domelement)
+    {
+        $this->_element = $domelement;
+        $this->content = $domelement->get_content();
+    }
 
-  function &first_child() {
-    $child =& PHP4DOMTree::from_DOMDocument($this->_element->first_child());
-    return $child;
-  }
+    function &document_element()
+    {
+        $element = $this->_element->document_element();
+        return $element;
+    }
 
-  function &from_DOMDocument($domdocument) { 
-    if (!$domdocument) {
-      $null = null;
-      return $null;
-    };
+    function &first_child()
+    {
+        $child =& PHP4DOMTree::from_DOMDocument($this->_element->first_child());
+        return $child;
+    }
 
-    $tree =  new PHP4DOMTree($domdocument); 
-    return $tree;
-  }
+    public static function &from_DOMDocument($domdocument)
+    {
+        if (!$domdocument) {
+            $null = null;
+            return $null;
+        }
 
-  function get_attribute($name) { 
-    return $this->_element->get_attribute($name); 
-  }
+        $tree = new PHP4DOMTree($domdocument);
+        return $tree;
+    }
 
-  function get_content() { 
-    return $this->_element->get_content(); 
-  }
+    function get_attribute($name)
+    {
+        return $this->_element->get_attribute($name);
+    }
 
-  function has_attribute($name) { 
-    return $this->_element->has_attribute($name);
-  }
+    function get_content()
+    {
+        return $this->_element->get_content();
+    }
 
-  function &last_child() {
-    $child =& PHP4DOMTree::from_DOMDocument($this->_element->last_child());
-    return $child;
-  }
+    function has_attribute($name)
+    {
+        return $this->_element->has_attribute($name);
+    }
 
-  function &next_sibling() {
-    $sibling =& PHP4DOMTree::from_DOMDocument($this->_element->next_sibling());
-    return $sibling;
-  }
-  
-  function node_type() { 
-    return $this->_element->node_type();
-  }
+    function &last_child()
+    {
+        $child =& PHP4DOMTree::from_DOMDocument($this->_element->last_child());
+        return $child;
+    }
 
-  function &parent() {
-    $parent =& PHP4DOMTree::from_DOMDocument($this->_element->parent());
-    return $parent;
-  }
+    function &next_sibling()
+    {
+        $sibling =& PHP4DOMTree::from_DOMDocument($this->_element->next_sibling());
+        return $sibling;
+    }
 
-  function &previous_sibling() {
-    $sibling =& PHP4DOMTree::from_DOMDocument($this->_element->previous_sibling());
-    return $sibling;
-  }
+    function node_type()
+    {
+        return $this->_element->node_type();
+    }
 
-  function tagname() { 
-    return $this->_element->tagname();
-  }
+    function &parent()
+    {
+        $parent =& PHP4DOMTree::from_DOMDocument($this->_element->parent());
+        return $parent;
+    }
+
+    function &previous_sibling()
+    {
+        $sibling =& PHP4DOMTree::from_DOMDocument($this->_element->previous_sibling());
+        return $sibling;
+    }
+
+    function tagname()
+    {
+        return $this->_element->tagname();
+    }
 }

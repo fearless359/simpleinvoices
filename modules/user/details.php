@@ -34,7 +34,7 @@ $roles = User::getUserRoles();
 
 $domain_id = DomainId::get();
 
-$cust_info = Customer::get_all(false, null, true);
+$cust_info = Customer::getAll(false, null, true);
 $billers = Biller::getAll();
 
 if ($user['user_id'] == 0) {

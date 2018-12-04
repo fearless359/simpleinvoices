@@ -114,7 +114,7 @@
         {/if}
     {/foreach}
     </table>
-    {if $invoice.note != null}
+    {if isset($invoice.note)}
     <table class="si_invoice_view_items">
         <tr class="tr_head_items">
             <th></th>

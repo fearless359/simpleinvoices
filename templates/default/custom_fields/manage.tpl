@@ -5,7 +5,7 @@
  * License:
  *	 GPL v2 or above
  *}
-{if $cfs == null}
+{if !isset($cfs)}
     <div class="si_message">{$LANG.no_invoices}.</div>
 {else}
     <table id="manageGrid" style="display:none"></table>

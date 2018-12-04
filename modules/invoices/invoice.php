@@ -32,20 +32,22 @@ Util::isAccessAllowed();
 
 // @formatter:off
 $billers           = Biller::getAll(true);
-$customers         = Customer::get_all(true);
+$customers         = Customer::getAll(true);
 $taxes             = Taxes::getActiveTaxes();
 $defaultTax        = Taxes::getDefaultTax();
-$products          = Product::select_all();
+$products          = Product::getAll();
 $preferences       = Preferences::getActivePreferences();
 $defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
 $defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
+
+$first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
-    $first_run_wizard = true;
-    $smarty->assign("first_run_wizard", $first_run_wizard);
+    $first_run_wizard =true;
 }
+$smarty->assign("first_run_wizard",$first_run_wizard);
 
 $defaults['biller']     = (isset($_GET['biller'])    ) ? $_GET['biller']     : $defaults['biller'];
 $defaults['customer']   = (isset($_GET['customer'])  ) ? $_GET['customer']   : $defaults['customer'];

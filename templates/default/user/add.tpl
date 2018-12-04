@@ -11,10 +11,16 @@
  * License:
  *  GPL v3 or above
  *}
-{if $smarty.post.username != null && $smarty.post.submit != null }
+{if isset($smarty.post.username) && isset($smarty.post.submit)}
     {include file="templates/default/user/save.tpl"}
 {else}
+    <div class="si_center si_help_div">
+        <h4><strong>{$LANG.add_new_user}</strong></h4>
+    </div>
+    <hr/>
     <form name="frmpost" action="index.php?module=user&amp;view=add" method="post" id="frmpost">
+        <input type="hidden" name="role_id" value="0"/>
+        <input type="hidden" name="enabled" value="{$smarty.const.DISABLED}"/>
         <div class="si_form">
             <table>
                 <tr>
@@ -69,52 +75,13 @@
                                class="validate[required]" title="See help for details" />
                     </td>
                 </tr>
-                <tr>
-                    <th>{$LANG.role}
-                        <a class="cluetip" href="#" tabindex="950"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_user_role"
-                           title="{$LANG.role}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
-                        </a>
-                    </th>
-                    <td>
-                        <select name="role_id" tabindex="50" title="See help for details" >
-                            {foreach from=$roles item=role name=urole}
-                                <option value="{$role.id|htmlsafe}" {if $smarty.foreach.urole.index == 0}selected{/if}>
-                                    {$role.name|htmlsafe}
-                                </option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>{$LANG.enabled}</th>
-                    <td>{html_options name=enabled options=$enabled selected=1 tabindex=60}</td>
-                </tr>
-                <tr>
-                    <th>{$LANG.user_id}
-                        <a class="cluetip" href="#" tabindex="970"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_user_id"
-                           title="{$LANG.user_id}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
-                        </a>
-                    </th>
-                    <td>
-                        <select name="user_id" tabindex="60" title="See help for details" >
-                            <option selected value="0">0 - USER</option>
-                            {foreach from=$cust_info item=cust}
-                                <option value="{$cust.id|htmlsafe}">{$cust.id|htmlsafe} - {$cust.name|htmlsafe}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
             </table>
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="positive" name="submit" value="Insert User">
                     <img class="button_img" src="images/common/tick.png" alt="" tabindex="100" />
                     {$LANG.save}
                 </button>
-                <a href="index.php?module=user&amp;view=manage" class="negative" tabindex="110">
+                <a href="index.php?module=user&view=manage" class="negative" tabindex="110">
                     <img src="images/common/cross.png" alt="" />
                     {$LANG.cancel}
                 </a>

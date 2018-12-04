@@ -10,7 +10,7 @@
             </tr>
             <tr>
                 <th class="left">{$LANG.name}: </th>
-                <td><input type="text" name="name" value="{$product_attribute.name}" size="50" readonly /></td>
+                <td><input type="text" name="name" value="{if isset($product_attribute.name)}{$product_attribute.name}{/if}" size="50" readonly /></td>
             </tr>
             <tr>
                 <th class="left">{$LANG.type}: </th>
@@ -18,11 +18,11 @@
             </tr>
             <tr>
                 <th class="left">{$LANG.enabled}: </th>
-                <td><input type="text" name="enabled" value="{$product_attribute.wording_for_enabled|htmlsafe}" readonly /></td>
+                <td><input type="text" name="enabled" value="{if isset($product_attribute.wording_for_enabled)}{$product_attribute.wording_for_enabled|htmlsafe}{/if}" readonly /></td>
             </tr>
             <tr>
                 <th class="left">{$LANG.visible}: </th>
-                <td><input type="text" name="visible" value="{$product_attribute.wording_for_visible|htmlsafe}" readonly /></td>
+                <td><input type="text" name="visible" value="{if isset($product_attribute.wording_for_visible)}{$product_attribute.wording_for_visible|htmlsafe}{/if}" readonly /></td>
             </tr>
         </table>
         <div class="si_toolbar si_toolbar_form">
@@ -40,14 +40,14 @@
             </tr>
             <tr>
                 <th class="details_screen">{$LANG.name}</th>
-                <td><input type="text" name="name" value="{$product_attribute.name}" size="50"/></td>
+                <td><input type="text" name="name" value="{if isset($product_attribute.name)}{$product_attribute.name}{/if}" size="50"/></td>
             </tr>
             <tr>
                 <th>{$LANG.type}</th>
                 <td>
                     <select name="type_id">
                         {foreach from=$types key=k item=v}
-                            <option value="{$v.id}" {if $product_attribute.type_id == $v.id} selected {/if}>{$LANG[$v.name]}</option>
+                            <option value="{if isset($v.id)}{$v.id}{/if}" {if $product_attribute.type_id == $v.id} selected {/if}>{$LANG[$v.name]}</option>
                         {/foreach}
                     </select>
                 </td>

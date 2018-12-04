@@ -10,9 +10,9 @@
 *  https://simpleinvoices.group
 */
 *}
-{if $smarty.post.submit != null}
+{if isset($smarty.post.submit)}
   <meta http-equiv="refresh"
-        content="1;URL=index.php?module=invoices&amp;view=details&amp;id={$smarty.post.id|urlencode}&amp;type={$smarty.post.type|urlencode}" />
+        content="2;URL=index.php?module=invoices&amp;view=details&amp;id={if isset($smarty.post.id)}{$smarty.post.id|urlencode}{/if}&amp;type={if isset($smarty.post.type)}{$smarty.post.type|urlencode}{/if}" />
   <br />
   <br />
   {$LANG.save_invoice_items_success};
@@ -35,14 +35,14 @@
         <td class="details_screen">{$LANG.product}</td>
         <td>
           <input type="text" name="description" />
-          {if $products == null }
+          {if !isset($products) }
           <p><em>{$LANG.no_products}</em></p>
           {else}
           <select name="product1"
                   onchange="invoice_product_change_price($(this).val(), 1, jQuery('#quantity1').val() );" >
             <option value=""></option>
             {foreach from=$products item=product}
-              <option {if $product.id == $defaults.product} selected {/if} value="{$product.id|htmlsafe}">
+              <option {if $product.id == $defaults.product} selected {/if} value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">
                 {$product.description|htmlsafe}
               </option>
             {/foreach}
@@ -68,9 +68,9 @@
     <hr />
     <div style="text-align:center;">
       <input type="submit" name="submit" value="{$LANG.add_item|htmlsafe}" />
-      <input type="hidden" name="id" value="{$smarty.get.id|htmlsafe}" />
-      <input type="hidden" name="type" value="{$smarty.get.type|htmlsafe}" />
-      <input type="hidden" name="tax_id" value="{$smarty.get.tax_id|htmlsafe}" />
+      <input type="hidden" name="id" value="{if isset($smarty.get.id)}{$smarty.get.id|htmlsafe}{/if}" />
+      <input type="hidden" name="type" value="{if isset($smarty.get.type)}{$smarty.get.type|htmlsafe}{/if}" />
+      <input type="hidden" name="tax_id" value="{if isset($smarty.get.tax_id)}{$smarty.get.tax_id|htmlsafe}{/if}" />
     </div>
   </form>
 {/if}

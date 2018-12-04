@@ -11,7 +11,7 @@
     <td>{$preference.pref_currency_sign}{$invoiceItem.unit_price|siLocal_number}</td>
     <td align="right">{$preference.pref_currency_sign}{$invoiceItem.gross_total|siLocal_number}</td>
   </tr>
-  {if $invoiceItem.description != null}
+  {if isset($invoiceItem.description)}
   <tr>
     <td></td>
     <td colspan="5">{$LANG.description}:&nbsp;{$invoiceItem.description|htmlsafe}</td>

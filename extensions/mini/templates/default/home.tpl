@@ -26,15 +26,15 @@
         <div class="iList">
             <h2>Create New</h2>
             <ul class="iArrow">
-                <li><a href="mini.php?module=invoices&amp;view=itemised"><img src="images/mini/itemised.png" width="29" height="29"/><span>New Itemized</span>
+                <li><a href="mini.php?module=invoices&amp;view=itemised"><img src="images/mini/itemised.png" width="29" height="29" /><span>New Itemized</span>
                         <small>Create a new Itemized Invoice</small>
                     </a>
                 </li>
-                <li><a href="mini.php?module=invoices&amp;view=total"><img src="images/mini/total.png" width="29" height="29"/><span>New Total</span>
+                <li><a href="mini.php?module=invoices&amp;view=total"><img src="images/mini/total.png" width="29" height="29" /><span>New Total</span>
                         <small>Create a new Total Invoice</small>
                     </a>
                 </li>
-                <li><a href="mini.php?module=invoices&amp;view=consulting"><img src="images/mini/consulting.png" width="29" height="29"/><span>New Consultancy</span>
+                <li><a href="mini.php?module=invoices&amp;view=consulting"><img src="images/mini/consulting.png" width="29" height="29" /><span>New Consultancy</span>
                         <small>Create a new Consultant Invoice</small>
                     </a>
                 </li>
@@ -45,15 +45,15 @@
         <div class="iList">
             <h2>Manage Data</h2>
             <ul class="iArrow">
-                <li><a href="mini.php?module=customers&amp;view=manage"><img src="images/mini/customers.png" width="29" height="29"/><span>Manage Customers</span>
+                <li><a href="mini.php?module=customers&amp;view=manage"><img src="images/mini/customers.png" width="29" height="29" /><span>Manage Customers</span>
                         <small>Manage your clients and customers</small>
                     </a>
                 </li>
-                <li><a href="mini.php?module=billers&amp;view=manage"><img src="images/mini/biller.png" width="29" height="29"/><span>Manage Billers</span>
+                <li><a href="mini.php?module=billers&amp;view=manage"><img src="images/mini/biller.png" width="29" height="29" /><span>Manage Billers</span>
                         <small>Manage existing billers</small>
                     </a>
                 </li>
-                <li><a href="mini.php?module=products&amp;view=manage"><img src="images/mini/products.png" width="29" height="29"/><span>Insert Products</span>
+                <li><a href="mini.php?module=products&amp;view=manage"><img src="images/mini/products.png" width="29" height="29" /><span>Insert Products</span>
                         <small>Manage existing product or services</small>
                     </a>
                 </li>

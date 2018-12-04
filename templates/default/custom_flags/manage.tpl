@@ -13,7 +13,7 @@
  *}
  <br/>
  <br/>
-{if $cflgs == null}
+{if !isset($cflgs)}
 <div class="si_message">{$LANG.no_custom_flags}</div>
 {else}
 <table id="manageGrid" style="display: none"></table>

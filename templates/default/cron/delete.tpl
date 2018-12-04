@@ -28,7 +28,7 @@
 <h3 style="text-align:center">Select <b>Delete</b> to remove this record:</h3>
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=cron&amp;view=delete&amp;id={$cron.id|urlencode}&amp;stage=2" >
-  <input type="hidden" name="index_id" value="{$cron.index_id}">
+  <input type="hidden" name="index_id" value="{if isset($cron.index_id)}{$cron.index_id}{/if}">
   <div class="si_form si_form_view">
     <table class="center">
       <tr>
@@ -78,7 +78,7 @@
 <meta http-equiv="refresh" content="2;URL=index.php?module=cron&amp;view=manage" />
 <br />
 <br />
-<h2 style="text-align:center;">Deleted record for Invoice #{$index_id|htmlsafe}</h2>
+<h2 style="text-align:center;">Deleted record for Invoice #{if isset($index_id)}{$index_id|htmlsafe}{/if}</h2>
 <br />
 <br />
 {/if}

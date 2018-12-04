@@ -15,7 +15,7 @@
  * Website:
  *  https://simpleinvoices.group *}
 {if $smarty.get.stage == 1 }
-{if $error == 1}<div class="si_message_error"><h2>{$message}</h2></div>{/if}
+{if $error == 1}<div class="si_message_error"><h2>{if isset($message)}{$message}{/if}</h2></div>{/if}
 <form name="frmpost"
       action="index.php?module=statement&amp;view=email&amp;stage=2&amp;biller_id={$smarty.get.biller_id|urlencode}&amp;customer_id={$smarty.get.customer_id|urlencode}&amp;start_date={$smarty.get.start_date|urlencode}&amp;end_date={$smarty.get.end_date|urlencode}&amp;show_only_unpaid={$smarty.get.show_only_unpaid|urlencode}&amp;format=file"
       method="post">
@@ -32,7 +32,7 @@
           </a>
         </th>
         <td>
-          <input type="text" name="email_from" size="50" value="{$biller.email|htmlsafe}"
+          <input type="text" name="email_from" size="50" value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}"
                  class="validate[required]" tabindex="10" autofocus />
         </td>
       </tr>
@@ -44,7 +44,7 @@
           </a>
         </th>
         <td>
-          <input type="text" name="email_to" size="50" value="{$customer.email|htmlsafe}"
+          <input type="text" name="email_to" size="50" value="{if isset($customer.email)}{$customer.email|htmlsafe}{/if}"
                  class="validate[required]" tabindex="20" />
         </td>
       </tr>
@@ -55,7 +55,7 @@
             <img src="{$help_image_path}help-small.png" alt="" />
           </a>
         </th>
-        <td><input type="text" name="email_bcc" size="50" value="{$biller.email|htmlsafe}" tabindex="30" /></td>
+        <td><input type="text" name="email_bcc" size="50" value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}" tabindex="30" /></td>
       </tr>
       <tr>
         <th>{$LANG.subject}
@@ -89,6 +89,6 @@
 {elseif $smarty.get.stage == 2}
 <meta http-equiv="refresh" content="2;URL=index.php?module=reports&amp;view=index" />
 <div class="si_message">
-  {$message|outhtml}
+  {if isset($message)}{$message|outhtml}{/if}
 </div>
 {/if}

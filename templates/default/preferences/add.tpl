@@ -1,4 +1,4 @@
-{if $smarty.post.p_description == "" AND $smarty.post.submit != null } 
+{if empty($smarty.post.p_description) && isset($smarty.post.submit) }
 		<div class="validation_alert"><img src="images/common/important.png" alt="" />
 		You must enter a description for the preference</div>
 		<hr />
@@ -15,7 +15,7 @@
 				</a>	
 			</th>
 			<td>
-				<input type="text" class="validate[required]" name="p_description" value="{$smarty.post.p_description|htmlsafe}" size="25" />
+				<input type="text" class="validate[required]" name="p_description" value="{if isset($smarty.post.p_description)}{$smarty.post.p_description|htmlsafe}{/if}" size="25" />
 			</td>
 		</tr>
 		<tr>
@@ -26,7 +26,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_currency_sign"  value="{$smarty.post.p_currency_sign|htmlsafe}" size="15" />
+				<input type="text" name="p_currency_sign"  value="{if isset($smarty.post.p_currency_sign)}{$smarty.post.p_currency_sign|htmlsafe}{/if}" size="15" />
 				<a class="cluetip" href="#" title="{$LANG.currency_sign}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_currency_sign">
 					{$LANG.currency_sign_non_dollar}
@@ -42,7 +42,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="currency_code"  value="{$smarty.post.currency_code|htmlsafe}" size="15" />
+				<input type="text" name="currency_code"  value="{if isset($smarty.post.currency_code)}{$smarty.post.currency_code|htmlsafe}{/if}" size="15" />
 			</td>
 		</tr>
 		<tr>
@@ -53,7 +53,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_heading"  value="{$smarty.post.p_inv_heading|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_heading"  value="{if isset($smarty.post.p_inv_heading)}{$smarty.post.p_inv_heading|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -64,7 +64,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_wording"  value="{$smarty.post.p_inv_wording|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_wording"  value="{if isset($smarty.post.p_inv_wording)}{$smarty.post.p_inv_wording|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +75,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_detail_heading"  value="{$smarty.post.p_inv_detail_heading|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_detail_heading"  value="{if isset($smarty.post.p_inv_detail_heading)}{$smarty.post.p_inv_detail_heading|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -87,7 +87,7 @@
 			</th>
 			</td>
 			<td>
-				<input type="text" name="p_inv_detail_line"  value="{$smarty.post.p_inv_detail_line|htmlsafe}" size="75" />
+				<input type="text" name="p_inv_detail_line"  value="{if isset($smarty.post.p_inv_detail_line)}{$smarty.post.p_inv_detail_line|htmlsafe}{/if}" size="75" />
 			</td>
 		</tr>
 		<tr>
@@ -111,7 +111,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_payment_method"  value="{$smarty.post.p_inv_payment_method|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_payment_method"  value="{if isset($smarty.post.p_inv_payment_method)}{$smarty.post.p_inv_payment_method|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -122,7 +122,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_payment_line1_name"  value="{$smarty.post.p_inv_payment_line1_name|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_payment_line1_name"  value="{if isset($smarty.post.p_inv_payment_line1_name)}{$smarty.post.p_inv_payment_line1_name|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -133,7 +133,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_payment_line1_value"  value="{$smarty.post.p_inv_payment_line1_value|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_payment_line1_value"  value="{if isset($smarty.post.p_inv_payment_line1_value)}{$smarty.post.p_inv_payment_line1_value|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -144,7 +144,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_payment_line2_name"  value="{$smarty.post.p_inv_payment_line2_name|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_payment_line2_name"  value="{if isset($smarty.post.p_inv_payment_line2_name)}{$smarty.post.p_inv_payment_line2_name|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -155,7 +155,7 @@
 				</a>
 			</th>
 			<td>
-				<input type="text" name="p_inv_payment_line2_value"  value="{$smarty.post.p_inv_payment_line2_value|htmlsafe}" size="50" />
+				<input type="text" name="p_inv_payment_line2_value"  value="{if isset($smarty.post.p_inv_payment_line2_value)}{$smarty.post.p_inv_payment_line2_value|htmlsafe}{/if}" size="50" />
 			</td>
 		</tr>
 		<tr>
@@ -180,13 +180,13 @@
 				</a>
 			</th>
 			<td >
-			{if $preferences == null }
+			{if !isset($preferences) }
 				<p><em>{$LANG.no_preferences}</em></p>
 			{else}
 				<select name="index_group">
 					<option value="">-use this preference-</option>
 				{foreach from=$preferences item=preference}
-					<option {if $preference.pref_id == $defaults.preference} selected {/if} value="{$preference.pref_id|htmlsafe}">{$preference.pref_description|htmlsafe}</option>
+					<option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
 				{/foreach}
 				</select>
 			{/if}
@@ -202,7 +202,7 @@
 			<td >
 				<select name="locale">
 				{foreach from=$localelist key=locale item=value}
-					<option {if $locale == $config->local->locale} selected {/if} value="{$locale|htmlsafe}">{$locale|htmlsafe}</option>
+					<option {if $locale == $config->local->locale} selected {/if} value="{if isset($locale)}{$locale|htmlsafe}{/if}">{$locale|htmlsafe}</option>
 				{/foreach}
 				</select>
 			</td>

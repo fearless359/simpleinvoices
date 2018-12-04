@@ -76,7 +76,7 @@
                             <img src="{$help_image_path}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="text" name="{$LANG.field_label_upper|lower}" value="{$cflg.field_label|escape}" size="20"/></td>
+                    <td><input type="text" name="{$LANG.field_label_upper|lower}" value="{if isset($cflg.field_label)}{$cflg.field_label|escape}{/if}" size="20"/></td>
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}
@@ -126,7 +126,7 @@
             </div>
         </div>
         <input type="hidden" name="op" value="edit_custom_flag">
-        <input type="hidden" name="associated_table" value="{$cflg.associated_table|htmlsafe}"/>
-        <input type="hidden" name="flg_id" value="{$cflg.flg_id|htmlsafe}"/>
+        <input type="hidden" name="associated_table" value="{if isset($cflg.associated_table)}{$cflg.associated_table|htmlsafe}{/if}"/>
+        <input type="hidden" name="flg_id" value="{if isset($cflg.flg_id)}{$cflg.flg_id|htmlsafe}{/if}"/>
     {/if}
 </form>

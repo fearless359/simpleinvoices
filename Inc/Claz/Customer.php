@@ -96,7 +96,7 @@ class Customer {
      *        calculated totals field.
      * @return array Customers selected.
      */
-    public static function get_all($enabled_only = false, $incl_cust_id=null, $no_totals=false) {
+    public static function getAll($enabled_only = false, $incl_cust_id=null, $no_totals=false) {
         global $LANG, $pdoDb;
 
         $customers = array();
@@ -110,13 +110,17 @@ class Customer {
                 }
             }
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+
             $pdoDb->setOrderBy("name");
+
             $rows = $pdoDb->request("SELECT", "customers");
             if ($no_totals) {
                 return $rows;
             }
 
             foreach ($rows as $customer) {
+                $customer['last_invoice'] = self::getLastInvoiceIndexId($customer['id']);
+                $customer['enabled_image'] = ($customer['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
                 $customer['enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
                 $customer['total'] = self::calc_customer_total($customer['id']);
                 $customer['paid'] = Payment::calc_customer_paid($customer['id']);
@@ -124,7 +128,7 @@ class Customer {
                 $customers[] = $customer;
             }
         } catch (PdoDbException $pde) {
-            error_log("Customer::get_all() - PdoDbException thrown: " . $pde->getMessage());
+            error_log("Customer::getAll() - PdoDbException thrown: " . $pde->getMessage());
         }
         return $customers;
     }

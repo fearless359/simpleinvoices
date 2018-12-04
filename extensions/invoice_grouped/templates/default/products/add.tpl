@@ -1,11 +1,11 @@
 
 {* if bill is updated or saved.*}
 
-{if $smarty.post.description != "" && $smarty.post.id != null } 
+{if !empty($smarty.post.description) && isset($smarty.post.id) }
 	{include file="templates/default/products/save.tpl"}
 {else}
 {* if  name was inserted *} 
-	{if $smarty.post.id !=null} 
+	{if isset($smarty.post.id)}
 		<div class="validation_alert">
 		<img src="images/common/important.png" />
 		You must enter a description for the product
@@ -21,11 +21,11 @@
 			<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field" title="{$LANG.required_field}">
 			<img src="{$help_image_path}required-small.png" /></a>
 		</td>
-		<td><input type="text" name="description" value="{$smarty.post.description}" size="50" id="description" class="required edit" onblur="checkField(this);" /></td>
+		<td><input type="text" name="description" value="{if isset($smarty.post.description)}{$smarty.post.description}{/if}" size="50" id="description" class="required edit" onblur="checkField(this);" /></td>
 	</tr>
 	<tr>
 		<td class="details_screen">{$LANG.unit_price}</td>
-		<td><input type="text" class="edit" name="unit_price" value="{$smarty.post.unit_price}"  size="25" /></td>
+		<td><input type="text" class="edit" name="unit_price" value="{if isset($smarty.post.unit_price)}{$smarty.post.unit_price}{/if}"  size="25" /></td>
 	</tr>
 	<tr>
 		<td class="details_screen">{$LANG.default_tax}</td>
@@ -33,7 +33,7 @@
 		<select name="default_tax_id">
 		    <option value=''></option>
 			{foreach from=$taxes item=tax}
-				<option value="{$tax.tax_id}">{$tax.tax_description}</option>
+				<option value="{if isset($tax.tax_id)}{$tax.tax_id}{/if}">{$tax.tax_description}</option>
 			{/foreach}
 		</select>
 		</td>
@@ -48,7 +48,7 @@
 		<select name="custom_field1">
 				<option value=""></option>
 			{foreach from=$product_group item=pg}
-				<option value="{$pg.name}">{$pg.name}</option>
+				<option value="{if isset($pg.name)}{$pg.name}{/if}">{$pg.name}</option>
 			{/foreach}
 		</select>
 		</td>
@@ -60,7 +60,7 @@
 			<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
 			<img src="{$help_image_path}help-small.png" alt="" /></a>
 		</td>
-		<td><input type="text" class="edit" name="custom_field2" value="{$smarty.post.custom_field2}" size="50" /></td>
+		<td><input type="text" class="edit" name="custom_field2" value="{if isset($smarty.post.custom_field2)}{$smarty.post.custom_field2}{/if}" size="50" /></td>
 	</tr>
 	{/if}
 	{if !empty($customFieldLabel.product_cf3)}
@@ -69,7 +69,7 @@
 			<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
 			<img src="{$help_image_path}help-small.png" alt="" /></a>
 		</td>
-		<td><input type="text" class="edit" name="custom_field3" value="{$smarty.post.custom_field3}" size="50" /></td>
+		<td><input type="text" class="edit" name="custom_field3" value="{if isset($smarty.post.custom_field3)}{$smarty.post.custom_field3}{/if}" size="50" /></td>
 	</tr>
 	{/if}
 	{if !empty($customFieldLabel.product_cf4)}
@@ -78,12 +78,12 @@
 			<a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
 			<img src="{$help_image_path}help-small.png" alt="" /></a>
 		</td>
-		<td><input type="text" class="edit" name="custom_field4" value="{$smarty.post.custom_field4}" size="50" /></td>
+		<td><input type="text" class="edit" name="custom_field4" value="{if isset($smarty.post.custom_field4)}{$smarty.post.custom_field4}{/if}" size="50" /></td>
 	</tr>
 	{/if}
 	<tr>
 		<td class="details_screen">{$LANG.notes}</td>
-		<td><textarea class="editor" name="notes" rows="8" cols="50" />{$smarty.post.notes|unescape}</textarea></td>
+		<td><textarea class="editor" name="notes" rows="8" cols="50" />{if isset($smarty.post.notes)}{$smarty.post.notes|unescape}{/if}</textarea></td>
 	</tr>
 	<tr>
 		<td class="details_screen">{$LANG.enabled}</td>

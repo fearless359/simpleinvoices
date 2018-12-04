@@ -36,10 +36,10 @@
                 <input class="si_right {if $lineNumber == "0"}validate[required]{/if}"
                        type="text" name="quantity{$lineNumber|htmlsafe}"
                        id="quantity{$lineNumber|htmlsafe}" size="5"
-                       {if $defaultInvoiceItems[$lineNumber]}value="{$defaultInvoiceItems[$lineNumber].quantity|siLocal_number_trim}"{/if} />
+                       value="{if isset($defaultInvoiceItems[$lineNumber].quantity)}{$defaultInvoiceItems[$lineNumber].quantity|siLocal_number_trim}{/if}" />
             </td>
             <td>
-                {if $products == null }
+                {if !isset($products) }
                     <em>{$LANG.no_products}</em>
                 {else}
                     <select id="products{$lineNumber|htmlsafe}"
@@ -49,8 +49,11 @@
                             data_description="{$LANG.description}">
                         <option value=""></option>
                         {foreach from=$products item=product}
-                            <option value="{$product.id|htmlsafe}"
-                                    {if $product.id == $defaultInvoiceItems[$lineNumber].product_id}selected{/if}>{$product.description|htmlsafe}</option>
+                            <option value="{if isset($product.id)}{$product.id|htmlsafe}{/if}"
+                                {if isset($defaultInvoiceItems[$lineNumber].product_id) &&
+                                    $product.id == $defaultInvoiceItems[$lineNumber].product_id}selected{/if}>
+                                {$product.description|htmlsafe}
+                            </option>
                         {/foreach}
                     </select>
                 {/if}
@@ -62,8 +65,9 @@
                             name="tax_id[{$lineNumber|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
                         <option value=""></option>
                         {foreach from=$taxes item=tax}
-                            <option value="{$tax.tax_id|htmlsafe}"
-                                    {if $tax.tax_id == $defaultInvoiceItems[$lineNumber].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlsafe}</option>
+                            <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}"
+                                    {if isset($defaultInvoiceItems[$lineNumber].tax[$taxNumber]) &&
+                                        $tax.tax_id == $defaultInvoiceItems[$lineNumber].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlsafe}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -72,7 +76,7 @@
                 <input class="si_right {if $lineNumber == "0"}validate[required]{/if}"
                        id="unit_price{$lineNumber|htmlsafe}"
                        name="unit_price{$lineNumber|htmlsafe}" size="7"
-                       value="{if $defaultInvoiceItems[$lineNumber].unit_price}{$defaultInvoiceItems[$lineNumber].unit_price|siLocal_number}{/if}"/>
+                       value="{if isset($defaultInvoiceItems[$lineNumber].unit_price)}{$defaultInvoiceItems[$lineNumber].unit_price|siLocal_number}{/if}"/>
             </td>
         </tr>
         <tr class="details si_hide">

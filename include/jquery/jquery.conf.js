@@ -55,7 +55,7 @@ $(document).ready(function () {
     }
 
     if ($("#ac_me")) {
-        $("#ac_me").autocomplete("index.php?module=payments&amp;view=process_ajax", {
+        $("#ac_me").autocomplete("index.php?module=payments&view=process_ajax", {
             minChars: 1, matchSubset: 1, matchContains: 1, cacheLength: 10, onItemSelect: selectItem,
             ormatItem: formatItem, selectOnly: 1
         });

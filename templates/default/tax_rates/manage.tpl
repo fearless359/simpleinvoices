@@ -21,7 +21,7 @@
             </a>
 	</div>
 
-{if $taxes == null}
+{if !isset($taxes)}
 
 	<div class="si_message">{$LANG.no_tax_rates}</div>
 
