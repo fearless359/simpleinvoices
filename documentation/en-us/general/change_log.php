@@ -13,8 +13,11 @@
   </div>
   <div id="left">
     <ul>
-        <li>2018-11-13 - <b>2018.3.0</b>
+        <li>2018-12-03 - <b>2018.3.0</b>
             <ul>
+                <li>Modified templates using a <em>&lt;button ...&gt;</em> tag to cancel so that
+                    it uses an anchor tag to exit the page. This makes all maintenance template
+                    use the same means to cancel the update/add/delete.</li>
                 <li>Cleaned up all PDF and SI errors and warnings issued when E_ALL error
                     mode is set. There is an exceptions for Smarty OPTIONS and CYCLE commands
                     (and possibly others) that attempt to find these functions in the compiled

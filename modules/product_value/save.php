@@ -16,13 +16,11 @@ $refresh_total = "<meta http-equiv='refresh' content='2;url=index.php?module=pro
 $display_block = "<div class=\"si_message_error\">{$LANG['save_product_value_failure']}</div>";
 
 #insert invoice_preference
-if ($_POST['cancel'] == "Cancel") {
-    $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
-} else if (  $op === 'insert_product_value' ) {
+if ( $op === 'insert_product_value') {
     if (ProductValues::insert() > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_value_success']}</div>";
     }
-}else if (  $op === 'edit_product_value' ) {
+}else if ( $op === 'edit_product_value') {
     if (ProductValues::update()) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_value_success']}</div>";
     }

@@ -27,14 +27,14 @@ global $LANG, $pdoDb, $smarty;
 Util::isAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
+$display_block = "<div class=\"si_message_error\">{$LANG['save_custom_field_failure']}</div>";
 $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=custom_fields&amp;view=manage' />";
-$op = !empty($_POST['op']) ? addslashes($_POST['op']) : NULL;
+$op = !empty($_POST['op']) ? addslashes($_POST['op']) : null;
 
 if ($op === 'edit_custom_field') {
     if (isset($_POST['save_custom_field'])) {
-        $clear_field = FALSE;
-        $error_found = FALSE;
+        $clear_field = false;
+        $error_found = false;
         // Check to see if the option to clear the value of the custom field in
         // the associated table. This can only happen if the field was changed
         // from non-blank to blank and the check box set on the custom field
@@ -45,17 +45,17 @@ if ($op === 'edit_custom_field') {
             // we will still verify this here just to make sure something isn't
             // mistakenly changed that allows the clear condition to be set when it shouldn't.
             if (empty($_POST['cf_custom_label'])) {
-                $clear_field = TRUE;
+                $clear_field = true;
             } else {
                 $display_block ="<div class=\"si_message_warning\">{$LANG['clear_data']} field setting is invalid. No update performed.</div>";
-                $error_found = TRUE;
+                $error_found = true;
                 error_log("modules/custom_fields/save.php - Clear Date set when label not empty.");
                 error_log("Custom Field[" . $_POST['cr_custom_field'] . "] Label[" . $_POST['cf_custom_label'] . "]");
             }
         }
 
         if (!$error_found) {
-            $result = false;
+            $result = array();
             try {
                 $pdoDb->addSimpleWhere('cf_id', $_GET['id'], 'AND');
                 $pdoDb->addSimpleWhere('domain_id', DomainId::get());
@@ -67,7 +67,7 @@ if ($op === 'edit_custom_field') {
                 error_log("modules/custom_fields/save.php - error: " . $pde->getMessage());
             }
 
-            if ($result) {
+            if (!empty($result)) {
                 if ($clear_field) {
                     // Split the value of the field name into parts and use that data to build
                     // the sql statement to clear the field in the associated table.
@@ -87,12 +87,11 @@ if ($op === 'edit_custom_field') {
                             $result = $pdoDb->request('UPDATE', $table);
                         } catch (PdoDbException $pde) {
                             error_log("modules/custom_fields/save.php - error: " . $pde->getMessage());
+                            $error_found = true;
                         }
                     }
                 }
                 $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";
-            } else {
-                $display_block = "<div class=\"si_message_warning\">{$LANG['save_custom_field_failure']}</div>";
             }
         }
     }

@@ -57,10 +57,10 @@
             <button type="submit" class="positive" name="submit" value="{$LANG.save}">
                 <img class="button_img" src="images/common/tick.png" alt=""/>{$LANG.save}
             </button>
-            <button type="submit" class="negative" name="cancel" value="{$LANG.cancel}">
-                <img class="button_img" src="images/common/cross.png" alt=""/>
+            <a href="index.php?module=product_value&amp;view=manage" class="negative">
+                <img src="images/common/cross.png" alt="" />
                 {$LANG.cancel}
-            </button>
+            </a>
         </div>
         <input type="hidden" name="op" value="edit_product_value"/>
     {/if}

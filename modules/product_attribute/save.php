@@ -16,9 +16,7 @@ $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=
 $display_block = "<div class=\"si_message_error\">{$LANG['save_product_attributes_failure']}</div>";
 
 #insert invoice_preference
-if (isset($_POST['cancel'])) {
-    $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
-} else if ($op === 'insert_product_attribute' ) {
+if ($op === 'insert_product_attribute' ) {
     if (ProductAttributes::insert() > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
     }

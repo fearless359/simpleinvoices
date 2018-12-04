@@ -119,10 +119,10 @@
                     <img class="button_img" src="images/common/tick.png" alt=""/>
                     {$LANG.save}
                 </button>
-                <button type="submit" class="negative" name="cancel" value="{$LANG.cancel}">
-                    <img class="button_img" src="images/common/cross.png" alt=""/>
+                <a href="index.php?module=custom_flags&amp;view=manage" class="negative">
+                    <img src="images/common/cross.png" alt="" />
                     {$LANG.cancel}
-                </button>
+                </a>
             </div>
         </div>
         <input type="hidden" name="op" value="edit_custom_flag">

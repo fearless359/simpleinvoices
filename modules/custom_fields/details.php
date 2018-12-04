@@ -31,7 +31,7 @@ try {
     error_log("modules/custom_fields/details.php - error: " . $pde->getMessage());
 }
 
-if (empty(rows)) {
+if (empty($rows)) {
     $cf = array();
 } else {
     $cf = $rows[0];

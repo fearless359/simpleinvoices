@@ -10,9 +10,7 @@ Util::isAccessAllowed();
 $refresh_redirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=extensions&amp;view=manage" />';
 $display_block = "<div class=\"si_message_error\">{$LANG['failure']}</div>";
 
-if ($_POST['cancel'] == 'Cancel') {
-    $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
-} else if ($_POST['action'] == "register") {
+if ($_POST['action'] == "register") {
     if (Extensions::insert() > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
     }

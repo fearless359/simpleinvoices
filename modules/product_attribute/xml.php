@@ -6,12 +6,12 @@ global $LANG;
 
 header("Content-type: text/xml");
 
-$dir   = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "ASC" ;
-$sort  = (isset($_POST['sortname']) ) ? $_POST['sortname']  : "id" ;
-$limit = (isset($_POST['rp'])       ) ? $_POST['rp']        : "25" ;
-$page  = (isset($_POST['page'])     ) ? $_POST['page']      : "1" ;
+$dir  = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "ASC" ;
+$sort = (isset($_POST['sortname']) ) ? $_POST['sortname']  : "id" ;
+$rp   = (isset($_POST['rp'])       ) ? $_POST['rp']        : "25" ;
+$page = (isset($_POST['page'])     ) ? $_POST['page']      : "1" ;
 
-$rows = ProductAttributes::xmlSql($type, $dir, $sort, $rp, $page);
+$rows = ProductAttributes::xmlSql('', $dir, $sort, $rp, $page);
 $count = ProductAttributes::xmlSql('count', $dir, $sort, $rp, $page);
 
 $xml  = "<rows>";
@@ -22,11 +22,11 @@ foreach ($rows as $row) {
     $xml .= "<row id='".$row['id']."'>";
     $xml .=
         "<cell><![CDATA[" .
-            "<a class='index_table' title='$LANG[view] ".$row['description']."' " .
+            "<a class='index_table' title='$LANG[view] ".$row['name']."' " .
                "href='index.php?module=product_attribute&amp;view=details&amp;action=view&amp;id=".$row['id']."&amp;action=view'>" .
                 "<img src='images/common/view.png' height='16' border='-5px' />" .
             "</a>" .
-            "<a class='index_table' title='$LANG[edit] ".$row['description']."' " .
+            "<a class='index_table' title='$LANG[edit] ".$row['name']."' " .
                "href='index.php?module=product_attribute&amp;view=details&amp;action=edit&amp;id=".$row['id']."&amp;action=edit'>" .
                 "<img src='images/common/edit.png' height='16' border='-5px' />" .
             "</a>" .

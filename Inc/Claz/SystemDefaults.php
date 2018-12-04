@@ -187,7 +187,7 @@ class SystemDefaults
 
         $result = false;
         try {
-            $pdoDb->addSimpleWhere(extension_id, $extension_id, 'AND');
+            $pdoDb->addSimpleWhere('extension_id', $extension_id, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
 
             $result = $pdoDb->request('DELETE', 'system_defaults');

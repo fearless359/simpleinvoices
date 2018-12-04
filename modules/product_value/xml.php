@@ -21,11 +21,11 @@ foreach ($rows as $row) {
     $xml .= "<row id='".$row['id']."'>";
     $xml .=
         "<cell><![CDATA[" .
-            "<a class='index_table' title='$LANG[view] ".$row['description']."' " .
+            "<a class='index_table' title='$LANG[view] ".$row['name']."' " .
                "href='index.php?module=product_value&amp;view=details&amp;action=view&amp;id=".$row['id']."&amp;action=view'>" .
                 "<img src='images/common/view.png' height='16' border='-5px' />" .
             "</a>" .
-            "<a class='index_table' title='$LANG[edit] ".$row['description']."' " .
+            "<a class='index_table' title='$LANG[edit] ".$row['name']."' " .
                "href='index.php?module=product_value&amp;view=details&amp;action=edit&amp;id=".$row['id']."&amp;action=edit'>" .
                 "<img src='images/common/edit.png' height='16' border='-5px' />" .
             "</a>" .
