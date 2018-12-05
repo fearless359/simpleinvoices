@@ -651,7 +651,7 @@ class CheckGDJPEG extends CheckGDFormat {
   }
 
   function _getInfoKey() {
-    return "JPG Support";
+    return "JPEG Support";
   }
 }
 
