@@ -24,7 +24,7 @@
 </div>
 <div id="tabmenu" class="flora si_wrap">
     {$smarty.capture.hook_tabmenu_start}
-    <ul class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+    <ul>
         {$smarty.capture.hook_tabmenu_main_start}
         <li><a href="#home"><span>{$LANG.home}</span></a></li>
         <li><a href="#money"><span>{$LANG.money} </span></a></li>

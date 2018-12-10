@@ -12,38 +12,29 @@
     <title>{$tmp_lang_module} : {$tmp_lang_view} - {$LANG.company_name} </title>
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex, nofollow" />
+
     <link rel="shortcut icon" href="images/common/favicon.ico" />
 
-{literal}
-    <link rel="stylesheet" type="text/css" href="include/jquery/wysiwyg/wysiwyg.css" />
-    <link rel="stylesheet" type="text/css" href="include/jquery/jquery.plugins.css" title="default" media="screen" />
-    <link rel="stylesheet" type="text/css" href="include/jquery/rte/rte.css" />    
-    <link rel="stylesheet" type="text/css" href="include/jquery/cluetip/jquery.cluetip.css" />
+    <link rel="stylesheet" type="text/css" href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.structure.css" />
+    <link rel="stylesheet" type="text/css" href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.theme.css" />
 
-    <link rel="stylesheet" type="text/css" href="templates/default/css/main.css" media="all"/>
-    <link rel="stylesheet" type="text/css" href="templates/default/css/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="include/jquery/css/main.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="include/jquery/css/print.css" media="print" />
 
-    <script type="text/javascript" src="include/jquery/jquery-1.2.6.min.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.init.js"></script>
-    <!-- jQuery Files -->
-    <script type="text/javascript" src="include/jquery/jquery-ui-personalized-1.6rc2.packed.js"></script>    
-    <script type="text/javascript" src="include/jquery/cluetip/jquery.hoverIntent.minified.js"></script>
-    <script type="text/javascript" src="include/jquery/cluetip/jquery.cluetip.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.flexigrid.1.0b3.pack.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.plugins.js"></script>
-    <script type="text/javascript" src="include/jquery/wysiwyg/wysiwyg.modified.packed.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.livequery.pack.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.functions.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.conf.js"></script>
-{/literal}
+    <link rel="stylesheet" type="text/css" href="node_modules/datatables.net-dt/css/jquery.dataTables.css" />
+
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+
+    <script src="node_modules/datatables.net/js/jquery.dataTables.js"></script>
     {$extension_jquery_files }
     {if $config->debug->level == "All"}
-    <link rel="stylesheet" type="text/css" href="library/blackbirdjs/blackbird.css" />    
-    <script type="text/javascript" src="library/blackbirdjs/blackbird.js"></script>
+        <link rel="stylesheet" type="text/css" href="library/blackbirdjs/blackbird.css" />
+        <script src="library/blackbirdjs/blackbird.js"></script>
     {/if}
-{literal}
+
     <script type="text/javascript" src="include/jquery/jquery.validationEngine.js"></script>
-{/literal}
 
 {$smarty.capture.hook_head_end}
 </head>

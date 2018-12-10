@@ -4,9 +4,9 @@
      * jquery stuff for tab_menu extension
      */
     $(document).ready(function () {
-        //TODO - grab the active page and put in here - so correct tab is open for that page
-        $("#tabmenu > ul").tabs({active: '{/literal}{if isset($active_tab)}{$active_tab}{else}0{/if}{literal}'});
+        let idx = {/literal}{if $active_tab == '#money'}1{elseif $active_tab == '#people'}2{elseif $active_tab == '#product'}3{elseif $active_tab == '#setting'}4{else}0{/if}{literal};
+        $('#tabmenu').tabs({active: idx});
     });
 </script>
 {/literal}
- 
+

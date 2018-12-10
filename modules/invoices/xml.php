@@ -63,8 +63,8 @@ foreach ($invoices as $row) {
              "<!--3 EXPORT TO PDF DIALOG -->" .
              "<a title='{$LANG['export_tooltip']} {$row['preference']} {$row['index_id']}' " .
                 "class='invoice_export_dialog' href='#' rel='{$row['id']}' " .
-                "data_spreadsheet='{$config->export->spreadsheet}' " .
-                "data_wordprocessor='{$config->export->wordprocessor}'>" .
+                "data-spreadsheet='{$config->export->spreadsheet}' " .
+                "data-wordprocessor='{$config->export->wordprocessor}'>" .
                  "<img src='images/common/page_white_acrobat.png' class='action' />" .
              "</a>";
     if (!$read_only) {
@@ -106,7 +106,7 @@ foreach ($invoices as $row) {
         $xml .= "<cell><![CDATA[&nbsp;]]></cell>";
         $xml .= "<cell><![CDATA[&nbsp;]]></cell>";
     }
-    $xml .= "<cell><![CDATA[" . $row['preference'] . "]]></cell>";
+//    $xml .= "<cell><![CDATA[" . $row['preference'] . "]]></cell>";
     $xml .= "</row>";
 }
 $xml .= "</rows>";

@@ -26,7 +26,7 @@
         {include file="$path/header.tpl" }
         {include file="$path/itemised_itemtable.tpl" }
         <div class="si_toolbar si_toolbar_inform">
-            <a href="#" class="add_line_item" data_description="{$LANG.description}">
+            <a href="#" class="add_line_item" data-descripiton="{$LANG.description}">
                 <img src="images/common/add.png" alt=""/>
                 {$LANG.add_new_row}
             </a>

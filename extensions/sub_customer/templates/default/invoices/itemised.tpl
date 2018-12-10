@@ -120,7 +120,7 @@
                                         {else}
                                             <select id="products{$smarty.section.line.index|htmlsafe}" name="products{$smarty.section.line.index|htmlsafe}"
                                                     rel="{$smarty.section.line.index|htmlsafe}" class="{if $smarty.section.line.index == "0"}validate[required]{/if} product_change"
-                                                    data_description="{$LANG.description}">
+                                                    data-descripiton="{$LANG.description}">
                                                 <option value=""></option>
                                                 {foreach from=$products item=product}
                                                     <option value="{if $product.id == $smarty.get.product.$lineNumber} {$smarty.get.product.$lineNumber}" selected {else} {$product.id|htmlsafe}"{/if}" >
@@ -156,7 +156,7 @@
                                     <td colspan="4">
                                         <textarea class="detail" name="description{$smarty.section.line.index|htmlsafe}"
                                                   id="description{$smarty.section.line.index|htmlsafe}" rows="3" cols="50"
-                                                  data_description="{$LANG['description']}"></textarea>
+                                                  data-descripiton="{$LANG['description']}"></textarea>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -169,7 +169,7 @@
                         <table class="center" align="left">
                             <tr>
                                 <td>
-                                    <a href="#" class="add_line_item" data_description="{$LANG.description}">
+                                    <a href="#" class="add_line_item" data-descripiton="{$LANG.description}">
                                         <img src="images/common/add.png" alt=""/>
                                         {$LANG.add_new_row}
                                     </a>

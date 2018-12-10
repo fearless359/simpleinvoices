@@ -113,6 +113,20 @@ class AssertTest extends TestCase
         $this->assertContains('', 'test');
     }
 
+    public function testAssertStringContainsNonString(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertContains(null, '');
+    }
+
+    public function testAssertStringNotContainsNonString(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertNotContains(null, '');
+    }
+
     public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument(): void
     {
         $this->expectException(Exception::class);
@@ -844,6 +858,8 @@ XML;
 
     public function testAssertNotIsReadable(): void
     {
+        $this->assertNotIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotIsReadable(__FILE__);
@@ -860,6 +876,8 @@ XML;
 
     public function testAssertNotIsWritable(): void
     {
+        $this->assertNotIsWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotIsWritable(__FILE__);
@@ -1582,11 +1600,25 @@ XML;
         $this->assertClassHasAttribute('1', \ClassWithNonPublicAttributes::class);
     }
 
+    public function testAssertClassHasAttributeThrowsExceptionIfClassDoesNotExist(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertClassHasAttribute('attribute', 'ClassThatDoesNotExist');
+    }
+
     public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
     {
         $this->expectException(Exception::class);
 
         $this->assertClassNotHasAttribute('1', \ClassWithNonPublicAttributes::class);
+    }
+
+    public function testAssertClassNotHasAttributeThrowsExceptionIfClassDoesNotExist(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertClassNotHasAttribute('attribute', 'ClassThatDoesNotExist');
     }
 
     public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
@@ -1596,11 +1628,25 @@ XML;
         $this->assertClassHasStaticAttribute('1', \ClassWithNonPublicAttributes::class);
     }
 
+    public function testAssertClassHasStaticAttributeThrowsExceptionIfClassDoesNotExist(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertClassHasStaticAttribute('attribute', 'ClassThatDoesNotExist');
+    }
+
     public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
     {
         $this->expectException(Exception::class);
 
         $this->assertClassNotHasStaticAttribute('1', \ClassWithNonPublicAttributes::class);
+    }
+
+    public function testAssertClassNotHasStaticAttributeThrowsExceptionIfClassDoesNotExist(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertClassNotHasStaticAttribute('attribute', 'ClassThatDoesNotExist');
     }
 
     public function testAssertObjectHasAttributeThrowsException2(): void
@@ -2397,6 +2443,13 @@ XML;
         $this->assertJsonFileEqualsJsonFile($file, $file, $message);
     }
 
+    public function testAssertInstanceOfThrowsExceptionIfTypeDoesNotExist(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertInstanceOf('ClassThatDoesNotExist', new \stdClass);
+    }
+
     public function testAssertInstanceOf(): void
     {
         $this->assertInstanceOf(\stdClass::class, new \stdClass);
@@ -2412,6 +2465,13 @@ XML;
         $o->a = new \stdClass;
 
         $this->assertAttributeInstanceOf(\stdClass::class, 'a', $o);
+    }
+
+    public function testAssertNotInstanceOfThrowsExceptionIfTypeDoesNotExist(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertNotInstanceOf('ClassThatDoesNotExist', new \stdClass);
     }
 
     public function testAssertNotInstanceOf(): void
@@ -2504,6 +2564,69 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "FOO\n");
+    }
+
+    public function testLogicalAnd(): void
+    {
+        $this->assertThat(
+            true,
+            $this->logicalAnd(
+                $this->isTrue(),
+                $this->isTrue()
+            )
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertThat(
+            true,
+            $this->logicalAnd(
+                $this->isTrue(),
+                $this->isFalse()
+            )
+        );
+    }
+
+    public function testLogicalOr(): void
+    {
+        $this->assertThat(
+            true,
+            $this->logicalOr(
+                $this->isTrue(),
+                $this->isFalse()
+            )
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertThat(
+            true,
+            $this->logicalOr(
+                $this->isFalse(),
+                $this->isFalse()
+            )
+        );
+    }
+
+    public function testLogicalXor(): void
+    {
+        $this->assertThat(
+            true,
+            $this->logicalXor(
+                $this->isTrue(),
+                $this->isFalse()
+            )
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertThat(
+            true,
+            $this->logicalXor(
+                $this->isTrue(),
+                $this->isTrue()
+            )
+        );
     }
 
     protected function sameValues(): array

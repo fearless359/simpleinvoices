@@ -279,11 +279,10 @@
               out: function() { $closeLink.trigger('click'); }
             });
           } else {
-            $cluetip.hover(doNothing, 
-            function() {$closeLink.trigger('click'); });
+            $cluetip.hover(function() {$closeLink.trigger('click'); });
           }
         } else {
-          $cluetip.unbind('mouseout');
+          $cluetip.off('mouseout');
         }
       }
 // now that content is loaded, finish the positioning 
@@ -414,15 +413,17 @@ clearTimeout(closeOnDelay);
               mouseTracks(event);
             }, 
             timeout: opts.hoverIntent.timeout,  
-            out: function(event) {inactivate(event); $this.unbind('mousemove');}
+            out: function(event) {inactivate(event); $this.off('mousemove');}
           });           
         } else {
-          $this.hover(function(event) {
-            activate(event);
-            mouseTracks(event);
-          }, function(event) {
-            inactivate(event);
-            $this.unbind('mousemove');
+          $this.hover(
+              function(event) {
+                activate(event);
+                mouseTracks(event);
+                },
+              function(event) {
+                inactivate(event);
+                $this.off('mousemove');
           });
         }
       }

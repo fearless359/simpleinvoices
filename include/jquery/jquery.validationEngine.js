@@ -65,7 +65,7 @@ jQuery.fn.validationEngine = function(settings) {
 	}, settings);	
 
 
-	$("form").bind("submit", function(caller){   // ON FORM SUBMIT, CONTROL AJAX FUNCTION IF SPECIFIED ON DOCUMENT READY
+	$("form").on("submit", function(caller){   // ON FORM SUBMIT, CONTROL AJAX FUNCTION IF SPECIFIED ON DOCUMENT READY
 		if(submitValidation(this) == false){
 			if (settings.success){
 				settings.success && settings.success(); 
@@ -76,8 +76,8 @@ jQuery.fn.validationEngine = function(settings) {
 			return false;
 		}
 	})
-	$(this).not("[type=checkbox]").bind("blur", function(caller){loadValidation(this)})
-	$(this+"[type=checkbox]").bind("click", function(caller){loadValidation(this)})
+	$(this).not("[type=checkbox]").on("blur", function(caller){loadValidation(this)})
+	$(this+"[type=checkbox]").on("click", function(caller){loadValidation(this)})
 	
 	var buildPrompt = function(caller,promptText) {			// ERROR PROMPT CREATION AND DISPLAY WHEN AN ERROR OCCUR
 		var divFormError = document.createElement('div')

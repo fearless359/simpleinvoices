@@ -188,7 +188,7 @@
                             <em>{$LANG.no_products}</em>
                         {else}
                             <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}" style="width:100%;"
-                                    rel="{$line|htmlsafe}" class="product_change" data_description="{$LANG.description}">
+                                    rel="{$line|htmlsafe}" class="product_change" data-descripiton="{$LANG.description}">
                                 {foreach from=$products item=product}
                                     <option {if $product.id == $invoiceItem.product_id} selected {/if}
                                             value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
@@ -220,14 +220,14 @@
                     <td colspan="4">
                         <textarea class="detail" name="description{$line|htmlsafe}" style="overflow:scroll;"
                                   id="description{$line|htmlsafe}" rows="3" cols="100%"
-                                  data_description="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
+                                  data-descripiton="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
                     </td>
                 </tr>
             </tbody>
             {/foreach}
         </table>
         <div class="si_toolbar si_toolbar_inform">
-            <a href="#" class="add_line_item" data_description="{$LANG.description}">
+            <a href="#" class="add_line_item" data-descripiton="{$LANG.description}">
                 <img src="images/common/add.png" alt=""/>{$LANG.add_new_row}</a>
             <a href='#' class="show-details" onclick="javascript: $('.details').show();$('.show-details').hide();">
                 <img src="images/common/page_white_add.png"
