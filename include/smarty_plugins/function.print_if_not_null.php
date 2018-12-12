@@ -4,7 +4,7 @@
  *
  * Used in the print preview to determine if a row/field gets printed, basically if the field is null dont print it else do
  *
- * Arguments:
+ * @param array $params - arguments:
  *   label   - The name of the field, ie. Custom Field 1, Email, etc..
  *   field   - The actual value from the db ie, test@test.com for email etc...
  *   class1  - the css class of the first td
@@ -14,14 +14,10 @@
 function smarty_function_print_if_not_null($params) {
     if (isset($params['field'])) {
         $print_if_not_null =
-            "<tr>
-               <td class='" . htmlsafe($params[class1]) . "'>" .
-                 htmlsafe($params[label]) . ":
-               </td>
-               <td class='" . htmlsafe($params[class2]) . "' colspan='" . htmlsafe($params[colspan]) . "'>" .
-                 htmlsafe($params[field]) .
-              "</td>
-             </tr>";
+            '<tr>' .
+                '<td class="' . htmlsafe($params['class1']) . '">' . htmlsafe($params['label']) . ':</td>' .
+                '<td class="' . htmlsafe($params['class2']) . '" colspan="' . htmlsafe($params['colspan']) . '" >' . htmlsafe($params['field']) . '</td>' .
+            '</tr>';
         echo $print_if_not_null;
     }
 }
