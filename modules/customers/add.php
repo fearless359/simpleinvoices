@@ -2,7 +2,7 @@
 
 use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
-use Inc\Claz\Extensions;
+use Inc\Claz\DynamicJs;
 use Inc\Claz\Util;
 
 /*
@@ -26,14 +26,22 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$customFieldLabel = CustomFields::getLabels(true);
-
 //if valid then do save
-if (!empty($_POST['name'])) {
-	include("modules/customers/save.php");
+if (!empty($_POST['op']) && $_POST['op'] == 'add') {
+    include("modules/customers/save.php");
+} else {
+    DynamicJs::begin();
+    DynamicJs::formValidationBegin("frmpost");
+    DynamicJs::validateRequired("name",$LANG['name']);
+    DynamicJs::validateIfEmail("email", "true");
+    DynamicJs::formValidationEnd();
+    DynamicJs::end();
+
+    $customFieldLabel = CustomFields::getLabels(true);
+    $smarty->assign('customFieldLabel', $customFieldLabel);
+    $smarty->assign('domain_id', DomainId::get());
+
+    $smarty->assign('pageActive', 'customer');
+    $smarty->assign('subPageActive', 'customer_add');
+    $smarty->assign('active_tab', '#people');
 }
-$smarty->assign('customFieldLabel',$customFieldLabel);
-$smarty->assign('pageActive', 'customer');
-$smarty->assign('subPageActive', 'customer_add');
-$smarty->assign('active_tab', '#people');
-$smarty->assign('domain_id', DomainId::get());

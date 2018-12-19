@@ -26,13 +26,13 @@ class Eway {
     public function pre_check() {
         //set customer,biller and preference if not defined
         if(empty($this->customer)) {
-            $this->customer = Customer::get($this->invoice['customer_id']);
+            $this->customer = Customer::getOne($this->invoice['customer_id']);
         }
         if(empty($this->biller)) {
-            $this->biller = Biller::select($this->invoice['biller_id']);
+            $this->biller = Biller::getOne($this->invoice['biller_id']);
         }
         if(empty($this->preference)) {
-            $this->preference = Preferences::getPreference($this->invoice['preference_id'], $this->domain_id);
+            $this->preference = Preferences::getOne($this->invoice['preference_id']);
         }
 
         if ($this->invoice['owing'] > 0 &&
@@ -53,15 +53,15 @@ class Eway {
 
         //set customer,biller and preference if not defined
         if(empty($this->customer)) {
-            $this->customer = Customer::get($this->invoice['customer_id']);
+            $this->customer = Customer::getOne($this->invoice['customer_id']);
         }
 
         if(empty($this->biller)) {
-            $this->biller = Biller::select($this->invoice['biller_id']);
+            $this->biller = Biller::getOne($this->invoice['biller_id']);
         }
 
         if(empty($this->preference)) {
-            $this->preference = Preferences::getPreference($this->invoice['preference_id'], $this->domain_id);
+            $this->preference = Preferences::getOne($this->invoice['preference_id']);
         }
 
         $eway = new \Ewaylib($this->biller['eway_customer_id'],'REAL_TIME', false);

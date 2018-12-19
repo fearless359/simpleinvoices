@@ -13,6 +13,10 @@
                 <img src="images/famfam/add.png" alt=""/>
                 {$LANG.edit}
             </a>
+            <a href="index.php?module=expense_account&amp;view=manage"
+               class="negative"> <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                {$LANG.cancel}
+            </a>
         </div>
     {else if $smarty.get.action == 'edit'}
         <input type="hidden" name="op" value="edit"/>

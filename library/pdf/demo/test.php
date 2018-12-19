@@ -10,9 +10,9 @@ global $pdoDb, $config, $http_auth, $httpPort, $install_path;
 $invoice_id = $_GET['invoice'];
 
 $invoice    = Invoice::getInvoice($invoice_id);
-$preference = Preferences::getPreference($invoice['preference_id']);
-$biller     = Biller::select($invoice['biller_id']);
-$customer   = Customer::get($invoice['customer_id']);
+$preference = Preferences::getOne($invoice['preference_id']);
+$biller     = Biller::getOne($invoice['biller_id']);
+$customer   = Customer::getOne($invoice['customer_id']);
 
 $pdoDb->addSimpleWhere("inv_ty_id", $invoice['type_id']);
 $pdoDb->setSelectList("inv_ty_description AS type");

@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
     } catch (PdoDbException $pde) {
         error_log("modules/statement/index.php - error: " . $pde->getMessage());
     }
-    $invoices = Invoice::select_all("", "date", "D");
+    $invoices = Invoice::selectAll("", "date", "D");
     foreach ( $invoices as $row ) {
         if ($row ['status'] > 0) {
             $statement ['total'] += $row ['invoice_total'];
@@ -86,8 +86,8 @@ $billers          = Biller::getAll(true);
 $biller_count     = count($billers);
 $customers        = Customer::getAll(true);
 $customer_count   = count($customers);
-$biller_details   = Biller::select($biller_id);
-$customer_details = Customer::get($customer_id);
+$biller_details   = Biller::getOne($biller_id);
+$customer_details = Customer::getOne($customer_id);
 
 $smarty->assign('biller_id'       , $biller_id);
 $smarty->assign('billers'         , $billers);

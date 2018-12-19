@@ -13,6 +13,18 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-12-10 - <b>2018.3.1</b>
+            <ul>
+                <li>Modified to use current version of jquery and jquery-ui files. Using
+                    NPM to obtain current version of jquery.</li>
+                <li>Replaced Flexigrid tables with Datatables. Datatables version is
+                    maintained via NPM.</li>
+                <li>Modified labels in Settings menu to stop wrap around when enhancements
+                    displayed "System Preferences" to "SI Defaults", "Invoice Preferences" to
+                    "Inv Preferences", "Payment Types" to "Pymt Types", and "Backup Database"
+                    to "DB Backup".</li>
+            </ul>
+        </li>
         <li>2018-12-03 - <b>2018.3.0</b>
             <ul>
                 <li>Modified templates using a <em>&lt;button ...&gt;</em> tag to cancel so that
@@ -635,7 +647,7 @@
           <li>SQL Patches
             <ul>
               <li>UPDATE `si_custom_fields` SET `cf_custom_field` = 'product_cf4' WHERE `si_custom_fields`.`cf_id` =12 LIMIT 1 ;</li>
-              <li>UPDATE `si_defaults` SET `def_inv_template` = 'default' WHERE `def_id` =1 LIMIT 1;</li>
+              <li>UPDATE `si_system_preferences` SET `def_inv_template` = 'default' WHERE `def_id` =1 LIMIT 1;</li>
             </ul>
           </li>
         </ul>
@@ -776,7 +788,7 @@
               <li>CREATE TABLE `si_payment_types` (`pt_id` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,`pt_description` VARCHAR( 250 ) NOT NULL ,`pt_enabled` VARCHAR( 1 ) NOT NULL DEFAULT '1');</li>
               <li>INSERT INTO `si_payment_types` ( `pt_id` , `pt_description` ) VALUES (NULL , 'Cash'), (NULL , 'Credit Card');</li>
               <li>ALTER TABLE `si_account_payments` ADD `ac_payment_type` INT( 10 ) NOT NULL DEFAULT '1';</li>
-              <li>ALTER TABLE `si_defaults` ADD `def_payment_type` VARCHAR( 25 ) NOT NULL DEFAULT '1' ;</li>
+              <li>ALTER TABLE `si_system_preferences` ADD `def_payment_type` VARCHAR( 25 ) NOT NULL DEFAULT '1' ;</li>
             </ul>
           </li>
         </ul>
@@ -908,7 +920,7 @@
           <li>SQL Patches
             <ul>
               <li>ALTER TABLE si_tax CHANGE tax_description tax_description VARCHAR( 50 ) DEFAULT NULL</li>
-              <li>ALTER TABLE si_defaults CHANGE def_inv_template def_inv_template VARCHAR( 50 ) DEFAULT NULL</li>
+              <li>ALTER TABLE si_system_preferences CHANGE def_inv_template def_inv_template VARCHAR( 50 ) DEFAULT NULL</li>
             </ul>
           </li>
         </ul>
@@ -954,12 +966,12 @@
               </li>
               <li>Add a row into the defaults table to handle the default number of line items
                 <ul>
-                  <li>ALTER TABLE `si_defaults` ADD `def_number_line_items` INT( 25 ) NOT NULL ;</li>
+                  <li>ALTER TABLE `si_system_preferences` ADD `def_number_line_items` INT( 25 ) NOT NULL ;</li>
                 </ul>
               </li>
               <li>Set the default number of line items to 5
                 <ul>
-                  <li>UPDATE `si_defaults` SET `def_number_line_items` = '5' WHERE `def_id` =1 LIMIT 1 ;</li>
+                  <li>UPDATE `si_system_preferences` SET `def_number_line_items` = '5' WHERE `def_id` =1 LIMIT 1 ;</li>
                 </ul>
               </li>
               <li>Create the sql patch manager table
@@ -974,7 +986,7 @@
               </li>
               <li>Add default invoice template option
                 <ul>
-                  <li>ALTER TABLE `si_defaults` ADD `def_inv_template` VARCHAR( 25 ) DEFAULT 'print_preview.php' NOT NULL ;</li>
+                  <li>ALTER TABLE `si_system_preferences` ADD `def_inv_template` VARCHAR( 25 ) DEFAULT 'print_preview.php' NOT NULL ;</li>
                 </ul>
               </li>
             </ul>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -6,7 +7,7 @@ namespace Inc\Claz;
  * @author Richard Rowley
  * @license GPL V3 or above
  * Created: 20181125
- * 
+ *
  * Class DynamicJs
  * @package Inc\Claz
  */
@@ -31,7 +32,7 @@ class DynamicJs
     }
 
     /**
-     * @param $sFormName Begin form validation script
+     * @param string $sFormName begin form validation script
      */
     public static function formValidationBegin($sFormName)
     {
@@ -48,13 +49,44 @@ class DynamicJs
     }
 
     /**
-     * Add text validation to the script
-     * @param $sName
-     * @param $sLabel
-     * @param $iMin
-     * @param $iMax
+     * Verify value is within specified constraints.
+     * @param string $sName to reference field content.
+     * @param string $sLabel to display for the field.
+     * @param int $iMin minimum value of the field.
+     * @param int $iMax maximum value of the field.
+     * @param bool $noDecimal true if no decimal places allowed; false if it is allowed.
      */
-    public static function textValidation($sName, $sLabel, $iMin, $iMax)
+    public static function valueValidation($sName, $sLabel, $iMin, $iMax, $noDecimal)
+    {
+        echo "  if (theForm." . $sName . ".value < " . $iMin . ") {\n";
+        echo "    alert(\"Please enter a valid " . $sLabel . "\");\n";
+        echo "    theForm." . $sName . ".focus();\n";
+        echo "    return (false);\n";
+        echo "  }\n\n";
+
+        echo "  if (theForm." . $sName . ".value > " . $iMax . ") {\n";
+        echo "    alert(\"The " . $sLabel . "  value exceeds the allowed maximum (" . $iMax . ")\");\n";
+        echo "    theForm." . $sName . ".focus();\n";
+        echo "    return (false);\n";
+        echo "  }\n\n";
+
+        if ($noDecimal) {
+            echo "  if(!(/^\d+$/).test(theForm." . $sName . ".value)) {\n";
+            echo "    alert(\"Please Enter a valid " . $sLabel . ". Decimal places or letters are not accepted in the " . $sLabel . " field.\");\n";
+            echo "    theForm." . $sName . ".focus();\n";
+            echo "    return (false);\n";
+            echo "  }\n";
+        }
+    }
+
+    /**
+     * Verify field value length is within a specified range.
+     * @param string $sName to reference field content.
+     * @param string $sLabel to display for the field.
+     * @param int $iMin minimum field value length.
+     * @param int $iMax maximum field value length.
+     */
+    public static function lengthValidation($sName, $sLabel, $iMin, $iMax)
     {
         echo "  if (theForm." . $sName . ".value.length < " . $iMin . ") {\n";
         echo "    alert(\"Please select a " . $sLabel . "\");\n";
@@ -70,59 +102,9 @@ class DynamicJs
     }
 
     /**
-     * Add payment validation to the script
-     * @param $sName
-     * @param $sLabel
-     * @param $iMin
-     * @param $iMax
-     */
-    public static function paymentValidation($sName, $sLabel, $iMin, $iMax)
-    {
-        echo "  if (theForm." . $sName . ".value < " . $iMin . ") {\n";
-        echo "    alert(\"Please enter a valid " . $sLabel . "\");\n";
-        echo "    theForm." . $sName . ".focus();\n";
-        echo "    return (false);\n";
-        echo "  }\n\n";
-
-        echo "  if (theForm." . $sName . ".value > " . $iMax . ") {\n";
-        echo "    alert(\"The " . $sLabel . " is not a valid.  Please make sure that there is in an actual invoice with this " . $sLabel . ".\");\n";
-        echo "    theForm." . $sName . ".focus();\n";
-        echo "    return (false);\n";
-        echo "  }\n\n";
-
-        echo "  if(!(/^\d+$/).test(theForm." . $sName . ".value)) {\n";
-        echo "    alert(\"Please Enter a valid " . $sLabel . ". Decimal places or letters are not accepted in the " . $sLabel . " field.\");\n";
-        echo "    theForm." . $sName . ".focus();\n";
-        echo "    return (false);\n";
-        echo "  }\n";
-    }
-
-    /**
-     * Add preference validation to the script
-     * @param $sName
-     * @param $sLabel
-     * @param $iMin
-     * @param $iMax
-     */
-    public static function preferenceValidation($sName, $sLabel, $iMin, $iMax)
-    {
-        echo "  if (theForm." . $sName . ".value.length < " . $iMin . ") {\n";
-        echo "    alert(\"Please select an " . $sLabel . "\");\n";
-        echo "    theForm." . $sName . ".focus();\n";
-        echo "    return (false);\n";
-        echo "  }\n\n";
-
-        echo "  if (theForm." . $sName . ".value.length > " . $iMax . ") {\n";
-        echo "    alert(\"The " . $sLabel . " field can only contain a maximum of " . $iMax . " characters.\");\n";
-        echo "    theForm." . $sName . ".focus();\n";
-        echo "    return (false);\n";
-        echo "  }\n";
-    }
-
-    /**
      * Add required field validation to the script
-     * @param $sName
-     * @param $sLabel
+     * @param string $sName to reference field content.
+     * @param string $sLabel to display for the field.
      */
     public static function validateRequired($sName, $sLabel)
     {
@@ -134,9 +116,9 @@ class DynamicJs
     }
 
     /**
-     * Add zero number validation to the script.
-     * @param $sName
-     * @param $sLabel
+     * Do not allow the field to be set to zero.
+     * @param string $sName to reference field content.
+     * @param string $sLabel to display for the field.
      */
     public static function validateIfNumZero($sName, $sLabel)
     {
@@ -148,9 +130,9 @@ class DynamicJs
     }
 
     /**
-     * Add number test to the script
-     * @param $sName
-     * @param $sLabel
+     * Verify allowed number values with optional leading signs and decimal part.
+     * @param string $sName to reference field content.
+     * @param string $sLabel to display for the field.
      */
     public static function validateIfNum($sName, $sLabel)
     {
@@ -162,9 +144,9 @@ class DynamicJs
     }
 
     /**
-     * Add email validation to the script
-     * @param $sName
-     * @param $required
+     * Verify email is validly formatted and optionally required.
+     * @param string $sName to reference field content.
+     * @param bool $required true if field is required; false if not.
      */
     public static function validateIfEmail($sName, $required)
     {
@@ -183,9 +165,9 @@ class DynamicJs
     }
 
     /**
-     * Add user specified RegEx validation to the script.
-     * @param $sName
-     * @param $regex
+     * User specified regular expression used to validate the field.
+     * @param string $sName to reference field content.
+     * @param string $regex to verify field value.
      */
     public static function validateRegEx($sName, $regex)
     {

@@ -37,7 +37,7 @@
         <td class="si_toolbar">
             <a href="index.php?module=system_defaults&amp;view=manage" class="">
                 <img src="images/common/cog_edit.png" alt=""/>
-                {$LANG.system_preferences}
+                {$LANG.si_defaults}
             </a>
         </td>
     </tr>

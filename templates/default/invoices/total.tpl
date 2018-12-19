@@ -11,7 +11,7 @@
 */
 *}
 
-<form name="frmpost" action="index.php?module=invoices&amp;view=save" method="POST">
+<form name="frmpost" id="frmpost" action="index.php?module=invoices&amp;view=save" method="POST">
     <div class="si_invoice_form">
         {include file="$path/header.tpl" }
         <table id="itemtable" class="si_invoice_items">

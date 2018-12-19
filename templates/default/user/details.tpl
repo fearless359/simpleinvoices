@@ -69,7 +69,7 @@
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}</th>
-                    <td>{$user.enabled_txt|htmlsafe}</td>
+                    <td>{$user.enabled_text|htmlsafe}</td>
                 </tr>
                 <tr>
                     <th>{$LANG.user_id}</th>

@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}</th>
-                    <td>{$cflg.wording_for_enabled|htmlsafe}</td>
+                    <td>{$cflg.enabled_text|htmlsafe}</td>
                 </tr>
                 <tr>
                     <th>{$LANG.field_help_upper}</th>

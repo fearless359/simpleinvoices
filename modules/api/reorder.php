@@ -4,7 +4,7 @@ use Inc\Claz\Inventory;
 
 ini_set('max_execution_time', 600); //600 seconds = 10 minutes
 
-$message = Inventory::check_reorder_level();
+$message = Inventory::sendReorderNotificationEmail();
 
 try {
     ob_end_clean();

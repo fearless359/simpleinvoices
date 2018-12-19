@@ -28,10 +28,10 @@ Util::isAccessAllowed();
 
 // @formatter:off
 $invoice_id  = $_GET['id'];
-$invoice     = Invoice::select($invoice_id);
-$preference  = Preferences::getPreference($invoice['preference_id']);
-$biller      = Biller::select($invoice['biller_id']);
-$customer    = Customer::get($invoice['customer_id']);
+$invoice     = Invoice::getOne($invoice_id);
+$preference  = Preferences::getOne($invoice['preference_id']);
+$biller      = Biller::getOne($invoice['biller_id']);
+$customer    = Customer::getOne($invoice['customer_id']);
 
 $error = false;
 $message = "Unable to process email request.";

@@ -15,7 +15,7 @@ global $smarty, $LANG, $pdoDb;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$paymentTypes = PaymentType::select_all(true);
+$paymentTypes = PaymentType::getAll(true);
 $chk_pt = 0;
 foreach ($paymentTypes as $paymentType) {
     if (preg_match('/^check$/iD', $paymentType['pt_description'])) {
@@ -46,7 +46,7 @@ DynamicJs::end();
 $today = date("Y-m-d");
 
 if(isset($_GET['id'])) {
-    $invoice = Invoice::select($_GET['id']);
+    $invoice = Invoice::getOne($_GET['id']);
 } else {
     $rows = array();
     try {
@@ -59,17 +59,17 @@ if(isset($_GET['id'])) {
 }
 
 // @formatter:off
-$customer = Customer::get($invoice['customer_id']);
-$biller   = Biller::select($invoice['biller_id']);
+$customer = Customer::getOne($invoice['customer_id']);
+$biller   = Biller::getOne($invoice['biller_id']);
 $defaults = SystemDefaults::loadValues();
 
-// Presets value that will be used in the Invoice::select_all() method.
+// Presets value that will be used in the Invoice::selectAll() method.
 try {
     $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
 } catch (PdoDbException $pde) {
     error_log("modules/payments/process.php - error(2): " . $pde->getMessage());
 }
-$invoice_all = Invoice::select_all("count", "id", "", null, "", "", "");
+$invoice_all = Invoice::selectAll("count", "id");
 
 $smarty->assign('invoice_all',$invoice_all);
 

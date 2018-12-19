@@ -63,8 +63,7 @@
     <tr>
         <th>{$LANG.date_formatted}</th>
         <td>
-            <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-                   size="10" name="date" id="date1"
+            <input type="text" class="date-picker" id="date1" size="10" name="date"
                    value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>
         </td>
     </tr>

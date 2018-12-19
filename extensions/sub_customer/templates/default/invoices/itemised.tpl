@@ -60,7 +60,7 @@
                 <td class="si_toolbar">
                     <a href="index.php?module=system_defaults&amp;view=manage" class="">
                         <img src="images/common/cog_edit.png" alt=""/>
-                        {$LANG.system_preferences}
+                        {$LANG.si_defaults}
                     </a>
                 </td>
             </tr>
@@ -120,7 +120,7 @@
                                         {else}
                                             <select id="products{$smarty.section.line.index|htmlsafe}" name="products{$smarty.section.line.index|htmlsafe}"
                                                     rel="{$smarty.section.line.index|htmlsafe}" class="{if $smarty.section.line.index == "0"}validate[required]{/if} product_change"
-                                                    data-descripiton="{$LANG.description}">
+                                                    data-description="{$LANG.description}">
                                                 <option value=""></option>
                                                 {foreach from=$products item=product}
                                                     <option value="{if $product.id == $smarty.get.product.$lineNumber} {$smarty.get.product.$lineNumber}" selected {else} {$product.id|htmlsafe}"{/if}" >
@@ -156,7 +156,7 @@
                                     <td colspan="4">
                                         <textarea class="detail" name="description{$smarty.section.line.index|htmlsafe}"
                                                   id="description{$smarty.section.line.index|htmlsafe}" rows="3" cols="50"
-                                                  data-descripiton="{$LANG['description']}"></textarea>
+                                                  data-description="{$LANG['description']}"></textarea>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -169,7 +169,7 @@
                         <table class="center" align="left">
                             <tr>
                                 <td>
-                                    <a href="#" class="add_line_item" data-descripiton="{$LANG.description}">
+                                    <a href="#" class="add_line_item" data-description="{$LANG.description}">
                                         <img src="images/common/add.png" alt=""/>
                                         {$LANG.add_new_row}
                                     </a>

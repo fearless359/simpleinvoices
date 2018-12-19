@@ -3,6 +3,7 @@
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
+use Inc\Claz\DynamicJs;
 use Inc\Claz\Invoice;
 use Inc\Claz\Preferences;
 use Inc\Claz\Product;
@@ -17,7 +18,7 @@ use Inc\Claz\Util;
  *   Justin Kelly, Nicolas Ruflin
  *
  * Last edited:
- *   2016-07-05
+ *   2018-12-16 by Richard Rowley
  *
  * License:
  *   GPL v3 or above
@@ -30,12 +31,25 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
+DynamicJs::begin();
+DynamicJs::formValidationBegin("frmpost");
+DynamicJs::validateRequired('date', $LANG['date_formatted']);
+DynamicJs::valueValidation("biller_id","Biller Name",1,1000000, true);
+DynamicJs::valueValidation("customer_id","Customer Name",1,1000000, true);
+DynamicJs::validateIfNumZero("i_quantity0","Quantity");
+DynamicJs::validateIfNum("i_quantity0","Quantity");
+DynamicJs::validateRequired("select_products0","Product");
+DynamicJs::valueValidation("select_tax","Tax Rate",1,100, false);
+DynamicJs::lengthValidation("select_preferences","Invoice Preference",1,1000000);
+DynamicJs::formValidationEnd();
+DynamicJs::end();
+
 // @formatter:off
 $billers           = Biller::getAll(true);
 $customers         = Customer::getAll(true);
 $taxes             = Taxes::getActiveTaxes();
 $defaultTax        = Taxes::getDefaultTax();
-$products          = Product::getAll();
+$products          = Product::getAll(true);
 $preferences       = Preferences::getActivePreferences();
 $defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
@@ -93,5 +107,3 @@ $smarty->assign("defaultPreference" , $defaultPreference);
 $smarty->assign("dynamic_line_items", $dynamic_line_items);
 $smarty->assign("customFields"      , $customFields);
 $smarty->assign("defaults"          , $defaults);
-
-$smarty->assign('active_tab', '#money');

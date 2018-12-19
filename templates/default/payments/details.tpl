@@ -9,31 +9,21 @@
     <table>
       <tr>
         <th>{$LANG.payment_id}</th><td>{$payment.id|htmlsafe}</td>
-        <td colspan="2"></td>
-      </tr>
-      <tr>
-        <th>{$LANG.invoice_id}</th><td><a href='index.php?module=invoices&amp;view=quick_view&amp;id={$payment.ac_inv_id|htmlsafe}&amp;action=view'>{$payment.ac_inv_id|htmlsafe}</a></td>
-        <td colspan="2"></td>
+        <th>{$LANG.invoice_id}</th><td><a href='index.php?module=invoices&amp;view=quick_view&amp;id={$payment.ac_inv_id|htmlsafe}&amp;action=view'>{$payment.iv_index_id|htmlsafe}</a></td>
       </tr>
       <tr>
         <th>{$LANG.amount}</th><td>{$payment.ac_amount|siLocal_number}</td>
-        <td colspan="2"></td>
-      </tr>
-      <tr>
         <th>{$LANG.date_upper}</th><td>{$payment.date|htmlsafe}</td>
-        <td colspan="2"></td>
       </tr>
       <tr>
-        <th>{$LANG.biller}</th><td colspan="3">{$payment.biller|htmlsafe}</td>
+        <th>{$LANG.biller}</th><td colspan="3">{$payment.bname|htmlsafe}</td>
       </tr>
       <tr>
-        <th>{$LANG.customer}</th><td>{$payment.customer|htmlsafe}</td>
-        <td colspan="2"></td>
+        <th>{$LANG.customer}</th><td colspan="3">{$payment.cname|htmlsafe}</td>
       </tr>
       <tr>
         <th>{$LANG.payment_type}</th><td>{$paymentType.pt_description|htmlsafe}</td>
-        <th>{$LANG.check_number}</th>
-        <td>{if strtolower($paymentType.pt_description)=="check"}{$payment.ac_check_number|htmlsafe}{/if}</td>
+        <th>{$LANG.check_number}</th><td>{if strtolower($paymentType.pt_description)=="check"}{$payment.ac_check_number|htmlsafe}{/if}</td>
       </tr>
       <tr>
         <th>{$LANG.online_payment_id}</th><td>{$payment.online_payment_id|htmlsafe}</td>

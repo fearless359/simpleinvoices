@@ -3,20 +3,20 @@
 use Inc\Claz\Acl;
 use Inc\Claz\ApiAuth;
 use Inc\Claz\CheckPermission;
-use Inc\Claz\Config;
 use Inc\Claz\Db;
-use Inc\Claz\DbInfo;
 use Inc\Claz\Extensions;
 use Inc\Claz\Log;
 use Inc\Claz\PdoDb;
 use Inc\Claz\PdoDbException;
-use Inc\Claz\Setup;
 use Inc\Claz\SiError;
 use Inc\Claz\SqlPatchManager;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
-global $auth_session;
+/**
+ * @var PdoDb $pdoDb_admin
+ */
+global $auth_session, $config, $pdoDb_admin;
 
 require_once 'smarty/libs/Smarty.class.php';
 require_once 'library/paypal/paypal.class.php';
@@ -139,7 +139,7 @@ $smarty->assign('patchCount', $patchCount);
 
 try {
     $smarty->registerPlugin('modifier', "siLocal_number"         , array("Inc\Claz\SiLocal", "number"));
-    $smarty->registerPlugin('modifier', "siLocal_number_trim"    , array("Inc\Claz\SiLocal", "number_trim"));
+    $smarty->registerPlugin('modifier', "siLocal_number_trim"    , array("Inc\Claz\SiLocal", "numberTrim"));
     $smarty->registerPlugin('modifier', "siLocal_currency"       , array("Inc\Claz\SiLocal", "currency"));
     $smarty->registerPlugin('modifier', "siLocal_date"           , array("Inc\Claz\SiLocal", "date"));
     $smarty->registerPlugin('modifier', "siLocal_truncateStr"    , array("Inc\Claz\SiLocal", "truncateStr"));
@@ -192,9 +192,13 @@ if (!$api_request) {
     // if user logged into SimpleInvoices with authentication set to false,
     // then use the fake authentication, killing the session that was started.
     if (($config->authentication->enabled == ENABLED) && ($auth_session->fake_auth == "1")) {
-        Zend_Session::start();
-        Zend_Session::destroy(true);
-        header('Location: .');
+        try {
+            Zend_Session::start();
+            Zend_Session::destroy(true);
+            header('Location: .');
+        } catch (Zend_Session_Exception $zse) {
+            die('Zend_Session_Exception - ' . $zse->getMessage());
+        }
     }
 
     if ($config->authentication->enabled == ENABLED) {

@@ -8,6 +8,35 @@ namespace Inc\Claz;
 class CustomFields {
 
     /**
+     * @return array All custom_fields records.
+     */
+    public static function getAll()
+    {
+        global $LANG, $pdoDb;
+
+        $cfs = array();
+        try {
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+            $pdoDb->setOrderBy("cf_id");
+            $rows = $pdoDb->request('SELECT', 'custom_fields');
+            foreach ($rows as $row) {
+                $row['field_name_nice'] = self::getCustomFieldName($row['cf_custom_field']);
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlsafe($row['field_name_nice']);
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlsafe($row['field_name_nice']);
+                $cfs[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("CustomFields::getAll() - Error: " . $pde->getMessage());
+        }
+
+        if (empty($cfs)) {
+            return array();
+        }
+
+        return $cfs;
+    }
+
+    /**
      * Used by manage_custom_fields to get the name of the custom field and which section it relates to (ie,
      * biller/product/customer)
      *
@@ -53,7 +82,7 @@ class CustomFields {
      *        won't be displayed.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function getLabels($noUndefinedLabels = FALSE) {
+    public static function getLabels($noUndefinedLabels = false) {
         global $LANG, $pdoDb_admin;
 
         $rows = array();
@@ -170,51 +199,63 @@ class CustomFields {
     }
 
     /**
-     * @param string $sort
-     * @param string $dir
-     * @param int $rp
-     * @param int $page
-     * @return array
+     * Update custome field label.
+     * @param int $cf_id of custom_fields record to update.
+     * @param string $cf_label to set custom field label to in custom_fields table
+     * @return bool true if processed without error; otherwise false.
      */
-    public static function xmlSql($sort, $dir, $rp, $page)
+    public static function update($cf_id, $cf_label)
     {
         global $pdoDb;
 
-        //SC: Safety checking values that will be directly subbed in
-        if (intval($page) != $page) {
-            $page = 0;
-        }
-        if (intval($rp) != $rp) {
-            $rp = 25;
-        }
-        if (!preg_match('/^(asc|desc)$/iD', $dir)) {
-            $dir = 'ASC';
-        }
-
-        $where = " WHERE domain_id = :domain_id";
-
-        /*Check that the sort field is OK*/
-        if (!in_array($sort, array('cf_id', 'cf_custom_label', 'enabled'))) {
-            $sort = "cf_id";
-        }
-
-        $rows = array();
+        $result = false;
         try {
+            $pdoDb->addSimpleWhere('cf_id', $cf_id, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
-            $pdoDb->setOrderBy(array($sort, $dir));
-            $pdoDb->setLimit($rp, $page);
-            $rows = $pdoDb->request('SELECT', 'custom_fields');
+
+            $pdoDb->setFauxPost(array("cf_custom_label" => $cf_label));
+
+            $result = $pdoDb->request('UPDATE', 'custom_fields');
         } catch (PdoDbException $pde) {
-            error_log("modules/custom_fields/xml.php - error: " . $pde->getMessage());
+            error_log("CustomFields::update - Error: " . $pde->getMessage());
         }
 
-        $cfs = array();
-        foreach ($rows as $row) {
-            $row['field_name_nice'] = self::getCustomFieldName($row['cf_custom_field']);
-            $cfs[] = $row;
-        }
-
-        return $cfs;
+        return $result;
     }
 
+    /**
+     * Clear uses of custom_field for a specific field.
+     * Split the value of the field name into parts and use that data to build
+     * the sql statement to clear the field in the associated table.
+     *     EX: Field name is: customer_cf2. The split values are "customer" and "cf2".
+     *         The test for a missing "s" will cause the table name to be "customers".
+     *         The field name will be the constant, "custom_field", with the field number
+     *         from the end of "cf2" to be appended resulting in "custom_field2".
+     * @param string $cf_field name of the custom field.
+     * @return bool true if processed without error; otherwise false.
+     */
+    public static function clearFields($cf_field)
+    {
+        global $pdoDb;
+
+        $result = false;
+        try {
+            $parts = explode("_", $cf_field);
+
+            if (count($parts) == 2 && preg_match("/cf[1-4]/", $parts[1])) {
+                // The table name part of cf_custom_field doesn't contain the needed "s" except for biller.
+                $table = $parts[0] . (preg_match("/^(customer|product|invoice)$/", $parts[0]) ? 's' : '');
+                $field = "custom_field" . substr($parts[1], 2, 1);
+
+                $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+                $pdoDb->setFauxPost(array($field => ''));
+
+                $result = $pdoDb->request('UPDATE', $table);
+            }
+        } catch (PdoDbException $pde) {
+            error_log("CustomFields::clearFields - Error: " . $pde->getMessage());
+        }
+
+        return $result;
+    }
 }

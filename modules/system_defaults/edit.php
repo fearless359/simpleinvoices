@@ -147,7 +147,7 @@ switch ($get_val) {
         break;
 
     case "def_payment_type":
-        $payments = PaymentType::select_all(true);
+        $payments = PaymentType::getAll(true);
         if (empty($payments)) {
             $value = "<p><em>{$LANG['payment_type']}</em></p>";
         } else {

@@ -30,8 +30,8 @@ Util::isAccessAllowed();
 // @formatter:off
 $cid = $_GET['id'];
 
-$customer = Customer::get($cid);
-$customer['wording_for_enabled'] = ($customer['enabled'] == 1 ? $LANG['enabled'] : $LANG['disabled']);
+$customer = Customer::getOne($cid);
+$customer['enabled_text'] = ($customer['enabled'] == 1 ? $LANG['enabled'] : $LANG['disabled']);
 if (empty($customer['credit_card_number'])) {
     $customer['credit_card_number_masked'] = "";
 } else {
@@ -48,7 +48,7 @@ if (empty($customer['credit_card_number'])) {
 $sub_customers = SubCustomers::getSubCustomers($cid);
 
 $customer['total'] = Customer::calc_customer_total($customer['id']);
-$customer['paid' ] = Payment::calc_customer_paid($customer['id']);
+$customer['paid' ] = Payment::calcCustomerPaid($customer['id']);
 $customer['owing'] = $customer['total'] - $customer['paid'];
 
 $customFieldLabel = CustomFields::getLabels(true);

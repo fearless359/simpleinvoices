@@ -18,7 +18,7 @@ DynamicJs::end();
 // Get the invoice id
 $payment_type_id = $_GET['id'];
 
-$paymentType = PaymentType::select($payment_type_id);
+$paymentType = PaymentType::getOne($payment_type_id);
 
 $smarty->assign('paymentType',$paymentType);
 

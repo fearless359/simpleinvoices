@@ -16,7 +16,7 @@
       <div id="tabs_customer">
         <ul class="anchors">
           <li><a href="#section-1" target="_top">{$LANG.details}</a></li>
-		  <li><a href="#section-2" target="_top">{$LANG.custom_upper}&nbsp;{$LANG.fields_upper}&nbsp;&amp;&nbsp;{$LANG.flags_upper}</a></li>
+          <li><a href="#section-2" target="_top">{$LANG.custom_upper}&nbsp;{$LANG.fields_upper}&nbsp;&amp;&nbsp;{$LANG.flags_upper}</a></li>
           <li><a href="#section-3" target="_top">{$LANG.notes}</a></li>
         </ul>
       </div>

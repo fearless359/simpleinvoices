@@ -12,17 +12,8 @@
 {if !empty($smarty.post.name)}
   {include file="templates/default/customers/save.tpl"}
 {else}
-  {* if  name was inserted *} 
-  {if isset($smarty.post.id)}
-  {*
-    <div class="validation_alert"><img src="images/common/important.png" alt="" />
-      You must enter a description for the Customer
-    </div>
-    <hr />
-  *}
-  {/if} 
-  <form name="frmpost" action="index.php?module=customers&amp;view=add"
-        method="post" id="frmpost" onsubmit="return checkForm(this);">
+  <form name="frmpost" method="post" id="frmpost" onsubmit="return frmpost_Validator(this)"
+        action="index.php?module=customers&amp;view=add" >
     <div class="si_form">
       <table>
         <tr>
@@ -35,7 +26,7 @@
           </th>
           <td>
             <input type="text" name="name" id="name" value="{if isset($smarty.post.name)}{$smarty.post.name|htmlsafe}{/if}"
-                   size="25" class="validate[required]" tabindex="10" autofocus />
+                   size="25" tabindex="10" autofocus />
           </td>
         </tr>
         <tr>
@@ -205,16 +196,16 @@
       </table>
       <div class="si_toolbar si_toolbar_form">
         <button type="submit" class="positive" name="id" value="{$LANG.save}" tabindex="220">
-          <img class="button_img" src="images/common/tick.png" alt="" />
+          <img class="button_img" src="images/common/tick.png" alt="{$LANG.save}" />
           {$LANG.save}
         </button>
         <a href="index.php?module=customers&amp;view=manage" class="negative" tabindex="230">
-          <img src="images/common/cross.png" alt="" />
+          <img src="images/common/cross.png" alt="{$LANG.cancel}" />
           {$LANG.cancel}
         </a>
       </div>
     </div>
-    <input type="hidden" name="op" value="insert_customer" />
+    <input type="hidden" name="op" value="add" />
     <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
   </form>
 {/if}

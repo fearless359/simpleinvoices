@@ -253,10 +253,6 @@ Log::out("index.php - After api/xml or ajax", \Zend_Log::DEBUG);
 // Prep the page - load the header stuff - START
 // **********************************************************
 
-// To remove the js error due to multiple document.ready.function()
-// in jquery.datePicker.js, jquery.autocomplete.conf.js
-// without instances in manage pages - Ap.Muthu
-// TODO: fix the javascript or move datapicker to extjs to fix this hack - not nice
 $extension_jquery_files = "";
 foreach ($ext_names as $ext_name) {
     if (file_exists("extensions/$ext_name/include/jquery/$ext_name.jquery.ext.js")) {

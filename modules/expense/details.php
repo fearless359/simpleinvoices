@@ -19,18 +19,17 @@ Util::isAccessAllowed();
 // @formatter:off
 $expense_id  = $_GET['id'];
 
-$expense = Expense::get($expense_id);
+$expense = Expense::getOne($expense_id);
 
-$detail  = Expense::detailInfo();
-$detail['customer']            = Customer::get($expense['customer_id']);
-$detail['biller']              = Biller::select($expense['biller_id']);
-$detail['invoice']             = Invoice::select($expense['invoice_id']);
-$detail['product']             = Product::get($expense['product_id']);
-$detail['expense_account']     = ExpenseAccount::select($expense['expense_account_id']);
+$detail  = Expense::additionalInfo();
+$detail['customer']            = Customer::getOne($expense['c_id']);
+$detail['biller']              = Biller::getOne($expense['b_id']);
+$detail['invoice']             = Invoice::getOne($expense['iv_id']);
+$detail['product']             = Product::getOne($expense['p_id']);
+$detail['expense_account']     = ExpenseAccount::getOne($expense['ea_id']);
 $detail['expense_tax']         = ExpenseTax::getAll($expense_id);
 $detail['expense_tax_total']   = $expense['amount'] + ExpenseTax::getSum($expense_id);
 $detail['expense_tax_grouped'] = ExpenseTax::grouped($expense_id);
-$detail['status_wording']      = ($expense['status'] == 1 ? $LANG['paid'] : $LANG['not_paid']);
 
 $taxes = Taxes::getActiveTaxes();
 $defaults = SystemDefaults::loadValues();

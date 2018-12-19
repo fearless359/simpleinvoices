@@ -2,7 +2,6 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\CustomFields;
-use Inc\Claz\Extensions;
 use Inc\Claz\Util;
 
 /*
@@ -28,7 +27,7 @@ Util::isAccessAllowed();
 
 //get the invoice id
 $biller_id = $_GET['id'];
-$biller = Biller::select($biller_id);
+$biller = Biller::getOne($biller_id);
 
 // Drop down list code for invoice logo
 $files = Util::getLogoList();

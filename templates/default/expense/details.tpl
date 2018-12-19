@@ -44,7 +44,7 @@
             </tr>
             <tr>
                 <th class="left">{$LANG.status}:</th>
-                <td>{$detail.status_wording}</td>
+                <td>{$expense.status_wording}</td>
             </tr>
             <tr>
                 <th class="left" colspan="2">{$LANG.notes}:</th>
@@ -55,9 +55,13 @@
         </table>
         <br/>
         <div class="si_toolbar si_toolbar_form">
-            <a href="index.php?module=expense&amp;view=details&amp;id={$expense.id}&amp;action=edit" class="positive">
+            <a href="index.php?module=expense&amp;view=details&amp;id={$expense.EID}&amp;action=edit" class="positive">
                 <img src="images/famfam/add.png" alt=""/>
                 {$LANG.edit}
+            </a>
+            <a href="index.php?module=expense&amp;view=manage"
+               class="negative"> <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                {$LANG.cancel}
             </a>
         </div>
     {elseif $smarty.get.action== 'edit' }
@@ -77,7 +81,7 @@
                     <select name="expense_account_id" class="validate[required]">
                         <option value=''></option>
                         {foreach from=$detail.expense_accounts item=expense_account}
-                            <option {if $expense_account.id == $expense.expense_account_id}selected{/if}
+                            <option {if $expense_account.id == $expense.ea_id}selected{/if}
                                     value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
                         {/foreach}
                     </select>
@@ -96,7 +100,7 @@
                     <select name="biller_id" class="validate[required]">
                         <option value=''></option>
                         {foreach from=$detail.billers item=biller}
-                            <option {if $biller.id == $expense.biller_id} selected {/if}
+                            <option {if $biller.id == $expense.b_id} selected {/if}
                                     value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
                         {/foreach}
                     </select>
@@ -108,7 +112,7 @@
                     <select name="customer_id">
                         <option value=''></option>
                         {foreach from=$detail.customers item=customer}
-                            <option {if $customer.id == $expense.customer_id} selected {/if}
+                            <option {if $customer.id == $expense.c_id} selected {/if}
                                     value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
                         {/foreach}
                     </select>
@@ -120,7 +124,7 @@
                     <select name="invoice_id">
                         <option value=''></option>
                         {foreach from=$detail.invoices item=invoice}
-                            <option {if $invoice.id == $expense.invoice_id} selected {/if}
+                            <option {if $invoice.id == $expense.iv_id} selected {/if}
                                     value="{$invoice.id}">{$invoice.index_name}</option>
                         {/foreach}
                     </select>
@@ -132,7 +136,7 @@
                     <select name="product_id">
                         <option value=''></option>
                         {foreach from=$detail.products item=product}
-                            <option {if $product.id == $expense.product_id} selected {/if}
+                            <option {if $product.id == $expense.p_id} selected {/if}
                                     value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
                         {/foreach}
                     </select>
@@ -166,7 +170,7 @@
                 <td>
                     {* enabled block *}
                     <select name="status">
-                        <option value="{if isset($expense.status)}{$expense.status}{/if}" selected style="font-weight: bold;">{$detail.status_wording}</option>
+                        <option value="{if isset($expense.status)}{$expense.status}{/if}" selected style="font-weight: bold;">{$expense.status_wording}</option>
                         <option value="1">{$LANG.paid}</option>
                         <option value="0">{$LANG.not_paid}</option>
                     </select>

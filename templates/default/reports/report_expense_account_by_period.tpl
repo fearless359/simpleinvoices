@@ -11,7 +11,7 @@
       <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
       <td>End date (YYYY-MM-DD)
         <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-               size="10" name="end_date" id="date1" value='{$end_date}' />
+               size="10" name="end_date" id="date2" value='{$end_date}' />
       </td>
     </tr>
   </table>

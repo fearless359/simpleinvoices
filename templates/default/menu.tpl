@@ -172,8 +172,8 @@
             <li><a {if isset($pageActive) && $pageActive== "setting"}class="active" {/if}href="index.php?module=options&amp;view=index">{$LANG.settings}</a></li>
             {if isset($subPageActive) && $subPageActive == "setting_extensions"}
                 <li><a class="active active_subpage" href="#">{$LANG.extensions}</a></li>{/if}
-            <!-- SECTION:system_preferences -->
-            <li><a {if isset($pageActive) && $pageActive== "system_default"}class="active" {/if}href="index.php?module=system_defaults&amp;view=manage">{$LANG.system_preferences}</a></li>
+            <!-- SECTION:si_defaults -->
+            <li><a {if isset($pageActive) && $pageActive== "system_default"}class="active" {/if}href="index.php?module=system_defaults&amp;view=manage">{$LANG.si_defaults}</a></li>
             <!-- SECTION:custom_fields -->
             <li><a {if isset($pageActive) && $pageActive== "custom_field"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.custom_fields_upper}</a></li>
             {if isset($subPageActive) && $subPageActive == "custom_fields_view"}
@@ -193,8 +193,8 @@
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "tax_rates_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-            <!-- SECTION:invoice_preferences -->
-            <li><a {if isset($pageActive) && $pageActive== "preference"}class="active" {/if}href="index.php?module=preferences&amp;view=manage">{$LANG.invoice_preferences}</a></li>
+            <!-- SECTION:invoice_prefs -->
+            <li><a {if isset($pageActive) && $pageActive== "preference"}class="active" {/if}href="index.php?module=preferences&amp;view=manage">{$LANG.inv_prefs}</a></li>
             {if isset($subPageActive) && $subPageActive == "preferences_add"}
                 <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "preferences_view"}
@@ -202,14 +202,14 @@
             {if isset($subPageActive) && $subPageActive == "preferences_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:payment_types -->
-            <li><a {if isset($pageActive) && $pageActive== "payment_type"}class="active" {/if}href="index.php?module=payment_types&amp;view=manage">{$LANG.payment_types}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "payment_type"}class="active" {/if}href="index.php?module=payment_types&amp;view=manage">{$LANG.pymt_types}</a></li>
             {if isset($subPageActive) && $subPageActive == "payment_types_add"}
                 <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "payment_types_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "payment_types_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-            <li><a {if isset($pageActive) && $pageActive== "backup"}class="active" {/if}href="index.php?module=options&amp;view=backup_database">{$LANG.backup_database}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "backup"}class="active" {/if}href="index.php?module=options&amp;view=backup_database">{$LANG.db_backup}</a></li>
         </ul>
     </div>
     <!-- SECTION:tabmenu_end -->

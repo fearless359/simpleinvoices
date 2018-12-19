@@ -9,7 +9,7 @@ global $pdoDb, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$cronlogs = CronLog::select($pdoDb, DomainId::get());
+$cronlogs = CronLog::getOne($pdoDb, DomainId::get());
 $smarty -> assign("cronlogs",$cronlogs);
 
 $smarty -> assign('pageActive', 'options');

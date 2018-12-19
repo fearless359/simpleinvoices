@@ -82,7 +82,7 @@
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}: </th>
-                    <td>{$customer.wording_for_enabled|htmlsafe}</td>
+                    <td>{$customer.enabled_text|htmlsafe}</td>
                     {if !empty($customFieldLabel.customer_cf3)}
                         <td class="td_sep"></td>
                         <th>{$customFieldLabel.customer_cf3}: </th>
@@ -103,6 +103,8 @@
                 </tr>
             </table>
         </div>
+    </div>
+    <div class="si_form si_form_view" id="si_form_cust">
         <div id="tabs_customer">
             <ul class="anchors">
                 <li><a href="#section-1" target="_top">{$LANG.summary_of_accounts}</a></li>
@@ -245,9 +247,13 @@
             </div>
         </div>
         <div class="si_toolbar si_toolbar_form">
-            <a href="index.php?module=customers&amp;view=details&amp;id={$customer.id|urlencode}&amp;action=edit"
-               class="positive">
-                <img src="images/common/tick.png" alt=""/>{$LANG.edit}
+            <a href="index.php?module=customers&amp;view=details&amp;id={$customer.id|urlencode}&amp;action=edit" class="positive">
+                <img src="images/common/tick.png" alt="{$LANG.edit}"/>
+                {$LANG.edit}
+            </a>
+            <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
+                <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                {$LANG.cancel}
             </a>
         </div>
     </div>
@@ -255,8 +261,7 @@
     {* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
     <form name="frmpost" action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}"
           method="post" id="frmpost" onsubmit="return frmpost_Validator(this);">
-        <input type="hidden" name="op" value="edit_customer"/>
-        <input type="hidden" name="domain_id" value="{if isset($customer.domain_id)}{$customer.domain_id}{/if}"/>
+        <input type="hidden" name="op" value="edit"/>
         <div class="si_form" id="si_form_cust_edit">
             <table class="center">
                 <tr>
@@ -481,12 +486,14 @@
                 </tr>
             </table>
             <div class="si_toolbar si_toolbar_form">
-                <button type="submit" class="positive" name="save_customer"
-                        value="{$LANG.save_customer}" tabindex="230">
-                    <img class="button_img" src="images/common/tick.png" alt=""/>{$LANG.save}
+                <button type="submit" class="positive" name="save_customer" value="{$LANG.save_customer}" tabindex="230">
+                    <img class="button_img" src="images/common/tick.png" alt="{$LANG.save}"/>
+                    {$LANG.save}
                 </button>
-                <a href="index.php?module=customers&amp;view=manage" tabindex="-1"
-                   class="negative"><img src="images/common/cross.png" alt=""/>{$LANG.cancel}</a>
+                <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
+                    <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                    {$LANG.cancel}
+                </a>
             </div>
         </div>
     </form>

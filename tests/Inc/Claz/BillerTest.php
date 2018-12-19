@@ -110,7 +110,7 @@ class BillerTest extends TestCase
 
     public function testSelect()
     {
-        $biller = Biller::select($this->id_active);
+        $biller = Biller::getOne($this->id_active);
         $billerName = (empty($biller['name']) ? "" : $biller['name']);
         // @formatter:off
         $this->assertTrue(!empty($billerName) && $billerName == $this->name_active,

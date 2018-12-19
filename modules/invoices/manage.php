@@ -38,28 +38,12 @@ if (!empty($having)) {
     }
 }
 
-$invoices = Invoice::select_all(''     , $sort, $dir, $rp, $page, $qtype, $query);
-$count    = Invoice::select_all('count', $sort, $dir, $rp, $page, $qtype, $query);
+$invoices = Invoice::selectAll(''     , $sort, $dir, $rp, $page, $qtype, $query);
+$count    = Invoice::selectAll('count', $sort, $dir, $rp, $page, $qtype, $query);
 
 $smarty->assign('invoices', $invoices);
 $smarty->assign('number_of_invoices', $count);
 $smarty->assign('read_only', $read_only);
-
-
-/******************************************************
-// Combine access of values to minimize overhead.
-$results = Invoice::select_all('count_owing');
-$count = $results['count'];
-$_POST['count'] = $count;
-
-$total_owing = $results['total_owing'];
-
-$smarty->assign('number_of_invoices', $count);
-$smarty->assign('total_owing', $total_owing);
-
-$url = 'index.php?module=invoices&view=xml' . $having;
-$smarty->assign('url', $url);
- ***************************************************/
 
 $having = "";
 if (isset($_GET['having'])) {

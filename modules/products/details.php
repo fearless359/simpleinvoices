@@ -2,7 +2,6 @@
 
 use Inc\Claz\CustomFields;
 use Inc\Claz\CustomFlags;
-use Inc\Claz\Extensions;
 use Inc\Claz\Product;
 use Inc\Claz\ProductAttributes;
 use Inc\Claz\SystemDefaults;
@@ -16,17 +15,17 @@ Util::isAccessAllowed();
 
 $product_id = $_GET['id'];
 
-$product = Product::get($product_id);
-
+$product = Product::getOne($product_id);
 $customFieldLabel = CustomFields::getLabels(true);
-$cflgs = CustomFlags::getCustomFlagsQualified('E');
+$cflgs = CustomFlags::getCustomFlagsQualified('products', true);
 
 $taxes = Taxes::getActiveTaxes();
-$tax_selected = Taxes::getTaxRate($product['default_tax_id']);
+$tax_selected = Taxes::getOne($product['default_tax_id']);
 
 $defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults"        , $defaults);
 $product['attribute_decode'] = json_decode($product['attribute'],true);
+
 $smarty->assign('product'         , $product);
 $smarty->assign('taxes'           , $taxes);
 $smarty->assign('tax_selected'    , $tax_selected);

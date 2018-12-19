@@ -29,7 +29,7 @@ isset($_POST['end_date']) ? $end_date = $_POST['end_date'] : $end_date = lastOfM
 // Select invoice date between range for real invoices.
 $pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
 $pdoDb->setHavings(Invoice::buildHavings("real"));
-$invoices = Invoice::select_all();
+$invoices = Invoice::selectAll();
 
 $invoice_totals = array();
 foreach($invoices as $k=>$v) {

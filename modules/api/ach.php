@@ -35,8 +35,8 @@ if ($_POST['pg_response_code'] == 'A01') {
                               "ac_payment_type"   => $pmt_type));
         Log::out('ACH - payment_type='.$pmt_type, \Zend_Log::INFO);
 
-        $invoice    = Invoice::select($_POST['pg_consumerorderid']);
-        $biller     = Biller::select($invoice['biller_id']);
+        $invoice    = Invoice::getOne($_POST['pg_consumerorderid']);
+        $biller     = Biller::getOne($invoice['biller_id']);
 
         //send email
         $body  =  "A PaymentsGateway.com payment of ".$_POST['pg_total_amount']." was successfully received\n";

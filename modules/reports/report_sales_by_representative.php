@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
         $filter_by_date = "yes";
     }
 
-    $invoices = Invoice::select_all("", "date", "", null, "", "", "", "", "");
+    $invoices = Invoice::selectAll("", "date");
     foreach ( $invoices as $row ) {
         $statement['total'] += $row['invoice_total'];
         $statement['owing'] += $row['owing'];

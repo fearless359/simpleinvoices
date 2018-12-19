@@ -5,7 +5,7 @@ use Inc\Claz\Encode;
 //get invoice details
 
 // why hard code invoice number below?
-$invoice = Invoice::select('1');
+$invoice = Invoice::getOne('1');
 
 header('Content-type: application/xml');
 echo Encode::xml($invoice);

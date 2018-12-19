@@ -48,10 +48,12 @@
                             {foreach from=$invoice_all item=invoice}
                                 <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}">
                                     {$invoice.index_name|htmlsafe}
-                                    ({$invoice.biller|htmlsafe},
-                                    {$invoice.customer|htmlsafe},
-                                    {$LANG.total} {$invoice.invoice_total|siLocal_number} :
-                                    {$LANG.owing} {$invoice.owing|siLocal_number})
+                                    (
+                                        {$invoice.biller|htmlsafe},
+                                        {$invoice.customer|htmlsafe},
+                                        {$LANG.total} {$invoice.invoice_total|siLocal_number} :
+                                        {$LANG.owing} {$invoice.owing|siLocal_number}
+                                    )
                                 </option>
                             {/foreach}
                         </select>

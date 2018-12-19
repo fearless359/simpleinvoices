@@ -59,7 +59,7 @@
 	</tr>
 	<tr>
 		<td class="details_screen">{$LANG.product_enabled}</td>
-		<td>{$product.wording_for_enabled}</td>
+		<td>{$product.enabled_text}</td>
 	</tr>
 </table>
 	<br />

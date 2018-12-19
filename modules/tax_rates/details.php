@@ -16,16 +16,14 @@ DynamicJs::validateIfNum("tax_percentage",$LANG['tax_percentage']);
 DynamicJs::formValidationEnd();
 DynamicJs::end();
 
-//get the invoice id
-$tax_rate_id = $_GET['id'];
-
-$tax = Taxes::getTaxRate($tax_rate_id);
+$tax = Taxes::getOne($_GET['id']);
 $types = Taxes::getTaxTypes();
 
-$smarty -> assign("tax",$tax);
-$smarty -> assign("types",$types);
+$smarty->assign("tax",$tax);
+$smarty->assign("types",$types);
+$smarty->assign('orig_description', $tax['tax_description']);
 
-$smarty -> assign('pageActive', 'tax_rate');
-$subPageActive = $_GET['action'] =="view"  ? "tax_rates_view" : "tax_rates_edit" ;
-$smarty -> assign('subPageActive', $subPageActive);
-$smarty -> assign('active_tab', '#setting');
+$subPageActive = (isset($_GET['action']) && $_GET['action'] != "view"  ? "tax_rates_edit" : "tax_rates_view");
+$smarty->assign('pageActive', 'tax_rate');
+$smarty->assign('subPageActive', $subPageActive);
+$smarty->assign('active_tab', '#setting');

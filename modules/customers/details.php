@@ -33,6 +33,7 @@ Util::isAccessAllowed();
 
 DynamicJs::begin();
 DynamicJs::formValidationBegin("frmpost");
+DynamicJs::validateRequired("name",$LANG['name']);
 DynamicJs::validateIfEmail("email", "true");
 DynamicJs::formValidationEnd();
 DynamicJs::end();
@@ -41,8 +42,8 @@ DynamicJs::end();
 $cid = $_GET['id'];
 $domain_id = DomainId::get();
 
-$customer = Customer::get($cid);
-$customer['wording_for_enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
+$customer = Customer::getOne($cid);
+$customer['enabled_text'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
 if (empty($customer['credit_card_number'])) {
     $customer['credit_card_number_masked'] = "";
 } else {
@@ -58,7 +59,7 @@ if (empty($customer['credit_card_number'])) {
 $invoices = Customer::getCustomerInvoices($cid);
 
 $customer['total'] = Customer::calc_customer_total($customer['id'], true);
-$customer['paid']  = Payment::calc_customer_paid( $customer['id'], true);
+$customer['paid']  = Payment::calcCustomerPaid( $customer['id'], true);
 $customer['owing'] = $customer['total'] - $customer['paid'];
 
 $customFieldLabel = CustomFields::getLabels(true);
@@ -76,8 +77,7 @@ try {
     error_log("modules/customers/details.php - Unable to set Havings - error: " . $pde->getMessage());
 }
 
-//$invoices_owing = Invoice::select_all($type, $sort, $dir, $rp, $page, $query, $qtype);
-$invoices_owing = Invoice::select_all("", $sort, $dir, $rp, $page, $query, $qtype);
+$invoices_owing = Invoice::selectAll("", $sort, $dir, $rp, $page, $query, $qtype);
 $subPageActive  = ($_GET['action'] == "view"  ? "customer_view" : "customer_edit");
 
 $smarty->assign('customer'        , $customer);

@@ -226,7 +226,7 @@
                     <td class="si_product_attribute">
                       {if $v.type == 'decimal'}
                         {$v.name}: {$preference.pref_currency_sign} {$v.value|siLocal_number};
-                      {else if $v.value !=''}
+                      {elseif $v.value !=''}
                         {$v.name}: {$v.value};
                       {/if}
                     </td>

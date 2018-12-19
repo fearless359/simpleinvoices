@@ -11,129 +11,86 @@ namespace Inc\Claz;
 class ProductAttributes {
 
     /**
-     * Get a specific products_attributes record plus the associated
-     * product_attributes_type name field (assigned field name of "type").
-     * @param string $id ID of record to retrieve.
-     * @return array Associative array for record retrieved.
+     * Retrieve a specific products_attributes record and associated product_attributes_type
+     * information.
+     * @param int $id of record to retrieve.
+     * @return array Associative array for record retrieved. Test for empty for no matching record.
      */
-    public static function get($id) {
+    public static function getOne($id) {
+        return self::getProductAttributes($id);
+    }
+
+    /**
+     * Retrieve all <b>products_attributes</b> records
+     * @param bool $enabled Set to true to retrieve enabled records only.
+     *          Set to false (default) to retureve all records.
+     * @return array Rows from table. Test for empty result for nothing found.
+     */
+    public static function getAll($enabled=false) {
+        return self::getProductAttributes(null, $enabled);
+    }
+
+    /**
+     * Retrieve product_attributes record(s) and associated information.
+     * @param int $id ID of record to retrieve.
+     * @param bool $enabled true if only enabled records are to be retrieved;
+     *              false if all records are to be retrieved.
+     * @return array Records retrieved. Test empty result for no records found.
+     */
+    private static function getProductAttributes($id = null, $enabled = false)
+    {
         global $LANG, $pdoDb;
 
-        $row = array();
+        $product_attributes = array();
         try {
             $pdoDb->setSelectList(array(
-                new DbField('pa.id', 'id'),
-                new DbField('pa.name', 'name'),
-                new DbField('pa.type_id', 'type_id'),
-                new DbField('pa.enabled', 'enabled'),
-                new DbField('pa.visible', 'visible'),
-                new DbField('pat.name', 'type')
+                'pa.id',
+                'pa.name',
+                'pa.type_id',
+                'pa.enabled',
+                'pa.visible',
+                new DbField('pat.name', 'type_name')
             ));
 
-            $pdoDb->addSimpleWhere("pa.id", $id);
+            $connector = (isset($id) && $enabled ? 'AND' : '');
+            if ($enabled) {
+                $pdoDb->addSimpleWhere('enabled', ENABLED, $connector);
+            }
 
-            $oc = new OnClause(new OnItem(false, "type_id", "=", new DbField("pat.id"), false));
-            $pdoDb->addToJoins(array("LEFT", "products_attribute_type", "pat", $oc));
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere("pa.id", $id);
+            }
 
-            $ca = new CaseStmt("visible", "wording_for_visible");
+            $jn = new Join('LEFT', 'products_attribute_type', 'pat');
+            $jn->addSimpleItem('type_id', new DbField("pat.id"));
+            $pdoDb->addToJoins($jn);
+
+            $ca = new CaseStmt("visible", "visible_text");
             $ca->addWhen( "=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
-            $ca = new CaseStmt("enabled", "wording_for_enabled");
+            $ca = new CaseStmt("enabled", "enabled_text");
             $ca->addWhen( "=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
             $rows = $pdoDb->request("SELECT", "products_attributes", 'pa');
-            if (!empty($rows)) {
-                $row = $rows[0];
+            foreach ($rows as $row) {
+                $row['vname'] = $LANG['view'] . ' ' . $row['name'];
+                $row['ename'] = $LANG['edit'] . ' ' . $row['name'];
+                $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
+                $row['visible_image'] = ($row['visible'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
+                $product_attributes[] = $row;
             }
         } catch (PdoDbException $pde) {
-            error_log("ProductAttributes::get() - id[$id] error: " . $pde->getMessage());
+            error_log("ProductAttributes::getOne() - id[$id] error: " . $pde->getMessage());
         }
 
-        return $row;
-    }
-
-    /**
-     * Get the <i>product_attribute</i> name for the specified <b>id</b>.
-     * @param string $id ID for the record to access.
-     * @return string <b>name</b> setting for the specified record.
-     */
-    public static function getName($id) {
-        global $pdoDb;
-
-        $name = '';
-        try {
-            $pdoDb->addSimpleWhere("id", $id);
-            $pdoDb->setSelectList("name");
-            $attribute = $pdoDb->request("SELECT","products_attributes");
-            $name = (empty($attribute['name']) ? '' : $attribute['name']);
-        } catch (PdoDbException $pde) {
-            error_log("ProductAttributes::get() - id[$id] error: " . $pde->getMessage());
+        if (empty($product_attributes)) {
+            return array();
         }
-        return $name;
-    }
-
-    /**
-     * Get the <i>product_attribute</i> type for the specified <b>id</b>.
-     * @param string $id ID for record to access.
-     * @return string <b>type</b> setting for the specified record.
-     */
-    public static function getType($id) {
-        global $pdoDb;
-
-        $type = '';
-        try {
-            $pdoDb->addSimpleWhere("id", $id);
-            $pdoDb->setSelectList("type");
-            $attribute = $pdoDb->request("SELECT", "products_attributes");
-            $type = (empty($attribute['type']) ? '': $attribute['type']);
-        } catch (PdoDbException $pde) {
-            error_log("ProductAttributes::getType() - id[$id] error: " . $pde->getMessage());
-        }
-        return $type;
-    }
-
-    /**
-     * Determine if a <b>product_attribute</b> is flagged as visible.
-     * @param string $id ID of record to check.
-     * @return boolean <b>true</b> if record is visible; <b>false</b> if not.
-     */
-    public static function getVisible($id) {
-        global $pdoDb;
-
-        try {
-            $pdoDb->addSimpleWhere("id", $id);
-            $pdoDb->setSelectList("visible");
-            $attribute = $pdoDb->request("SELECT", "products_attributes");
-            return ($attribute['visible'] == ENABLED);
-        } catch (PdoDbException $pde) {
-            error_log("ProductAttributes::getVisible() - id[$id] error: " . $pde->getMessage());
-        }
-        return false;
-    }
-
-    /**
-     * Get all <b>products_attributes</b> records
-     * @param bool $enabled set to true to select only enabled records. Otherwise
-     *          set to false to select all records. Note the if not specified,
-     *          false is assumed.
-     * @return array Rows from table.
-     */
-    public static function getAll($enabled=false) {
-        global $pdoDb;
-        $rows = array();
-        try {
-            if ($enabled) {
-                $pdoDb->addSimpleWhere('enabled', ENABLED);
-            }
-            $rows = $pdoDb->request("SELECT", "products_attributes");
-        } catch (PdoDbException $pde) {
-            error_log("ProductAttributes::getAll() - Error: " . $pde->getMessage());
-        }
-        return $rows;
+        return (isset($id) ? $product_attributes[0] : $product_attributes);
     }
 
     /**
@@ -194,69 +151,6 @@ class ProductAttributes {
             error_log('ProductAttributes::update() - Error: ' . $pde->getMessage());
         }
         return $result;
-    }
-
-    /**
-     * @param string $type 'count' if count of qualified rows requests. All other settings
-     *          cause array of qualified rows is returned.
-     * @param string $dir
-     * @param string $sort
-     * @param int $rp limit of rows to return if not type 'count'.
-     * @param int $page of rows to return if not type 'count'.
-     * @return array|int if $type is 'count', count of qualified rows returned, otherwise
-     *          array of qualified rows returned.
-     */
-    public static function xmlSql($type, $dir, $sort, $rp, $page) {
-        /**
-         * @var PdoDb $pdoDb
-         */
-        global $pdoDb;
-
-        $count_type = ($type == 'count');
-
-        if (!$count_type) {
-            if (intval($page) != $page) {
-                $page = 1;
-            }
-
-            if (intval($rp) != $rp) {
-                $rp = 25;
-            }
-
-            $start = (($page - 1) * $rp);
-            $pdoDb->setLimit($rp, $start);
-        }
-
-        $rows = array();
-        try {
-            $query = isset($_POST['query']) ? $_POST['query'] : null;
-            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
-            if (!empty($qtype) && !empty($query)) {
-                if (in_array($qtype, array('id', 'name'))) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, 'LIKE', $query, false));
-                }
-            }
-
-            if (!preg_match('/^(asc|desc)$/iD', $dir)) {
-                $dir = 'DESC';
-            }
-
-            if (!in_array($sort, array('id', 'name', 'enabled', 'visible'))) {
-                $sort = "id";
-            }
-
-            $pdoDb->setOrderBy(array($sort, $dir));
-
-            $pdoDb->setSelectList(array('id', 'name', 'enabled', 'visible'));
-
-            $rows = $pdoDb->request('SELECT', 'products_attributes');
-        } catch (PdoDbException $pde) {
-            error_log('ProductAtributes::xmlSql() - Error: ' . $pde->getMessage());
-        }
-        if ($count_type) {
-            return count($rows);
-        }
-        return $rows;
     }
 
 }

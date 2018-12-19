@@ -43,7 +43,7 @@
             {$LANG.new_invoice}
         </a>
     </div>
-    <table id="si-data-table" class="display" style="width:100%" >
+    <table id="si-data-table" class="display" >
         <thead>
             <tr>
                 <th>{$LANG.actions}</th>

@@ -10,9 +10,10 @@ Util::isAccessAllowed();
 
 $display_block = "<div class='si_message_error'>{$LANG['no_expense_accounts']}</div>";
 
-$number_of_rows  = ExpenseAccount::count();
+$expense_accounts = ExpenseAccount::getAll();
 
-$smarty->assign("number_of_rows", $number_of_rows );
+$smarty->assign('expense_accounts', $expense_accounts);
+$smarty->assign("number_of_rows", count($expense_accounts));
 $smarty->assign("display_block", $display_block);
 
 $smarty->assign('pageActive', 'expense_account');

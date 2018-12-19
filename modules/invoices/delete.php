@@ -30,9 +30,9 @@ Util::isAccessAllowed();
 // @formatter:off
 $id           = $_GET['id'];
 $invoice      = Invoice::getInvoice($id);
-$preference   = Preferences::getPreference($invoice['preference_id']);
+$preference   = Preferences::getOne($invoice['preference_id']);
 $defaults     = SystemDefaults::loadValues();
-$invoicePaid  = Payment::calc_invoice_paid($id);
+$invoicePaid  = Payment::calcInvoicePaid($id);
 $invoiceItems = Invoice::getInvoiceItems($id);
 
 $smarty->assign("invoice"     , $invoice);

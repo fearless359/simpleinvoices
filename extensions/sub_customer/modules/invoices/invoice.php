@@ -34,7 +34,7 @@ Util::isAccessAllowed();
 $billers     = Biller::getAll(true);
 $customers   = Customer::getAll(true);
 $taxes       = Taxes::getActiveTaxes();
-$products    = Product::getAll();
+$products    = Product::getAll(true);
 $preferences = Preferences::getActivePreferences();
 $defaults    = SystemDefaults::loadValues();
 $matrix      = ProductAttributes::getMatrix();

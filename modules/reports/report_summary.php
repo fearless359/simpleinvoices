@@ -72,10 +72,10 @@ $pdoDb->addToWhere(new WhereItem(false, "e.date", "BETWEEN", array($start_date, 
 
 $accounts = $pdoDb->request("SELECT", "expense", "e");
 
-$payments = Payment::select_by_date($start_date, $end_date, "date", "");
+$payments = Payment::selectByDate($start_date, $end_date, "date", "");
 
 $pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
-$invoices = Invoice::select_all("", "preference", "A", null, "", "", "");
+$invoices = Invoice::selectAll("", "preference", "A");
 
 $smarty->assign('accounts'  , $accounts);
 $smarty->assign('payments'  , $payments);

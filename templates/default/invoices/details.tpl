@@ -19,7 +19,7 @@
     <img src="images/common/gmail-loader.gif" alt="{$LANG.loading} ..."/>
     {$LANG.loading} ...
 </div>
-<form name="frmpost" action="index.php?module=invoices&amp;view=save" method="post">
+<form name="frmpost" method="post" id="frmpost" action="index.php?module=invoices&amp;view=save">
     <div class="si_invoice_form">
         <table class='si_invoice_top'>
             <tr>
@@ -84,193 +84,192 @@
             *}
         </table>
         {if $invoice.type_id == TOTAL_INVOICE }
-        <table id="itemtable" class="si_invoice_items">
-            <tr>
-                <th class="left">{$LANG.description}</th>
-            </tr>
-            <tr>
-                <td class='si_invoice_notes' colspan="2">
+            <table id="itemtable" class="si_invoice_items">
+                <tr>
+                    <th class="left">{$LANG.description}</th>
+                </tr>
+                <tr>
+                    <td class='si_invoice_notes' colspan="2">
                     <textarea class="editor" name="description0" rows="10" cols="100%"
                               style="overflow:scroll;">{$invoiceItems[0].description|outhtml}</textarea>
-                </td>
-            </tr>
-        </table>
-        <table class="si_invoice_bot">
-            <tr>
-                <th>{$LANG.gross_total}</th>
-                <td>
-                    <input type="text" name="unit_price0"
-                           value="{$invoiceItems[0].unit_price|siLocal_number_trim}" size="10"/>
-                    <input type="hidden" name="quantity0" value="1"/>
-                    <input type="hidden" name="id0" value="{$invoiceItems[0].id|htmlsafe}"/>
-                    <input type="hidden" name="products0" value="{$invoiceItems[0].product_id|htmlsafe}"/>
-                </td>
-                <th>{$LANG.tax}</th>
-                <td>
-                    <table class="si_invoice_taxes">
-                        <tr>
-                            {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
-                                <td>
-                                    <select id="tax_id[0][{$smarty.section.tax.index|htmlsafe}]"
-                                            name="tax_id[0][{$smarty.section.tax.index|htmlsafe}]">
-                                        <option value=""></option>
-                                        {assign var="index" value=$smarty.section.tax.index}
-                                        {foreach from=$taxes item=tax}
-                                            <option {if $tax.tax_id === $invoiceItems[0].tax.$index} selected {/if}
-                                                    value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
-                                        {/foreach}
-                                    </select>
-                                </td>
-                            {/section}
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            {$customFields.1}
-            {$customFields.2}
-            {$customFields.3}
-            {$customFields.4}
-            <tr>
-                <th>{$LANG.inv_pref}</th>
-                <td>
-                    {if !isset($preferences) }
-                        <em>{$LANG.no_preferences}</em>
-                    {else}
-                        <select name="preference_id">
-                            {foreach from=$preferences item=preference}
-                                <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
-                                        value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
-                            {/foreach}
-                        </select>
-                    {/if}
-                </td>
-                <th>{$LANG.sales_representative}</th>
-                <td>
-                    <input id="sales_representative}" name="sales_representative" size="30"
-                           value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
-                </td>
-            </tr>
-        </table>
-
-        {elseif $invoice.type_id == ITEMIZED_INVOICE || $invoice.type_id == CONSULTING_INVOICE }
-        <table id="itemtable" class="si_invoice_items">
-            <thead>
-            <tr>
-                <th></th>
-                <th>{$LANG.quantity_short}</th>
-                <th>{$LANG.description}</th>
-                {section name=tax_header loop=$defaults.tax_per_line_item }
-                    <th>{$LANG.tax}{if $defaults.tax_per_line_item > 1} {$smarty.section.tax_header.index+1|htmlsafe}{/if}</th>
-                {/section}
-                <th>{$LANG.unit_price}</th>
-            </tr>
-            </thead>
-            {foreach key=line from=$invoiceItems item=invoiceItem name=line_item_number}
-            <tbody class="line_item" id="row{$line|htmlsafe}">
-                <tr class="tr_{cycle name="rows" values="A,B"}">
-                    <input type="hidden" id="delete{$line|htmlsafe}" name="delete{$line|htmlsafe}" size="3"/>
-                    <input type="hidden" name="line_item{$line|htmlsafe}" id="line_item{$line|htmlsafe}"
-                           value="{if isset($invoiceItem.id)}{$invoiceItem.id|htmlsafe}{/if}"/>
-                    <td>
-                        <a id="trash_link_edit{$line|htmlsafe}" class="trash_link_edit"
-                           title="{$LANG.delete_line_item}" href="#" style="display:inline;"
-                           rel="{$line|htmlsafe}" data_delete_line_item={$config->confirm->deleteLineItem}>
-                            <img id="delete_image{$line|htmlsafe}"
-                                 src="images/common/{if $line == "0"}blank.gif{else}delete_item.png{/if}" alt=""/>
-                        </a>
                     </td>
+                </tr>
+            </table>
+            <table class="si_invoice_bot">
+                <tr>
+                    <th>{$LANG.gross_total}</th>
                     <td>
-                        <input class="si_right" type="text" name='quantity{$line|htmlsafe}' id='quantity{$line|htmlsafe}'
-                               value='{$invoiceItem.quantity|siLocal_number_trim}' size="5"/>
+                        <input type="text" name="unit_price0"
+                               value="{$invoiceItems[0].unit_price|siLocal_number_trim}" size="10"/>
+                        <input type="hidden" name="quantity0" value="1"/>
+                        <input type="hidden" name="id0" value="{$invoiceItems[0].id|htmlsafe}"/>
+                        <input type="hidden" name="products0" value="{$invoiceItems[0].product_id|htmlsafe}"/>
                     </td>
+                    <th>{$LANG.tax}</th>
                     <td>
-                        {if !isset($products) }
-                            <em>{$LANG.no_products}</em>
+                        <table class="si_invoice_taxes">
+                            <tr>
+                                {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
+                                    <td>
+                                        <select id="tax_id[0][{$smarty.section.tax.index|htmlsafe}]"
+                                                name="tax_id[0][{$smarty.section.tax.index|htmlsafe}]">
+                                            <option value=""></option>
+                                            {assign var="index" value=$smarty.section.tax.index}
+                                            {foreach from=$taxes item=tax}
+                                                <option {if $tax.tax_id === $invoiceItems[0].tax.$index} selected {/if}
+                                                        value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
+                                            {/foreach}
+                                        </select>
+                                    </td>
+                                {/section}
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {$customFields.1}
+                {$customFields.2}
+                {$customFields.3}
+                {$customFields.4}
+                <tr>
+                    <th>{$LANG.inv_pref}</th>
+                    <td>
+                        {if !isset($preferences) }
+                            <em>{$LANG.no_preferences}</em>
                         {else}
-                            <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}" style="width:100%;"
-                                    rel="{$line|htmlsafe}" class="product_change" data-descripiton="{$LANG.description}">
-                                {foreach from=$products item=product}
-                                    <option {if $product.id == $invoiceItem.product_id} selected {/if}
-                                            value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
+                            <select name="preference_id">
+                                {foreach from=$preferences item=preference}
+                                    <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
+                                            value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
                                 {/foreach}
                             </select>
                         {/if}
                     </td>
-                    {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
-                        <td>
-                            <select id="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]"
-                                    name="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
-                                <option value=""></option>
-                                {assign var="index" value=$smarty.section.tax.index}
-                                {foreach from=$taxes item=tax}
-                                    <option {if $tax.tax_id === $invoiceItem.tax.$index} selected {/if}
-                                            value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
-                                {/foreach}
-                            </select>
-                        </td>
-                    {/section}
+                    <th>{$LANG.sales_representative}</th>
                     <td>
-                        <input class="si_right" id="unit_price{$line|htmlsafe}" name="unit_price{$line|htmlsafe}" size="7"
-                               value="{$invoiceItem.unit_price|siLocal_number_trim}"/>
+                        <input id="sales_representative}" name="sales_representative" size="30"
+                               value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
                     </td>
                 </tr>
-                {$invoiceItem.html}
-                <tr class="details si_hide">
-                    <td></td>
-                    <td colspan="4">
+            </table>
+        {elseif $invoice.type_id == ITEMIZED_INVOICE || $invoice.type_id == CONSULTING_INVOICE }
+            <table id="itemtable" class="si_invoice_items">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{$LANG.quantity_short}</th>
+                    <th>{$LANG.description}</th>
+                    {section name=tax_header loop=$defaults.tax_per_line_item }
+                        <th>{$LANG.tax}{if $defaults.tax_per_line_item > 1} {$smarty.section.tax_header.index+1|htmlsafe}{/if}</th>
+                    {/section}
+                    <th>{$LANG.unit_price}</th>
+                </tr>
+                </thead>
+                {foreach key=line from=$invoiceItems item=invoiceItem name=line_item_number}
+                    <tbody class="line_item" id="row{$line|htmlsafe}">
+                    <tr class="tr_{cycle name="rows" values="A,B"}">
+                        <input type="hidden" id="delete{$line|htmlsafe}" name="delete{$line|htmlsafe}" size="3"/>
+                        <input type="hidden" name="line_item{$line|htmlsafe}" id="line_item{$line|htmlsafe}"
+                               value="{if isset($invoiceItem.id)}{$invoiceItem.id|htmlsafe}{/if}"/>
+                        <td>
+                            <a id="trash_link_edit{$line|htmlsafe}" class="trash_link_edit"
+                               title="{$LANG.delete_line_item}" href="#" style="display:inline;"
+                               rel="{$line|htmlsafe}" data_delete_line_item={$config->confirm->deleteLineItem}>
+                                <img id="delete_image{$line|htmlsafe}"
+                                     src="images/common/{if $line == "0"}blank.gif{else}delete_item.png{/if}" alt=""/>
+                            </a>
+                        </td>
+                        <td>
+                            <input class="si_right" type="text" name='quantity{$line|htmlsafe}' id='quantity{$line|htmlsafe}'
+                                   value='{$invoiceItem.quantity|siLocal_number_trim}' size="5"/>
+                        </td>
+                        <td>
+                            {if !isset($products) }
+                                <em>{$LANG.no_products}</em>
+                            {else}
+                                <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}" style="width:100%;"
+                                        rel="{$line|htmlsafe}" class="product_change" data-description="{$LANG.description}">
+                                    {foreach from=$products item=product}
+                                        <option {if $product.id == $invoiceItem.product_id} selected {/if}
+                                                value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
+                                    {/foreach}
+                                </select>
+                            {/if}
+                        </td>
+                        {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
+                            <td>
+                                <select id="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]"
+                                        name="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
+                                    <option value=""></option>
+                                    {assign var="index" value=$smarty.section.tax.index}
+                                    {foreach from=$taxes item=tax}
+                                        <option {if $tax.tax_id === $invoiceItem.tax.$index} selected {/if}
+                                                value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        {/section}
+                        <td>
+                            <input class="si_right" id="unit_price{$line|htmlsafe}" name="unit_price{$line|htmlsafe}" size="7"
+                                   value="{$invoiceItem.unit_price|siLocal_number_trim}"/>
+                        </td>
+                    </tr>
+                    {$invoiceItem.html}
+                    <tr class="details si_hide">
+                        <td></td>
+                        <td colspan="4">
                         <textarea class="detail" name="description{$line|htmlsafe}" style="overflow:scroll;"
                                   id="description{$line|htmlsafe}" rows="3" cols="100%"
-                                  data-descripiton="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
-                    </td>
+                                  data-description="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                {/foreach}
+            </table>
+            <div class="si_toolbar si_toolbar_inform">
+                <a href="#" class="add_line_item" data-description="{$LANG.description}">
+                    <img src="images/common/add.png" alt=""/>{$LANG.add_new_row}</a>
+                <a href='#' class="show-details" onclick="javascript: $('.details').show();$('.show-details').hide();">
+                    <img src="images/common/page_white_add.png"
+                         title="{$LANG.show_details}" alt=""/>{$LANG.show_details}</a>
+                <a href='#' class="details" onclick="javascript: $('.details').hide();$('.show-details').show();" style="display:none">
+                    <img src="images/common/page_white_delete.png"
+                         title="{$LANG.hide_details}" alt=""/>{$LANG.hide_details}</a>
+            </div>
+            <table class="si_invoice_bot">
+                {$customFields.1}
+                {$customFields.2}
+                {$customFields.3}
+                {$customFields.4}
+                <tr>
+                    <th>{$LANG.notes}</th>
                 </tr>
-            </tbody>
-            {/foreach}
-        </table>
-        <div class="si_toolbar si_toolbar_inform">
-            <a href="#" class="add_line_item" data-descripiton="{$LANG.description}">
-                <img src="images/common/add.png" alt=""/>{$LANG.add_new_row}</a>
-            <a href='#' class="show-details" onclick="javascript: $('.details').show();$('.show-details').hide();">
-                <img src="images/common/page_white_add.png"
-                     title="{$LANG.show_details}" alt=""/>{$LANG.show_details}</a>
-            <a href='#' class="details" onclick="javascript: $('.details').hide();$('.show-details').show();" style="display:none">
-                <img src="images/common/page_white_delete.png"
-                     title="{$LANG.hide_details}" alt=""/>{$LANG.hide_details}</a>
-        </div>
-        <table class="si_invoice_bot">
-            {$customFields.1}
-            {$customFields.2}
-            {$customFields.3}
-            {$customFields.4}
-            <tr>
-                <th>{$LANG.notes}</th>
-            </tr>
-            <tr>
-                <td class='si_invoice_notes' colspan="4">
+                <tr>
+                    <td class='si_invoice_notes' colspan="4">
                     <textarea class="editor" name="note" rows="10" cols="100%"
                               style="overflow:scroll;">{$invoice.note|outhtml}</textarea>
-                </td>
-            </tr>
-            <tr>
-                <th>{$LANG.inv_pref}</th>
-                <td>
-                    {if !isset($preferences) }
-                        <em>{$LANG.no_preferences}</em>
-                    {else}
-                        <select name="preference_id">
-                            {foreach from=$preferences item=preference}
-                                <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
-                                        value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
-                            {/foreach}
-                        </select>
-                    {/if}
-                </td>
-                <th>{$LANG.sales_representative}</th>
-                <td>
-                    <input id="sales_representative}" name="sales_representative" size="30"
-                           value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
-                </td>
-            </tr>
-        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{$LANG.inv_pref}</th>
+                    <td>
+                        {if !isset($preferences) }
+                            <em>{$LANG.no_preferences}</em>
+                        {else}
+                            <select name="preference_id">
+                                {foreach from=$preferences item=preference}
+                                    <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
+                                            value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
+                                {/foreach}
+                            </select>
+                        {/if}
+                    </td>
+                    <th>{$LANG.sales_representative}</th>
+                    <td>
+                        <input id="sales_representative}" name="sales_representative" size="30"
+                               value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
+                    </td>
+                </tr>
+            </table>
         {/if}
 
         <div class="si_toolbar si_toolbar_form">

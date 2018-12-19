@@ -8,10 +8,9 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$rows = ProductAttributes::getAll();
-$number_of_rows = count($rows);
-$smarty->assign("number_of_rows",$number_of_rows);
+$product_attributes = ProductAttributes::getAll();
+$smarty->assign('product_attributes', $product_attributes);
+$smarty->assign("number_of_rows", count($product_attributes));
 
-$pageActive = "product_attribute_manage";
-$smarty->assign('pageActive', $pageActive);
-$smarty -> assign('active_tab', '#product');
+$smarty->assign('pageActive', "product_attribute_manage");
+$smarty->assign('active_tab', '#product');

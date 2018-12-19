@@ -5,30 +5,34 @@
         <div class="si_center"><h2>{$LANG.product_attribute}</h2></div>
         <table class="center">
             <tr>
-                <th class="left">{$LANG.id}</th>
+                <th class="left">{$LANG.id}: </th>
                 <td>{$product_attribute.id}</td>
             </tr>
             <tr>
                 <th class="left">{$LANG.name}: </th>
-                <td><input type="text" name="name" value="{if isset($product_attribute.name)}{$product_attribute.name}{/if}" size="50" readonly /></td>
+                <td>{$product_attribute.name}
             </tr>
             <tr>
                 <th class="left">{$LANG.type}: </th>
-                <td><input type="text" name="attribute_type" value="{$product_attribute.type|capitalize|htmlsafe}" readonly /></td>
+                <td>{$product_attribute.type_name|capitalize|htmlsafe}
             </tr>
             <tr>
                 <th class="left">{$LANG.enabled}: </th>
-                <td><input type="text" name="enabled" value="{if isset($product_attribute.wording_for_enabled)}{$product_attribute.wording_for_enabled|htmlsafe}{/if}" readonly /></td>
+                <td>{$product_attribute.enabled_text|htmlsafe}
             </tr>
             <tr>
                 <th class="left">{$LANG.visible}: </th>
-                <td><input type="text" name="visible" value="{if isset($product_attribute.wording_for_visible)}{$product_attribute.wording_for_visible|htmlsafe}{/if}" readonly /></td>
+                <td>{$product_attribute.visible_text|htmlsafe}
             </tr>
         </table>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=product_attribute&amp;view=details&amp;id={$product_attribute.id|htmlsafe}&amp;action=edit">
                 <img src="images/famfam/report_edit.png" alt=""/>
                 {$LANG.edit}
+            </a>
+            <a href="index.php?module=product_attribute&amp;view=manage"
+               class="negative"> <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                {$LANG.cancel}
             </a>
         </div>
     {elseif $smarty.get.action== 'edit' }
@@ -40,13 +44,14 @@
             </tr>
             <tr>
                 <th class="details_screen">{$LANG.name}</th>
-                <td><input type="text" name="name" value="{if isset($product_attribute.name)}{$product_attribute.name}{/if}" size="50"/></td>
+                <td><input type="text" name="name" class="validate[required]" size="50"
+                           value="{if isset($product_attribute.name)}{$product_attribute.name}{/if}" /></td>
             </tr>
             <tr>
                 <th>{$LANG.type}</th>
                 <td>
                     <select name="type_id">
-                        {foreach from=$types key=k item=v}
+                        {foreach $types as $k => $v}
                             <option value="{if isset($v.id)}{$v.id}{/if}" {if $product_attribute.type_id == $v.id} selected {/if}>{$LANG[$v.name]}</option>
                         {/foreach}
                     </select>
@@ -65,7 +70,7 @@
                 </td>
             </tr>
         </table>
-        <input type="hidden" name="op" value="edit_product_attribute"/>
+        <input type="hidden" name="op" value="edit"/>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="submit" value="{$LANG.save}">
                 <img class="button_img" src="images/common/tick.png" alt=""/>{$LANG.save}

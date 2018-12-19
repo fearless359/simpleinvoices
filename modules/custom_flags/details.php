@@ -8,6 +8,9 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
+// If no id specified, the associated_table and flg_id are present, so use them.
+// If id is specified, it contains both the associated_table and flg_id. So explode
+// them to get these fields.
 if (empty($_GET['id'])) {
     $associated_table = $_GET['associated_table'];
     $flg_id = $_GET['flg_id'];
@@ -17,7 +20,7 @@ if (empty($_GET['id'])) {
     $flg_id = $parts[1];
 }
 
-$cflg = CustomFlags::getCustomFlag($associated_table, $flg_id);
+$cflg = CustomFlags::getOne($associated_table, $flg_id);
 
 $smarty->assign('cflg', $cflg);
 

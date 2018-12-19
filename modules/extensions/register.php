@@ -18,7 +18,7 @@ $description = (empty($_GET['description']) ? "" : $_GET['description']);
 
 $count = 0;
 if (!empty($id)) {
-    $row = Extensions::get($id);
+    $row = Extensions::getOne($id);
     if (!empty($row)) {
         $name = $row['name'];
         $description = $row['description'];

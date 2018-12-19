@@ -25,17 +25,21 @@ global $smarty;
 Util::isAccessAllowed();
 
 $op = (empty($_POST['op']) ? "" : $_POST['op']);
+$display_block = "<div class=\"si_message_error\">{$LANG['save_biller_failure']}</div>";
+$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=billers&amp;view=manage\" />";
 
-$saved = false;
-if ( $op === 'insert_biller') {
-    if (Biller::insertBiller() > 0) $saved = true;
-} else if ($op === 'edit_biller') {
-    if (isset($_POST['save_biller'])) {
-        if (Biller::updateBiller()) $saved = true;
+if ( $op === 'add') {
+    if (Biller::insertBiller() > 0) {
+        $display_block = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
+    }
+} else if ($op === 'edit') {
+    if (Biller::updateBiller()) {
+        $display_block = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
     }
 }
 
-$smarty->assign('saved',$saved);
+$smarty->assign('display_block', $display_block);
+$smarty->assign('refresh_redirect', $refresh_redirect);
 
 $smarty->assign('pageActive', 'biller');
 $smarty->assign('active_tab', '#people');

@@ -48,16 +48,22 @@ class Customer {
     /**
      * Update an existing customer record.
      * @param int $id of customer to update.
-     * @param bool true if credit card number field should be excluded, false to include it.
+     * @param bool $excludeCreditCardNumber true if credit card number field should be
+     *          excluded, false to include it.
+     * @param array $fauxPostList If specified, the associative array of fields to update.
      * @return bool true if update ok, false otherwise.
      */
-    public static function updateCustomer($id, $excludeCreditCardNumber) {
+    public static function updateCustomer($id, $excludeCreditCardNumber, $fauxPostList = null) {
         global $pdoDb;
 
         try {
             $excludedFields = array('id', 'domain_id');
             if ($excludeCreditCardNumber) $excludedFields[] = 'credit_card_number';
             $pdoDb->setExcludedFields($excludedFields);
+
+            if (!empty($fauxPostList)) {
+                $pdoDb->setFauxPost($fauxPostList);
+            }
             $pdoDb->addSimpleWhere('id', $id, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
             $pdoDb->request('UPDATE', 'customers');
@@ -73,17 +79,8 @@ class Customer {
      * @param string $id Unique ID record to retrieve.
      * @return array Row retrieved. Test for "=== false" to check for failure.
      */
-    public static function get($id) {
-        global $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get(), "AND");
-            $pdoDb->addSimpleWhere("id", $id);
-            $rows = $pdoDb->request("SELECT", "customers");
-        } catch (PdoDbException $pde) {
-            error_log("Customer::get() - id[$id] error: " . $pde->getMessage());
-        }
+    public static function getOne($id) {
+        $rows = self::getCustomers($id);
         return (empty($rows) ? $rows : $rows[0]);
     }
 
@@ -91,12 +88,28 @@ class Customer {
      * Retrieve all <b>customers</b> records per specified option.
      * @param boolean $enabled_only (Defaults to <b>false</b>) If set to <b>true</b> only Customers 
      *        that are <i>Enabled</i> will be selected. Otherwise all <b>customers</b> records are returned.
-     * @param integer $incl_cust_id If not null, id of customer record to retrieve.
+     * @param int $incl_cust_id If set, makes sure this customer is included if not enabled regardles
+     *        of the $enabled_only option setting.
      * @param boolean $no_totals true if only customer record fields to be returned, false (default) to add
      *        calculated totals field.
      * @return array Customers selected.
      */
-    public static function getAll($enabled_only = false, $incl_cust_id=null, $no_totals=false) {
+    public static function getAll($enabled_only = false, $incl_cust_id = null, $no_totals=false) {
+        return self::getCustomers(null, $enabled_only, $incl_cust_id, $no_totals);
+    }
+
+    /**
+     * Retrieve all <b>customers</b> records per specified option.
+     * @param int $id of customer to retrieve, set to null if all customers to be considered.
+     * @param boolean $enabled_only (Defaults to <b>false</b>) If set to <b>true</b> only Customers
+     *        that are <i>Enabled</i> will be selected. Otherwise all <b>customers</b> records are returned.
+     * @param int $incl_cust_id If set, makes sure this customer is included if not enabled regardles
+     *        of the $enabled_only option setting.
+     * @param boolean $no_totals true if only customer record fields to be returned, false (default) to add
+     *        calculated totals field.
+     * @return array Customers selected.
+     */
+    private static function getCustomers($id = null, $enabled_only = false, $incl_cust_id=null, $no_totals=false) {
         global $LANG, $pdoDb;
 
         $customers = array();
@@ -109,9 +122,19 @@ class Customer {
                     $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
                 }
             }
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('id', $id, 'AND');
+            }
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
 
+            $case = new CaseStmt("enabled", "enabled_text");
+            $case->addWhen("=", ENABLED, $LANG['enabled']);
+            $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($case);
+
             $pdoDb->setOrderBy("name");
+
+            $pdoDb->setSelectAll(true);
 
             $rows = $pdoDb->request("SELECT", "customers");
             if ($no_totals) {
@@ -119,11 +142,13 @@ class Customer {
             }
 
             foreach ($rows as $customer) {
-                $customer['last_invoice'] = self::getLastInvoiceIndexId($customer['id']);
+                self::getLastInvoiceIds($customer['id'], $last_index_id, $last_id);
+                $customer['last_index_id'] = $last_index_id;
+                $customer['last_inv_id'] = $last_id;
                 $customer['enabled_image'] = ($customer['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
                 $customer['enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
                 $customer['total'] = self::calc_customer_total($customer['id']);
-                $customer['paid'] = Payment::calc_customer_paid($customer['id']);
+                $customer['paid'] = Payment::calcCustomerPaid($customer['id']);
                 $customer['owing'] = $customer['total'] - $customer['paid'];
                 $customers[] = $customer;
             }
@@ -270,29 +295,36 @@ class Customer {
 
     /**
      * Find the last invoice index_id for a customer.
-     * @param $customer_id
-     * @return int $index_id
+     * @param int $customer_id
+     * @param int $last_index_id
+     * @param int $last_id
      */
-    public static function getLastInvoiceIndexId($customer_id) {
+    public static function getLastInvoiceIds($customer_id, &$last_index_id, &$last_id) {
         global $pdoDb;
 
+        $last_index_id = 0;
+        $last_id = 0;
         try {
             $pdoDb->addSimpleWhere('customer_id', $customer_id, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
+            $fn = new FunctionStmt("MAX", new DbField("id"), 'last_id');
+            $pdoDb->addToFunctions($fn);
 
             $fn = new FunctionStmt("MAX", new DbField("index_id"), 'last_index_id');
             $pdoDb->addToFunctions($fn);
 
             $rows = $pdoDb->request('SELECT', 'invoices');
             if (empty($rows)) {
-                return 0;
+                return;
             }
         } catch (PdoDbException $pde) {
-            error_log("Customer::getLastInvoiceIndexId() - Error: " . $pde->getMessage());
-            return 0;
+            error_log("Customer::getLastInvoiceIds() - Error: " . $pde->getMessage());
+            return;
         }
 
-        return $rows[0]['last_index_id'];
+        $last_index_id = $rows[0]['last_index_id'];
+        $last_id = $rows[0]['last_id'];
     }
 
     /**
@@ -310,146 +342,6 @@ class Customer {
         for ($i=0; $i<$mask_len; $i++) $masked_value .= $chr;
         $masked_value .= substr($value, $mask_len);
         return $masked_value;
-    }
-
-    /**
-     * Select records for the flexigrid list
-     * @param $type
-     * @param $dir
-     * @param $sort
-     * @param $rp
-     * @param $page
-     * @return array
-     */
-    public static function xmlSql($type, $dir, $sort, $rp, $page) {
-        global $LANG, $pdoDb;
-
-        try {
-            $valid_search_fields = array(
-                "c.id",
-                "c.name",
-                "c.department",
-                "c.enabled",
-                "c.street_address",
-                "c.city",
-                "c.state",
-                "c.phone",
-                "c.mobile_phone",
-                "c.email"
-            );
-
-            $query = isset($_POST['query']) ? $_POST['query'] : null;
-            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
-            if (!empty($qtype) && !empty($query)) {
-                if (in_array($qtype, $valid_search_fields)) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
-                }
-            }
-            $pdoDb->addSimpleWhere("c.domain_id", DomainId::get());
-
-            if ($type == "count") {
-                $pdoDb->addToFunctions("COUNT(*) AS count");
-                $rows = $pdoDb->request("SELECT", "customers", "c");
-                return $rows[0]['count'];
-            }
-
-            if (intval($page) != $page) $page = 1;
-            if (intval($rp) != $rp) $rp = 25;
-
-            $start = (($page - 1) * $rp);
-
-            $expr_list = array(
-                new DbField("c.id", "CID"),
-                "c.domain_id",
-                "c.name",
-                "c.department",
-                "c.enabled",
-                "c.street_address",
-                "c.city",
-                "c.state",
-                "c.phone",
-                "c.mobile_phone",
-                "c.email"
-            );
-            $pdoDb->setSelectList($expr_list);
-            $pdoDb->setGroupBy($expr_list);
-
-            $case = new CaseStmt("c.enabled", "enabled_txt");
-            $case->addWhen("=", ENABLED, $LANG['enabled']);
-            $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($case);
-
-            $fn = new FunctionStmt("COALESCE", "SUM(ii.total), 0", "total");
-            $fr = new FromStmt("invoice_items", "ii");
-            $jn = new Join("INNER", "invoices", "iv");
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.id", new DbField("ii.invoice_id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
-            $jn->setOnClause($oc);
-            $wh = new WhereClause();
-            $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
-            $wh->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
-            $se = new Select($fn, $fr, $wh, null, "customer_total");
-            $se->addJoin($jn);
-            $pdoDb->addToSelectStmts($se);
-
-            $fn = new FunctionStmt("MAX", new DbField("iv.id"));
-            $fr = new FromStmt("invoices", "iv");
-            $wh = new WhereClause();
-            $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
-            $wh->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-            $se = new Select($fn, $fr, $wh, null, "last_inv_id");
-            $pdoDb->addToSelectStmts($se);
-
-            $fn = new FunctionStmt("COALESCE", "SUM(ap.ac_amount), 0", "amount");
-            $fr = new FromStmt("payment", "ap");
-            $jn = new Join("INNER", "invoices", "iv");
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.id", new DbField("ap.ac_inv_id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
-            $jn->setOnClause($oc);
-            $wh = new WhereClause();
-            $wh->addSimpleItem("iv.customer_id", new DbField("CID"), "AND");
-            $wh->addSimpleItem("iv.domain_id", new DbField("ap.domain_id"));
-            $se = new Select($fn, $fr, $wh, null, "paid");
-            $se->addJoin($jn);
-            $pdoDb->addToSelectStmts($se);
-
-            $fn = new FunctionStmt(null, "customer_total");
-            $fn->addPart("-", "paid");
-            $se = new Select($fn, null, null, null, "owing");
-            $pdoDb->addToSelectStmts($se);
-
-            $validFields = array('CID', 'name', 'department', 'customer_total', 'paid', 'owing', 'enabled');
-            if (in_array($sort, $validFields)) {
-                $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
-                $sortlist = array(array("enabled", "D"), array($sort, $dir));
-            } else {
-                $sortlist = array(array("enabled", "D"), array("name", "A"));
-            }
-            $pdoDb->setOrderBy($sortlist);
-
-            $pdoDb->setLimit($rp, $start);
-
-            $rows = $pdoDb->request("SELECT", "customers", "c");
-
-            $result = array();
-            foreach($rows as $row) {
-                if ($row['last_inv_id'] > 0) {
-                    $pdoDb->addSimpleWhere('id', $row['last_inv_id']);
-                    $pdoDb->setSelectList('index_id');
-                    $recs = $pdoDb->request("SELECT", 'invoices');
-                    $row['last_invoice'] = $recs[0]['index_id'];
-                } else {
-                    $row['last_invoice'] = '0';
-                }
-                $result[] = $row;
-            }
-        } catch (PdoDbException $pde) {
-            return array();
-        }
-
-        return $result;
     }
 
 }

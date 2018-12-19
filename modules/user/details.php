@@ -29,7 +29,7 @@ Util::isAccessAllowed();
 
 global $smarty, $LANG;
 
-$user = User::getUser($_GET['id']);
+$user = User::getOne($_GET['id']);
 $roles = User::getUserRoles();
 
 $domain_id = DomainId::get();

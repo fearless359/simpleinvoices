@@ -50,7 +50,7 @@
         <tr class="text{$smarty.section.line.index|htmlsafe} hide">
             <td colspan="3">
                 <textarea class="detail" name='description{$smarty.section.line.index|htmlsafe}'
-                          rows="3" cols="80" data-descripiton="{$LANG['description']}"></textarea>
+                          rows="3" cols="80" data-description="{$LANG['description']}"></textarea>
             </td>
         </tr>
     {/section}

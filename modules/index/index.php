@@ -15,9 +15,9 @@ Util::isAccessAllowed();
 // @formatter:off
 $billers     = Biller::getAll();
 $customers   = Customer::getAll();
-$taxes       = Taxes::getTaxes();
-$products    = Product::getAll();
-$preferences = Preferences::getPreferences();
+$taxes       = Taxes::getAll();
+$products    = Product::getAll(true);
+$preferences = Preferences::getAll();
 
 $first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {

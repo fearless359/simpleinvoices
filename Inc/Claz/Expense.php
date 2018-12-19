@@ -11,52 +11,8 @@ class Expense {
      * @return int count of expense records.
      */
     public static function count() {
-        global $pdoDb;
-
-        $count = 0;
-        try {
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-            $pdoDb->addToFunctions("count(`id`) as count");
-            $rows = $pdoDb->request("SELECT", "expense");
-            $count = $rows[0]['count'];
-        } catch (PdoDbException $pde) {
-            error_log("Expense::count() - error: " . $pde->getMessage());
-        }
-        return $count;
-    }
-
-    /**
-     * Get all expense records.
-     * @return array $rows of expense records.
-     */
-    public static function getAll() {
-        global $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->setOrderBy("id");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-            $rows = $pdoDb->request("SELECT", "expense");
-        } catch (PdoDbException $pde) {
-            error_log("Expense::getAll() - error: " . $pde->getMessage());
-        }
-        return $rows;
-    }
-
-    /**
-     * Get information needed when adding a new expense.
-     * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
-     */
-    public static function addInfo() {
-        // @formatter:off
-        $add_info = array();
-        $add_info['expense_accounts'] = ExpenseAccount::getAll();
-        $add_info['customers']        = Customer::getAll(true);
-        $add_info['billers']          = Biller::getAll();
-        $add_info['invoices']         = Invoice::getAll();
-        $add_info['products']         = Product::getAll();
-        // @formatter:on
-        return $add_info;
+        $rows = self::getExpenses();
+        return count($rows);
     }
 
     /**
@@ -64,34 +20,115 @@ class Expense {
      * @param int $id of expense record to retrieve.
      * @return array Expense record.
      */
-    public static function get($id) {
-        global $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get(), "AND");
-            $pdoDb->addSimpleWhere("id", $id);
-            $rows = $pdoDb->request("SELECT", "expense");
-        } catch (PdoDbException $pde) {
-            error_log("Expense::get() - id[$id] error: " . $pde->getMessage());
-        }
+    public static function getOne($id) {
+        $rows = self::getExpenses($id);
         return (empty($rows) ? array() : $rows[0]);
     }
 
     /**
-     * Get information needed when updating an expense.
+     * Get all expense records.
+     * @return array $rows of expense records.
+     */
+    public static function getAll() {
+        return self::getExpenses();
+    }
+
+    /**
+     * Get all expense records.
+     * @param int $id If not null, id of record to retrieve.
+     * @return array $rows of expense records.
+     */
+    private static function getExpenses($id = null) {
+        global $LANG, $pdoDb;
+
+        $expenses = array();
+        try {
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('e.id', $id, 'AND');
+            }
+            $pdoDb->addSimpleWhere("e.domain_id", DomainId::get());
+
+            $join = new Join("LEFT", "expense_account", "ea");
+            $join->addSimpleItem("ea.id", new DbField("e.expense_account_id"), "AND");
+            $join->addSimpleItem("ea.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
+
+            $join = new Join("LEFT", "biller", "b");
+            $join->addSimpleItem("b.id", new DbField("e.biller_id"), "AND");
+            $join->addSimpleItem("b.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
+
+            $join = new Join("LEFT", "customers", "c");
+            $join->addSimpleItem("c.id", new DbField("e.customer_id"), "AND");
+            $join->addSimpleItem("c.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
+
+            $join = new Join("LEFT", "products", "p");
+            $join->addSimpleItem("p.id", new DbField("e.product_id"), "AND");
+            $join->addSimpleItem("p.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
+
+            $join = new Join("LEFT", "invoices", "i");
+            $join->addSimpleItem("i.id", new DbField("e.invoice_id"), "AND");
+            $join->addSimpleItem("i.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
+
+            $case = new CaseStmt("status", "status_wording");
+            $case->addWhen("=", ENABLED, $LANG['paid']);
+            $case->addWhen("!=", ENABLED, $LANG['not_paid'], true);
+            $pdoDb->addToCaseStmts($case);
+
+            // This is a fudge until sub-select can be added to the features.
+            $exp_item_tax = TB_PREFIX . "expense_item_tax";
+            $pdoDb->addToFunctions("(SELECT SUM(tax_amount) FROM $exp_item_tax WHERE expense_id = id) AS tax");
+            $pdoDb->addToFunctions("(SELECT tax + e.amount) AS total");
+
+            $selectList = array(
+                new DbField('e.id', 'EID'),
+                new DbField('e.domain_id', 'domain_id'),
+                new DbField('e.status', 'status'),
+                new DbField('e.amount', 'amount'),
+                new DbField('e.date', 'date'),
+                new DbField('e.note', 'note'),
+                new DbField('e.expense_account_id', 'ea_id'),
+                new DbField('e.biller_id', 'b_id'),
+                new DbField('e.customer_id', 'c_id'),
+                new DbField('e.product_id', 'p_id'),
+                new DbField('i.id', 'iv_id'),
+                new DbField('b.name', 'b_name'),
+                new DbField('ea.name', 'ea_name'),
+                new DbField('c.name', 'c_name'),
+                new DbField('p.description', 'p_desc')
+            );
+            $pdoDb->setSelectList($selectList);
+
+            $rows = $pdoDb->request("SELECT", "expense", 'e');
+            foreach($rows as $row) {
+                $row['vname'] = $LANG['view'] . ' ' . $row['p_desc'];
+                $row['ename'] = $LANG['edit'] . ' ' . $row['p_desc'];
+                $row['status_wording'] = ($row['status'] == ENABLED ? $LANG['paid'] : $LANG['not_paid']);
+                $expenses[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Expense::getExpense() - error: " . $pde->getMessage());
+        }
+        return $expenses;
+    }
+
+    /**
+     * Get information needed when adding a new expense.
      * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
      */
-    public static function detailInfo() {
+    public static function additionalInfo() {
         // @formatter:off
-        $detail_info = array();
-        $detail_info['expense_accounts'] = ExpenseAccount::getAll();
-        $detail_info['customers']        = Customer::getAll(true);
-        $detail_info['billers']          = Biller::getAll();
-        $detail_info['invoices']         = Invoice::getAll();
-        $detail_info['products']         = Product::getAll();
+        $add_info = array();
+        $add_info['expense_accounts'] = ExpenseAccount::getAll();
+        $add_info['customers']        = Customer::getAll(true);
+        $add_info['billers']          = Biller::getAll();
+        $add_info['invoices']         = Invoice::getAll();
+        $add_info['products']         = Product::getAll(true);
         // @formatter:on
-        return $detail_info;
+        return $add_info;
     }
 
     /**
@@ -158,7 +195,7 @@ class Expense {
 
             foreach($line_item_tax_id as $value) {
                 if($value !== "") {
-                    $tax = Taxes::getTaxRate($value);
+                    $tax = Taxes::getOne($value);
 
                     $tax_amount = Taxes::lineItemTaxCalc($tax, $unit_price,$quantity);
 
@@ -182,107 +219,40 @@ class Expense {
 
     /**
      * Select record for the flexigrid list of expenses.
-     * @param string $type set to 'count' if a count of all qualified records will be calculated.
-     * @param string $dir sort direction A, ASC, D or DESC work.
-     * @param string $sort field to order by subject to $dir setting.
-     * @param int $rp number of records per page to display. Ignored if $type is "count".
-     * @param int $page number used with $rp to calculate next page ($rp) set of records to select.
-     *          Ignored if $type is "count".
      * @return mixed $rows for normal selection and calculated count for $type is 'count'.
      */
-    public static function xmlSql($type, $dir, $sort, $rp, $page)
+    public static function xmlSql()
     {
         global $LANG, $pdoDb;
 
-        $get_count = ($type == 'count');
         $rows = array();
         try {
-            $table_alias = "";
-            $query = isset($_REQUEST['query']) ? $_REQUEST['query'] : null;
-            $qtype = isset($_REQUEST['qtype']) ? $_REQUEST['qtype'] : null;
-            if (!(empty($qtype) || empty($query))) {
-                // @formatter:off
-                if (in_array($qtype, array( 'e.id',
-                                            'ea.name',
-                                            'b.name',
-                                            'c.name',
-                                            'i.id',
-                                            'e.status_wording')
-                )) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
-                    $table_alias = strstr($qtype, ".", true);
-                }
-                // @formatter:on
-            }
-
             $pdoDb->addSimpleWhere("e.domain_id", DomainId::get());
 
-            // If getting a count, only include joins if they are selected by the query.
-            if (!$get_count || $table_alias == "ea") {
-                $join = new Join("LEFT", "expense_account", "ea");
-                $join->addSimpleItem("ea.id", new DbField("e.expense_account_id"), "AND");
-                $join->addSimpleItem("ea.domain_id", new DbField("e.domain_id"));
-                $pdoDb->addToJoins($join);
-            }
+            $join = new Join("LEFT", "expense_account", "ea");
+            $join->addSimpleItem("ea.id", new DbField("e.expense_account_id"), "AND");
+            $join->addSimpleItem("ea.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
 
-            if (!$get_count || $table_alias == "b") {
-                $join = new Join("LEFT", "biller", "b");
-                $join->addSimpleItem("b.id", new DbField("e.biller_id"), "AND");
-                $join->addSimpleItem("b.domain_id", new DbField("e.domain_id"));
-                $pdoDb->addToJoins($join);
-            }
+            $join = new Join("LEFT", "biller", "b");
+            $join->addSimpleItem("b.id", new DbField("e.biller_id"), "AND");
+            $join->addSimpleItem("b.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
 
-            if (!$get_count || $table_alias == "c") {
-                $join = new Join("LEFT", "customers", "c");
-                $join->addSimpleItem("c.id", new DbField("e.customer_id"), "AND");
-                $join->addSimpleItem("c.domain_id", new DbField("e.domain_id"));
-                $pdoDb->addToJoins($join);
-            }
+            $join = new Join("LEFT", "customers", "c");
+            $join->addSimpleItem("c.id", new DbField("e.customer_id"), "AND");
+            $join->addSimpleItem("c.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
 
-            if (!$get_count || $table_alias == "p") {
-                $join = new Join("LEFT", "products", "p");
-                $join->addSimpleItem("p.id", new DbField("e.product_id"), "AND");
-                $join->addSimpleItem("p.domain_id", new DbField("e.domain_id"));
-                $pdoDb->addToJoins($join);
-            }
+            $join = new Join("LEFT", "products", "p");
+            $join->addSimpleItem("p.id", new DbField("e.product_id"), "AND");
+            $join->addSimpleItem("p.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
 
-            if (!$get_count || $table_alias == "i") {
-                $join = new Join("LEFT", "invoices", "i");
-                $join->addSimpleItem("i.id", new DbField("e.invoice_id"), "AND");
-                $join->addSimpleItem("i.domain_id", new DbField("e.domain_id"));
-                $pdoDb->addToJoins($join);
-            }
-
-            if ($get_count) {
-                $pdoDb->addToFunctions("count(*) AS count");
-                $rows = $pdoDb->request("SELECT", "expense", "e");
-                return $rows[0]['count'];
-            }
-
-            if (intval($page) != $page) $page = 1;
-            if (intval($rp) != $rp) $rp = 25;
-
-            $start = (($page - 1) * $rp);
-            $pdoDb->setLimit($rp, $start);
-
-            // @formatter:off
-            if (!in_array($sort, array( 'id',
-                                        'status',
-                                        'amount',
-                                        'expense_account_id',
-                                        'biller_id',
-                                        'customer_id',
-                                        'invoice_id',
-                                        'date',
-                                        'amount',
-                                        'note')
-            )) {
-                $sort = "id";
-            }
-            // @formatter:on
-
-            $dir = (preg_match('/^(a|d|asc|desc)$/iD', $dir) ? 'A' : 'D');
-            $pdoDb->setOrderBy(array($sort, $dir));
+            $join = new Join("LEFT", "invoices", "i");
+            $join->addSimpleItem("i.id", new DbField("e.invoice_id"), "AND");
+            $join->addSimpleItem("i.domain_id", new DbField("e.domain_id"));
+            $pdoDb->addToJoins($join);
 
             $case = new CaseStmt("status", "status_wording");
             $case->addWhen("=", ENABLED, $LANG['paid']);

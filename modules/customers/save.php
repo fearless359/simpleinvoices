@@ -28,7 +28,7 @@ Util::isAccessAllowed();
 $op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : NULL;
 
 $display_block = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
-$refresh_total = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
+$redirect_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
 
 $error = false;
 // The field is only non-empty if the user entered a value.
@@ -47,11 +47,11 @@ if (!empty($_POST['credit_card_number'])) {
 }
 
 if (!$error) {
-    if ($op === "insert_customer") {
+    if ($op === "add") {
         if (Customer::insertCustomer($excludeCreditCardNumber)) {
             $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }
-    } else if ($op === 'edit_customer' && isset($_POST['save_customer'])) {
+    } else if ($op === 'edit') {
         if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
             $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }
@@ -59,7 +59,7 @@ if (!$error) {
 }
 
 $smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_total', $refresh_total);
+$smarty->assign('redirect_redirect', $redirect_redirect);
 
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('active_tab', '#people');

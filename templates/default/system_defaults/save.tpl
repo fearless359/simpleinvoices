@@ -1,2 +1,2 @@
 {$display_block}
-{$refresh_total}
+{$redirect_redirect}
