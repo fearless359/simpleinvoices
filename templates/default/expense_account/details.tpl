@@ -1,4 +1,5 @@
-<form name="frmpost" action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}">
     {if $smarty.get.action == 'view'}
         <br/>
         <table class="center">
@@ -12,6 +13,10 @@
             <a href="index.php?module=expense_account&amp;view=details&amp;id={$expense_account.id}&amp;action=edit" class="positive">
                 <img src="images/famfam/add.png" alt=""/>
                 {$LANG.edit}
+            </a>
+            <a href="index.php?module=expense_account&amp;view=manage"
+               class="negative"> <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                {$LANG.cancel}
             </a>
         </div>
     {else if $smarty.get.action == 'edit'}

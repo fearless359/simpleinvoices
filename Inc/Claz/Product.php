@@ -13,12 +13,9 @@ class Product {
         global $pdoDb;
         $count = 0;
         try {
-            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
             $rows = $pdoDb->request("SELECT", "products");
-            if (!empty($rows)) {
-                $count = $rows[0]['count'];
-            }
+            $count = count($rows);
         } catch (PdoDbException $pde) {
             error_log("Product::count() - error: " . $pde->getMessage());
         }
@@ -29,147 +26,101 @@ class Product {
      * @param int $id of product record to select.
      * @return array select row or empty array if row not found.
      */
-    public static function get($id) {
-        global $pdoDb, $LANG;
-
-        $row = array();
-        try {
-            $cs = new CaseStmt("enabled", "wording_for_enabled");
-            $cs->addWhen("=", ENABLED, $LANG['enabled']);
-            $cs->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($cs);
-
-            $pdoDb->addSimpleWhere("id", $id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            $pdoDb->setSelectAll(true);
-
-            $rows = $pdoDb->request("SELECT", "products");
-            $row = (empty($rows) ? $rows : $rows[0]);
-        } catch (PdoDbException $pde) {
-            error_log("Product::get for id[$id] - error: " . $pde->getMessage());
-        }
-        return $row;
+    public static function getOne($id) {
+        return self::getProducts($id);
     }
 
     /**
-     * @param bool $enabled true (default) if only enabled rows should be selected,
-     *              false if all rows should be selected.
+     * @param bool $enabled true, if only enabled rows should be selected,
+     *              false (default) if all rows should be selected.
      * @return array Product rows selected or empty array if none.
      */
-    public static function getAll($enabled = true) {
-        global $pdoDb, $LANG;
-
-        try {
-            $cs = new CaseStmt("enabled", "wording_for_enabled");
-            $cs->addWhen("=", ENABLED, $LANG['enabled']);
-            $cs->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($cs);
-
-            if ($enabled) {
-                $pdoDb->addSimpleWhere("enabled", ENABLED, 'AND');
-            }
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            $pdoDb->setOrderBy(array(array("description", "A"), array("id", "A")));
-
-            $pdoDb->setSelectAll(true);
-
-            $rows = $pdoDb->request("SELECT", "products");
-        } catch (PdoDbException $pde) {
-            error_log("Product::getAll() - error: " . $pde->getMessage());
-            $rows = array();
-        }
-        return $rows;
+    public static function getAll($enabled = false) {
+        return self::getProducts(null, $enabled);
     }
 
     /**
-     * @param $type
-     * @param $dir
-     * @param $sort
-     * @param $rp
-     * @param $page
+     * Accessor for product table records.
+     * @param int $id If not null, the id of the product record to retrieve
+     *          subject to other parameters.
+     * @param bool $enabled If true, only enabled records are retrieved.
+     *          If false (default), all records are retrieved subject to
+     *          other parameters.
      * @return array
      */
-    public static function xmlSql($type, $dir, $sort, $rp, $page) {
+    private static function getProducts($id = null, $enabled = false) {
         global $LANG, $pdoDb;
 
-        $rows = array();
+        $products = array();
         try {
-            $query = isset($_POST['query']) ? $_POST['query'] : null;
-            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
-            if (!empty($qtype) && !empty($query)) {
-                $valid_search_fields = array('id', 'description', 'unit_price');
-                if (in_array($qtype, $valid_search_fields)) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
-                }
-            }
-            $pdoDb->addSimpleWhere("p.visible", ENABLED, "AND");
-            $pdoDb->addSimpleWhere("p.domain_id", DomainId::get());
-
-            if (($type == "count")) {
-                $pdoDb->addToFunctions("COUNT(*) as count");
-                $rows = $pdoDb->request("SELECT", "products", "p");
-                return $rows[0]['count'];
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('id', $id, 'AND');
             }
 
-            if (intval($rp) != $rp) $rp = 25;
-
-            $start = (($page - 1) * $rp);
-            $pdoDb->setLimit($rp, $start);
-
-            if (in_array($sort, array('p.id', 'p.description', 'p.unit_price', 'p.enabled'))) {
-                if (!preg_match('/^(a|asc|d|desc)$/iD', $dir)) $dir = 'D';
-                $pdoDb->setOrderBy(array($sort, $dir));
-            } else {
-                // Default to major sort for enabled items first and secondary sort for descriptions.
-                $pdoDb->setOrderBy(array(array("p.enabled", "D"), array("p.description", "A")));
+            if ($enabled) {
+                $pdoDb->addSimpleWhere('enabled', ENABLED, 'AND');
             }
 
-            // @formatter:off
-            $pdoDb->setSelectList(array("p.id", "p.description", "p.unit_price", "p.enabled"));
+            $pdoDb->addSimpleWhere('p.domain_id', DomainId::get());
 
-            $fn = new FunctionStmt("COALESCE", "SUM(ii.quantity),0");
-            $fr = new FromStmt("invoice_items", "ii");
-            $fr->addTable("invoices", "iv");
-            $fr->addTable("preferences", "pr");
+            $fn = new FunctionStmt('COALESCE', 'SUM(ii.quantity),0');
+            $fr = new FromStmt('invoice_items', 'ii');
+            $fr->addTable('invoices', 'iv');
+            $fr->addTable('preferences', 'pr');
             $wh = new WhereClause();
-            $wh->addSimpleItem("ii.product_id", new DbField("p.id"), "AND");
-            $wh->addSimpleItem("ii.domain_id", new DbField("p.domain_id"), "AND");
-            $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), "AND");
-            $wh->addSimpleItem("iv.preference_id", new DbField("pr.pref_id"), "AND");
-            $wh->addSimpleItem("pr.status", ENABLED);
-            $se = new Select($fn, $fr, $wh, null, "qty_out");
+            $wh->addSimpleItem('ii.product_id', new DbField('p.id'), 'AND');
+            $wh->addSimpleItem('ii.domain_id', new DbField('p.domain_id'), 'AND');
+            $wh->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
+            $wh->addSimpleItem('iv.preference_id', new DbField('pr.pref_id'), 'AND');
+            $wh->addSimpleItem('pr.status', ENABLED);
+            $se = new Select($fn, $fr, $wh, null, 'qty_out');
             $pdoDb->addToSelectStmts($se);
 
-            $fn = new FunctionStmt("COALESCE", "SUM(inv.quantity),0");
-            $fr = new FromStmt("inventory", "inv");
+            $fn = new FunctionStmt('SUM', 'COALESCE(inv.quantity,0)');
+            $fr = new FromStmt('inventory', 'inv');
             $wc = new WhereClause();
-            $wc->addSimpleItem("inv.product_id", new DbField("p.id"), "AND");
-            $wc->addSimpleItem("inv.domain_id" , new DbField("p.domain_id"));
-            $se = new Select($fn, $fr, $wc, null, "qty_in");
+            $wc->addSimpleItem('inv.product_id', new DbField('p.id'), 'AND');
+            $wc->addSimpleItem('inv.domain_id' , new DbField('p.domain_id'));
+            $se = new Select($fn, $fr, $wc, null, 'qty_in');
             $pdoDb->addToSelectStmts($se);
 
-            $fn = new FunctionStmt("COALESCE", "p.reorder_level,0");
-            $se = new Select($fn, null, null, null, "reorder_level");
+            $fn = new FunctionStmt('COALESCE', 'p.reorder_level,0');
+            $se = new Select($fn, null, null, null, 'reorder_level');
             $pdoDb->addToSelectStmts($se);
 
-            $fn = new FunctionStmt("", "qty_in");
-            $fn->addPart("-",  "qty_out");
-            $se = new Select($fn, null, null, null, "quantity");
+            $fn = new FunctionStmt('', 'qty_in');
+            $fn->addPart('-',  'qty_out');
+            $se = new Select($fn, null, null, null, 'quantity');
             $pdoDb->addToSelectStmts($se);
 
-            $ca = new CaseStmt("p.enabled", "enabled");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
-            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $ca = new CaseStmt('p.enabled', 'enabled_text');
+            $ca->addWhen( '=', ENABLED, $LANG['enabled']);
+            $ca->addWhen('!=', ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
-            // @formatter:on
 
-            $rows = $pdoDb->request("SELECT", "products", "p");
+            $pdoDb->setOrderBy(array(
+                array('p.description', 'A'),
+                array('id', 'A')
+            ));
+
+            $pdoDb->setSelectAll(true);
+
+            $rows = $pdoDb->request('SELECT', 'products', 'p');
+            foreach ($rows as $row) {
+                $row['vname'] = $LANG['view'] . ' ' . $row['description'];
+                $row['ename'] = $LANG['edit'] . ' ' . $row['description'];
+                $row['image'] = ($row['enabled'] == ENABLED ? "images/common/tick.png" :
+                                                              "images/common/cross.png");
+                $products[] = $row;
+            }
         } catch (PdoDbException $pde) {
             error_log("Product::xmlSql() - error: " . $pde->getMessage());
         }
-        return $rows;
+        if (empty($products)) {
+            return array();
+        }
+
+        return (isset($id) ? $products[0] : $products);
     }
 
     /**
@@ -199,8 +150,8 @@ class Product {
             }
         }
 
-        $notes_as_description = (isset($_POST['notes_as_description']) && $_POST['notes_as_description'] == 'true' ? 'Y' : NULL);
-        $show_description     = (isset($_POST['show_description']    ) && $_POST['show_description'    ] == 'true' ? 'Y' : NULL);
+        $notes_as_description = (isset($_POST['notes_as_description']) && $_POST['notes_as_description'] == 'true' ? 'Y' : null);
+        $show_description     = (isset($_POST['show_description']    ) && $_POST['show_description'    ] == 'true' ? 'Y' : null);
 
         $custom_flags = '0000000000';
         for ($i = 1; $i <= 10; $i++) {

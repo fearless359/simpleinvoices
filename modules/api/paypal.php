@@ -56,9 +56,9 @@ if ($p->validate_ipn ()) {
                               "ac_payment_type"   => $pmt_type));
         Log::out('Paypal - payment_type=' . $pmt_type, \Zend_Log::INFO);
 
-        $invoice = Invoice::select ( $p->ipn_data ['invoice'] );
+        $invoice = Invoice::getOne( $p->ipn_data ['invoice'] );
 
-        $biller = Biller::select ( $invoice ['biller_id'] );
+        $biller = Biller::getOne( $invoice ['biller_id'] );
 
         // send email
         $body = "A Paypal instant payment notification was successfully received\n";

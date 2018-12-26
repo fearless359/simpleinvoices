@@ -10,6 +10,6 @@
  *
  *	License:
  *	 	GPL v3 or above
-*}
+ *}
 {$display_block}
-{$refresh_total}
+{$redirect_redirect}

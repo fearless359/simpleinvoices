@@ -16,11 +16,11 @@ $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=
 $display_block = "<div class=\"si_message_error\">{$LANG['save_product_attributes_failure']}</div>";
 
 #insert invoice_preference
-if ($op === 'insert_product_attribute' ) {
+if ($op === 'add' ) {
     if (ProductAttributes::insert() > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
     }
-}else if ($op === 'edit_product_attribute' ) {
+}else if ($op === 'edit' ) {
     if (ProductAttributes::update()) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
     }
@@ -28,3 +28,6 @@ if ($op === 'insert_product_attribute' ) {
 
 $smarty -> assign('display_block',$display_block);
 $smarty -> assign('refresh_redirect',$refresh_redirect);
+
+$smarty->assign('pageActive', 'product_attribute_add');
+$smarty->assign('active_tab', '#product');

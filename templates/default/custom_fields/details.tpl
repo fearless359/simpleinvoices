@@ -11,9 +11,8 @@
 * License:
 *	 GPL v3 or above
 *}
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}"
-      method="POST" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}" >
     {if $smarty.get.action == "view" }
         <div class="si_form si_form_view">
             <table>
@@ -37,8 +36,12 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=custom_fields&amp;view=details&amp;id={$cf.cf_id|urlencode}&amp;action=edit" class="positive">
-                <img src="images/common/tick.png" alt=""/>
+                <img src="images/common/tick.png" alt="{$LANG.edit}"/>
                 {$LANG.edit}
+            </a>
+            <a href="index.php?module=custom_fields&amp;view=manage" class="negative">
+                <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                {$LANG.cancel}
             </a>
         </div>
     {elseif $smarty.get.action == "edit" }
@@ -85,6 +88,19 @@
             </div>
         </div>
         <input type="hidden" name="cf_custom_field" value="{$cf.cf_custom_field}"/>
-        <input type="hidden" name="op" value="edit_custom_field">
+        <input type="hidden" name="op" value="edit">
     {/if}
 </form>
+{literal}
+<script>
+    $(document).ready(function() {
+        $('#cf_custom_label_maint').change(function () {
+            if (!$(this).val()) {
+                $('#clear_data_option').attr('disabled');
+            } else {
+                $('#clear_data_option').removeAttr('disabled');
+            }
+        });
+    });
+</script>
+{/literal}

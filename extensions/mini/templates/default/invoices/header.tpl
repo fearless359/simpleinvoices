@@ -1,22 +1,19 @@
 {*
-	/*
-	* Script: header.tpl
-	* 	 Header file for invoice template
-	*
-	* Authors:
-	*	 Justin Kelly, Nicolas Ruflin
-	*
-	* Last edited:
-	* 	 2007-07-18
-	*
-	* License:
-	*	 GPL v2 or above
-	*
-	* Website:
-	*	https://simpleinvoices.group	*/
-*}
-<hr/>
-<input type="hidden" name="action" value="insert"/>
+ *  Script: header.tpl
+ *      Header file for invoice template
+ *
+ *  Authors:
+ *      Justin Kelly, Nicolas Ruflin
+ *
+ *  Last edited:
+ *      2007-07-18
+ *
+ *  License:
+ *      GPL v3 or above
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *}
 <table class="center">
     <tr>
         <td class="details_screen">{$LANG.biller}</td>
@@ -26,7 +23,7 @@
             {else}
                 <select name="biller_id">
                     {foreach from=$billers item=biller}
-		<option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
+                        <option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
                     {/foreach}
                 </select>
             {/if}
@@ -41,7 +38,7 @@
             {else}
                 <select name="customer_id">
                     {foreach from=$customers item=customer}
-		<option {if $customer.id == $defaultCustomerID} selected {/if} value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
+                        <option {if $customer.id == $defaultCustomerID} selected {/if} value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
                     {/foreach}
                 </select>
             {/if}
@@ -53,4 +50,5 @@
             <input type="text" class="date-picker" name="date" id="date1" value='{$smarty.now|date_format:"%Y-%m-%d"}'/>
         </td>
     </tr>
+    <input type="hidden" name="action" value="insert"/>
 

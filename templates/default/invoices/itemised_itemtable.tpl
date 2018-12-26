@@ -33,20 +33,20 @@
                 {/if}
             </td>
             <td>
-                <input class="si_right {if $lineNumber == "0"}validate[required]{/if}"
+                <input class="si_right {if $lineNumber == "0"}validate[required,min[.01],custom[number]]{/if}"
                        type="text" name="quantity{$lineNumber|htmlsafe}"
                        id="quantity{$lineNumber|htmlsafe}" size="5"
                        value="{if isset($defaultInvoiceItems[$lineNumber].quantity)}{$defaultInvoiceItems[$lineNumber].quantity|siLocal_number_trim}{/if}" />
             </td>
             <td>
                 {if !isset($products) }
-                    <em>{$LANG.no_products}</em>
+                    <emjquery.vali>{$LANG.no_products}</emjquery.vali>
                 {else}
                     <select id="products{$lineNumber|htmlsafe}"
                             name="products{$lineNumber|htmlsafe}"
                             rel="{$lineNumber|htmlsafe}"
                             class="{if $lineNumber == "0"}validate[required]{/if} product_change"
-                            data_description="{$LANG.description}">
+                            data-description="{$LANG.description}">
                         <option value=""></option>
                         {foreach from=$products item=product}
                             <option value="{if isset($product.id)}{$product.id|htmlsafe}{/if}"
@@ -82,8 +82,8 @@
         <tr class="details si_hide">
             <td></td>
             <td colspan="4">
-                 <textarea class="detail" name="description{$lineNumber|htmlsafe}" id="description{$lineNumber|htmlsafe}"
-                           rows="4" cols="60" data_description="{$LANG['description']}">{$defaultInvoiceItems[$lineNumber].description|htmlsafe} </textarea>
+                 <textarea class="detail" name="description{$lineNumber|htmlsafe}" id="description{$lineNumber|htmlsafe}" data-description="{$LANG['description']}"
+                           rows="4" cols="60">{if isset($defaultInvoiceItems[$lineNumber].description)}{$defaultInvoiceItems[$lineNumber].description|htmlsafe}{/if}</textarea>
                 {* Note that the space immediatly prior to the closing </textarea> tag is required to allow the description to display. Why??? I don't know!!! *}
             </td>
         </tr>

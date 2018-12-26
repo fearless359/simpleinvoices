@@ -11,15 +11,15 @@ Util::isAccessAllowed();
 
 //if valid then do save
 if (!empty($_POST['value'])) {
-	include("modules/product_value/save.php");
+    include("modules/product_value/save.php");
 }
 
 #get the invoice id
 $id = $_GET['id'];
 
 // @formatter:off
-$product_value      = ProductValues::get($id);
-$product_attribute  = ProductAttributes::get($product_value['attribute_id']);
+$product_value      = ProductValues::getOne($id);
+$product_attribute  = ProductAttributes::getOne($product_value['attribute_id']);
 $product_attributes = ProductAttributes::getAll();
 
 $smarty->assign("product_value"     , $product_value);

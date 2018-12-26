@@ -8,7 +8,11 @@
     </tr>
     <tr>
         <td class='si_invoice_notes' colspan="2">
-            <textarea class="editor" name="note" rows="5" cols="100%">{if isset($defaultInvoice.note)}{$defaultInvoice.note}{/if}</textarea>
+            <!--
+            <textarea class="editor" name="note">{*if isset($defaultInvoice.note)*}{*$defaultInvoice.note*}{*/if*}</textarea>
+            -->
+            <input name="note" id="note" {if isset($defaultInvoice.note)}value="{$defaultInvoice.note|outhtml}"{/if} type="hidden">
+            <trix-editor input="note"></trix-editor>
         </td>
     </tr>
     <tr>

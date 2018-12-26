@@ -88,7 +88,7 @@ class Export {
 
             case "file":
                 $invoice    = Invoice::getInvoice($this->id);
-                $preference = Preferences::getPreference($invoice['preference_id'], $this->domain_id);
+                $preference = Preferences::getOne($invoice['preference_id']);
 
                 // xls/doc export no longer uses the export template $template = "export";
                 header("Content-type: application/octet-stream");
@@ -143,20 +143,20 @@ class Export {
                     if (!empty($this->biller_id)  ) $pdoDb->addSimpleWhere("biller_id"  , $this->biller_id  , "AND");
                     if (!empty($this->customer_id)) $pdoDb->addSimpleWhere("customer_id", $this->customer_id, "AND");
 
-                    $invoices  = Invoice::select_all("", "date", "D");
+                    $invoices  = Invoice::getAll("date", "desc");
                     $statement = array("total" => 0, "owing" => 0, "paid" => 0);
                     foreach ( $invoices as $row ) {
                         if ($row ['status'] > 0) {
-                            $statement ['total'] += $row ['invoice_total'];
+                            $statement ['total'] += $row ['total'];
                             $statement ['owing'] += $row ['owing'];
-                            $statement ['paid']  += $row ['INV_PAID'];
+                            $statement ['paid']  += $row ['paid'];
                         }
                     }
 
                     $templatePath     = "templates/default/statement/index.tpl";
-                    $biller_details   = Biller::select($this->biller_id);
+                    $biller_details   = Biller::getOne($this->biller_id);
                     $billers          = $biller_details;
-                    $customer_details = Customer::get($this->customer_id);
+                    $customer_details = Customer::getOne($this->customer_id);
                     if (empty($this->file_name)) {
                         $pdf_file_name = 'statement';
                         if (!empty($this->biller_id)  ) $pdf_file_name .= '_' . $this->biller_id;
@@ -190,20 +190,20 @@ class Export {
 
             case "payment":
                 try {
-                    $payment = Payment::select($this->id);
+                    $payment = Payment::getOne($this->id);
 
                     // Get Invoice preference to link from this screen back to the invoice
                     $invoice = Invoice::getInvoice($payment['ac_inv_id']);
-                    $biller  = Biller::select($payment['biller_id']);
+                    $biller  = Biller::getOne($payment['biller_id']);
 
                     $logo = Util::getLogo($biller);
                     $logo = str_replace(" ", "%20", trim($logo));
 
-                    $customer          = Customer::get($payment['customer_id']);
+                    $customer          = Customer::getOne($payment['customer_id']);
                     $invoiceType       = Invoice::getInvoiceType($invoice['type_id']);
                     $customFieldLabels = CustomFields::getLabels(true);
-                    $paymentType       = PaymentType::select($payment['ac_payment_type']);
-                    $preference        = Preferences::getPreference($invoice['preference_id'], $this->domain_id);
+                    $paymentType       = PaymentType::getOne($payment['ac_payment_type']);
+                    $preference        = Preferences::getOne($invoice['preference_id']);
 
                     $smarty->assign("payment"          , $payment);
                     $smarty->assign("invoice"          , $invoice);
@@ -230,7 +230,7 @@ class Export {
             case "invoice":
                 try {
                     if (empty($this->invoice)) {
-                        $this->invoice = Invoice::select($this->id);
+                        $this->invoice = Invoice::getOne($this->id);
                     }
 
                     $this->file_name = str_replace(" ", "_", $this->invoice['index_name']);
@@ -238,9 +238,9 @@ class Export {
                     $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($this->id);
                     $invoiceItems = Invoice::getInvoiceItems($this->id);
 
-                    if (!isset($this->customer)) $this->customer = Customer::get($this->invoice['customer_id']);
-                    if (!isset($this->biller)) $this->biller = Biller::select($this->invoice['biller_id']);
-                    if (!isset($this->preference)) $this->preference = Preferences::getPreference($this->invoice['preference_id'], $this->domain_id);
+                    if (!isset($this->customer)) $this->customer = Customer::getOne($this->invoice['customer_id']);
+                    if (!isset($this->biller)) $this->biller = Biller::getOne($this->invoice['biller_id']);
+                    if (!isset($this->preference)) $this->preference = Preferences::getOne($this->invoice['preference_id']);
 
                     $defaults = SystemDefaults::loadValues();
 

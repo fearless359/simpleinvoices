@@ -11,7 +11,8 @@
 */
 *}
 
-<form name="frmpost" action="index.php?module=invoices&amp;view=save" method="POST">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=invoices&amp;view=save">
     <div class="si_invoice_form">
         {include file="$path/header.tpl" }
         <table id="itemtable" class="si_invoice_items">
@@ -20,7 +21,11 @@
             </tr>
             <tr>
                 <td class="si_invoice_notes">
-                    <textarea class="editor" name="description" rows="10" cols="100%">{if isset($defaultInvoice.note)}{$defaultInvoice.note}{/if}</textarea>
+                    <!--
+                    <textarea class="editor" name="description">{*if isset($defaultInvoice.note)*}{*$defaultInvoice.note*}{*/if*}</textarea>
+                    -->
+                    <input name="description" id="description" {if isset($defaultInvoice.note)}value="{$defaultInvoice.note|outhtml}"{/if} type="hidden">
+                    <trix-editor input="description"></trix-editor>
                 </td>
             </tr>
         </table>

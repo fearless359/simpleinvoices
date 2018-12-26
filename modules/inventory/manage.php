@@ -18,11 +18,9 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$number_of_rows = Inventory::count();
-$smarty->assign("number_of_rows",$number_of_rows);
+$inventories = Inventory::getAll();
+$smarty->assign('inventories', $inventories);
+$smarty->assign("number_of_rows",count($inventories));
 
 $smarty->assign('pageActive', 'inventory');
 $smarty->assign('active_tab', '#product');
-
-$url = 'index.php?module=inventory&view=xml';
-$smarty->assign('url', $url);

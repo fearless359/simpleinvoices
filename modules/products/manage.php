@@ -10,14 +10,15 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$count = Product::count();
+$products = Product::getAll();
+$smarty->assign('products', $products);
+$smarty->assign("number_of_rows",count($products));
+
+$cflgs = CustomFlags::getCustomFlagsQualified('products', true);
+$smarty->assign("cflgs", $cflgs);
 
 $defaults = SystemDefaults::loadValues();
-
-$cflgs = CustomFlags::getCustomFlagsQualified('E');
-$smarty->assign("cflgs", $cflgs);
 $smarty->assign("defaults",$defaults);
-$smarty->assign("number_of_rows",$count);
 
 $smarty->assign('pageActive', 'product_manage');
 $smarty->assign('active_tab', '#product');

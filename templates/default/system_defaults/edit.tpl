@@ -1,6 +1,5 @@
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" action="index.php?module=system_defaults&amp;view=save"
-      method="post" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=system_defaults&amp;view=save" >
 <div class="si_center">
     <h3>{$LANG.edit} {$description|htmlsafe}</h3>
 </div>

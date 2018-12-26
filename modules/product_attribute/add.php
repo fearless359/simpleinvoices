@@ -9,14 +9,11 @@ global $smarty;
 Util::isAccessAllowed();
 
 //if valid then do save
-if (!empty($_POST['name']) || isset($_POST['cancel'])) {
-	include("modules/product_attribute/save.php");
+if (!empty($_POST['name'])) {
+    include("modules/product_attribute/save.php");
 } else {
-    $types = ProductAttributeType::getAll();
+    $smarty->assign("types", ProductAttributeType::getAll());
 
-    $smarty->assign("types", $types);
-
-    $pageActive = "product_attribute_add";
-    $smarty->assign('pageActive', $pageActive);
+    $smarty->assign('pageActive', 'product_attribute_add');
     $smarty->assign('active_tab', '#product');
 }

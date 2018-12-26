@@ -6,6 +6,77 @@ namespace Inc\Claz;
  * @package Inc\Claz
  */
 class PaymentType {
+
+    /**
+     * Retrieve a specific payment_type record.
+     * @param int $pt_id ID of record to retrieve.
+     * @return array Rows retrieved. Note that an empty array is returned if no
+     *         records are found.
+     */
+    public static function getOne($pt_id) {
+        return self::getPaymentTypes($pt_id);
+    }
+
+    /**
+     * Get payment type records.
+     * @param boolean $active Set to <b>true</b> if you only want active payment types.
+     *        Set to <b>false</b> or don't specify if you want all payment types.
+     * @return array Rows retrieved. Note that an empty array is returned if no
+     *         records are found.
+     */
+    public static function getAll($active=false) {
+        return self::getPaymentTypes(null, $active);
+    }
+
+    /**
+     * Common data access method. Retrieve record(s) per specified parameters.
+     * @param int $pt_id If not null, the id of the record to retrieve.
+     * @param bool $enabled If true, only enabled records are retrieved.
+     * @return array Qualified record(s) retrieved. Test for empty array when
+     *          no qualified records found.
+     */
+    private static function getPaymentTypes($pt_id = null, $enabled = false) {
+        global $LANG, $pdoDb;
+
+        $payment_types = array();
+        try {
+            if (isset($pt_id)) {
+                $pdoDb->addSimpleWhere('pt_id', $pt_id, 'AND');
+            }
+
+            if ($enabled) {
+                $pdoDb->addSimpleWhere("pt_enabled", ENABLED, "AND");
+            }
+
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+
+            $pdoDb->setOrderBy('pt_description');
+
+            $oc = new CaseStmt("pt_enabled", "enabled_text");
+            $oc->addWhen("=", ENABLED, $LANG['enabled']);
+            $oc->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($oc);
+
+            $pdoDb->setSelectAll(true);
+
+            $rows = $pdoDb->request("SELECT", "payment_types");
+            foreach ($rows as $row) {
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
+                $row['image'] = ($row['pt_enabled'] == ENABLED ? "images/common/tick.png" :
+                                                                 "images/common/cross.png");
+                $payment_types[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("PaymentType::getPaymentTypes - error: " . $pde->getMessage());
+        }
+
+        if (empty($payment_types)) {
+            return array();
+        }
+        return (isset($pt_id) ? $payment_types[0] : $payment_types);
+    }
+
     /**
      * Get ID for payment type and set the type up if it doesn't exist.
      * @param string $description This is the payment type.
@@ -21,9 +92,8 @@ class PaymentType {
 
             $pdoDb->addToFunctions(new FunctionStmt("COUNT", "DISTINCT pt_id", "count"));
 
-            $expr_list = "pt_id";
-            $pdoDb->setSelectList($expr_list);
-            $pdoDb->setGroupBy($expr_list);
+            $pdoDb->setSelectList("pt_id");
+            $pdoDb->setGroupBy("pt_id");
 
             $rows = $pdoDb->request("SELECT", "payment_types");
             if (empty($rows)) {
@@ -66,144 +136,18 @@ class PaymentType {
     }
 
     /**
-     * Get a specific payment type record.
-     * @param int $id Unique ID of record to retrieve.
-     * @return array Row retrieved. Test for "=== false" to check for failure.
-     *         Note that a field named, "enabled", was added to store the $LANG
-     *         enable or disabled word depending on the "pref_enabled" setting
-     *         of the record.
-     */
-    public static function select($id) {
-        global $LANG, $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->addSimpleWhere("pt_id", $id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            $ca = new CaseStmt("pt_enabled", "enabled");
-            $ca->addWhen("=", ENABLED, $LANG['enabled']);
-            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($ca);
-
-            $pdoDb->setSelectAll(true);
-
-            $rows = $pdoDb->request("SELECT", "payment_types");
-        } catch (PdoDbException $pde) {
-            error_log("PaymentType::select() - id[$id] - error: " . $pde->getMessage());
-        }
-        return (empty($rows) ? $rows : $rows[0]);
-    }
-
-    /**
-     * Get payment type records.
-     * @param boolean $active Set to <b>true</b> if you only want active payment types.
-     *        Set to <b>false</b> or don't specify if you want all payment types.
-     * @return array Rows retrieved. Note that an empty array is returned if no
-     *         records are found.
-     *         Note that a field named, "pt_enabled", was added to store the $LANG
-     *         enable or disabled word depending on the "pref_enabled" setting
-     *         of the record.
-     */
-    public static function select_all($active=false) {
-        global $LANG, $pdoDb;
-
-        $rows = array();
-        try {
-            if ($active) {
-                $pdoDb->addSimpleWhere("pt_enabled", ENABLED, "AND");
-            }
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            $ca = new CaseStmt("pt_enabled", "pt_enabled");
-            $ca->addWhen("=", ENABLED, $LANG['enabled']);
-            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($ca);
-
-            $pdoDb->setOrderBy("pt_description");
-
-            $pdoDb->setSelectAll(true);
-            $rows = $pdoDb->request("SELECT", "payment_types");
-        } catch (PdoDbException $pde) {
-            error_log("PaymentType::select_all() - active[$active] - error: " . $pde->getMessage());
-        }
-        return $rows;
-    }
-
-    /**
-     * Get information for grid list.
-     * @param string $type
-     * @param string $dir
-     * @param string $sort
-     * @param int $rp
-     * @param int $page
-     * @return array|mixed
-     */
-    public static function xmlSql($type, $dir, $sort, $rp, $page) {
-        global $pdoDb, $LANG;
-
-        $rows = array();
-        try {
-            $query = isset($_POST['query']) ? $_POST['query'] : null;
-            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
-            if (!(empty($qtype) || empty($query))) {
-                if (in_array($qtype, array('pt_id', 'pt_description'))) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
-                }
-            }
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            if ($type == "count") {
-                $pdoDb->addToFunctions("COUNT(*) AS count");
-                $rows = $pdoDb->request("SELECT", "payment_types");
-                return $rows[0]['count'];
-            }
-
-            // Check that the sort field is OK
-            if (!preg_match('/^(asc|desc|A|D)$/iD', $dir)) $dir = 'A';
-            if (!in_array($sort, array('pt_id', 'pt_description', 'enabled'))) {
-                $sort = "pt_description";
-                $dir = "A";
-            }
-            $pdoDb->setOrderBy(array($sort, $dir));
-
-            if (intval($rp) != $rp) $rp = 25;
-            $start = (($page - 1) * $rp);
-            $pdoDb->setLimit($rp, $start);
-
-            $oc = new CaseStmt("pt_enabled", "enabled");
-            $oc->addWhen("=", ENABLED, $LANG['enabled']);
-            $oc->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($oc);
-
-            $pdoDb->setSelectAll(true);
-
-            $rows = $pdoDb->request("SELECT", "payment_types");
-        } catch (PdoDbException $pde) {
-            error_log("modules/payment_types/xml.php - error: " . $pde->getMessage());
-        }
-        return $rows;
-    }
-
-    /**
      * Insert a new record using the values in the class properties.
-     * @param string $pt_description Payment type description.
-     * @param string $pt_enabled Set to constant, <b><i>ENABLED</i></b> or <b><i>DISABLED</i></b>.
      * @return integer Unique <b>pt_id</b> value assigned to the new record.
      */
-    public static function insert($pt_description, $pt_enabled) {
+    public static function insert() {
         global $pdoDb;
 
         $result = 0;
         try {
             $pdoDb->setExcludedFields("pt_id");
-            $pdoDb->setFauxPost(array("pt_description" => $pt_description,
-                "pt_enabled" => ($pt_enabled == ENABLED ? ENABLED : DISABLED),
-                "domain_id" => DomainId::get()));
             $result = $pdoDb->request("INSERT", "payment_types");
         } catch (PdoDbException $pde) {
-            error_log("PaymentType::insert() - pt_description[$pt_description] " .
-                "pt_enabled[$pt_enabled] - error: " . $pde->getMessage());
+            error_log("PaymentType::insert() - Error: " . $pde->getMessage());
         }
         return $result;
     }
@@ -211,25 +155,20 @@ class PaymentType {
     /**
      * Update an existing record using the values in the class properties.
      * @param string $pt_id Unique ID for this record.
-     * @param string $pt_description Payment type description.
-     * @param string $pt_enabled Set to constant, <b><i>ENABLED</i></b> or <b><i>DISABLED</i></b>.
      * @return boolean <b>true</b> if update was successful; otherwise <b>false</b>.
      */
-    public static function update($pt_id, $pt_description, $pt_enabled) {
+    public static function update($pt_id) {
         global $pdoDb;
 
         try {
             $pdoDb->setExcludedFields(array("pt_id", "domain_id"));
-            $pdoDb->setFauxPost(array("pt_description" => $pt_description,
-                "pt_enabled" => ($pt_enabled == ENABLED ? ENABLED : DISABLED)));
 
             // Note that we don't need to include the domain_id in the key since this is a unique key.
             $pdoDb->addSimpleWhere("pt_id", $pt_id);
 
             return $pdoDb->request("UPDATE", "payment_types");
         } catch (PdoDbException $pde) {
-            error_log("PaymentType::update() - pt_id[$pt_id] pt_description[$pt_description] " .
-                "pt_enabled[$pt_enabled] error: " . $pde->getMessage());
+            error_log("PaymentType::update() - pt_id[$pt_id] error: " . $pde->getMessage());
         }
         return false;
     }

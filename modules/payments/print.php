@@ -3,7 +3,6 @@
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
-use Inc\Claz\Extensions;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\PaymentType;
@@ -16,16 +15,16 @@ Util::isAccessAllowed();
 
 // @formatter:off
 $menu    = false;
-$payment = Payment::select($_GET['id']);
+$payment = Payment::getOne($_GET['id']);
 
 // Get Invoice preference - so can link from this screen back to the invoice
 $invoice           = Invoice::getInvoice($payment['ac_inv_id']);
-$biller            = Biller::select($payment['biller_id']);
-$customer          = Customer::get($payment['customer_id']);
+$biller            = Biller::getOne($payment['biller_id']);
+$customer          = Customer::getOne($payment['customer_id']);
 $invoiceType       = Invoice::getInvoiceType($invoice['type_id']);
 $customFieldLabels = CustomFields::getLabels(true);
-$paymentType       = PaymentType::select($payment['ac_payment_type']);
-$preference        = Preferences::getPreference($invoice['preference_id']);
+$paymentType       = PaymentType::getOne($payment['ac_payment_type']);
+$preference        = Preferences::getOne($invoice['preference_id']);
 $logo              = str_replace(" ", "%20", Util::getLogo($biller));
 
 $biller_info = array();

@@ -14,7 +14,7 @@ global $smarty;
 Util::isAccessAllowed();
 
 $customFieldLabel = CustomFields::getLabels(true);
-$cflgs = CustomFlags::getCustomFlagsQualified('E');
+$cflgs = CustomFlags::getCustomFlagsQualified('products', true);
 $taxes = Taxes::getActiveTaxes();
 // if valid then do save
 if (!empty($_POST['description'])) {

@@ -82,7 +82,7 @@
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}: </th>
-                    <td>{$customer.wording_for_enabled|htmlsafe}</td>
+                    <td>{$customer.enabled_text|htmlsafe}</td>
                     {if !empty($customFieldLabel.customer_cf3)}
                         <td class="td_sep"></td>
                         <th>{$customFieldLabel.customer_cf3}: </th>
@@ -103,12 +103,14 @@
                 </tr>
             </table>
         </div>
+    </div>
+    <div class="si_form si_form_view" id="si_form_cust">
         <div id="tabs_customer">
             <ul class="anchors">
                 <li><a href="#section-1" target="_top">{$LANG.summary_of_accounts}</a></li>
                 <li><a href="#section-2" target="_top">{$LANG.credit_card_details}</a></li>
-                <li><a href="#section-3" target="_top">{$LANG.unpaid_invoices}</a></li>
-                <li><a href="#section-4" target="_top">{$LANG.customer}&nbsp;{$LANG.invoice_listings}</a></li>
+                <li><a href="#section-3" target="_top">{$LANG.customer}&nbsp;{$LANG.invoice_listings}</a></li>
+                <li {if $invoices_owing_count == 0}style="display:none"{/if}><a href="#section-4" target="_top">{$LANG.unpaid_invoices}</a></li>
                 <li><a href="#section-5" target="_top">{$LANG.notes}</a></li>
             </ul>
             <div id="section-1" class="fragment">
@@ -160,53 +162,6 @@
                     <table>
                         <thead>
                         <tr class="tr_head">
-                            <th class="first">
-                                <!--6 Payment -->{$LANG.actions}
-                            </th>
-                            <th>{$LANG.id}</th>
-                            <th>{$LANG.date_created}</th>
-                            <th>{$LANG.total}</th>
-                            <th>{$LANG.paid}</th>
-                            <th>{$LANG.owing}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {foreach from=$invoices item=invoice}
-                            {if $invoice.status > 0}
-                                {if $invoice.owing != 0}
-                                    <tr class="index_table">
-                                        <td class="first">
-                                            <!--6 Payment -->
-                                            <a title="{$LANG.process_payment_for} {$invoice.preference} {$invoice.id}"
-                                               href='index.php?module=payments&amp;view=process&amp;id={$invoice.id}&amp;op=pay_selected_invoice'>
-                                                <img src='images/common/money_dollar.png' class='action'/>
-                                            </a>
-                                            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
-                                                <img src='images/common/view.png' class='action'/>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
-                                                {$invoice.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}
-                                            </a>
-                                        </td>
-                                        <td>{$invoice.date|htmlsafe}</td>
-                                        <td>{$invoice.total|siLocal_number}</td>
-                                        <td>{$invoice.paid|siLocal_number}</td>
-                                        <td>{$invoice.owing|siLocal_number}</td>
-                                    </tr>
-                                {/if}
-                            {/if}
-                        {/foreach}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="section-4" class="fragment">
-                <div class="si_cust_invoices">
-                    <table>
-                        <thead>
-                        <tr class="tr_head">
                             <th class="first">{$LANG.invoice}</th>
                             <th>{$LANG.date_created}</th>
                             <th>{$LANG.total}</th>
@@ -215,48 +170,83 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {foreach from=$invoices item=invoice}
+                        {foreach $invoices_owing as $invoice}
                             <tr class="index_table">
                                 <td class="first">
-                                    <a href="index.php?module=invoices&amp;view=quick_view&id={$invoice.id|urlencode}">
-                                        {$invoice.pref_inv_wording|htmlsafe}&nbsp;{$invoice.index_id|htmlsafe}
+                                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                                        {$invoice.index_name|htmlsafe}
                                     </a>
                                 </td>
-                                <td>{$invoice.date|htmlsafe}</td>
-                                <td class="right">{$invoice.total|siLocal_number}</td>
-                                {if $invoice.status > 0}
-                                    <td class="right">{$invoice.paid|siLocal_number}</td>
-                                    {if $invoice.owing != 0}
-                                        <td class="right">{$invoice.owing|siLocal_number}</td>
-                                    {else}
-                                        <td>&nbsp;</td>
-                                    {/if}
-                                {else}
-                                    <td colspan="2">&nbsp;</td>
-                                {/if}
+                                <td class="si_center">{$invoice.date|htmlsafe}</td>
+                                <td class="right">{$invoice.total|siLocal_currency}</td>
+                                <td class="right">{$invoice.paid|siLocal_currency}</td>
+                                <td class="right">{$invoice.owing|siLocal_currency}</td>
                             </tr>
                         {/foreach}
                         </tbody>
                     </table>
                 </div>
             </div>
+            {if $invoices_owing_count != 0}
+            <div id="section-4" class="fragment">
+                <div class="si_cust_invoices">
+                    <table>
+                        <thead>
+                        <tr class="tr_head">
+                            <th class="first">{$LANG.actions}</th>
+                            <th>{$LANG.id}</th>
+                            <th>{$LANG.date_created}</th>
+                            <th>{$LANG.total}</th>
+                            <th>{$LANG.paid}</th>
+                            <th>{$LANG.owing}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $invoices_owing as $invoice}
+                            <tr class="index_table">
+                                <td class="first">
+                                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                                        <img src='images/common/view.png' class='action'/>
+                                    </a>
+                                    <a title="{$LANG.process_payment_for} {$invoice.preference} {$invoice.index_id}"
+                                       href='index.php?module=payments&amp;view=process&amp;id={$invoice.id}&amp;op=pay_selected_invoice'>
+                                        <img src='images/common/money_dollar.png' class='action'/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                                        {$invoice.index_name|htmlsafe} {$invoice.index_id|htmlsafe}
+                                    </a>
+                                </td>
+                                <td class="si_center">{$invoice.date|htmlsafe}</td>
+                                <td class="right">{$invoice.total|siLocal_currency}</td>
+                                <td class="right">{$invoice.paid|siLocal_currency}</td>
+                                <td class="right">{$invoice.owing|siLocal_currency}</td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {/if}
             <div id="section-5" class="fragment">
                 <div class="si_cust_notes">{$customer.notes|outhtml}</div>
             </div>
         </div>
         <div class="si_toolbar si_toolbar_form">
-            <a href="index.php?module=customers&amp;view=details&amp;id={$customer.id|urlencode}&amp;action=edit"
-               class="positive">
-                <img src="images/common/tick.png" alt=""/>{$LANG.edit}
+            <a href="index.php?module=customers&amp;view=details&amp;id={$customer.id|urlencode}&amp;action=edit" class="positive">
+                <img src="images/common/tick.png" alt="{$LANG.edit}"/>
+                {$LANG.edit}
+            </a>
+            <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
+                <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                {$LANG.cancel}
             </a>
         </div>
     </div>
 {elseif $smarty.get.action == 'edit' }
-    {* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-    <form name="frmpost" action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}"
-          method="post" id="frmpost" onsubmit="return frmpost_Validator(this);">
-        <input type="hidden" name="op" value="edit_customer"/>
-        <input type="hidden" name="domain_id" value="{if isset($customer.domain_id)}{$customer.domain_id}{/if}"/>
+        <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}">
         <div class="si_form" id="si_form_cust_edit">
             <table class="center">
                 <tr>
@@ -358,7 +348,8 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email" value="{if isset($customer.email)}{$customer.email|htmlsafe}{/if}" size="50" tabindex="120"/>
+                        <input type="text" name="email" class="validate[required,custom[email]] text-input"
+                               value="{if isset($customer.email)}{$customer.email|htmlsafe}{/if}" size="50" tabindex="120"/>
                     </td>
                 </tr>
                 <tr>
@@ -405,7 +396,7 @@
                                {*value="{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}" size="8" tabindex="165"/>*}
                         <select name="default_invoice" tabindex="165">
                             <option value=""></option>
-                            {foreach from=$invoices item=invoice}
+                            {foreach $invoices as $invoice}
                                 <option {if $invoice.index_id == $customer.default_invoice}selected{/if}
                                         value="{$invoice.index_id}">Inv#{$invoice.index_id} ({$invoice.name|htmlsafe} {$invoice.total|siLocal_number})</option>
                             {/foreach}
@@ -472,7 +463,11 @@
                 <tr>
                     <th>{$LANG.notes}</th>
                     <td>
-                        <textarea name="notes" class="editor" rows="8" cols="50" tabindex="210">{$customer.notes|outhtml}</textarea>
+                        <!--
+                        <textarea name="notes" class="editor" rows="6" cols="80" tabindex="210">{*$customer.notes|outhtml*}</textarea>
+                        -->
+                        <input name="notes" id="notes" {if isset($customer.notes)}value="{$customer.notes|outhtml}"{/if} type="hidden">
+                        <trix-editor input="notes" tabindex="210"></trix-editor>
                     </td>
                 </tr>
                 <tr>
@@ -481,13 +476,17 @@
                 </tr>
             </table>
             <div class="si_toolbar si_toolbar_form">
-                <button type="submit" class="positive" name="save_customer"
-                        value="{$LANG.save_customer}" tabindex="230">
-                    <img class="button_img" src="images/common/tick.png" alt=""/>{$LANG.save}
+                <button type="submit" class="positive" name="save_customer" value="{$LANG.save_customer}" tabindex="230">
+                    <img class="button_img" src="images/common/tick.png" alt="{$LANG.save}"/>
+                    {$LANG.save}
                 </button>
-                <a href="index.php?module=customers&amp;view=manage" tabindex="-1"
-                   class="negative"><img src="images/common/cross.png" alt=""/>{$LANG.cancel}</a>
+                <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
+                    <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                    {$LANG.cancel}
+                </a>
             </div>
         </div>
+        <input type="hidden" name="op" value="edit"/>
+        <input type="hidden" name="domain_id" value="{if isset($customer.domain_id)}{$customer.domain_id}{/if}"/>
     </form>
 {/if}

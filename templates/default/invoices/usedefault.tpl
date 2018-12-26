@@ -8,10 +8,10 @@
 *	 Marcel van Dorp
 *
 * Last edited:
-* 	 2018-10-23 by Richard Rowley.
+* 	 2018-12-16 by Richard Rowley.
 *
 * License:
 *	 GPL v2 or above
 *}
 <meta http-equiv="refresh"
-      content="0;URL=index.php?module=invoices&amp;view={$view}&amp;{$attr1}={$attr1_val}{if $attr2}&amp;{$attr2}={$attr2_val}{/if}"/>
+      content="0;URL=index.php?module=invoices&amp;view={$view}&amp;{$attr1}={$attr1_val}{if isset($attr2)}&amp;{$attr2}={$attr2_val}{/if}"/>

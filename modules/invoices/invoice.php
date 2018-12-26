@@ -17,7 +17,7 @@ use Inc\Claz\Util;
  *   Justin Kelly, Nicolas Ruflin
  *
  * Last edited:
- *   2016-07-05
+ *   2018-12-16 by Richard Rowley
  *
  * License:
  *   GPL v3 or above
@@ -35,7 +35,7 @@ $billers           = Biller::getAll(true);
 $customers         = Customer::getAll(true);
 $taxes             = Taxes::getActiveTaxes();
 $defaultTax        = Taxes::getDefaultTax();
-$products          = Product::getAll();
+$products          = Product::getAll(true);
 $preferences       = Preferences::getActivePreferences();
 $defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
@@ -93,5 +93,3 @@ $smarty->assign("defaultPreference" , $defaultPreference);
 $smarty->assign("dynamic_line_items", $dynamic_line_items);
 $smarty->assign("customFields"      , $customFields);
 $smarty->assign("defaults"          , $defaults);
-
-$smarty->assign('active_tab', '#money');

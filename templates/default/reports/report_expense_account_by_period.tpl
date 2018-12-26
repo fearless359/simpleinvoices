@@ -1,7 +1,6 @@
 
-<form name="frmpost"
-  action="index.php?module=reports&amp;view=report_expense_account_by_period"
-  method="post">
+<form name="frmpost" method="POST" id="frmpost"
+  action="index.php?module=reports&amp;view=report_expense_account_by_period">
   <table class="center">
     <tr>
       <td>Start date (YYYY-MM-DD)
@@ -11,7 +10,7 @@
       <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
       <td>End date (YYYY-MM-DD)
         <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-               size="10" name="end_date" id="date1" value='{$end_date}' />
+               size="10" name="end_date" id="date2" value='{$end_date}' />
       </td>
     </tr>
   </table>

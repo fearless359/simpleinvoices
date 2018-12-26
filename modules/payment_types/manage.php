@@ -6,11 +6,12 @@ use Inc\Claz\Util;
 global $smarty;
 
 // Stop the direct browsing to this file.
-// Let index.php handle which files get displayed.
 Util::isAccessAllowed();
 
-$paymentTypes = PaymentType::select_all();
+$payment_types = PaymentType::getAll();
 
-$smarty->assign('paymentTypes', $paymentTypes);
+$smarty->assign('payment_types', $payment_types);
+$smarty->assign('number_of_rows', count($payment_types));
+
 $smarty->assign('pageActive'  , 'payment_type');
 $smarty->assign('active_tab'  , '#setting');

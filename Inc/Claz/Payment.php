@@ -1,18 +1,21 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class Payment
  * @package Inc\Claz
  */
-class Payment {
+class Payment
+{
     /**
      * Count of optionally filtered payments
      * @param string $filter
      * @param string $ol_pmt_id
      * @return string
      */
-    public static function count($filter, $ol_pmt_id) {
+    public static function count($filter, $ol_pmt_id)
+    {
         global $pdoDb;
 
         $count = 0;
@@ -33,13 +36,128 @@ class Payment {
     }
 
     /**
+     * Get first payment record for the specified id.
+     * @param int $id Unique ID of record to retrieve.
+     * @param boolean $is_pymt_id true (default) $id is payment ID, else is invoice ID.
+     * @return array Row retrieved. An empty array is returned if no payment found.
+     */
+    public static function getOne($id, $is_pymt_id = true)
+    {
+        $rows = self::getPayments($id, $is_pymt_id);
+        $count = count($rows);
+        if ($count == 0) {
+            $payment = array();
+        } else {
+            $payment = $rows[0];
+            $payment['date'] = SiLocal::date($payment['ac_date']);
+            $payment['num_payment_recs'] = $count;
+        }
+        return $payment;
+    }
+
+    /**
+     * Get a all payment records.
+     * @return array Rows retrieved. Test for "=== false" to check for failure.
+     */
+    public static function getAll()
+    {
+        return self::getPayments();
+    }
+
+    /**
+     * @param null $id
+     * @param bool $is_pymt_id
+     * @return array
+     */
+    private static function getPayments($id = null, $is_pymt_id = true)
+    {
+        global $pdoDb;
+
+        $payments = array();
+        try {
+            $pdoDb->setSelectList(array(
+                'ap.*',
+                new DbField('iv.index_id', 'iv_index_id'),
+                new DbField('c.id', 'customer_id'),
+                new DbField('c.name', 'cname'),
+                new DbField('b.id', 'biller_id'),
+                new DbField('b.name', 'bname'),
+                new DbField('pt.pt_description', 'description')
+            ));
+
+            $jn = new Join('LEFT', 'invoices', 'iv');
+            $jn->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
+            $jn->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'customers', 'c');
+            $jn->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'biller', 'b');
+            $jn->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join("INNER", "preferences", "pr");
+            $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
+            $jn->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('LEFT', 'payment_types', 'pt');
+            $jn->addSimpleItem('pt.pt_id', new DbField('ap.ac_payment_type'), 'AND');
+            $jn->addSimpleItem('pt.domain_id', new DbField('ap.domain_id'));
+            $pdoDb->addToJoins($jn);
+
+            $fn = new FunctionStmt("DATE_FORMAT", "ac_date,'%Y-%m-%d'");
+            $se = new Select($fn, null, null, null, "date");
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt("CONCAT", "pr.pref_inv_wording,' ',iv.index_id");
+            $se = new Select($fn, null, null, null, "index_name");
+            $pdoDb->addToSelectStmts($se);
+
+            $fn = new FunctionStmt("CONCAT", "description,' ',ac_check_number");
+            $se = new Select($fn, null, null, null, "type");
+            $pdoDb->addToSelectStmts($se);
+
+            if (isset($id)) {
+                if ($is_pymt_id) {
+                    $pdoDb->addSimpleWhere('ap.id', $id, 'AND');
+                    $pdoDb->setOrderBy(array("ap.id", "D"));
+                } else {
+                    $pdoDb->addSimpleWhere('ap.ac_inv_id', $id, 'AND');
+                    $pdoDb->setOrderBy(array("ap.ac_inv_id", "D"));
+                }
+            } else {
+                $pdoDb->setOrderBy(array("ap.id", "D"));
+            }
+            $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get());
+
+            $rows = $pdoDb->request("SELECT", "payment", "ap");
+
+            foreach ($rows as $row) {
+                $row['notes_short'] = SiLocal::truncateStr($row['ac_notes'], '13', '...');
+                $row['date'] = SiLocal::date($row['ac_date']);
+                $payments[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Payment::getAll() - Error: " . $pde->getMessage());
+        }
+
+        return $payments;
+    }
+
+    /**
      * @param $start_date
      * @param $end_date
      * @param $filter
      * @param $ol_pmt_id
      * @return array|mixed
      */
-    public static function select_by_date($start_date, $end_date, $filter, $ol_pmt_id) {
+    public static function selectByDate($start_date, $end_date, $filter, $ol_pmt_id)
+    {
         global $pdoDb;
 
         $rows = array();
@@ -90,7 +208,7 @@ class Payment {
 
             $rows = $pdoDb->request("SELECT", "payment", "ap");
         } catch (PdoDbException $pde) {
-            error_log("Payment::select_by_date() - Error: " . $pde->getMessage());
+            error_log("Payment::selectByDate() - Error: " . $pde->getMessage());
         }
         return $rows;
     }
@@ -100,7 +218,8 @@ class Payment {
      * @param int $id Unique ID of invoice to retrieve payments for.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function getInvoicePayments($id) {
+    public static function getInvoicePayments($id)
+    {
         global $pdoDb;
 
         $rows = array();
@@ -149,7 +268,8 @@ class Payment {
      * @param int $id Unique ID of customer to retrieve payments for.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function getCustomerPayments($id) {
+    public static function getCustomerPayments($id)
+    {
         global $pdoDb;
 
         $rows = array();
@@ -194,110 +314,12 @@ class Payment {
     }
 
     /**
-     * Get a specific payment record.
-     * @param int $id Unique ID of record to retrieve.
-     * @param boolean $is_pymt_id true (default) $id is payment ID, else is invoice ID.
-     * @return array Row retrieved. An empty array is returned if no row found.
-     */
-    public static function select($id, $is_pymt_id = true) {
-        global $pdoDb;
-
-        $payment = null;
-        try {
-            $oc = new OnClause();
-            $oc->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
-            $oc->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "invoices", "iv", $oc));
-
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "customers", "c", $oc));
-
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
-            $pdoDb->addToJoins(array("LEFT", "biller", "b", $oc));
-
-            $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get(), "AND");
-            if ($is_pymt_id) {
-                $pdoDb->addSimpleWhere("ap.id", $id);
-            } else {
-                $pdoDb->addSimpleWhere("ap.ac_inv_id", $id);
-            }
-
-            $pdoDb->setSelectList(array("ap.*", "c.id AS customer_id", "c.name AS customer",
-                "b.id AS biller_id", "b.name AS biller"));
-
-            $rows = $pdoDb->request("SELECT", "payment", "ap");
-            if (count($rows) == 0) {
-                $payment = null;
-            } else {
-                $payment = $rows[0];
-                $payment['date'] = SiLocal::date($payment['ac_date']);
-                $payment['num_payment_recs'] = count($rows);
-            }
-        } catch (PdoDbException $pde) {
-            error_log("Payment::select() - id[$id] error: " . $pde->getMessage());
-        }
-
-        return $payment;
-    }
-
-    /**
-     * Get a all payment records.
-     * @return array Rows retrieved. Test for "=== false" to check for failure.
-     */
-    public static function select_all() {
-        global $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->setSelectList(array(
-                'ap.*',
-                new DbField('c.name', 'cname'),
-                new DbField('b.name', 'bname'),
-                new DbField('pt.pt_description', 'description')
-            ));
-
-            $jn = new Join('LEFT', 'invoices', 'iv');
-            $jn->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
-            $jn->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins($jn);
-
-            $jn = new Join('LEFT', 'customers', 'c');
-            $jn->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
-            $jn->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
-            $pdoDb->addToJoins($jn);
-
-            $jn = new Join('LEFT', 'biller', 'b');
-            $jn->addSimpleItem("iv.biller_id", new DbField("b.id"), "AND");
-            $jn->addSimpleItem("iv.domain_id", new DbField("b.domain_id"));
-            $pdoDb->addToJoins($jn);
-
-            $jn = new Join('LEFT', 'payment_types', 'pt');
-            $jn->addSimpleItem('pt.pt_id', new DbField('ap.ac_payment_type'), 'AND');
-            $jn->addSimpleItem('pt.domain_id', new DbField('ap.domain_id'));
-            $pdoDb->addToJoins($jn);
-
-            $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get());
-
-            $pdoDb->setOrderBy(array("ap.id", "D"));
-
-            $rows = $pdoDb->request("SELECT", "payment", "ap");
-        } catch (PdoDbException $pde) {
-            error_log("Payment::select_all() - Error: " . $pde->getMessage());
-        }
-
-        return $rows;
-    }
-
-    /**
      * Add payment type description to retrieved payment records.
      * @param array $payments Array of <i>Payment</i> object to update.
      * @return array <i>Payment</i> records with payment type description added.
      */
-    public static function progressPayments($payments) {
+    public static function progressPayments($payments)
+    {
         global $pdoDb;
 
         $progressPayments = array();
@@ -305,7 +327,7 @@ class Payment {
             foreach ($payments as $payment) {
                 $pdoDb->addSimpleWhere("pt_id", $payment['ac_payment_type'], "AND");
                 $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-                $pdoDb->setSelectList("pt_description", 'description');
+                $pdoDb->setSelectList(array("pt_description", 'description'));
                 $result = $pdoDb->request("SELECT", "payment_types");
                 if (empty($result)) {
                     $payment['description'] = "";
@@ -325,7 +347,8 @@ class Payment {
      * @param array $list <i>Faux Post</i> list of record's values.
      * @return integer <b>ID</b> of record inserted. 0 if insert failed.
      */
-    public static function insert($list) {
+    public static function insert($list)
+    {
         global $pdoDb;
 
         $result = 0;
@@ -344,7 +367,8 @@ class Payment {
      * @param integer $ac_inv_id Invoice ID to sum payments for.
      * @return float Total paid on the invoice.
      */
-    public static function calc_invoice_paid($ac_inv_id) {
+    public static function calcInvoicePaid($ac_inv_id)
+    {
         global $pdoDb;
 
         $amount = 0;
@@ -356,7 +380,7 @@ class Payment {
                 $amount = $rows[0]['amount'];
             }
         } catch (PdoDbException $pde) {
-            error_log("Payment::calc_invoice_paid() - Error: " . $pde->getMessage());
+            error_log("Payment::calcInvoicePaid() - Error: " . $pde->getMessage());
         }
         return $amount;
     }
@@ -366,7 +390,8 @@ class Payment {
      * @param bool $isReal
      * @return mixed
      */
-    public static function calc_customer_paid($customer_id, $isReal = false) {
+    public static function calcCustomerPaid($customer_id, $isReal = false)
+    {
         global $pdoDb;
 
         $rows = array();
@@ -392,7 +417,7 @@ class Payment {
 
             $rows = $pdoDb->request("SELECT", "payment", "ap");
         } catch (PdoDbException $pde) {
-            error_log("Payment::calc_invoice_paid() - customer_id[$customer_id] error: " . $pde->getMessage());
+            error_log("Payment::calcInvoicePaid() - customer_id[$customer_id] error: " . $pde->getMessage());
         }
 
         return $rows[0]['amount'];

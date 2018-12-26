@@ -1,88 +1,64 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class Taxes
  * @package Inc\Claz
  */
-class Taxes {
+class Taxes
+{
 
     /**
      * Get a tax record.
-     * @param string $tax_id Unique ID record to retrieve.
-     * @param string $domain_id Domain ID logged into.
-     * @return array Row retrieved. Test for "=== false" to check for failure.
+     * @param string $id Unique ID record to retrieve.
+     * @return array Row retrieved. Test for empty row for failure.
      */
-    public static function getTaxRate($tax_id, $domain_id="") {
-        global $LANG, $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->addSimpleWhere("tax_id", $tax_id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get($domain_id));
-
-            $ca = new CaseStmt("tax_enabled", "enabled");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
-            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($ca);
-
-            $pdoDb->setSelectAll(true);
-            $rows = $pdoDb->request("SELECT", "tax");
-        } catch (PdoDbException $pde) {
-            error_log("Taxes::getTaxRate() - tax_id[$tax_id] error: " . $pde->getMessage());
-        }
-        return (empty($rows) ? $rows : $rows[0]);
+    public static function getOne($id)
+    {
+        return self::getTaxes($id);
     }
 
+    /**
+     * Get all tax table rows.
+     * @return array Rows retrieved. Test for empty rows for failure.
+     */
+    public static function getAll()
+    {
+        return self::getTaxes();
+    }
 
     /**
      * Get all active taxes records.
      * @return array Rows retrieved.
      */
-    public static function getActiveTaxes() {
-        global $LANG, $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->addSimpleWhere("tax_enabled", ENABLED, "AND");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            $pdoDb->setSelectAll(true);
-            $pdoDb->setSelectList("'$LANG[enabled]' AS enabled");
-
-            $pdoDb->setOrderBy("tax_description");
-            $rows = $pdoDb->request("SELECT", "tax");
-        } catch (PdoDbException $pde) {
-            error_log("Taxes::getActiveTaxes() - PdoDbException thrown: " . $pde->getMessage());
-        }
-        return $rows;
-    }
-
-
-    /**
-     * Get tax types
-     * @return string[] Types of tax records (% - percentage, $ - dollars)
-     */
-    public static function getTaxTypes() {
-        $types = array('%' => '%', '$' => '$');
-        return $types;
+    public static function getActiveTaxes()
+    {
+        return self::getTaxes(null, true);
     }
 
     /**
-     * Get tax table rows.
-     * @return array Rows retrieved.
-     *         Note that a field named, "wording_for_enabled", was added to store the $LANG
-     *         enable or disabled word depending on the "pref_enabled" setting
-     *         of the record.
+     * @param int $id If not null, id of record to retrieve
+     * @param bool $active_only if true get enabled records only; false (default) for all records.
+     * @return array rows retrieved.
      */
-    public static function getTaxes() {
+    private static function getTaxes($id = null, $active_only = false)
+    {
         global $LANG, $pdoDb;
 
-        $rows = array();
+        $taxes = array();
         try {
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('tax_id', $id, 'AND');
+            }
+
+            if ($active_only) {
+                $pdoDb->addSimpleWhere('tax_enabled', ENABLED, 'AND');
+            }
+
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
 
-            $ca = new CaseStmt("tax_enabled", "enabled");
+            $ca = new CaseStmt("tax_enabled", "enabled_text");
             $ca->addWhen("=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
@@ -92,17 +68,38 @@ class Taxes {
             $pdoDb->setOrderBy("tax_description");
 
             $rows = $pdoDb->request("SELECT", "tax");
+            foreach ($rows as $row) {
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
+                $row['image'] = ($row['tax_enabled'] == ENABLED ? 'images/common/tick.png' :
+                                                                  'images/common/cross.png');
+                $taxes[] = $row;
+            }
         } catch (PdoDbException $pde) {
-            error_log("Taxes::getTaxes() - error: " . $pde->getMessage());
+            error_log("Taxes::getAll() - error: " . $pde->getMessage());
         }
-        return $rows;
+        if (empty($taxes)) {
+            return array();
+        }
+        return (isset($id) ? $taxes[0] : $taxes);
+    }
+
+    /**
+     * Get tax types
+     * @return string[] Types of tax records (% - percentage, $ - dollars)
+     */
+    public static function getTaxTypes()
+    {
+        $types = array('%' => '%', '$' => '$');
+        return $types;
     }
 
     /**
      * Get a default tax record.
      * @return array Default tax record.
      */
-    public static function getDefaultTax() {
+    public static function getDefaultTax()
+    {
         global $pdoDb;
 
         try {
@@ -122,31 +119,52 @@ class Taxes {
     }
 
     /**
+     * Check to see if a specified tax description already exists for the user's domain.
+     * @param string $description of tax to check for.
+     * @return bool true if record exists; false if not.
+     */
+    public static function verifyExists($description)
+    {
+        global $pdoDb;
+
+        $rows = array();
+        try {
+            $pdoDb->addSimpleWhere('tax_description', $description, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+            $rows = $pdoDb->request('SELECT', 'tax');
+        } catch (PdoDbException $pde) {
+            error_log("Tax::verifyExists(): description[$description] error - " . $pde->getMessage());
+        }
+        return (!empty($rows));
+    }
+    /**
      * Insert a new tax rate.
      * @return int ID of new record. 0 if insert failed.
      */
-    public static function insertTaxRate() {
+    public static function insertTaxRate()
+    {
         global $pdoDb;
 
         $result = 0;
         try {
             $pdoDb->setFauxPost(array('domain_id' => DomainId::get(),
-                                      'tax_description' => $_POST['tax_description'],
-                                      'tax_percentage'  => $_POST['tax_percentage'],
-                                      'type'            => $_POST['type'],
-                                      'tax_enabled'     => $_POST['tax_enabled']));
+                'tax_description' => $_POST['tax_description'],
+                'tax_percentage' => $_POST['tax_percentage'],
+                'type' => $_POST['type'],
+                'tax_enabled' => $_POST['tax_enabled']));
             $result = $pdoDb->request("INSERT", "tax");
         } catch (PdoDbException $pde) {
             error_log("Taxes::insertTaxRate() - Error: " . $pde->getMessage());
         }
-      return $result;
+        return $result;
     }
 
     /**
      * Update tax rate.
      * @return bool true if processed successfully, false if not.
      */
-    public static function updateTaxRate() {
+    public static function updateTaxRate()
+    {
         global $pdoDb;
 
         try {
@@ -160,7 +178,7 @@ class Taxes {
             if ($pdoDb->request("UPDATE", "tax") === false) {
                 return false;
             }
-        }catch (PdoDbException $pde) {
+        } catch (PdoDbException $pde) {
             error_log("Taxes::updateTaxRate() - Error: " . $pde->getMessage());
             return false;
         }
@@ -172,15 +190,14 @@ class Taxes {
      * @param array $line_item_tax_id Tax values to apply.
      * @param int $quantity Number of units.
      * @param int $unit_price Price of each unit.
-     * @param string $domain_id SI domain being processed.
      * @return float Total tax
      */
-    public static function getTaxesPerLineItem($line_item_tax_id, $quantity, $unit_price, $domain_id = '') {
-        $domain_id = DomainId::get($domain_id);
+    public static function getTaxesPerLineItem($line_item_tax_id, $quantity, $unit_price)
+    {
         $tax_total = 0;
         if (is_array($line_item_tax_id)) {
             foreach ($line_item_tax_id as $value) {
-                $tax = self::getTaxRate($value, $domain_id);
+                $tax = self::getOne($value);
                 $tax_total += self::lineItemTaxCalc($tax, $unit_price, $quantity);
             }
         }
@@ -194,77 +211,13 @@ class Taxes {
      * @param int $quantity Number of units to tax.
      * @return float Total tax for the line item.
      */
-    public static function lineItemTaxCalc($tax, $unit_price, $quantity) {
+    public static function lineItemTaxCalc($tax, $unit_price, $quantity)
+    {
         // Calculate tax as a percentage of unit price or dollars per unit.
         if ($tax['type'] == "%") {
             return (($tax['tax_percentage'] / 100) * $unit_price) * $quantity;
         }
         return $tax['tax_percentage'] * $quantity;
-    }
-
-    /**
-     * Select records for display on flexgrid list.
-     * @param string $type 'count' for count of qualified records, all other settings
-     *          for array of qualified rows.
-     * @param string $dir sort order direction ASC/DESC.
-     * @param string $sort field to order by.
-     * @param int $rp report lines per page.
-     * @param int $page being displayed.
-     * @return array/int of rows selected.
-     */
-    function xmlSql($type, $dir, $sort, $rp, $page ) {
-        global $LANG, $pdoDb;
-
-        $count = ($type == 'count');
-        $rows = array();
-        try {
-            if (intval($page) != $page) {
-                $page = 1;
-            }
-
-            if (intval($rp) != $rp) {
-                $rp = 25;
-            }
-
-            if (!$count) {
-                $start = (($page - 1) * $rp);
-                $pdoDb->setLimit($rp, $start);
-            }
-
-            if (!preg_match('/^(asc|desc)$/iD', $dir)) {
-                $dir = 'ASC';
-            }
-
-            if (!in_array($sort, array('tax_id', 'tax_description', 'tax_percentage', 'enabled'))) {
-                $sort = "tax_description";
-            }
-            $pdoDb->setOrderBy(array($sort, $dir));
-
-            $query = isset($_POST['query']) ? $_POST['query'] : null;
-            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
-            if (!empty($qtype) && !empty($query)) {
-                if (in_array($qtype, array('tax_id', 'tax_description', 'tax_percentage'))) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, 'LIKE', $query, false, 'AND'));
-            }
-            }
-            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
-
-            $pdoDb->setSelectAll(true);
-
-            $ca = new CaseStmt("tax_enabled", "enabled");
-            $ca->addWhen("=", ENABLED, $LANG['enabled']);
-            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($ca);
-
-            $rows = $pdoDb->request('SELECT', 'tax');
-        } catch (PdoDbException $pde) {
-            error_log("Taxed::xmlSql() - Error: " . $pde->getMessage());
-        }
-
-        if ($count) {
-            return count($rows);
-        }
-        return $rows;
     }
 
 }

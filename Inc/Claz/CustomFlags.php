@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -8,16 +9,22 @@ namespace Inc\Claz;
 class CustomFlags
 {
     /**
+     * @var IDSEP Separator for the pseudo 'id' field.
+     */
+    const IDSEP = ':';
+
+    /**
      * Test for custom flag field.
      * @param $field
      * @return bool
      */
-    public static function isCustomFlagField($field) {
+    public static function isCustomFlagField($field)
+    {
         global $smarty;
-        $useit  = false;
+        $useit = false;
         $result = false;
         if (!empty($field)) {
-            if (preg_match('/flag:/i',$field) == 1) {
+            if (preg_match('/flag:/i', $field) == 1) {
                 $useit = true;
             } else {
                 $result = true;
@@ -56,63 +63,105 @@ class CustomFlags
      * @param integer $flg_id Number of the flag to get the record for.
      * @return array Requested custom flag.
      */
-    public static function getCustomFlag($associated_table, $flg_id)
+    public static function getOne($associated_table, $flg_id)
     {
-        global $LANG, $pdoDb;
-
-        $rows = array();
-        try {
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get(), "AND");
-            $pdoDb->addSimpleWhere("associated_table", $associated_table, "AND");
-            $pdoDb->addSimpleWhere("flg_id", $flg_id);
-            $rows = $pdoDb->request("SELECT", "custom_flags");
-        } catch (PdoDbException $pde) {
-            error_log("CustomFlags::getCustomFlag() - associated_table[$associated_table] flg_id[$flg_id] - error: " . $pde->getMessage());
-        }
-
-        $cflg = array();
-        if (!empty($rows)) {
-            $cflg = $rows[0];
-            $cflg['wording_for_enabled'] = ($cflg['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
-        }
-        return $cflg;
+        return self::getCustomFlags($associated_table, $flg_id);
     }
 
     /**
      * Get all custom_flags records for the user's domain along with the enabled text.
-     * @return array Custom_flags rows with an added value, "wording_for_enabled", that contains
+     * @param string $associated_table Table flags are associated with. If not specified, all
+     *          records for the user's domain are returned.
+     * @return array Custom_flags rows with an added value, "enabled_text", that contains
      *         "Enabled" or "Disabled" corresponding with the enabled field setting.
      */
-    public static function getCustomFlags()
+    public static function getAll($associated_table = '')
     {
-        return self::getCustomFlagsQualified('A');
+        return self::getCustomFlags($associated_table);
     }
 
     /**
      * Get custom_flag record based on the specified qualifier.
-     * @param string $qualifier - Qualifies records to return.
-     *        Valid options are: (A) - All, (E) - Enabled.
+     * @param string $associated_table If specified, qualifies records to retireve.
+     * @param bool $enabled_only - If true, only enabled records are returned.
      * @return array
      */
-    public static function getCustomFlagsQualified($qualifier)
+    public static function getCustomFlagsQualified($associated_table, $enabled_only)
+    {
+        return self::getCustomFlags($associated_table, null, $enabled_only);
+    }
+
+    /**
+     * Class common method to access custom flag records.
+     * @param string $associated_table If specified, specifies table for records to retrieve.
+     * @param int $flg_id If not null, Specified the flag id within the $associated_table to
+     *          retrieve. Note that if specified, the $associated table must also be specified.
+     * @param bool $enabled_only - If true, only enabled records are returned.
+     * @return array
+     */
+    private static function getCustomFlags($associated_table, $flg_id = null, $enabled_only = false)
     {
         global $LANG, $pdoDb;
 
         $cflgs = array();
         try {
-            if ($qualifier == "E") {
-                $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
+            if (isset($flg_id)) {
+                $pdoDb->addSimpleWhere('flg_id', $flg_id, 'AND');
+            }
+
+            if ($enabled_only) {
+                $pdoDb->addSimpleWhere('enabled', ENABLED, 'AND');
+            }
+
+            if (!empty($associated_table)) {
+                $pdoDb->addSimpleWhere('associated_table', $associated_table, 'AND');
             }
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+
+            $ca = new CaseStmt("enabled", "enabled_text");
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
+            $pdoDb->setSelectAll(true);
+
             $rows = $pdoDb->request("SELECT", "custom_flags");
-            foreach ($rows as $cflg) {
-                $cflg['wording_for_enabled'] = ($cflg['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
-                $cflgs[] = $cflg;
+            foreach ($rows as $row) {
+                $row['id'] = self::implodeId($row['associated_table'], $row['flg_id']);
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['custom_flags_upper'];
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['custom_flags_upper'];
+                $row['image'] = ($row['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
+                $cflgs[] = $row;
             }
         } catch (PdoDbException $pde) {
-            error_log("CustomFlags::getCustomFlagQualified() - qualifier[$qualifier] - error: " . $pde->getMessage());
+            error_log("CustomFlags::getCustomFlags() - Error: " . $pde->getMessage());
         }
-        return $cflgs;
+        if (empty($cflgs)) {
+            return array();
+        }
+        return (isset($flg_id) ? $cflgs[0] : $cflgs);
+    }
+
+    /**
+     * Implode the $associated_table and $flg_id into a single field called $id.
+     * @param string $associated_table Table the flags are associated with
+     * @param int $flg_id. Flag ID of the row.
+     * @return string Imploded result.
+     */
+    public static function implodeId($associated_table, $flg_id)
+    {
+        return implode(CustomFlags::IDSEP, array($associated_table, $flg_id));
+    }
+
+    /**
+     * Explode the $id field into the $associated_table and $flg_id parts.
+     * @param string $id Imploded field to be exploded.
+     * @return array Contains parts from exploded $id field. Contains the #associated_table and
+     *          $flg_id at indecies 0 and 1 respectively.
+     */
+    public static function explodeId($id)
+    {
+        return explode(CustomFlags::IDSEP, $id);
     }
 
     /**
@@ -131,15 +180,15 @@ class CustomFlags
     {
         if (is_bool($enabled)) {
             $enabled = ($enabled ? ENABLED : DISABLED);
-        } elseif (is_string($enabled)) {
+        } else if (is_string($enabled)) {
             $enabled = ($enabled == 'Enabled' ? ENABLED :
-                        $enabled == 'Disabled' ? DISABLED : intval($enabled));
+                $enabled == 'Disabled' ? DISABLED : intval($enabled));
         }
 
         try {
             // If the reset flags option was specified, do so now. Note that this is not considered critical.
             // Therefore failure to update will report in the error log for will not otherwise affect the update.
-            $products = Product::getAll();
+            $products = Product::getAll(true);
             $requests = new Requests();
             if ($clear_flags == ENABLED) {
                 foreach ($products as $product) {
@@ -169,59 +218,6 @@ class CustomFlags
         }
 
         return true;
-    }
-
-    /**
-     * @param string $type Set to 'count' if a count is needed for the list, otherwise not referenced.
-     * @param string $dir Sort direction "asc" or "desc";
-     * @param string $sort Field to sort (order) by.
-     * @param int $rp Number of lines to retrieve for the current page.
-     * @param int $page Page we are currently displaying
-     * @return array rows selected.
-     */
-    public static function xmlSql($type, $dir, $sort, $rp, $page) {
-        global $LANG, $pdoDb;
-
-        $rows = array();
-        try {
-            $query = isset($_POST['query']) ? $_POST['query'] : null;
-            $qtype = isset($_POST['qtype']) ? $_POST['qtype'] : null;
-            if (!empty($qtype) && !empty($query)) {
-                $valid_search_fields = array('associated_table', 'flg_id', 'enabled');
-                if (in_array($qtype, $valid_search_fields)) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
-                }
-            }
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            if ($type == "count") {
-                $pdoDb->addToFunctions("count(*) AS count");
-                $rows = $pdoDb->request("SELECT", "custom_flags");
-                return $rows[0]['count'];
-            }
-
-            $start = (($page - 1) * $rp);
-            $pdoDb->setLimit($rp, $start);
-
-            $validFields = array('associated_table', 'flg_id');
-            if (!in_array($sort, $validFields)) $sort = "associated_table";
-
-            $dir = (preg_match('/^(asc|desc)$/iD', $dir) ? 'A' : 'D');
-            $pdoDb->setOrderBy(array($sort, $dir));
-
-            $ca = new CaseStmt("enabled", "wording_for_enabled");
-            $ca->addWhen("=", ENABLED, $LANG['enabled']);
-            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
-            $pdoDb->addToCaseStmts($ca);
-
-            $pdoDb->setSelectList(array("associated_table", "flg_id", "field_label", "enabled", "field_help"));
-
-            $rows = $pdoDb->request("SELECT", "custom_flags");
-        } catch (PdoDbException $pde) {
-            error_log("CustomFlags::xmlSql() - Error: " . $pde->getMessage());
-        }
-
-        return $rows;
     }
 
 }

@@ -18,23 +18,21 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-// Combine access of values to minimize overhead.
-$results = Invoice::select_all('count_owing');
-$count = $results['count'];
-$_POST['count'] = $count;
+$having = (isset($_GET['having'])) ? $_GET['having'] : "";
 
-$total_owing = $results['total_owing'];
+// If user role is customer or biller, then restrict invoices to those they have access to.
+// Make customer access read only. Billers change work only on those invoices generated for them.
+$read_only = ($auth_session->role_name == 'customer');
 
-$smarty->assign('number_of_invoices', $count);
-$smarty->assign('total_owing', $total_owing);
+$invoices = Invoice::getAllWithHavings($having);
+$smarty->assign('invoices', $invoices);
+$smarty->assign('number_of_invoices', count($invoices));
+$smarty->assign('read_only', $read_only);
 
-$having = "";
-if (isset($_GET['having'])) {
-    $having = "&having=" . $_GET['having'];
+if (!empty($having)) {
+    $having = "&amp;having=" . $having;
 }
-$url = 'index.php?module=invoices&view=xml' . $having;
 $smarty->assign('get_having', $having);
-$smarty->assign('url', $url);
 
 $smarty->assign('pageActive', "invoice");
 $smarty->assign('active_tab', '#money');

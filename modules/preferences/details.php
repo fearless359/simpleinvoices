@@ -10,13 +10,11 @@ Util::isAccessAllowed();
 
 //if valid then do save
 if (isset($_POST['p_description']) && $_POST['p_description'] != "" ) {
-	include("modules/preferences/save.php");
+    include("modules/preferences/save.php");
 }
 
-$preference_id = $_GET['id'];
-
-$preference = Preferences::getPreference($preference_id);
-$index_group = Preferences::getPreference($preference['index_group']);
+$preference = Preferences::getOne($_GET['id']);
+$index_group = Preferences::getOne($preference['index_group']);
 
 $preferences = Preferences::getActivePreferences();
 $defaults = SystemDefaults::loadValues();

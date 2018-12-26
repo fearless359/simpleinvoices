@@ -1,7 +1,7 @@
 /*
  * Product Change - updates line item with product price info
  */
-$("#customer_id").livequery('change', function() {
+$("#customer_id").change(function() {
     var $customer_id = $(this).val();
     invoice_customer_change($customer_id);
 });

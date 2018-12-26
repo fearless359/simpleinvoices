@@ -22,7 +22,7 @@
             {$preference.pref_inv_wording|htmlsafe}
             {$invoice.index_id|htmlsafe}
         </div>
-        <form name="frmpost" method="post"
+        <form name="frmpost" method="POST" id="frmpost"
               action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}" >
             <table class="center">
                 <tr>
@@ -30,7 +30,7 @@
                         <div class="si_toolbar si_toolbar_form">
                             <button type="submit" class="positive" name="submit">
                                 <img class="button_img" src="images/common/tick.png" alt=""/>
-                                {$LANG.yes}
+                                {$LANG.yes_uppercase}
                             </button>
                             <input type="hidden" name="doDelete" value="y"/>
                             <a href="index.php?module=invoices&amp;view=manage" class="negative">

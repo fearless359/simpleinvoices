@@ -3,7 +3,8 @@
 		You must enter a description for the preference</div>
 		<hr />
 {/if}
-<form name="frmpost" action="index.php?module=preferences&amp;view=save" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+	  action="index.php?module=preferences&amp;view=save">
 
 <div class="si_form">
 	<table>

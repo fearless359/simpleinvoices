@@ -10,7 +10,7 @@ $saved = false;
 $invoice_all = Invoice::getAll();
 
 if (($_POST ['op'] == 'add') && (! empty ( $_POST ['invoice_id'] ))) {
-    $invoice = Invoice::select ( $_POST ['invoice_id'] );
+    $invoice = Invoice::getOne( $_POST ['invoice_id'] );
 
     $eway_check = new Eway ();
     $eway_check->invoice = $invoice;

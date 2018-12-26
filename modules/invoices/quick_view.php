@@ -4,11 +4,10 @@ use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\Eway;
-use Inc\Claz\Extensions;
 use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
-use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
+use Inc\Claz\ProductAttributes;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
@@ -37,9 +36,9 @@ $invoice_id = $_GET['id'];
 $invoice                 = Invoice::getInvoice($invoice_id);
 $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($invoice_id);
 $invoice_type            = Invoice::getInvoiceType($invoice['type_id']);
-$customer                = Customer::get($invoice['customer_id']);
-$biller                  = Biller::select($invoice['biller_id']);
-$preference              = Preferences::getPreference($invoice['preference_id']);
+$customer                = Customer::getOne($invoice['customer_id']);
+$biller                  = Biller::getOne($invoice['biller_id']);
+$preference              = Preferences::getOne($invoice['preference_id']);
 $defaults                = SystemDefaults::loadValues();
 $invoiceItems            = Invoice::getInvoiceItems($invoice_id);
 
@@ -70,24 +69,15 @@ for($i=1;$i<=4;$i++) {
                                                       5, ':');
 }
 
-$attributes = array();
-try {
-    $pdoDb->setSelectAll(true);
-    $attributes = $pdoDb->request("SELECT", "products_attributes");
-} catch (PdoDbException $pde) {
-    error_log("modules/invoices/quick_view.php - error: " . $pde->getMessage());
-}
+$attributes = ProductAttributes::getAll();
 
 //Customer accounts sections
 $customerAccount = null;
-$customerAccount['total'] = Customer::calc_customer_total($customer['id'], true);
-$customerAccount['paid']  = Payment::calc_customer_paid($customer['id'] , true);
+$customerAccount['total'] = Customer::calcCustomerTotal($customer['id'], true);
+$customerAccount['paid']  = Payment::calcCustomerPaid($customer['id'] , true);
 $customerAccount['owing'] = $customerAccount['total'] - $customerAccount['paid'];
 
 $smarty->assign("attributes"             , $attributes);
-$smarty->assign('pageActive'             , 'invoice');
-$smarty->assign('subPageActive'          , 'invoice_view');
-$smarty->assign('active_tab'             , '#money');
 $smarty->assign("customFields"           , $customFields);
 $smarty->assign("customFieldLabels"      , $customFieldLabels);
 $smarty->assign("invoice_age"            , $invoice_age);
@@ -103,4 +93,8 @@ $smarty->assign("wordprocessor"          , $config->export->wordprocessor);
 $smarty->assign("spreadsheet"            , $config->export->spreadsheet);
 $smarty->assign("customerAccount"        , $customerAccount);
 $smarty->assign("eway_pre_check"         , $eway_pre_check);
+
+$smarty->assign('pageActive'   , 'invoice');
+$smarty->assign('subPageActive', 'invoice_view');
+$smarty->assign('active_tab'   , '#money');
 // @formatter:on

@@ -1,2 +1,2 @@
 <?php
-SubCustomers::getSubCustomer($_GET['id']);
+SubCustomers::getSubCustomerAjax($_GET['id']);

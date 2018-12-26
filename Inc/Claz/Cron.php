@@ -1,11 +1,98 @@
 <?php
 namespace Inc\Claz;
 
+use \Exception;
+
 /**
  * Class Cron
  * @package Inc\Claz
  */
 class Cron {
+
+    /**
+     * Retrieve a record for a specified id.
+     * @param int $id of record to retrieve.
+     * @return array
+     */
+    public static function getOne($id) {
+        return self::getCrons($id);
+    }
+
+    /**
+     * Retrieve all records for the domain
+     * @return array|mixed
+     */
+    public static function getAll() {
+        return self::getCrons();
+    }
+
+    /**
+     * @param int $id If not null, the id of the record to retrieve.
+     * @return array|mixed
+     */
+    public static function getCrons($id = null) {
+        global $LANG, $pdoDb;
+
+        $crons = array();
+        try {
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('cron.id', $id, 'AND');
+            }
+            $pdoDb->addSimpleWhere("cron.domain_id", DomainId::get());
+
+            $fn = new FunctionStmt("CONCAT", "pf.pref_description, ' ', iv.index_id");
+            $se = new Select($fn, null, null, null, "index_name");
+            $pdoDb->addToSelectStmts($se);
+
+            $jn = new Join('INNER', 'invoices', 'iv');
+            $jn->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");
+            $jn->addSimpleItem("cron.domain_id", new DbField("iv.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('INNER', 'customers', 'cust');
+            $jn->addSimpleItem("iv.customer_id", new DbField("cust.id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("cust.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join('INNER', 'preferences', 'pf');
+            $jn->addSimpleItem("iv.preference_id", new DbField("pf.pref_id"), "AND");
+            $jn->addSimpleItem("iv.domain_id", new DbField("pf.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $expr_list = array(
+                "cron.id",
+                "cron.domain_id",
+                "cron.email_biller",
+                "cron.email_customer",
+                "cron.start_date",
+                "cron.end_date",
+                "cron.invoice_id",
+                "cron.recurrence",
+                "cron.recurrence_type",
+                "cust.name"
+            );
+
+            $pdoDb->setSelectList($expr_list);
+
+            $pdoDb->setGroupBy($expr_list);
+
+            $pdoDb->setOrderBy("cron.id");
+
+            $rows = $pdoDb->request("SELECT", "cron", "cron");
+
+            foreach ($rows as $row) {
+                $row['email_biller_nice']   = ($row['email_biller']   == ENABLED ? $LANG['yes_uppercase'] : $LANG['no_uppercase']);
+                $row['email_customer_nice'] = ($row['email_customer'] == ENABLED ? $LANG['yes_uppercase'] : $LANG['no_uppercase']);
+                $crons[] = $row;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Cron::getCrons() - Error - " . $pde->getMessage());
+        }
+        if (empty($crons)) {
+            return array();
+        }
+        return (isset($id) ? $crons[0] : $crons);
+    }
 
     /**
      * @return int ID of inserted record. 0 if insert failed.
@@ -41,125 +128,23 @@ class Cron {
     }
 
     /**
-     * Not set up
+     * Delete a specific record
+     * @param int $id of record record to delete.
+     * @return bool true if succeeded; otherwise false.
      */
-    public static function delete() {
-    }
-
-    /**
-     * @param $type
-     * @param $sort
-     * @param $dir
-     * @param $rp
-     * @param $page
-     * @return array|mixed
-     */
-    public static function xmlSql($type, $sort, $dir, $rp, $page) {
+    public static function delete($id) {
         global $pdoDb;
 
-        $result = array();
+        $result = false;
         try {
-            $query = isset ($_POST ['query']) ? $_POST ['query'] : null;
-            $qtype = isset ($_POST ['qtype']) ? $_POST ['qtype'] : null;
-            if (!empty($qtype) && !empty($query)) {
-                if (in_array($qtype, array('iv.id', 'b.name', 'cron.id', 'aging'))) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
-                }
-            }
-            $pdoDb->addSimpleWhere("cron.domain_id", DomainId::get());
-
-            $oc = new OnClause();
-            $oc->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");
-            $oc->addSimpleItem("cron.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins(array("INNER", "invoices", "iv", $oc));
-
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.customer_id", new DbField("cust.id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("cust.domain_id"));
-            $pdoDb->addToJoins(array("INNER", "customers", "cust", $oc));
-
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.preference_id", new DbField("pf.pref_id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("pf.domain_id"));
-            $pdoDb->addToJoins(array("INNER", "preferences", "pf", $oc));
-
-            if ($type == "count") {
-                $pdoDb->addToFunctions("COUNT(*) AS count");
-                $rows = $pdoDb->request("SELECT", "cron", "cron");
-                return $rows[0]['count'];
-            }
-
-            if (empty($sort)) {
-                $pdoDb->setOrderBy("cron.id");
-            } else {
-                $dir = (preg_match('/^(a|d|asc|desc)$/iD', $dir) ? 'A' : 'D');
-                $pdoDb->setOrderBy(array($sort, $dir));
-            }
-
-            $start = (($page - 1) * $rp);
-            $pdoDb->setLimit($rp, $start);
-
-            $expr_list = array(
-                "cron.id",
-                "cron.domain_id",
-                "cron.email_biller",
-                "cron.email_customer",
-                "cron.start_date",
-                "cron.end_date",
-                "cron.invoice_id",
-                "cron.recurrence",
-                "cron.recurrence_type",
-                "cust.name"
-            );
-
-            $pdoDb->setSelectList($expr_list);
-
-            $pdoDb->setGroupBy($expr_list);
-
-            $fn = new FunctionStmt("CONCAT", "pf.pref_description, ' ', iv.index_id");
-            $se = new Select($fn, null, null, null, "index_name");
-            $pdoDb->addToSelectStmts($se);
-
-            $result = $pdoDb->request("SELECT", "cron", "cron");
+            $pdoDb->addSimpleWhere("id", $id, "AND");
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $result = $pdoDb->request("DELETE", "cron");
         } catch (PdoDbException $pde) {
-            error_log("Cron::xmlSql() - Error - " . $pde->getMessage());
+            error_log("modules/cron/delete - error: " . $pde->getMessage());
         }
+
         return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public static function select() {
-        global $pdoDb;
-
-        $rows = null;
-        try {
-            // Use this function to select crons that need to run each day across all domain_id values
-            $oc = new OnClause();
-            $oc->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");
-            $oc->addSimpleItem("cron.domain_id", new DbField("iv.domain_id"));
-            $pdoDb->addToJoins(array("INNER", "invoices", "iv", $oc));
-
-            $oc = new OnClause();
-            $oc->addSimpleItem("iv.preference_id", new DbField("pf.pref_id"), "AND");
-            $oc->addSimpleItem("iv.domain_id", new DbField("pf.domain_id"));
-            $pdoDb->addToJoins(array("INNER", "preferences", "pf", $oc));
-
-            $fn = new FunctionStmt("CONCAT", "pf.pref_description, ' ', iv.index_id");
-            $se = new Select($fn, null, null, null, "index_name");
-            $pdoDb->addToSelectStmts($se);
-
-            $pdoDb->addSimpleWhere("cron.id", $_GET['id'], "AND");
-            $pdoDb->addSimpleWhere("cron.domain_id", DomainId::get());
-
-            $pdoDb->setSelectList(array("cron.*", "cron.id", "cron.domain_id"));
-
-            $rows = $pdoDb->request("SELECT", "cron", "cron");
-        } catch (PdoDbException $pde) {
-            error_log("Cron::select() - Error - " . $pde->getMessage());
-        }
-        return (empty($rows) ? array() : $rows[0]);
     }
 
     /**
@@ -269,10 +254,10 @@ class Cron {
 
                         CronLog::insert($pdoDb, $domain_id, $cron_id, $today);
                         // @formatter:off
-                        $invoice               = Invoice::select($new_invoice_id);
-                        $preference            = Preferences::getPreference($invoice['preference_id'], $domain_id);
-                        $biller                = Biller::select($invoice['biller_id']);
-                        $customer              = Customer::get($invoice['customer_id']);
+                        $invoice               = Invoice::getOne($new_invoice_id);
+                        $preference            = Preferences::getOne($invoice['preference_id']);
+                        $biller                = Biller::getOne($invoice['biller_id']);
+                        $customer              = Customer::getOne($invoice['customer_id']);
                         $spc2us_pref           = str_replace(" ", "_", $invoice['index_name']);
                         $pdf_file_name_invoice = $spc2us_pref . ".pdf";
                         // @formatter:on
@@ -460,7 +445,9 @@ class Cron {
             $pdoDb->setGroupBy(array("cron.id", "cron.domain_id"));
             $rows = $pdoDb->request("SELECT", "cron", "cron");
         } catch (PdoDbException $pde) {
-            error_log("Cron::select_crons_to_run() - Error: " . $pde->getMessage());
+            error_log("Cron::get_crons_to_run() - Error: " . $pde->getMessage());
+        } catch (Exception $e) {
+            error_log("Cron::get_crons_to_run() - Error: " . $e->getMessage());
         }
         return $rows;
     }

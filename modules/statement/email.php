@@ -27,7 +27,7 @@ $message = "Unable to process email request.";
 if (empty($_GET['biller_id'])) {
     $biller = Biller::getDefaultBiller();
 } else {
-    $biller = Biller::select($_GET['biller_id']);
+    $biller = Biller::getOne($_GET['biller_id']);
 }
 
 if (empty($biller)) {
@@ -41,7 +41,7 @@ if (empty($biller)) {
 if (empty($_GET['customer_id'])) {
     $customer = array("id" => 0, "name" => "All");
 } else {
-    $customer = Customer::get($_GET['customer_id']);
+    $customer = Customer::getOne($_GET['customer_id']);
 }
 $customer_id = $customer['id'];
 

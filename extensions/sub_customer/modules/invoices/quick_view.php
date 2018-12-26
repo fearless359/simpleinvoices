@@ -36,12 +36,12 @@ $invoice_id = $_GET['id'];
 $invoice                 = Invoice::getInvoice($invoice_id);
 $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($invoice_id);
 $invoice_type            = Invoice::getInvoiceType($invoice['type_id']);
-$customer                = Customer::get($invoice['customer_id']);
-$biller                  = Biller::select($invoice['biller_id']);
-$preference              = Preferences::getPreference($invoice['preference_id']);
+$customer                = Customer::getOne($invoice['customer_id']);
+$biller                  = Biller::getOne($invoice['biller_id']);
+$preference              = Preferences::getOne($invoice['preference_id']);
 $defaults                = SystemDefaults::loadValues();
 $invoiceItems            = Invoice::getInvoiceItems($invoice_id);
-$sub_customer            = Customer::get($invoice['custom_field1']);
+$sub_customer            = Customer::getOne($invoice['custom_field1']);
 
 $eway_check          = new Eway();
 $eway_check->invoice = $invoice;
@@ -70,8 +70,8 @@ for($i=1;$i<=4;$i++) {
 }
 
 $customerAccount = null;
-$customerAccount['total'] = Customer::calc_customer_total($customer['id']);
-$customerAccount['paid']  = Payment::calc_customer_paid($customer['id']);
+$customerAccount['total'] = Customer::calcCustomerTotal($customer['id']);
+$customerAccount['paid']  = Payment::calcCustomerPaid($customer['id']);
 $customerAccount['owing'] = $customerAccount['total'] - $customerAccount['paid'];
 
 $smarty->assign("customFields"           , $customFields);

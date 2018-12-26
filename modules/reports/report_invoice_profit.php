@@ -27,9 +27,9 @@ isset($_POST['start_date']) ? $start_date = $_POST['start_date'] : $start_date =
 isset($_POST['end_date']) ? $end_date = $_POST['end_date'] : $end_date = lastOfMonth();
 
 // Select invoice date between range for real invoices.
-$pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
-$pdoDb->setHavings(Invoice::buildHavings("real"));
-$invoices = Invoice::select_all();
+$havings = array("date_between" => array($start_date, $end_date),
+                 "real" => '');
+$invoices = Invoice::getAllWithHavings($havings);
 
 $invoice_totals = array();
 foreach($invoices as $k=>$v) {
@@ -62,9 +62,9 @@ foreach($invoices as $k=>$v) {
         $invoice_total_cost += $product_total_cost;
     }
     $invoices[$k]['cost'  ] =  $invoice_total_cost;
-    $invoices[$k]['profit'] =  $invoices[$k]['invoice_total'] - $invoices[$k]['cost'];
+    $invoices[$k]['profit'] =  $invoices[$k]['total'] - $invoices[$k]['cost'];
 
-    $invoice_totals['sum_total' ] = $invoice_totals['sum_total' ] + $invoices[$k]['invoice_total'];
+    $invoice_totals['sum_total' ] = $invoice_totals['sum_total' ] + $invoices[$k]['total'];
     $invoice_totals['sum_cost'  ] = $invoice_totals['sum_cost'  ] + $invoices[$k]['cost'         ];
     $invoice_totals['sum_profit'] = $invoice_totals['sum_profit'] + $invoices[$k]['profit'       ];
 }

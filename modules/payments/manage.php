@@ -22,25 +22,29 @@ $customer   = null;
 if (!empty($_GET['id'])) {
     // Filter by just one invoice
     $inv_id        = $_GET['id'];
-    $payments      = Payment::getInvoicePayments($_GET['id']);
-    $invoice       = Invoice::getInvoice($_GET['id']);
-    $preference    = Preferences::getPreference($invoice['preference_id']);
+    $payments      = Payment::getInvoicePayments($inv_id);
+    $invoice       = Invoice::getInvoice($inv_id);
+    $preference    = Preferences::getOne($invoice['preference_id']);
     $subPageActive = "payment_filter_invoice";
+    $no_entry_msg  = $LANG['no_payments_invoice'];
 } else if (!empty($_GET['c_id'])) {
     // Filter by just one customer
     $c_id          = $_GET['c_id'];
-    $payments      = Payment::getCustomerPayments($_GET['c_id']);
-    $customer      = Customer::get($_GET['c_id']);
+    $payments      = Payment::getCustomerPayments($c_id);
+    $customer      = Customer::getOne($c_id);
     $subPageActive = "payment_filter_customer";
+    $no_entry_msg  = $LANG['no_payments_customer'];
 } else {
     // No filters
-    $payments = Payment::select_all();
+    $payments = Payment::getAll();
     $subPageActive = "payment_manage";
+    $no_entry_msg  = $LANG['no_payments'];
 }
 
-$smarty->assign("payments"  , $payments);
-$smarty->assign("preference", $preference);
-$smarty->assign("customer"  , $customer);
+$smarty->assign("payments"    , $payments);
+$smarty->assign("preference"  , $preference);
+$smarty->assign("customer"    , $customer);
+$smarty->assign('no_entry_msg', $no_entry_msg);
 
 $smarty->assign("c_id"  , $c_id);
 $smarty->assign("inv_id", $inv_id);

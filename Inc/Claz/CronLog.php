@@ -9,6 +9,24 @@ namespace Inc\Claz;
  */
 class CronLog
 {
+
+    /**
+     * @param PdoDb $pdoDb
+     * @param $domain_id
+     * @return array|mixed
+     */
+    public static function getOne(PdoDb $pdoDb, $domain_id) {
+        $rows = array();
+        try {
+            $pdoDb->addSimpleWhere("domain_id", $domain_id);
+            $pdoDb->setOrderBy(array(array("run_date", "DESC"), array("id", "DESC")));
+            $rows = $pdoDb->request("SELECT", "cron_log");
+        } catch (PdoDbException $pde) {
+            error_log("CronLog::getOne() - Error: " . $pde->getMessage());
+        }
+        return $rows;
+    }
+
     /**
      * @param PdoDb $pdoDb
      * @param $domain_id
@@ -48,22 +66,5 @@ class CronLog
             error_log("CronLog::check() - Error: " . $pde->getMessage());
         }
         return (empty($rows) ? 0 : $rows[0]['count']);
-    }
-
-    /**
-     * @param PdoDb $pdoDb
-     * @param $domain_id
-     * @return array|mixed
-     */
-    public static function select(PdoDb $pdoDb, $domain_id) {
-        $rows = array();
-        try {
-            $pdoDb->addSimpleWhere("domain_id", $domain_id);
-            $pdoDb->setOrderBy(array(array("run_date", "DESC"), array("id", "DESC")));
-            $rows = $pdoDb->request("SELECT", "cron_log");
-        } catch (PdoDbException $pde) {
-            error_log("CronLog::select() - Error: " . $pde->getMessage());
-        }
-        return $rows;
     }
 }

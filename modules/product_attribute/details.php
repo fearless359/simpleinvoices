@@ -4,25 +4,14 @@ use Inc\Claz\ProductAttributes;
 use Inc\Claz\ProductAttributeType;
 use Inc\Claz\Util;
 
-global $smarty, $LANG;
+global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-//if valid then do save
-if (!empty($_POST['name'])) {
-    include("modules/product_attribute/save.php");
-}
+$smarty->assign('product_attribute', ProductAttributes::getOne($_GET['id']));
+$smarty->assign("types", ProductAttributeType::getAll());
 
-$id = $_GET['id'];
-
-$attribute = ProductAttributes::get($id);
-$types = ProductAttributeType::getAll();
-
-$smarty->assign('product_attribute',$attribute);
-$smarty -> assign("types", $types);
-
-$pageActive = "product_attribute_manage";
-$smarty->assign('pageActive', $pageActive);
+$smarty->assign('pageActive', 'product_attribute_manage');
 $smarty->assign('active_tab', '#product');
 

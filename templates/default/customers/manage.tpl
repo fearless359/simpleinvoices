@@ -6,7 +6,7 @@
  *      GPL v3 or above
  *
  *  Last modified:
- *      2018-10-06 by Richard Rowley
+ *      2018-12-10 by Richard Rowley
  *
  *  Website:
  *      https://simpleinvoices.group
@@ -16,7 +16,7 @@
         {$LANG.thank_you} {$LANG.before_starting}
     </div>
     <table class="si_table_toolbar">
-        {if empty($billers)}
+        {if $number_of_billers == 0}
             <tr>
                 <th>{$LANG.setup_as_biller}</th>
                 <td class="si_toolbar">
@@ -27,7 +27,7 @@
                 </td>
             </tr>
         {/if}
-        {if empty($customers)}
+        {if $number_of_customers == 0}
             <tr>
                 <th>{$LANG.setup_add_customer}</th>
                 <td class="si_toolbar">
@@ -38,7 +38,7 @@
                 </td>
             </tr>
         {/if}
-        {if empty($products)}
+        {if $number_of_products == 0}
             <tr>
                 <th>{$LANG.setup_add_products}</th>
                 <td class="si_toolbar">
@@ -54,7 +54,7 @@
             <td class="si_toolbar">
                 <a href="index.php?module=system_defaults&amp;view=manage" class="">
                     <img src="images/common/cog_edit.png" alt=""/>
-                    {$LANG.system_preferences}
+                    {$LANG.si_defaults}
                 </a>
             </td>
         </tr>
@@ -69,8 +69,72 @@
     {if $number_of_customers == 0}
         <div class="si_message">{$LANG.no_customers}</div>
     {else}
-        <br/>
-        <table id="manageGrid" style="display: none"></table>
-        {include file='modules/customers/manage.js.php'}
+        <table id="si-data-table" class="display" >
+            <thead>
+                <tr>
+                    <th>{$LANG.actions}</th>
+                    <th>{$LANG.name}</th>
+                    <th>{$LANG.customer_department}</th>
+                    <th>{$LANG.last_invoice}</th>
+                    <th>{$LANG.total}</th>
+                    <th>{$LANG.paid}</th>
+                    <th>{$LANG.owing}</th>
+                    <th>{$LANG.enabled}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {foreach $customers as $customer}
+                <tr>
+                    <td>
+                        <a class="index_table" title="{$customer.vname}"
+                           href="index.php?module=customers&amp;view=details&amp;id={$customer.id}&amp;action=view">
+                            <img src="images/common/view.png" class="action" alt="view" />
+                        </a>
+                        <a class="index_table" title="{$customer.ename}"
+                           href="index.php?module=customers&amp;view=details&amp;id={$customer.id}&amp;action=edit">
+                            <img src="images/common/edit.png" class="action" alt="edit" />
+                        </a>
+                        <a class="index_table" title="{$defaultinv}"
+                           href="index.php?module=invoices&amp;view=usedefault&amp;customer_id={$customer.id}&amp;action=view">
+                            <img src="images/common/add.png" class="action" alt="add" />
+                        </a>
+                    </td>
+                    <td>{$customer.name}</td>
+                    <td>{$customer.department}</td>
+                    <td class="si_right">
+                        <a class="index_table" title="quick view"
+                           href="index.php?module=invoices&amp;view=quick_view&amp;id={$customer.last_inv_id}">
+                            {$customer.last_index_id}
+                        </a>
+                    </td>
+                    <td class="si_right">{$customer.total|siLocal_currency}</td>
+                    <td class="si_right">{$customer.paid|siLocal_currency}</td>
+                    <td class="si_right">{$customer.owing|siLocal_currency}</td>
+                    <td class="si_center">
+                        <!-- This span is here for datatables to order on -->
+                        <span style="display: none">{$customer.enabled_text}</span>
+                        <img src="{$customer.enabled_image}" alt="{$customer.enabled_text}" title="{$customer.enabled_text}" />
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {literal}
+            <script>
+                $(document).ready(function() {
+                    $('#si-data-table').DataTable({
+                        "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],
+                        "order": [
+                            [7, "desc"],
+                            [1, "asc"]
+                        ],
+                        "columnDefs": [
+                            { "targets": 0, "orderable": false }
+                        ],
+                        "colReorder": true
+                    });
+                });
+            </script>
+        {/literal}
     {/if}
 {/if}

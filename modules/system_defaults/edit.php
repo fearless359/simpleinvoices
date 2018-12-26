@@ -2,7 +2,6 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
-use Inc\Claz\DynamicJs;
 use Inc\Claz\PaymentType;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
@@ -114,40 +113,22 @@ switch ($get_val) {
         sort($files);
 
         $escaped = Util::htmlsafe($defaults['template']);
-        $value = '<select name="value">' . "\n";
-        $value .= '  <option selected value="' . $escaped . '" style="font-weight:bold;" >';
-        $value .= '    ' . $escaped;
-        $value .= '  </option>' . "\n";
-
+        $value = "<select name=\"value\">\n";
+        $value .= "  <option selected value=\"{$escaped}\" style=\"font-weight:bold;\" >{$escaped}</option>\n";
         foreach ($files as $var) {
             $var = Util::htmlsafe($var);
-            $value .= '  <option value="' . $var . '" >';
-            $value .= '    ' . $var;
-            $value .= '  </option> . "\n"';
+            $value .= "  <option value=\"{$var}\" >{$var}</option>\n";
         }
-
-        $value .= '</select>' . "\n";
+        $value .= "</select>\n";
         /****************************************************************
          * Make drop down list invoice template - end
-         ****************************************************************/
-
-        /****************************************************************
-         * Validation section - start
-         ****************************************************************/
-        DynamicJs::begin();
-        DynamicJs::formValidationBegin("frmpost");
-        DynamicJs::validateRequired("def_inv_template", "{$LANG['default_inv_template']}");
-        DynamicJs::formValidationEnd();
-        DynamicJs::end();
-        /****************************************************************
-         * Validation section - end
          ****************************************************************/
 
         $description = $LANG['default_inv_template'];
         break;
 
     case "def_payment_type":
-        $payments = PaymentType::select_all(true);
+        $payments = PaymentType::getAll(true);
         if (empty($payments)) {
             $value = "<p><em>{$LANG['payment_type']}</em></p>";
         } else {
@@ -168,14 +149,10 @@ switch ($get_val) {
         break;
 
     case "default_invoice":
-        DynamicJs::begin();
-        DynamicJs::formValidationBegin("frmpost");
-        DynamicJs::validateifNum("default_invoice", $LANG['default_invoice']);
-        DynamicJs::formValidationEnd();
-        DynamicJs::end();
-
         $default = "default_invoice";
-        $value = '<input type="text" size="10" name="value" value="' . Util::htmlsafe($defaults['default_invoice']) . '">';
+        $value = "<input type=\"text\" size=\"10\" name=\"value\" " .
+                        "class=\"validate[required,custom[onlyNumber]\" value=\"" .
+                         Util::htmlsafe($defaults['default_invoice']) . "\">";
         $description = "{$LANG['default_invoice']}";
         break;
 
@@ -218,14 +195,10 @@ switch ($get_val) {
         break;
 
     case "line_items":
-        DynamicJs::begin();
-        DynamicJs::formValidationBegin("frmpost");
-        DynamicJs::validateifNum("def_num_line_items", "Default number of line items");
-        DynamicJs::formValidationEnd();
-        DynamicJs::end();
-
         $default = "line_items";
-        $value = '<input type="text" size="25" name="value" value="' . Util::htmlsafe($defaults['line_items']) . '">';
+        $value = "<input type=\"text\" size=\"25\" name=\"value\" " .
+                        "class=\"validate[required,custom[onlyNumber]\" value=\"" .
+                         Util::htmlsafe($defaults['line_items']) . "\">";
         $description = "{$LANG['default_number_items']}";
         break;
 

@@ -15,7 +15,7 @@ Util::allowDirectAccess();
 //if this page has error with auth remove the above line and figure out how to do it right
 
 $lines = array();
-$invoices = Invoice::getInvoices($_GET["q"]);
+$invoices = Invoice::getInvoicesWithHtmlTotals($_GET["q"]);
 foreach($invoices as $invoice) {
     $total = Util::htmlsafe(number_format($row['total'],2));
     $paid  = Util::htmlsafe(number_format($row['paid'],2));

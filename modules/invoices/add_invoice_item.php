@@ -26,7 +26,7 @@ if(isset($_POST['submit'])) {
                                $_POST['tax_id'], trim($_POST['description']), $_POST['unit_price1']);
     Invoice::updateAging($id);
 } else {
-    $products = Product::getAll();
+    $products = Product::getAll(true);
     $smarty -> assign("products",$products);
 }
 

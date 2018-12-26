@@ -3,28 +3,30 @@
 use Inc\Claz\PaymentType;
 use Inc\Claz\Util;
 
-global $smarty;
+global $LANG, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed.
 Util::isAccessAllowed();
 
-// Deal with op and add some basic sanity checking
-$op = !empty($_POST['op']) ? addslashes($_POST['op']) : NULL;
+$display_block = "<div class=\"si_message_error\">{$LANG['save_payment_type_failure']}</div>";
+$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=payment_types&amp;view=manage\"/>";
 
-$saved = false;
-if ($op === 'insert_payment_type') {
-    if (PaymentType::insert($_POST['pt_description'], $_POST['pt_enabled']) > 0) $saved = true;
-} else if ($op === 'edit_payment_type') {
-    if (isset($_POST['save_payment_type'])) {
-        $saved = PaymentType::update($_GET['id'], $_POST['pt_description'], $_POST['pt_enabled']);
+// Deal with op and add some basic sanity checking
+$op = !empty($_POST['op']) ? addslashes($_POST['op']) : null;
+
+if ($op === 'add') {
+    if (PaymentType::insert()) {
+        $display_block = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
+    }
+} else if ($op === 'edit') {
+    if (PaymentType::update($_GET['id'])) {
+        $display_block = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
     }
 }
 
-$refresh_total = '&nbsp';
-
-$smarty->assign('refresh_total', $refresh_total);
-$smarty->assign('saved', $saved);
+$smarty->assign('display_block', $display_block);
+$smarty->assign('refresh_redirect', $refresh_redirect);
 
 $smarty->assign('pageActive', 'payment_type');
 $smarty->assign('active_tab', '#setting');

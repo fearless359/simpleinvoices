@@ -18,7 +18,8 @@
         <h4><strong>{$LANG.add_new_user}</strong></h4>
     </div>
     <hr/>
-    <form name="frmpost" action="index.php?module=user&amp;view=add" method="post" id="frmpost">
+    <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=user&amp;view=add">
         <input type="hidden" name="role_id" value="0"/>
         <input type="hidden" name="enabled" value="{$smarty.const.DISABLED}"/>
         <div class="si_form">

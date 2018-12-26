@@ -1,5 +1,11 @@
 {
   "name": "simpleinvoices",
   "version": "1.0.0",
-  "dependencies": {}
+  "dependencies": {
+    "datatables.net": "^1.10.19",
+    "datatables.net-dt": "^1.10.19",
+    "jquery": "^3.3.1",
+    "qtip2": "^3.0.3"
+  },
+  "devDependencies": {}
 }
