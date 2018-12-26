@@ -20,19 +20,24 @@
     <div class="si_filters_invoices si_buttons_manage_invoices">
         <span class='si_filters_title'>{$LANG.filters}:</span>
         <span class='si_filters_links'>
-            <a href="index.php?module=invoices&amp;view=manage" class="first{if $get_having==''} selected{/if}">
+            <a href="index.php?module=invoices&amp;view=manage"
+               class="first{if !isset($smarty.get.having) || empty($smarty.get.having)==''} selected{/if}">
               {$LANG.all}
             </a>
-            <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed" class="{if $get_having=='money_owed'}selected{/if}">
+            <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed"
+               class="{if isset($smarty.get.having) && $smarty.get.having=='money_owed'}selected{/if}">
               {$LANG.due}
             </a>
-            <a href="index.php?module=invoices&amp;view=manage&amp;having=paid" class="{if $get_having=='paid'}selected{/if}">
+            <a href="index.php?module=invoices&amp;view=manage&amp;having=paid"
+               class="{if isset($smarty.get.having) && $smarty.get.having=='paid'}selected{/if}">
               {$LANG.paid}
             </a>
-            <a href="index.php?module=invoices&amp;view=manage&amp;having=draft" class="{if $get_having=='draft'}selected{/if}">
+            <a href="index.php?module=invoices&amp;view=manage&amp;having=draft"
+               class="{if isset($smarty.get.having) && $smarty.get.having=='draft'}selected{/if}">
               {$LANG.draft}
             </a>
-            <a href="index.php?module=invoices&amp;view=manage&amp;having=real" class="{if $get_having=='real'}selected{/if}">
+            <a href="index.php?module=invoices&amp;view=manage&amp;having=real"
+               class="{if isset($smarty.get.having) && $smarty.get.having=='real'}selected{/if}">
               {$LANG.real}
             </a>
         </span>
@@ -99,7 +104,7 @@
                 <td>{$invoice['biller']}</td>
                 <td>{$invoice['customer']}</td>
                 <td class="si_center">{$invoice['date']|siLocal_date}</td>
-                <td class="si_right">{$invoice['invoice_total']|siLocal_currency}</td>
+                <td class="si_right">{$invoice['total']|siLocal_currency}</td>
                 {if isset($invoice['status'])}
                     <td class="si_right">{$invoice['owing']|siLocal_currency}</td>
                     <td class="si_right">{$invoice['aging']}</td>

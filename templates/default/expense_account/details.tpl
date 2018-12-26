@@ -1,4 +1,5 @@
-<form name="frmpost" action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}">
     {if $smarty.get.action == 'view'}
         <br/>
         <table class="center">

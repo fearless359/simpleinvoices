@@ -1,7 +1,6 @@
 
-<form name="frmpost"
-  action="index.php?module=reports&amp;view=report_expense_account_by_period"
-  method="post">
+<form name="frmpost" method="POST" id="frmpost"
+  action="index.php?module=reports&amp;view=report_expense_account_by_period">
   <table class="center">
     <tr>
       <td>Start date (YYYY-MM-DD)

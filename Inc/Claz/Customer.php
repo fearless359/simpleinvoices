@@ -26,62 +26,12 @@ class Customer {
     }
 
     /**
-     * Insert a new customer record.
-     * @param bool $excludeCreditCardNumber true if no credit card number to store, false otherwise.
-     * @return bool true if insert succeeded, false if failed.
-     */
-    public static function insertCustomer($excludeCreditCardNumber) {
-        global $pdoDb;
-
-        try {
-            if ($excludeCreditCardNumber) {
-                $pdoDb->setExcludedFields('credit_card_number');
-            }
-            $pdoDb->request('INSERT', 'customers');
-        } catch (PdoDbException $pde) {
-            error_log("Customer::insertCustomer(): Unable to add new customer record. Error: " . $pde->getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Update an existing customer record.
-     * @param int $id of customer to update.
-     * @param bool $excludeCreditCardNumber true if credit card number field should be
-     *          excluded, false to include it.
-     * @param array $fauxPostList If specified, the associative array of fields to update.
-     * @return bool true if update ok, false otherwise.
-     */
-    public static function updateCustomer($id, $excludeCreditCardNumber, $fauxPostList = null) {
-        global $pdoDb;
-
-        try {
-            $excludedFields = array('id', 'domain_id');
-            if ($excludeCreditCardNumber) $excludedFields[] = 'credit_card_number';
-            $pdoDb->setExcludedFields($excludedFields);
-
-            if (!empty($fauxPostList)) {
-                $pdoDb->setFauxPost($fauxPostList);
-            }
-            $pdoDb->addSimpleWhere('id', $id, 'AND');
-            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
-            $pdoDb->request('UPDATE', 'customers');
-        } catch (PdoDbException $pde) {
-            error_log("Customer::updateCustomer(): Unable to update the customer record. Error: " . $pde->getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Get a customer record.
      * @param string $id Unique ID record to retrieve.
      * @return array Row retrieved. Test for "=== false" to check for failure.
      */
     public static function getOne($id) {
-        $rows = self::getCustomers($id);
-        return (empty($rows) ? $rows : $rows[0]);
+        return self::getCustomers($id);
     }
 
     /**
@@ -138,24 +88,28 @@ class Customer {
 
             $rows = $pdoDb->request("SELECT", "customers");
             if ($no_totals) {
-                return $rows;
-            }
-
-            foreach ($rows as $customer) {
-                self::getLastInvoiceIds($customer['id'], $last_index_id, $last_id);
-                $customer['last_index_id'] = $last_index_id;
-                $customer['last_inv_id'] = $last_id;
-                $customer['enabled_image'] = ($customer['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
-                $customer['enabled'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
-                $customer['total'] = self::calc_customer_total($customer['id']);
-                $customer['paid'] = Payment::calcCustomerPaid($customer['id']);
-                $customer['owing'] = $customer['total'] - $customer['paid'];
-                $customers[] = $customer;
+                $customers = $rows;
+            } else {
+                foreach ($rows as $row) {
+                    self::getLastInvoiceIds($row['id'], $last_index_id, $last_id);
+                    $row['last_index_id'] = $last_index_id;
+                    $row['last_inv_id'] = $last_id;
+                    $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
+                    $row['total'] = self::calcCustomerTotal($row['id']);
+                    $row['paid'] = Payment::calcCustomerPaid($row['id']);
+                    $row['owing'] = $row['total'] - $row['paid'];
+                    $customers[] = $row;
+                }
             }
         } catch (PdoDbException $pde) {
             error_log("Customer::getAll() - PdoDbException thrown: " . $pde->getMessage());
         }
-        return $customers;
+
+        if (empty($customers)) {
+            return array();
+        }
+
+        return (isset($id) ? $customers[0] : $customers);
     }
 
     /**
@@ -165,64 +119,14 @@ class Customer {
     public static function getCustomerInvoices($id) {
         global $pdoDb;
 
+
         $invoices = array();
         try {
-            $fn = new FunctionStmt("SUM", "COALESCE(ii.total,0)");
-            $fr = new FromStmt("invoice_items", "ii");
-            $wh = new WhereClause();
-            $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), "AND");
-            $wh->addSimpleItem("ii.domain_id", new DbField("iv.domain_id"));
-            $se = new Select($fn, $fr, $wh, null, "invd");
-            $pdoDb->addToSelectStmts($se);
-
-            $fn = new FunctionStmt("SUM", "COALESCE(ap.ac_amount, 0)");
-            $fr = new FromStmt("payment", "ap");
-            $wh = new WhereClause();
-            $wh->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
-            $wh->addSimpleItem("ap.domain_id", new DbField("iv.domain_id"));
-            $se = new Select($fn, $fr, $wh, null, "pmt");
-            $pdoDb->addToSelectStmts($se);
-
-            $fn = new FunctionStmt("COALESCE", "invd, 0");
-            $se = new Select($fn, null, null, null, "total");
-            $pdoDb->addToSelectStmts($se);
-
-            $fn = new FunctionStmt("COALESCE", "pmt, 0");
-            $se = new Select($fn, null, null, null, "paid");
-            $pdoDb->addToSelectStmts($se);
-
-            $fn = new FunctionStmt("", "total - paid");
-            $se = new Select($fn, null, null, null, "owing");
-            $pdoDb->addToSelectStmts($se);
-
-            $pdoDb->setSelectList(array("iv.id", "iv.index_id", "iv.date", "iv.type_id",
-                "pr.status", "pr.pref_inv_wording", "b.name"));
-
-            $jn = new Join("LEFT", "preferences", "pr");
-            $oc = new OnClause();
-            $oc->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
-            $oc->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
-            $jn->setOnClause($oc);
-            $pdoDb->addToJoins($jn);
-
-            $jn = new Join("LEFT", "biller", "b");
-            $oc = new OnClause();
-            $oc->addSimpleItem('b.id', new DbField('iv.biller_id'), 'AND');
-            $oc->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
-            $jn->setOnClause($oc);
-            $pdoDb->addToJoins($jn);
-
-            $pdoDb->addSimpleWhere("iv.customer_id", $id, "AND");
-            $pdoDb->addSimpleWhere("iv.domain_id", DomainId::get());
-
-            $pdoDb->setOrderBy(array("iv.id", "D"));
-
-            $rows = $pdoDb->request("SELECT", "invoices", "iv");
-            foreach ($rows as $row) {
-                $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-                $row['date'] = SiLocal::date($row['date']);
-                $invoices[] = $row;
-            }
+            // Using a trick here to add a selection key then call get all with
+            // no parameters so the selection key set here is applied in the
+            // standard access method.
+            $pdoDb->addSimpleWhere('customer_id', $id, 'AND');
+            $invoices = Invoice::getAll();
         } catch (PdoDbException $pde) {
             error_log("Customer::getCustomerInvoices() - id[$id] error: " . $pde->getMessage());
         }
@@ -254,11 +158,13 @@ class Customer {
     }
 
     /**
-     * @param $customer_id
-     * @param bool $isReal
+     * Get the total owing for a customer.
+     * @param int $id for customer to get the total for.
+     * @param bool $is_real if true, selects customer only if preferences statis is ENABLED.
+     *          If false (default), selection by ID and user's domain.
      * @return float total for customer.
      */
-    public static function calc_customer_total($customer_id, $isReal = false) {
+    public static function calcCustomerTotal($id, $is_real = false) {
         global $pdoDb;
 
         $total = 0;
@@ -270,7 +176,7 @@ class Customer {
             $jn->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
             $pdoDb->addToJoins($jn);
 
-            if ($isReal) {
+            if ($is_real) {
                 $jn = new Join("LEFT", "preferences", "pr");
                 $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
                 $jn->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
@@ -279,7 +185,7 @@ class Customer {
                 $pdoDb->addSimpleWhere("pr.status", ENABLED, "AND");
             }
 
-            $pdoDb->addSimpleWhere("iv.customer_id", $customer_id, "AND");
+            $pdoDb->addSimpleWhere("iv.customer_id", $id, "AND");
             $pdoDb->addSimpleWhere("ii.domain_id", DomainId::get());
 
             $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
@@ -328,18 +234,93 @@ class Customer {
     }
 
     /**
+     * Insert a new customer record.
+     * @param bool $excludeCreditCardNumber true if no credit card number to store, false otherwise.
+     * @return bool true if insert succeeded, false if failed.
+     */
+    public static function insertCustomer($excludeCreditCardNumber) {
+        global $pdoDb;
+
+        try {
+            $pdoDb->addSimpleWhere("name", $_POST['name'], "AND");
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $rows = $pdoDb->request("SELECT", "customers");
+            if (!empty($rows)) {
+                error_log("The specified customer name[{$_POST['name']}) already exists.");
+                return false;
+            }
+
+            if ($excludeCreditCardNumber) {
+                $pdoDb->setExcludedFields('credit_card_number');
+            }
+            $pdoDb->setExcludedFields('id');
+            $pdoDb->request('INSERT', 'customers');
+        } catch (PdoDbException $pde) {
+            error_log("Customer::insertCustomer(): Unable to add new customer record. Error: " . $pde->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Update an existing customer record.
+     * @param int $id of customer to update.
+     * @param bool $excludeCreditCardNumber true if credit card number field should be
+     *          excluded, false to include it.
+     * @param array $fauxPostList If specified, the associative array of fields to update.
+     * @return bool true if update ok, false otherwise.
+     */
+    public static function updateCustomer($id, $excludeCreditCardNumber, $fauxPostList = null) {
+        global $pdoDb;
+
+        try {
+            $excludedFields = array('id', 'domain_id');
+            if ($excludeCreditCardNumber) $excludedFields[] = 'credit_card_number';
+            $pdoDb->setExcludedFields($excludedFields);
+
+            if (!empty($fauxPostList)) {
+                $pdoDb->setFauxPost($fauxPostList);
+            }
+            $pdoDb->addSimpleWhere('id', $id, 'AND');
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+            $pdoDb->request('UPDATE', 'customers');
+        } catch (PdoDbException $pde) {
+            error_log("Customer::updateCustomer(): Unable to update the customer record. Error: " . $pde->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Mask a string with specified string of characters exposed.
      * @param string $value Value to be masked.
      * @param string $chr Character to replace masked characters.
      * @param int $num_to_show Number of characters to leave exposed.
      * @return string Masked value.
      */
-    public static function maskCreditCardNumber($value, $chr='x', $num_to_show=4) {
-        $len = strlen($value);
-        if ($len <= $num_to_show) return $value;
+    public static function maskCreditCardNumber($value, $chr='x', $num_to_show=4)
+    {
+        global $config;
+
+        if (empty($value)) {
+            return '';
+        }
+
+        // decrypt the value
+        $key = $config->encryption->default->key;
+        $enc = new Encryption();
+        $decrypted_value = $enc->decrypt($key, $value);
+
+        $len = strlen($decrypted_value);
+        if ($len <= $num_to_show) {
+            return $decrypted_value;
+        }
+
         $mask_len = $len - $num_to_show;
         $masked_value = "";
-        for ($i=0; $i<$mask_len; $i++) $masked_value .= $chr;
+        for ($i = 0; $i < $mask_len; $i++) {
+            $masked_value .= $chr;
+        }
         $masked_value .= substr($value, $mask_len);
         return $masked_value;
     }

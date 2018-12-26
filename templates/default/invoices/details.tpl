@@ -19,7 +19,8 @@
     <img src="images/common/gmail-loader.gif" alt="{$LANG.loading} ..."/>
     {$LANG.loading} ...
 </div>
-<form name="frmpost" method="post" id="frmpost" action="index.php?module=invoices&amp;view=save">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=invoices&amp;view=save">
     <div class="si_invoice_form">
         <table class='si_invoice_top'>
             <tr>
@@ -90,8 +91,11 @@
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="2">
-                    <textarea class="editor" name="description0" rows="10" cols="100%"
-                              style="overflow:scroll;">{$invoiceItems[0].description|outhtml}</textarea>
+                        <!--
+                        <textarea class="editor" name="description0">{*$invoiceItems[0].description|outhtml*}</textarea>
+                        -->
+                        <input name="description0" id="description0" {if isset($invoiceItems[0].description)}value="{$invoiceItems[0].description|outhtml}"{/if} type="hidden">
+                        <trix-editor input="description0"></trix-editor>
                     </td>
                 </tr>
             </table>
@@ -164,7 +168,7 @@
                     <th>{$LANG.unit_price}</th>
                 </tr>
                 </thead>
-                {foreach key=line from=$invoiceItems item=invoiceItem name=line_item_number}
+                {foreach $invoiceItems as $line => $invoiceItem}
                     <tbody class="line_item" id="row{$line|htmlsafe}">
                     <tr class="tr_{cycle name="rows" values="A,B"}">
                         <input type="hidden" id="delete{$line|htmlsafe}" name="delete{$line|htmlsafe}" size="3"/>
@@ -179,7 +183,8 @@
                             </a>
                         </td>
                         <td>
-                            <input class="si_right" type="text" name='quantity{$line|htmlsafe}' id='quantity{$line|htmlsafe}'
+                            <input class="si_right {if $line == 0}validate[required,min[.01],custom[number]]{/if}"
+                                   type="text" name='quantity{$line|htmlsafe}' id='quantity{$line|htmlsafe}'
                                    value='{$invoiceItem.quantity|siLocal_number_trim}' size="5"/>
                         </td>
                         <td>
@@ -245,8 +250,11 @@
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="4">
-                    <textarea class="editor" name="note" rows="10" cols="100%"
-                              style="overflow:scroll;">{$invoice.note|outhtml}</textarea>
+                        <!--
+                        <textarea class="editor" name="note">{*$invoice.note|outhtml*}</textarea>
+                        -->
+                        <input name="note" id="note" {if isset($invoice.note)}value="{$invoice.note|outhtml}"{/if} type="hidden">
+                        <trix-editor input="note"></trix-editor>
                     </td>
                 </tr>
                 <tr>

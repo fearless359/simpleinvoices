@@ -1,4 +1,4 @@
-<form name="frmpost" method="post" id="frmpost" onsubmit="return checkForm(this);"
+<form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=products&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     {if $smarty.get.action== 'view' }
         <div class="si_form si_form_view">
@@ -23,7 +23,7 @@
                 {/if}
                 <tr>
                     <th>{$LANG.default_tax}</th>
-                    <td>{$tax_selected.tax_description|htmlsafe}&nbsp;{$tax_selected.type|htmlsafe}</td>
+                    <td>{if isset($tax_selected.tax_description)}{$tax_selected.tax_description|htmlsafe}&nbsp;{/if}{if isset($tax_selected.type)}{$tax_selected.type|htmlsafe}{/if}</td>
                 </tr>
                 {if !empty($customFieldLabel.product_cf1)}
                     <tr>
@@ -54,7 +54,7 @@
                     <tr>
                         <th>{$cflg.field_label|trim|htmlsafe}</th>
                         <td><input type="checkbox" disabled="disabled" name="custom_flags_{$cflg.flg_id}"
-                                    {if substr($product.custom_flags,$i,1) == ENABLED} checked {/if} value="1"/>
+                                    {if substr($product.custom_flags,$i,1) == $smarty.const.ENABLED}checked{/if} value="1"/>
                         </td>
                     </tr>
                 {/foreach}
@@ -65,14 +65,14 @@
                     </tr>
                     {foreach $attributes as $attribute}
                         {assign var="i" value=$attribute.id}
-                        {if $attribute.enabled == ENABLED ||
+                        {if $attribute.enabled == $smarty.const.ENABLED ||
                             (isset($product.attribute_decode[$i]) && $product.attribute_decode[$i] == 'true')}
                             <tr>
                                 <td></td>
                                 <th class="details_screen product_attribute">
                                     <input type="checkbox" disabled="disabled" name="attribute{$i}"
-                                            {if isset($product.attribute_decode[$i]) &&
-                                                $product.attribute_decode[$i] == 'true'} checked {/if} value="true"/>
+                                           {if isset($product.attribute_decode[$i]) &&
+                                               $product.attribute_decode[$i] == 'true'}checked{/if} value="true"/>
                                     {$attribute.name}
                                 </th>
                             </tr>
@@ -279,7 +279,11 @@
                         <tr>
                             <th>{$LANG.notes}</th>
                             <td>
-                                <textarea name="notes" class="editor" rows="8" cols="50">{$product.notes|unescape}</textarea>
+                                <!--
+                                <textarea name="notes" class="editor">{*$product.notes|unescape*}</textarea>
+                                -->
+                                <input name="notes" id="notes" {if isset($product.notes)}value="{$product.notes|outhtml}"{/if} type="hidden">
+                                <trix-editor input="notes"></trix-editor>
                             </td>
                         </tr>
                         <tr>

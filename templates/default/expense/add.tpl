@@ -9,7 +9,8 @@
         </div>
         <hr/>
     {/if}
-    <form name="frmpost" action="index.php?module=expense&amp;view=add" method="POST" id="frmpost">
+    <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=expense&amp;view=add">
         <input type="hidden" name="op" value="add"/>
         <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
         <table class="left" width="100%">
@@ -107,7 +108,13 @@
                 <th class="left" colspan="2">{$LANG.notes}</th>
             </tr>
             <tr>
-                <td colspan="2"><textarea class="editor" name='note' rows="4" cols="40">{if isset($smarty.post.notes)}{$smarty.post.notes|unescape}{/if}</textarea></td>
+                <td colspan="2">
+                    <!--
+                    <textarea class="editor" name='note'>{*if isset($smarty.post.notes)*}{*$smarty.post.notes|unescape*}{*/if*}</textarea>
+                    -->
+                    <input name="note" id="note" {if isset($smarty.post.notes)}value="{$smarty.post.notes|outhtml}"{/if} type="hidden">
+                    <trix-editor input="note"></trix-editor>
+                </td>
             </tr>
         </table>
         <div class="si_toolbar si_toolbar_form">

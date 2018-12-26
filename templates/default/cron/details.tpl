@@ -66,7 +66,7 @@
                         <option value=''></option>
                         {foreach $invoice_all as $invoice}
                             <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if} >
-                                Inv#{$invoice.index_id}: ({$invoice.biller|htmlsafe}, {$invoice.customer|htmlsafe}, {$invoice.invoice_total|siLocal_number})
+                                Inv#{$invoice.index_id}: ({$invoice.biller|htmlsafe}, {$invoice.customer|htmlsafe}, {$invoice.total|siLocal_number})
                             </option>
                         {/foreach}
                     </select>

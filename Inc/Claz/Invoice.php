@@ -25,7 +25,6 @@ class Invoice
 
         $rows = 0;
         try {
-            $pdoDb->setSelectList('id');
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
             $rows = $pdoDb->request("SELECT", "invoices");
         } catch (PdoDbException $pde) {
@@ -42,138 +41,103 @@ class Invoice
      */
     public static function getOne($id)
     {
-        global $pdoDb;
-
-        $invoice = array();
-        try {
-            // Make sure aging is current. Don't worry about performance as
-            // this is only one record.
-            self::updateAging($id);
-
-            $domain_id = DomainId::get();
-            // @formatter:off
-            $list = array(new DbField("i.*"),
-                          new DbField("i.date", "date_original"),
-                          new DbField("i.owing", "owing"),
-                          new DbField("p.pref_inv_wording", "preference"),
-                          new DbField("p.status"));
-            $pdoDb->setSelectList($list);
-            $se = new Select(new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id"), null, null, null, "index_name");
-            $pdoDb->addToSelectStmts($se);
-
-            $pdoDb->addToFunctions(new FunctionStmt("SUM", "ii.tax_amount", "total_tax"));
-
-            $jn = new Join("LEFT", "preferences", "p");
-            $jn->addSimpleItem("i.preference_id", new DbField("p.pref_id"), 'AND');
-            $jn->addSimpleItem('i.domain_id', new DbField('p.domain_id'));
-            $pdoDb->addToJoins($jn);
-
-            $jn = new Join("LEFT", "invoice_items", "ii");
-            $jn->addSimpleItem("ii.invoice_id", new DbField("i.id"), 'AND');
-            $jn->addSimpleItem('ii.domain_id', new DbField('i.domain_id'));
-            $pdoDb->addToJoins($jn);
-
-            $pdoDb->addSimpleWhere("i.id", $id, "AND");
-            $pdoDb->addSimpleWhere("i.domain_id", $domain_id);
-
-            $rows = $pdoDb->request("SELECT", "invoices", "i");
-            if (!empty($rows)) {
-                $invoice                  = $rows[0];
-                $invoice['total']         = self::getInvoiceTotal($invoice['id']);
-                $invoice['gross']         = self::getInvoiceGross($invoice['id']);
-                $invoice['paid']          = Payment::calcInvoicePaid($invoice['id']);
-                $invoice['invoice_items'] = self::getInvoiceItems($id);
-                $invoice['tax_grouped']   = self::taxesGroupedForInvoice($id);
-                $invoice['calc_date']     = date('Y-m-d', strtotime($invoice['date']));
-            }
-            // @formatter:on
-        } catch (PdoDbException $pde) {
-            error_log("Invoice::getOne() - id[$id] error: " . $pde->getMessage());
-        }
-
-        return $invoice;
+        return self::getInvoices($id);
     }
 
     /**
-     * TODO: Change uses to handle commonly formatted record and get data from common private class method.
      * Get all the invoice records with associated information.
+     * <strong>NOTE:</strong> DO NOT CLEAR $pdoDb as some selection and other values might have been added
+     * @param string $sort field to order by, defaults to index_name.
+     * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
      * @return array invoice records.
      */
-    public static function getAll()
+    public static function getAll($sort="index_name", $dir="asc")
+    {
+        return self::getInvoices(null, $sort, $dir);
+    }
+
+    /**
+     * Retrieve all the invoices with using a having value if specified.
+     * @param mixed $having Can be:
+     *          <b>string:</b> One of the values defined in the buildHavings() method.
+     *          <b>array:</b> Associative array with an array element:
+     *              Ex: array("date_between" => array($start_date, $end_date)), or
+     *                  array("date_between" => array($start_date, $end_date),
+     *                        "real" => array());
+     * @param string $sort field to order by (optional).
+     * @param string $dir order by direction, "asc" or "desc" - (optional).
+     * @return array Invoices retrieved.
+     */
+    public static function getAllWithHavings($having, $sort="", $dir="")
     {
         global $pdoDb;
 
-        $results = array();
-        try {
-            $pdoDb->setSelectList(array(
-                new DbField("i.id", "id"),
-                new DbField('i.preference_id', 'preference_id'),
-                new DbField('i.date', 'date'),
-                new DbField('i.owing', 'owing'),
-                new DbField('i.last_activity_date', 'last_activity_date'),
-                new DbField('i.aging_date', 'aging_date')));
-
-            $fn = new FunctionStmt("CONCAT", "p.pref_inv_wording, ' ', i.index_id");
-            $pdoDb->addToSelectStmts(new Select($fn, null, null, null, "index_name"));
-
-            $jn = new Join("LEFT", "preferences", "p");
-            $jn->addSimpleItem("i.preference_id", new DbField("p.pref_id"), "AND");
-            $jn->addSimpleItem("i.domain_id", new DbField("p.domain_id"));
-            $pdoDb->addToJoins($jn);
-
-            $pdoDb->addSimpleWhere("i.domain_id", DomainId::get());
-
-            $pdoDb->setOrderBy("index_name");
-
-            $rows = $pdoDb->request("SELECT", "invoices", "i");
-            foreach ($rows as $row) {
-                $age_info = self::calculateAgeDays(
-                    $row['id'],
-                    $row['date'],
-                    $row['owing'],
-                    $row['last_activity_date'],
-                    $row['aging_date'],
-                    $row['preference_id']);
-                array_merge($row, $age_info);
-                $results[] = $row;
+        if (!empty($having)) {
+            try {
+                if (is_array($having)) {
+                    foreach ($having as $key => $value) {
+                        if (empty($value)) {
+                            $pdoDb->setHavings(Invoice::buildHavings($key));
+                        } else {
+                            $pdoDb->setHavings(Invoice::buildHavings($key, $value));
+                        }
+                    }
+                } else if (is_string($having)) {
+                    $pdoDb->setHavings(Invoice::buildHavings($having));
+                } else {
+                    // Will be caught below
+                    throw new PdoDbException("Invalid having parameter passed - ". print_r($having, true));
+                }
+            } catch (PdoDbException $pde) {
+                error_log("Invoice::getAllWithHavings() - Error: " . $pde->getMessage());
             }
-        } catch (PdoDbException $pde) {
-            error_log("Invoice::getAll() - error: " . $pde->getMessage());
         }
-        return $results;
+        return self::getInvoices(null, $sort, $dir);
     }
 
     /**
-     * TODO: Make this the private standard access method
-     * Standard invoice selection for display in flexgrid by xml files.
+     * Retrieve all active invoices that have an amount owing.
+     * @return array Invoices with an ENABLED preferences status and
+     *          a non-zero owing amount.
+     */
+    public static function getInvoicesOwing()
+    {
+        global $pdoDb;
+
+        $invoices_owing = array();
+        try {
+            $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
+            $rows = Invoice::getAll("id", "desc");
+            foreach ($rows as $row) {
+                if ($row['status'] == ENABLED && $row['owing'] != 0) {
+                    $invoices_owing[] = $row;
+                }
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::getInvoicesOwing() - Error: " . $pde->getMessage());
+        }
+        return $invoices_owing;
+    }
+
+    /**
+     * Retrieve standard format invoice arrays.
      * <strong>NOTE:</strong> DO NOT CLEAR $pdoDb as some selection and other values might have been added
      * prior to calling this method.
-     *
-     * @param string $type Three setting:
-     *        <ol>
-     *          <li><b>count</b> - Get the count of all records.</li>
-     *          <li><b>owing</b> - Get the total amount owing on all invoices.</li>
-     *          <li><b>all</b> - Access all records. Same as 'count' except array of rows is returned.</li>
-     *          <li><b>count_owing</b> - Return array containing the result of "count" and "owing".
-     *              Indecies are "count" and "total_owing".</li>
-     *          <li><b>&nbsp;&nbsp;</b> - All other settings are result in normal access of data based on specified criteria.</li>
-     *        </ol>
-     * @param string $sort Field to order results.
-     * @param string $dir Direction of the order (ASC, DESC, A or D).
-     * @param string $rp Number of lines to report per page.
-     * @param string $page Page number processed.
-     * @param string $qtype Special query field name.
-     * @param string $query Value to look for. Will be enclosed in wildcards and searched using <i>LIKE</i>.
+     * @param int $id If not null, the ID of the invoices to retrieve.
+     * @param string $sort field to order by, defaults to index_name.
+     * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
      * @return array Selected rows.
      */
-    public static function selectAll($type = "", $sort = "", $dir = "", $rp = null, $page = "", $qtype = "", $query = "")
+    private static function getInvoices($id = null, $sort = "", $dir = "")
     {
         global $auth_session, $pdoDb;
 
-        $results = array();
-        $inv_count = 0;
-        $total_owing = 0;
+        $invoices = array();
         try {
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('iv.id', $id, 'AND');
+            }
+
             // If user role is customer or biller, then restrict invoices to those they have access to.
             if ($auth_session->role_name == 'customer') {
                 $pdoDb->addSimpleWhere("c.id", $auth_session->user_id, "AND");
@@ -181,45 +145,29 @@ class Invoice
                 $pdoDb->addSimpleWhere("b.id", $auth_session->user_id, "AND");
             }
 
+            // If caller pass a null value, that mean there is no limit.
+            $pdoDb->addSimpleWhere("iv.domain_id", DomainId::get());
+
             if (empty($sort) ||
-                !in_array($sort, array('index_id', 'b.name', 'c.name', 'date', 'invoice_total', 'owing', 'aging'))) $sort = "index_id";
+                !in_array($sort, array('index_id', 'b.name', 'c.name', 'date', 'total', 'owing', 'aging'))) $sort = "index_id";
             if (empty($dir)) $dir = "DESC";
             $pdoDb->setOrderBy(array($sort, $dir));
 
-            // If caller pass a null value, that mean there is no limit.
-            // @formatter:off
-            $count_type = ($type == 'count' || $type == "count_owing");
-            $calc_owing = ($type == 'owing' || $type == "count_owing");
-            $all        = ($type == 'all');
-            if (isset($rp) && !$count_type && !$calc_owing && !$all) {
-                if (empty($rp)) $rp = "25";
-                if (empty($page)) $page = "1";
-                $start = (($page - 1) * $rp);
-                $pdoDb->setLimit($rp, $start);
-            }
-            // @formatter:on
+            $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.total,0)", "total"));
 
-            if (!(empty($query) || empty($qtype))) {
-                if (in_array($qtype, array('index_id', 'b.name', 'c.name', 'date', 'invoice_total', 'owing', 'aging'))) {
-                    $pdoDb->addToWhere(new WhereItem(false, $qtype, "LIKE", "%$query%", false, "AND"));
-                }
-            }
-            $pdoDb->addSimpleWhere("iv.domain_id", DomainId::get());
+            $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.tax_amount,0)", "total_tax"));
 
-            $fn = new FunctionStmt("COALESCE", "SUM(ii.total),0");
-            $fr = new FromStmt("invoice_items", "ii");
-            $wh = new WhereClause();
-            $wh->addSimpleItem("ii.invoice_id", new DbField("iv.id"), 'AND');
-            $wh->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
-            $se = new Select($fn, $fr, $wh, null, "invoice_total");
-            $pdoDb->addToSelectStmts($se);
+            $jn = new Join("LEFT", "invoice_items", "ii");
+            $jn->addSimpleItem("ii.invoice_id", new DbField("iv.id"), 'AND');
+            $jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+            $pdoDb->addToJoins($jn);
 
-            $fn = new FunctionStmt("COALESCE", "SUM(ac_amount),0");
+            $fn = new FunctionStmt("SUM", "COALESCE(ac_amount,0)");
             $fr = new FromStmt("payment", "ap");
             $wh = new WhereClause();
             $wh->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), 'AND');
             $wh->addSimpleItem('ap.domain_id', new DbField('iv.domain_id'));
-            $se = new Select($fn, $fr, $wh, null, "INV_PAID");
+            $se = new Select($fn, $fr, $wh, null, "paid");
             $pdoDb->addToSelectStmts($se);
 
             $fn = new FunctionStmt("DATE_FORMAT", "date, '%Y-%m-%d'", "date");
@@ -252,24 +200,23 @@ class Invoice
                 "iv.age_days",
                 "iv.aging",
                 "iv.sales_representative",
+                "iv.customer_id",
+                "iv.biller_id",
+                new DbField("iv.date", "date_original"),
                 new DbField("iv.index_id", "index_id"),
+                new DbField("iv.preference_id", "preference_id"),
                 new DbField("iv.type_id", "type_id"),
                 new DbField("b.name", "biller"),
                 new DbField("c.name", "customer"),
-                new DbField("iv.preference_id", "preference_id"),
                 new DbField("pf.pref_description", "preference"),
                 new DbField("pf.status", "status"));
             $pdoDb->setSelectList($expr_list);
 
             $pdoDb->setGroupBy($expr_list);
 
-            $pdoDb->setGroupBy(array('date', 'index_name'));
-
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
-
-            $inv_count = count($rows);
             foreach ($rows as $row) {
-                $row['owing'] = $row['invoice_total'] - $row['INV_PAID'];
+                $row['owing'] = $row['total'] - $row['paid'];
                 $age_list = self::calculateAgeDays(
                     $row['id'],
                     $row['date'],
@@ -277,36 +224,19 @@ class Invoice
                     $row['last_activity_date'],
                     $row['aging_date'],
                     $row['preference_id']);
-                $total_owing += $age_list['owing'];
 
                 // The merge will update fields that exist and append those that don't.
-                $results[] = array_merge($row, $age_list);
+                $invoices[] = array_merge($row, $age_list);
             }
         } catch (PdoDbException $pde) {
-            error_log("Invoice::selectAll() - Error: " . $pde->getMessage());
+            error_log("Invoice::getInvoices() - Error: " . $pde->getMessage());
         }
 
-        // Return requested type.
-        switch ($type) {
-            case 'count_owing':
-                // Array with indecies for 'count' and 'total_owing'
-                return array('count' => $inv_count, 'total_owing' => $total_owing);
-            case 'count' :
-                // Count value.
-                return $inv_count;
-            case 'calc_owing':
-                // Total owing value.
-                return $total_owing;
-            case 'all':
-                // All invoice rows, et al selected.
-                break;
-            default:
-                // All invoice rows, et al selected.
-                break;
+        if (empty($invoices)) {
+            return array();
         }
 
-        // Return results for "all" or blank type.
-        return $results;
+        return (isset($id) ? $invoices[0] : $invoices);
     }
 
     /**
@@ -946,11 +876,11 @@ class Invoice
      * @param $q
      * @return mixed
      */
-    public static function getInvoices($q)
+    public static function getInvoicesWithHtmlTotals($q)
     {
         $results = array();
         if (isset($q)) {
-            $rows = self::select_all();
+            $rows = self::getAll();
             foreach ($rows as $row) {
                 $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
                 $row['date'] = SiLocal::date($row['date']);

@@ -1,5 +1,4 @@
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" method="post" onsubmit="return frmpost_Validator(this)"
+<form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=tax_rates&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     {if $smarty.get.action === 'view' }
         <div class="si_form si_form_view">
@@ -36,7 +35,10 @@
             <table>
                 <tr>
                     <th>{$LANG.description}</th>
-                    <td><input type="text" name="tax_description" value="{if isset($tax.tax_description)}{$tax.tax_description|htmlsafe}{/if}" class="validate[required]" size="25"/></td>
+                    <td>
+                        <input type="text" name="tax_description" class="validate[required]" size="25"
+                               value="{if isset($tax.tax_description)}{$tax.tax_description|htmlsafe}{/if}"/>
+                    </td>
                 </tr>
                 <tr>
                     <th>{$LANG.rate}
@@ -46,7 +48,8 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="tax_percentage" value="{$tax.tax_percentage|siLocal_number}" size="10"/>
+                        <input type="text" name="tax_percentage" class="validate[required,custom[number]]" size="10"
+                               value="{$tax.tax_percentage|siLocal_number}" size="10"/>
                         {html_options name=type options=$types selected=$tax.type}
                     </td>
                 </tr>

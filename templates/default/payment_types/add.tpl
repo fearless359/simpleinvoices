@@ -17,7 +17,7 @@
 {if !empty($smarty.post.pt_description)}
     {include file="templates/default/payment_types/save.tpl"}
 {else}
-    <form name="frmpost" method="post" onsubmit="return frmpost_Validator(this)"
+    <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=payment_types&amp;view=add">
         <div class="si_form">
             <table>

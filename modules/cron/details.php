@@ -9,7 +9,7 @@ if (isset($_POST['op']) && $_POST['op'] =='edit' && !empty($_POST['invoice_id'])
     include 'modules/cron/save.php';
 }
 
-$invoice_all = Invoice::selectAll('', 'id');
+$invoice_all = Invoice::getAll('id');
 $cron = Cron::getOne($_GET['id']);
 
 $smarty->assign('invoice_all', $invoice_all);

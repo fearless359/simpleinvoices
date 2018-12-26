@@ -18,36 +18,19 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$dir    = (isset($_POST['sortorder'])) ? $_POST['sortorder'] : "DESC";
-$sort   = (isset($_POST['sortname']) ) ? $_POST['sortname']  : "id";
-$rp     = (isset($_POST['rp'])       ) ? $_POST['rp']        : "25";
-$having = (isset($_GET['having'])    ) ? $_GET['having']     : "";
-$page   = (isset($_POST['page'])     ) ? $_POST['page']      : "1";
-$query  = (isset($_POST['query'])    ) ? $_POST['query']     : null;
-$qtype  = (isset($_POST['qtype'])    ) ? $_POST['qtype']     : null;
+$having = (isset($_GET['having'])) ? $_GET['having'] : "";
 
 // If user role is customer or biller, then restrict invoices to those they have access to.
 // Make customer access read only. Billers change work only on those invoices generated for them.
 $read_only = ($auth_session->role_name == 'customer');
 
-if (!empty($having)) {
-    try {
-        $pdoDb->setHavings(Invoice::buildHavings($having));
-    } catch (PdoDbException $pde) {
-        error_log("modules/invoices/manage.php - error: " . $pde->getMessage());
-    }
-}
-
-$invoices = Invoice::selectAll(''     , $sort, $dir, $rp, $page, $qtype, $query);
-$count    = Invoice::selectAll('count', $sort, $dir, $rp, $page, $qtype, $query);
-
+$invoices = Invoice::getAllWithHavings($having);
 $smarty->assign('invoices', $invoices);
-$smarty->assign('number_of_invoices', $count);
+$smarty->assign('number_of_invoices', count($invoices));
 $smarty->assign('read_only', $read_only);
 
-$having = "";
-if (isset($_GET['having'])) {
-    $having = "&having=" . $_GET['having'];
+if (!empty($having)) {
+    $having = "&amp;having=" . $having;
 }
 $smarty->assign('get_having', $having);
 

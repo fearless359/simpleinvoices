@@ -9,7 +9,7 @@
  * License:
  *   GPL v3 or above
  *}
-<form name="frmpost" method="post" onsubmit="return checkForm(this);"
+<form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=billers&amp;view=save&amp;id={$smarty.get.id}">
     {if $smarty.get.action== 'view' }
         <input type="hidden" name="op" value="view_biller">
@@ -224,7 +224,13 @@
                             <img src="{$help_image_path}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><textarea name="signature" class="editor" rows="8" cols="30">{$biller.signature|htmlsafe}</textarea></td>
+                    <td>
+                        <!--
+                        <textarea name="signature" class="editor">{*$biller.signature|htmlsafe*}</textarea>
+                        -->
+                        <input name="signature" id="signature" {if isset($biller.signature)}value="{$biller.signature|outhtml}"{/if} type="hidden">
+                        <trix-editor input="signature"></trix-editor>
+                    </td>
                 </tr>
                 <tr>
                     <th>{$LANG.paypal_business_name}</th>
@@ -315,11 +321,23 @@
                 </tr>
                 <tr>
                     <th>{$LANG.invoice_footer}</th>
-                    <td><textarea name="footer" class="editor" rows="4" cols="50">{$biller.footer|htmlsafe}</textarea></td>
+                    <td>
+                        <!--
+                        <textarea name="footer" class="editor">{*$biller.footer|htmlsafe*}</textarea>
+                        -->
+                        <input name="footer" id="footer" {if isset($biller.footer)}value="{$biller.footer|outhtml}"{/if} type="hidden">
+                        <trix-editor input="footer"></trix-editor>
+                    </td>
                 </tr>
                 <tr>
                     <th>{$LANG.notes}</th>
-                    <td><textarea name="notes" class="editor" rows="8" cols="50">{$biller.notes|htmlsafe}</textarea></td>
+                    <td>
+                        <!--
+                        <textarea name="notes" class="editor">{*$biller.notes|htmlsafe*}</textarea>
+                        -->
+                        <input name="notes" id="notes" {if isset($biller.notes)}value="{$biller.notes|outhtml}"{/if} type="hidden">
+                        <trix-editor input="notes"></trix-editor>
+                    </td>
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}</th>

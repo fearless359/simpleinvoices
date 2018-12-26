@@ -8,7 +8,8 @@
         </div>
         <hr/>
     {/if}
-    <form name="frmpost" action="index.php?module=product_value&amp;view=add" method="post">
+    <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=product_value&amp;view=add">
         <div class="si_center"><h2>{$LANG.add_product_value}</h2></div>
         <table class="center">
             <tr>

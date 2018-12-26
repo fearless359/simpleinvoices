@@ -29,7 +29,7 @@ class Log
         if (preg_match('/^.*\/$/', $folder) == 1) {
             self::$folder = $folder;
         } else {
-            self::$$folder = $folder . '/';
+            self::$folder = $folder . '/';
         }
         self::$path = self::$folder . $file;
         self::$file = $file;

@@ -25,8 +25,8 @@
 </script>
 {/literal}
 
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" action="index.php?module=invoices&amp;view=save" method="post" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=invoices&amp;view=save">
     <h3>{$LANG.inv} {$LANG.inv_itemized}</h3>
     {include file="$path/header.tpl" }
     {* NOTE: the <table> tag for the following is in the header.tpl file. *}

@@ -2,7 +2,7 @@
 {if !empty($smarty.post.product_id)}
     {include file="templates/default/cron/save.tpl"}
 {else}
-    <form name="frmpost" method="POST" id="frmpost" onsubmit="return checkForm(this);"
+    <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=inventory&amp;view=add">
         <div class="si_form">
             <table>
@@ -43,8 +43,11 @@
                 <tr>
                     <th>{$LANG.notes}</th>
                     <td>
-                    <textarea name="note" class="editor" rows="8"
-                              cols="50">{if isset($smarty.post.note)}{$smarty.post.note|outhtml}{/if}</textarea>
+                        <!--
+                        <textarea name="note" class="editor">{*if isset($smarty.post.note)*}{*$smarty.post.note|outhtml*}{*/if*}</textarea>
+                        -->
+                        <input name="note" id="note" {if isset($smarty.post.note)}value="{$smarty.post.note|outhtml}"{/if} type="hidden">
+                        <trix-editor input="note"></trix-editor>
                     </td>
                 </tr>
             </table>

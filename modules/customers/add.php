@@ -2,7 +2,6 @@
 
 use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
-use Inc\Claz\DynamicJs;
 use Inc\Claz\Util;
 
 /*
@@ -13,7 +12,7 @@ use Inc\Claz\Util;
  *	    Justin Kelly, Nicolas Ruflin
  *
  * Last edited:
- * 	    2016-07-27
+ * 	 2018-12-21 by Richard Rowley
  *
  * License:
  *	    GPL v3 or above
@@ -27,16 +26,9 @@ global $smarty;
 Util::isAccessAllowed();
 
 //if valid then do save
-if (!empty($_POST['op']) && $_POST['op'] == 'add') {
+if (!empty($_POST['op']) && $_POST['op'] == 'add' && !empty($_POST['name'])) {
     include("modules/customers/save.php");
 } else {
-    DynamicJs::begin();
-    DynamicJs::formValidationBegin("frmpost");
-    DynamicJs::validateRequired("name",$LANG['name']);
-    DynamicJs::validateIfEmail("email", "true");
-    DynamicJs::formValidationEnd();
-    DynamicJs::end();
-
     $customFieldLabel = CustomFields::getLabels(true);
     $smarty->assign('customFieldLabel', $customFieldLabel);
     $smarty->assign('domain_id', DomainId::get());

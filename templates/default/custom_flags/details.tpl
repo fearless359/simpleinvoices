@@ -5,10 +5,8 @@
  * License:
  *  GPL v3 or above
  *}
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost"
-      action="index.php?module=custom_flags&amp;view=save&amp;associated_table={$cflg.associated_table|urlencode}&amp;flg_id={$cflg.flg_id|urlencode}"
-      method="POST" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=custom_flags&amp;view=save&amp;associated_table={$cflg.associated_table|urlencode}&amp;flg_id={$cflg.flg_id|urlencode}">
     {if $smarty.get.action == "view" }
         <div class="si_form si_form_view">
             <table>
@@ -108,9 +106,11 @@
                         </a>
                     </th>
                     <td>
-                        <textarea name="{$LANG.field_help_upper|lower}" class="editor" rows="3" cols="100" maxlength="255" wrap="soft">
-                            {$cflg.field_help|escape}
-                        </textarea>
+                        <!--
+                        <textarea name="{*$LANG.field_help_upper|lower*}" class="editor" maxlength="255" wrap="soft">{*$cflg.field_help|escape*}</textarea>
+                        -->
+                        <input name="{$LANG.field_help_upper|lower}" id="{$LANG.field_help_upper|lower}" {if isset($cflg.field_help)}value="{$cflg.field_help|outhtml}"{/if} type="hidden">
+                        <trix-editor input="{$LANG.field_help_upper|lower}"></trix-editor>
                     </td>
                 </tr>
             </table>

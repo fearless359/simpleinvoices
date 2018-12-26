@@ -2,11 +2,8 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
-use Inc\Claz\DynamicJs;
-use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
 use Inc\Claz\PaymentType;
-use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
@@ -24,38 +21,13 @@ foreach ($paymentTypes as $paymentType) {
     }
 }
 
-// Generate form validation script
-DynamicJs::begin();
-DynamicJs::formValidationBegin("frmpost");
-DynamicJs::validateIfNum("ac_amount",$LANG['amount']);
-DynamicJs::validateIfNum("ac_date",$LANG['date']);
-echo "if(theForm.ac_payment_type.value=='$chk_pt') {\n";
-echo "    var cknum = theForm.ac_check_number.value;\n";
-echo "    cknum = cknum.toUpperCase();\n";
-echo "    if(!(/^[1-9][0-9]* *$/).test(cknum) && cknum != 'N/A') {\n";
-echo "        alert('Enter a valid Check Number, \"N/A\" or change the Payment Type.');\n";
-echo "        theForm.ac_check_number.focus();\n";
-echo "        return (false);\n";
-echo "    };\n";
-echo "    theForm.ac_check_number.value = cknum;\n";
-echo "}\n";
-DynamicJs::formValidationEnd();
-DynamicJs::end();
-// end validation generation
-
 $today = date("Y-m-d");
 
 if(isset($_GET['id'])) {
     $invoice = Invoice::getOne($_GET['id']);
 } else {
-    $rows = array();
-    try {
-        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-        $rows = $pdoDb->request("SELECT", "invoices");
-    } catch (PdoDbException $pde) {
-        error_log("modules/payments/process.php - error(1): " . $pde->getMessage());
-    }
-    $invoice = $rows[0];
+    $rows = Invoice::getAll();
+    $invoice = (empty($rows) ? $rows : $rows[0]);
 }
 
 // @formatter:off
@@ -63,13 +35,7 @@ $customer = Customer::getOne($invoice['customer_id']);
 $biller   = Biller::getOne($invoice['biller_id']);
 $defaults = SystemDefaults::loadValues();
 
-// Presets value that will be used in the Invoice::selectAll() method.
-try {
-    $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
-} catch (PdoDbException $pde) {
-    error_log("modules/payments/process.php - error(2): " . $pde->getMessage());
-}
-$invoice_all = Invoice::selectAll("count", "id");
+$invoice_all = Invoice::getAllWithHavings("money_owed", "id");
 
 $smarty->assign('invoice_all',$invoice_all);
 

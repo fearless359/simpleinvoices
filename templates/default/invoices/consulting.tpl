@@ -10,9 +10,8 @@
 *	https://simpleinvoices.group
 */
 *}
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" action="index.php?module=invoices&amp;view=save"
-      method="post" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=invoices&amp;view=save">
     <h3>{$LANG.inv} {$LANG.inv_consulting}
         <div id="gmail_loading" class="gmailLoader" style="float:right; display: none;">
             <img src="images/common/gmail-loader.gif" alt="{$LANG.loading} ..."/> {$LANG.loading} ...
@@ -26,27 +25,29 @@
     </tr>
     {section name=line start=0 loop=$dynamic_line_items step=1}
         <tr>
-            <td><input type="text" id="quantity{$smarty.section.line.index|htmlsafe}" name="quantity{$smarty.section.line.index|htmlsafe}" size="5"/></td>
+            <td><input type="text" id="quantity{$smarty.section.line.index|htmlsafe}"
+                       {if $smarty.section.line.index == 0}class="validate[required,min[.01],custom[number]]"{/if}
+                       name="quantity{$smarty.section.line.index|htmlsafe}" size="5"/></td>
             </td>
             <td><input type="text" name="description{$smarty.section.line.index|htmlsafe}" size="50"/>
                 {if !isset($products) }
                     <p><em>{$LANG.no_products}</em></p>
                 {else}
                     <select name="products{$smarty.section.line.index|htmlsafe}"
-                            onchange="invoice_product_change_price($(this).val(), {$smarty.section.line.index|htmlsafe}, jQuery('#quantity{$smarty.section.line.index|htmlsafe}').val() );" >
+                            {if $smarty.section.line.index == 0}class="validate[required]"{/if}
+                            onchange="invoice_product_change_price($(this).val(), {$smarty.section.line.index|htmlsafe}, jQuery('#quantity{$smarty.section.line.index|htmlsafe}').val() );">
                         <option value=""></option>
-                        {foreach from=$products item=product}
+                        {foreach $products as $product}
                             <option {if $product.id == $defaults.product} selected {/if} value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
                         {/foreach}
                     </select>
                 {/if}
-				                				                
+
             </td>
             <td>
                 <input id="unit_price{$smarty.section.line.index|htmlsafe}" name="unit_price{$smarty.section.line.index|htmlsafe}" size="7" value=""/>
             </td>
         </tr>
-                
         <tr class="text{$smarty.section.line.index|htmlsafe} hide">
             <td colspan="3">
                 <textarea class="detail" name='description{$smarty.section.line.index|htmlsafe}'
@@ -62,7 +63,10 @@
         <td colspan="3" class="details_screen">{$LANG.notes}</td>
     </tr>
     <tr>
-        <td colspan="3"><textarea class="editor" height="60px" name="note" rows="5" cols="70"></textarea></td>
+        <td colspan="3">
+            <input name="note" id="note" type="hidden">
+            <trix-editor input="note"></trix-editor>
+        </td>
     </tr>
     <tr>
         <td class="details_screen">{$LANG.tax}</td>
@@ -71,7 +75,7 @@
                 <p><em>{$LANG.no_taxes}</em></p>
             {else}
                 <select name="tax_id">
-                    {foreach from=$taxes item=tax}
+                    {foreach $taxes as $tax}
                         <option {if $tax.tax_id == $defaults.tax} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
                     {/foreach}
                 </select>
@@ -85,7 +89,7 @@
                 <p><em>{$LANG.no_preferences}</em></p>
             {else}
                 <select name="preference_id">
-                    {foreach from=$preferences item=preference}
+                    {foreach $preferences as $preference}
                         <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
                     {/foreach}
                 </select>
@@ -94,7 +98,7 @@
     </tr>
     <tr>
         <td align="left">
-            <a class="cluetip" href="#" 
+            <a class="cluetip" href="#"
                rel="index.php?module=documentation&amp;view=view&amp;page=help_invoice_custom_fields" title="{$LANG.want_more_fields}">
                 <img src="{$help_image_path}help-small.png" alt=""/>
                 {$LANG.want_more_fields}

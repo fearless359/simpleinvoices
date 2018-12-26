@@ -2,12 +2,7 @@
 
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
-use Inc\Claz\DomainId;
-use Inc\Claz\DynamicJs;
-use Inc\Claz\Extensions;
 use Inc\Claz\Invoice;
-use Inc\Claz\Payment;
-use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 
 /*
@@ -18,7 +13,7 @@ use Inc\Claz\Util;
  *	 Justin Kelly, Nicolas Ruflin
  *
  * Last edited:
- * 	    2016-10-21
+ *      2018-12-21 by Richard Rowley
  *
  * License:
  *	    GPL v3 or above
@@ -26,65 +21,28 @@ use Inc\Claz\Util;
  * Website:
  * 	https://simpleinvoices.group
  */
-global $smarty, $LANG, $config;
+global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-DynamicJs::begin();
-DynamicJs::formValidationBegin("frmpost");
-DynamicJs::validateRequired("name",$LANG['name']);
-DynamicJs::validateIfEmail("email", "true");
-DynamicJs::formValidationEnd();
-DynamicJs::end();
-
-// @formatter:off
 $cid = $_GET['id'];
-$domain_id = DomainId::get();
 
 $customer = Customer::getOne($cid);
-$customer['enabled_text'] = ($customer['enabled'] == ENABLED ? $LANG['enabled'] : $LANG['disabled']);
-if (empty($customer['credit_card_number'])) {
-    $customer['credit_card_number_masked'] = "";
-} else {
-    try {
-        $key = $config->encryption->default->key;
-        $enc = new \Encryption();
-        $credit_card_number = $enc->decrypt($key, $customer['credit_card_number']);
-        $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($credit_card_number);
-    } catch (\Exception $e) {
-        throw new \Exception("details.php - Unable to decrypt credit card for Customer, $cid. " . $e->getMessage());
-    }
-}
-$invoices = Customer::getCustomerInvoices($cid);
+$customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($customer['credit_card_number']);
+$smarty->assign('customer', $customer);
 
-$customer['total'] = Customer::calc_customer_total($customer['id'], true);
-$customer['paid']  = Payment::calcCustomerPaid( $customer['id'], true);
-$customer['owing'] = $customer['total'] - $customer['paid'];
+$invoices = Customer::getCustomerInvoices($cid);
+$smarty->assign('invoices', $invoices);
 
 $customFieldLabel = CustomFields::getLabels(true);
-
-$dir    =  "DESC";
-$sort   =  "id";
-$rp     = (isset($_POST['rp'])       ? $_POST['rp']       : "25");
-$page   = (isset($_POST['page'])     ? $_POST['page']     : "1");
-$query  = (isset($_REQUEST['query']) ? $_REQUEST['query'] : "");
-$qtype  = (isset($_REQUEST['qtype']) ? $_REQUEST['qtype'] : "");
-
-try {
-    $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
-} catch (PdoDbException $pde) {
-    error_log("modules/customers/details.php - Unable to set Havings - error: " . $pde->getMessage());
-}
-
-$invoices_owing = Invoice::selectAll("", $sort, $dir, $rp, $page, $query, $qtype);
-$subPageActive  = ($_GET['action'] == "view"  ? "customer_view" : "customer_edit");
-
-$smarty->assign('customer'        , $customer);
-$smarty->assign('invoices'        , $invoices);
-$smarty->assign('invoices_owing'  , $invoices_owing);
 $smarty->assign('customFieldLabel', $customFieldLabel);
-$smarty->assign('pageActive'      , 'customer');
-$smarty->assign('subPageActive'   , $subPageActive);
-$smarty->assign('active_tab'      , '#people');
-// @formatter:on
+
+$invoices_owing = Invoice::getInvoicesOwing();
+$smarty->assign('invoices_owing', $invoices_owing);
+$smarty->assign('invoices_owing_count', count($invoices_owing));
+
+$smarty->assign('pageActive', 'customer');
+$subPageActive  = ($_GET['action'] == "view"  ? "customer_view" : "customer_edit");
+$smarty->assign('subPageActive', $subPageActive);
+$smarty->assign('active_tab', '#people');

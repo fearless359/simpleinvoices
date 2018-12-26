@@ -52,16 +52,17 @@ $statement             = array ("total" => 0, "owing" => 0, "paid" => 0);
 
 if (isset($_POST['submit'])) {
     try {
+        $havings = array();
         if (isset($_POST['do_not_filter_by_date'])) {
             $do_not_filter_by_date = "yes";
         } else {
             $do_not_filter_by_date = "no";
-            $pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
+            $havings[] = array("date_between" => array($start_date, $end_date));
         }
 
         if (isset($_POST['show_only_unpaid'])) {
             $show_only_unpaid = "yes";
-            $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
+            $havings[] = array("money_owed" => '');
         } else {
             $show_only_unpaid = "no";
         }
@@ -71,12 +72,12 @@ if (isset($_POST['submit'])) {
     } catch (PdoDbException $pde) {
         error_log("modules/statement/index.php - error: " . $pde->getMessage());
     }
-    $invoices = Invoice::selectAll("", "date", "D");
+    $invoices = Invoice::getAllWithHavings($havings, "date", "desc");
     foreach ( $invoices as $row ) {
         if ($row ['status'] > 0) {
-            $statement ['total'] += $row ['invoice_total'];
+            $statement ['total'] += $row ['total'];
             $statement ['owing'] += $row ['owing'];
-            $statement ['paid']  += $row ['INV_PAID'];
+            $statement ['paid']  += $row ['paid'];
         }
     }
 }

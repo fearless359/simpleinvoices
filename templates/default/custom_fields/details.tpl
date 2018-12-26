@@ -11,8 +11,7 @@
 * License:
 *	 GPL v3 or above
 *}
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" method="POST" onsubmit="return frmpost_Validator(this);"
+<form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}" >
     {if $smarty.get.action == "view" }
         <div class="si_form si_form_view">

@@ -2,7 +2,6 @@
 
 use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
-use Inc\Claz\DynamicJs;
 use Inc\Claz\Util;
 
 /*
@@ -28,12 +27,6 @@ Util::isAccessAllowed();
 if (!empty($_POST['op']) && $_POST['op'] == 'add') {
     include ("modules/billers/save.php");
 } else {
-    DynamicJs::begin();
-    DynamicJs::formValidationBegin("frmpost");
-    DynamicJs::validateRequired("name", $LANG['name']);
-    DynamicJs::formValidationEnd();
-    DynamicJs::end();
-
     $files = Util::getLogoList();
     $smarty->assign("files", $files);
 

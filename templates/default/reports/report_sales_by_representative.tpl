@@ -1,7 +1,8 @@
 <h2 class="si_report_title">{$LANG.sales_representative} {$LANG.report}</h2>
 {if $menu}
     <div class="welcome">
-        <form name="frmpost" action="index.php?module=reports&amp;view=report_Sales by Representative" method="post">
+        <form name="frmpost" method="POST" id="frmpost"
+              action="index.php?module=reports&amp;view=report_Sales by Representative">
             <table class="center">
                 <tr>
                     <th>{$LANG.sales_representative}</th>
@@ -122,7 +123,7 @@
                 <td>&nbsp;&nbsp;</td>
                 <td class="details_screen">{$invoices[invoice].customer}</td>
                 <td>&nbsp;&nbsp;</td>
-                <td class="details_screen">{$invoices[invoice].invoice_total|siLocal_number}</td>
+                <td class="details_screen">{$invoices[invoice].total|siLocal_number}</td>
             </tr>
         {/section}
         <tr>

@@ -442,6 +442,7 @@ Log::out("index.php - After main.tpl", \Zend_Log::DEBUG);
 $extensionTemplates = 0;
 $my_tpl_path = '';
 $path = '';
+$real_path = '';
 // For extensions with a report, this logic allows them to be inserted into the
 // the report menu (index.tpl) without having to replicate the content of that
 // file. There two ways to insert content; either as a new menu section or as
@@ -495,6 +496,7 @@ foreach ($ext_names as $ext_name) {
             // @formatter:on
         } else {
             $path = "extensions/$ext_name/templates/default/$module/";
+            $real_path = "templates/default/$module/";
             $my_tpl_path = $tpl_file;
             $extensionTemplates++;
         }
@@ -509,14 +511,20 @@ Log::out("index.php - After $module/$view.tpl", \Zend_Log::DEBUG);
 if ($extensionTemplates == 0) {
     if ($my_tpl_path = Util::getCustomPath("$module/$view")) {
         $path = dirname($my_tpl_path) . '/';
+        $real_path = $path;
         $extensionTemplates++;
     }
 }
 
 $smarty->assign("extension_insertion_files"   , $extension_insertion_files);
 $smarty->assign("perform_extension_insertions", $perform_extension_insertions);
+
+// If this is not an extension, $path and $real_path are the same. If it is an extension,
+// $path is relative to the extension and $real_path is relative to the standard library path.
 $smarty->assign("path"                        , $path);
-Log::out("index.php - my_tpl_path[$my_tpl_path]", \Zend_Log::DEBUG);
+$smarty->assign("real_path"                   , $real_path);
+
+Log::out("index.php - path[$path] my_tpl_path[$my_tpl_path]", \Zend_Log::DEBUG);
 $smarty->$smarty_output($my_tpl_path);
 Log::out("index.php - After output my_tpl_path[$my_tpl_path]", \Zend_Log::DEBUG);
 

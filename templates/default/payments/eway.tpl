@@ -26,7 +26,8 @@
         You must select an invoice</div>
         <hr />
     {/if}
-    <form name="frmpost" action="index.php?module=payments&amp;view=eway" method="POST" id="frmpost">
+    <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=payments&amp;view=eway">
         <br />
         <table class="center">
             <tr>

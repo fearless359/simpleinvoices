@@ -11,16 +11,12 @@
 <input type="hidden" name="action" value="insert" />
 <div class="si_filters si_buttons_invoice_header">
     <span class="si_filters_links">
-        <a href="index.php?module=invoices&amp;view=itemised
-                 {if $template}&amp;template={$template}{/if}
-                 {if $defaultCustomerID}&amp;customer_id={$defaultCustomerID}{/if}"
+        <a href="index.php?module=invoices&amp;view=itemised{if isset($template)}&amp;template={$template}{/if}{if isset($defaultCustomerID)}&amp;customer_id={$defaultCustomerID}{/if}"
            class="first{if $view=='itemised'} selected{/if}">
             <img class="action" src="images/common/edit.png"/>
             {$LANG.itemised_style}
         </a>
-        <a href="index.php?module=invoices&amp;view=total
-                 {if $template}&amp;template={$template}{/if}
-                 {if $defaultCustomerID}&amp;customer_id={$defaultCustomerID}{/if}"
+        <a href="index.php?module=invoices&amp;view=total{if isset($template)}&amp;template={$template}{/if}{if isset($defaultCustomerID)}&amp;customer_id={$defaultCustomerID}{/if}"
            class="{if $view=='total'}selected{/if}">
             <img class="action" src="images/common/page_white_edit.png"/>
             {$LANG.total_style}
@@ -34,7 +30,7 @@
     </span>
 </div>
 <table class='si_invoice_top'>
-    {if $template}
+    {if isset($template)}
     <tr>
         <th>{$LANG.copied_from}</th>
         <td>{$template|htmlsafe}</td>
@@ -47,7 +43,7 @@
                 <p><em>{$LANG.no_billers}</em></p>
             {else}
                 <select name="biller_id">
-                    {foreach from=$billers item=biller}
+                    {foreach $billers as $biller}
                     <option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id|htmlsafe}{/if}">
                             {$biller.name|htmlsafe}
                         </option>
@@ -57,13 +53,15 @@
         </td>
     </tr>
     <tr>
+        {* TODO: Add jquery logic to change the $sub_customers values relative to the
+                 setting in the $customers drop down *}
         <th>{$LANG.customer}</th>
         <td>
             {if !isset($customers) }
                 <em>{$LANG.no_customers}</em>
             {else}
                 <select name="customer_id">
-                    {foreach from=$customers item=customer}
+                    {foreach $customers as $customer}
                         <option {if $customer.id == $defaultCustomerID} selected{/if} value="{if isset($customer.id)}{$customer.id|htmlsafe}{/if}">
                             {$customer.name|htmlsafe}
                         </option>
@@ -76,11 +74,11 @@
     <tr>
         <th>{$LANG.sub_customer}</th>
         <td>
-            {if !isset($sub_customers) }
+            {if !isset($sub_customers) || empty($sub_customers) }
                 <em>{$LANG.no_sub_customers}</em>
             {else}
                 <select name="custom_field1" id="custom_field1">
-                    {foreach from=$sub_customers item=sub_customer}
+                    {foreach $sub_customers as $sub_customer}
                         <option {if isset($sub_customer.id) && $sub_customer.id == $defaultCustomerID}selected{/if} value="{if isset($sub_customer.id)}{$sub_customer.id|htmlsafe}{/if}">
                             {$sub_customer.attention|htmlsafe}
                         </option>
@@ -94,7 +92,7 @@
         <td>
             <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
                    size="10" name="date" id="date1"
-                   value="{if $smarty.get.date}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}" />
+                   value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}" />
         </td>
     </tr>
 </table>

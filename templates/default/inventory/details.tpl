@@ -4,12 +4,12 @@
         <div class="si_form si_form_view">
             <table>
                 <tr>
-                    <th>{$LANG.date_upper}</th>
-                    <td>{$inventory.date|htmlsafe}</td>
-                </tr>
-                <tr>
                     <th>{$LANG.product}</th>
                     <td>{$inventory.description|htmlsafe}</td>
+                </tr>
+                <tr>
+                    <th>{$LANG.date_upper}</th>
+                    <td>{$inventory.date|htmlsafe}</td>
                 </tr>
                 <tr>
                     <th>{$LANG.quantity}</th>
@@ -75,7 +75,11 @@
                 <tr>
                     <td class="details_screen">{$LANG.notes}</td>
                     <td>
-                         <textarea name="note" class="editor" rows="8" cols="50">{$inventory.note|outhtml}</textarea>
+                        <!--
+                        <textarea name="note" class="editor">{*$inventory.note|outhtml*}</textarea>
+                        -->
+                        <input name="note" id="note" {if isset($inventory.note)}value="{$inventory.note|outhtml}"{/if} type="hidden">
+                        <trix-editor input="note"></trix-editor>
                     </td>
                 </tr>
             </table>

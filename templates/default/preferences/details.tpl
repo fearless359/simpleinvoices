@@ -1,5 +1,6 @@
 <!--Modified code to display apostrophes in text box output 05/02/2008-Gates-->
-<form name="frmpost" action="index.php?module=preferences&amp;view=save&amp;id={$smarty.get.id}" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=preferences&amp;view=save&amp;id={$smarty.get.id}">
     {if $smarty.get.action== 'view' }
         <div class="si_form si_form_view">
             <table>

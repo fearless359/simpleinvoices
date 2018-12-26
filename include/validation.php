@@ -1,4 +1,4 @@
 <?php
 /*
- * Dynamic js validation logic moved to the Inc\Claz\DynamicJs class.
+ * Dynamic js validation logic has been eliminated.
  */

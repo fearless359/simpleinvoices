@@ -1,4 +1,5 @@
-<form name="frmpost" action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id}" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id}">
     {if $smarty.get.action== 'view' }
         <br/>
         <table class="center">
@@ -182,7 +183,11 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <textarea class="editor" name='note' rows="4">{$expense.note|htmlsafe}</textarea>
+                    <!--
+                    <textarea class="editor" name='note'>{*$expense.note|htmlsafe*}</textarea>
+                    -->
+                    <input name="note" id="note" {if isset($expense.note)}value="{$expense.note|outhtml}"{/if} type="hidden">
+                    <trix-editor input="note"></trix-editor>
                 </td>
             </tr>
             <tr><td colspan="2">&nbsp;</td></tr>

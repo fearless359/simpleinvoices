@@ -1,5 +1,6 @@
 {* if  name was inserted *}
-<form name="frmpost" method="POST" action="index.php?module=tax_rates&amp;view=add">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=tax_rates&amp;view=add">
     <div class="si_form">
         <table>
             <tr>

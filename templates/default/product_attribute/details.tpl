@@ -1,5 +1,5 @@
 <!--Modified code to display apostrophes in text box output 05/02/2008-Gates-->
-<form name="frmpost" method="post"
+<form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=product_attribute&amp;view=save&amp;id={$smarty.get.id}" >
     {if $smarty.get.action== 'view' }
         <div class="si_center"><h2>{$LANG.product_attribute}</h2></div>

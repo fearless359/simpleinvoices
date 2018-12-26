@@ -73,7 +73,7 @@ $attributes = ProductAttributes::getAll();
 
 //Customer accounts sections
 $customerAccount = null;
-$customerAccount['total'] = Customer::calc_customer_total($customer['id'], true);
+$customerAccount['total'] = Customer::calcCustomerTotal($customer['id'], true);
 $customerAccount['paid']  = Payment::calcCustomerPaid($customer['id'] , true);
 $customerAccount['owing'] = $customerAccount['total'] - $customerAccount['paid'];
 

@@ -13,12 +13,9 @@ class Product {
         global $pdoDb;
         $count = 0;
         try {
-            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "id", "count"));
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
             $rows = $pdoDb->request("SELECT", "products");
-            if (!empty($rows)) {
-                $count = $rows[0]['count'];
-            }
+            $count = count($rows);
         } catch (PdoDbException $pde) {
             error_log("Product::count() - error: " . $pde->getMessage());
         }

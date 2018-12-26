@@ -44,15 +44,16 @@ $statement = array("total" => 0, "owing" => 0, "paid" => 0);
 if (isset($_POST['submit'])) {
     $pdoDb->addSimpleWhere("iv.sales_representative", $sales_rep, 'AND');
     if (isset($_POST['filter_by_date'])) {
-        $pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
+        $invoices = Invoice::getAllWithHavings(array("date_between" => array($start_date, $end_date)), "date");
         $filter_by_date = "yes";
+    } else {
+        $invoices = Invoice::getAll("date");
     }
 
-    $invoices = Invoice::selectAll("", "date");
     foreach ( $invoices as $row ) {
-        $statement['total'] += $row['invoice_total'];
+        $statement['total'] += $row['total'];
         $statement['owing'] += $row['owing'];
-        $statement['paid' ] += $row['INV_PAID'];
+        $statement['paid' ] += $row['paid'];
     }
 }
 

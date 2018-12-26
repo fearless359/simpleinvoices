@@ -70,7 +70,7 @@ for($i=1;$i<=4;$i++) {
 }
 
 $customerAccount = null;
-$customerAccount['total'] = Customer::calc_customer_total($customer['id']);
+$customerAccount['total'] = Customer::calcCustomerTotal($customer['id']);
 $customerAccount['paid']  = Payment::calcCustomerPaid($customer['id']);
 $customerAccount['owing'] = $customerAccount['total'] - $customerAccount['paid'];
 

@@ -11,7 +11,8 @@
  *  Website:
  *      https://simpleinvoices.group
  *}
-<form name="frmpost" method="post" id="frmpost" action="index.php?module=invoices&amp;view=save">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=invoices&amp;view=save">
     <div id="gmail_loading" class="gmailLoader si_hide" style="float:right;">
         <img src="images/common/gmail-loader.gif" alt="{$LANG.loading} ..."/>
         {$LANG.loading} ...

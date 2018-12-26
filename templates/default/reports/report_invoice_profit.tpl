@@ -1,5 +1,6 @@
 
-<form name="frmpost" action="index.php?module=reports&amp;view=report_invoice_profit" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=reports&amp;view=report_invoice_profit">
 <table class="center">
     <tr>
         <td>Start date (YYYY-MM-DD)
@@ -105,7 +106,7 @@
             &nbsp;
         </td>
         <td  class="details_screen">
-            {$invoices[invoice].invoice_total|siLocal_number}
+            {$invoices[invoice].total|siLocal_number}
         </td>
         <td>
             &nbsp;

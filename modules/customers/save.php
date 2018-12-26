@@ -11,7 +11,7 @@ use Inc\Claz\Util;
  *      Justin Kelly, Nicolas Ruflin
  *
  *  Last edited:
- *      2016-07-27
+ *      2018-10-03 by Richard Rowley
  *
  *  License:
  *      GPL v3 or above
@@ -19,14 +19,14 @@ use Inc\Claz\Util;
  * Website:
  *      https://simpleinvoices.group
  */
-global $config, $smarty, $LANG;
+global $config, $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : NULL;
-
+$op = !empty( $_POST['op'] ) ? $_POST['op'] : null;
+error_log("save.php _POST - " . print_r($_POST, true));
 $display_block = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
 $redirect_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
 

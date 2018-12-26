@@ -11,7 +11,7 @@
 {if !empty($smarty.post.invoice_id)}
     {include file="templates/default/cron/save.tpl"}
 {else}
-    <form name="frmpost" method="POST" onsubmit="return frmpost_Validator(this)"
+    <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=cron&amp;view=add">
         <table class="center">
             <tr>
@@ -25,7 +25,7 @@
                                         $smarty.post.invoice_id == $invoice.id}selected{/if}>
                                 {$invoice.index_name|htmlsafe}
                                 ({$invoice.biller|htmlsafe}, {$invoice.customer|htmlsafe},
-                                {$invoice.invoice_total|siLocal_number})
+                                {$invoice.total|siLocal_number})
                             </option>
                         {/foreach}
                     </select>

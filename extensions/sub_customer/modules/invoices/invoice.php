@@ -39,7 +39,6 @@ $preferences = Preferences::getActivePreferences();
 $defaults    = SystemDefaults::loadValues();
 $matrix      = ProductAttributes::getMatrix();
 
-
 $first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
     $first_run_wizard =true;
@@ -67,18 +66,18 @@ for($i=1;$i<=4;$i++) {
                                                              "details_screen", '', ''     , '');
 }
 
-$smarty->assign("matrix"            , $matrix);
-$smarty->assign("billers"           , $billers);
-$smarty->assign("customers"         , $customers);
-$smarty->assign("sub_customers"     , $sub_customers);
-$smarty->assign("taxes"             , $taxes);
-$smarty->assign("defaultTax"        , $defaultTax);
-$smarty->assign("products"          , $products);
-$smarty->assign("preferences"       , $preferences);
-$smarty->assign("defaultPreference" , $defaultPreference);
-$smarty->assign("dynamic_line_items", $dynamic_line_items);
-$smarty->assign("customFields"      , $customFields);
-$smarty->assign("defaultCustomerID" , $defaultCustomer['id']);
-$smarty->assign("defaults"          , $defaults);
+$smarty->assign('matrix'            , $matrix);
+$smarty->assign('billers'           , $billers);
+$smarty->assign('customers'         , $customers);
+$smarty->assign('sub_customers'     , $sub_customers);
+$smarty->assign('taxes'             , $taxes);
+$smarty->assign('defaultTax'        , $defaultTax);
+$smarty->assign('products'          , $products);
+$smarty->assign('preferences'       , $preferences);
+$smarty->assign('defaultPreference' , $defaultPreference);
+$smarty->assign('dynamic_line_items', $dynamic_line_items);
+$smarty->assign('customFields'      , $customFields);
+$smarty->assign('defaultCustomerID' , $defaultCustomer['id']);
+$smarty->assign('defaults'          , $defaults);
 $smarty->assign('active_tab'        , '#money');
 // @formatter:on

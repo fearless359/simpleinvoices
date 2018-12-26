@@ -13,16 +13,23 @@
   </div>
   <div id="left">
     <ul>
-        <li>2018-12-10 - <b>2018.3.1</b>
+        <li>2018-12-26 - <b>2018.3.1</b>
             <ul>
                 <li>Modified to use current version of jquery and jquery-ui files. Using
                     NPM to obtain current version of jquery.</li>
                 <li>Replaced Flexigrid tables with Datatables. Datatables version is
-                    maintained via NPM.</li>
+                    maintained via NPM. NOTE: The table logic is not yet tuned for performance.
+                    This means the process is noticably slower the more records it has to load.
+                    In the future, large tables will be converted to use ajax to load a page of
+                    records at a time in much the same way flexigrid tables worked.</li>
+                <li>Replaced out of date WYSIWYG rich text editor with the trix-master rich text
+                    editor.</li>
                 <li>Modified labels in Settings menu to stop wrap around when enhancements
                     displayed "System Preferences" to "SI Defaults", "Invoice Preferences" to
                     "Inv Preferences", "Payment Types" to "Pymt Types", and "Backup Database"
                     to "DB Backup".</li>
+                <li>Eliminated dynamic javascript for field validation (validation.php) and
+                    replaced with use of jQueryValidationEngine logic throughout.</li>
             </ul>
         </li>
         <li>2018-12-03 - <b>2018.3.0</b>

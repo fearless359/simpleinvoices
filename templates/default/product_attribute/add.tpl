@@ -5,7 +5,8 @@
     </div>
     <hr/>
 {/if}
-<form name="frmpost" action="index.php?module=product_attribute&amp;view=add" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=product_attribute&amp;view=add">
     <h3>{$LANG.add_product_attribute}</h3>
     <hr/>
     <table class="center">

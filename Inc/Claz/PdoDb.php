@@ -3,6 +3,7 @@ namespace Inc\Claz;
 
 use Exception;
 use PDO;
+use PDOException;
 
 /**
  * PdoDb class
@@ -91,7 +92,7 @@ class PdoDb {
             // Used internally to perform table structure look ups, etc. so these
             // queries will not impact in process activity for the user's requests.
             $this->pdoDb2 = new PDO($dsn, $username, $password);
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $str = "PdoDb - construct error: " . $e->getMessage();
             error_log($str);
             error_log("dbinfo - " . print_r($dbinfo,true));

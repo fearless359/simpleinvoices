@@ -22,7 +22,7 @@
             {$preference.pref_inv_wording|htmlsafe}
             {$invoice.index_id|htmlsafe}
         </div>
-        <form name="frmpost" method="post"
+        <form name="frmpost" method="POST" id="frmpost"
               action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}" >
             <table class="center">
                 <tr>

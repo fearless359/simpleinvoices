@@ -1,6 +1,7 @@
 <div class="si_center"><h2>Statement of Invoices</h2></div>
 {if $menu}
-  <form name="frmpost" action="index.php?module=statement&amp;view=index" method="post">
+  <form name="frmpost" method="POST" id="frmpost"
+        action="index.php?module=statement&amp;view=index">
     <div class="si_form si_form_search{if !isset($smarty.post.submit)} si_form_search_null{/if}">
       <table>
         <tr style="margin: 0 auto; width: 100%;">
@@ -175,11 +176,11 @@
           <td>{$invoices[invoice].biller|htmlsafe}</td>
           <td>{$invoices[invoice].customer|htmlsafe}</td>
           {if $invoices[invoice].status > 0}
-          <td class="si_right">{$invoices[invoice].invoice_total|siLocal_number}</td>
-          <td class="si_right">{$invoices[invoice].INV_PAID|siLocal_number}</td>
+          <td class="si_right">{$invoices[invoice].total|siLocal_number}</td>
+          <td class="si_right">{$invoices[invoice].paid|siLocal_number}</td>
           <td class="si_right">{$invoices[invoice].owing|siLocal_number}</td>
           {else}
-          <td class="si_right"><i>{$invoices[invoice].invoice_total|siLocal_number}</i></td>
+          <td class="si_right"><i>{$invoices[invoice].total|siLocal_number}</i></td>
           <td colspan="2">&nbsp;</td>
           {/if}
         </tr>

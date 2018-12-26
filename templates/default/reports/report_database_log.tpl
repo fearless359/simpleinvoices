@@ -4,7 +4,7 @@
 {* Created: 20181108 *}
 <h1 style="position: relative; margin: 0 auto; text-align: center;">Database Log Report</h1>
 <hr/>
-<form name="frmpost" method="post"
+<form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=reports&amp;view=report_database_log">;
     <table class="center">
         <tr>

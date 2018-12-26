@@ -1,6 +1,5 @@
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" action="index.php?module=payments&amp;view=save"
-      method="post" onsubmit="return frmpost_Validator(this);">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=payments&amp;view=save">
     <div class="si_form">
         <table>
             {if $smarty.get.op === "pay_selected_invoice"}
@@ -25,7 +24,8 @@
                 <tr>
                     <th>{$LANG.amount}</th>
                     <td colspan="5">
-                        <input type="text" name="ac_amount" size="25" value="{$invoice.owing|siLocal_number}"/>
+                        <input type="text" name="ac_amount" size="25" class="validate[required,custom[number]]"
+                               value="{$invoice.owing|siLocal_number}"/>
                         <a class="cluetip" href="#"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_process_payment_auto_amount"
                            title="{$LANG.process_payment_auto_amount}">
@@ -36,7 +36,9 @@
                 <tr>
                     <th>{$LANG.date_formatted}</th>
                     <td colspan="5">
-                        <input type="text" class="date-picker" name="ac_date" id="date1" value="{if isset($today)}{$today|htmlsafe}{/if}"/>
+                        <input type="text" name="ac_date" id="date1"
+                               class="validate[required,custom[date],length[0,10]] date-picker"
+                               value="{if isset($today)}{$today|htmlsafe}{/if}"/>
                     </td>
                 </tr>
             {elseif $smarty.get.op === "pay_invoice"}
@@ -49,10 +51,10 @@
                                 <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}">
                                     {$invoice.index_name|htmlsafe}
                                     (
-                                        {$invoice.biller|htmlsafe},
-                                        {$invoice.customer|htmlsafe},
-                                        {$LANG.total} {$invoice.invoice_total|siLocal_number} :
-                                        {$LANG.owing} {$invoice.owing|siLocal_number}
+                                    {$invoice.biller|htmlsafe},
+                                    {$invoice.customer|htmlsafe},
+                                    {$LANG.total} {$invoice.total|siLocal_number} :
+                                    {$LANG.owing} {$invoice.owing|siLocal_number}
                                     )
                                 </option>
                             {/foreach}
@@ -76,7 +78,7 @@
                     {if !$paymentTypes}
                         <p><em>{$LANG.no_payment_types}</em></p>
                     {else}
-                        <select name="ac_payment_type" id="pymt_type1">
+                        <select name="ac_payment_type" id="pymt_type">
                             {foreach from=$paymentTypes item=paymentType}
                                 <option value="{if isset($paymentType.pt_id)}{$paymentType.pt_id|htmlsafe}{/if}" {if $paymentType.pt_id==$defaults.payment_type}selected{/if}>{$paymentType.pt_description|htmlsafe}</option>
                             {/foreach}
@@ -84,11 +86,37 @@
                     {/if}
                 </td>
                 <th>{$LANG.check_number}</th>
-                <td><input type="text" name="ac_check_number" id="chk_num1" size="10" onblur="verifyCheckNumber(this,'pymt_type1');"/></td>
+                <td>
+                    <input type="text" name="ac_check_number" id="chk_num" size="10"/>
+                    {literal}
+                        <script>
+                            $(function(){
+                                $('#frmpost').submit(function(){
+                                    let pymt_type = $('#pymt_type option:selected').text().toLowerCase();
+                                    if ($('#pymt_type option:selected').text().toLowerCase() == 'check') {
+                                        let cknum = $('#chk_num').val().toUpperCase();
+                                        if (!(/^[1-9][0-9]* *$/).test(cknum) && cknum != 'N/A') {
+                                            alert('Enter a valid Check Number, \"N/A\" or change the Payment Type.');
+                                            $('#chk_num').focus();
+                                            return (false);
+                                        };
+                                        $('#chk_num').val(cknum);
+                                    }
+                                });
+                            });
+                        </script>
+                    {/literal}
+                </td>
             </tr>
             <tr>
                 <th>{$LANG.note}</th>
-                <td colspan="3"><textarea class="editor" name="ac_notes" rows="5" cols="50"></textarea></td>
+                <td colspan="3">
+                    <!--
+                    <textarea class="editor" name="ac_notes"></textarea>
+                    -->
+                    <input name="ac_notes" id="ac_notes" type="hidden">
+                    <trix-editor input="ac_notes"></trix-editor>
+                </td>
             </tr>
         </table>
         <div class="si_toolbar si_toolbar_form">

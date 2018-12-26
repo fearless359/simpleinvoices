@@ -1,8 +1,7 @@
 <h1 style="position: relative; margin: 0 auto; text-align: center;">Net Income Report</h1>
 <hr/>
-<form name="frmpost"
-      action="index.php?module=reports&amp;view=report_net_income"
-      method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=reports&amp;view=report_net_income">
     <table class="center">
         <tr>
             <td colspan="2"

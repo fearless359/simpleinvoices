@@ -33,7 +33,7 @@
                 {/if}
             </td>
             <td>
-                <input class="si_right {if $lineNumber == "0"}validate[required]{/if}"
+                <input class="si_right {if $lineNumber == "0"}validate[required,min[.01],custom[number]]{/if}"
                        type="text" name="quantity{$lineNumber|htmlsafe}"
                        id="quantity{$lineNumber|htmlsafe}" size="5"
                        value="{if isset($defaultInvoiceItems[$lineNumber].quantity)}{$defaultInvoiceItems[$lineNumber].quantity|siLocal_number_trim}{/if}" />

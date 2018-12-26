@@ -21,7 +21,9 @@
 
         $('#tabs_customer').tabs();
 
-        $(".date-picker").datepicker();
+        $(".date-picker").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
 
         /* Product Change - updates line item with product price info */
         $(".product_change").change(function () {

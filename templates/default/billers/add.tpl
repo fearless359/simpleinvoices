@@ -13,7 +13,7 @@
 {if !empty($smarty.post.name) && isset($smarty.post.submit) }
     {include file="templates/default/billers/save.tpl"}
 {else}
-    <form name="frmpost" method="post" onsubmit="return frmpost_Validator(this)"
+    <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=billers&amp;view=add">
         <div class="si_form">
             <table>
@@ -24,7 +24,7 @@
                             <img src="{$help_image_path}required-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="text" name="name" size="25" id="name"
+                    <td><input type="text" name="name" size="25" id="name" class="validate[required] text-input"
                                value="{if isset($smarty.post.name)}{$smarty.post.name|htmlsafe}{/if}"/>
                     </td>
                 </tr>
@@ -89,8 +89,13 @@
                 </tr>
                 <tr>
                     <th>{$LANG.signature}</th>
-                    <td><textarea name="signature" class="editor"
-                                  rows="3" cols="30">{if isset($smarty.post.signature)}{$smarty.post.signature|htmlsafe}{/if}</textarea></td>
+                    <td>
+                        <!--
+                        <textarea name="signature" class="editor">{*if isset($smarty.post.signature)*}{*$smarty.post.signature|htmlsafe*}{*/if*}</textarea>
+                        -->
+                        <input name="signature" id="signature" {if isset($smarty.post.signature)}value="{$smarty.post.signature|outhtml}"{/if} type="hidden">
+                        <trix-editor input="signature"></trix-editor>
+                    </td>
                 </tr>
                 <tr>
                     <th>{$LANG.paypal_business_name}</th>
@@ -178,15 +183,21 @@
                 <tr>
                     <th>{$LANG.invoice_footer}</th>
                     <td>
-                         <textarea class="editor" name="footer" rows="4"
-                                   cols="50">{if isset($smarty.post.footer)}{$smarty.post.footer|htmlsafe}{/if}</textarea>
+                        <!--
+                        <textarea class="editor" name="footer">{*if isset($smarty.post.footer)*}{*$smarty.post.footer|htmlsafe*}{*/if*}</textarea>
+                        -->
+                        <input name="footer" id="footer" {if isset($smarty.post.footer)}value="{$smarty.post.footer|outhtml}"{/if} type="hidden">
+                        <trix-editor input="footer"></trix-editor>
                     </td>
                 </tr>
                 <tr>
                     <th>{$LANG.notes}</th>
                     <td>
-                        <textarea class="editor" name="notes" rows="8"
-                                  cols="50">{if isset($smarty.post.notes)}{$smarty.post.notes|htmlsafe}{/if}</textarea>
+                        <!--
+                        <textarea class="editor" name="notes">{*if isset($smarty.post.notes)*}{*$smarty.post.notes|htmlsafe*}{*/if*}</textarea>
+                        -->
+                        <input name="notes" id="notes" {if isset($smarty.post.notes)}value="{$smarty.post.notes|outhtml}"{/if} type="hidden">
+                        <trix-editor input="notes"></trix-editor>
                     </td>
                 </tr>
                 <tr>

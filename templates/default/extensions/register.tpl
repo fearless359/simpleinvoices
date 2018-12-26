@@ -1,7 +1,7 @@
 <h2 class="si_center">About to <i>{$action|htmlsafe}</i>: {$name|htmlsafe}</h2>
 
-{* Note that frmpost_Validator() is generated at runtime using the DynamicJs::formValidationBegin() function*}
-<form name="frmpost" action="index.php?module=extensions&amp;view=save" method="post">
+<form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=extensions&amp;view=save">
     <div class="si_form">
         <table>
             <tr>

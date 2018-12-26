@@ -74,8 +74,7 @@ $accounts = $pdoDb->request("SELECT", "expense", "e");
 
 $payments = Payment::selectByDate($start_date, $end_date, "date", "");
 
-$pdoDb->setHavings(Invoice::buildHavings("date_between", array($start_date, $end_date)));
-$invoices = Invoice::selectAll("", "preference", "A");
+$invoices = Invoice::getAllWithHavings(array("date_between", array($start_date, $end_date)), "preference");
 
 $smarty->assign('accounts'  , $accounts);
 $smarty->assign('payments'  , $payments);

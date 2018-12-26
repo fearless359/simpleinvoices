@@ -143,13 +143,13 @@ class Export {
                     if (!empty($this->biller_id)  ) $pdoDb->addSimpleWhere("biller_id"  , $this->biller_id  , "AND");
                     if (!empty($this->customer_id)) $pdoDb->addSimpleWhere("customer_id", $this->customer_id, "AND");
 
-                    $invoices  = Invoice::selectAll("", "date", "D");
+                    $invoices  = Invoice::getAll("date", "desc");
                     $statement = array("total" => 0, "owing" => 0, "paid" => 0);
                     foreach ( $invoices as $row ) {
                         if ($row ['status'] > 0) {
-                            $statement ['total'] += $row ['invoice_total'];
+                            $statement ['total'] += $row ['total'];
                             $statement ['owing'] += $row ['owing'];
-                            $statement ['paid']  += $row ['INV_PAID'];
+                            $statement ['paid']  += $row ['paid'];
                         }
                     }
 
