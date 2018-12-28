@@ -26,7 +26,7 @@ Util::isAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $op = !empty( $_POST['op'] ) ? $_POST['op'] : null;
-error_log("save.php _POST - " . print_r($_POST, true));
+
 $display_block = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
 $redirect_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
 

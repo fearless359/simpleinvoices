@@ -47,15 +47,22 @@ require_once 'config/define.php';
 /***********************************************************************
  * Make sure the tmp directories exist and are writeable.
  ***********************************************************************/
-if (!is_writable('./tmp')) {
+if (!file_exists('./tmp')) {
+    mkdir('./tmp');
+    mkdir('./tmp/database_backups');
+} else if (!is_writable('./tmp')) {
     SiError::out('notWritable', 'directory', './tmp');
 }
 
-if (!is_writable('tmp/cache')) {
+if (!file_exists('./tmp/cache')) {
+    mkdir('./tmp/cache');
+} else if (!is_writable('tmp/cache')) {
     SiError::out('notWritable', 'file', './tmp/cache');
 }
 
-if (!is_writable('tmp/log')) {
+if (!file_exists('./tmp/log')) {
+    mkdir('./tmp/log');
+} else if (!is_writable('tmp/log')) {
     SiError::out('notWritable', 'file', './tmp/cache');
 }
 

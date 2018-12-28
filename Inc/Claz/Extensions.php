@@ -1,6 +1,8 @@
 <?php
 namespace Inc\Claz;
 
+use Zend_Config;
+
 /**
  * @name Extensions.php
  * @author Richard Rowley
