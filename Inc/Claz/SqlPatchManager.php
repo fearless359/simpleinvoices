@@ -22,7 +22,6 @@ class SqlPatchManager
      * Add an entry to the $patchLines array.
      * @param int $num Number of patch, must match what is expected next.
      * @param array $patch entry to add to $patchLines.
-     * @throws PdoDbException if the $num parameter is out of sequence.
      */
     private static function makePatch($num, $patch)
     {
@@ -30,7 +29,8 @@ class SqlPatchManager
         $last++;
 
         if ($last != $num) {
-            throw new PdoDbException("self::makePatch - Patch #{$num} is out of sequence.");
+            error_log("SqlPatchManager::makePatch - Patch #{$num} is out of sequence.");
+            die("SqlPatchManager::makePatch() error. See error log for more information.");
         }
 
         self::$patchLines[] = array(
@@ -67,7 +67,6 @@ class SqlPatchManager
 
     /**
      * @return int Count of patches
-     * @throws PdoDbException
      */
     public static function numberOfUnappliedPatches()
     {
@@ -108,7 +107,6 @@ class SqlPatchManager
     /**
      * Add and initialize source column to sql_patchmanager table if not present.
      * If no error thrown, then this function processed correctly.
-     * @throws PdoDbException If exception was reported.
      */
     private static function addSourceColumn()
     {
@@ -118,18 +116,23 @@ class SqlPatchManager
         if ($pdoDb_admin->checkFieldExists('sql_patchmanager', 'source')) {
             // Fix an issue where the source column update was lost, so fix it
             if ($fixSource) {
-                $pdoDb_admin->setSelectAll(true);
-                $pdoDb_admin->addSimpleWhere('source', '');
-                $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
-                foreach ($rows as $row) {
-                    if ($row['sql_patch_ref'] > 293) {
-                        $source = 'fearless359';
-                    } else {
-                        $source = 'original';
+                try {
+                    $pdoDb_admin->setSelectAll(true);
+                    $pdoDb_admin->addSimpleWhere('source', '');
+                    $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
+                    foreach ($rows as $row) {
+                        if ($row['sql_patch_ref'] > 293) {
+                            $source = 'fearless359';
+                        } else {
+                            $source = 'original';
+                        }
+                        $pdoDb_admin->setFauxPost(array('source' => $source));
+                        $pdoDb_admin->addSimpleWhere('sql_id', $row['sql_id']);
+                        $pdoDb_admin->request('UPDATE', 'sql_patchmanager');
                     }
-                    $pdoDb_admin->setFauxPost(array('source' => $source));
-                    $pdoDb_admin->addSimpleWhere('sql_id', $row['sql_id']);
-                    $pdoDb_admin->request('UPDATE', 'sql_patchmanager');
+                } catch(PdoDbException $pde) {
+                    error_log("SqlPatchManager::addSourceColumn() - Error(1): " . $pde->getMessage());
+                    die("SqlPatchManager::addSourceColumn() error. See error log for more information.");
                 }
             }
             $fixSource = false;
@@ -138,12 +141,14 @@ class SqlPatchManager
             try {
                 $pdoDb_admin->addTableConstraints('source', 'ADD ~ VARCHAR(20) NOT NULL');
                 if (!$pdoDb_admin->request('ALTER TABLE', 'sql_patchmanager')) {
+                    // Caught below
                     throw new PdoDbException('Unable to add "source" column to sql_patchmanager.');
                 }
 
                 $pdoDb_admin->setFauxPost(array("source" => "original"));
                 $pdoDb_admin->addToWhere(new WhereItem(false, 'sql_patch_ref', '<', 294, false));
                 if (!$pdoDb_admin->request('UPDATE', 'sql_patchmanager')) {
+                    // Caught below
                     throw new PdoDbException('Unable to set source to "original"');
                 }
 
@@ -152,17 +157,20 @@ class SqlPatchManager
                 $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
                 foreach ($rows as $row) {
                     if (!self::sameUpdate($row)) {
+                        // Caught below
                         throw new PdoDbException("Patch #{$row['sql_patch_ref']} does not match fearless359 patch. Can't update source");
                     }
 
                     $pdoDb_admin->setFauxPost(array('source' => 'fearless359'));
                     $pdoDb_admin->addSimpleWhere('sql_id', $row['sql_id']);
                     if (!$pdoDb_admin->request('UPDATE', 'sql_patchmanager')) {
+                        // Caught below
                         throw new PdoDbException("Patch #{$row['sql_patch_ref']} source update failed");
                     }
                 }
             } catch (PdoDbException $pde) {
-                throw new PdoDbException("SqlPatchManager::addSourceColumn() - Error: " . $pde->getMessage());
+                error_log("SqlPatchManager::addSourceColumn() - Error(2): " . $pde->getMessage());
+                die("SqlPatchManager::addSourceColumn() error. See error log for more information.");
             }
         }
     }
@@ -196,7 +204,6 @@ class SqlPatchManager
      * @param $id
      * @param $patch
      * @return array
-     * @throws PdoDbException
      */
     private static function runSqlPatch($id, $patch) {
         global $pdoDb_admin;
@@ -237,6 +244,7 @@ class SqlPatchManager
                 ));
 
                 if ($pdoDb_admin->request('INSERT', 'sql_patchmanager') == 0) {
+                    // Caught below
                     throw new PdoDbException("SqlPatchManager::runSqlPatch() = Unable to insert into sql_patchmanager.");
                 }
 
@@ -246,12 +254,11 @@ class SqlPatchManager
                     self::patch303();
                 } else if ($id == 304) {
                     self::patch304();
-//                } else if ($id == 306) {
-//                    self::patch306();
                 }
             }
         } catch (PdoDbException $pde) {
-            throw new PdoDbException("SqlPatchManager::runSqlPatch() - " . $pde->getMessage());
+            error_log("SqlPatchManager::runSqlPatch() - " . $pde->getMessage());
+            die("SqlPatchManager::runSqlPatch() error. See error log for more information.");
         }
 
         return $smarty_row;
@@ -259,7 +266,6 @@ class SqlPatchManager
 
     /**
      * Run the unapplied patches.
-     * @throws PdoDbException - See error message to know the issue.
      */
     public static function runPatches()
     {
@@ -270,7 +276,13 @@ class SqlPatchManager
             self::loadPatches();
         }
 
-        $rows = $pdoDb_admin->request('SHOW TABLES', 'sql_patchmanager');
+        try {
+            $rows = $pdoDb_admin->request('SHOW TABLES', 'sql_patchmanager');
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::runPatches() - SHOW TABLES failed - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::runPatches() error. See error log for additional details.");
+        }
+
         $page_info = array();
         $init_patch_table = true;
         if (count($rows) == 1) {
@@ -278,31 +290,39 @@ class SqlPatchManager
             // point where fearless359/simpleinvoices version patches diverged from
             // original simpleinvoices version.
             self::siCanUpdateCheck();
-            $pdoDb_admin->begin();
+            try {
+                $pdoDb_admin->begin();
+            } catch (PdoDbException $pde) {
+                error_log("SqlPatchManager::runPatches() - Begin transaction failed - Error: " . $pde->getMessage());
+                die ("SqlPatchManager::runPatches() error. See error log for additional details.");
+            }
 
             $i = 0;
             $error = false;
             $page_info['html'] = '';
             foreach(self::$patchLines as $patch) {
                 $i++;
-                try {
-                    $result = self::runSqlPatch($i, $patch);
-                    if (!empty($result)) {
-                        $page_info['rows'][$i] = $result;
-                    }
-                } catch (PdoDbException $pde) {
-                    error_log($pde->getMessage());
-                    $page_info['html'] .= "<div class=\"si_message_error\">Unable to process patch #{$i}. Error: " . $pde->getMessage() . "</div>";
-                    $error = true;
-                    break;
+                $result = self::runSqlPatch($i, $patch);
+                if (!empty($result)) {
+                    $page_info['rows'][$i] = $result;
                 }
             }
 
             if ($error) {
-                $pdoDb_admin->rollback();
+                try {
+                    $pdoDb_admin->rollback();
+                } catch (PdoDbException $pde) {
+                    error_log("SqlPatchManager::runPatches() - Rollback failed - Error: " . $pde->getMessage());
+                    die ("SqlPatchManager::runPatches() error. See error log for additional details.");
+                }
             } else {
                 $init_patch_table = false;
-                $pdoDb_admin->commit();
+                Try {
+                    $pdoDb_admin->commit();
+                } catch (PdoDbException $pde) {
+                    error_log("SqlPatchManager::runPatches() - Commit failed - Error: " . $pde->getMessage());
+                    die ("SqlPatchManager::runPatches() error. See error log for additional details.");
+                }
                 $page_info['message'] = "The database patches have now been applied. You can now start working with SimpleInvoices";
                 $page_info['html'] .= "<div class='si_toolbar si_toolbar_form'><a href='index.php'>HOME</a></div>";
                 $page_info['refresh'] = 5;
@@ -322,7 +342,6 @@ class SqlPatchManager
 
     /**
      * List all patches and their status.
-     * @throws PdoDbException
      */
     public static function listPatches()
     {
@@ -368,16 +387,21 @@ class SqlPatchManager
     /**
      * Get all patches.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
-     * @throws PdoDbException
      */
     public static function sqlPatches() {
         global $pdoDb_admin;
-        $pdoDb_admin->addToWhere(new WhereItem(false, "sql_patch"    , "<>", "", false, "OR"));
-        $pdoDb_admin->addToWhere(new WhereItem(false, "sql_release"  , "<>", "", false, "OR"));
-        $pdoDb_admin->addToWhere(new WhereItem(false, "sql_statement", "<>", "", false));
-        $pdoDb_admin->setOrderBy(array(array("sql_release","A"), array("sql_patch_ref","A")));
 
-        $rows = $pdoDb_admin->request("SELECT", "sql_patchmanager");
+        try {
+            $pdoDb_admin->addToWhere(new WhereItem(false, "sql_patch", "<>", "", false, "OR"));
+            $pdoDb_admin->addToWhere(new WhereItem(false, "sql_release", "<>", "", false, "OR"));
+            $pdoDb_admin->addToWhere(new WhereItem(false, "sql_statement", "<>", "", false));
+            $pdoDb_admin->setOrderBy(array(array("sql_release", "A"), array("sql_patch_ref", "A")));
+
+            $rows = $pdoDb_admin->request("SELECT", "sql_patchmanager");
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::qqlPatches() - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::sqlPatches() error. See error log for additional details.");
+        }
         return $rows;
     }
 
@@ -391,7 +415,7 @@ class SqlPatchManager
         global $pdoDb_admin;
 
         if ($patchRef == 0) return true; // start patch always applied
-        
+
         try {
             $pdoDb_admin->addSimpleWhere('sql_patch_ref', $patchRef);
             $rows = $pdoDb_admin->request('SELECT', 'sql_patchmanager');
@@ -404,83 +428,93 @@ class SqlPatchManager
     /**
      * Create the sql_patchmanager table and save initial record in it.
      * @return string
-     * @throws PdoDbException if error occurs performing create or table insert.
      */
     private static function initializeSqlPatchTable()
     {
         global $pdoDb_admin;
 
-        $pdoDb_admin->addTableColumns("sql_id"       , "INT"         , "NOT NULL AUTO_INCREMENT PRIMARY KEY");
-        $pdoDb_admin->addTableColumns("sql_patch_ref", "VARCHAR( 50)", "NOT NULL");
-        $pdoDb_admin->addTableColumns("sql_patch"    , "VARCHAR(255)", "NOT NULL");
-        $pdoDb_admin->addTableColumns("sql_release"  , "VARCHAR( 25)", "NOT NULL");
-        $pdoDb_admin->addTableColumns("sql_statement", "TEXT"        , "NOT NULL");
-        $pdoDb_admin->addTableEngine("MYISAM");
-        if (!$pdoDb_admin->request("CREATE TABLE", "sql_patchmanager")) {
-            throw new PdoDbException("SqlPatchManager::initializeSqlPatchTable() - Unable to create sql_patchmanager table.");
-        }
+        try {
+            $pdoDb_admin->addTableColumns("sql_id", "INT", "NOT NULL AUTO_INCREMENT PRIMARY KEY");
+            $pdoDb_admin->addTableColumns("sql_patch_ref", "VARCHAR( 50)", "NOT NULL");
+            $pdoDb_admin->addTableColumns("sql_patch", "VARCHAR(255)", "NOT NULL");
+            $pdoDb_admin->addTableColumns("sql_release", "VARCHAR( 25)", "NOT NULL");
+            $pdoDb_admin->addTableColumns("sql_statement", "TEXT", "NOT NULL");
+            $pdoDb_admin->addTableEngine("MYISAM");
+            if (!$pdoDb_admin->request("CREATE TABLE", "sql_patchmanager")) {
+                // Caught below.
+                throw new PdoDbException("SqlPatchManager::initializeSqlPatchTable() - Unable to create sql_patchmanager table.");
+            }
 
-        $log = "<b>Step 2</b> - The SQL patch table has been created<br />";
+            $log = "<b>Step 2</b> - The SQL patch table has been created<br />";
 
-        $lastCommand = $pdoDb_admin->getLastCommand();
-        $pdoDb_admin->setFauxPost(array(
+            $lastCommand = $pdoDb_admin->getLastCommand();
+            $pdoDb_admin->setFauxPost(array(
                 'sql_patch_ref' => '1',
                 'sql_patch' => 'Create " . TB_PREFIX . "sql_patchmanger table',
                 'sql_release' => '20060514',
                 'sql_statement' => $lastCommand
-        ));
-        if ($pdoDb_admin->request('INSERT', 'sql_patchmanager') == 0) {
-            throw new PdoDbException("SqlPatchManager::initializeSqlPatchTable() - Unable to save create sql_patchmanager record in table.");
-        }
+            ));
+            if ($pdoDb_admin->request('INSERT', 'sql_patchmanager') == 0) {
+                // Caught below
+                throw new PdoDbException("SqlPatchManager::initializeSqlPatchTable() - Unable to save create sql_patchmanager record in table.");
+            }
 
-        $log .= "<b>Step 3</b> - The SQL patch has been inserted into the SQL patch table<br />";
+            $log .= "<b>Step 3</b> - The SQL patch has been inserted into the SQL patch table<br />";
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::initializeSqlPatchTable() - Error: " . $pde->getMessage());
+            die("SqlPatchManager::initializeSqlPatchTable() error. See error log for addtional informaiton.");
+        }
 
         return $log;
     }
 
     /**
      * Special handling for patch #126
-     * @throws PdoDbException
      */
     private static function patch126()
     {
         global $pdoDb_admin;
 
-        $pdoDb_admin->addSimpleWhere('product_id', 0);
-        $rows = $pdoDb_admin->request('SELECT', 'invoice_items');
-        foreach ($rows as $row) {
-            $pdoDb_admin->setSelectList(array (
-                'description' => $row['description'],
-                'unit_price' => $row['gross_total'],
-                'enabled' => DISABLED,
-                'visible' => DISABLED));
-            $id = $pdoDb_admin->request('INSERT', 'invoice_items');
+        try {
+            $pdoDb_admin->addSimpleWhere('product_id', 0);
+            $rows = $pdoDb_admin->request('SELECT', 'invoice_items');
+            foreach ($rows as $row) {
+                $pdoDb_admin->setSelectList(array(
+                    'description' => $row['description'],
+                    'unit_price' => $row['gross_total'],
+                    'enabled' => DISABLED,
+                    'visible' => DISABLED));
+                $id = $pdoDb_admin->request('INSERT', 'invoice_items');
 
-            $pdoDb_admin->setFauxPost(array('product_id' => $id, 'unit_price' => $row['gross_total']));
-            $pdoDb_admin->addSimpleWhere('id', $row['id']);
-            if (!$pdoDb_admin->request('UPDATE', 'invoice_items')) {
-                throw new PdoDbException("'SqlPatchManager::patch126() - Update invoice_items error for " .
-                    "id[{$row['id']}] product_id[$id] unit_price[{$row['gross_total']}]");
+                $pdoDb_admin->setFauxPost(array('product_id' => $id, 'unit_price' => $row['gross_total']));
+                $pdoDb_admin->addSimpleWhere('id', $row['id']);
+                if (!$pdoDb_admin->request('UPDATE', 'invoice_items')) {
+                    throw new PdoDbException("'SqlPatchManager::patch126() - Update invoice_items error for " .
+                        "id[{$row['id']}] product_id[$id] unit_price[{$row['gross_total']}]");
+                }
             }
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::patch126() - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::patch126() error. See error log for additional details.");
         }
     }
 
     /**
      * Special handling for patch #303
-     * @throws PdoDbException
      */
     private static function patch303()
     {
         global $pdoDb_admin;
 
-        $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report', 'AND');
-        $pdoDb_admin->addSimpleWhere('enabled', ENABLED);
-        $rows = $pdoDb_admin->request('SELECT', 'extensions');
-        if (!empty($rows)) {
-            // Copy invoice custom field 3 value to the new sales representative field.
-            $pdoDb_admin->addToWhere(new WhereItem(false,'custom_field3', "<>", "", false));
-            $rows = $pdoDb_admin->request("SELECT", "invoices");
-            try {
+        try {
+            $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report', 'AND');
+            $pdoDb_admin->addSimpleWhere('enabled', ENABLED);
+            $rows = $pdoDb_admin->request('SELECT', 'extensions');
+            if (!empty($rows)) {
+                // Copy invoice custom field 3 value to the new sales representative field.
+                $pdoDb_admin->addToWhere(new WhereItem(false,'custom_field3', "<>", "", false));
+                $rows = $pdoDb_admin->request("SELECT", "invoices");
+
                 foreach ($rows as $row) {
                     // Note that custom_field3 is intentionally NOT cleared. The user can do that
                     // through the custom field maintenance screen.
@@ -488,15 +522,15 @@ class SqlPatchManager
                     $pdoDb_admin->setFauxPost(array('sales_representative' => $row['custom_field3']));
                     $pdoDb_admin->request('UPDATE', 'invoices');
                 }
-            } catch (PdoDbException $pde) {
-                error_log("SqlPatchManager::patch303() - Error: " . $pde->getMessage());
-                throw new PdoDbException("SqlPatchManager::patch303() - " . $pde->getMessage());
             }
-        }
 
-        // Delete extension record if present (enabled or not)
-        $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report');
-        $pdoDb_admin->request('DELETE', 'extensions');
+            // Delete extension record if present (enabled or not)
+            $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report');
+            $pdoDb_admin->request('DELETE', 'extensions');
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::patch303() - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::patch303() error. See error log for additional details.");
+        }
     }
 
     /**
@@ -517,24 +551,24 @@ class SqlPatchManager
      *      contains a non-zero value, that value will be converted from an invoice
      *      "id" to the invoice "index_id" value. If NO "default_invoice" entry exists
      *      a "default_invoice" record with a zero setting will be created.
-     * @throws PdoDbException
      */
     private static function patch304()
     {
         global $pdoDb_admin;
 
-        $pdoDb_admin->addSimpleWhere('name', 'default_invoice', 'AND');
-        $pdoDb_admin->addSimpleWhere('enabled', ENABLED);
-        $rows = $pdoDb_admin->request('SELECT', 'extensions');
-        if (!empty($rows)) {
-            // 1) Convert default invoice id in invoices *custom_field4' to the index_id and then store it in the customers table.
-            //    Clear the default value from the invoice.
-            $pdoDb_admin->addToWhere(new WhereItem(false,'custom_field4', "<>", "", false));
-            $rows = $pdoDb_admin->request("SELECT", "invoices");
-            try {
+        try {
+            $pdoDb_admin->addSimpleWhere('name', 'default_invoice', 'AND');
+            $pdoDb_admin->addSimpleWhere('enabled', ENABLED);
+            $rows = $pdoDb_admin->request('SELECT', 'extensions');
+            if (!empty($rows)) {
+                // 1) Convert default invoice id in invoices *custom_field4' to the index_id and then store it in the customers table.
+                //    Clear the default value from the invoice.
+                $pdoDb_admin->addToWhere(new WhereItem(false, 'custom_field4', "<>", "", false));
+                $rows = $pdoDb_admin->request("SELECT", "invoices");
+
                 // Convert id to the index_id and store it in the customers record.
                 foreach ($rows as $row) {
-                    $pdoDb_admin->setSelectList('index_id', 'customer_id');
+                    $pdoDb_admin->setSelectList(array('index_id', 'customer_id'));
                     $pdoDb_admin->addSimpleWhere('id', $row['custom_field4']);
                     $recs = $pdoDb_admin->request('SELECT', 'invoices');
                     if (!empty($recs)) {
@@ -547,18 +581,14 @@ class SqlPatchManager
                     $pdoDb_admin->addSimpleWhere('id', $row['id']);
                     $pdoDb_admin->request('UPDATE', 'invoices');
                 }
-            } catch (PdoDbException $pde) {
-                error_log("SqlPatchManager::patch304() - Error(1): " . $pde->getMessage());
-                throw new PdoDbException("SqlPatchManager::patch304() - " . $pde->getMessage());
-            }
 
-            // 2) Convert non-blank custom_field4 values in the customers table to the corresponding index_id and store
-            //    it in the new default_value field. Also clear the existing custom_field4 field. Note this will INTENTIONALLY
-            //    overwrite any value set up the invoices file above.
-            $pdoDb_admin->setSelectList(array('id', 'custom_field4'));
-            $pdoDb_admin->addToWhere(new WhereItem(false,'custom_field4', "<>", "", false));
-            $rows = $pdoDb_admin->request("SELECT", "customers");
-            try {
+                // 2) Convert non-blank custom_field4 values in the customers table to the corresponding index_id and store
+                //    it in the new default_value field. Also clear the existing custom_field4 field. Note this will INTENTIONALLY
+                //    overwrite any value set up the invoices file above.
+                $pdoDb_admin->setSelectList(array('id', 'custom_field4'));
+                $pdoDb_admin->addToWhere(new WhereItem(false, 'custom_field4', "<>", "", false));
+                $rows = $pdoDb_admin->request("SELECT", "customers");
+
                 foreach ($rows as $row) {
                     // Convert id to index_id
                     $pdoDb_admin->setSelectList('index_id');
@@ -575,91 +605,55 @@ class SqlPatchManager
                         $pdoDb_admin->request('UPDATE', 'customers');
                     }
                 }
-            } catch (PdoDbException $pde) {
-                error_log("SqlPatchManager::patch304() - Error(2): " . $pde->getMessage());
-                throw new PdoDbException("SqlPatchManager::patch304() - " . $pde->getMessage());
             }
-        }
 
-        // Check for a default_invoice entry in the system_defaults table. If none, put an empty
-        // record in there for it. If found, convert from id to index_id for non-zero setting.
-        $pdoDb_admin->addSimpleWhere('name', 'default_invoice', 'AND');
-        $pdoDb_admin->addSimpleWhere('domain_id', DomainId::get());
-        $rows = $pdoDb_admin->request('SELECT', 'system_defaults');
-        if (empty($rows)) {
-            $pdoDb_admin->setFauxPost(array(
-                'name' => 'default_invoice',
-                'value' => '',
-                'domain_id' => DomainId::get(),
-                'extension_id' => '1'
-            ));
-            $pdoDb_admin->request('INSERT', 'system_defaults');
-        } else {
-            $invoice_id = $rows['value'];
-            $id = $rows['id'];
-            if (!empty($invoice_id) && $invoice_id > 0) {
-                $row = Invoice::getInvoice($invoice_id);
-                $pdoDb_admin->setFauxPost(array('value' => $row['index_id']));
-                $pdoDb_admin->addSimpleWhere('id', $id);
-                $pdoDb_admin->request('UPDATE', 'system_defaults');
+            // Check for a default_invoice entry in the system_defaults table. If none, put an empty
+            // record in there for it. If found, convert from id to index_id for non-zero setting.
+            $pdoDb_admin->addSimpleWhere('name', 'default_invoice', 'AND');
+            $pdoDb_admin->addSimpleWhere('domain_id', DomainId::get());
+            $rows = $pdoDb_admin->request('SELECT', 'system_defaults');
+            if (empty($rows)) {
+                $pdoDb_admin->setFauxPost(array(
+                    'name' => 'default_invoice',
+                    'value' => '',
+                    'domain_id' => DomainId::get(),
+                    'extension_id' => '1'
+                ));
+                $pdoDb_admin->request('INSERT', 'system_defaults');
+            } else {
+                $invoice_id = $rows['value'];
+                $id = $rows['id'];
+                if (!empty($invoice_id) && $invoice_id > 0) {
+                    $row = Invoice::getInvoice($invoice_id);
+                    $pdoDb_admin->setFauxPost(array('value' => $row['index_id']));
+                    $pdoDb_admin->addSimpleWhere('id', $id);
+                    $pdoDb_admin->request('UPDATE', 'system_defaults');
+                }
             }
-        }
 
-        // Clear custom_field4 labels for Customer sand Invoices if present
-        try {
+            // Clear custom_field4 labels for Customer sand Invoices if present
             $pdoDb_admin->setSelectAll(true);
             $pdoDb_admin->addSimpleWhere('domain_id', DomainId::get(), 'AND');
             $pdoDb_admin->addToWhere(new WhereItem(true, 'cf_custom_field', '=', 'invoice_cf4', false, 'OR'));
             $pdoDb_admin->addToWhere(new WhereItem(false, 'cf_custom_field', '=', 'customer_cf4', true));
             $rows = $pdoDb_admin->request('SELECT', 'custom_fields');
-            foreach($rows as $row) {
+            foreach ($rows as $row) {
                 $pdoDb_admin->setFauxPost(array('cf_custom_label' => "", 'cf_display' => DISABLED));
                 $pdoDb_admin->addSimpleWhere('cf_id', $row['cf_id']);
                 $pdoDb_admin->request('UPDATE', 'custom_fields');
             }
-        } catch (PdoDbException $pde) {
-            error_log("SqlPatchManager::patch304() - Error(3): " . $pde->getMessage());
-            throw new PdoDbException("SqlPatchManager::patch304() - " . $pde->getMessage());
-        }
 
-        // Delete extension record if present (enabled or not)
-        $pdoDb_admin->addSimpleWhere('name', 'default_invoice');
-        $pdoDb_admin->request('DELETE', 'extensions');
+            // Delete extension record if present (enabled or not)
+            $pdoDb_admin->addSimpleWhere('name', 'default_invoice');
+            $pdoDb_admin->request('DELETE', 'extensions');
+        } catch (PdoDbException $pde) {
+            error_log("SqlPatchManager::patch304() - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::patch304() error. See error log for additional details.");
+        }
     }
-//
-//    /**
-//     * Special handling for patch #306
-//     * @throws PdoDbException
-//     */
-//    private static function patch306()
-//    {
-//        /**
-//         * @var PdoDb $pdoDb_admin
-//         */
-//        global $pdoDb_admin;
-//
-//        try {
-//            $rows = $pdoDb_admin->request('SELECT', 'extensions');
-//            foreach ($rows as $row) {
-//                $parts = explode('_', $row['name']);
-//                $name = '';
-//                foreach ($parts as $part) {
-//                    $name .= ucwords($part);
-//                }
-//
-//                $pdoDb_admin->addSimpleWhere(id, $row['id']);
-//                $pdoDb_admin->setFauxPost(array('name' => $name));
-//                $pdoDb_admin->request('UPDATE', 'extensions');
-//            }
-//        } catch (PdoDbException $pde) {
-//            error_log("SqlPatchManager::patch306() - Error: " . $pde->getMessage());
-//            throw new PdoDbException("SqlPatchManager::patch303() - " . $pde->getMessage());
-//        }
-//    }
 
     /**
      * Load all patches to be processed.
-     * @throws PdoDbException
      */
     private static function loadPatches()
     {
@@ -671,7 +665,12 @@ class SqlPatchManager
         if (self::lastPatchApplied() < 124) {
             // System defaults conversion patch. Defaults query and DEFAULT NUMBER OF LINE ITEMS
             $pdoDb_admin->setSelectAll(true);
-            $rows = $pdoDb_admin->request('SELECT', 'defaults');
+            try {
+                $rows = $pdoDb_admin->request('SELECT', 'defaults');
+            } catch(PdoDbException $pde) {
+                error_log("SqlPatchManager::loadPatches() - Error: " . $pde->getMessage());
+                die ("SqlPatchManager::patch303() error. See error log for additional details.");
+            }
             $defaults = (empty($rows) ? array() : $rows[0]);
         }
 
@@ -2716,12 +2715,12 @@ class SqlPatchManager
 
         $patch = array(
             'name' => "si_system_defaults - add composite primary key",
-            'patch' => "ALTER TABLE  `" . TB_PREFIX . "system_defaults` ADD `new_id` INT( 11 ) NOT NULL FIRST;
-                        UPDATE `" . TB_PREFIX . "system_defaults` SET new_id = id;
-                        ALTER TABLE  `" . TB_PREFIX . "system_defaults` DROP  `id` ;
-                        ALTER TABLE  `" . TB_PREFIX . "system_defaults` DROP INDEX `name` ;
-                        ALTER TABLE  `" . TB_PREFIX . "system_defaults` CHANGE  `new_id`  `id` INT( 11 ) NOT NULL;
-                        ALTER TABLE  `" . TB_PREFIX . "system_defaults` ADD PRIMARY KEY(`domain_id`,`id` );",
+            'patch' => "ALTER TABLE  `" . TB_PREFIX . "system_defaults` ADD `new_id` INT( 11 ) NOT NULL FIRST;" .
+                       "UPDATE `" . TB_PREFIX . "system_defaults` SET new_id = id WHERE 1=1;" .
+                       "ALTER TABLE  `" . TB_PREFIX . "system_defaults` DROP  `id`;" .
+                       "ALTER TABLE  `" . TB_PREFIX . "system_defaults` DROP INDEX `name`;" .
+                       "ALTER TABLE  `" . TB_PREFIX . "system_defaults` CHANGE  `new_id`  `id` INT( 11 ) NOT NULL;" .
+                       "ALTER TABLE  `" . TB_PREFIX . "system_defaults` ADD PRIMARY KEY(`domain_id`,`id` );",
             'date' => "20100305",
             'source' => 'original'
         );
@@ -3330,7 +3329,7 @@ class SqlPatchManager
         $patch = array(
             'name' => "Added owing to invoices table",
             'patch' => "ALTER TABLE `" . TB_PREFIX . "invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT 'Amount owing as of aging-date' AFTER `note`;" .
-                       "UPDATE `" . TB_PREFIX . "invoices` SET `owing` = 1;",
+                       "UPDATE `" . TB_PREFIX . "invoices` SET `owing` = 1 WHERE 1=1;",
             'date' => "20181017",
             'source' => 'fearless359'
         );
@@ -3385,15 +3384,6 @@ class SqlPatchManager
             'source' => 'fearless359'
         );
         self::makePatch('305', $patch);
-//
-//        $patch = array(
-//            'name' => "Change extensions naming convention",
-//            'patch' => "SELECT 1+1",
-//            'date' => "20181120",
-//            'source' => 'fearless359'
-//        );
-//        self::makePatch('306', $patch);
-
         // @formatter:on
     }
 

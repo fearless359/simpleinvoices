@@ -1,13 +1,16 @@
 <?php
 namespace Inc\Claz;
 
+use Fetcher;
+use FetchedDataURL;
+
 require_once ('library/pdf/fetcher._interface.class.php');
 
 /**
  * Class MyFetcherLocalFile
  * @package Inc\Claz
  */
-class MyFetcherLocalFile extends \Fetcher {
+class MyFetcherLocalFile extends Fetcher {
     public $_content;
 
     /**
@@ -23,7 +26,7 @@ class MyFetcherLocalFile extends \Fetcher {
      * @return \FetchedDataURL
      */
     public function get_data($dummy1) {
-        return new \FetchedDataURL($this->_content, array(), "");
+        return new FetchedDataURL($this->_content, array(), "");
     }
 
     /**

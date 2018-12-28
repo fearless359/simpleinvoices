@@ -2,6 +2,10 @@
 
 namespace Inc\Claz;
 
+use DataFilterUTF8;
+use Media;
+use PipelineFactory;
+
 /**
  * @name Pdf.php
  * @author Richard Rowley
@@ -32,7 +36,7 @@ class Pdf
 
         require_once ("include/init.php"); // for getInvoice() and getPreference()
 
-        self::convert_to_pdf($html_to_pdf, $pdfname, $download);
+        self::convertToPdf($html_to_pdf, $pdfname, $download);
     }
 
     /**
@@ -40,14 +44,14 @@ class Pdf
      * @param $pdfname
      * @param $download
      */
-    private static function convert_to_pdf($html_to_pdf, $pdfname, $download) {
+    private static function convertToPdf($html_to_pdf, $pdfname, $download) {
         global $config;
 
         $destination = $download ? "DestinationDownload" : "DestinationFile";
-        $pipeline = \PipelineFactory::create_default_pipeline("", ""); // Attempt to auto-detect encoding
+        $pipeline = PipelineFactory::create_default_pipeline("", ""); // Attempt to auto-detect encoding
         $pipeline->fetchers[] = new MyFetcherLocalFile($html_to_pdf); // Override HTML source
         $baseurl = "";
-        $media = \Media::predefined($config->export->pdf->papersize);
+        $media = Media::predefined($config->export->pdf->papersize);
         $media->set_landscape(false);
 
         $margins = array(
@@ -85,7 +89,7 @@ class Pdf
         $g_pt_scale = $g_px_scale * (72 / 96);
 
         $pipeline->configure($g_config);
-        $pipeline->data_filters[] = new \DataFilterUTF8("");
+        $pipeline->data_filters[] = new DataFilterUTF8("");
         $pipeline->destination = new $destination($pdfname);
         $pipeline->process($baseurl, $media);
     }

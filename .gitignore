@@ -21,7 +21,3 @@ templates/invoices/**
 ### PhpStorm intelliJ folder ###
 .idea/**
 
-### npm files ###
-package-lock.json
-node_modules/*
-

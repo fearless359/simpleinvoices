@@ -1,6 +1,8 @@
 <?php
 namespace Inc\Claz;
 
+use Zend_Log;
+
 /**
  * Class Export
  * @package Inc\Claz
@@ -62,7 +64,7 @@ class Export {
      */
     private function showData($data) {
         if (!isset($data)) {
-            Log::out("Export::showData() - No data to report.", \Zend_Log::DEBUG);
+            Log::out("Export::showData() - No data to report.", Zend_Log::DEBUG);
             error_log("Export::showData() - No data to report.");
             echo "<div class='si_message_error'>Export process terminated. No data to report.</div>";
             echo "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
@@ -73,7 +75,7 @@ class Export {
             $this->file_name = 'payment' . $this->id;
         }
 
-        Log::out("Export::showData() format:[{$this->format}]", \Zend_Log::DEBUG);
+        Log::out("Export::showData() format:[{$this->format}]", Zend_Log::DEBUG);
 
         // @formatter:off
         switch ($this->format) {
@@ -125,7 +127,7 @@ class Export {
      */
     private function getData() {
         global $config, $smarty, $pdoDb, $siUrl;
-        Log::out("Export::getData() module:[{$this->module}]", \Zend_Log::DEBUG);
+        Log::out("Export::getData() module:[{$this->module}]", Zend_Log::DEBUG);
 
         // @formatter:off
         $data = null;
