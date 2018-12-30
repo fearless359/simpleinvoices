@@ -45,13 +45,24 @@ $api_request = ($module == 'api');
 require_once 'config/define.php';
 
 /***********************************************************************
- * Make sure the tmp directories exist and are writeable.
+ * Make sure the public and tmp directories exist and are writeable.
  ***********************************************************************/
+if (!file_exists('./public')) {
+    mkdir('./public');
+} else if (!is_writable('./public')) {
+    SiError::out('notWritable', 'directory', './public');
+}
+
 if (!file_exists('./tmp')) {
     mkdir('./tmp');
-    mkdir('./tmp/database_backups');
 } else if (!is_writable('./tmp')) {
     SiError::out('notWritable', 'directory', './tmp');
+}
+
+if (!file_exists('./tmp/database_backups')) {
+    mkdir('./tmp/database_backups');
+} else if (!is_writable('tmp/database_backups')) {
+    SiError::out('notWritable', 'file', './tmp/database_backups');
 }
 
 if (!file_exists('./tmp/cache')) {

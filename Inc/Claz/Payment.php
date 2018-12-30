@@ -57,11 +57,53 @@ class Payment
 
     /**
      * Get a all payment records.
+     * @param bool $manageTable true if selection if for the manage table; false (default) if not.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function getAll()
+    public static function getAll($manageTable = false)
     {
-        return self::getPayments();
+        $rows = self::getPayments();
+        if ($manageTable) {
+            return self::manageTableInfo($rows);
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Minimize the amount of data returned to the manage table.
+     * @param array $rows selected payment information.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo($rows)
+    {
+        global $LANG;
+
+        $tableRows = array();
+        foreach ($rows as $row) {
+            $action =
+                "<a class=\"index_table\" title=\"{$LANG['view']} {$LANG['payment']}# {$row['id']}\" " .
+                   "href=\"index.php?module=payments&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
+                    "<img src=\"images/common/view.png\" height=\"16\" border=\"-5px\" />" .
+                "</a>" .
+                "&nbsp;&nbsp;" .
+                "<a class=\"index_table\" title=\"{$LANG['print_preview_tooltip']} {$LANG['payment']}# {$row['id']}\" " .
+                   "href=\"index.php?module=payments&amp;view=print&amp;id={$row['id']}\">" .
+                    "<img src=\"images/common/printer.png\" height=\"16\" border=\"-5px\" />" .
+                "</a>";
+
+            $tableRows[] = array(
+                'action' => $action,
+                'payment_id' => $row['id'],
+                'invoice_id' => $row['ac_inv_id'],
+                'customer' => $row['cname'],
+                'biller' => $row['bname'],
+                'amount' => $row['ac_amount'],
+                'type' => $row['type'],
+                'date' => $row['date']
+            );
+        }
+        return $tableRows;
     }
 
     /**
@@ -136,7 +178,6 @@ class Payment
             $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get());
 
             $rows = $pdoDb->request("SELECT", "payment", "ap");
-
             foreach ($rows as $row) {
                 $row['notes_short'] = SiLocal::truncateStr($row['ac_notes'], '13', '...');
                 $row['date'] = SiLocal::date($row['ac_date']);
@@ -216,13 +257,14 @@ class Payment
     /**
      * Get a specific payment type record.
      * @param int $id Unique ID of invoice to retrieve payments for.
+     * @param bool $manageTable true if selection if for the manage table; false (default) if not.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function getInvoicePayments($id)
+    public static function getInvoicePayments($id, $manageTable = false)
     {
         global $pdoDb;
 
-        $rows = array();
+        $payments = array();
         try {
             $pdoDb->setSelectList(array(
                 "ap.*",
@@ -257,22 +299,33 @@ class Payment
             $pdoDb->setOrderBy(array("ap.id", "D"));
 
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
+            foreach ($rows as $row) {
+                $row['notes_short'] = SiLocal::truncateStr($row['ac_notes'], '13', '...');
+                $row['date'] = SiLocal::date($row['ac_date']);
+                $payments[] = $row;
+            }
         } catch (PdoDbException $pde) {
             error_log("Payment::getInvoicePayments() - id[$id] error: " . $pde->getMessage());
         }
-        return $rows;
+
+        if ($manageTable) {
+            return self::manageTableInfo($payments);
+        }
+
+        return $payments;
     }
 
     /**
      * Get a specific payment type record.
      * @param int $id Unique ID of customer to retrieve payments for.
+     * @param bool $manageTable true if selection if for the manage table; false (default) if not.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function getCustomerPayments($id)
+    public static function getCustomerPayments($id, $manageTable = false)
     {
         global $pdoDb;
 
-        $rows = array();
+        $payments = array();
         try {
             $pdoDb->setSelectList(array(
                 'ap.*',
@@ -307,10 +360,20 @@ class Payment
             $pdoDb->setOrderBy(array("ap.id", "D"));
 
             $rows = $pdoDb->request("SELECT", "customers", "c");
+            foreach ($rows as $row) {
+                $row['notes_short'] = SiLocal::truncateStr($row['ac_notes'], '13', '...');
+                $row['date'] = SiLocal::date($row['ac_date']);
+                $payments[] = $row;
+            }
         } catch (PdoDbException $pde) {
             error_log("Payment::getCustomerPayments() - id[$id] error: " . $pde->getMessage());
         }
-        return $rows;
+
+        if ($manageTable) {
+            return self::manageTableInfo($payments);
+        }
+
+        return $payments;
     }
 
     /**

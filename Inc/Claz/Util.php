@@ -8,9 +8,14 @@
 
 namespace Inc\Claz;
 
+use Exception;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 
 class Util
 {
+    static $timebreaks = array();
+
     /**
      * Verify page access via valid path. The PHP files that can be directly
      * accessed (index.php, login.php, logout.php, etc.) define this constant.
@@ -114,7 +119,8 @@ class Util
         $dirname = "templates/invoices/logos";
         $ext = array("jpg", "png", "jpeg", "gif");
         $files = array();
-        if ($handle = opendir($dirname)) {
+        $handle = opendir($dirname);
+        if ($handle !== false) {
             while (false !== ($file = readdir($handle))) {
                 for ($i = 0; $i < sizeof($ext); $i++) {
                     // NOT case sensitive: OK with JpeG, JPG, ecc.
@@ -129,7 +135,7 @@ class Util
     }
 
     /**
-     * @param Smarty $smarty
+     * @param array $smarty
      */
     public static function loginLogo($smarty) {
         $defaults = SystemDefaults::loadValues();
@@ -241,18 +247,62 @@ class Util
      */
     public static function outhtml($html) {
         try {
-            $config = \HTMLPurifier_Config::createDefault();
+            $config = HTMLPurifier_Config::createDefault();
 
             // configuration goes here:
             $config->set('Core.Encoding', 'UTF-8'); // replace with your encoding
             $config->set('HTML.Doctype', 'XHTML 1.0 Strict'); // replace with your doctype
 
-            $purifier = new \HTMLPurifier($config);
+            $purifier = new HTMLPurifier($config);
             return $purifier->purify($html);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             error_log("Util::outhtml() - Error: " . $e->getMessage());
         }
         return '';
+    }
+
+    /**
+     * @param string $action 'set' to set the current time. 'report' to
+     *          report the elapsed time.
+     * @param string Descriptive label to the break.
+     * @return string;
+     */
+    public static function timer($action, $label) {
+        $result = '';
+        $action = strtolower($action);
+        if ($action == 'set') {
+            $label = empty($label) ? 'Break ' . (count(Util::$timebreaks) + 1) : $label;
+            Util::$timebreaks[] = array($label, microtime(true));
+        } else if ($action == 'report') {
+            $label = empty($label) ? 'End' : $label;
+            Util::$timebreaks[] = array($label, microtime(true));
+            $result = '';
+            for ($i = 1; $i < count(Util::$timebreaks); $i++) {
+                $cur = Util::$timebreaks[$i];
+                $cur_label = $cur[0];
+                $cur_time = $cur[1];
+                $prev = Util::$timebreaks[$i-1];
+                $prev_label = $prev[0];
+                $prev_time = $prev[1];
+
+                $diff = ($cur_time - $prev_time) * 60;
+
+                if ($i == 1) {
+                    $result = "\nTime initially set by $prev_label";
+                }
+                $result .= "\n";
+
+                $result .= "$cur_label: $diff seconds";
+            }
+            if (empty($result)) {
+                $result = 'No time interval set.';
+            }
+            Util::$timebreaks = array(); // Clear the reported info
+        } else {
+            $result = "Util::timer() - Invalid action[$action].";
+        }
+
+        return $result;
     }
 
 }

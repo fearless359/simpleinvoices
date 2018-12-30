@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "dependencies": {
     "datatables.net": "^1.10.19",
+    "datatables.net-buttons-dt": "^1.5.4",
+    "datatables.net-colreorder-dt": "^1.5.1",
     "datatables.net-dt": "^1.10.19",
+    "datatables.net-fixedheader-dt": "^3.1.5",
+    "datatables.net-scroller-dt": "^1.5.1",
     "jquery": "^3.3.1",
     "qtip2": "^3.0.3"
   },

@@ -21,7 +21,7 @@
         <span class='si_filters_title'>{$LANG.filters}:</span>
         <span class='si_filters_links'>
             <a href="index.php?module=invoices&amp;view=manage"
-               class="first{if !isset($smarty.get.having) || empty($smarty.get.having)==''} selected{/if}">
+               class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">
               {$LANG.all}
             </a>
             <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed"
@@ -48,7 +48,7 @@
             {$LANG.new_invoice}
         </a>
     </div>
-    <table id="si-data-table" class="display" >
+    <table id="si-data-table" class="display compact" >
         <thead>
             <tr>
                 <th>{$LANG.actions}</th>
@@ -61,62 +61,7 @@
                 <th>{$LANG.aging}</th>
             </tr>
         </thead>
-        <tbody>
-        {foreach $invoices as $invoice}
-            <tr>
-                <td>
-                    <a class='index_table' title="{$LANG['quick_view_tooltip']}" href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice['id']}">
-                        <img src="images/common/view.png" class="action" alt="view" />
-                    </a>
-                    {if !$read_only}
-                        <a class="index_table" title="{$LANG['edit_view_tooltip']}" href="index.php?module=invoices&amp;view=details&amp;id={$invoice['id']}&amp;action=view">
-                            <img src="images/common/edit.png" class="action" alt="edit" />
-                        </a>
-                    {/if}
-                    <a class="index_table" title="{$LANG['print_preview_tooltip']}" href="index.php?module=export&amp;view=invoice&amp;id={$invoice['id']}&amp;format=print">
-                        <img src="images/common/printer.png" class="action" alt="print" />
-                    </a>
-                    <a title="{$LANG['export_tooltip']}" class="invoice_export_dialog" href="#" rel="{$invoice['id']}" data-spreadsheet="{$config->export->spreadsheet}" data-wordprocessor="{$config->export->wordprocessor}">
-                        <img src="images/common/page_white_acrobat.png" class="action" alt="spreadsheet"/>
-                    </a>
-                    {if !$read_only}
-                        <!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->
-                        {if isset($invoice['status']) && $invoice['owing'] > 0}
-                            <!-- Real Invoice Has Owing - Process payment -->
-                            <a title="{$LANG['process_payment']}" class="index_table" href="index.php?module=payments&amp;view=process&amp;id={$invoice['id']}&amp;op=pay_selected_invoice">
-                                <img src="images/common/money_dollar.png" class="action" alt="payment"/>
-                            </a>
-                        {elseif isset($invoice['status'])}
-                            <!-- Real Invoice Payment Details if not Owing (get different color payment icon) -->
-                            <a title="{$LANG['process_payment']}" class="index_table" href="index.php?module=payments&amp;view=details&amp;ac_inv_id={$invoice['id']}&amp;action=view">
-                                <img src="images/common/money_dollar.png" class="action" alt="payment" />
-                            </a>
-                        {else}
-                            <!-- Draft Invoice Just Image to occupy space till blank or greyed out icon becomes available -->
-                            <img src="images/common/money_dollar.png" class="action" alt="payment" />
-                        {/if}
-                    {/if}
-                    <a title="{$LANG['email']}" class="index_table" href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice['id']}">
-                        <img src="images/common/mail-message-new.png" class="action" alt="email" />
-                    </a>
-                </td>
-                <td class="si_center">{$invoice['index_id']}</td>
-                <td>{$invoice['biller']}</td>
-                <td>{$invoice['customer']}</td>
-                <td class="si_center">{$invoice['date']|siLocal_date}</td>
-                <td class="si_right">{$invoice['total']|siLocal_currency}</td>
-                {if isset($invoice['status'])}
-                    <td class="si_right">{$invoice['owing']|siLocal_currency}</td>
-                    <td class="si_right">{$invoice['aging']}</td>
-                {else}
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                {/if}
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
-    {*{include file='modules/invoices/manage.js.php'}*}
     <div id="export_dialog" class="flora" title="Export" style="display: none;">
         <div class="si_toolbar si_toolbar_dialog">
             <a title="{$LANG.export_tooltip} {$LANG.export_pdf_tooltip}" class="export_pdf export_window">
@@ -137,15 +82,28 @@
         {literal}
         $(document).ready(function() {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "columns": [
+                    { "data": "action" },
+                    { "data": "index_id" },
+                    { "data": "biller" },
+                    { "data": "customer" },
+                    { "data": "date" },
+                    { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
+                    { "data": "owing", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
+                    { "data": "aging" }
+                ],
                 "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],
                 "order": [
                     [1, "desc"]
                 ],
                 "columnDefs": [
-                    { "targets": 0, "width": "16%", "orderable": false },
-                    { "targets": 1, "width": "9%" },
-                    { "targets": 4, "width": "11%" },
-                    { "targets": [5,6,7], "width": "10%" }
+                    { "targets": 0, "width": "12%", "className": 'dt-body-center', "orderable": false },
+                    { "targets": 1, "className": 'dt-body-center' },
+                    { "targets": 4, "width": "10%" },
+                    { "targets": 5, "className": 'dt-body-right' },
+                    { "targets": 6, "className": 'dt-body-right' },
+                    { "targets": 7, "className": 'dt-body-right' }
                 ],
                 "colReorder": true
             });

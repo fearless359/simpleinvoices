@@ -24,10 +24,13 @@ $having = (isset($_GET['having'])) ? $_GET['having'] : "";
 // Make customer access read only. Billers change work only on those invoices generated for them.
 $read_only = ($auth_session->role_name == 'customer');
 
-$invoices = Invoice::getAllWithHavings($having);
-$smarty->assign('invoices', $invoices);
+$invoices = Invoice::getAllWithHavings($having, '', '', true);
+$data = json_encode(array('data' => $invoices));
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unabled to create public/data.json file");
+}
+
 $smarty->assign('number_of_invoices', count($invoices));
-$smarty->assign('read_only', $read_only);
 
 if (!empty($having)) {
     $having = "&amp;having=" . $having;

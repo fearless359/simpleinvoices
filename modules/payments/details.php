@@ -17,9 +17,11 @@ if (isset($_GET['ac_inv_id'])) {
 } else {
     $payment = Payment::getOne($_GET['id']);
 }
+$numPymtRecs = count($payment);
+$smarty->assign('num_payment_recs', $numPymtRecs);
+$smarty->assign("payment", $payment);
 
-$smarty->assign("payment"    , $payment);
-if (isset($payment)) {
+if ($numPymtRecs > 0) {
     /*Code to get the Invoice preference - so can link from this screen back to the invoice - START */
     $invoice     = Invoice::getInvoice($payment['ac_inv_id']);
     $invoiceType = Invoice::getInvoiceType($invoice['type_id']);

@@ -66,9 +66,10 @@ class Invoice
      *                        "real" => array());
      * @param string $sort field to order by (optional).
      * @param string $dir order by direction, "asc" or "desc" - (optional).
+     * @param bool $manageTable true if select for manage.tpl table; false (default) if not.
      * @return array Invoices retrieved.
      */
-    public static function getAllWithHavings($having, $sort="", $dir="")
+    public static function getAllWithHavings($having, $sort="", $dir="", $manageTable = false)
     {
         global $pdoDb;
 
@@ -92,6 +93,11 @@ class Invoice
                 error_log("Invoice::getAllWithHavings() - Error: " . $pde->getMessage());
             }
         }
+
+        if ($manageTable) {
+            return self::manageTableInfo();
+        }
+
         return self::getInvoices(null, $sort, $dir);
     }
 
@@ -117,6 +123,83 @@ class Invoice
             error_log("Invoice::getInvoicesOwing() - Error: " . $pde->getMessage());
         }
         return $invoices_owing;
+    }
+
+    /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo()
+    {
+        global $auth_session, $config, $LANG;
+
+        $read_only = ($auth_session->role_name == 'customer');
+
+        $rows = self::getInvoices();
+        $tableRows = array();
+        foreach ($rows as $row) {
+            $readonly_1 =
+                $read_only ?    ""
+                    :
+                                "<a class=\"index_table\" title=\"{$LANG['edit_view_tooltip']} {$row['index_id']}\" " .
+                                   "href=\"index.php?module=invoices&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
+                                    "<img src=\"images/common/edit.png\" class=\"action\" alt=\"edit\" />" .
+                                "</a>";
+            $readonly_2_1 =
+                isset($row['status']) && $row['owing'] > 0 ?
+                                "<!-- Real Invoice Has Owing - Process payment -->" .
+                                "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
+                                   "href=\"index.php?module=payments&amp;view=process&amp;id={$row['id']}&amp;op=pay_selected_invoice\">" .
+                                    "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\"/>" .
+                                "</a>"
+                : isset($row['status']) ?
+                                "<!-- Real Invoice Payment Details if not Owing (get different color payment icon) -->" .
+                                "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
+                                   "href=\"index.php?module=payments&amp;view=details&amp;ac_inv_id={$row['id']}&amp;action=view\">" .
+                                    "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\" />" .
+                                "</a>"
+                    :
+                                "<!-- Draft Invoice Just Image to occupy space till blank or greyed out icon becomes available -->" .
+                                "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\" />";
+
+
+            $readonly_2 =
+                $read_only ?    ""
+                    :           "<!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->" .
+                                $readonly_2_1;
+
+            $action =   "<a class='index_table' title=\"{$LANG['quick_view_tooltip']} {$row['index_id']}\" " .
+                           "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}\">" .
+                            "<img src=\"images/common/view.png\" class=\"action\" alt=\"view\" />" .
+                        "</a>" .
+                        $readonly_1 .
+                        "<a class=\"index_table\" title=\"{$LANG['print_preview_tooltip']} {$row['index_id']}\" " .
+                           "href=\"index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print\">" .
+                            "<img src=\"images/common/printer.png\" class=\"action\" alt=\"print\" />" .
+                        "</a>" .
+                        "<a title=\"{$LANG['export_tooltip']} {$row['index_id']}\" class=\"invoice_export_dialog\" " .
+                           "href=\"#\" rel=\"{$row['id']}\" data-spreadsheet=\"{$config->export->spreadsheet}\" " .
+                           "data-wordprocessor=\"{$config->export->wordprocessor}\">" .
+                            "<img src=\"images/common/page_white_acrobat.png\" class=\"action\" alt=\"spreadsheet\"/>" .
+                        "</a>" .
+                        $readonly_2 .
+                        "<a title=\"{$LANG['email']} {$row['index_id']}\" class=\"index_table\" " .
+                           "href=\"index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$row['id']}\">" .
+                            "<img src=\"images/common/mail-message-new.png\" class=\"action\" alt=\"email\" />" .
+                        "</a>";
+
+            $tableRows[] = array(
+                'action' => $action,
+                'index_id' => $row['index_id'],
+                'biller' => $row['biller'],
+                'customer' => $row['customer'],
+                'date' => SiLocal::date($row['date']),
+                'total' => $row['total'],
+                'owing' => (isset($row['status']) ? $row['owing'] : ''),
+                'aging' => (isset($row['aging']) ? $row['aging'] : '')
+            );
+        }
+        return $tableRows;
     }
 
     /**
@@ -285,7 +368,6 @@ class Invoice
      */
     private static function calculateAgeDays($id, $invoice_date, $owing, $last_activity_date, $aging_date, $pref_id)
     {
-
         // Don't recalculate $owing unless you have to because it involves DB reads.
         // Note that there is a time value in the dates so they are typically equal only when
         // an account is created.
@@ -297,7 +379,6 @@ class Invoice
 
         // We don't want create values here.
         if ($owing < 0 || $pref_id != 1) $owing = 0;
-
         $curr_dt_ymd_hms = '';
         try {
             $curr_dt = new DateTime();
@@ -305,7 +386,7 @@ class Invoice
             // date is greater than the aging date, set the invoice aging value.
             $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
 
-            if ($pref_id == 1) {
+            if ($pref_id == 1 && $owing > 0) {
                 $inv_dt = new DateTime($invoice_date);
                 $date_diff = $curr_dt->diff($inv_dt);
                 $dys = $date_diff->days;
@@ -1394,5 +1475,10 @@ class Invoice
 
         return true;
     }
+
+}
+
+class InvoiceManageTable
+{
 
 }

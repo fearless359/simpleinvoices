@@ -9,6 +9,7 @@ tmp/*
 tmp/database_backups/*
 .buildpath
 .project
+public/**
 .settings/**
 library/HTMLPurifier/DefinitionCache/Serializer/HTML/*
 templates/invoices/**

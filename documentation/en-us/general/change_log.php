@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2018-12-30 - <b>2018.3.2</b>
+            <ul>
+                <li>Modified invoices and payments datatables to use ajax to speed it up.</li>
+            </ul>
+        </li>
         <li>2018-12-26 - <b>2018.3.1</b>
             <ul>
                 <li>Modified to use current version of jquery and jquery-ui files. Using

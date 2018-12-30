@@ -1,8 +1,8 @@
-{if !isset($payment)}
-  <meta http-equiv="refresh" content="5;URL=index.php?module=invoices&amp;view=manage" />
+{if $num_payment_recs == 0}
+  <meta http-equiv="refresh" content="2;URL=index.php?module=invoices&amp;view=manage" />
   <div class='si_message_error'>{$LANG['zero_invoice_amt']}</div>
 {else}
-  {if $payment.num_payment_recs > 1}
+  {if $num_payment_recs > 1}
     <h3>{$LANG['more_than_one_pymt_rec']}</h3>
   {/if}
   <div class="si_form si_form_view" id="si_form_pay_details">

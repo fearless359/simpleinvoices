@@ -22,33 +22,38 @@ $customer   = null;
 if (!empty($_GET['id'])) {
     // Filter by just one invoice
     $inv_id        = $_GET['id'];
-    $payments      = Payment::getInvoicePayments($inv_id);
-    $invoice       = Invoice::getInvoice($inv_id);
-    $preference    = Preferences::getOne($invoice['preference_id']);
+    $payments      = Payment::getInvoicePayments($inv_id, true);
+//    $invoice       = Invoice::getInvoice($inv_id);
+//    $preference    = Preferences::getOne($invoice['preference_id']);
     $subPageActive = "payment_filter_invoice";
     $no_entry_msg  = $LANG['no_payments_invoice'];
 } else if (!empty($_GET['c_id'])) {
     // Filter by just one customer
     $c_id          = $_GET['c_id'];
-    $payments      = Payment::getCustomerPayments($c_id);
-    $customer      = Customer::getOne($c_id);
+    $payments      = Payment::getCustomerPayments($c_id, true);
+//    $customer      = Customer::getOne($c_id);
     $subPageActive = "payment_filter_customer";
     $no_entry_msg  = $LANG['no_payments_customer'];
 } else {
     // No filters
-    $payments = Payment::getAll();
+    $payments = Payment::getAll(true);
     $subPageActive = "payment_manage";
     $no_entry_msg  = $LANG['no_payments'];
 }
 
-$smarty->assign("payments"    , $payments);
-$smarty->assign("preference"  , $preference);
-$smarty->assign("customer"    , $customer);
+$data = json_encode(array('data' => $payments));
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unabled to create public/data.json file");
+}
+
+$smarty->assign("number_of_rows", count($payments));
+//$smarty->assign("preference", $preference);
+//$smarty->assign("customer", $customer);
 $smarty->assign('no_entry_msg', $no_entry_msg);
 
-$smarty->assign("c_id"  , $c_id);
-$smarty->assign("inv_id", $inv_id);
+//$smarty->assign("c_id", $c_id);
+//$smarty->assign("inv_id", $inv_id);
 
 $smarty->assign('subPageActive', $subPageActive);
-$smarty->assign('pageActive'   , 'payment');
-$smarty->assign('active_tab'   , '#money');
+$smarty->assign('pageActive', 'payment');
+$smarty->assign('active_tab', '#money');
