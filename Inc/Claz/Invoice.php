@@ -138,55 +138,54 @@ class Invoice
         $rows = self::getInvoices();
         $tableRows = array();
         foreach ($rows as $row) {
-            $readonly_1 =
-                $read_only ?    ""
-                    :
-                                "<a class=\"index_table\" title=\"{$LANG['edit_view_tooltip']} {$row['index_id']}\" " .
+            // @formatter:off
+            if ($read_only) {
+                $inv_edit = '';
+                $inv_pymt = '';
+            } else {
+                $inv_edit =   "<a class=\"index_table\" title=\"{$LANG['edit_view_tooltip']} {$row['index_id']}\" " .
                                    "href=\"index.php?module=invoices&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
                                     "<img src=\"images/common/edit.png\" class=\"action\" alt=\"edit\" />" .
                                 "</a>";
-            $readonly_2_1 =
-                isset($row['status']) && $row['owing'] > 0 ?
-                                "<!-- Real Invoice Has Owing - Process payment -->" .
-                                "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
-                                   "href=\"index.php?module=payments&amp;view=process&amp;id={$row['id']}&amp;op=pay_selected_invoice\">" .
-                                    "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\"/>" .
-                                "</a>"
-                : isset($row['status']) ?
-                                "<!-- Real Invoice Payment Details if not Owing (get different color payment icon) -->" .
-                                "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
-                                   "href=\"index.php?module=payments&amp;view=details&amp;ac_inv_id={$row['id']}&amp;action=view\">" .
-                                    "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\" />" .
-                                "</a>"
-                    :
-                                "<!-- Draft Invoice Just Image to occupy space till blank or greyed out icon becomes available -->" .
+
+                $inv_pymt =   "<!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->";
+                if ($row['status'] == ENABLED && $row['owing'] > 0) {
+                    $inv_pymt .= "<!-- Real Invoice Has Owing - Process payment -->" .
+                                 "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
+                                    "href=\"index.php?module=payments&amp;view=process&amp;id={$row['id']}&amp;op=pay_selected_invoice\">" .
+                                     "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\"/>" .
+                                 "</a>";
+                } else if ($row['status'] == ENABLED) {
+                    $inv_pymt .= "<!-- Real Invoice Payment Details if not Owing (get different color payment icon) -->" .
+                                 "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
+                                    "href=\"index.php?module=payments&amp;view=details&amp;ac_inv_id={$row['id']}&amp;action=view\">" .
+                                     "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\" />" .
+                                 "</a>";
+                } else {
+                    $inv_pymt = "<!-- Draft Invoice Just Image to occupy space till blank or greyed out icon becomes available -->" .
                                 "<img src=\"images/common/money_dollar.png\" class=\"action\" alt=\"payment\" />";
+                }
+            }
 
-
-            $readonly_2 =
-                $read_only ?    ""
-                    :           "<!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->" .
-                                $readonly_2_1;
-
-            $action =   "<a class='index_table' title=\"{$LANG['quick_view_tooltip']} {$row['index_id']}\" " .
-                           "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}\">" .
-                            "<img src=\"images/common/view.png\" class=\"action\" alt=\"view\" />" .
-                        "</a>" .
-                        $readonly_1 .
-                        "<a class=\"index_table\" title=\"{$LANG['print_preview_tooltip']} {$row['index_id']}\" " .
-                           "href=\"index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print\">" .
-                            "<img src=\"images/common/printer.png\" class=\"action\" alt=\"print\" />" .
-                        "</a>" .
-                        "<a title=\"{$LANG['export_tooltip']} {$row['index_id']}\" class=\"invoice_export_dialog\" " .
-                           "href=\"#\" rel=\"{$row['id']}\" data-spreadsheet=\"{$config->export->spreadsheet}\" " .
-                           "data-wordprocessor=\"{$config->export->wordprocessor}\">" .
-                            "<img src=\"images/common/page_white_acrobat.png\" class=\"action\" alt=\"spreadsheet\"/>" .
-                        "</a>" .
-                        $readonly_2 .
-                        "<a title=\"{$LANG['email']} {$row['index_id']}\" class=\"index_table\" " .
-                           "href=\"index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$row['id']}\">" .
-                            "<img src=\"images/common/mail-message-new.png\" class=\"action\" alt=\"email\" />" .
-                        "</a>";
+            $action = "<a class='index_table' title=\"{$LANG['quick_view_tooltip']} {$row['index_id']}\" " .
+                         "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}\">" .
+                          "<img src=\"images/common/view.png\" class=\"action\" alt=\"view\" />" .
+                      "</a>" .
+                      $inv_edit .
+                      "<a class=\"index_table\" title=\"{$LANG['print_preview_tooltip']} {$row['index_id']}\" " .
+                         "href=\"index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print\">" .
+                          "<img src=\"images/common/printer.png\" class=\"action\" alt=\"print\" />" .
+                      "</a>" .
+                      "<a title=\"{$LANG['export_tooltip']} {$row['index_id']}\" class=\"invoice_export_dialog\" " .
+                         "href=\"#\" rel=\"{$row['id']}\" data-spreadsheet=\"{$config->export->spreadsheet}\" " .
+                         "data-wordprocessor=\"{$config->export->wordprocessor}\">" .
+                          "<img src=\"images/common/page_white_acrobat.png\" class=\"action\" alt=\"spreadsheet\"/>" .
+                      "</a>" .
+                      $inv_pymt .
+                      "<a title=\"{$LANG['email']} {$row['index_id']}\" class=\"index_table\" " .
+                         "href=\"index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$row['id']}\">" .
+                          "<img src=\"images/common/mail-message-new.png\" class=\"action\" alt=\"email\" />" .
+                      "</a>";
 
             $tableRows[] = array(
                 'action' => $action,

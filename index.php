@@ -71,6 +71,12 @@ if (!file_exists('./tmp/cache')) {
     SiError::out('notWritable', 'file', './tmp/cache');
 }
 
+if (!file_exists('./tmp/template_c')) {
+    mkdir('./tmp/template_c');
+} else if (!is_writable('tmp/template_c')) {
+    SiError::out('notWritable', 'file', './tmp/template_c');
+}
+
 if (!file_exists('./tmp/log')) {
     mkdir('./tmp/log');
 } else if (!is_writable('tmp/log')) {
