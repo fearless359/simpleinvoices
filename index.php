@@ -261,7 +261,7 @@ if (($module == "invoices") && (strstr($view, "template"))) {
 Log::out("index.php - After invoices/template", Zend_Log::DEBUG);
 
 // Check for "api" module or a "xml" or "ajax" "page request" (aka view)
-if (strstr($module, "api") || (strstr($view, "xml") || (strstr($view, "ajax")))) {
+if ($api_request || (strstr($view, "xml") || (strstr($view, "ajax")))) {
     $extensionXml = 0;
     foreach ($ext_names as $ext_name) {
         if (file_exists("extensions/$ext_name/modules/$module/$view.php")) {
@@ -271,9 +271,11 @@ if (strstr($module, "api") || (strstr($view, "xml") || (strstr($view, "ajax"))))
     }
 
     // Load default if none found for enabled extensions.
-    if ($extensionXml == 0 && $my_path = Util::getCustomPath("$module/$view", 'module')) {
-        include ($my_path);
+    $my_path = Util::getCustomPath("$module/$view", 'module');
+    if ($extensionXml == 0 && isset($my_path)) {
+        include($my_path);
     }
+
     exit(0);
 }
 Log::out("index.php - After api/xml or ajax", Zend_Log::DEBUG);
@@ -322,7 +324,9 @@ if (!in_array($module . "_" . $view, $early_exit)) {
 
     if ($extensionHeader == 0) {
         $my_path = Util::getCustomPath('header');
-        $smarty->$smarty_output($my_path);
+        if (isset($my_path)) {
+            $smarty->$smarty_output($my_path);
+        }
     }
 }
 Log::out("index.php - after header.tpl", Zend_Log::DEBUG);
@@ -360,9 +364,12 @@ foreach ($ext_names as $ext_name) {
 }
 Log::out("index.php - After extension_php_insert_files, etc.", Zend_Log::DEBUG);
 
-if ($extensionPhpFile == 0 && ($my_path = Util::getCustomPath("$module/$view", 'module'))) {
-    Log::out("index.php - my_path[$my_path]", Zend_Log::DEBUG);
-    include $my_path;
+if ($extensionPhpFile == 0) {
+    $my_path = Util::getCustomPath("$module/$view", 'module');
+    if (isset($my_path)) {
+        Log::out("index.php - my_path[$my_path]", Zend_Log::DEBUG);
+        include $my_path;
+    }
 }
 // **********************************************************
 // Include php file for the requested page section - END
@@ -429,14 +436,15 @@ if ($menu) {
     //
     // If no matching section is found, the file will NOT be inserted.
     $my_path = Util::getCustomPath('menu');
-    Log::out("index.php - menu my_path[$my_path]", Zend_Log::DEBUG);
-
-    $menutpl = $smarty->fetch($my_path);
-    $lines = array();
-    $sections = array();
-    Funcs::menuSections($menutpl, $lines, $sections);
-    $menutpl = Funcs::mergeMenuSections($ext_names, $lines, $sections);
-    echo $menutpl;
+    if (isset($my_path)) {
+        Log::out("index.php - menu my_path[$my_path]", Zend_Log::DEBUG);
+        $menutpl = $smarty->fetch($my_path);
+        $lines = array();
+        $sections = array();
+        Funcs::menuSections($menutpl, $lines, $sections);
+        $menutpl = Funcs::mergeMenuSections($ext_names, $lines, $sections);
+        echo $menutpl;
+    }
 }
 Log::out("index.php - After menutpl processed", Zend_Log::DEBUG);
 
@@ -457,7 +465,10 @@ if (!in_array($module . "_" . $view, $early_exit)) {
     }
 
     if ($extensionMain == "0") {
-        $smarty->$smarty_output(Util::getCustomPath('main'));
+        $my_path = Util::getCustomPath('main');
+        if (isset($my_path)) {
+            $smarty->$smarty_output($my_path);
+        }
     }
 }
 Log::out("index.php - After main.tpl", Zend_Log::DEBUG);

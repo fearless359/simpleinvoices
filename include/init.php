@@ -40,7 +40,7 @@ if ($api_request) {
             $pdoDb_admin->setSelectList('value');
             $rows = $pdoDb_admin->request('SELECT', 'system_defaults');
             $timeout = (empty($rows) ? 0 : intval($rows[0]['value']));
-            Log::out("session_timeout loaded[$timeout]", \Zend_Log::DEBUG);
+            Log::out("session_timeout loaded[$timeout]", Zend_Log::DEBUG);
         } catch (PdoDbException $pde) {
             $timeout = 0;
         }
@@ -54,12 +54,12 @@ if ($api_request || $timeout <= 0) {
 
 try {
     $auth_session->setExpirationSeconds($timeout * 60);
-} catch (\Zend_Session_Exception $zse) {
+} catch (Zend_Session_Exception $zse) {
     SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
 }
 
 $frontendOptions = array('lifetime' => ($timeout * 60), 'automatic_serialization' => true);
-Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), \Zend_Log::DEBUG);
+Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), Zend_log::DEBUG);
 
 /* *************************************************************
  * Zend Framework cache section - start
@@ -69,15 +69,15 @@ $backendOptions = array('cache_dir' => './tmp/cache'); // Directory where to put
 
 // getting a Zend_Cache_Core object
 try {
-    $cache = \Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-} catch (\Zend_Cache_Exception $zce) {
+    $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+} catch (Zend_Cache_Exception $zce) {
     SiError::out('generic', 'Zend_Cache_Exception', $zce->getMessage());
 }
 
 // required for some servers
 try {
-    \Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
-} catch (\Zend_Date_Exception $zde) {
+    Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
+} catch (Zend_Date_Exception $zde) {
     SiError::out('generic', 'Zend_Date_Exception', $zde->getMessage());
 }
 /* *************************************************************
@@ -132,7 +132,6 @@ if ($databaseBuilt) {
 // Or if this is a batch job
 if ($api_request || (!$databaseBuilt || !$databasePopulated)) {
     $config->authentication->enabled = DISABLED;
-    $module="";
 }
 
 $smarty->assign('patchCount', $patchCount);
@@ -187,7 +186,7 @@ if (isset($defaults['company_name'])) {
     $LANG['company_name'] = 'SimpleInvoices';
 }
 if (!$api_request) {
-    Log::out("init.php - authentication-enabled[{$config->authentication->enabled}] fake_auth[{$auth_session->fake_auth}]", \Zend_Log::DEBUG);
+    Log::out("init.php - authentication-enabled[{$config->authentication->enabled}] fake_auth[{$auth_session->fake_auth}]", Zend_Log::DEBUG);
 
     // if user logged into SimpleInvoices with authentication set to false,
     // then use the fake authentication, killing the session that was started.
