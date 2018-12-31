@@ -144,6 +144,7 @@ return array(
     'PHPUnit\\Runner\\AfterSuccessfulTestHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/AfterSuccessfulTestHook.php',
     'PHPUnit\\Runner\\AfterTestErrorHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/AfterTestErrorHook.php',
     'PHPUnit\\Runner\\AfterTestFailureHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/AfterTestFailureHook.php',
+    'PHPUnit\\Runner\\AfterTestHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/AfterTestHook.php',
     'PHPUnit\\Runner\\AfterTestWarningHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/AfterTestWarningHook.php',
     'PHPUnit\\Runner\\BaseTestRunner' => $vendorDir . '/phpunit/phpunit/src/Runner/BaseTestRunner.php',
     'PHPUnit\\Runner\\BeforeFirstTestHook' => $vendorDir . '/phpunit/phpunit/src/Runner/Hook/BeforeFirstTestHook.php',

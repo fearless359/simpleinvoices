@@ -55,7 +55,7 @@ phpSettings.error_log               = tmp/log/php.log
 ; Logs in tmp/log/si.log. Set to the desired level for log detail.
 ; The higher the number, the more information will be logged.
 ; DEBUG(7),INFO(6),NOTICE(5),WARN(4),ERR(3),CRIT(2),ALERT(1),EMERG(0)
-zend.logger_level                   = DEBUG
+zend.logger_level                   = EMERG
 
 ; Explicitly confirm delete of line items from invoices? (yes/no)
 confirm.deleteLineItem              = no

@@ -15,7 +15,6 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
@@ -291,15 +290,17 @@ class JUnit extends Printer implements TestListener
      */
     public function startTest(Test $test): void
     {
-        if (!$test instanceof TestCase) {
-            return;
+        $usesDataprovider = false;
+
+        if (\method_exists($test, 'usesDataProvider')) {
+            $usesDataprovider = $test->usesDataProvider();
         }
 
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
 
         $class      = new ReflectionClass($test);
-        $methodName = $test->getName(!$test->usesDataProvider());
+        $methodName = $test->getName(!$usesDataprovider);
 
         if ($class->hasMethod($methodName)) {
             $method = $class->getMethod($methodName);
@@ -318,11 +319,12 @@ class JUnit extends Printer implements TestListener
      */
     public function endTest(Test $test, float $time): void
     {
-        if (!$test instanceof TestCase) {
-            return;
+        $numAssertions = 0;
+
+        if (\method_exists($test, 'getNumAssertions')) {
+            $numAssertions = $test->getNumAssertions();
         }
 
-        $numAssertions = $test->getNumAssertions();
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 
         $this->currentTestCase->setAttribute(
@@ -342,10 +344,16 @@ class JUnit extends Printer implements TestListener
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
-        if ($test->hasOutput()) {
+        $testOutput = '';
+
+        if (\method_exists($test, 'hasOutput') && \method_exists($test, 'getActualOutput')) {
+            $testOutput = $test->hasOutput() ? $test->getActualOutput() : '';
+        }
+
+        if (!empty($testOutput)) {
             $systemOut = $this->document->createElement(
                 'system-out',
-                Xml::prepareString($test->getActualOutput())
+                Xml::prepareString($testOutput)
             );
 
             $this->currentTestCase->appendChild($systemOut);
