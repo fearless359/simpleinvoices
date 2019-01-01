@@ -92,10 +92,14 @@ class Payment
                     "<img src=\"images/common/printer.png\" height=\"16\" border=\"-5px\" />" .
                 "</a>";
 
+            $invoice_id =
+                "<a class=\"index_table\" title=\"{$LANG['invoice']} {$row['iv_index_id']}\" " .
+                   "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['ac_inv_id']}\">{$row['iv_index_id']}</a>";
+
             $tableRows[] = array(
                 'action' => $action,
                 'payment_id' => $row['id'],
-                'invoice_id' => $row['ac_inv_id'],
+                'invoice_id' => $invoice_id,
                 'customer' => $row['cname'],
                 'biller' => $row['bname'],
                 'amount' => $row['ac_amount'],
