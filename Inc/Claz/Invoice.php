@@ -1320,7 +1320,7 @@ class Invoice
             $dt_tm = '';
         }
 
-        $invoice = self::select($invoice_id);
+        $invoice = self::getOne($invoice_id);
         // @formatter:off
         $list = array('biller_id'     => $invoice['biller_id'],
                       'customer_id'   => $invoice['customer_id'],
