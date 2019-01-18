@@ -1,6 +1,6 @@
 {literal}
 <script>
-    $(function () {
+    $(document).ready(function () {
         /* Load the cluetip - only if cluetip plugin has been loaded */
         if (jQuery.cluetip) {
             $('a.cluetip').cluetip(
@@ -81,13 +81,36 @@
         });
 
         //add new line item in invoices
-        $("a.add_line_item").click(function (e) {
+        $(document).on("click", "a.add_line_item", (function (e) {
             e.preventDefault();
             add_line_item();
-            //(unused) already done in the add_line_item fn
-            //autoFill($(".details"), "Description");
-        });
+        }));
+// unhide.description, unhide.note, description
+        //show invoice item line details
+        $(document).on("click", "a.show_details", (function (e) {
+            let clonedRow = $('#itemtable tbody.line_item:first').clone();
+            let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+            if (rowID_old === undefined) {
+                alert('Invalid invoice. No existing rows to show.');
+                return false;
+            }
+            $('.details').show(); // Show the details
+            $('.hide_details').show(); // Show the hide details button
+            $('.show_details').hide(); // Hide the show details button
+        }));
 
+        //hide invoice item line details
+        $(document).on("click", "a.hide_details", (function () {
+            let clonedRow = $('#itemtable tbody.line_item:first').clone();
+            let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+            if (rowID_old === undefined) {
+                alert('Invalid invoice. No existing rows to show.');
+                return false;
+            }
+            $('.details').hide(); // Hide the details
+            $('.hide_details').hide(); // Hide the hide details button
+            $('.show_details').show(); // Show the show details button
+        }));
 
         //calc number of line items
         $(".invoice_save").click(function () {
@@ -103,12 +126,14 @@
             $('.ui-dialog-titlebar-close').trigger('click');
         });
 
-        /* Product Change - updates line item with product price info */
-        $(".invoice_export_dialog").click(function () {
-            var $row_number = $(this).attr("rel");
-            siLog('debug', "{/literal}$config->export->spreadsheet{literal}");
-            export_invoice($row_number, '{/literal}{$config->export->spreadsheet}{literal}', '{/literal}{$config->export->wordprocessor}{literal}');
-        });
+        // Product Change - updates line item with product price info
+        $(document).on("click", ".invoice_export_dialog", (function () {
+            let row_number = $(this).attr("rel");
+            let spreadsheet = $(this).attr("data_spreadsheet");
+            let wordprocessor = $(this).attr("data_wordprocessor");
+            siLog('debug', spreadsheet);
+            export_invoice(row_number, spreadsheet, wordprocessor);
+        }));
 
     });
 

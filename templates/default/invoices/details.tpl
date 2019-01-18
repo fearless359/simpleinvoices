@@ -222,7 +222,7 @@
                     <tr class="details si_hide">
                         <td></td>
                         <td colspan="4">
-                        <textarea class="detail" name="description{$line|htmlsafe}" style="overflow:scroll;"
+                        <textarea name="description{$line|htmlsafe}" style="overflow:scroll;"
                                   id="description{$line|htmlsafe}" rows="3" cols="100%"
                                   data-description="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
                         </td>
@@ -233,12 +233,14 @@
             <div class="si_toolbar si_toolbar_inform">
                 <a href="#" class="add_line_item" data-description="{$LANG.description}">
                     <img src="images/common/add.png" alt=""/>{$LANG.add_new_row}</a>
-                <a href='#' class="show-details" onclick="javascript: $('.details').show();$('.show-details').hide();">
-                    <img src="images/common/page_white_add.png"
-                         title="{$LANG.show_details}" alt=""/>{$LANG.show_details}</a>
-                <a href='#' class="details" onclick="javascript: $('.details').hide();$('.show-details').show();" style="display:none">
-                    <img src="images/common/page_white_delete.png"
-                         title="{$LANG.hide_details}" alt=""/>{$LANG.hide_details}</a>
+                <a href='#' class="show_details" title="{$LANG.show_details}">
+                    <img src="images/common/page_white_add.png" alt=""/>
+                    {$LANG.show_details}
+                </a>
+                <a href='#' class="hide_details si_hide" title="{$LANG.hide_details}">
+                    <img src="images/common/page_white_delete.png" alt=""/>
+                    {$LANG.hide_details}
+                </a>
             </div>
             <table class="si_invoice_bot">
                 {$customFields.1}

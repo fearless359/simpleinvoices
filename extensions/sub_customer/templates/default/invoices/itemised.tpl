@@ -31,13 +31,11 @@
                     <img src="images/common/add.png" alt=""/>
                     {$LANG.add_new_row}
                 </a>
-                <a href='#' class="show-details" title="{$LANG.show_details}"
-                   onclick="$('.details').addClass('si_show').removeClass('si_hide');$('.show-details').addClass('si_hide').removeClass('si_show');">
+                <a href='#' class="show_details" title="{$LANG.show_details}">
                     <img src="images/common/page_white_add.png" alt=""/>
                     {$LANG.show_details}
                 </a>
-                <a href='#' class="details si_hide" title="{$LANG.hide_details}"
-                   onclick="$('.details').removeClass('si_show').addClass('si_hide');$('.show-details').addClass('si_show').removeClass('si_hide');">
+                <a href='#' class="hide_details si_hide" title="{$LANG.hide_details}">
                     <img src="images/common/page_white_delete.png" alt=""/>
                     {$LANG.hide_details}
                 </a>

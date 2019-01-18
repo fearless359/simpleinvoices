@@ -1,6 +1,6 @@
 {literal}
 <script>
-    $(function () {
+    $(document).ready(function () {
         let idx =
         {/literal}
                 {if !isset($active_tab)}0

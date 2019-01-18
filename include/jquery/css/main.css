@@ -1207,11 +1207,6 @@ a.si_hide,
     display: none;
 }
 
-/* Added to fix display of notes on invoice quick_view.tpl. */
-.si_notes_hide {
-  display: none;
-}
-
 .si_invoice_form {
     display: block;
     margin: 0 auto;

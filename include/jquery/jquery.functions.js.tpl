@@ -108,8 +108,8 @@
      * Purpose: find the last line item and update max_items so /modules/invoice/save.php can access it
      */
     function count_invoice_line_items() {
-        var lastRow = $('#itemtable tbody.line_item:last');
-        var rowID_last = $("input[id^='quantity']", lastRow).attr("id");
+        let lastRow = $('#itemtable tbody.line_item:last');
+        let rowID_last = $("input[id^='quantity']", lastRow).attr("id");
         rowID_last = parseInt(rowID_last.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number thats after that
         /*$("#max_items").val(rowID_last);*/
         $("#max_items").attr('value', rowID_last);
@@ -139,18 +139,22 @@
         $('#gmail_loading').show();
 
         //clone the last tr in the item table
-        var clonedRow = $('#itemtable tbody.line_item:first').clone();
-        var lastRow = $('#itemtable tbody.line_item:last').clone();
+        let clonedRow = $('#itemtable tbody.line_item:first').clone();
+        let lastRow = $('#itemtable tbody.line_item:last').clone();
 
         //find the Id for the row from the quantity if
-        // var rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
-        var rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
-        var rowID_last = $("input[id^='quantity']", lastRow).attr("id");
-        rowID_old = parseInt(rowID_old.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number thats after that
-        rowID_last = parseInt(rowID_last.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number thats after that
+        // let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+        let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+        if (rowID_old === undefined) {
+            alert('Invalid invoice. No existing rows to clone.');
+            return false;
+        }
+        let rowID_last = $("input[id^='quantity']", lastRow).attr("id");
+        rowID_old = parseInt(rowID_old.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number that is after that
+        rowID_last = parseInt(rowID_last.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number that is after that
 
         //create next row id
-        var rowID_new = rowID_last + 1;
+        let rowID_new = rowID_last + 1;
 
         siLog('debug', 'Line item ' + rowID_new + 'added');
         //log.debug( 'Line item '+rowID_new+'added');

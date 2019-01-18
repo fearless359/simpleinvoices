@@ -124,28 +124,27 @@
             <th>{$LANG.notes}:</th>
             <td colspan="4"></td>
             <td class="si_switch">
-                {if ($invoice.note|count_characters:true > 25)}
-                    <a href='#' class="show-notes"
-                       onclick="$('.notes').show();$('.si_notes_hide').show();$('.show-notes').hide();">
-                        <img src="images/common/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
-                    </a>
-                    <a href='#' class="notes si_hide"
-                       onclick="$('.notes').hide();$('.si_notes_hide').hide();$('.show-notes').show();">
-                        <img src="images/common/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
-                    </a>
-                {/if}
+                <a href='#' class="show_notes"
+                   onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
+                    <img src="images/common/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
+                </a>
+                <a href='#' class="hide_notes si_hide"
+                   onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
+                    <img src="images/common/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
+                </a>
             </td>
         </tr>
         <!-- if hide detail click - the stripped note will be displayed -->
-        <tr class="show-notes tr_notes">
-            <td colspan="6">{$invoice.note|truncate:25:"...":true|outhtml}</td>
+        <tr class="abbrev_notes tr_notes">
+            <td colspan="6">{$invoice.note|truncate:80:"...":true|outhtml}</td>
         </tr>
         <!-- if show detail click - the full note will be displayed -->
-        <tr class="notes tr_notes si_notes_hide">
+        <tr class="full_notes tr_notes si_hide">
             <td colspan="6" style="white-space:normal;">{$invoice.note|outhtml}</td>
         </tr>
     </table>
     {/if}
+    <br/>
     <table class="si_invoice_view_items" width="50%" style="text-align: left;">
         <tr>
             <th width="25%">{$LANG.sales_representative}:</th>

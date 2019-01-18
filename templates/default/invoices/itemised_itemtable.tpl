@@ -82,7 +82,7 @@
         <tr class="details si_hide">
             <td></td>
             <td colspan="4">
-                 <textarea class="detail" name="description{$lineNumber|htmlsafe}" id="description{$lineNumber|htmlsafe}" data-description="{$LANG['description']}"
+                 <textarea name="description{$lineNumber|htmlsafe}" id="description{$lineNumber|htmlsafe}" data-description="{$LANG['description']}"
                            rows="4" cols="60">{if isset($defaultInvoiceItems[$lineNumber].description)}{$defaultInvoiceItems[$lineNumber].description|htmlsafe}{/if}</textarea>
                 {* Note that the space immediatly prior to the closing </textarea> tag is required to allow the description to display. Why??? I don't know!!! *}
             </td>

@@ -31,7 +31,7 @@
             {$invoiceItem.description|truncate:80:"...":true|htmlsafe}
         </td>
     </tr>
-    <tr class="itemised tr_desc">
+    <tr class="itemised si_hide tr_desc">
         <td></td>
         <td colspan="5" class="">{$invoiceItem.description|htmlsafe}</td>
     </tr>

@@ -3,7 +3,7 @@
         <a href='#' class="show-itemised" onclick="$('.itemised').show();$('.show-itemised').hide();">
             <img src="images/common/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
         </a>
-        <a href='#' class="itemised" onclick="$('.itemised').hide();$('.show-itemised').show();">
+        <a href='#' class="itemised si_hide" onclick="$('.itemised').hide();$('.show-itemised').show();">
             <img src="images/common/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
         </a>
     </td>

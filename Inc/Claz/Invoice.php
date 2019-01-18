@@ -176,7 +176,7 @@ class Invoice
                          "href=\"index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print\">" .
                           "<img src=\"images/common/printer.png\" class=\"action\" alt=\"print\" />" .
                       "</a>" .
-                      "<a title=\"{$LANG['export_tooltip']} {$row['index_id']}\" class=\"invoice_export_dialog\" " .
+                      "<a class=\"invoice_export_dialog\" title=\"{$LANG['export_tooltip']} {$row['index_id']}\" " .
                          "href=\"#\" rel=\"{$row['id']}\" data-spreadsheet=\"{$config->export->spreadsheet}\" " .
                          "data-wordprocessor=\"{$config->export->wordprocessor}\">" .
                           "<img src=\"images/common/page_white_acrobat.png\" class=\"action\" alt=\"spreadsheet\"/>" .
