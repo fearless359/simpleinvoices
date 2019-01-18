@@ -13,6 +13,14 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-01-18 - <b>2018.3.3</b>
+            <ul>
+                <li>Fixed the export button (aka acrobat button) in the invoices list action
+                    column. It wasn't displaying update the export option list when selected.</li>
+                <li>Fixed the section show hide options on the invoice quick view, itemized entry
+                    and details edit screens.</li>
+            </ul>
+        </li>
         <li>2018-12-30 - <b>2018.3.2</b>
             <ul>
                 <li>Modified invoices and payments datatables to use ajax to speed it up.</li>

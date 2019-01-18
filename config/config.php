@@ -24,7 +24,7 @@ export.pdf.rightmargin              = 15
 export.pdf.topmargin                = 15
 export.pdf.bottommargin             = 15
 
-version.name                        = 2018.3.2
+version.name                        = 2018.3.3
 version.update_date                 = 20181230
 
 local.locale                        = en_US

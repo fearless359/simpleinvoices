@@ -25,18 +25,18 @@
     </tr>
 {/if}
 {if isset($invoiceItem.description)}
-    <tr class="show-itemised tr_desc">
+    <tr class="abbrev_itemised tr_desc">
         <td></td>
         <td colspan="5" class="">
             {$invoiceItem.description|truncate:80:"...":true|htmlsafe}
         </td>
     </tr>
-    <tr class="itemised si_hide tr_desc">
+    <tr class="full_itemised si_hide tr_desc">
         <td></td>
         <td colspan="5" class="">{$invoiceItem.description|htmlsafe}</td>
     </tr>
 {/if}
-<tr class="itemised tr_custom">
+<tr class="full_itemised si_hide tr_custom">
     <td></td>
     <td colspan="5">
         <table class="si_invoice_view_custom_items">
