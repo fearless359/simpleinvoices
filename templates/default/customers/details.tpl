@@ -170,7 +170,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {foreach $invoices_owing as $invoice}
+                        {foreach $invoices as $invoice}
                             <tr class="index_table">
                                 <td class="first">
                                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
@@ -215,7 +215,7 @@
                                 </td>
                                 <td>
                                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
-                                        {$invoice.index_name|htmlsafe} {$invoice.index_id|htmlsafe}
+                                        {$invoice.index_name|htmlsafe}
                                     </a>
                                 </td>
                                 <td class="si_center">{$invoice.date|htmlsafe}</td>

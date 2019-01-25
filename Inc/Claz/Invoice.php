@@ -103,10 +103,11 @@ class Invoice
 
     /**
      * Retrieve all active invoices that have an amount owing.
+     * @param int $customer_id Filters invoices selected if specified.
      * @return array Invoices with an ENABLED preferences status and
      *          a non-zero owing amount.
      */
-    public static function getInvoicesOwing()
+    public static function getInvoicesOwing($customer_id = null)
     {
         global $pdoDb;
 
@@ -116,7 +117,9 @@ class Invoice
             $rows = Invoice::getAll("id", "desc");
             foreach ($rows as $row) {
                 if ($row['status'] == ENABLED && $row['owing'] != 0) {
-                    $invoices_owing[] = $row;
+                    if (empty($customer_id) || $customer_id == $row['customer_id']) {
+                        $invoices_owing[] = $row;
+                    }
                 }
             }
         } catch (PdoDbException $pde) {
@@ -295,8 +298,10 @@ class Invoice
             $pdoDb->setSelectList($expr_list);
 
             $pdoDb->setGroupBy($expr_list);
-
+$pdoDb->debugOn();
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
+$pdoDb->debugOff();
+error_log("Invoices::getInvoices() - rows: " . print_r($rows, true));
             foreach ($rows as $row) {
                 $row['owing'] = $row['total'] - $row['paid'];
                 $age_list = self::calculateAgeDays(

@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-01-25 - <b>2018.3.4</b>
+            <ul>
+                <li>Fixed display of customer invoices and invoices owing on Customer view screen.</li>
+            </ul>
+        </li>
         <li>2019-01-18 - <b>2018.3.3</b>
             <ul>
                 <li>Fixed the export button (aka acrobat button) in the invoices list action
@@ -32,7 +37,7 @@
                     NPM to obtain current version of jquery.</li>
                 <li>Replaced Flexigrid tables with Datatables. Datatables version is
                     maintained via NPM. NOTE: The table logic is not yet tuned for performance.
-                    This means the process is noticably slower the more records it has to load.
+                    This means the process is noticeably slower the more records it has to load.
                     In the future, large tables will be converted to use ajax to load a page of
                     records at a time in much the same way flexigrid tables worked.</li>
                 <li>Replaced out of date WYSIWYG rich text editor with the trix-master rich text
@@ -215,7 +220,7 @@
               on a large scale, and therefore these changes will be retained.</li>
           <li>Merged Smarty 3 changes into this standard stream.</li>
           <li>Added <b>Information</b> link to the SI banner line between <i>Help</i> and <i>Log out</i>. This
-              link displays information about the SI implimentation including this change log and other useful
+              link displays information about the SI implementation including this change log and other useful
               files stored in the <i>documentation/en-us/general</i> folder.</li>
         </ul>
       </li>
@@ -234,7 +239,7 @@
       <li>2016-08-08 - <b>2016.0.beta.2</b>
         <ul>
           <li><b>General Cleanup</b> Modifed numerous files to correct issues of undefined or uninitialized
-              variables and other excution time warnings when <i>strict</i> mode set.
+              variables and other execution time warnings when <i>strict</i> mode set.
           <li><b>Cron Logic</b> Added delete feature.</li>
           <li><b>Default Invoice</b> extension update to eliminate PHP errors and warnings. Also modified
               to always display detail list with enabled customers first.</li>

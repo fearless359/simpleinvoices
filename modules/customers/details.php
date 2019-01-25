@@ -38,7 +38,7 @@ $smarty->assign('invoices', $invoices);
 $customFieldLabel = CustomFields::getLabels(true);
 $smarty->assign('customFieldLabel', $customFieldLabel);
 
-$invoices_owing = Invoice::getInvoicesOwing();
+$invoices_owing = Invoice::getInvoicesOwing($cid);
 $smarty->assign('invoices_owing', $invoices_owing);
 $smarty->assign('invoices_owing_count', count($invoices_owing));
 
