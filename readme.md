@@ -24,7 +24,7 @@ These instructions should work for all version updates. They protect your curren
 1. Now access SI from your browser just as you did the previous version. It should automatically bring your database current and leave your user settings and passwords the same.
 
 ## Downloads
-* Fearless359 Release - *Version 2017.2.0*: [fearless359/simpleinvoices](https://github.com/fearless359/simpleinvoices.zip) (.zip)
+* Fearless359 Release - *Version 2018.3.4 - namespace_autoload*: [fearless359/simpleinvoices](https://github.com/fearless359/simpleinvoices/archive/namespace_autoload.zip) (.zip)
 
 ## Documentation
 * [All discussions & help have moved to Google+](https://plus.google.com/u/0/communities/102476804981627142204)
