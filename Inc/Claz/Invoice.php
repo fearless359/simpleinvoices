@@ -298,10 +298,8 @@ class Invoice
             $pdoDb->setSelectList($expr_list);
 
             $pdoDb->setGroupBy($expr_list);
-$pdoDb->debugOn();
+
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
-$pdoDb->debugOff();
-error_log("Invoices::getInvoices() - rows: " . print_r($rows, true));
             foreach ($rows as $row) {
                 $row['owing'] = $row['total'] - $row['paid'];
                 $age_list = self::calculateAgeDays(
