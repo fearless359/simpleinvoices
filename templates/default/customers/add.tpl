@@ -12,15 +12,6 @@
 {if !empty($smarty.post.name)}
   {include file="templates/default/customers/save.tpl"}
 {else}
-  {* if  name was inserted *} 
-  {if isset($smarty.post.id)}
-  {*
-    <div class="validation_alert"><img src="images/common/important.png" alt="" />
-      You must enter a description for the Customer
-    </div>
-    <hr />
-  *}
-  {/if} 
   <form name="frmpost" action="index.php?module=customers&amp;view=add"
         method="post" id="frmpost" onsubmit="return checkForm(this);">
     <div class="si_form">
@@ -204,7 +195,7 @@
         </tr>
       </table>
       <div class="si_toolbar si_toolbar_form">
-        <button type="submit" class="positive" name="id" value="{$LANG.save}" tabindex="220">
+        <button type="submit" class="positive" name="submit" value="{$LANG.save}" tabindex="220">
           <img class="button_img" src="images/common/tick.png" alt="" />
           {$LANG.save}
         </button>

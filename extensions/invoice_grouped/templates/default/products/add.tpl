@@ -1,11 +1,11 @@
 
 {* if bill is updated or saved.*}
 
-{if !empty($smarty.post.description) && isset($smarty.post.id) }
+{if !empty($smarty.post.description) && isset($smarty.post.submit) }
 	{include file="templates/default/products/save.tpl"}
 {else}
 {* if  name was inserted *} 
-	{if isset($smarty.post.id)}
+	{if isset($smarty.post.submit)}
 		<div class="validation_alert">
 		<img src="images/common/important.png" />
 		You must enter a description for the product
@@ -97,7 +97,7 @@
 <table class="center" >
 	<tr>
 		<td>
-			<button type="submit" class="positive" name="id" value="{$LANG.save}">
+			<button type="submit" class="positive" name="submit" value="{$LANG.save}">
 			    <img class="button_img" src="images/common/tick.png" alt="" /> 
 				{$LANG.save}
 			</button>

@@ -13,7 +13,17 @@
   </div>
   <div id="left">
     <ul>
-        <li>2019-01-07 - <b>2018.2.8</b>
+        <li>2019-02-07 - <b>2018.2.8_1</b>
+            <ul>
+                <li>Changed submit button name in add.tpl files to NOT be 'id'. They are now
+                    named 'submit'. The name 'id' should be reserved across the board for
+                    an actual field name of 'id' (typically not present or hidden). Otherwise
+                    it can trip PdoDb logic that by default builds commands from screen fields.
+                    In the case of add templates, this means the value of the submit button
+                    was being used for the auto-increment 'id' field.</li>
+            </ul>
+        </li>
+        <li>2019-02-07 - <b>2018.2.8</b>
             <ul>
                 <li>Add logic to exclude the ID field from being included in the SQL statement
                     that creates a new customers record.</li>
