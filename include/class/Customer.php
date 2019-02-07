@@ -32,6 +32,9 @@ class Customer {
             if ($excludeCreditCardNumber) {
                 $pdoDb->setExcludedFields('credit_card_number');
             }
+
+            $pdoDb->setExcludedFields('id');
+
             $pdoDb->request('INSERT', 'customers');
         } catch (Exception $e) {
             error_log("Customer::insertCustomer(): Unable to add new customer record. Error: " . $e->getMessage());

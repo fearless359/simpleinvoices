@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-01-07 - <b>2018.2.8</b>
+            <ul>
+                <li>Add logic to exclude the ID field from being included in the SQL statement
+                    that creates a new customers record.</li>
+            </ul>
+        </li>
         <li>2018-12-01 - <b>2018.2.7</b>
             <ul>
                 <li>Cleaned up all PDF and SI errors and warnings issued when E_ALL error
