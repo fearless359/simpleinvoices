@@ -11,7 +11,7 @@ global $smarty, $LANG;
 Util::isAccessAllowed();
 
 $display_block = "<div class='si_message_error'>$LANG[save_payment_failure]</div>";
-$redirect_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
+$refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
 
 if (isset($_POST['process_payment'])) {
     try {
@@ -32,7 +32,7 @@ if (isset($_POST['process_payment'])) {
 }
 
 $smarty->assign('display_block', $display_block);
-$smarty->assign('redirect_redirect', $redirect_redirect);
+$smarty->assign('refresh_redirect', $refresh_redirect);
 
 $smarty->assign('pageActive'   , 'payment');
 $smarty->assign('active_tab'   , '#money');

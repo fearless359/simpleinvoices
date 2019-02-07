@@ -13,6 +13,18 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-02-07 - <b>2018.3.5</b>
+            <ul>
+                <li>Changed submit button name in tpl files to NOT be 'id'. They are now
+                    named 'submit'. The name 'id' should be reserved across the board for
+                    an actual field name of 'id' (typically not present or hidden). Otherwise
+                    it can trip PdoDb logic that by default builds commands from screen fields.
+                    In the case of add templates, this means the value of the submit button
+                    was being used for the auto-increment 'id' field.</li>
+                <li>Fixed user maintenance logic to use correct domain that was preventing updates.</li>
+                <li>Change all occurrences of redirect_redirect to refersh_redirect for consistency.</li>
+            </ul>
+        </li>
         <li>2019-01-25 - <b>2018.3.4</b>
             <ul>
                 <li>Fixed display of customer invoices and invoices owing on Customer view screen.</li>

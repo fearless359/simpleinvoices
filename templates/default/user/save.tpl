@@ -13,4 +13,4 @@
  *  	GPL v3 or above
  *}
 {$display_block}
-{$redirect_redirect}
+{$refresh_redirect}

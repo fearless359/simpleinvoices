@@ -3,7 +3,7 @@
 use Inc\Claz\Expense;
 use Inc\Claz\Util;
 
-global $redirect_redirect, $smarty;
+global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
@@ -29,5 +29,6 @@ if ($op === 'add') {
 $smarty->assign('display_block', $display_block);
 $smarty->assign('refresh_redirect', $refresh_redirect);
 
-$smarty->assign( 'pageActive', 'product_manage' );
-$smarty->assign( 'active_tab', '#product' );
+$smarty->assign('pageActive', 'expense');
+$smarty->assign('active_tab', '#money');
+

@@ -138,9 +138,10 @@ class User
             $pdoDb->setExcludedFields($excludedFields);
 
             $pdoDb->addSimpleWhere('id', $_POST['id'], 'AND');
-            $pdoDb->addSimpleWhere('domain_id', $_POST['domain_id']);
-
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+$pdoDb->debugOn();
             $result = $pdoDb->request('UPDATE', 'user');
+$pdoDb->debugOff();
         } catch (PdoDbException $pde) {
             error_log("User::updateUser() - Error:" . $pde->getMessage());
             $result = false;

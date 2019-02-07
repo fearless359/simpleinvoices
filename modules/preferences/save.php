@@ -20,7 +20,7 @@ if (isset($_POST['include_online_payment']) &&
 }
 
 $display_block = "<div class=\"si_message_error\">{$LANG['save_preference_failure']}</div>";
-$redirect_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=preferences&amp;view=manage\" />";
+$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=preferences&amp;view=manage\" />";
 
 if (  $op === 'insert_preference' ) {
     // @formatter:off
@@ -101,7 +101,7 @@ if (  $op === 'insert_preference' ) {
 }
 
 $smarty->assign('display_block', $display_block);
-$smarty->assign('redirect_redirect', $redirect_redirect);
+$smarty->assign('refresh_redirect', $refresh_redirect);
 
 $smarty->assign('pageActive', 'preference');
 $smarty->assign('active_tab', '#setting');

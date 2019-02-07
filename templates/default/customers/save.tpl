@@ -14,4 +14,4 @@
 */
 *}
 {$display_block}
-{$redirect_redirect}
+{$refresh_redirect}

@@ -14,6 +14,7 @@
         {$add_button_msg}
     </a>
 </div>
+<br />
 {if $number_of_rows == 0 }
     {$display_block}
 {else}

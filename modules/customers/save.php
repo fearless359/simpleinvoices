@@ -28,7 +28,7 @@ Util::isAccessAllowed();
 $op = !empty( $_POST['op'] ) ? $_POST['op'] : null;
 
 $display_block = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
-$redirect_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
+$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
 
 $error = false;
 // The field is only non-empty if the user entered a value.
@@ -59,7 +59,7 @@ if (!$error) {
 }
 
 $smarty->assign('display_block', $display_block);
-$smarty->assign('redirect_redirect', $redirect_redirect);
+$smarty->assign('refresh_redirect', $refresh_redirect);
 
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('active_tab', '#people');

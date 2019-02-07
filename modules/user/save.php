@@ -22,7 +22,7 @@ global $LANG, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
 
-$redirect_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=user&amp;view=manage' />";
+$refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=user&amp;view=manage' />";
 $display_block = "<div class='si_message_error'>{$LANG['save_user_failure']}</div>";
 
 // Deal with op and add some basic sanity checking
@@ -40,7 +40,9 @@ if (!empty($_POST['password'])) {
 
 if ($ok) {
     if (isset($_POST['user_id']) &&
-        (preg_match('/^(customer|biller)$/', $_POST['currrole']))) $_POST['user_id']++;
+        (preg_match('/^(customer|biller)$/', $_POST['currrole']))) {
+        $_POST['user_id']++;
+    }
 
     if ($op === 'insert_user') {
         if (User::insertUser() > 0) {
@@ -54,7 +56,7 @@ if ($ok) {
 }
 
 $smarty->assign('display_block', $display_block);
-$smarty->assign('redirect_redirect', $redirect_redirect);
+$smarty->assign('refresh_redirect', $refresh_redirect);
 
 $smarty->assign('pageActive', 'user');
 $smarty->assign('active_tab', '#people');

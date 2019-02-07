@@ -228,6 +228,5 @@
         </div>
         <input type="hidden" name="op" value="edit_user" />
         <input type="hidden" name="id" value="{if isset($user.id)}{$user.id|htmlsafe}{/if}" />
-        <input type="hidden" name="domain_id" value="{if isset($user.domain_id)}{$user.domain_id|htmlsafe}{/if}" />
     {/if}
 </form>

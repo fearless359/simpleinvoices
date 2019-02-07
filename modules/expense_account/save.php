@@ -3,7 +3,7 @@
 use Inc\Claz\ExpenseAccount;
 use Inc\Claz\Util;
 
-global $redirect_redirect, $smarty;
+global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::isAccessAllowed();
