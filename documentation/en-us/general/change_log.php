@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-02-11 - <b>2019.0.0</b>
+            <ul>
+                <li>Renamed namespace_autoload branch to master_2019</li>
+            </ul>
+        </li>
         <li>2019-02-07 - <b>2018.3.5</b>
             <ul>
                 <li>Changed submit button name in tpl files to NOT be 'id'. They are now
