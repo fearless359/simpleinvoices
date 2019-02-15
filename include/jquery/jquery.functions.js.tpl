@@ -173,7 +173,7 @@
         clonedRow.find("#trash_link_edit" + rowID_old).attr("id", "trash_link_edit" + rowID_new);
         clonedRow.find("#trash_link_edit" + rowID_new).attr("name", "trash_link_edit" + rowID_new);
 
-        //update teh hidden delete field
+        //update the hidden delete field
         clonedRow.find("#delete" + rowID_old).attr("id", "delete" + rowID_new);
         clonedRow.find("#delete" + rowID_new).attr("name", "delete" + rowID_new);
         //update the delete icon
@@ -218,7 +218,7 @@
 
         $("#description" + rowID_old, clonedRow).attr("id", "description" + rowID_new);
         $("#description" + rowID_new, clonedRow).attr("name", "description" + rowID_new);
-        $("#description" + rowID_new, clonedRow).attr("value", "{/literal}{$LANG.description}{literal}");
+        $("#description" + rowID_new, clonedRow).val("");
         $("#description" + rowID_new, clonedRow).css({color: "#b2adad"});
         $(".details", clonedRow).hide();
 

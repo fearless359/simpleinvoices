@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-02-15 - <b>2019.0.1</b>
+            <ul>
+                <li>Fixed issue where adding item to invoice does not blank the description field.</li>
+                <li>Order product list to show enabled products before disabled.</li>
+            </ul>
+        </li>
         <li>2019-02-11 - <b>2019.0.0</b>
             <ul>
                 <li>Renamed namespace_autoload branch to master_2019</li>

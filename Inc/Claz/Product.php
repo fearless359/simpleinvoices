@@ -99,6 +99,7 @@ class Product {
             $pdoDb->addToCaseStmts($ca);
 
             $pdoDb->setOrderBy(array(
+                array('p.enabled', 'D'),
                 array('p.description', 'A'),
                 array('id', 'A')
             ));
