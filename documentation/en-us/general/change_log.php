@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-02-17 - <b>2019.0.2</b>
+            <ul>
+                <li>Correct cron api generation of new invoices copied in total from old invoice.</li>
+            </ul>
+        </li>
         <li>2019-02-15 - <b>2019.0.1</b>
             <ul>
                 <li>Fixed issue where adding item to invoice does not blank the description field.</li>

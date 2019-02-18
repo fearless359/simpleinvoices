@@ -248,6 +248,7 @@ class Export {
 
                     $logo = Util::getLogo($this->biller);
                     $logo = str_replace(" ", "%20", trim($logo));
+                    Log::out("Export::getData() - logo[$logo]", Zend_Log::DEBUG);
 
                     $customFieldLabels = CustomFields::getLabels(true);
 
@@ -287,6 +288,7 @@ class Export {
                         $plugins_dirs[] = $template_plugins_dir;
                         $smarty->setPluginsDir($plugins_dirs);
                     }
+                    Log::out("Export::getData() - templatePath[$templatePath]", Zend_Log::DEBUG);
 
                     $data = $smarty->fetch($templatePath);
 

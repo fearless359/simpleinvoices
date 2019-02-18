@@ -1324,6 +1324,7 @@ class Invoice
         }
 
         $invoice = self::getOne($invoice_id);
+        $invoice_items = self::getInvoiceItems($invoice_id);
         // @formatter:off
         $list = array('biller_id'     => $invoice['biller_id'],
                       'customer_id'   => $invoice['customer_id'],
@@ -1335,24 +1336,24 @@ class Invoice
                       'custom_field2' => $invoice['custom_field2'],
                       'custom_field3' => $invoice['custom_field3'],
                       'custom_field4' => $invoice['custom_field4']);
-        $id = self::insert($list);
+        $new_id = self::insert($list);
 
         // insert each line item
-        foreach ($invoice['invoice_items'] as $v) {
-            $list = array('invoice_id' => $id,
-                          'quantity'   => $v['quantity'],
-                          'product_id' => $v['product_id'],
-                          'unit_price' => $v['unit_price'],
-                          'tax_amount' => $v['tax_amount'],
-                          'gross_total'=> $v['gross_total'],
-                          'description'=> $v['description'],
-                          'total'      => $v['total'],
-                          'attribute'  => $v['attribute']);
-            self::insertItem($list, $v['tax_id']);
+        foreach ($invoice_items as $invoice_item) {
+            $list = array('invoice_id' => $new_id,
+                          'quantity'   => $invoice_item['quantity'],
+                          'product_id' => $invoice_item['product_id'],
+                          'unit_price' => $invoice_item['unit_price'],
+                          'tax_amount' => $invoice_item['tax_amount'],
+                          'gross_total'=> $invoice_item['gross_total'],
+                          'description'=> $invoice_item['description'],
+                          'total'      => $invoice_item['total'],
+                          'attribute'  => $invoice_item['attribute']);
+            self::insertItem($list, $invoice_item['tax_id']);
         }
         // @formatter:on
 
-        return $id;
+        return $new_id;
     }
 
     /**
