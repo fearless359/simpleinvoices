@@ -45,7 +45,7 @@ class CaseStmt {
 
     /**
      * Builds the formatted <b>CASE</b> for this object.
-     * @param $keypairs (Optional) Parameter exists for function call compatibility
+     * @param array $keypairs (Optional) Parameter exists for function call compatibility
      *        with other <i>PdoDb</i> class SQL build objects. 
      * @return string Formatted <b>CASE</b> statement this criterion.
      * @throws PdoDbException

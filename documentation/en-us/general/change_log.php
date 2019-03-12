@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-02-21 - <b>2019.1.0</b>
+            <ul>
+                <li>Major update. Email with PDF attachment replaced with SwiftMailer.</li>
+            </ul>
+        </li>
         <li>2019-02-17 - <b>2019.0.2</b>
             <ul>
                 <li>Correct cron api generation of new invoices copied in total from old invoice.</li>

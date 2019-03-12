@@ -2,6 +2,10 @@
 
 namespace Inc\Claz;
 
+use Zend_Acl;
+use Zend_Acl_Exception;
+use Zend_Acl_Role;
+
 /**
  * Class Acl
  * @package Inc\Claz
@@ -10,19 +14,21 @@ class Acl
 {
     /**
      * Initialize the access control information for SI users.
+     * @param Zend_Acl &$acl
+     * @throws Zend_Acl_Exception
      */
     public static function init(&$acl)
     {
-        $acl = new \Zend_Acl();
+        $acl = new Zend_Acl();
 
         //create the user roles
-        $acl->addRole(new \Zend_Acl_Role('administrator'));
-        $acl->addRole(new \Zend_Acl_Role('domain_administrator'));
-        $acl->addRole(new \Zend_Acl_Role('user'));
-        $acl->addRole(new \Zend_Acl_Role('operator'));
-        $acl->addRole(new \Zend_Acl_Role('viewer'));
-        $acl->addRole(new \Zend_Acl_Role('customer'));
-        $acl->addRole(new \Zend_Acl_Role('biller'));
+        $acl->addRole(new Zend_Acl_Role('administrator'));
+        $acl->addRole(new Zend_Acl_Role('domain_administrator'));
+        $acl->addRole(new Zend_Acl_Role('user'));
+        $acl->addRole(new Zend_Acl_Role('operator'));
+        $acl->addRole(new Zend_Acl_Role('viewer'));
+        $acl->addRole(new Zend_Acl_Role('customer'));
+        $acl->addRole(new Zend_Acl_Role('biller'));
 
         //create the resources
         $acl->addResource('api');
@@ -139,14 +145,16 @@ class Acl
      * For extensions to add one or more resources to the list.
      * Make extensions/<yourextname>/Inc/Claz/Acl.php wi
      * @param $resources
+     * @param Zend_Acl &$acl
+     * @throws Zend_Acl_Exception
      */
     public static function addResource($resources, &$acl) {
         if (is_array($resources)) {
-            foreach($resource as $resource) {
+            foreach($resources as $resource) {
                 $acl->addResource($resource);
             }
         } else {
-            $acl->addResource($resource);
+            $acl->addResource($resources);
         }
     }
 }

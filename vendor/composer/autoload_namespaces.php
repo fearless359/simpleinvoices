@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
-    '' => array($baseDir . '/library', $baseDir . '/library/pdf', $baseDir . '/library/pdf/fpdf'),
+    'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
+    '' => array($baseDir . '/library'),
 );

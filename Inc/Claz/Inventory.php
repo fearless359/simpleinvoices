@@ -156,11 +156,11 @@ class Inventory {
             }
         }
 
-        $email = new Email ();
-        $email->notes   = $email_message;
-        $email->from    = $email->getAdminEmail();
-        $email->to      = $email->getAdminEmail();
-        $email->subject = "SimpleInvoices inventory reorder level email";
+        $email = new Email();
+        $email->setBody($email_message);
+        $email->setFrom($email->getAdminEmail());
+        $email->setTo($email->getAdminEmail());
+        $email->setSubject("SimpleInvoices inventory reorder level email");
         $email->send ();
 
         return $result;

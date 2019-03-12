@@ -7,43 +7,44 @@ use Zend_Log;
  * Class Export
  * @package Inc\Claz
  */
-class Export {
-    public $biller;
-    public $biller_id;
-    public $customer;
-    public $customer_id;
-    public $do_not_filter_by_date;
-    public $domain_id;
-    public $end_date;
-    public $file_name;
-    public $file_type;
-    public $format;
-    public $id;
-    public $invoice;
-    public $module;
-    public $preference;
-    public $show_only_unpaid;
-    public $start_date;
-
-    private $download;
+class Export
+{
+    private $biller;
+    private $biller_id;
+    private $customer;
+    private $customer_id;
+    private $destination;
+    private $do_not_filter_by_date;
+    private $end_date;
+    private $file_name;
+    private $file_type;
+    private $format;
+    private $id;
+    private $invoice;
+    private $module;
+    private $preference;
+    private $show_only_unpaid;
+    private $start_date;
 
     /**
      * Export constructor.
+     * @param string $destination Set to Destination::DOWNLOAD for file or
+     *      Destination::STRING for email attachment.
      */
-    public function __construct() {
+    public function __construct(string $destination)
+    {
         // @formatter:off
-        $this->domain_id             = DomainId::get();
         $this->biller                = null;
-        $this->biller_id             = 0;
+        $this->biller_id             = null;
         $this->customer              = null;
-        $this->customer_id           = 0;
+        $this->customer_id           = null;
+        $this->destination           = $destination;
         $this->do_not_filter_by_date = "no";
-        $this->download              = false;
         $this->end_date              = "";
         $this->file_name             = "";
         $this->file_type             = "";
         $this->format                = "";
-        $this->id                    = 0;
+        $this->id                    = null;
         $this->invoice               = null;
         $this->module                = "";
         $this->preference            = null;
@@ -53,29 +54,22 @@ class Export {
     }
 
     /**
-     * @param $download
-     */
-    public function setDownload($download) {
-        $this->download = $download;
-    }
-
-    /**
      * @param $data
+     * @return string/null String returned if PDF for Destination::STRING_RETURN, otherwise null;
      */
-    private function showData($data) {
+    private function showData($data)
+    {
         if (!isset($data)) {
             Log::out("Export::showData() - No data to report.", Zend_Log::DEBUG);
             error_log("Export::showData() - No data to report.");
             echo "<div class='si_message_error'>Export process terminated. No data to report.</div>";
             echo "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
-            return;
+            return null;
         }
 
         if ($this->file_name == '' && $this->module == 'payment') {
             $this->file_name = 'payment' . $this->id;
         }
-
-        Log::out("Export::showData() format:[{$this->format}]", Zend_Log::DEBUG);
 
         // @formatter:off
         switch ($this->format) {
@@ -84,9 +78,7 @@ class Export {
                 break;
 
             case "pdf":
-                Pdf::pdfThis($data, $this->file_name, $this->download);
-                if ($this->download) exit(); // stop script execution after download
-                break; // continue script execution
+                return Pdf::generate($data, $this->file_name, $this->destination);
 
             case "file":
                 $invoice    = Invoice::getInvoice($this->id);
@@ -120,12 +112,14 @@ class Export {
                 break;
         }
         // @formatter:on
+        return null;
     }
 
     /**
      * @return null|string
      */
-    private function getData() {
+    private function getData()
+    {
         global $config, $smarty, $pdoDb, $siUrl;
         Log::out("Export::getData() module:[{$this->module}]", Zend_Log::DEBUG);
 
@@ -302,7 +296,7 @@ class Export {
                 break;
 
             default:
-                error_log("ExportKLgetData() - Undefined module[{$this->module}]");
+                error_log("Export::getData() - Undefined module[{$this->module}]");
                 break;
         }
         // @formatter:on
@@ -312,9 +306,11 @@ class Export {
 
     /**
      * Execute the request by getting the data and the showing it.
+     * @return string/null String returned if PDF for Destination::STRING_RETURN, otherwise null;
      */
-    public function execute() {
-        $this->showData($this->getData());
+    public function execute()
+    {
+        return $this->showData($this->getData());
     }
 
     /**
@@ -322,7 +318,8 @@ class Export {
      * @param $preference
      * @return mixed
      */
-    private function assignTemplateLanguage($preference) {
+    private function assignTemplateLanguage($preference)
+    {
         global $config;
 
         // get and assign the language file from the preference table
@@ -343,4 +340,261 @@ class Export {
         }
         return $orig_locale;
     }
+
+    /**
+     * @return null
+     */
+    public function getBiller()
+    {
+        return $this->biller;
+    }
+
+    /**
+     * @param null $biller
+     */
+    public function setBiller($biller): void
+    {
+        $this->biller = $biller;
+    }
+
+    /**
+     * @return null
+     */
+    public function getBillerId()
+    {
+        return $this->biller_id;
+    }
+
+    /**
+     * @param null $biller_id
+     */
+    public function setBillerId($biller_id): void
+    {
+        $this->biller_id = $biller_id;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param null $customer
+     */
+    public function setCustomer($customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCustomerId()
+    {
+        return $this->customer_id;
+    }
+
+    /**
+     * @param null $customer_id
+     */
+    public function setCustomerId($customer_id): void
+    {
+        $this->customer_id = $customer_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDestination(): string
+    {
+        return $this->destination;
+    }
+
+    /**
+     * @param string $destination
+     */
+    public function setDestination(string $destination): void
+    {
+        $this->destination = $destination;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDoNotFilterByDate(): string
+    {
+        return $this->do_not_filter_by_date;
+    }
+
+    /**
+     * @param string $do_not_filter_by_date
+     */
+    public function setDoNotFilterByDate(string $do_not_filter_by_date): void
+    {
+        $this->do_not_filter_by_date = $do_not_filter_by_date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndDate(): string
+    {
+        return $this->end_date;
+    }
+
+    /**
+     * @param string $end_date
+     */
+    public function setEndDate(string $end_date): void
+    {
+        $this->end_date = $end_date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileName(): string
+    {
+        return $this->file_name;
+    }
+
+    /**
+     * @param string $file_name
+     */
+    public function setFileName(string $file_name): void
+    {
+        $this->file_name = $file_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileType(): string
+    {
+        return $this->file_type;
+    }
+
+    /**
+     * @param string $file_type
+     */
+    public function setFileType(string $file_type): void
+    {
+        $this->file_type = $file_type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param string $format
+     */
+    public function setFormat(string $format): void
+    {
+        $this->format = $format;
+    }
+
+    /**
+     * @return null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param null $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return null
+     */
+    public function getInvoice()
+    {
+        return $this->invoice;
+    }
+
+    /**
+     * @param null $invoice
+     */
+    public function setInvoice($invoice): void
+    {
+        $this->invoice = $invoice;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModule(): string
+    {
+        return $this->module;
+    }
+
+    /**
+     * @param string $module
+     */
+    public function setModule(string $module): void
+    {
+        $this->module = $module;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPreference()
+    {
+        return $this->preference;
+    }
+
+    /**
+     * @param null $preference
+     */
+    public function setPreference($preference): void
+    {
+        $this->preference = $preference;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShowOnlyUnpaid(): string
+    {
+        return $this->show_only_unpaid;
+    }
+
+    /**
+     * @param string $show_only_unpaid
+     */
+    public function setShowOnlyUnpaid(string $show_only_unpaid): void
+    {
+        $this->show_only_unpaid = $show_only_unpaid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartDate(): string
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * @param string $start_date
+     */
+    public function setStartDate(string $start_date): void
+    {
+        $this->start_date = $start_date;
+    }
+
 }

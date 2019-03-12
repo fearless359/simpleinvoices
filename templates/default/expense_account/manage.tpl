@@ -21,7 +21,7 @@
 {if $number_of_rows == 0 }
     {$display_block}
 {else}
-    <table id="si-data-table" class="display" style="width:70%!important;">
+    <table id="si-data-table" class="display compact" style="width:70%!important;">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>

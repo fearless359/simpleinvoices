@@ -69,7 +69,7 @@
     {if $number_of_customers == 0}
         <div class="si_message">{$LANG.no_customers}</div>
     {else}
-        <table id="si-data-table" class="display" >
+        <table id="si-data-table" class="display compact" >
             <thead>
                 <tr>
                     <th>{$LANG.actions}</th>

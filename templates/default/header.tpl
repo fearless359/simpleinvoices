@@ -55,7 +55,13 @@
         <script src="include/jquery/trix-master/dist/trix.js"></script>
     {/literal}
     {$extension_jquery_files }
+    {literal}
+        <script src="include/jquery/jquery.functions1.js"></script>
+    {/literal}
     {include 'include/jquery/jquery.functions.js.tpl'}
+    {literal}
+        <script src="include/jquery/jquery.conf1.js"></script>
+    {/literal}
     {include 'include/jquery/jquery.conf.js.tpl'}
     {if $config->debug->level == "All"}
     {literal}

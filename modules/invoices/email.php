@@ -8,6 +8,8 @@ use Inc\Claz\Invoice;
 use Inc\Claz\Preferences;
 use Inc\Claz\Util;
 
+use Mpdf\Output\Destination;
+
 /*
  *  Script: email.php
  *      Email invoice page
@@ -33,33 +35,40 @@ $preference  = Preferences::getOne($invoice['preference_id']);
 $biller      = Biller::getOne($invoice['biller_id']);
 $customer    = Customer::getOne($invoice['customer_id']);
 
+$smarty->assign('biller'     , $biller);
+$smarty->assign('customer'   , $customer);
+$smarty->assign('invoice'    , $invoice);
+$smarty->assign('preferences', $preference);
+
 $error = false;
 $message = "Unable to process email request.";
 if ($_GET['stage'] == 2 ) {
-    $export = new Export();
-    $export->format     = "pdf";
-    $export->module     = 'invoice';
-    $export->id         = $invoice_id;
-    $export->invoice    = $invoice;
-    $export->preference = $preference;
-    $export->biller     = $biller;
-    $export->customer   = $customer;
-    $export->setDownload(false);
-    $export->execute();
+    $export = new Export(Mpdf\Output\Destination::STRING_RETURN);
+    $export->setBiller($biller);
+    $export->setCustomer($customer);
+    $export->setFormat("pdf");
+    $export->setId($invoice_id);
+    $export->setInvoice($invoice);
+    $export->setModule('invoice');
+    $export->setPreference($preference);
+    $pdf_string = $export->execute();
 
-    $pdf_file_name = $export->file_name . '.pdf';
+    $email = new Email;
+    $email->setBcc($_POST['email_bcc']);
+    $email->setBody($_POST['email_notes']);
+    $email->setFormat('invoice');
+    $email->setFrom($_POST['email_from']);
+    $email->setFromFriendly($biller['name']);
+    $email->setPdfFileName($export->getFileName() . '.pdf');
+    $email->setPdfString($pdf_string);
+    $email->setSubject($_POST['email_subject']);
+    $email->setTo($_POST['email_to']);
 
-    $email = new Email();
-    $email->format        = 'invoice';
-    $email->notes         = $_POST['email_notes'];
-    $email->from          = $_POST['email_from'];
-    $email->from_friendly = $biller['name'];
-    $email->to            = $_POST['email_to'];
-    $email->bcc           = $_POST['email_bcc'];
-    $email->subject       = $_POST['email_subject'];
-    $email->attachment    = $pdf_file_name;
-    $message = $email->send();
+    $results = $email->send();
+    $smarty->assign('display_block', $results['display_block']);
+    $smarty->assign('refresh_redirect', $results['refresh_redirect']);
 
+    $message = '';
 } else if ($_GET['stage'] == 3 ) {
     //stage 3 = assemble email and send
     $message = "Invalid routing to stage 3 of email processing. Probably a process error.";
@@ -68,10 +77,6 @@ if ($_GET['stage'] == 2 ) {
 
 $smarty->assign('error'      , ($error ? "1":"0"));
 $smarty->assign('message'    , $message);
-$smarty->assign('biller'     , $biller);
-$smarty->assign('customer'   , $customer);
-$smarty->assign('invoice'    , $invoice);
-$smarty->assign('preferences', $preference);
 
 $smarty->assign('pageActive', 'invoice');
 $smarty->assign('active_tab', '#money');

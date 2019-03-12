@@ -16,7 +16,7 @@
 {if $number_of_rows == 0}
     <div class="si_message">{$LANG.no_custom_flags}</div>
 {else}
-    <table id="si-data-table" class="display">
+    <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>

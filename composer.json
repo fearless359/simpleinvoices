@@ -1,7 +1,7 @@
 {
   "autoload": {
     "psr-0": {
-      "": ["library", "library/pdf", "library/pdf/fpdf"]
+      "": ["library"]
     },
     "psr-4": {
       "Inc\\Claz\\": "Inc/Claz/"
@@ -9,5 +9,9 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^7"
+  },
+  "require": {
+    "mpdf/mpdf": "^7.1",
+    "swiftmailer/swiftmailer": "^6.1"
   }
 }

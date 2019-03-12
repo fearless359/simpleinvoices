@@ -33,7 +33,7 @@ if (empty($_GET['biller_id'])) {
 if (empty($biller)) {
     $error = true;
     $message = "Must specify a biller to send an e-mail";
-    $biller_id = 0;
+    $biller_id = null;
 } else {
     $biller_id = $biller['id'];
 }
@@ -52,30 +52,41 @@ $end_date   = (isset($_GET['end_date']  ) ? $_GET['end_date']   : "");
 $show_only_unpaid = (empty($_GET['show_only_unpaid']) ? "no" : $_GET['show_only_unpaid']);
 
 if ($_GET['stage'] == 2) {
-    $export = new Export();
-    $export->format                = 'pdf';
-    $export->module                = 'statement';
-    $export->biller_id             = $biller_id;
-    $export->customer_id           = $customer_id;
-    $export->start_date            = $start_date;
-    $export->end_date              = $end_date;
-    $export->show_only_unpaid      = $show_only_unpaid;
-    $export->do_not_filter_by_date = $do_not_filter_by_date;
-    $export->setDownload(false);
-    $export->execute();
+    $export = new Export(Mpdf\Output\Destination::STRING_RETURN);
+    $export->setFormat('pdf');
+    $export->setModule('statement');
+    if (empty($biller_id)) {
+        $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=statement&amp;view=index\" />";
+        $display_block = "<div class=\"si_message_error\">{$message}</div>";
+        $results = [
+            "message" => $message,
+            "refresh_redirect" => $refresh_redirect,
+            "display_block" =>$display_block
+        ];
+    } else {
+        $export->setBiller($biller);
+        $export->setCustomerId($customer_id);
+        $export->setStartDate($start_date);
+        $export->setEndDate($end_date);
+        $export->setShowOnlyUnpaid($show_only_unpaid);
+        $export->setDoNotFilterByDate($do_not_filter_by_date);
+        $pdf_string = $export->execute();
 
-    $attachment = $export->file_name . '.pdf';
-    
-    $email = new Email();
-    $email->format        = 'statement';
-    $email->notes         = trim($_POST['email_notes']);
-    $email->from          = $_POST['email_from'];
-    $email->from_friendly = $biller['name'];
-    $email->to            = $_POST['email_to'];
-    $email->bcc           = $_POST['email_bcc'];
-    $email->subject       = $_POST['email_subject'];
-    $email->attachment    = $attachment;
-    $message = $email->send();
+        $email = new Email();
+        $email->setBcc($_POST['email_bcc']);
+        $email->setBody(trim($_POST['email_notes']));
+        $email->setFormat('statement');
+        $email->setFrom($_POST['email_from']);
+        $email->setFromFriendly($biller['name']);
+        $email->setPdfFileName($export->getFileName() . '.pdf');
+        $email->setPdfString($pdf_string);
+        $email->setSubject($_POST['email_subject']);
+        $email->setTo($_POST['email_to']);
+
+        $results = $email->send();
+    }
+    $smarty->assign('display_block', $results['display_block']);
+    $smarty->assign('refresh_redirect', $results['refresh_redirect']);
 
 } else if ($_GET['stage'] == 3) {
     // stage 3 = assemble email and send

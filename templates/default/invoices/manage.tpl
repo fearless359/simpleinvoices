@@ -62,7 +62,8 @@
             </tr>
         </thead>
     </table>
-    <div id="export_dialog" class="flora" title="Export" style="display: none;">
+    <div id="overlay" class="web_dialog_overlay"></div>
+    <div id="dialog" class="web_dialog flora" title="Export" style="display: none;">
         <div class="si_toolbar si_toolbar_dialog">
             <a title="{$LANG.export_tooltip} {$LANG.export_pdf_tooltip}" class="export_pdf export_window">
                 <img src="images/common/page_white_acrobat.png" alt=""/>
@@ -76,6 +77,7 @@
                 <img src="images/common/page_white_word.png" alt=""/>
                 {$LANG.export_doc}
             </a>
+            <button id="webDialogClose">Close</button>
         </div>
     </div>
     <script>

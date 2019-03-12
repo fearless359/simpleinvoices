@@ -66,11 +66,11 @@ if ($p->validate_ipn ()) {
         $body .= " at " . date ( 'g:i A' ) . "\n\nDetails:\n";
         $body .= $paypal_data;
 
-        $email = new Email ();
-        $email->notes   = $body;
-        $email->to      = $biller ['email'];
-        $email->from    = "simpleinvoices@localhost.localdomain";
-        $email->subject = 'Instant Payment Notification - Received Payment';
+        $email = new Email();
+        $email->setBody($body);
+        $email->setTo($biller ['email']);
+        $email->setFrom("simpleinvoices@localhost.localdomain");
+        $email->setSubject('Instant Payment Notification - Received Payment');
         $email->send ();
 
         $xml_message .= $body;

@@ -95,9 +95,6 @@
         </div>
         <input type="hidden" name="op" value="insert_customer"/>
     </form>
-{else if $smarty.get.stage == 2}
-    <meta http-equiv="refresh" content="2;URL=index.php?module=invoices&amp;view=manage"/>
-    <div class="si_message_ok">
-        {$message|outhtml}
-    </div>
+{elseif $smarty.get.stage == 2}
+    {include file="templates/default/invoices/save.tpl"}
 {/if}

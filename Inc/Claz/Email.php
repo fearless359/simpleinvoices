@@ -1,163 +1,208 @@
 <?php
 namespace Inc\Claz;
 
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_Message;
+use Swift_SmtpTransport;
+
+use Exception;
+
 /**
  * Class Email
  * @package Inc\Claz
  */
 class Email {
-    public $attachment;
-    // public $attachments;
-    public $biller_id;
-    public $customer_id;
-    public $domain_id;
-    public $end_date;
-    public $file_location;
-    public $format;
-    public $from;
-    public $from_friendly;
-    public $id;
-    public $invoice_date;
-    public $invoice_name;
-    public $notes;
-    public $start_date;
-    public $subject;
-    public $to;
+    protected $bcc;
+    protected $body;
+    protected $format;
+    protected $from;
+    protected $from_friendly;
+    protected $pdf_file_name;
+    protected $pdf_string;
+    protected $subject;
+    protected $to;
+
+    public function __construct()
+    {
+        $this->bcc = '';
+        $this->body = '';
+        $this->format = '';
+        $this->from = '';
+        $this->from_friendly = '';
+        $this->pdf_file_name = '';
+        $this->pdf_string = '';
+        $this->subject = '';
+        $this->to = '';
+    }
 
     /**
-     * @return string
+     * @return array $results with indices of 'display_block' & 'refresh_redirect'
      */
     public function send() {
         global $config;
 
-        // Create authentication with SMTP server
-        $authentication = array();
-        if ($config->email->smtp_auth) {
-            // @formatter:off
-            $authentication = array('auth'     => 'login',
-                                    'username' => $config->email->username,
-                                    'password' => $config->email->password,
-                                    'ssl'      => $config->email->secure,
-                                    'port'     => $config->email->smtpport);
-            // @formatter:on
+        // Validate that minimum required fields are present
+        // @formatter:off
+        if (empty($this->body)    ||
+            empty($this->format)  ||
+            empty($this->from)    ||
+            empty($this->subject) ||
+            empty($this->to)) {
+            $message = "One or more required fields is missing";
+            error_log("Email::send() - " . $message);
+            $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=statement&amp;view=index\" />";
+            $display_block = "<div class=\"si_message_error\">{$message}</div>";
+            $results = [
+                "message" => $message,
+                "refresh_redirect" => $refresh_redirect,
+                "display_block" =>$display_block
+            ];
+            return $results;
+        }
+        // @formatter:on
+
+        if ((!empty($this->pdf_string) &&  empty($this->pdf_file_name)) ||
+            ( empty($this->pdf_string) && !empty($this->pdf_file_name))) {
+            $message = "Both pdf_string and pdf_file_name must be set or left empty";
+            error_log("Email::send() - " . $message);
+            $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=statement&amp;view=index\" />";
+            $display_block = "<div class=\"si_message_error\">{$message}</div>";
+            $results = [
+                "message" => $message,
+                "refresh_redirect" => $refresh_redirect,
+                "display_block" =>$display_block
+            ];
+            return $results;
         }
 
-        $transport = null;
-        try {
-            if ($config->email->use_local_sendmail == false) {
-                $transport = new \Zend_Mail_Transport_Smtp($config->email->host, $authentication);
-            }
+        $transport = new Swift_SmtpTransport($config->email->host, $config->email->smtpport);
+        $transport->setUsername($config->email->username);
+        $transport->setPassword($config->email->password);
 
-            // Create e-mail message
-            $mail = new \Zend_Mail('utf-8');
-            $mail->setType(\Zend_Mime::MULTIPART_MIXED);
-            $mail->setBodyText($this->notes);
-            $mail->setBodyHTML($this->notes);
-            $mail->setFrom($this->from, $this->from_friendly);
+        $mailer = new Swift_Mailer($transport);
+        $message = new Swift_Message();
 
-            $to_addresses = preg_split('/\s*[,;]\s*/', $this->to);
-            if (!empty($to_addresses)) {
-                foreach ($to_addresses as $to) {
-                    $mail->addTo($to);
-                }
-            }
-
-            if (!empty($this->bcc)) {
-                $bcc_addresses = preg_split('/\s*[,;]\s*/', $this->bcc);
-                foreach ($bcc_addresses as $bcc) {
-                    $mail->addBcc($bcc);
-                }
-            }
-            $mail->setSubject($this->subject);
-
-            if (!empty($this->attachment)) {
-                // Create attachment
-                $content = file_get_contents('./tmp/cache/' . $this->attachment);
-                $at = $mail->createAttachment($content);
-                $at->type = 'application/pdf';
-                $at->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
-                $at->filename = $this->attachment;
-            }
-
-        // TODO: Add support for other attachment types
-//        foreach ($this->attachments as $attachment) {
-//            $content = file_get_contents("path to pdf file"); // e.g. ("attachment/abc.pdf")
-//            $attachment = new Zend_Mime_Part($content);
-//            $attachment->type = 'application/pdf';
-//            $attachment->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
-//            $attachment->encoding = Zend_Mime::ENCODING_BASE64;
-//            $attachment->filename = 'filename.pdf'; // name of file
-//        }
-//        $mail->addAttachment($attachment);
-
-            // Send e-mail through SMTP
-            if ($config->email->use_local_sendmail) {
-                $mail->send();
-            } else {
-                $mail->send($transport);
-            }
-        } catch (\Exception $e) {
-            echo '<strong>Zend Mail Protocol Exception:</strong> ' . $e->getMessage();
-            error_log("Email.php mail error - " . print_r($e,true));
-            exit();
+        // If pdf_file_name is empty, pdf_string is also empty per previous test.
+        if (!empty($this->pdf_file_name)) {
+            $attachment = new Swift_Attachment($this->pdf_string, $this->pdf_file_name, 'application/pdf');
+            $message->attach($attachment);
         }
 
-        // Remove temp invoice if present
-        if (!empty($this->attachment)) unlink("tmp/cache/$this->attachment");
+        if (!empty($this->bcc)) {
+            $message->setBcc([$this->bcc]);
+        }
 
+        $message->setBody($this->body, 'text/html');
+        if (empty($this->from_friendly)) {
+            $message->setFrom($this->from);
+        } else {
+            $message->setFrom([$this->from => $this->from_friendly]);
+        }
+
+        $message->setSubject($this->subject);
+
+        // Split multiple addresses that are separated by ";" or ",".
+        $to_addresses = preg_split('/\s*[,;]\s*/', $this->to);
+        if (empty($to_addresses)) {
+            $message->setTo($this->to);
+        } else {
+            $message->setTo($to_addresses);
+        }
+
+        $result = $mailer->send($message);
+        $results = self::makeResults($result);
+        return $results;
+    }
+
+    /**
+     * @param $result
+     * @return array
+     */
+    private function makeResults($result) {
         switch ($this->format) {
             case "invoice":
-                // Create success message
-                $message = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\">";
-                $message .= "<br />$this->attachment has been emailed";
+                $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+                if ($result == 0) {
+                    $message = $this->pdf_file_name . "could not be sent";
+                    $display_block = "<div class=\"si_message_error\">$message</div>";
+                } else {
+                    $message = $this->pdf_file_name . "has been sent";
+                    $display_block = "<div class=\"si_message_ok\">{$message}</div>";
+                }
                 break;
 
             case "statement":
-                // Create success message
-                $message = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=statement&amp;view=index\">";
-                $message .= "<br />$this->attachment has been emailed";
+                $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=statement&amp;view=index\" />";
+                if ($result == 0) {
+                    $message = $this->pdf_file_name . ' could not be sent';
+                    $display_block = "<div class=\"si_message_error\">{$message}</div>";
+                } else {
+                    $message = $this->pdf_file_name . 'has been sent';
+                    $display_block = "<div class=\"si_message_ok\">{$message}</div>";
+                }
                 break;
 
             case "cron":
-                // Create success message
-                $message = "<br />Cron email for today has been sent";
+                $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+                if ($result == 0) {
+                    $message = "Cron email for today has not been sent";
+                    $display_block = "<div class=\"si_message_error\">{$message}</div>";
+                } else {
+                    $message = "Cron email for today has been sent";
+                    $display_block = "<div class=\"si_message_ok\">{$message}</div>";
+                }
                 break;
 
             case "cron_invoice":
-                // Create success message
-                $message = "$this->attachment has been emailed";
+                $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+                if ($result == 0) {
+                    $message = "Cron {$this->pdf_file_name} has not been emailed";
+                    $display_block = "<div class=\"si_message_error\">{$message}</div>";
+                } else {
+                    $message = "Cron {$this->pdf_file_name} has been emailed";
+                    $display_block = "<div class=\"si_message_ok\">{$message}</div>";
+                }
                 break;
 
             default:
-                error_log("include/class/Email.php - Undefined format, " . $this->format);
-                echo '<strong>Undefined format (' . $this->format . ')</strong>';
-                exit();
+                if (empty($this->format)) {
+                    $this->format = ''; // Make sure empty is blank
+                }
+                $message = "Undefined format, \" . $this->format";
+                error_log("Email::send() - {$message}");
+                $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+                $display_block = "<div class=\"si_message_error\">{$message}</div>";
         }
-
-        return $message;
+        $results = [
+            "message" => $message,
+            "refresh_redirect" => $refresh_redirect,
+            "display_block" =>$display_block
+        ];
+        return $results;
     }
-
     /**
+     * Make a default subject for email based on specified type.
      * @param string $type
      * @return string
      */
-    public function set_subject($type = '') {
+    public function makeSubject($type) {
         switch ($type) {
             case "invoice_eway":
-                $message = "$this->invoice_name ready for automatic credit card payment";
+                $message = "$this->pdf_file_name ready for automatic credit card payment";
                 break;
 
             case "invoice_eway_receipt":
-                $message = "$this->invoice_name secure credit card payment successful";
+                $message = "$this->pdf_file_name secure credit card payment successful";
                 break;
 
             case "invoice_receipt":
-                $message = "$this->attachment has been emailed";
+                $message = "$this->pdf_file_name has been emailed";
                 break;
 
             case "invoice":
             default:
-                $message = "$this->attachment from $this->from_friendly";
+                $message = "$this->pdf_file_name from $this->from_friendly";
                 break;
 
         }
@@ -166,139 +211,169 @@ class Email {
     }
 
     /**
-     * @return array|mixed
+     * @return string
      */
-    public function getAdminEmail() {
-        global $pdoDb;
-
-        $rows = array();
-        try {
-            $jn = new Join("LEFT", "user_role", "r");
-            $jn->addSimpleItem("u.role_id", new DbField("r.id"));
-            $pdoDb->addToJoins($jn);
-
-            $pdoDb->addSimpleWhere("r.name", "administrator", "AND");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-
-            $pdoDb->setSelectList("u.email");
-            $rows = $pdoDb->request("SELECT", "user", "u");
-        } catch (PdoDbException $pde) {
-            error_log("Email::getAdminEmail() - Error: " . $pde->getMessage());
-        }
-        return $rows;
+    public function getBcc(): string
+    {
+        return $this->bcc;
     }
 
     /**
-     * TODO: Use for attachment logic
-     * Verify the $_FILES[] values for upload files.
-     * @param string $varname The variable name for the upload entry.
-     * @param $validtypes
-     * @param $max_size
-     * @param $lines
-     * @param $files
-     * @return bool true OK, false if not.
+     * @param mixed $bcc
+     * @throws Exception
      */
-    private function verifyFiles($varname, $validtypes, $max_size, &$lines, &$files) {
-        // Undefined | Multiple Files | $_FILES Corruption Attack
-        // If this request falls under any of them, treat as invalid.
-        if (!isset($_FILES[$varname]['error'])) {
-            $lines[] = '<p class="warnMsg">Invalid value found. Verify all fields set and re-submit.</p>';
-            return false;
+    public function setBcc($bcc): void
+    {
+        if (!filter_var($bcc, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Invalid 'bcc' email address specified");
         }
 
-        if (is_array($_FILES[$varname]['error'])) {
-            $files = array();
-            for ($i = 0; $i < count($_FILES[$varname]['error']); $i++) {
-                $files[] = $_FILES[$varname]['name'][$i];
-                if (!self::verifyOneFile($varname, $_FILES[$varname]['error'][$i], $validtypes, $_FILES[$varname]['size'][$i],
-                        $max_size, $_FILES[$varname]['name'][$i], $lines)) {
-                            return false;
-                        }
-            }
-        } else {
-            $files = $_FILES[$varname]['name'];
-            if (!self::verifyOneFile($varname, $_FILES[$varname]['error'], $validtypes, $_FILES[$varname]['size'], $max_size,
-                    $_FILES[$varname]['name'], $lines)) {
-                        return false;
-                    }
-        }
-        return true;
+        $this->bcc = $bcc;
     }
 
     /**
-     * @param $varname
-     * @param $error
-     * @param $validtypes
-     * @param $size
-     * @param $max_size
-     * @param $name
-     * @param $lines
-     * @return bool
+     * @return string
      */
-    private function verifyOneFile($varname, $error, $validtypes, $size, $max_size, $name, &$lines) {
-        // Check $error value.
-        if (strstr($varname, 'pic')) {
-            $desc = 'Picture';
-        } else {
-            $desc = 'Media';
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param mixed $body
+     */
+    public function setBody($body): void
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param mixed $format
+     * @throws Exception
+     */
+    public function setFormat($format): void
+    {
+        if ($format != 'invoice' &&
+            $format != 'statement' &&
+            $format != 'cron' &&
+            $format != 'cron_invoice') {
+            throw new Exception("Invalid format. Must be 'invoice', 'statement', 'cron' or 'crong_invoice'");
+        }
+        $this->format = $format;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
+    /**
+     * @param string $from Valid email address of sender
+     * @throws Exception
+     */
+    public function setFrom($from): void
+    {
+        if (!filter_var($from, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Invalid 'from' email address specified");
         }
 
-        switch ($error) {
-            case UPLOAD_ERR_OK:
-                break;
+        $this->from = $from;
+    }
 
-            case UPLOAD_ERR_NO_FILE:
-                $lines[] = "<p class='warnMsg'>No {$desc} file transmitted. Verify file specified and re-submit.</p>";
-                return false;
+    /**
+     * @return string
+     */
+    public function getFromFriendly(): string
+    {
+        return $this->from_friendly;
+    }
 
-            case UPLOAD_ERR_INI_SIZE:
-            case UPLOAD_ERR_FORM_SIZE:
-                $lines[] = "<p class='warnMsg'>{$desc} file, {$name}, is too large.</p>";
-                return false;
+    /**
+     * @param string $from_friendly Friendly name of sender
+     */
+    public function setFromFriendly($from_friendly): void
+    {
+        $this->from_friendly = $from_friendly;
+    }
 
-            default:
-                $lines[] = "<p class='warnMsg'>Undefined error reported for {$desc}.</p>";
-                return false;
+    /**
+     * @return string
+     */
+    public function getPdfFileName(): string
+    {
+        return $this->pdf_file_name;
+    }
+
+    /**
+     * @param string $pdf_file_name
+     */
+    public function setPdfFileName($pdf_file_name): void
+    {
+        $this->pdf_file_name = $pdf_file_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPdfString(): string
+    {
+        return $this->pdf_string;
+    }
+
+    /**
+     * @param string $pdf_string PDF file in string format
+     */
+    public function setPdfString($pdf_string): void
+    {
+        $this->pdf_string = $pdf_string;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject(): string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject($subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTo(): string
+    {
+        return $this->to;
+    }
+
+    /**
+     * @param string $to Email address to send message to.
+     * @throws Exception
+     */
+    public function setTo($to): void
+    {
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Invalid 'to' email address specified");
         }
 
-        if ($max_size < 1024) {
-            $maxsiz = 1024 * 1024 * 1024;
-            $maxsizstr = '100Mb';
-        } else if ($max_size < (1024 * 1024)) {
-            $maxsiz = $max_size;
-            $maxsizstr = sprintf('%uKb', ($max_size / 1024));
-        } else {
-            $maxsiz = $max_size;
-            $maxsizstr = sprintf('%uMb', ($max_size / (1024 * 1024)));
-        }
-
-        // You should also check file size here.
-        if ($size > $maxsiz) {
-            $lines[] = "<p class='warnMsg'>{$desc} file, {$name}, exceeds specified file size limit, {$maxsizstr}.</p>";
-            return false;
-        }
-
-        $typs = $_FILES[$varname]['type'];
-        if (is_string($typs)) $typs = array($typs);
-        foreach($typs as $typ) {
-            $error=false;
-            if (($key = array_search($typ, $validtypes)) === false) {
-                $error = true;
-            } else if (strlen($key) > 3 && substr($key,3) != "-any") {
-                $browser = strtolower(\Zend_Http_UserAgent_AbstractDevice::getBrowser());
-                $typ_browser = strtolower(substr($key,4));
-                if ($browser != $typ_browser) $error = true;
-            }
-
-            if ($error) {
-                error_log("media_form_functions verifyOneFile(): File type, $typ, not allowed. Validtypes are: " .
-                        print_r($validtypes,true));
-                $lines[] = "<p class='warnMsg'>{$desc} file, {$name}, is not an allowed file type.</p>";
-                return false;
-            }
-        }
-
-        return true;
+        $this->to = $to;
     }
 
 }

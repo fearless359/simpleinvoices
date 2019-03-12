@@ -18,7 +18,7 @@ class CustInfo {
      * @param $billed
      * @param $paid
      * @param $owed
-     * @param $inv_info
+     * @param InvInfo $inv_info
      */
     public function __construct($name, $billed, $paid, $owed, $inv_info) {
         $this->name     = $name;

@@ -24,8 +24,6 @@ use Inc\Claz\Util;
 // **********************************************************
 $lcl_path = get_include_path() .
     PATH_SEPARATOR . "./library/" .
-    PATH_SEPARATOR . "./library/pdf" .
-    PATH_SEPARATOR . "./library/pdf/fpdf" .
     PATH_SEPARATOR . "./include/";
 if (set_include_path($lcl_path) === false) {
     echo "<h1>Unable to set include path. Request terminated.</h1>";
@@ -80,7 +78,13 @@ if (!file_exists('./tmp/template_c')) {
 if (!file_exists('./tmp/log')) {
     mkdir('./tmp/log');
 } else if (!is_writable('tmp/log')) {
-    SiError::out('notWritable', 'file', './tmp/cache');
+    SiError::out('notWritable', 'file', './tmp/log');
+}
+
+if (!file_exists('./tmp/pdf_tmp')) {
+    mkdir('./tmp/pdf_tmp');
+} else if (!is_writable('tmp/pdf_tmp')) {
+    SiError::out('notWritable', 'file', './tmp/pdf_tmp');
 }
 
 try {
@@ -106,7 +110,6 @@ $databasePopulated = false;
 $ext_names = array();
 $help_image_path = "images/common/";
 
-include_once "include/functions.php";
 include_once "include/init.php";
 global $smarty,
        $smarty_output,
@@ -273,7 +276,7 @@ if ($api_request || (strstr($view, "xml") || (strstr($view, "ajax")))) {
     // Load default if none found for enabled extensions.
     $my_path = Util::getCustomPath("$module/$view", 'module');
     if ($extensionXml == 0 && isset($my_path)) {
-        include($my_path);
+        include ($my_path);
     }
 
     exit(0);
@@ -357,7 +360,7 @@ foreach ($ext_names as $ext_name) {
             $extension_php_insert_files[$ext_name] = $vals;
             // @formatter:on
         } else {
-            include $phpfile;
+            include ($phpfile);
             $extensionPhpFile++;
         }
     }
@@ -368,7 +371,7 @@ if ($extensionPhpFile == 0) {
     $my_path = Util::getCustomPath("$module/$view", 'module');
     if (isset($my_path)) {
         Log::out("index.php - my_path[$my_path]", Zend_Log::DEBUG);
-        include $my_path;
+        include ($my_path);
     }
 }
 // **********************************************************

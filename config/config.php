@@ -17,15 +17,16 @@ authentication.http                 =
 
 export.spreadsheet                  = xls
 export.wordprocessor                = doc
-export.pdf.screensize               = 800
-export.pdf.papersize                = A4
+
+export.pdf.defaultfontsize          = 12
+export.pdf.papersize                = Letter
 export.pdf.leftmargin               = 15
 export.pdf.rightmargin              = 15
 export.pdf.topmargin                = 15
 export.pdf.bottommargin             = 15
 
-version.name                        = 2019.0.2
-version.update_date                 = 20180217
+version.name                        = 2019.1.0
+version.update_date                 = 20190226
 
 local.locale                        = en_US
 local.precision                     = 2

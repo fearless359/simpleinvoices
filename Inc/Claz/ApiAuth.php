@@ -4,6 +4,10 @@ namespace Inc\Claz;
 
 class ApiAuth
 {
+    /**
+     * @param $module
+     * @param \Zend_Session_Namespace $auth_session
+     */
     public static function authenticate($module, $auth_session) {
         // API calls don't use the auth module
         if ($module != 'api') {

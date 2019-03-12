@@ -14,7 +14,7 @@
 {if $number_of_rows == 0}
     <p><em>No extensions registered</em></p>
 {else}
-    <table id="si-data-table" class="display">
+    <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>

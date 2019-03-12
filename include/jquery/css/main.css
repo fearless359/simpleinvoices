@@ -44,6 +44,41 @@ body {
     background: #ebebeb;
 }
 
+.web_dialog_overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    opacity: .15;
+    filter: alpha(opacity=15);
+    -moz-opacity: .15;
+    z-index: 101;
+    display: none;
+}
+
+.web_dialog {
+    position: fixed;
+    top: 30%;
+    left: 42%;
+    background-color: #ffffff;
+    border: 2px solid #a9a9a9;
+    z-index: 102;
+    font-size: 10pt;
+}
+
+.web_dialog_button {
+    text-align: center;
+    margin: 0 auto 9px auto !important;
+    width: 50%;
+    padding: 8px 15px;
+}
+
 body, .dialog {
     font-family: arial, verdana, helvetica, sans-serif;
     font-size: 12px;
@@ -333,7 +368,8 @@ div#Container {
     margin-right: 45px;
 }
 
-.si_toolbar a {
+.si_toolbar a,
+.si_toolbar button {
     border-left: 1px solid #ccc;
     display: inline-block;
     margin: 0;
@@ -402,10 +438,16 @@ div#Container {
 
 }
 
-.si_toolbar_dialog a {
+.si_toolbar_dialog a,
+.si_toolbar_dialog button {
     display: block;
-    margin: 0 0 9px 11px;
+    margin: 10px;
     width: 220px;
+}
+
+.si_toolbar_dialog button {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* @end */

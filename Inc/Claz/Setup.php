@@ -21,8 +21,6 @@ class Setup
     {
         $lcl_path = get_include_path() .
             PATH_SEPARATOR . "./library/" .
-            PATH_SEPARATOR . "./library/pdf" .
-            PATH_SEPARATOR . "./library/pdf/fpdf" .
             PATH_SEPARATOR . "./include/";
         if (set_include_path($lcl_path) === false) {
             error_log("Error reported by set_include_path() for path: {$lcl_path}");
@@ -36,7 +34,7 @@ class Setup
      * @param DbInfo &$dbInfo
      * @param PdoDb &$pdoDb
      * @param PdoDb &$pdoDb_admin
-     * @param Zend_Db &$zendDb
+     * @param \Zend_Db &$zendDb
      * @throws PdoDbException
      */
     public static function init($updateCustomConfig, &$config, &$dbInfo, &$pdoDb, &$pdoDb_admin, &$zendDb)

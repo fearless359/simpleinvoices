@@ -176,7 +176,6 @@ class Cron {
         Log::out("Cron::run() - today[$today] row count[" . count($rows) . "]", Zend_Log::DEBUG);
 
         foreach($rows as $value) {
-            // @formatter:off
             $cron_id   = $value['id'];
             $domain_id = $value['domain_id'];
 
@@ -251,166 +250,150 @@ class Cron {
                     Log::out("Cron::run() - run_cron[$run_cron]", Zend_Log::DEBUG);
                     if ($run_cron) {
                         $number_of_crons_run++;
-                        // @formatter:off
                         $cron_msg = "Cron ID: $value[id] - Cron for $value[index_name] with ";
                         $cron_msg .= (empty($value['start_date']) ? "no start date" : "start date of $value[start_date] ") . "and ";
                         $cron_msg .= (empty($value['end_date']  ) ? "no end date"   : "an end date of $value[end_date] ");
                         $cron_msg .= " that runs each $value[recurrence] $value[recurrence_type], was run today :: Info diff=$diff";
                         $result["cron_message_{$value['id']}"] = $cron_msg;
-                        // @formatter:on
                         $i++;
 
                         // $domain_id gets propagated from invoice to be copied from
                         $new_invoice_id = Invoice::recur ($value['invoice_id']);
 
                         CronLog::insert($pdoDb, $domain_id, $cron_id, $today);
-                        // @formatter:off
-                        $invoice               = Invoice::getOne($new_invoice_id);
-                        $preference            = Preferences::getOne($invoice['preference_id']);
-                        $biller                = Biller::getOne($invoice['biller_id']);
-                        $customer              = Customer::getOne($invoice['customer_id']);
-                        $spc2us_pref           = str_replace(" ", "_", $invoice['index_name']);
+                        $invoice = Invoice::getOne($new_invoice_id);
+                        $preference = Preferences::getOne($invoice['preference_id']);
+                        $biller = Biller::getOne($invoice['biller_id']);
+                        $customer = Customer::getOne($invoice['customer_id']);
+                        $spc2us_pref = str_replace(" ", "_", $invoice['index_name']);
                         $pdf_file_name_invoice = $spc2us_pref . ".pdf";
-                        // @formatter:on
 
                         // email invoice
                         if (($value['email_biller'] == ENABLED) || ($value['email_customer'] == ENABLED)) {
-                            $export = new Export();
-                            // @formatter:off
-                            $export->domain_id = $domain_id;
-                            $export->format    = "pdf";
-                            $export->module    = 'invoice';
-                            $export->id        = $invoice['id'];
-                            $export->setDownload(false);
-                            $export->execute ();
+                            $export = new Export(Mpdf\Output\Destination::STRING_RETURN);
+                            $export->setFormat("pdf");
+                            $export->setId($invoice['id']);
+                            $export->setModule('invoice');
+                            $pdf_string = $export->execute();
 
                             // $attachment = file_get_contents('./tmp/cache/' . $pdf_file_name);
-                            $email = new Email ();
-                            $email->domain_id = $domain_id;
-                            $email->format    = 'cron_invoice';
 
-                            $email_body = new EmailBody ();
+                            $email_body = new EmailBody();
                             $email_body->email_type    = 'cron_invoice';
                             $email_body->customer_name = $customer['name'];
                             $email_body->invoice_name  = $invoice['index_name'];
                             $email_body->biller_name   = $biller['name'];
 
-                            $email->notes              = $email_body->create ();
-                            $email->from               = $biller['email'];
-                            $email->from_friendly      = $biller['name'];
-                            $email->to                 = self::getEmailSendAddresses($value, $customer['email'], $biller['email']);
-                            $email->invoice_name       = $invoice['index_name'];
-                            $email->subject            = $email->set_subject ();
-                            $email->attachment         = $pdf_file_name_invoice;
-                            $result['email_message']   = $email->send ();
-                            // @formatter:on
+                            $email = new Email();
+                            $email->setBody($email_body->create());
+                            $email->setFormat('cron_invoice');
+                            $email->setFrom($biller['email']);
+                            $email->setFromFriendly($biller['name']);
+                            $email->setPdfFileName($export->getFileName() . '.pdf');
+                            $email->setPdfString($pdf_string);
+                            $email->setSubject($email->makeSubject('invoice'));
+                            $email->setTo(self::getEmailSendAddresses($value, $customer['email'], $biller['email']));
+                            $results = $email->send();
+                            $result['email_message'] = $results['message'];
                         }
 
                         // Check that all details are OK before doing the eway payment
                         $eway_check = new Eway ();
-                        // @formatter:off
                         $eway_check->domain_id  = $domain_id;
                         $eway_check->invoice    = $invoice;
                         $eway_check->customer   = $customer;
                         $eway_check->biller     = $biller;
                         $eway_check->preference = $preference;
                         $eway_pre_check         = $eway_check->pre_check ();
-                        // @formatter:on
 
                         // do eway payment
                         if ($eway_pre_check == 'true') {
                             $eway = new Eway ();
-                            // @formatter:off
                             $eway->domain_id = $domain_id;
                             $eway->invoice   = $invoice;
                             $eway->biller    = $biller;
                             $eway->customer  = $customer;
                             $payment_id      = $eway->payment ();
                             $payment_done    = ($payment_id !== false);
-                            // @formatter:on
 
                             // Appears to not be used. Commented out by Rich Rowley 20181104
                             // $pdf_file_name_receipt = 'payment' . $payment_id . '.pdf';
                             if ($payment_done == 'true') {
                                 // Email receipt to biller and customer
-                                if (($value['email_biller']   == ENABLED) ||
-                                    ($value['email_customer'] == ENABLED)) {
+                                if ($value['email_biller'] == ENABLED || $value['email_customer'] == ENABLED) {
                                      // Code to email a new copy of the invoice to the customer
-                                    $export_rec = new Export();
-                                    // @formatter:off
-                                    $export_rec->domain_id = $domain_id;
-                                    $export_rec->format    = "pdf";
-                                    $export_rec->module    = 'invoice';
-                                    $export_rec->id        = $invoice['id'];
-                                    $export_rec->setDownload(false);
-                                    $export_rec->execute ();
+                                    $export_rec = new Export(Mpdf\Output\Destination::STRING_RETURN);
+                                    $export_rec->setFormat("pdf");
+                                    $export_rec->setId($invoice['id']);
+                                    $export_rec->setModule('invoice');
 
-                                    $email_rec = new Email ();
-                                    $email_rec->domain_id = $domain_id;
-                                    $email_rec->format    = 'cron_invoice';
+                                    $pdf_string = $export_rec->execute();
 
-                                    $email_body_rec = new EmailBody ();
+                                    $email_body_rec = new EmailBody();
                                     $email_body_rec->email_type    = 'cron_invoice_receipt';
                                     $email_body_rec->customer_name = $customer['name'];
                                     $email_body_rec->invoice_name  = $invoice['index_name'];
                                     $email_body_rec->biller_name   = $biller['name'];
 
-                                    $email_rec->notes         = $email_body_rec->create ();
-                                    $email_rec->from          = $biller['email'];
-                                    $email_rec->from_friendly = $biller['name'];
-                                    $email_rec->to            = self::getEmailSendAddresses($value, $customer['email'], $biller['email']);
-                                    $email_rec->invoice_name  = $invoice['index_name'];
-                                    $email_rec->attachment    = $pdf_file_name_invoice;
-                                    $email_rec->subject       = $email_rec->set_subject('invoice_eway_receipt');
-                                    $result['email_message']  = $email_rec->send ();
-                                    // @formatter:on
+                                    $email_rec = new Email();
+                                    $email_rec->setBody($email_body_rec->create());
+                                    $email_rec->setFormat('cron_invoice');
+                                    $email_rec->setFrom($biller['email']);
+                                    $email_rec->setFromFriendly($biller['name']);
+                                    $email_rec->setPdfFileName($export_rec->getFileName() . '.pdf');
+                                    $email_rec->setPdfString($pdf_string);
+                                    $email_rec->setSubject($email_rec->makeSubject('invoice_eway_receipt'));
+                                    $email_rec->setTo(self::getEmailSendAddresses($value, $customer['email'], $biller['email']));
+                                    $results = $email_rec->send();
+                                    $result['email_message']  = $results['message'];
                                 }
                             } else {
                                 // do email to biller/admin - say error
-                                $email = new Email ();
-                                // @formatter:off
-                                $email->domain_id     = $domain_id;
-                                $email->format        = 'cron_payment';
-                                $email->from          = $biller['email'];
-                                $email->from_friendly = $biller['name'];
-                                $email->to            = $biller['email'];
-                                $email->subject       = "Payment failed for $invoice[index_name]";
-                                $error_message        = "Invoice: $invoice[index_name]<br />Amount: $invoice[total]<br />";
+                                $email = new Email();
+                                $email->setFormat('cron_payment');
+                                $email->setFrom($biller['email']);
+                                $email->setFromFriendly($biller['name']);
+                                $email->setSubject("Payment failed for $invoice[index_name]");
+                                $email->setTo($biller['email']);
+
+                                $error_message = "Invoice: {$invoice['index_name']}<br />Amount: {$invoice['total']}<br />";
                                 foreach($eway->get_message () as $key2 => $value2) {
-                                    $error_message .= "\n<br>\$ewayResponseFields[\"$key2\"] = $value2";
+                                    $error_message .= "\n<br>\$ewayResponseFields[\"{$key2}\"] = $value2";
                                 }
-                                $email->notes            = $error_message;
-                                $result['email_message'] = $email->send ();
+                                $email->setBody($error_message);
+
+                                $results = $email->send();
+                                $result['email_message'] = $results['message'];
                             }
                         }
                     } else {
                         // Cron not run for this cron_id
-                        $cron_msg = "Cron ID: $value[id] - Cron for $value[index_name] with ";
-                        $cron_msg .= (empty($value['start_date']) ? "no start date" : "start date of $value[start_date] ") . "and ";
-                        $cron_msg .= (empty($value['end_date']  ) ? "no end date"   : "an end date of $value[end_date] ");
-                        $cron_msg .= " that runs each $value[recurrence] $value[recurrence_type], did not recur today :: Info diff=$diff";
-                        $result["cron_message_$value[id]"] = $cron_msg;
+                        $cron_msg = "Cron ID: {$value['id']} - Cron for {$value['index_name']} with ";
+                        $cron_msg .= (empty($value['start_date']) ? "no start date" : "start date of {$value['start_date']} ") . "and ";
+                        $cron_msg .= (empty($value['end_date']  ) ? "no end date"   : "an end date of {$value['end_date']} ");
+                        $cron_msg .= " that runs each {$value['recurrence']} {$value['recurrence_type']}, did not recur today :: Info diff={$diff}";
+                        $result["cron_message_{$value['id']}"] = $cron_msg;
                     }
                 } else {
                     // days diff is negative - whats going on
-                    $cron_msg = "Cron ID: $value[id] - NOTE RUN: Not scheduled for today. Cron for $value[index_name] with ";
-                    $cron_msg .= (empty($value['start_date']) ? "no start date" : "start date of $value[start_date] ") . "and ";
-                    $cron_msg .= (empty($value['end_date']  ) ? "no end date"   : "an end date of $value[end_date] ");
-                    $cron_msg .= " that runs each $value[recurrence] $value[recurrence_type], did not recur today :: Info diff=$diff";
-                    $result["cron_message_$value[id]"] = $cron_msg;
+                    $cron_msg = "Cron ID: {$value['id']} - NOTE RUN: Not scheduled for today. Cron for {$value['index_name']} with ";
+                    $cron_msg .= (empty($value['start_date']) ? "no start date" : "start date of {$value['start_date']} ") . "and ";
+                    $cron_msg .= (empty($value['end_date']  ) ? "no end date"   : "an end date of {$value['end_date']} ");
+                    $cron_msg .= " that runs each {$value['recurrence']} {$value['recurrence_type']}, did not recur today :: Info diff={$diff}";
+                    $result["cron_message_{$value['id']}"] = $cron_msg;
                 }
             } else {
                 // Cron has already been run for that id today
-                $result["cron_message_$value[id]"] = "Cron ID: $value[id] - Cron has already been run for domain: $value[domain_id] " .
-                                                     "for the date: $today for invoice $value[invoice_id]";
+                $result["cron_message_{$value['id']}"] = "Cron ID: {$value['id']} - Cron has already been run for domain: {$value['domain_id']} " .
+                                                         "for the date: {$today} for invoice {$value['invoice_id']}";
                 $result['email_message'] = "";
             }
         }
 
         // no crons scheduled for today
         if ($number_of_crons_run == '0') {
-            $result['id'           ] = $i;
-            $result['cron_message' ] = "No invoices recurred for this Cron run for domain: " . DomainId::get() . " for the date: $today";
+            $result['id'] = $i;
+            $result['cron_message'] = "No invoices recurred for this Cron run for domain: " . DomainId::get() . " for the date: {$today}";
             $result['email_message'] = "";
         }
         return $result;

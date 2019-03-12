@@ -12,15 +12,14 @@ use Inc\Claz\Export;
  *  Website:
  * 	    https://simpleinvoices.group */
 // @formatter:off
-$id        = $_GET['id'];
-$format    = $_GET['format'];
-$file_type = $_GET['filetype'];
+$format    = (isset($_GET['format']  ) ? $_GET['format']   : "");
+$file_type = (isset($_GET['filetype']) ? $_GET['filetype'] : "");
+$id        = (isset($_GET['id']      ) ? $_GET['id']       : "");
 
-$export = new Export();
-$export->id        = $id;
-$export->format    = $format;
-$export->file_type = $file_type;
-$export->module    = 'payment';
-$export->setDownload(true);
+$export = new Export(Mpdf\Output\Destination::DOWNLOAD);
+$export->setFormat($format);
+$export->setFileType($file_type);
+$export->setId($id);
+$export->setModule('payment');
 $export->execute();
 // @formatter:on
