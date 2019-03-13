@@ -102,10 +102,9 @@ class WhereItem {
 
             case 'IN':
                 // Make array if not one already
-                $lcl_token = (is_array($this->token) ? $this->token : array($this->token));
-                $item = '(';
-                for($i=0; $i<count($lcl_token); $i++) {
-                    $tk = PdoDb::makeToken($lcl_token[$i], $cnt);
+                $item .= '(';
+                for($i=0; $i<count($this->value); $i++) {
+                    $tk = PdoDb::makeToken($this->token, $cnt);
                     $item .= ($i == 0 ? '' : ', ');
                     $item .= $tk;
                     $keyPairs[$tk] = $this->value[$i];
