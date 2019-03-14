@@ -10,7 +10,7 @@ class GroupBy {
 
     /**
      * GroupBy class constructor
-     * @param DbField $field Highest priority fields to <b>GROUP BY</b>.
+     * @param DbField/array $field Highest priority fields to <b>GROUP BY</b>.
      */
     public function __construct($field) {
         if (is_array($field)) $this->fields = $field;

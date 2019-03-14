@@ -26,16 +26,16 @@ class WhereItemTest extends TestCase
     public function testConstructAndBuild()
     {
         $this->expectExceptionMessage("WhereItem - Non-string connector specified. See error log for details.");
-        $wi - new WhereItem(false, 'db_field', '=', 'b', false, 1);
+        $wi = new WhereItem(false, 'db_field', '=', 'b', false, 1);
 
         $this->expectExceptionMessage("WhereItem - Invalid operator, BAD, specified.");
-        $wi - new WhereItem(false, 'db_field', 'BAD', 'b', false, 1);
+        $wi = new WhereItem(false, 'db_field', 'BAD', 'b', false, 1);
 
         $this->expectExceptionMessage("WhereItem - Invalid value for BETWEEN operator. Must be an array of two elements.");
-        $wi - new WhereItem(false, 'db_field', 'BETWEEN', 'b', false);
+        $wi = new WhereItem(false, 'db_field', 'BETWEEN', 'b', false);
 
         $this->expectExceptionMessage("WhereItem - Invalid value for IN operator. Must be an array.");
-        $wi - new WhereItem(false, 'db_field', 'IN', 'b', false);
+        $wi = new WhereItem(false, 'db_field', 'IN', 'b', false);
     }
 
     public function testParenCount()
