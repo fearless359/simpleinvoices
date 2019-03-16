@@ -21,7 +21,7 @@ use Inc\Claz\Util;
 global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // Create & initialize DB table if it doesn't exist.
 SubCustomers::addParentCustomerId();

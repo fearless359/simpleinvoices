@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $display_block = "<div class=\"si_message_error\">{$LANG['save_tax_rate_failure']}</div>";
 $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=manage' />";

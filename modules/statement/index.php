@@ -24,7 +24,7 @@ use Inc\Claz\Util;
  */
 global $menu, $pdoDb, $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 /**
  * @return string first of month date.

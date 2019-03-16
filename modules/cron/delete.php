@@ -21,7 +21,7 @@ use Inc\Claz\Util;
  */
 global $pdoDb, $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $cron = Cron::getOne($_GET['id']);
 $smarty->assign('cron', $cron);

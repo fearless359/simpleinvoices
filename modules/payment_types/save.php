@@ -7,7 +7,7 @@ global $LANG, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed.
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $display_block = "<div class=\"si_message_error\">{$LANG['save_payment_type_failure']}</div>";
 $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=payment_types&amp;view=manage\"/>";

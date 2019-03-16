@@ -7,7 +7,7 @@ global $LANG, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed.
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 if (!empty($_POST['op']) && $_POST['op'] == 'add') {
     include 'modules/payment_types/save.php';

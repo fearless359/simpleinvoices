@@ -23,7 +23,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 //get the invoice id
 $biller_id = $_GET['id'];

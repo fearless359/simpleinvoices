@@ -78,13 +78,13 @@ if (!file_exists('./tmp/template_c')) {
 if (!file_exists('./tmp/log')) {
     mkdir('./tmp/log');
 } else if (!is_writable('tmp/log')) {
-    SiError::out('notWritable', 'file', './tmp/log');
+    SiError::out('notWritable', 'directory', './tmp/log');
 }
 
 if (!file_exists('./tmp/pdf_tmp')) {
     mkdir('./tmp/pdf_tmp');
 } else if (!is_writable('tmp/pdf_tmp')) {
-    SiError::out('notWritable', 'file', './tmp/pdf_tmp');
+    SiError::out('notWritable', 'directory', './tmp/pdf_tmp');
 }
 
 try {

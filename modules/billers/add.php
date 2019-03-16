@@ -22,7 +22,7 @@ use Inc\Claz\Util;
  */
 global $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 if (!empty($_POST['op']) && $_POST['op'] == 'add') {
     include ("modules/billers/save.php");

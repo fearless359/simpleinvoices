@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $tax = Taxes::getOne($_GET['id']);
 $types = Taxes::getTaxTypes();

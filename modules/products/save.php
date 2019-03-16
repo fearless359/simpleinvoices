@@ -4,7 +4,7 @@ use Inc\Claz\Util;
 
 global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $display_message = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";

@@ -21,7 +21,7 @@ use Inc\Claz\Util;
  */
 global $db, $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $domain_id = DomainId::get();
 

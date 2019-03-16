@@ -23,7 +23,7 @@ global $LANG, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $billers = array();
 $rows = Biller::getAll();

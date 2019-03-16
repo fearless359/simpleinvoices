@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $LANG, $smarty;
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // Get the invoice id
 $payment_type_id = $_GET['id'];

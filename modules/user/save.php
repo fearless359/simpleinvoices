@@ -20,7 +20,7 @@ use Inc\Claz\Util;
 global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=user&amp;view=manage' />";
 $display_block = "<div class='si_message_error'>{$LANG['save_user_failure']}</div>";

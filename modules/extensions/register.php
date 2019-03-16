@@ -7,7 +7,7 @@ use Inc\Claz\Util;
 global $pdoDb, $smarty;
 
 // Stop direct browsing to this file
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // @formatter:off
 $id          = (empty($_GET['id']         ) ? "" : $_GET['id']);

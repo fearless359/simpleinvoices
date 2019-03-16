@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 isset($_GET['id']) && $extension_id = $_GET['id'];
 isset($_GET['action']) && $action = $_GET['action'];

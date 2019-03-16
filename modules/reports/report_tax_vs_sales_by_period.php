@@ -26,7 +26,7 @@ use Inc\Claz\WhereItem;
  */
 global$pdoDb, $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $domain_id = DomainId::get();
 

@@ -24,7 +24,7 @@ global $LANG, $pdoDb, $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $display_block = "<div class=\"si_message_error\">{$LANG['save_custom_field_failure']}</div>";

@@ -8,7 +8,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // If the invoice ID is present, access payments for it but only first.
 // TODO Handle chance of multiple payments on an invoice

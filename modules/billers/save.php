@@ -22,7 +22,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $op = (empty($_POST['op']) ? "" : $_POST['op']);
 $display_block = "<div class=\"si_message_error\">{$LANG['save_biller_failure']}</div>";

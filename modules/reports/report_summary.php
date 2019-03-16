@@ -30,7 +30,7 @@ use Inc\Claz\WhereItem;
  */
 global $LANG, $smarty, $pdoDb;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $domain_id = DomainId::get();
 

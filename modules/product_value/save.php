@@ -7,7 +7,7 @@ global $smarty;
 
 // -Gates 5/5/2008 added domain_id to parameters
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $op = !empty($_POST['op']) ? $_POST['op'] : null;
 

@@ -14,7 +14,7 @@ use HTMLPurifier_Config;
 
 class Util
 {
-    static $timebreaks = array();
+    public static $timebreaks = array();
 
     /**
      * Verify page access via valid path. The PHP files that can be directly
@@ -22,7 +22,7 @@ class Util
      * So all other php files should check this function to prevent a user from
      * trying to access that file directly.
      */
-    public static function isAccessAllowed() {
+    public static function directAccessAllowed() {
         $allowDirectAccess = (isset($GLOBALS['allow_direct_access']) ? $GLOBALS['allow_direct_access'] : false);
         if (!$allowDirectAccess) {
             header("HTTP/1.0 404 Not Found");
@@ -35,7 +35,7 @@ class Util
      * in the index.php file. Then all other php file access while processing the
      * request process normally. If an attempt is made to access a php file other
      * than one that first calls this method, the process will terminate either
-     * due to no autoloader defined or the Util::isAccessAllowed() method rejects
+     * due to no autoloader defined or the Util::directAccessAllowed() method rejects
      * the request.;
      */
     public static function allowDirectAccess() {
@@ -60,8 +60,9 @@ class Util
     }
 
     /**
-     * @param $str
-     * @return string
+     * Replace all non-alphanumeric, dash, underscore and period characters with an underscore.
+     * @param string $str String to be escaped.
+     * @return string Escaped string.
      */
     public static function filenameEscape($str)
     {
@@ -113,7 +114,7 @@ class Util
     }
 
     /**
-     * @return array List of logo file.
+     * @return array List of logo files.
      */
     public static function getLogoList() {
         $dirname = "templates/invoices/logos";

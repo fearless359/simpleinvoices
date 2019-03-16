@@ -9,7 +9,7 @@ use Inc\Claz\WhereItem;
 
 global $pdoDb, $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 /**
  * @return string Beginning date for selection.

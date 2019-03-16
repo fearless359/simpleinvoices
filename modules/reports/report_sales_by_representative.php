@@ -24,7 +24,7 @@ use Inc\Claz\WhereItem;
  */
 global $menu, $pdoDb, $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 function firstOfMonth() {
     return date("Y-m-d", strtotime('01-01-' . date('Y') . ' 00:00:00'));

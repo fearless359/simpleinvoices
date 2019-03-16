@@ -18,7 +18,7 @@ use Inc\Claz\Util;
  * 	https://simpleinvoices.group
  */
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 echo "<h2>Admin Functions</h2><ul><li>Cache Cleanup</li></ul>";
 

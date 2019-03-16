@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 // Stop the direct browsing to this file.
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $payment_types = PaymentType::getAll();
 

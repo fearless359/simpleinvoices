@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
 $op = !empty($_POST ['op']) ? $_POST['op'] : null;

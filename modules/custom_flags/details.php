@@ -6,7 +6,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 // If no id specified, the associated_table and flg_id are present, so use them.
 // If id is specified, it contains both the associated_table and flg_id. So explode

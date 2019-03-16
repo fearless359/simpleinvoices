@@ -14,7 +14,7 @@ global $LANG,
        $perform_extension_php_insertions;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 /**
  * Help function for sorting the language array by name

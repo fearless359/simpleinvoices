@@ -29,7 +29,7 @@ use Inc\Claz\Util;
  */
 global $config, $LANG, $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $invoice_id = $_GET['id'];
 // @formatter:off

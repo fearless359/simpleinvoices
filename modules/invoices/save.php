@@ -20,7 +20,7 @@ use Inc\Claz\Util;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 global $smarty, $pdoDb;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $smarty -> assign('pageActive', 'invoice_new');
 $smarty -> assign('active_tab', '#money');

@@ -23,7 +23,7 @@ use Inc\Claz\Util;
  */
 global $smarty;
 
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 if (!empty($_POST['username'])) {
     include ("modules/user/save.php");

@@ -8,7 +8,7 @@ use Inc\Claz\Util;
 global $smarty, $LANG;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $display_block = "<div class='si_message_error'>$LANG[save_payment_failure]</div>";
 $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";

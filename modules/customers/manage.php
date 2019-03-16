@@ -21,7 +21,7 @@ use Inc\Claz\Util;
 global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 /**********************************************************************
  * These settings are used to force user to enter the first biller,

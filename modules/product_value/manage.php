@@ -5,7 +5,7 @@ use Inc\Claz\Util;
 
 global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
-Util::isAccessAllowed();
+Util::directAccessAllowed();
 
 $product_values = ProductValues::getAll();
 $smarty->assign('product_values', $product_values);
