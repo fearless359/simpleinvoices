@@ -127,7 +127,7 @@ class Email {
                     $message = $this->pdf_file_name . "could not be sent";
                     $display_block = "<div class=\"si_message_error\">$message</div>";
                 } else {
-                    $message = $this->pdf_file_name . "has been sent";
+                    $message = $this->pdf_file_name . " has been sent";
                     $display_block = "<div class=\"si_message_ok\">{$message}</div>";
                 }
                 break;
@@ -138,7 +138,7 @@ class Email {
                     $message = $this->pdf_file_name . ' could not be sent';
                     $display_block = "<div class=\"si_message_error\">{$message}</div>";
                 } else {
-                    $message = $this->pdf_file_name . 'has been sent';
+                    $message = $this->pdf_file_name . ' has been sent';
                     $display_block = "<div class=\"si_message_ok\">{$message}</div>";
                 }
                 break;
@@ -224,7 +224,7 @@ class Email {
      */
     public function setBcc($bcc): void
     {
-        if (!filter_var($bcc, FILTER_VALIDATE_EMAIL)) {
+        if (!empty($bcc) && !filter_var($bcc, FILTER_VALIDATE_EMAIL)) {
             throw new Exception("Invalid 'bcc' email address specified");
         }
 

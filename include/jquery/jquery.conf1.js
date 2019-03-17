@@ -6,7 +6,7 @@ $(document).ready(function () {
         let spreadsheet = $(this).attr("data-spreadsheet");
         let wordprocessor = $(this).attr("data-wordprocessor");
         export_invoice(row_number, spreadsheet, wordprocessor);
-        ShowDialog(false);
+        ShowDialog(true);
     }));
 
     // Export dialog window - onclick send href to create export file and close window
