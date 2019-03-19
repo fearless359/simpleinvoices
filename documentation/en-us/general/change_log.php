@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-03-19 - <b>2019.1.1</b>
+            <ul>
+                <li>Remove last use of ZendDb ($zendDb), replacing it with PdoDb.</li>
+            </ul>
+        </li>
         <li>2019-02-21 - <b>2019.1.0</b>
             <ul>
                 <li>Major update. Email with PDF attachment replaced with SwiftMailer.</li>
