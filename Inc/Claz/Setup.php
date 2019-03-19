@@ -34,10 +34,9 @@ class Setup
      * @param DbInfo &$dbInfo
      * @param PdoDb &$pdoDb
      * @param PdoDb &$pdoDb_admin
-     * @param \Zend_Db &$zendDb
      * @throws PdoDbException
      */
-    public static function init($updateCustomConfig, &$config, &$dbInfo, &$pdoDb, &$pdoDb_admin, &$zendDb)
+    public static function init($updateCustomConfig, &$config, &$dbInfo, &$pdoDb, &$pdoDb_admin)
     {
         try {
             $config = Config::init(CONFIG_SECTION, $updateCustomConfig);
@@ -92,19 +91,6 @@ class Setup
         ini_set('display_errors',         $config->phpSettings->display_errors);
         ini_set('log_errors',             $config->phpSettings->log_errors);
         ini_set('error_log',              $config->phpSettings->error_log);
-
-        try {
-            // @formatter:off
-            $zendDb = \Zend_Db::factory($config->database->adapter,
-                                       array('host'     => $dbInfo->getHost(),
-                                             'username' => $dbInfo->getUsername(),
-                                             'password' => $dbInfo->getPassword(),
-                                             'dbname'   => $dbInfo->getDbname(),
-                                             'port'     => $dbInfo->getPort()));
-            // @formatter:on
-        } catch (\Zend_Db_Exception $zde) {
-            SiError::out('generic', 'Zend_Db_Exception', $zde->getMessage());
-        }
     }
 
 }

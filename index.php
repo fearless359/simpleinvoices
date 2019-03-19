@@ -89,7 +89,7 @@ if (!file_exists('./tmp/pdf_tmp')) {
 
 try {
     $updateCustomConfig = empty($module);
-    Setup::init($updateCustomConfig, $config, $dbInfo, $pdoDb, $pdoDb_admin, $zendDb);
+    Setup::init($updateCustomConfig, $config, $dbInfo, $pdoDb, $pdoDb_admin);
 } catch (PdoDbException $pde) {
     // Error already reported so simply exit.
     exit();

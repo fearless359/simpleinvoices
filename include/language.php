@@ -1,4 +1,5 @@
 <?php
+use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
 
 /*
@@ -8,15 +9,28 @@ use Inc\Claz\SystemDefaults;
  * 3. make some editing (Upper-Case etc.)
  * Not in each translated file need to be each all translations, only in the default-lang-file (english)
  */
-global $LANG, $databaseBuilt, $zendDb;
+global $LANG, $databaseBuilt, $pdoDb;
 unset($LANG);
 $LANG = array();
 
 if ($databaseBuilt) {
-    $tables = $zendDb->listTables(); // TEST: print db tables
+    $found = false;
+    try {
+        $tables = $pdoDb->query("SHOW TABLES");
 
-    // if upgrading from old version then getDefaultLang wont work during install
-    if (in_array(TB_PREFIX . 'system_defaults', $tables)) {
+        // if upgrading from old version then getDefaultLang wont work during install
+        $tbl = TB_PREFIX . 'system_defaults';
+        foreach ($tables as $table) {
+            if ($table[0] == $tbl) {
+                $found = true;
+                break;
+            }
+        }
+    } catch (PdoDbException $pde) {
+        error_log("language.php: DB error performing SHOW TABLES. Error: " . $pde->getMessage());
+    }
+
+    if ($found) {
         $language = SystemDefaults::getDefaultLanguage();
     } else {
         $language = "en_US";
@@ -56,7 +70,6 @@ function getLanguageList() {
     $folders = null;
 
     if ($handle = opendir($langPath)) {
-        // TODO: catch ., .. and other bad folders
         for ($i = 0; $file = readdir($handle); $i++) {
             $folders[$i] = $file;
         }
@@ -79,7 +92,3 @@ function getLanguageList() {
 }
 
 $LANG = getLanguageArray();
-
-//TODO: if (getenv("HTTP_ACCEPT_LANGUAGE") != available language) && (config lang != en) ) {
-// then use config lang
-// }

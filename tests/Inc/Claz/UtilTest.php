@@ -33,11 +33,11 @@ class UtilTest extends TestCase
     protected static $parent_dir;
 
     public static function setUpBeforeClass() {
-        global $api_request, $config, $dbInfo, $pdoDb, $pdoDb_admin, $zendDb;
+        global $api_request, $config, $dbInfo, $pdoDb, $pdoDb_admin;
 
         $api_request = false;
         Setup::setPath();
-        Setup::init(false, $config, $dbInfo, $pdoDb, $pdoDb_admin, $zendDb);
+        Setup::init(false, $config, $dbInfo, $pdoDb, $pdoDb_admin);
 
         $parts = explode('\\', dirname(__FILE__, 4));
         $ndx = count($parts) - 1;
