@@ -46,7 +46,7 @@ if (!empty($id)) {
                             $attr_name = $rows[0];
                         }
                     } catch (PdoDbException $pde) {
-                        error_log("modules/invoices/product_ajaz.php - error(2): " . $pde->getMessage());
+                        error_log("modules/invoices/product_ajax.php - error(2): " . $pde->getMessage());
                     }
 
                     $rows = array();
@@ -58,7 +58,7 @@ if (!empty($id)) {
                         $pdoDb->setSelectList(array("a.name AS name", "v.id AS id", "v.value AS value", "v.enabled AS enabled"));
                         $rows = $pdoDb->request("SELECT", "products_attributes", "a");
                     } catch (PdoDbException $pde) {
-                        error_log("modules/invoices/product_ajaz.php - error(2): " . $pde->getMessage());
+                        error_log("modules/invoices/product_ajax.php - error(2): " . $pde->getMessage());
                     }
                     if ($attr_name['enabled'] == ENABLED) {
                         if ($attr_name['type'] == 'list') {

@@ -32,7 +32,7 @@ Util::directAccessAllowed();
 
 // @formatter:off
 $billers           = Biller::getAll(true);
-$customers         = Customer::getAll(true);
+$customers         = Customer::getAll(['enabled_only' => true]);
 $taxes             = Taxes::getActiveTaxes();
 $defaultTax        = Taxes::getDefaultTax();
 $products          = Product::getAll(true);

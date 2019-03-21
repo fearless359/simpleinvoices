@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
 // @formatter:off
 $billers          = Biller::getAll(true);
 $biller_count     = count($billers);
-$customers        = Customer::getAll(true);
+$customers        = Customer::getAll(['enabled_only' => true]);
 $customer_count   = count($customers);
 $biller_details   = Biller::getOne($biller_id);
 $customer_details = Customer::getOne($customer_id);

@@ -43,7 +43,7 @@ if (!empty($_GET['id'])) {
 
 $data = json_encode(array('data' => $payments));
 if (file_put_contents("public/data.json", $data) === false) {
-    die("Unabled to create public/data.json file");
+    die("Unable to create public/data.json file");
 }
 
 $smarty->assign("number_of_rows", count($payments));

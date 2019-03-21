@@ -40,6 +40,50 @@ class Product {
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @param boolean $inventory Set true if inventory is enabled; false if not.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo($inventory)
+    {
+        $rows = self::getProducts();
+        $tableRows = array();
+        foreach ($rows as $row) {
+            // @formatter:off
+            $action = "<a class='index_table' title=\"{$row['vname']}\" " .
+                         "href=\"index.php?module=products&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
+                          "<img src=\"images/common/view.png\" class=\"action\" alt=\"{$row['vname']}\" />" .
+                      "</a>" .
+                      "<a class=\"index_table\" title=\"{$row['ename']}\" " .
+                         "href=\"index.php?module=products&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
+                          "<img src=\"images/common/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
+                      "</a>";
+
+            $image = ($row['enabled'] == ENABLED ? "images/common/tick.png" : "images/common/cross.png");
+            $enabled = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
+                       "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
+
+            if ($inventory) {
+                $tableRows[] = array(
+                    'action' => $action,
+                    'description' => $row['description'],
+                    'unit_price' => SiLocal::currency($row['unit_price']),
+                    'quantity' => SiLocal::numberTrim($row['quantity']),
+                    'enabled' => $enabled
+                );
+            } else {
+                $tableRows[] = array(
+                    'action' => $action,
+                    'description' => $row['description'],
+                    'unit_price' => SiLocal::currency($row['unit_price']),
+                    'enabled' => $enabled
+                );
+            }
+        }
+        return $tableRows;
+    }
+
+    /**
      * Accessor for product table records.
      * @param int $id If not null, the id of the product record to retrieve
      *          subject to other parameters.

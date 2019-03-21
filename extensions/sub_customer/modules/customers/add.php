@@ -34,7 +34,7 @@ if (!empty($_POST['op']) && $_POST['op'] == 'add' && !empty($_POST['name'])) {
     $smarty->assign('customFieldLabel', $customFieldLabel);
     $smarty->assign('domain_id', DomainId::get());
     
-    $parent_customers = Customer::getAll(true);
+    $parent_customers = Customer::getAll(['enabled_only' => true]);
     $smarty->assign('parent_customers', $parent_customers);
     
     $smarty->assign('pageActive', 'customer');

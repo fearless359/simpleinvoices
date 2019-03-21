@@ -32,8 +32,8 @@ SubCustomers::addParentCustomerId();
  * has been performed.
  * TODO: Need better way to determine if still in initialization phase.
  */
-$rows = Customer::getAll();
-$customer_count = count($rows);
+$customers = Customer::manageTableInfo();
+$customer_count = count($customers);
 $biller_count = Biller::count();
 $product_count  = Product::count();
 
@@ -50,23 +50,11 @@ $smarty->assign("first_run_wizard",$first_run_wizard);
 
 // No need to do all this if first_run_wizard specified
 if (!$first_run_wizard) {
-    $viewcust = $LANG['view'] . " " . $LANG['customer'];
-    $editcust = $LANG['edit'] . " " . $LANG['customer'];
-    $defaultinv = $LANG['new_uppercase'] . " " . $LANG['default_invoice'];
-    $customers = array();
-    foreach ($rows as $row) {
-        $row['vname'] = $viewcust . $row['name'];
-        $row['ename'] = $editcust . $row['name'];
-        $row['image'] = ($row['enabled'] == ENABLED ? "images/common/tick.png" : "images/common/cross.png");
-        $customers[] = $row;
+    $data = json_encode(array('data' => $customers));
+    if (file_put_contents("public/data.json", $data) === false) {
+        die("Unable to create public/data.json file");
     }
-
-    $smarty->assign('customers', $customers);
     $smarty->assign('number_of_rows', $customer_count);
-
-    $smarty->assign('viewcust', $viewcust);
-    $smarty->assign('editcust', $editcust);
-    $smarty->assign("defaultinv", $defaultinv);
 }
 
 $smarty->assign('pageActive', 'customer');

@@ -12,6 +12,7 @@
   },
   "require": {
     "mpdf/mpdf": "^7.1",
-    "swiftmailer/swiftmailer": "^6.1"
+    "swiftmailer/swiftmailer": "^6.1",
+    "ext-json": "*"
   }
 }

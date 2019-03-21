@@ -71,7 +71,7 @@ switch ($get_val) {
 
     case "customer":
         $default = "customer";
-        $customers = Customer::getAll(true);
+        $customers = Customer::getAll(['enabled_only' => true]);
 
         if (empty($customers)) {
             $value  = "<p><em>{$LANG['no_customers']}</em></p>" . "\n";

@@ -13,9 +13,11 @@
   </div>
   <div id="left">
     <ul>
-        <li>2019-03-19 - <b>2019.1.1</b>
+        <li>2019-03-21 - <b>2019.1.1</b>
             <ul>
                 <li>Remove last use of ZendDb ($zendDb), replacing it with PdoDb.</li>
+                <li>Use ajax for customer and product tables.</li>
+                <li>Update Symphony and related files.</li>
             </ul>
         </li>
         <li>2019-02-21 - <b>2019.1.0</b>

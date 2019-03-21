@@ -123,7 +123,7 @@ class Expense {
         // @formatter:off
         $add_info = array();
         $add_info['expense_accounts'] = ExpenseAccount::getAll();
-        $add_info['customers']        = Customer::getAll(true);
+        $add_info['customers']        = Customer::getAll(['enabled_only' => true]);
         $add_info['billers']          = Biller::getAll();
         $add_info['invoices']         = Invoice::getAll();
         $add_info['products']         = Product::getAll(true);

@@ -43,7 +43,10 @@ if ($default_template_set) {
 }
 // @formatter:off
 $invoiceItems = Invoice::getInvoiceItems ( $master_invoice_id );
-$customers    = Customer::getAll(true, $invoice['customer_id']);
+$customers    = Customer::getAll( [
+    'enabled_only' => true,
+    'incl_cust_id' => "{$invoice['customer_id']}"
+]);
 $preference   = Preferences::getOne( $invoice ['preference_id'] );
 $billers      = Biller::getAll(true);
 $defaults     = SystemDefaults::loadValues();

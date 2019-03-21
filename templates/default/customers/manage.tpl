@@ -82,59 +82,37 @@
                     <th>{$LANG.enabled}</th>
                 </tr>
             </thead>
-            <tbody>
-            {foreach $customers as $customer}
-                <tr>
-                    <td>
-                        <a class="index_table" title="{$customer.vname}"
-                           href="index.php?module=customers&amp;view=details&amp;id={$customer.id}&amp;action=view">
-                            <img src="images/common/view.png" class="action" alt="view" />
-                        </a>
-                        <a class="index_table" title="{$customer.ename}"
-                           href="index.php?module=customers&amp;view=details&amp;id={$customer.id}&amp;action=edit">
-                            <img src="images/common/edit.png" class="action" alt="edit" />
-                        </a>
-                        <a class="index_table" title="{$defaultinv}"
-                           href="index.php?module=invoices&amp;view=usedefault&amp;customer_id={$customer.id}&amp;action=view">
-                            <img src="images/common/add.png" class="action" alt="add" />
-                        </a>
-                    </td>
-                    <td>{$customer.name}</td>
-                    <td>{$customer.department}</td>
-                    <td class="si_right">
-                        <a class="index_table" title="quick view"
-                           href="index.php?module=invoices&amp;view=quick_view&amp;id={$customer.last_inv_id}">
-                            {$customer.last_index_id}
-                        </a>
-                    </td>
-                    <td class="si_right">{$customer.total|siLocal_currency}</td>
-                    <td class="si_right">{$customer.paid|siLocal_currency}</td>
-                    <td class="si_right">{$customer.owing|siLocal_currency}</td>
-                    <td class="si_center">
-                        <!-- This span is here for datatables to order on -->
-                        <span style="display: none">{$customer.enabled_text}</span>
-                        <img src="{$customer.enabled_image}" alt="{$customer.enabled_text}" title="{$customer.enabled_text}" />
-                    </td>
-                </tr>
-            {/foreach}
-            </tbody>
         </table>
-        {literal}
-            <script>
-                $(document).ready(function() {
-                    $('#si-data-table').DataTable({
-                        "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],
-                        "order": [
-                            [7, "desc"],
-                            [1, "asc"]
-                        ],
-                        "columnDefs": [
-                            { "targets": 0, "orderable": false }
-                        ],
-                        "colReorder": true
-                    });
+        <script>
+            {literal}
+            $(document).ready(function () {
+                $('#si-data-table').DataTable({
+                    "ajax": "./public/data.json",
+                    "columns": [
+                        { "data": "action" },
+                        { "data": "name" },
+                        { "data": "department" },
+                        { "data": "quick_view" },
+                        { "data": "total" },
+                        { "data": "paid" },
+                        { "data": "owing" },
+                        { "data": "enabled" },
+                    ],
+                    "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
+                    "columnDefs": [
+                        {"targets": 0, "className": 'dt-body-center', "orderable": false },
+                        {"targets": 1 },
+                        {"targets": 2 },
+                        {"targets": 3, "className": 'dt-body-right' },
+                        {"targets": 4, "className": 'dt-body-right' },
+                        {"targets": 5, "className": 'dt-body-right' },
+                        {"targets": 6, "className": 'dt-body-right' },
+                        {"targets": 7, "className": 'dt-body-center'}
+                    ],
+                    "colReorder": true
                 });
-            </script>
-        {/literal}
+            });
+            {/literal}
+        </script>
     {/if}
 {/if}

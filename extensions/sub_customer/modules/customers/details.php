@@ -37,7 +37,7 @@ $sub_customers = SubCustomers::getSubCustomers($cid);
 $smarty->assign('sub_customers',$sub_customers);
 $smarty->assign('sub_customer_count', count($sub_customers));
 
-$parent_customers = Customer::getAll(true);
+$parent_customers = Customer::getAll(['enabled_only' => true]);
 $smarty->assign('parent_customers', $parent_customers);
 
 $invoices = Customer::getCustomerInvoices($cid);
