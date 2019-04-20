@@ -26,7 +26,7 @@ if (!empty($id)) {
         $attr = (empty($row['attribute']) ? "[]" : $row['attribute']);
         $html = "";
         $json_att = json_decode($attr);
-        if($json_att !== null && $row['attribute'] !== '[]') {
+        if($json_att !== null && $attr !== '[]') {
             $html .= "<tr id='json_html$row_id'>";
             $html .= "  <td></td>";
             $html .= "  <td colspan='5'>";
@@ -98,8 +98,8 @@ if (!empty($id)) {
         $output['json_attribute']       = $json_att;
         $output['json_html']            = $html;
         $output['notes']                = (isset($row['notes']) ? $row['notes'] : "");
-        $output['notes_as_description'] = (isset($row['notes_as_description']) ? $row['notes_as_description'] : "");
-        $output['show_description']     = (isset($row['show_description']) ? $row['show_description'] : "");
+        $output['notes_as_description'] = (isset($row['notes_as_description']) ? $row['notes_as_description'] : "N");
+        $output['show_description']     = (isset($row['show_description']) ? $row['show_description'] : "N");
         // @formatter:on
     } else {
         $output .= '';

@@ -7,7 +7,7 @@ namespace Inc\Claz;
  */
 class WhereItem {
     const CONNECTORS = '/^(AND|OR)$/';
-    const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|REGEXP|IS)$/';
+    const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|REGEXP|IS NULL|IS NOT NULL|REGEXP)$/';
 
     private $close_paren;
     private $connector;
@@ -24,8 +24,9 @@ class WhereItem {
      * @param string $field The actual name of the field (column) in the table. This is
      *        a required parameter and <b>MUST</b> exist in the table.
      * @param string $operator Valid SQL comparison operator to the <b>$field</b> record
-     *        content test against the <b>$value</b> parameter. Currently only the relational
-     *        operator are allowed: <b>=</b>, <b><></b>, <b><</b>, <b>></b>, <b><=</b> and <b>>=</b>.
+     *        content test against the <b>$value</b> parameter. Allowed operators:
+     *          <b>=</b>, <b><></b>, <b><</b>, <b>></b>, <b><=</b> and <b>>=</b>,
+     *          <b>BETWEEN</b>, <b>LIKE</b>, <b>IN</b>, <b>IS</b>, <b>IS NOT</b>, <b>REGEXP</b>
      * @param mixed $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginval,endval)</b>.
      * @param boolean $close_paren Set to <b>true</b> if a closing parenthesis should be
      *        inserted after this term; otherwise set to <b>false</b>.
@@ -37,20 +38,15 @@ class WhereItem {
         $this->open_paren = $open_paren;
         $this->field = $field;
         $this->operator = strtoupper($operator);
+        $this->connector = (isset($connector) ? strtoupper($connector) : '');
         $this->close_paren = $close_paren;
-
-        if (isset($connector) && !is_string($connector)) {
-            error_log("WhereItem - __construct(): Non-string connector specified. Connector - " . print_r($this->connector,true));
-            throw new PdoDbException("WhereItem - Non-string connector specified. See error log for details.");
-        }
-        $this->connector = (isset($connector) ? (is_string($connector) ? strtoupper($connector) : $connector) : '');
 
         if (!preg_match(self::OPERATORS, $this->operator)) {
             throw new PdoDbException("WhereItem - Invalid operator, $this->operator, specified.");
         }
 
         if (!empty($this->connector) && !preg_match(self::CONNECTORS, $this->connector)) {
-            throw new PdoDbException("WhereItem - Invalid connector, $this->connector, specified.");
+            throw new PdoDbException("WhereItem - Invalid connector, $this->connector, specified. Must be \"AND\" or \"OR\".");
         }
 
         switch ($this->operator) {
@@ -66,6 +62,14 @@ class WhereItem {
                     throw new PdoDbException("WhereItem - Invalid value for IN operator. Must be an array.");
                 }
                 $this->value = $value;
+                break;
+
+            case 'IS NULL':
+            case 'IS NOT NULL':
+                if (!empty($value)) {
+                    throw new PdoDbException("WhereItem - Value must be blank for '$this->operator' operator'.");
+                }
+                $this->value = strtoupper($value);
                 break;
 
             default:
@@ -118,6 +122,11 @@ class WhereItem {
                 $item .= $tk . ' ';
                 $keyPairs[$tk] = $this->value;
                 $item .= ')';
+                break;
+
+            case 'IS NULL':
+            case 'IS NOT NULL':
+                // No token for this operator.
                 break;
 
             default:

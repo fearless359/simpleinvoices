@@ -5,17 +5,14 @@
 
 function ShowDialog(modal)
 {
-    $("#overlay").show();
+    let overlay = $("#overlay");
+    overlay.show();
     $("#dialog").fadeIn(300);
 
-    if (modal)
-    {
-        $("#overlay").unbind("click");
-    }
-    else
-    {
-        $("#overlay").click(function (e)
-        {
+    if (modal) {
+        overlay.unbind("click");
+    } else {
+        overlay.click(function () {
             HideDialog();
         });
     }
@@ -27,17 +24,6 @@ function HideDialog()
     $("#dialog").fadeOut(300);
 }
 
-// for autocomplete in payment page
-function selectItem(li) {
-    if (li.extra)
-        document.getElementById("js_total").innerHTML = " " + li.extra[0] + " "
-}
-
-// for autocomplete in papyment page
-function formatItem(row) {
-    return row[0] + "<br><i>" + row[1] + "</i>";
-}
-
 //delete line item in new invoice page
 function delete_row(row_number) {
     //	$('#row'+row_number).hide();
@@ -47,7 +33,6 @@ function delete_row(row_number) {
 //dlete line item in EDIT page
 function delete_line_item(row_number) {
     $('#row' + row_number).hide();
-    $('#row' + row_number).hide();
     $('#quantity' + row_number).removeAttr('value');
     $('#delete' + row_number).attr('value', 'yes');
 }
@@ -56,20 +41,19 @@ function delete_line_item(row_number) {
 * Product Change -Inventory  - updates cost from  product info
 */
 function product_inventory_change(product, existing_cost) {
-
-    $('#gmail_loading').show();
+    let gmail_loading = $('#gmail_loading');
+    gmail_loading.show();
     $.ajax({
         type: 'GET',
         url: './index.php?module=invoices&view=product_inventory_ajax&id=' + product,
         data: "id: " + product,
         dataType: "json",
         success: function (data) {
-            $('#gmail_loading').hide();
+            gmail_loading.hide();
             if (existing_cost !== null) {
                 $("#cost").attr("value", data['cost']);
             }
         }
-
     });
 }
 
@@ -91,7 +75,7 @@ function count_invoice_line_items() {
 * if debugging is OFF in config.php - then blackbirdjs.js wont be loaded in header.tpl and normal call to log.debug would fail and cause problems
 */
 function siLog(level, message) {
-    log_level = "log." + level + "('" + message + "')";
+    let log_level = "log." + level + "('" + message + "')";
 
     //if blackbirdjs is loaded (ie. debug in config.php is on) run - else do nothing
     if (window.log) {
@@ -104,7 +88,8 @@ function siLog(level, message) {
 * purpose: to add a new line item in invoice creation page
 * */
 function add_line_item() {
-    $('#gmail_loading').show();
+    let gmail_loading = $('#gmail_loading');
+    gmail_loading.show();
 
     //clone the last tr in the item table
     let clonedRow = $('#itemtable tbody.line_item:first').clone();
@@ -174,7 +159,7 @@ function add_line_item() {
     clonedRow.find("#products" + rowID_new).attr("name", "products" + rowID_new);
     clonedRow.find("#products" + rowID_new).find('option:selected').removeAttr("selected");
     clonedRow.find("#products" + rowID_new).prepend(new Option("", ""));
-    clonedRow.find("#products" + rowID_new).find('option:eq(0)').attr('selected', true)
+    clonedRow.find("#products" + rowID_new).find('option:eq(0)').attr('selected', true);
     clonedRow.find("#products" + rowID_new).removeClass("validate[required]");
 
     //clonedRow.find("#products"+rowID_new).attr("onChange", "invoice_product_change_price($(this).val(), "+rowID_new+", jQuery('#quantity"+rowID_new+"').val() )");
@@ -199,13 +184,13 @@ function add_line_item() {
 
     $('#itemtable').append(clonedRow);
 
-    $('#gmail_loading').hide();
-
+    gmail_loading.hide();
 }
 
 //the export dialog in the manage invoices page
 function export_invoice(row_number, spreadsheet, wordprocessor) {
-    $("#export_dialog").show();
+    let exp_dialog = $('#export_dialog');
+    exp_dialog.show();
     $(".export_pdf").attr({
         href: "index.php?module=export&view=invoice&id=" + row_number + "&format=pdf"
     });
@@ -215,7 +200,7 @@ function export_invoice(row_number, spreadsheet, wordprocessor) {
     $(".export_xls").attr({
         href: "index.php?module=export&view=invoice&id=" + row_number + "&format=file&filetype=" + spreadsheet
     });
-    $("#export_dialog").dialog({
+    exp_dialog.dialog({
         modal: true,
         height: 230,
         buttons: {

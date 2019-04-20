@@ -43,7 +43,7 @@ $smarty->assign('preferences', $preference);
 $error = false;
 $message = "Unable to process email request.";
 if ($_GET['stage'] == 2 ) {
-    $export = new Export(Mpdf\Output\Destination::STRING_RETURN);
+    $export = new Export(Destination::STRING_RETURN);
     $export->setBiller($biller);
     $export->setCustomer($customer);
     $export->setFormat("pdf");

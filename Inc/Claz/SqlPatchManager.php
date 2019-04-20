@@ -228,6 +228,11 @@ class SqlPatchManager
                     $smarty_row['result'] = "skip";
                 }
             } else {
+                // Validate patches before being applied
+                if ($id == 317) {
+                    self::prePatch317();
+                }
+
                 // patch hasn't been run, so run it
                 $pdoDb_admin->query($patch['patch']);
 
@@ -249,11 +254,11 @@ class SqlPatchManager
                 }
 
                 if ($id == 126) {
-                    self::patch126();
+                    self::postPatch126();
                 } else if ($id == 303) {
-                    self::patch303();
+                    self::postPatch303();
                 } else if ($id == 304) {
-                    self::patch304();
+                    self::postPatch304();
                 }
             }
         } catch (PdoDbException $pde) {
@@ -462,7 +467,7 @@ class SqlPatchManager
             $log .= "<b>Step 3</b> - The SQL patch has been inserted into the SQL patch table<br />";
         } catch (PdoDbException $pde) {
             error_log("SqlPatchManager::initializeSqlPatchTable() - Error: " . $pde->getMessage());
-            die("SqlPatchManager::initializeSqlPatchTable() error. See error log for addtional informaiton.");
+            die("SqlPatchManager::initializeSqlPatchTable() error. See error log for additional information.");
         }
 
         return $log;
@@ -471,7 +476,7 @@ class SqlPatchManager
     /**
      * Special handling for patch #126
      */
-    private static function patch126()
+    private static function postPatch126()
     {
         global $pdoDb_admin;
 
@@ -489,20 +494,20 @@ class SqlPatchManager
                 $pdoDb_admin->setFauxPost(array('product_id' => $id, 'unit_price' => $row['gross_total']));
                 $pdoDb_admin->addSimpleWhere('id', $row['id']);
                 if (!$pdoDb_admin->request('UPDATE', 'invoice_items')) {
-                    throw new PdoDbException("'SqlPatchManager::patch126() - Update invoice_items error for " .
+                    throw new PdoDbException("'SqlPatchManager::postPatch126() - Update invoice_items error for " .
                         "id[{$row['id']}] product_id[$id] unit_price[{$row['gross_total']}]");
                 }
             }
         } catch (PdoDbException $pde) {
-            error_log("SqlPatchManager::patch126() - Error: " . $pde->getMessage());
-            die ("SqlPatchManager::patch126() error. See error log for additional details.");
+            error_log("SqlPatchManager::postPatch126() - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::postPatch126() error. See error log for additional details.");
         }
     }
 
     /**
      * Special handling for patch #303
      */
-    private static function patch303()
+    private static function postPatch303()
     {
         global $pdoDb_admin;
 
@@ -528,8 +533,8 @@ class SqlPatchManager
             $pdoDb_admin->addSimpleWhere('name', 'inv_custom_field_report');
             $pdoDb_admin->request('DELETE', 'extensions');
         } catch (PdoDbException $pde) {
-            error_log("SqlPatchManager::patch303() - Error: " . $pde->getMessage());
-            die ("SqlPatchManager::patch303() error. See error log for additional details.");
+            error_log("SqlPatchManager::postPatch303() - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::postPatch303() error. See error log for additional details.");
         }
     }
 
@@ -552,7 +557,7 @@ class SqlPatchManager
      *      "id" to the invoice "index_id" value. If NO "default_invoice" entry exists
      *      a "default_invoice" record with a zero setting will be created.
      */
-    private static function patch304()
+    private static function postPatch304()
     {
         global $pdoDb_admin;
 
@@ -647,8 +652,255 @@ class SqlPatchManager
             $pdoDb_admin->addSimpleWhere('name', 'default_invoice');
             $pdoDb_admin->request('DELETE', 'extensions');
         } catch (PdoDbException $pde) {
-            error_log("SqlPatchManager::patch304() - Error: " . $pde->getMessage());
-            die ("SqlPatchManager::patch304() error. See error log for additional details.");
+            error_log("SqlPatchManager::postPatch304() - Error: " . $pde->getMessage());
+            die ("SqlPatchManager::postPatch304() error. See error log for additional details.");
+        }
+    }
+
+    /**
+     * Set foreign key constraint on all tables that need it after first validating
+     * that foreign key values are valid (present in the referenced table.
+     * @throws PdoDbException If undefined foreign key values found.
+     */
+    private static function prePatch317() {
+        global $pdoDb_admin;
+
+        // @formatter::off
+        $fk_constraints = [
+            [
+                'table'       => 'cron',
+                'constraint'  => 'fk_invoice',
+                'foreign_key' => 'invoice_id',
+                'references'  => 'invoices',
+                 'column'     => 'id'
+            ],
+            [
+                'table'       => 'cron_log',
+                'constraint'  => 'fk_cron',
+                'foreign_key' => 'cron_id',
+                'references'  => 'cron',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'expense',
+                'constraint'  => 'fk_biller',
+                'foreign_key' => 'biller_id',
+                'references'  => 'biller',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'expense',
+                'constraint'  => 'fk_customer',
+                'foreign_key' => 'customer_id',
+                'references'  => 'customers',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'expense',
+                'constraint'  => 'fk_invoice',
+                'foreign_key' => 'invoice_id',
+                'references'  => 'invoices',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'expense',
+                'constraint'  => 'fk_product',
+                'foreign_key' => 'product_id',
+                'references'  => 'products',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'expense',
+                'constraint'  => 'fk_expense_account',
+                'foreign_key' => 'expense_account_id',
+                'references'  => 'expense_account',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'expense_item_tax',
+                'constraint'  => 'fk_expense',
+                'foreign_key' => 'expense_id',
+                'references'  => 'expense',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'expense_item_tax',
+                'constraint'  => 'fk_tax',
+                'foreign_key' => 'tax_id',
+                'references'  => 'tax',
+                'column'      => 'tax_id'
+            ],
+            [
+                'table'       => 'inventory',
+                'constraint'  => 'fk_product',
+                'foreign_key' => 'product_id',
+                'references'  => 'products',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'invoices',
+                'constraint'  => 'fk_biller',
+                'foreign_key' => 'biller_id',
+                'references'  => 'biller',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'invoices',
+                'constraint'  => 'fk_customer',
+                'foreign_key' => 'customer_id',
+                'references'  => 'customers',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'invoices',
+                'constraint'  => 'fk_invoice_type',
+                'foreign_key' => 'type_id',
+                'references'  => 'invoice_type',
+                'column'      => 'inv_ty_id'
+            ],
+            [
+                'table'       => 'invoices',
+                'constraint'  => 'fk_preference',
+                'foreign_key' => 'preference_id',
+                'references'  => 'preferences',
+                'column'      => 'pref_id'
+            ],
+            [
+                'table'       => 'invoice_items',
+                'constraint'  => 'fk_invoice',
+                'foreign_key' => 'invoice_id',
+                'references'  => 'invoices',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'invoice_items',
+                'constraint'  => 'fk_product',
+                'foreign_key' => 'product_id',
+                'references'  => 'products',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'invoice_item_tax',
+                'constraint'  => 'fk_tax',
+                'foreign_key' => 'tax_id',
+                'references'  => 'tax',
+                'column'      => 'tax_id'
+            ],
+            [
+                'table'       => 'invoice_item_attachments',
+                'constraint'  => 'fk_invoice_item',
+                'foreign_key' => 'invoice_item_id',
+                'references'  => 'invoice_items',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'payment',
+                'constraint'  => 'fk_invoice',
+                'foreign_key' => 'ac_inv_id',
+                'references'  => 'invoices',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'payment',
+                'constraint'  => 'fk_payment_type',
+                'foreign_key' => 'ac_payment_type',
+                'references'  => 'payment_types',
+                'column'      => 'pt_id'
+            ],
+            [
+                'table'       => 'products',
+                'constraint'  => 'fk_tax',
+                'foreign_key' => 'default_tax_id',
+                'references'  => 'tax',
+                'column'      => 'tax_id'
+            ],
+            [
+                'table'       => 'products',
+                'constraint'  => 'fk_tax_2',
+                'foreign_key' => 'default_tax_id_2',
+                'references'  => 'tax',
+                'column'      => 'tax_id'
+            ],
+            [
+                'table'       => 'products_attributes',
+                'constraint'  => 'fk_type',
+                'foreign_key' => 'type_id',
+                'references'  => 'products_attribute_type',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'products_values',
+                'constraint'  => 'fk_attribute',
+                'foreign_key' => 'attribute_id',
+                'references'  => 'products_attributes',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'user',
+                'constraint'  => 'fk_domain',
+                'foreign_key' => 'domain_id',
+                'references'  => 'user_domain',
+                'column'      => 'id'
+            ],
+            [
+                'table'       => 'user',
+                'constraint'  => 'fk_role',
+                'foreign_key' => 'role_id',
+                'references'  => 'user_role',
+                'column'      => 'id'
+            ]
+        ];
+
+        $undefined_values = array();
+        set_time_limit(240);
+        foreach ($fk_constraints as $fk_constraint) {
+            $table = $fk_constraint['table'];
+            $foreign_key = $fk_constraint['foreign_key'];
+            $references = $fk_constraint['references'];
+            $column = $fk_constraint['column'];
+
+            $pdoDb_admin->addToWhere(new WhereItem(false, $foreign_key, 'IS NOT NULL', '', false));
+            $pdoDb_admin->setSelectList($foreign_key);
+            $rows = $pdoDb_admin->request('SELECT', $table);
+            foreach ($rows as $row) {
+                $value = $row[$foreign_key];
+                $pdoDb_admin->addSimpleWhere($column, $value);
+                $pdoDb_admin->setSelectList($column);
+                $recs = $pdoDb_admin->request('SELECT', $references);
+                if (empty($recs)) {
+                    // Key construction so it can be exploded in error message and to make sure only one
+                    // occurrence of the missing value is displayed in the error message.
+                    $undefined_values[$table . ':' . $foreign_key . ':' . $references . ':' . $column . ':' . $value] = $value;
+                }
+            }
+        }
+
+        if (!empty($undefined_values)) {
+            $msg = "\nUnable to apply patch 317. Found foreign key table columns with values not in\n" .
+                   "the reference table column. The following list shows what values in foreign\n" .
+                   "key columns are missing from reference columns.\n\n";
+
+            $msg .= "There two ways to fix this situation. Either change the row columns to reference\n" .
+                    "an existing record in the REFERENCE TABLE, or delete the rows that contain\n" .
+                    "the invalid columns.\n\n";
+
+            $msg .= "To do this, the following example of the SQL statements to execute for the test\n" .
+                    "case where the 'cron_log' table contains invalid values '2' and '3' in the\n" .
+                    "'cron_id' column. The SQL statements to consider using are:\n\n";
+
+            $msg .= "    UPDATE si_cron_log SET cron_id = 6 WHERE cron_id IN (2,3);\n";
+            $msg .= "                      ----  or  ----\n" .
+                    "    DELETE FROM si_cron_log WHERE cron_id IN (2,3);\n\n";
+
+            $msg .= "FOREIGN KEY TABLE         COLUMN              REFERENCE TABLE          COLUMN     INVALID VALUE\n" .
+                    "------------------------  ------------------  -----------------------  ---------  -------------\n";
+            foreach ($undefined_values as $key => $value) {
+                $parts = explode(':', $key);
+                $line = sprintf('%-24s  %-18s  %-23s  %-9s  %s', $parts[0], $parts[1], $parts[2], $parts[3], $value);
+                $msg .= $line . "\n";
+            }
+            error_log($msg);
+            throw new PdoDbException("SqlPatchManager::prePatch317() = Unable to set Foreign Keys.");
         }
     }
 
@@ -669,7 +921,7 @@ class SqlPatchManager
                 $rows = $pdoDb_admin->request('SELECT', 'defaults');
             } catch(PdoDbException $pde) {
                 error_log("SqlPatchManager::loadPatches() - Error: " . $pde->getMessage());
-                die ("SqlPatchManager::patch303() error. See error log for additional details.");
+                die ("SqlPatchManager::postPatch303() error. See error log for additional details.");
             }
             $defaults = (empty($rows) ? array() : $rows[0]);
         }
@@ -3049,7 +3301,7 @@ class SqlPatchManager
         self::makePatch('278', $patch);
 
         $patch = array(
-            'name' => "Drop unused superceeded table si_product_matrix if present",
+            'name' => "Drop unused superseded table si_product_matrix if present",
             'patch' => "DROP TABLE IF EXISTS `" . TB_PREFIX . "products_matrix`;",
             'date' => "20131009",
             'source' => 'original'
@@ -3199,28 +3451,28 @@ class SqlPatchManager
         $patch = array(
             'name' => 'Add custom_flags table for products.',
             'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'custom_flags';" :
-                              "CREATE TABLE `" . TB_PREFIX . "custom_flags` (
-                                              `domain_id`        int(11) DEFAULT '1' NOT NULL,
-                                              `associated_table` char(10)            NOT NULL COMMENT 'Table flag is associated with. Only defined for products for now.',
-                                              `flg_id`           tinyint(3) unsigned NOT NULL COMMENT 'Flag number ranging from 1 to 10',
-                                              `field_label`      varchar(20)         NOT NULL COMMENT 'Label to use on screen where option is set.',
-                                              `enabled`          tinyint(1)          NOT NULL COMMENT 'Defaults to enabled when record created. Can disable to retire flag.',
-                                              `field_help`       varchar(255)        NOT NULL COMMENT 'Help information to display for this field.',
-                                        PRIMARY KEY `uid` (`domain_id`, `associated_table`, `flg_id`),
-                                                KEY `domain_id` (`domain_id`),
-                                                KEY `dtable`    (`domain_id`, `associated_table`)) ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';
-                              ALTER TABLE `" . TB_PREFIX . "products` ADD `custom_flags` CHAR( 10 ) NOT NULL COMMENT 'User defined flags';
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',1,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',2,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',3,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',4,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',5,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',6,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',7,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',8,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',9,0);
-                              INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',10,0);
-                              DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'custom_flags';"),
+                              "CREATE TABLE `" . TB_PREFIX . "custom_flags` (" .
+                                              "`domain_id`        int(11) DEFAULT '1' NOT NULL, " .
+                                              "`associated_table` char(10)            NOT NULL COMMENT 'Table flag is associated with. Only defined for products for now.', " .
+                                              "`flg_id`           tinyint(3) unsigned NOT NULL COMMENT 'Flag number ranging from 1 to 10', " .
+                                              "`field_label`      varchar(20)         NOT NULL COMMENT 'Label to use on screen where option is set.', " .
+                                              "`enabled`          tinyint(1)          NOT NULL COMMENT 'Defaults to enabled when record created. Can disable to retire flag.', " .
+                                              "`field_help`       varchar(255)        NOT NULL COMMENT 'Help information to display for this field.', " .
+                                        "PRIMARY KEY `uid` (`domain_id`, `associated_table`, `flg_id`), " .
+                                                "KEY `domain_id` (`domain_id`), " .
+                                                "KEY `dtable`    (`domain_id`, `associated_table`)) ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';" .
+                              "ALTER TABLE `" . TB_PREFIX . "products` ADD `custom_flags` CHAR( 10 ) NOT NULL COMMENT 'User defined flags';" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',1,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',2,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',3,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',4,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',5,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',6,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',7,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',8,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',9,0);" .
+                              "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',10,0);" .
+                              "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'custom_flags';"),
             'date' => "20180922",
             'source' => 'fearless359'
         );
@@ -3248,24 +3500,24 @@ class SqlPatchManager
         $cologo = 'simple_invoices_logo.png';
         $patch = array(
             'name' => 'Add User Security enhancement fields and values',
-            'patch' => ($ud ? "UPDATE `" . TB_PREFIX . "system_defaults` SET `extension_id` = 1 WHERE `name` IN
-                                    ('company_logo','company_name','company_name_item','password_min_length','password_lower','password_number','password_special','password_upper','session_timeout');                                
-                               DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'user_security';" :
-                              "ALTER TABLE `" . TB_PREFIX . "user` ADD `username` VARCHAR(255) DEFAULT '' NOT NULL AFTER `id`;
-                               ALTER TABLE `" . TB_PREFIX . "user` DROP INDEX `UnqEMailPwd`;
-                               UPDATE `" . TB_PREFIX . "user` AS U1, `" . TB_PREFIX . "user` AS U2 SET U1.username = U2.email WHERE U2.id = U1.id;
-                               ALTER TABLE `" . TB_PREFIX . "user` ADD UNIQUE INDEX `uname` (`username`); 
-                               ALTER TABLE `" . TB_PREFIX . "system_defaults` CHANGE `value` `value` VARCHAR(60);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'company_logo'        , '$cologo', 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'company_name'        , '$conam' , 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'company_name_item'   , '$conam' , 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_min_length' , 8        , 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_lower'      , 1        , 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_number'     , 1        , 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_special'    , 1        , 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_upper'      , 1        , 1);
-                               INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'session_timeout'     , 15       , 1);
-                               DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'user_security';"),
+            'patch' => ($ud ? "UPDATE `" . TB_PREFIX . "system_defaults` SET `extension_id` = 1 WHERE `name` IN " .
+                                    "('company_logo','company_name','company_name_item','password_min_length','password_lower','password_number','password_special','password_upper','session_timeout');" .
+                              "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'user_security';" :
+                              "ALTER TABLE `" . TB_PREFIX . "user` ADD `username` VARCHAR(255) DEFAULT '' NOT NULL AFTER `id`;" .
+                              "ALTER TABLE `" . TB_PREFIX . "user` DROP INDEX `UnqEMailPwd`;" .
+                              "UPDATE `" . TB_PREFIX . "user` AS U1, `" . TB_PREFIX . "user` AS U2 SET U1.username = U2.email WHERE U2.id = U1.id;" .
+                              "ALTER TABLE `" . TB_PREFIX . "user` ADD UNIQUE INDEX `uname` (`username`);" .
+                              "ALTER TABLE `" . TB_PREFIX . "system_defaults` CHANGE `value` `value` VARCHAR(60);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'company_logo'        , '$cologo', 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'company_name'        , '$conam' , 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'company_name_item'   , '$conam' , 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_min_length' , 8        , 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_lower'      , 1        , 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_number'     , 1        , 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_special'    , 1        , 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'password_upper'      , 1        , 1);" .
+                              "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domain_id, 'session_timeout'     , 15       , 1);" .
+                              "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'user_security';"),
             'date' => "20180924",
             'source' => 'fearless359'
         );
@@ -3290,8 +3542,8 @@ class SqlPatchManager
         $patch = array(
             'name' => 'Add check number field to the payment table.',
             'patch' => ($ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'payments';" :
-                              "ALTER TABLE `" . TB_PREFIX . "payment` ADD `ac_check_number` varchar(10) DEFAULT '' NOT NULL COMMENT 'Check number for CHECK payment types';
-                               DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'payments';"),
+                              "ALTER TABLE `" . TB_PREFIX . "payment` ADD `ac_check_number` varchar(10) DEFAULT '' NOT NULL COMMENT 'Check number for CHECK payment types';" .
+                              "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'payments';"),
             'date' => "20181003",
             'source' => 'fearless359'
         );
@@ -3302,10 +3554,9 @@ class SqlPatchManager
         $patch = array(
             'name' => 'Add install complete table.',
             'patch' => ($ud ? "UPDATE `" . TB_PREFIX . "install_complete` SET `completed` = 1;" :
-                              "CREATE TABLE `" . TB_PREFIX . "install_complete` (
-                                            `completed` tinyint(1) NOT NULL COMMENT 'Flag SI install has completed'
-                                            ) ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';
-                               INSERT INTO `" . TB_PREFIX . "install_complete` (completed) VALUES (1);"),
+                              "CREATE TABLE `" . TB_PREFIX . "install_complete` (`completed` tinyint(1) NOT NULL COMMENT 'Flag SI install has completed') " .
+                                                             "ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';" .
+                              "INSERT INTO `" . TB_PREFIX . "install_complete` (completed) VALUES (1);"),
             'date' => "20181008",
             'source' => 'fearless359'
         );
@@ -3384,6 +3635,300 @@ class SqlPatchManager
             'source' => 'fearless359'
         );
         self::makePatch('305', $patch);
+
+        $patch = array(
+            'name' => 'Clean up default_tax_id and default_tax_id_2 for products',
+            'patch' =>
+                "UPDATE `" . TB_PREFIX . "products` SET `default_tax_id` = NULL WHERE `default_tax_id` = 0;" .
+                "UPDATE `" . TB_PREFIX . "products` SET `default_tax_id_2` = NULL WHERE `default_tax_id_2` = 0;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('306', $patch);
+
+        $patch = array(
+            'name' => 'Fix cron_log cron_id data type',
+            'patch' =>
+                "DROP INDEX `CronIdUnq` ON `" . TB_PREFIX . "cron_log`;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` MODIFY `cron_id` INT(11) NULL;" .
+                "UPDATE `" . TB_PREFIX . "cron_log` SET `cron_id` = NULL WHERE `cron_id` = 0;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` ADD UNIQUE KEY `CronIdUnq`  (`domain_id`,`cron_id`,`run_date`);",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('307', $patch);
+
+        $patch = array(
+            'name' => 'Remove dup id key from invoice_item_attachments and fix products_attributes type_id data type',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` DROP INDEX `id`;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attributes` MODIFY `type_id` INT(11) NULL;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('308', $patch);
+
+        $patch = array(
+            'name' => "Rename userid to user_id in log table",
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "log` CHANGE `userid` `user_id` INT(11) NULL;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('309', $patch);
+
+        $patch = array(
+            'name' => 'Make record unique id fields consistent in size and properties',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "biller` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('310', $patch);
+
+        $patch = array(
+            'name' => 'Remove default from all id fields.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "biller` ALTER `id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `biller_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `customer_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `type_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `preference_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ALTER `invoice_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ALTER `product_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ALTER `ac_payment_type` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` ALTER `extension_id` DROP DEFAULT;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('311', $patch);
+
+        $patch = array(
+            'name' => 'Remove default from domain_id.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "biller` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `biller_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `customer_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `type_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `preference_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ALTER `invoice_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ALTER `product_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ALTER `ac_payment_type` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` ALTER `extension_id` DROP DEFAULT;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('312', $patch);
+
+        $patch = array(
+            'name' => 'Use common characteristics for all auto increment fields.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "cron` MODIFY `invoice_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `expense_account_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `biller_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `customer_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `invoice_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `product_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` MODIFY `expense_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` MODIFY `tax_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` MODIFY `product_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `biller_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `customer_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `type_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `preference_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` MODIFY `invoice_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` MODIFY `product_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` MODIFY `invoice_item_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `invoice_item_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `tax_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `ac_inv_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `ac_payment_type` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` MODIFY `pt_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_values` MODIFY `attribute_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` MODIFY `extension_id` INT(11) UNSIGNED NULL;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('313', $patch);
+
+        $patch = array(
+            'name' => 'Create the index items for all auto increment fields.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "biller` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "cron` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_fields` ADD CONSTRAINT `cf_id` UNIQUE(`cf_id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "customers` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "extensions` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "log` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` ADD CONSTRAINT `pt_id` UNIQUE(`pt_id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` ADD CONSTRAINT `pref_id` UNIQUE(`pref_id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` ADD CONSTRAINT `id` UNIQUE(`id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "tax` ADD CONSTRAINT `tax_id` UNIQUE(`tax_id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "user` ADD CONSTRAINT `id` UNIQUE(`id`);",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('314', $patch);
+
+        $patch = array(
+            'name' => 'Make all tables InnoDB, utf8 and utr8_unicode_ci',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "biller` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_fields` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_flags` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "customers` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_account` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "extensions` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "index` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "install_complete` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_type` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attribute_type` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attributes` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_values` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "tax` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user_domain` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user_role` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('315', $patch);
+
+        $patch = array(
+            'name' => 'Change character type field settings to charset utf8 collate utf8_unicode_ci',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "custom_flags` MODIFY `associated_table` char(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_flags` MODIFY `field_label` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_flags` MODIFY `field_help` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_account` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` MODIFY `tax_type` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "extensions` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "extensions` MODIFY `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "index` MODIFY `node` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` MODIFY `note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `custom_field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `custom_field2` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `custom_field3` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `custom_field4` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `sales_representative` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` MODIFY `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` MODIFY `attribute` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `tax_type` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_type` MODIFY `inv_ty_description` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` MODIFY `sqlquerie` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `ac_notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `online_payment_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `ac_check_number` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` MODIFY `pt_description` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_description` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_currency_sign` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_heading` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_wording` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_detail_heading` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_detail_line` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_payment_method` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_payment_line1_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_payment_line1_value` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_payment_line2_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_inv_payment_line2_value` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `locale` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `language` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `currency_code` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `include_online_payment` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `currency_position` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `custom_field1` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `custom_field2` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `custom_field3` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `custom_field4` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `attribute` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `notes_as_description` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `show_description` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `custom_flags` char(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attributes` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attribute_type` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_values` MODIFY `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` MODIFY `sql_patch` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` MODIFY `sql_release` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` MODIFY `sql_statement` text CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` MODIFY `source` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` MODIFY `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` MODIFY `value` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "tax` MODIFY `tax_description` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "tax` MODIFY `type` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` MODIFY `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` MODIFY `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` MODIFY `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user_domain` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "user_role` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('316', $patch);
+
+        $patch = array(
+            'name' => 'Add foreign keys to tables.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "cron` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` ADD FOREIGN KEY (`cron_id`) REFERENCES `" . TB_PREFIX . "cron` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`biller_id`) REFERENCES `" . TB_PREFIX . "biller` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`expense_account_id`) REFERENCES `" . TB_PREFIX . "expense_account` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` ADD FOREIGN KEY (`expense_id`) REFERENCES `" . TB_PREFIX . "expense` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`biller_id`) REFERENCES `" . TB_PREFIX . "biller` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`type_id`) REFERENCES `" . TB_PREFIX . "invoice_type` (`inv_ty_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`preference_id`) REFERENCES `" . TB_PREFIX . "preferences` (`pref_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` ADD FOREIGN KEY (`invoice_item_id`) REFERENCES `" . TB_PREFIX . "invoice_items` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` ADD FOREIGN KEY (`userid`) REFERENCES `" . TB_PREFIX . "user` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ADD FOREIGN KEY (`ac_inv_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ADD FOREIGN KEY (`ac_payment_type`) REFERENCES `" . TB_PREFIX . "payment_types` (`pt_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ADD FOREIGN KEY (`default_tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ADD FOREIGN KEY (`default_tax_id_2`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attributes` ADD FOREIGN KEY (`type_id`) REFERENCES `" . TB_PREFIX . "products_attribute_type` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_values` ADD FOREIGN KEY (`attribute_id`) REFERENCES `" . TB_PREFIX . "products_attributes` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` ADD FOREIGN KEY (`domain_id`) REFERENCES `" . TB_PREFIX . "user_domain` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` ADD FOREIGN KEY (`role_id`) REFERENCES `" . TB_PREFIX . "user_role` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;",
+            'date' => "20190329",
+            'source' => 'fearless359'
+        );
+        self::makePatch('317', $patch);
+
         // @formatter:on
     }
 

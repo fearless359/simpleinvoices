@@ -2,6 +2,10 @@
 
 namespace Inc\Claz;
 
+use Exception;
+use Zend_Log;
+use Zend_Session_Namespace;
+
 Class CheckPermission
 {
     /**
@@ -13,7 +17,7 @@ Class CheckPermission
         global $LANG;
         $checkPermission = "";
         try {
-            $auth_session = new \Zend_Session_Namespace('Zend_Auth');
+            $auth_session = new Zend_Session_Namespace('Zend_Auth');
             $acl_view = (isset($_GET['view']) ? $_GET['view'] : null);
             $acl_action = (isset($_GET['action']) ? $_GET['action'] : null);
             if (empty($acl_action)) {
@@ -50,10 +54,11 @@ Class CheckPermission
                 }
             }
             // @formatter:on
-        } catch (\Zend_Session_Exception $zse) {
+        } catch (Exception $zse) {
             $checkPermission = "denied";
         }
 
+        Log::out("CheckPermission::isAllowed - checkPermission[{$checkPermission}]", Zend_Log::DEBUG);
         if ($checkPermission == "denied") {
             exit($LANG['denied_page']);
         }

@@ -6,6 +6,7 @@ use Inc\Claz\Email;
 use Inc\Claz\Export;
 use Inc\Claz\Util;
 
+use Mpdf\Output\Destination;
 /*
  *  Script: email.php
  *      Email invoice page
@@ -52,7 +53,7 @@ $end_date   = (isset($_GET['end_date']  ) ? $_GET['end_date']   : "");
 $show_only_unpaid = (empty($_GET['show_only_unpaid']) ? "no" : $_GET['show_only_unpaid']);
 
 if ($_GET['stage'] == 2) {
-    $export = new Export(Mpdf\Output\Destination::STRING_RETURN);
+    $export = new Export(Destination::STRING_RETURN);
     $export->setFormat('pdf');
     $export->setModule('statement');
     if (empty($biller_id)) {

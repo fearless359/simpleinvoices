@@ -13,6 +13,14 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-04-09 - <b>2019.2.0</b>
+            <ul>
+                <li>Converted all DB tables to InnoDB using utf8 charset and uft8_unicode_ci collation.</li>
+                <li>Add foreign keys to si_invoices.</li>
+                <li>Remove foreign key checks in code as they will now occur automatically.</li>
+                <li>Modified si_cron delete to also delete associated si_cron_log history records.</li>
+            </ul>
+        </li>
         <li>2019-03-21 - <b>2019.1.1</b>
             <ul>
                 <li>Remove last use of ZendDb ($zendDb), replacing it with PdoDb.</li>

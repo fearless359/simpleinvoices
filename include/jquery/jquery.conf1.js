@@ -44,6 +44,14 @@ $(document).ready(function () {
         dateFormat: "yy-mm-dd"
     });
 
+    /* Product Change - updates line item with product price info */
+    $(document).on("change", ".product_change", (function () {
+        let $row_number = $(this).attr("rel");
+        let $product = $(this).val();
+        let $quantity = $("#quantity" + $row_number).attr("value");
+        invoice_product_change($product, $row_number, $quantity);
+    }));
+
     /* Product Inventory Change - updates line item with product price info */
     $(".product_inventory_change").change(function () {
         let $product = $(this).val();

@@ -322,7 +322,7 @@
       "sql_patch_ref": "1",
       "sql_patch": "Create sql_patchmanger table",
       "sql_release": "20060514",
-      "sql_statement": "CREATE TABLE si_sql_patchmanager (sql_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,sql_patch_ref VARCHAR( 50 ) NOT NULL ,sql_patch VARCHAR( 255 ) NOT NULL ,sql_release VARCHAR( 25 ) NOT NULL ,sql_statement TEXT NOT NULL) ENGINE = MYISAM ",
+      "sql_statement": "CREATE TABLE si_sql_patchmanager (sql_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,sql_patch_ref VARCHAR( 50 ) NOT NULL ,sql_patch VARCHAR( 255 ) NOT NULL ,sql_release VARCHAR( 25 ) NOT NULL ,sql_statement TEXT NOT NULL) ENGINE = InnoDB ",
       "source": "original"
     },
     {
@@ -1713,30 +1713,30 @@
     },
     {
       "sql_patch_ref": "200",
-      "sql_patch": "Update extensions table",
-      "sql_release": "20090529",
-      "sql_statement": "UPDATE si_extensions SET id = 0 WHERE name = core LIMIT 1",
+      "sql_patch": "",
+      "sql_release": "",
+      "sql_statement": "",
       "source": "original"
     },
     {
       "sql_patch_ref": "201",
-      "sql_patch": "Set domain_id on system defaults table to 1",
-      "sql_release": "20090622",
-      "sql_statement": "UPDATE si_system_defaults SET domain_id = 1",
+      "sql_patch": "",
+      "sql_release": "",
+      "sql_statement": "",
       "source": "original"
     },
     {
       "sql_patch_ref": "202",
-      "sql_patch": "Set extension_id on system defaults table to 1",
-      "sql_release": "20090622",
-      "sql_statement": "UPDATE si_system_defaults SET extension_id = 1",
+      "sql_patch": "",
+      "sql_release": "",
+      "sql_statement": "",
       "source": "original"
     },
     {
       "sql_patch_ref": "203",
-      "sql_patch": "Move all old consulting style invoices to itemized",
-      "sql_release": "20090704",
-      "sql_statement": "UPDATE si_invoices SET type_id = 2 where type_id = 3",
+      "sql_patch": "",
+      "sql_release": "",
+      "sql_statement": "",
       "source": "original"
     },
     {
@@ -2394,63 +2394,112 @@
       "sql_patch_ref": "297",
       "sql_patch": "Add User Security enhancement fields and values",
       "sql_release": "20180924",
-      "sql_statement": "ALTER TABLE `si_user` ADD `username` VARCHAR(255) DEFAULT '' NOT NULL AFTER `id`;",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "298",
       "sql_patch": "Add Signature field to the biller table.",
       "sql_release": "20181003",
-      "sql_statement": "ALTER TABLE `si_biller` ADD `signature` varchar(255) DEFAULT '' NOT NULL AFTER `email`;",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "299",
       "sql_patch": "Add check number field to the payment table.",
       "sql_release": "20181004",
-      "sql_statement": "ALTER TABLE `si_payment` ADD `ac_check_number` varchar(10) DEFAULT '' NOT NULL COMMENT 'Check number for CHECK payment types';",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "300",
       "sql_patch": "Add install complete table.",
       "sql_release": "20181008",
-      "sql_statement": "CREATE TABLE `si_install_complete` (`completed` tinyint(1) NOT NULL COMMENT 'Flag SI install has completed') ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "301",
       "sql_patch": "Add last_activity_date, aging_date and aging_value to invoices.",
       "sql_release": "20181012",
-      "sql_statement": "ALTER TABLE `si_invoices` ADD `last_activity_date` DATETIME DEFAULT '2000-12-31 00:00:00' NOT NULL COMMENT 'Date last activity update to the invoice', ADD `aging_date` DATETIME DEFAULT '2000-12-30 00:00:00' NOT NULL COMMENT 'Date aging was last calculated', ADD `age_days` SMALLINT(5) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Age of invoice balance', ADD `aging` VARCHAR(5) DEFAULT '' NOT NULL COMMENT 'Aging string (1-14, 15-30, etc.'; DELETE IGNORE FROM `si_system_defaults` WHERE `name` = 'large_dataset';",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "302",
       "sql_patch": "Added owing to invoices table",
       "sql_release": "20181017",
-      "sql_statement": "ALTER TABLE `si_invoices` ADD COLUMN `owing` DECIMAL(25,6) DEFAULT 0 NOT NULL COMMENT 'Amount owing as of aging-date' AFTER `note`;UPDATE `si_invoices` SET `owing` = 1;",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "303",
       "sql_patch": "Add invoice custom field report extension to standard application and add sales_representative field.",
       "sql_release": "20181018",
-      "sql_statement": "ALTER TABLE `si_invoices` ADD `sales_representative` VARCHAR(50) DEFAULT '' NOT NULL;",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "304",
       "sql_patch": "Add default_invoice field to the customers table.",
       "sql_release": "20181020",
-      "sql_statement": "ALTER TABLE `si_customers` ADD `default_invoice` INT(10) UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Invoice index_id value to use as the default template' AFTER `notes`;",
+      "sql_statement": "",
       "source": "fearless359"
     },
     {
       "sql_patch_ref": "305",
       "sql_patch": "Add expense tables to the database.",
       "sql_release": "20181027",
-      "sql_statement": "CREATE TABLE `si_expense` (id INT(11) NOT NULL AUTO_INCREMENT UNIQUE KEY, domain_id INT(11) NOT NULL, amount DECIMAL(25,6) NOT NULL, expense_account_id INT(11) NOT NULL, biller_id INT(11) NOT NULL, customer_id INT(11) NOT NULL, invoice_id INT(11) NOT NULL, product_id INT(11) NOT NULL, date DATE NOT NULL, note TEXT NOT NULL) ENGINE = InnoDb;",
+      "sql_statement": "",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "306",
+      "sql_patch": "Clean up default_tax_id and default_tax_id_2 for products",
+      "sql_release": "20190325",
+      "sql_statement": "UPDATE `si_products` SET `default_tax_id` = NULL WHERE `default_tax_id` = 0; UPDATE `si_products` SET `default_tax_id_2` = NULL WHERE `default_tax_id_2` = 0;",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "307",
+      "sql_patch": "Fix cron_log cron_id data type",
+      "sql_release": "20190325",
+      "sql_statement": "DROP INDEX `CronIdUnq` ON `si_cron_log`; ALTER TABLE `si_cron_log` MODIFY `cron_id` INT(11); UPDATE `si_cron_log` SET `cron_id` = NULL WHERE `cron_id` = 0; ALTER TABLE `si_cron_log` ADD UNIQUE KEY `CronIdUnq`  (`domain_id`,`cron_id`,`run_date`);",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "308",
+      "sql_patch": "Remove dup id key from invoice_item_attachments and fix products_attributes type_id data type",
+      "sql_release": "20190325",
+      "sql_statement": "ALTER TABLE `si_invoice_item_attachments` DROP INDEX `id`; ALTER TABLE `si_products_attributes` MODIFY `type_id` INT(11);",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "309",
+      "sql_patch": "Create the index items for all auto increment fields.",
+      "sql_release": "20190325",
+      "sql_statement": "ALTER TABLE `si_biller` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_cron` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_cron_log` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_custom_fields` ADD CONSTRAINT `cf_id` UNIQUE(`cf_id`); ALTER TABLE `si_customers` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_extensions` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_inventory` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_invoices` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_log` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_payment` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_payment_types` ADD CONSTRAINT `pt_id` UNIQUE(`pt_id`); ALTER TABLE `si_preferences` ADD CONSTRAINT `pref_id` UNIQUE(`pref_id`); ALTER TABLE `si_products` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_system_defaults` ADD CONSTRAINT `id` UNIQUE(`id`); ALTER TABLE `si_tax` ADD CONSTRAINT `tax_id` UNIQUE(`tax_id`); ALTER TABLE `si_user` ADD CONSTRAINT `id` UNIQUE(`id`);",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "310",
+      "sql_patch": "Make all tables InnoDB, utf8 and utr8_unicode_ci",
+      "sql_release": "20190325",
+      "sql_statement": "ALTER TABLE `si_biller` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_cron` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_cron_log` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_custom_fields` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_custom_flags` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_customers` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_expense` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_expense_account` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_expense_item_tax` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_extensions` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_index` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_install_complete` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_inventory` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_invoice_item_attachments` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_invoice_item_tax` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_invoice_items` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_invoice_type` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_invoices` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_log` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_payment` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_payment_types` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_preferences` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_products` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_products_attribute_type` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_products_attributes` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_products_values` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_sql_patchmanager` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_system_defaults` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_tax` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_user` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_user_domain` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ALTER TABLE `si_user_role` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "311",
+      "sql_patch": "Change to charset utf8 collate utf8_unicode_ci",
+      "sql_release": "20190323",
+      "sql_statement": "ALTER TABLE `si_custom_flags` MODIFY `associated_table` char(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_custom_flags` MODIFY `field_label` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_custom_flags` MODIFY `field_help` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_expense` MODIFY `note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_expense_account` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_expense_item_tax` MODIFY `tax_type` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_extensions` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_extensions` MODIFY `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_index` MODIFY `node` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_inventory` MODIFY `note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoices` MODIFY `custom_field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoices` MODIFY `custom_field2` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoices` MODIFY `custom_field3` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoices` MODIFY `custom_field4` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoices` MODIFY `note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoices` MODIFY `sales_representative` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoice_items` MODIFY `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoice_items` MODIFY `attribute` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoice_item_attachments` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoice_item_tax` MODIFY `tax_type` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_invoice_type` MODIFY `inv_ty_description` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_log` MODIFY `sqlquerie` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_payment` MODIFY `ac_notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_payment` MODIFY `online_payment_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_payment` MODIFY `ac_check_number` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_payment_types` MODIFY `pt_description` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_description` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_currency_sign` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_heading` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_wording` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_detail_heading` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_detail_line` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_payment_method` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_payment_line1_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_payment_line1_value` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_payment_line2_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `pref_inv_payment_line2_value` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `locale` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `language` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `currency_code` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `include_online_payment` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_preferences` MODIFY `currency_position` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `custom_field1` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `custom_field2` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `custom_field3` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `custom_field4` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `attribute` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `notes_as_description` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `show_description` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products` MODIFY `custom_flags` char(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products_attributes` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products_attribute_type` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_products_values` MODIFY `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_sql_patchmanager` MODIFY `sql_patch` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_sql_patchmanager` MODIFY `sql_release` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_sql_patchmanager` MODIFY `sql_statement` text CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_sql_patchmanager` MODIFY `source` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_system_defaults` MODIFY `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_system_defaults` MODIFY `value` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_tax` MODIFY `tax_description` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_tax` MODIFY `type` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_user` MODIFY `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_user` MODIFY `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_user` MODIFY `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_user_domain` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE `si_user_role` MODIFY `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "312",
+      "sql_patch": "Add foreign keys to tables.",
+      "sql_release": "20190323",
+      "sql_statement": "ALTER TABLE `si_cron` ADD FOREIGN KEY (`invoice_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_cron_log` ADD FOREIGN KEY (`cron_id`) REFERENCES `si_cron` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_expense` ADD FOREIGN KEY (`biller_id`) REFERENCES `si_biller` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_expense` ADD FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_expense` ADD FOREIGN KEY (`invoice_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_expense` ADD FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_expense` ADD FOREIGN KEY (`expense_account_id`) REFERENCES `si_expense_account` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_expense_item_tax` ADD FOREIGN KEY (`expense_id`) REFERENCES `si_expense` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_expense_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE; ALTER TABLE `si_inventory` ADD FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_invoices` ADD FOREIGN KEY (`biller_id`) REFERENCES `si_biller` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_invoices` ADD FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_invoices` ADD FOREIGN KEY (`type_id`) REFERENCES `si_invoice_type` (`inv_ty_id`) ON UPDATE CASCADE; ALTER TABLE `si_invoices` ADD FOREIGN KEY (`preference_id`) REFERENCES `si_preferences` (`pref_id`) ON UPDATE CASCADE; ALTER TABLE `si_invoice_items` ADD FOREIGN KEY (`invoice_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_invoice_items` ADD FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_invoice_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE; ALTER TABLE `si_invoice_item_attachments` ADD FOREIGN KEY (`invoice_item_id`) REFERENCES `si_invoice_items` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_payment` ADD FOREIGN KEY (`ac_inv_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_payment` ADD FOREIGN KEY (`ac_payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE; ALTER TABLE `si_products` ADD FOREIGN KEY (`default_tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE; ALTER TABLE `si_products` ADD FOREIGN KEY (`default_tax_id_2`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE; ALTER TABLE `si_products_attributes` ADD FOREIGN KEY (`type_id`) REFERENCES `si_products_attribute_type` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_products_values` ADD FOREIGN KEY (`attribute_id`) REFERENCES `si_products_attributes` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_user` ADD FOREIGN KEY (`domain_id`) REFERENCES `si_user_domain` (`id`) ON UPDATE CASCADE; ALTER TABLE `si_user` ADD FOREIGN KEY (`role_id`) REFERENCES `si_user_role` (`id`) ON UPDATE CASCADE;",
       "source": "fearless359"
     }
   ],
@@ -2708,18 +2757,6 @@
       "domain_id": "DOMAIN-ID"
     }
   ],
-  "si_user": [
-    {
-      "id": "1",
-      "username": "demo",
-      "email": "demo@simpleinvoices.group",
-      "role_id": "1",
-      "domain_id": "DOMAIN-ID",
-      "password": "fe01ce2a7fbac8fafaed7c982a04e229",
-      "enabled": "1",
-      "user_id": "0"
-    }
-  ],
   "si_user_domain": [
     {
       "id": "1",
@@ -2754,6 +2791,18 @@
     {
       "id": "7",
       "name": "viewer"
+    }
+  ],
+  "si_user": [
+    {
+      "id": "1",
+      "username": "demo",
+      "email": "demo@simpleinvoices.group",
+      "role_id": "1",
+      "domain_id": "DOMAIN-ID",
+      "password": "fe01ce2a7fbac8fafaed7c982a04e229",
+      "enabled": "1",
+      "user_id": "0"
     }
   ]
 }

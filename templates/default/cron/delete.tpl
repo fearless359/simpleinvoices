@@ -6,7 +6,7 @@
  *      Rich Rowley
  *
  *  Last edited:
- *      2016-08-08
+ *      2019-03-25
  *
  *  License:
  *      GPL v3 or above
@@ -16,7 +16,7 @@
  *}
 <br/>
 <br/>
-<h3 style="text-align:center">Select <b>Delete</b> to remove this record:</h3>
+<h2 style="color:red;text-align:center">Select <b>Delete</b> to remove this record and its associated history:</h2>
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlencode}">
     <input type="hidden" name="index_id" value="{if isset($cron.index_id)}{$cron.index_id}{/if}">

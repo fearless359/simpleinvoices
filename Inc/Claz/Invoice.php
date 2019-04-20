@@ -2,9 +2,9 @@
 
 namespace Inc\Claz;
 
-use \DateTime;
-use \DateTimeZone;
-use \Exception;
+use DateTime;
+use DateTimeZone;
+use Exception;
 
 /**
  * Class Invoice
@@ -34,7 +34,6 @@ class Invoice
     }
 
     /**
-     * TODO: Change uses to handle commonly formatted record and get data from common private class method.
      * Retrieve an invoice.
      * @param integer $id
      * @return array $invoice
@@ -526,13 +525,6 @@ class Invoice
         $lcl_list = $list;
         if (empty($lcl_list['domain_id'])) $lcl_list['domain_id'] = DomainId::get();
 
-        if (!self::invoiceItemsCheckFk(null, $list['product_id'], $tax_ids, true)) {
-            error_log("Invoice::insertItem - Failed foreign key check");
-            error_log("                       list - " . print_r($list, true));
-            error_log("                       tax_ids - " . print_r($tax_ids, true));
-            return null;
-        }
-
         $id = 0;
         try {
             $pdoDb->setFauxPost($list);
@@ -612,10 +604,6 @@ class Invoice
             $index_id = Index::increment('invoice', $new_pref_group['index_group']);
         }
 
-        $type = $current_invoice['type_id'];
-        // TODO: Add foreign key logic to database definition
-        if (!self::invoiceCheckFk($_POST['biller_id'], $_POST['customer_id'], $type, $_POST['preference_id'])) return null;
-
         // Note that this will make the last activity date greater than the aging_date which will force the
         // aging information to be recalculated.
         try {
@@ -677,26 +665,24 @@ class Invoice
         $total = $gross_total + $tax_amount;
         if ($description == $LANG['description']) $description = "";
 
-        if (self::invoiceItemsCheckFk(null, $product_id, $tax_ids, true)) {
-            try {
-                // @formatter:off
-                $pdoDb->addSimpleWhere("id", $id);
-                $pdoDb->setFauxPost(array('quantity'    => $quantity,
-                                          'product_id'  => $product_id,
-                                          'unit_price'  => $unit_price,
-                                          'tax_amount'  => $tax_amount,
-                                          'gross_total' => $gross_total,
-                                          'description' => $description,
-                                          'total'       => $total,
-                                          'attribute'   => json_encode($attr)));
-                $pdoDb->setExcludedFields(array("id", "domain_id"));
-                $pdoDb->request("UPDATE", "invoice_items");
-                // @formatter:on
+        try {
+            // @formatter:off
+            $pdoDb->addSimpleWhere("id", $id);
+            $pdoDb->setFauxPost(array('quantity'    => $quantity,
+                                      'product_id'  => $product_id,
+                                      'unit_price'  => $unit_price,
+                                      'tax_amount'  => $tax_amount,
+                                      'gross_total' => $gross_total,
+                                      'description' => $description,
+                                      'total'       => $total,
+                                      'attribute'   => json_encode($attr)));
+            $pdoDb->setExcludedFields(array("id", "domain_id"));
+            $pdoDb->request("UPDATE", "invoice_items");
+            // @formatter:on
 
-                self::chgInvoiceItemTax($id, $tax_ids, $unit_price, $quantity, true);
-            } catch (PdoDbException $pde) {
-                error_log("Invoice::updateInvoiceItem() - Error: " . $pde->getMessage());
-            }
+            self::chgInvoiceItemTax($id, $tax_ids, $unit_price, $quantity, true);
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::updateInvoiceItem() - Error: " . $pde->getMessage());
         }
     }
 
@@ -838,12 +824,7 @@ class Invoice
      */
     public static function chgInvoiceItemTax($invoice_item_id, $line_item_tax_ids, $unit_price, $quantity, $update)
     {
-        /*
-         * @TODO: if editing invoice delete all tax info then insert first then do insert again.
-         *  This can probably can be done without delete - someone to look into this if required
-         */
         try {
-            $domain_id = DomainId::get();
             $requests = new Requests();
             if ($update) {
                 $request = new Request("DELETE", "invoice_item_tax");
@@ -1086,7 +1067,7 @@ class Invoice
                         $invoiceItem['attribute_json'][$key]['name'] = $product_attributes['name'];
                         $invoiceItem['attribute_json'][$key]['type'] = $product_attributes['type'];
                         $invoiceItem['attribute_json'][$key]['visible'] = $product_attributes['visible'];
-                        $invoiceItem['attribute_json'][$key]['value'] = ProductValues::getOne($key, $value);
+                        $invoiceItem['attribute_json'][$key]['value'] = ProductValues::getOne($key);
                     }
                 }
 
@@ -1355,133 +1336,5 @@ class Invoice
 
         return $new_id;
     }
-
-    /**
-     * Manual verification of foreign keys.
-     * Performs some manual FK checks on tables that the invoice table refers to.
-     * Under normal conditions, this function will return true. Returning false
-     * indicates that if the INSERT or UPDATE were to proceed, bad data could be
-     * written to the database.
-     * @param int $biller_id Unique ID for <b>si_biller</b> table.
-     * @param int $customer_id Unique ID for <b>si_customers</b> table.
-     * @param int $inv_ty_id Unique ID for <b>si_invoice_type</b> table.
-     * @param int $pref_id Unique ID for <b>si_preferences</b> table.
-     * @return boolean true if keys all test true; false otherwise.
-     * TODO: Add FK logic to database.
-     */
-    private static function invoiceCheckFk($biller_id, $customer_id, $inv_ty_id, $pref_id)
-    {
-        global $pdoDb;
-        $domain_id = DomainId::get();
-
-        try {
-            // Check biller
-            $pdoDb->addSimpleWhere("id", $biller_id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", $domain_id);
-            $pdoDb->setLimit(1);
-            $rows = $pdoDb->request("SELECT", "biller");
-            if (empty($rows)) return false;
-
-            // Check customer
-            $pdoDb->addSimpleWhere("id", $customer_id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", $domain_id);
-            $pdoDb->setLimit(1);
-            $rows = $pdoDb->request("SELECT", "customers");
-            if (empty($rows)) return false;
-
-            // Check invoice type
-            $pdoDb->addSimpleWhere("inv_ty_id", $inv_ty_id);
-            $pdoDb->setLimit(1);
-            $rows = $pdoDb->request("SELECT", "invoice_type");
-            if (empty($rows)) return false;
-
-            // Check preferences
-            $pdoDb->addSimpleWhere("pref_id", $pref_id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", $domain_id);
-            $pdoDb->setLimit(1);
-            $rows = $pdoDb->request("SELECT", "preferences");
-            if (empty($rows)) return false;
-        } catch (PdoDbException $pde) {
-            error_log("Invoice::invoiceCheckFk() - Error: " . $pde->getMessage());
-            return false;
-        }
-
-        // All good
-        return true;
-    }
-
-    /**
-     * Manual verification of foreign keys.
-     * Performs some manual FK checks on tables that the invoice table refers to.
-     * Under normal conditions, this function will return true. Returning false
-     * indicates that if the INSERT or UPDATE were to proceed, bad data could be
-     * written to the database.
-     * @param int $invoice_id Unique ID for <b>si_invoices</b> table.
-     * @param int $product_id Unique ID for <b>si_products</b> table.
-     * @param int $tax_ids Unique ID for <b>si_tax</b> table.
-     * @param boolean $update <b>true</b> if check update constraints; <b>false</b> otherwise.
-     * @return boolean true if keys all test true; false otherwise.
-     * TODO: Add FK logic to database.
-     */
-    private static function invoiceItemsCheckFk($invoice_id, $product_id, $tax_ids, $update)
-    {
-        /**
-         * @var PdoDb $pdoDb_admin
-         */
-        global $pdoDb_admin;
-        $domain_id = DomainId::get();
-        // Check invoice
-        if (!$update || !empty($invoice_id)) {
-            $rows = array();
-            try {
-                $pdoDb_admin->addSimpleWhere("id", $invoice_id, "AND");
-                $pdoDb_admin->addSimpleWhere("domain_id", $domain_id);
-                $pdoDb_admin->setSelectList("id");
-                $rows = $pdoDb_admin->request("SELECT", "invoices");
-            } catch (PdoDbException $pde) {
-                error_log("Invoice::invoiceItemsCheckFk() - Error: " . $pde->getMessage());
-            }
-            if (empty($rows)) return false;
-        }
-
-        // Check product
-        $rows = array();
-        try {
-            $pdoDb_admin->addSimpleWhere("id", $product_id, "AND");
-            $pdoDb_admin->addSimpleWhere("domain_id", $domain_id);
-            $pdoDb_admin->setSelectList("id");
-            $rows = $pdoDb_admin->request("SELECT", "products");
-        } catch (PdoDbException $pde) {
-            error_log("Invoice::invoiceItemsCheckFk() - Error(2): " . $pde->getMessage());
-        }
-        if (empty($rows)) return false;
-
-        // Check tax id
-        if ((is_array($tax_ids) && !empty($tax_ids[0])) ||
-            (!is_array($tax_ids) && !empty($tax_ids))) {
-            if (!is_array($tax_ids)) {
-                $tax_ids = array($tax_ids);
-            }
-            foreach ($tax_ids as $tax_id) {
-                $rows = array();
-                try {
-                    $pdoDb_admin->addSimpleWhere("tax_id", $tax_id, "AND");
-                    $pdoDb_admin->addSimpleWhere("domain_id", $domain_id);
-                    $pdoDb_admin->setSelectList("tax_id");
-                    $rows = $pdoDb_admin->request("SELECT", "tax");
-                } catch (PdoDbException $pde) {
-                    error_log("Invoice::invoiceItemsCheckFk() - Error(3): " . $pde->getMessage());
-                }
-                if (empty($rows)) return false;
-            }
-        }
-
-        return true;
-    }
-
-}
-
-class InvoiceManageTable
-{
 
 }

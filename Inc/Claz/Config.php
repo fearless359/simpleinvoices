@@ -1,15 +1,14 @@
 <?php
-/**
- * @name Config.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20181009
- */
 
 namespace Inc\Claz;
 
+use Exception;
+
 /**
  * Class Config
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20181009
  * @package Inc\Claz
  */
 class Config

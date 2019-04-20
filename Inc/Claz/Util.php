@@ -136,7 +136,7 @@ class Util
     }
 
     /**
-     * @param array $smarty
+     * @param object $smarty
      */
     public static function loginLogo($smarty) {
         $defaults = SystemDefaults::loadValues();
@@ -149,10 +149,6 @@ class Util
             $maxWidth = 100;
             $maxHeight = 100;
             list($width, $height, $type, $attr) = getimagesize($image);
-            if ($type != $type || $attr != $attr) {
-                // No action, test exists to eliminate unused variable warning.
-                echo "modules.auth.login.php - This code is never executed.";
-            }
 
             if (($width > $maxWidth || $height > $maxHeight)) {
                 $wp = $maxWidth / $width;

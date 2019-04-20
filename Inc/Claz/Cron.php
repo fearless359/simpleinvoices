@@ -1,6 +1,8 @@
 <?php
 namespace Inc\Claz;
 
+use Mpdf\Output\Destination;
+
 use \Exception;
 use \Zend_Log;
 
@@ -31,7 +33,7 @@ class Cron {
      * @param int $id If not null, the id of the record to retrieve.
      * @return array|mixed
      */
-    public static function getCrons($id = null) {
+    private static function getCrons($id = null) {
         global $LANG, $pdoDb;
 
         $crons = array();
@@ -136,16 +138,29 @@ class Cron {
     public static function delete($id) {
         global $pdoDb;
 
-        $result = false;
         try {
-            $pdoDb->addSimpleWhere("id", $id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-            $result = $pdoDb->request("DELETE", "cron");
+            $pdoDb->begin();
+            $pdoDb->addSimpleWhere('cron_id', $id);
+            $result = $pdoDb->request('DELETE', 'cron_log');
+            if ($result) {
+                $pdoDb->addSimpleWhere("id", $id, "AND");
+                $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+                $result = $pdoDb->request("DELETE", "cron");
+                if ($result) {
+                    $pdoDb->commit();
+                    return true;
+                }
+            }
         } catch (PdoDbException $pde) {
-            error_log("modules/cron/delete - error: " . $pde->getMessage());
+            error_log("Cron::delete() - error: " . $pde->getMessage());
         }
 
-        return $result;
+        try{
+            $pdoDb->rollback();
+        } catch (PdoDbException $pde) {
+            error_log("Cron::delete() - error2: " . $pde->getMessage());
+        }
+        return false;
     }
 
     /**
@@ -163,6 +178,7 @@ class Cron {
 
     /**
      * @return array
+     * @throws
      */
     public static function run() {
         global $pdoDb;
@@ -270,7 +286,7 @@ class Cron {
 
                         // email invoice
                         if (($value['email_biller'] == ENABLED) || ($value['email_customer'] == ENABLED)) {
-                            $export = new Export(Mpdf\Output\Destination::STRING_RETURN);
+                            $export = new Export(Destination::STRING_RETURN);
                             $export->setFormat("pdf");
                             $export->setId($invoice['id']);
                             $export->setModule('invoice');
@@ -322,7 +338,7 @@ class Cron {
                                 // Email receipt to biller and customer
                                 if ($value['email_biller'] == ENABLED || $value['email_customer'] == ENABLED) {
                                      // Code to email a new copy of the invoice to the customer
-                                    $export_rec = new Export(Mpdf\Output\Destination::STRING_RETURN);
+                                    $export_rec = new Export(Destination::STRING_RETURN);
                                     $export_rec->setFormat("pdf");
                                     $export_rec->setId($invoice['id']);
                                     $export_rec->setModule('invoice');

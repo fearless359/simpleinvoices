@@ -25,7 +25,7 @@ class WhereItemTest extends TestCase
 
     public function testConstructAndBuild()
     {
-        $this->expectExceptionMessage("WhereItem - Non-string connector specified. See error log for details.");
+        $this->expectExceptionMessage('WhereItem - Invalid connector, 1, specified. Must be "AND" or "OR".');
         $wi = new WhereItem(false, 'db_field', '=', 'b', false, 1);
 
         $this->expectExceptionMessage("WhereItem - Invalid operator, BAD, specified.");
@@ -36,6 +36,12 @@ class WhereItemTest extends TestCase
 
         $this->expectExceptionMessage("WhereItem - Invalid value for IN operator. Must be an array.");
         $wi = new WhereItem(false, 'db_field', 'IN', 'b', false);
+
+        $this->expectExceptionMessage("WhereItem - Value must be blank for 'IS NULL' operator.");
+        $wi = new WhereItem(false, 'db_field', 'IS NULL', 'b', false);
+
+        $this->expectExceptionMessage("WhereItem - Value must be blank for 'IS NOT NULL' operator.");
+        $wi = new WhereItem(false, 'db_field', 'IS NOT NULL', 'b', false);
     }
 
     public function testParenCount()
@@ -74,6 +80,20 @@ class WhereItemTest extends TestCase
         $this->assertEquals(3, $keyPairs[':db_field_001'], 'Test build for WhereItem "IN" keyPairs should contain 3');
         $this->assertEquals(7, $keyPairs[':db_field_002'], 'Test build for WhereItem "IN" keyPairs should contain 7');
         $this->assertEquals(11, $keyPairs[':db_field_003'], 'Test build for WhereItem "IN" keyPairs should contain 10');
+
+        // Test IS where item
+        $cnt = null;
+        $keyPairs = null;
+        $wi = new WhereItem(false, 'db_field', 'IS NULL', '', false);
+        $stmt = trim($wi->build($cnt, $keyPairs));
+        $this->assertEquals(0, $cnt, 'Test build for WhereItem "IS NULL" cnt should be 0');
+
+        // Test IS where item
+        $cnt = null;
+        $keyPairs = null;
+        $wi = new WhereItem(false, 'db_field', 'IS NOT NULL', '', false);
+        $stmt = trim($wi->build($cnt, $keyPairs));
+        $this->assertEquals(0, $cnt, 'Test build for WhereItem "IS NOT NULL" cnt should be 0');
 
         // Test REGEXP where item
         $cnt = null;
