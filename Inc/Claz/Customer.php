@@ -69,6 +69,7 @@ class Customer {
         $rows = self::getCustomers(['order_by_set' => true]);
         $tableRows = array();
         foreach ($rows as $row) {
+            $enabled = $row['enabled'] == ENABLED;
             // @formatter:off
             $action = "<a class='index_table' title=\"{$viewcust} {$row['name']}\" " .
                          "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
@@ -77,20 +78,22 @@ class Customer {
                       "<a class=\"index_table\" title=\"{$editcust} {$row['name']}\" " .
                          "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
                           "<img src=\"images/common/edit.png\" class=\"action\" alt=\"edit\" />" .
-                      "</a>" .
-                      "<a class=\"index_table\" title=\"{$defaultinv}\" " .
-                         "href=\"index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view\">" .
-                          "<img src=\"images/common/add.png\" class=\"action\" alt=\"add\" />" .
                       "</a>";
+            if ($enabled) {
+                $action .= "<a class=\"index_table\" title=\"{$defaultinv}\" " .
+                              "href=\"index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view\">" .
+                               "<img src=\"images/common/add.png\" class=\"action\" alt=\"add\" />" .
+                           "</a>";
+            }
 
             $quick_view = "<a class=\"index_table\" title=\"quick view\" " .
                              "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['last_inv_id']}\">" .
                               "{$row['last_index_id']}" .
                           "</a>";
 
-            $image = ($row['enabled'] == ENABLED ? "images/common/tick.png" : "images/common/cross.png");
-            $enabled = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
-                       "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
+            $image = ($enabled ? "images/common/tick.png" : "images/common/cross.png");
+            $enabled_col = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
+                           "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
             // @formatter::on
 
             $tableRows[] = array(
@@ -101,7 +104,7 @@ class Customer {
                 'total' => SiLocal::currency($row['total']),
                 'paid' => SiLocal::currency($row['paid']),
                 'owing' => SiLocal::currency($row['owing']),
-                'enabled' => $enabled
+                'enabled' => $enabled_col
             );
         }
         return $tableRows;
