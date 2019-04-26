@@ -3662,7 +3662,7 @@ class SqlPatchManager
             'name' => 'Remove dup id key from invoice_item_attachments and fix products_attributes type_id data type',
             'patch' =>
                 "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` DROP INDEX `id`;" .
-                "ALTER TABLE `" . TB_PREFIX . "products_attributes` MODIFY `type_id` INT(11) NULL;",
+                "ALTER TABLE `" . TB_PREFIX . "products_attributes` MODIFY `type_id` INT(11) UNSIGNED NULL;",
             'date' => "20190329",
             'source' => 'fearless359'
         );
@@ -3707,24 +3707,18 @@ class SqlPatchManager
         self::makePatch('311', $patch);
 
         $patch = array(
-            'name' => 'Remove default from domain_id.',
+            'name' => 'Remove default from domain_id & set misc id characteristics.',
             'patch' =>
                 "ALTER TABLE `" . TB_PREFIX . "biller` ALTER `domain_id` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `biller_id` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `customer_id` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `type_id` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `preference_id` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ALTER `invoice_id` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ALTER `product_id` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "payment` ALTER `ac_payment_type` DROP DEFAULT;" .
-                "ALTER TABLE `" . TB_PREFIX . "system_defaults` ALTER `extension_id` DROP DEFAULT;",
+                "ALTER TABLE `" . TB_PREFIX . "cron` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` MODIFY `cron_id` INT(11) UNSIGNED NULL;",
             'date' => "20190329",
             'source' => 'fearless359'
         );
         self::makePatch('312', $patch);
 
         $patch = array(
-            'name' => 'Use common characteristics for all auto increment fields.',
+            'name' => 'Use common characteristics for all non-autoincrement id type fields.',
             'patch' =>
                 "ALTER TABLE `" . TB_PREFIX . "cron` MODIFY `invoice_id` INT(11) UNSIGNED NULL;" .
                 "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `expense_account_id` INT(11) UNSIGNED NULL;" .
@@ -3928,6 +3922,77 @@ class SqlPatchManager
             'source' => 'fearless359'
         );
         self::makePatch('317', $patch);
+
+        // Note that si_index table does NOT have an auto_increment field.
+        $patch = array(
+            'name' => "Additional foreign key field characteristic setting changes",
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "biller` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "customers` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "customers` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "customers` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "customers` MODIFY `parent_customer_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_fields` MODIFY `cf_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_fields` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "custom_flags` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_account` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_account` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "extensions` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "extensions` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "index` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "index` MODIFY `id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_type` MODIFY `inv_ty_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` MODIFY `index_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` MODIFY `id` BIGINT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` MODIFY `last_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` MODIFY `user_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` MODIFY `pt_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `default_tax_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `default_tax_id_2` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attributes` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attribute_type` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_values` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "sql_patchmanager` MODIFY `sql_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "system_defaults` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "tax` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "tax` MODIFY `tax_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` ALTER `domain_id` DROP DEFAULT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` MODIFY `role_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "user_domain` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user_role` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;",
+            'date' => "20190425",
+            'source' => 'fearless359'
+        );
+        self::makePatch('318', $patch);
 
         // @formatter:on
     }

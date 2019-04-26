@@ -2,6 +2,7 @@
 
 use Inc\Claz\DbField;
 use Inc\Claz\Join;
+use Inc\Claz\Log;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\User;
@@ -37,7 +38,7 @@ try {
 }
 $errorMessage = '';
 Util::loginLogo($smarty);
-\Inc\Claz\Log::out("login.php _POST - " . print_r($_POST,true), \Zend_Log::DEBUG);
+Log::out("login.php _POST - " . print_r($_POST,true), Zend_Log::DEBUG);
 if (empty($_POST['user']) || empty($_POST['pass'])) {
     if (isset($_POST['action']) && $_POST['action'] == 'login') {
         $errorMessage = STD_LOGIN_FAILED_MSG;
@@ -47,7 +48,7 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
     $password  = $_POST['pass'];
     if (User::verifyPassword($username, $password)) {
         try {
-            \Zend_Session::start();
+            Zend_Session::start();
 
             $timeout = SystemDefaults::getDefaultSessionTimeout();
             if ($timeout <= 0) {
@@ -56,7 +57,7 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
 
             $authNamespace = new \Zend_Session_Namespace('Zend_Auth');
             $authNamespace->setExpirationSeconds($timeout * 60);
-        } catch (\Zend_Session_Exception $zse) {
+        } catch (Zend_Session_Exception $zse) {
             error_log("modules.auth.login.php: Error(2): " . $zse->getMessage());
             die("modules.auth.login.php(2) - Unable to start a session.");
         }

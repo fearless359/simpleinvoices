@@ -13,7 +13,7 @@
   </div>
   <div id="left">
     <ul>
-        <li>2019-04-09 - <b>2019.2.0</b>
+        <li>2019-04-24 - <b>2019.2.0</b>
             <ul>
                 <li>Converted all DB tables to InnoDB using utf8 charset and uft8_unicode_ci collation.</li>
                 <li>Add foreign keys to si_invoices.</li>
