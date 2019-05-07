@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2019 at 03:51 PM
+-- Generation Time: May 07, 2019 at 04:05 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -17,10 +17,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `rrowfbbw_simple_invoices`
---
 
 -- --------------------------------------------------------
 
@@ -455,7 +451,7 @@ CREATE TABLE `si_products` (
 CREATE TABLE `si_products_attributes` (
                                           `id` int(11) UNSIGNED NOT NULL,
                                           `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                                          `type_id` int(11) DEFAULT NULL,
+                                          `type_id` int(11) UNSIGNED DEFAULT NULL,
                                           `enabled` tinyint(1) NOT NULL DEFAULT '1',
                                           `visible` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -623,7 +619,11 @@ ALTER TABLE `si_custom_flags`
 ALTER TABLE `si_expense`
     ADD PRIMARY KEY (`domain_id`,`id`),
     ADD UNIQUE KEY `id` (`id`),
-    ADD KEY `biller_id` (`biller_id`);
+    ADD KEY `biller_id` (`biller_id`),
+    ADD KEY `customer_id` (`customer_id`),
+    ADD KEY `invoice_id` (`invoice_id`),
+    ADD KEY `product_id` (`product_id`),
+    ADD KEY `expense_account_id` (`expense_account_id`);
 
 --
 -- Indexes for table `si_expense_account`
@@ -636,7 +636,9 @@ ALTER TABLE `si_expense_account`
 -- Indexes for table `si_expense_item_tax`
 --
 ALTER TABLE `si_expense_item_tax`
-    ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `expense_id` (`expense_id`),
+    ADD KEY `tax_id` (`tax_id`);
 
 --
 -- Indexes for table `si_extensions`
@@ -656,7 +658,8 @@ ALTER TABLE `si_index`
 --
 ALTER TABLE `si_inventory`
     ADD PRIMARY KEY (`domain_id`,`id`),
-    ADD UNIQUE KEY `id` (`id`);
+    ADD UNIQUE KEY `id` (`id`),
+    ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `si_invoices`
@@ -668,7 +671,9 @@ ALTER TABLE `si_invoices`
     ADD KEY `domain_id` (`domain_id`),
     ADD KEY `biller_id` (`biller_id`),
     ADD KEY `customer_id` (`customer_id`),
-    ADD KEY `IdxDI` (`index_id`,`preference_id`,`domain_id`);
+    ADD KEY `IdxDI` (`index_id`,`preference_id`,`domain_id`),
+    ADD KEY `type_id` (`type_id`),
+    ADD KEY `preference_id` (`preference_id`);
 
 --
 -- Indexes for table `si_invoice_items`
@@ -676,7 +681,8 @@ ALTER TABLE `si_invoices`
 ALTER TABLE `si_invoice_items`
     ADD PRIMARY KEY (`id`),
     ADD KEY `invoice_id` (`invoice_id`),
-    ADD KEY `DomainInv` (`invoice_id`,`domain_id`);
+    ADD KEY `DomainInv` (`invoice_id`,`domain_id`),
+    ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `si_invoice_item_attachments`
@@ -689,7 +695,8 @@ ALTER TABLE `si_invoice_item_attachments`
 -- Indexes for table `si_invoice_item_tax`
 --
 ALTER TABLE `si_invoice_item_tax`
-    ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `tax_id` (`tax_id`);
 
 --
 -- Indexes for table `si_invoice_type`
@@ -702,7 +709,8 @@ ALTER TABLE `si_invoice_type`
 --
 ALTER TABLE `si_log`
     ADD PRIMARY KEY (`id`,`domain_id`),
-    ADD UNIQUE KEY `id` (`id`);
+    ADD UNIQUE KEY `id` (`id`),
+    ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `si_payment`
@@ -712,7 +720,8 @@ ALTER TABLE `si_payment`
     ADD UNIQUE KEY `id` (`id`),
     ADD KEY `domain_id` (`domain_id`),
     ADD KEY `ac_inv_id` (`ac_inv_id`),
-    ADD KEY `ac_amount` (`ac_amount`);
+    ADD KEY `ac_amount` (`ac_amount`),
+    ADD KEY `ac_payment_type` (`ac_payment_type`);
 
 --
 -- Indexes for table `si_payment_types`
@@ -733,13 +742,16 @@ ALTER TABLE `si_preferences`
 --
 ALTER TABLE `si_products`
     ADD PRIMARY KEY (`domain_id`,`id`),
-    ADD UNIQUE KEY `id` (`id`);
+    ADD UNIQUE KEY `id` (`id`),
+    ADD KEY `default_tax_id` (`default_tax_id`),
+    ADD KEY `default_tax_id_2` (`default_tax_id_2`);
 
 --
 -- Indexes for table `si_products_attributes`
 --
 ALTER TABLE `si_products_attributes`
-    ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `type_id` (`type_id`);
 
 --
 -- Indexes for table `si_products_attribute_type`
@@ -751,7 +763,8 @@ ALTER TABLE `si_products_attribute_type`
 -- Indexes for table `si_products_values`
 --
 ALTER TABLE `si_products_values`
-    ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `attribute_id` (`attribute_id`);
 
 --
 -- Indexes for table `si_sql_patchmanager`
@@ -781,7 +794,8 @@ ALTER TABLE `si_tax`
 ALTER TABLE `si_user`
     ADD PRIMARY KEY (`domain_id`,`id`),
     ADD UNIQUE KEY `id` (`id`),
-    ADD UNIQUE KEY `uname` (`username`);
+    ADD UNIQUE KEY `uname` (`username`),
+    ADD KEY `role_id` (`role_id`);
 
 --
 -- Indexes for table `si_user_domain`
@@ -989,7 +1003,91 @@ ALTER TABLE `si_cron_log`
 -- Constraints for table `si_expense`
 --
 ALTER TABLE `si_expense`
-    ADD CONSTRAINT `si_expense_ibfk_1` FOREIGN KEY (`biller_id`) REFERENCES `si_biller` (`id`) ON UPDATE CASCADE;
+    ADD CONSTRAINT `si_expense_ibfk_1` FOREIGN KEY (`biller_id`) REFERENCES `si_biller` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_expense_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_expense_ibfk_3` FOREIGN KEY (`invoice_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_expense_ibfk_4` FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_expense_ibfk_5` FOREIGN KEY (`expense_account_id`) REFERENCES `si_expense_account` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_expense_item_tax`
+--
+ALTER TABLE `si_expense_item_tax`
+    ADD CONSTRAINT `si_expense_item_tax_ibfk_1` FOREIGN KEY (`expense_id`) REFERENCES `si_expense` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_expense_item_tax_ibfk_2` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_inventory`
+--
+ALTER TABLE `si_inventory`
+    ADD CONSTRAINT `si_inventory_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_invoices`
+--
+ALTER TABLE `si_invoices`
+    ADD CONSTRAINT `si_invoices_ibfk_1` FOREIGN KEY (`biller_id`) REFERENCES `si_biller` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_invoices_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_invoices_ibfk_3` FOREIGN KEY (`type_id`) REFERENCES `si_invoice_type` (`inv_ty_id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_invoices_ibfk_4` FOREIGN KEY (`preference_id`) REFERENCES `si_preferences` (`pref_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_invoice_items`
+--
+ALTER TABLE `si_invoice_items`
+    ADD CONSTRAINT `si_invoice_items_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_invoice_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_invoice_item_attachments`
+--
+ALTER TABLE `si_invoice_item_attachments`
+    ADD CONSTRAINT `si_invoice_item_attachments_ibfk_1` FOREIGN KEY (`invoice_item_id`) REFERENCES `si_invoice_items` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_invoice_item_tax`
+--
+ALTER TABLE `si_invoice_item_tax`
+    ADD CONSTRAINT `si_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_log`
+--
+ALTER TABLE `si_log`
+    ADD CONSTRAINT `si_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `si_user` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_payment`
+--
+ALTER TABLE `si_payment`
+    ADD CONSTRAINT `si_payment_ibfk_1` FOREIGN KEY (`ac_inv_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_payment_ibfk_2` FOREIGN KEY (`ac_payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_products`
+--
+ALTER TABLE `si_products`
+    ADD CONSTRAINT `si_products_ibfk_1` FOREIGN KEY (`default_tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_products_ibfk_2` FOREIGN KEY (`default_tax_id_2`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_products_attributes`
+--
+ALTER TABLE `si_products_attributes`
+    ADD CONSTRAINT `si_products_attributes_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `si_products_attribute_type` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_products_values`
+--
+ALTER TABLE `si_products_values`
+    ADD CONSTRAINT `si_products_values_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `si_products_attributes` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_user`
+--
+ALTER TABLE `si_user`
+    ADD CONSTRAINT `si_user_ibfk_1` FOREIGN KEY (`domain_id`) REFERENCES `si_user_domain` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `si_user_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `si_user_role` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

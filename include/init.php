@@ -128,9 +128,12 @@ if ($databaseBuilt) {
     }
 }
 
-// Turn authorization off until database is built. It messes up the install screens.
-// Or if this is a batch job
-if ($api_request || (!$databaseBuilt || !$databasePopulated)) {
+// Turn authorization off if an api request, or
+// the database is not built and populated, or
+// a request to install sample data.
+if ($api_request ||
+    (!$databaseBuilt || !$databasePopulated) ||
+    ($module == 'install' && $view == 'sample_data')) {
     $config->authentication->enabled = DISABLED;
 }
 

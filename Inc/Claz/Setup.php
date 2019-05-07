@@ -92,5 +92,4 @@ class Setup
         ini_set('log_errors',             $config->phpSettings->log_errors);
         ini_set('error_log',              $config->phpSettings->error_log);
     }
-
 }

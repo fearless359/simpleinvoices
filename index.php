@@ -148,27 +148,28 @@ if (!isset($menu)) {
 // TODO - redo this code
 Log::out("index.php - module[$module] view[$view] " .
              "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", Zend_Log::DEBUG);
+error_log("index.php 161 - module[$module] view[$view] databaseBuild[$databaseBuilt] databasePopulated[$databasePopulated]");
 if (($module == "options") && ($view == "database_sqlpatches")) {
     SqlPatchManager::donePatchesMessage();
 } else {
     // Check that database structure has been built and populated.
-    $skip_db_patches = false;
+    $apply_db_patches = true;
     if (!$databaseBuilt) {
         $module = "install";
         $view == "structure" ? $view = "structure" : $view = "index";
-        $skip_db_patches = true; // do installer
+        $apply_db_patches = false; // do installer
     } else if (!$databasePopulated) {
         $module = "install";
         $view == "essential" ? $view = "essential" : $view = "structure";
-        $skip_db_patches = true; // do installer
+        $apply_db_patches = false; // do installer
     } else if($module == 'install' && $view == 'sample_data') {
-        $skip_db_patches = true;
+        $apply_db_patches = false;
     }
 
-    Log::out("index.php - skip_db_patches[$skip_db_patches]", Zend_Log::DEBUG);
+    Log::out("index.php - apply_db_patches[$apply_db_patches]", Zend_Log::DEBUG);
 
     // See if we need to verify patches have been loaded.
-    if (!$skip_db_patches) {
+    if ($apply_db_patches) {
         Log::out("index.php - config->authentication->enabled[{$config->authentication->enabled}] auth_session->id: " .
             print_r($auth_session->id,true), Zend_Log::DEBUG);
         // If default user or an active session exists, proceed with check.
@@ -245,10 +246,10 @@ if (($module == "options") && ($view == "database_sqlpatches")) {
 }
 
 Log::out("index.php - module[" . (empty($module) ? "" : $module) .
-                         "] view[" . (empty($view) ? "" : $view) .
-                       "] action[" . (empty($action) ? "" : $action) .
-                           "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
-                         "] menu[$menu]", Zend_Log::DEBUG);
+                          "] view[" . (empty($view) ? "" : $view) .
+                        "] action[" . (empty($action) ? "" : $action) .
+                            "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
+                          "] menu[$menu]", Zend_Log::DEBUG);
 
 // This logic is for the default_invoice where the invoice "template" (aka record)
 // is used to make the new invoice.

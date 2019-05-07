@@ -273,6 +273,24 @@
       "domain_id": "DOMAIN-ID",
       "pt_description": "Credit Card",
       "pt_enabled": "1"
+    },
+    {
+      "pt_id": "3",
+      "domain_id": "DOMAIN-ID",
+      "pt_description": "Check",
+      "pt_enabled": "1"
+    },
+    {
+      "pt_id": "4",
+      "domain_id": "DOMAIN-ID",
+      "pt_description": "Write-off",
+      "pt_enabled": "1"
+    },
+    {
+      "pt_id": "5",
+      "domain_id": "DOMAIN-ID",
+      "pt_description": "VOID",
+      "pt_enabled": "1"
     }
   ],
   "si_preferences": [

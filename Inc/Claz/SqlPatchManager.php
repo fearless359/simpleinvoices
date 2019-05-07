@@ -229,8 +229,8 @@ class SqlPatchManager
                 }
             } else {
                 // Validate patches before being applied
-                if ($id == 317) {
-                    self::prePatch317();
+                if ($id == 318) {
+                    self::prePatch318();
                 }
 
                 // patch hasn't been run, so run it
@@ -662,7 +662,7 @@ class SqlPatchManager
      * that foreign key values are valid (present in the referenced table.
      * @throws PdoDbException If undefined foreign key values found.
      */
-    private static function prePatch317() {
+    private static function prePatch318() {
         global $pdoDb_admin;
 
         // @formatter::off
@@ -876,7 +876,7 @@ class SqlPatchManager
         }
 
         if (!empty($undefined_values)) {
-            $msg = "\nUnable to apply patch 317. Found foreign key table columns with values not in\n" .
+            $msg = "\nUnable to apply patch 318. Found foreign key table columns with values not in\n" .
                    "the reference table column. The following list shows what values in foreign\n" .
                    "key columns are missing from reference columns.\n\n";
 
@@ -900,7 +900,7 @@ class SqlPatchManager
                 $msg .= $line . "\n";
             }
             error_log($msg);
-            throw new PdoDbException("SqlPatchManager::prePatch317() = Unable to set Foreign Keys.");
+            throw new PdoDbException("SqlPatchManager::prePatch318() = Unable to set Foreign Keys.");
         }
     }
 
@@ -3888,44 +3888,9 @@ class SqlPatchManager
         );
         self::makePatch('316', $patch);
 
-        $patch = array(
-            'name' => 'Add foreign keys to tables.',
-            'patch' =>
-                "ALTER TABLE `" . TB_PREFIX . "cron` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "cron_log` ADD FOREIGN KEY (`cron_id`) REFERENCES `" . TB_PREFIX . "cron` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`biller_id`) REFERENCES `" . TB_PREFIX . "biller` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
-                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
-                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`expense_account_id`) REFERENCES `" . TB_PREFIX . "expense_account` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` ADD FOREIGN KEY (`expense_id`) REFERENCES `" . TB_PREFIX . "expense` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "inventory` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`biller_id`) REFERENCES `" . TB_PREFIX . "biller` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`type_id`) REFERENCES `" . TB_PREFIX . "invoice_type` (`inv_ty_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`preference_id`) REFERENCES `" . TB_PREFIX . "preferences` (`pref_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` ADD FOREIGN KEY (`invoice_item_id`) REFERENCES `" . TB_PREFIX . "invoice_items` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "log` ADD FOREIGN KEY (`userid`) REFERENCES `" . TB_PREFIX . "user` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "payment` ADD FOREIGN KEY (`ac_inv_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "payment` ADD FOREIGN KEY (`ac_payment_type`) REFERENCES `" . TB_PREFIX . "payment_types` (`pt_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "products` ADD FOREIGN KEY (`default_tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "products` ADD FOREIGN KEY (`default_tax_id_2`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "products_attributes` ADD FOREIGN KEY (`type_id`) REFERENCES `" . TB_PREFIX . "products_attribute_type` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "products_values` ADD FOREIGN KEY (`attribute_id`) REFERENCES `" . TB_PREFIX . "products_attributes` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "user` ADD FOREIGN KEY (`domain_id`) REFERENCES `" . TB_PREFIX . "user_domain` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
-                "ALTER TABLE `" . TB_PREFIX . "user` ADD FOREIGN KEY (`role_id`) REFERENCES `" . TB_PREFIX . "user_role` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;",
-            'date' => "20190329",
-            'source' => 'fearless359'
-        );
-        self::makePatch('317', $patch);
-
         // Note that si_index table does NOT have an auto_increment field.
         $patch = array(
-            'name' => "Additional foreign key field characteristic setting changes",
+            'name' => "Additional field characteristic setting changes prior to declaring foreign keys.",
             'patch' =>
                 "ALTER TABLE `" . TB_PREFIX . "biller` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
                 "ALTER TABLE `" . TB_PREFIX . "cron` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
@@ -3990,6 +3955,41 @@ class SqlPatchManager
                 "ALTER TABLE `" . TB_PREFIX . "user_domain` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
                 "ALTER TABLE `" . TB_PREFIX . "user_role` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;",
             'date' => "20190425",
+            'source' => 'fearless359'
+        );
+        self::makePatch('317', $patch);
+
+        $patch = array(
+            'name' => 'Add foreign keys to tables.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "cron` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_log` ADD FOREIGN KEY (`cron_id`) REFERENCES `" . TB_PREFIX . "cron` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`biller_id`) REFERENCES `" . TB_PREFIX . "biller` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense` ADD FOREIGN KEY (`expense_account_id`) REFERENCES `" . TB_PREFIX . "expense_account` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` ADD FOREIGN KEY (`expense_id`) REFERENCES `" . TB_PREFIX . "expense` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "expense_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "inventory` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`biller_id`) REFERENCES `" . TB_PREFIX . "biller` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT; " .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`type_id`) REFERENCES `" . TB_PREFIX . "invoice_type` (`inv_ty_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoices` ADD FOREIGN KEY (`preference_id`) REFERENCES `" . TB_PREFIX . "preferences` (`pref_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD FOREIGN KEY (`invoice_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_items` ADD FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_attachments` ADD FOREIGN KEY (`invoice_item_id`) REFERENCES `" . TB_PREFIX . "invoice_items` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "log` ADD FOREIGN KEY (`user_id`) REFERENCES `" . TB_PREFIX . "user` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ADD FOREIGN KEY (`ac_inv_id`) REFERENCES `" . TB_PREFIX . "invoices` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment` ADD FOREIGN KEY (`ac_payment_type`) REFERENCES `" . TB_PREFIX . "payment_types` (`pt_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ADD FOREIGN KEY (`default_tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ADD FOREIGN KEY (`default_tax_id_2`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_attributes` ADD FOREIGN KEY (`type_id`) REFERENCES `" . TB_PREFIX . "products_attribute_type` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "products_values` ADD FOREIGN KEY (`attribute_id`) REFERENCES `" . TB_PREFIX . "products_attributes` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` ADD FOREIGN KEY (`domain_id`) REFERENCES `" . TB_PREFIX . "user_domain` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;" .
+                "ALTER TABLE `" . TB_PREFIX . "user` ADD FOREIGN KEY (`role_id`) REFERENCES `" . TB_PREFIX . "user_role` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;",
+            'date' => "20190507",
             'source' => 'fearless359'
         );
         self::makePatch('318', $patch);

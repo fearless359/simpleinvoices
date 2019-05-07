@@ -183,7 +183,7 @@
             "node":"invoice",
             "sub_node":"1",
             "sub_node_2":"0",
-            "domain_id":"1"
+            "domain_id":"DOMAIN-ID"
         }
     ],
     "si_invoice_item_tax":
@@ -285,7 +285,7 @@
             "custom_field2":"",
             "custom_field3":"",
             "custom_field4":"",
-            "note":""
+            "note":"This is a test invoice from the sample data."
         }
     ],
     "si_products":
@@ -296,7 +296,6 @@
             "description":"Hourly charge",
             "unit_price":"150",
             "default_tax_id":"1",
-            "default_tax_id_2":"",
             "cost":"",
             "reorder_level":"",
             "custom_field1":"",
@@ -312,7 +311,6 @@
             "description":"Accounting services",
             "unit_price":"140",
             "default_tax_id":"1",
-            "default_tax_id_2":"",
             "cost":"",
             "reorder_level":"",
             "custom_field1":"",
@@ -328,7 +326,6 @@
             "description":"Ploughing service",
             "unit_price":"125",
             "default_tax_id":"1",
-            "default_tax_id_2":"",
             "cost":"",
             "reorder_level":"",
             "custom_field1":"",
@@ -344,7 +341,6 @@
             "description":"Bootleg homebrew",
             "unit_price":"15.5",
             "default_tax_id":"1",
-            "default_tax_id_2":"",
             "cost":"",
             "reorder_level":"",
             "custom_field1":"",
@@ -360,7 +356,6 @@
             "description":"Accommodation",
             "unit_price":"125.5",
             "default_tax_id":"1",
-            "default_tax_id_2":"",
             "cost":"",
             "reorder_level":"",
             "custom_field1":"",

@@ -13,9 +13,9 @@ $file = "databases/json/sample_data.json";
 $find = array('si_','DOMAIN-ID','LOCALE','LANGUAGE');
 $replace = array(TB_PREFIX,'1','en_US','en_US');
 
-$samplejson = new ImportJson($file, $find, $replace, $debug);
-error_log("samplejson - " . print_r($samplejson, true));
-$collated = $samplejson->collate();
+$sample_json = new ImportJson($file, $find, $replace, $debug);
+error_log("sample_json - " . print_r($sample_json, true));
+$collated = $sample_json->collate();
 error_log("================================================");
 error_log("collated - " . print_r($collated, true));
 try {
