@@ -148,7 +148,7 @@ if (!isset($menu)) {
 // TODO - redo this code
 Log::out("index.php - module[$module] view[$view] " .
              "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", Zend_Log::DEBUG);
-error_log("index.php 161 - module[$module] view[$view] databaseBuild[$databaseBuilt] databasePopulated[$databasePopulated]");
+
 if (($module == "options") && ($view == "database_sqlpatches")) {
     SqlPatchManager::donePatchesMessage();
 } else {
