@@ -20,6 +20,7 @@
                 <li>Remove foreign key checks in code as they will now occur automatically.</li>
                 <li>Modified si_cron delete to also delete associated si_cron_log history records.</li>
                 <li>Modified Customer manage page to only show default invoice button if customer is enabled.</li>
+                <li>Modified empty database setup - 20190507</li>
             </ul>
         </li>
         <li>2019-03-21 - <b>2019.1.1</b>
