@@ -24,5 +24,5 @@
     For information regarding the setup,installation, and use of SimpleInvoices please refer to the Instructions sub-menu in the Option menu. <br />
     <br />
     For other queries please refer to the <a href='https://simpleinvoices.group' target="_blank">SimpleInvoices Knowledge Base</a>
-    and the <a href="https://plus.google.com/communities/104308055324308879768">SimpleInvoices Google+ Forum</a>
+    and the <a href="https://simpleinvoices.group/">SimpleInvoices Google+ Forum</a>
 </div>
