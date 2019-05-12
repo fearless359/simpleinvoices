@@ -5,6 +5,7 @@ use Inc\Claz\Customer;
 use Inc\Claz\Email;
 use Inc\Claz\Export;
 use Inc\Claz\Invoice;
+use Inc\Claz\Log;
 use Inc\Claz\Preferences;
 use Inc\Claz\Util;
 
@@ -42,6 +43,7 @@ $smarty->assign('preferences', $preference);
 
 $error = false;
 $message = "Unable to process email request.";
+Log::out("email.php - _GET stage[{$_GET['stage']}]", Zend_Log::DEBUG);
 if ($_GET['stage'] == 2 ) {
     $export = new Export(Destination::STRING_RETURN);
     $export->setBiller($biller);
