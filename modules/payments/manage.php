@@ -23,15 +23,12 @@ if (!empty($_GET['id'])) {
     // Filter by just one invoice
     $inv_id        = $_GET['id'];
     $payments      = Payment::getInvoicePayments($inv_id, true);
-//    $invoice       = Invoice::getInvoice($inv_id);
-//    $preference    = Preferences::getOne($invoice['preference_id']);
     $subPageActive = "payment_filter_invoice";
     $no_entry_msg  = $LANG['no_payments_invoice'];
 } else if (!empty($_GET['c_id'])) {
     // Filter by just one customer
     $c_id          = $_GET['c_id'];
     $payments      = Payment::getCustomerPayments($c_id, true);
-//    $customer      = Customer::getOne($c_id);
     $subPageActive = "payment_filter_customer";
     $no_entry_msg  = $LANG['no_payments_customer'];
 } else {

@@ -6,6 +6,8 @@ use Mpdf\Mpdf;
 use Mpdf\MpdfException;
 use Mpdf\Output\Destination;
 
+use Zend_Log;
+
 /**
  * @name Pdf.php
  * @author Richard Rowley
@@ -35,6 +37,8 @@ class Pdf
                 $pdfname .= '.pdf';
             }
 
+            Log::out("Pdf::generate() - pdfname[{$pdfname}] destination[{$destination}]", Zend_Log::DEBUG);
+            Log::out("Pdf::generate() - html_to_pdf[{$html_to_pdf}]", Zend_Log::DEBUG);
             $mpdf = new Mpdf([
                 'tempDir'           => 'tmp/pdf_tmp',
                 'format'            => $config->export->pdf->papersize,
@@ -50,6 +54,7 @@ class Pdf
             if ($destination == Destination::STRING_RETURN) {
                 return $result;
             }
+            error_log("Pdf::generate() - Destination not STRING_RETURN - result: " . print_r($result,true));
         } catch (MpdfException $mpdfException) {
             error_log('Pdf::generate(): exception - ' . $mpdfException->getMessage());
         }

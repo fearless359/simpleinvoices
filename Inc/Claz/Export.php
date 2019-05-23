@@ -72,6 +72,7 @@ class Export
         }
 
         // @formatter:off
+        Log::out("Export::showData() - format[{$this->format}]", Zend_Log::DEBUG);
         switch ($this->format) {
             case "print":
                 echo ($data);
@@ -81,7 +82,7 @@ class Export
                 return Pdf::generate($data, $this->file_name, $this->destination);
 
             case "file":
-                $invoice    = Invoice::getInvoice($this->id);
+                $invoice    = Invoice::getOne($this->id);
                 $preference = Preferences::getOne($invoice['preference_id']);
 
                 // xls/doc export no longer uses the export template $template = "export";
@@ -189,7 +190,7 @@ class Export
                     $payment = Payment::getOne($this->id);
 
                     // Get Invoice preference to link from this screen back to the invoice
-                    $invoice = Invoice::getInvoice($payment['ac_inv_id']);
+                    $invoice = Invoice::getOne($payment['ac_inv_id']);
                     $biller  = Biller::getOne($payment['biller_id']);
 
                     $logo = Util::getLogo($biller);

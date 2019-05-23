@@ -629,7 +629,7 @@ class SqlPatchManager
                 $invoice_id = $rows['value'];
                 $id = $rows['id'];
                 if (!empty($invoice_id) && $invoice_id > 0) {
-                    $row = Invoice::getInvoice($invoice_id);
+                    $row = Invoice::getOne($invoice_id);
                     $pdoDb_admin->setFauxPost(array('value' => $row['index_id']));
                     $pdoDb_admin->addSimpleWhere('id', $id);
                     $pdoDb_admin->request('UPDATE', 'system_defaults');

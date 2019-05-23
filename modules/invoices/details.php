@@ -37,7 +37,7 @@ Util::directAccessAllowed();
 // See if we are generating this from a default_invoice template
 $default_template_set = (!empty($_GET['template']));
 $master_invoice_id = ($default_template_set ? $_GET ['template'] : $_GET ['id']);
-$invoice = Invoice::getInvoice($master_invoice_id);
+$invoice = Invoice::getOne($master_invoice_id);
 if ($default_template_set) {
     $invoice['id'] = null;
 }

@@ -25,7 +25,6 @@ $today = date("Y-m-d");
 
 if(isset($_GET['id'])) {
     $invoice = Invoice::getOne($_GET['id']);
-error_log("invoice - " . print_r($invoice, true));
 } else {
     $rows = Invoice::getAll();
     $invoice = (empty($rows) ? $rows : $rows[0]);

@@ -29,7 +29,7 @@ Util::directAccessAllowed();
 
 // @formatter:off
 $id           = $_GET['id'];
-$invoice      = Invoice::getInvoice($id);
+$invoice      = Invoice::getOne($id);
 $preference   = Preferences::getOne($invoice['preference_id']);
 $defaults     = SystemDefaults::loadValues();
 $invoicePaid  = Payment::calcInvoicePaid($id);

@@ -237,6 +237,8 @@ class Invoice
             if (empty($dir)) $dir = "DESC";
             $pdoDb->setOrderBy(array($sort, $dir));
 
+            $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.gross_total,0)", "gross"));
+
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.total,0)", "total"));
 
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.tax_amount,0)", "total_tax"));
@@ -286,6 +288,11 @@ class Invoice
                 "iv.sales_representative",
                 "iv.customer_id",
                 "iv.biller_id",
+                "iv.custom_field1",
+                "iv.custom_field2",
+                "iv.custom_field3",
+                "iv.custom_field4",
+                "iv.note",
                 new DbField("iv.date", "date_original"),
                 new DbField("iv.index_id", "index_id"),
                 new DbField("iv.preference_id", "preference_id"),
@@ -301,7 +308,7 @@ class Invoice
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
             foreach ($rows as $row) {
                 $row['owing'] = $row['total'] - $row['paid'];
-                $age_list = self::calculateAgeDays(
+                $age_info = self::calculateAgeDays(
                     $row['id'],
                     $row['date'],
                     $row['owing'],
@@ -310,7 +317,11 @@ class Invoice
                     $row['preference_id']);
 
                 // The merge will update fields that exist and append those that don't.
-                $invoices[] = array_merge($row, $age_list);
+                self::updateAgingValues($row, $age_info);
+                $row['tax_grouped']  = self::taxesGroupedForInvoice($row['id']);
+                $row['calc_date']    = date('Y-m-d', strtotime($row['date']));
+                $row['display_date'] = SiLocal::date($row['date']);
+                $invoices[] = $row;
             }
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoices() - Error: " . $pde->getMessage());
@@ -323,6 +334,35 @@ class Invoice
         return (isset($id) ? $invoices[0] : $invoices);
     }
 
+    /**
+     * Update values in invoice with just calculated values from calculateAgeDays().
+     * Note: Previously used array_merge but it doesn't update numeric values which
+     *       $ageInfo array contains.
+     * @param array $invoice Reference to the array with invoice values.
+     * @param array $ageInfo Updated aging information.
+     */
+    private static function updateAgingValues(&$invoice, $ageInfo)
+    {
+        if (isset($invoice['owing'])) {
+            $invoice['owing'] = $ageInfo['owing'];
+        }
+
+        if (isset($invoice['last_activity_date'])) {
+            $invoice['last_activity_date'] = $ageInfo['last_activity_date'];
+        }
+
+        if (isset($invoice['aging_date'])) {
+            $invoice['aging_date'] = $ageInfo['aging_date'];
+        }
+
+        if (isset($invoice['age_days'])) {
+            $invoice['age_days'] = $ageInfo['age_days'];
+        }
+
+        if (isset($invoice['aging'])) {
+            $invoice['aging'] = $ageInfo['aging'];
+        }
+    }
     /**
      * Create the aging wording to show on the invoice list.
      * @param int $age_days to get string for.
@@ -881,62 +921,6 @@ class Invoice
     }
 
     /**
-     * Get a specific invoice from the database.
-     * @param $id
-     * @return array
-     */
-    public static function getInvoice($id)
-    {
-        global $pdoDb;
-
-        $domain_id = DomainId::get();
-
-        $row = array();
-        try {
-            $pdoDb->setSelectAll(true);
-            $pdoDb->addSimpleWhere("id", $id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", $domain_id);
-            $rows = $pdoDb->request("SELECT", "invoices");
-            if (empty($rows)) {
-                return array();
-            }
-
-            $row = $rows[0];
-
-            // @formatter:off
-            $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-            $row['date']      = SiLocal::date($row['date']);
-            $row['total']     = self::getInvoiceTotal($row['id']);
-            $row['gross']     = self::getInvoiceGross($row['id']);
-            $row['paid']      = Payment::calcInvoicePaid($row['id']);
-
-            $age_info = self::calculateAgeDays(
-                $row['id'],
-                $row['date'],
-                $row['owing'],
-                $row['last_activity_date'],
-                $row['aging_date'],
-                $row['preference_id']);
-            array_merge($row, $age_info);
-
-            // invoice total tax
-            $pdoDb->addToFunctions("SUM(tax_amount) AS total_tax");
-            $pdoDb->addToFunctions("SUM(total) AS total");
-            $pdoDb->addSimpleWhere("invoice_id", $id, "AND");
-            $pdoDb->addSimpleWhere("domain_id", $domain_id);
-            $rows = $pdoDb->request("SELECT", "invoice_items");
-
-            $invoice_item_tax = $rows[0];
-            $row['total_tax']   = $invoice_item_tax['total_tax'];
-            $row['tax_grouped'] = self::taxesGroupedForInvoice($id);
-            // @formatter:on
-        } catch (PdoDbException $pde) {
-            error_log("Invoice::getInvoice() - id[$id] error: " . $pde->getMessage());
-        }
-        return $row;
-    }
-
-    /**
      * @param $q
      * @return mixed
      */
@@ -958,7 +942,7 @@ class Invoice
                     $row['last_activity_date'],
                     $row['aging_date'],
                     $row['preference_id']);
-                array_merge($row, $age_info);
+                self::updateAgingValues($row, $age_info);
 
                 $results[] = $row;
 
@@ -1305,23 +1289,27 @@ class Invoice
         }
 
         $invoice = self::getOne($invoice_id);
+error_log("Invoice.php 1308 - invoice: " . print_r($invoice, true));
         $invoice_items = self::getInvoiceItems($invoice_id);
         // @formatter:off
         $list = array('biller_id'     => $invoice['biller_id'],
                       'customer_id'   => $invoice['customer_id'],
                       'type_id'       => $invoice['type_id'],
                       'preference_id' => $invoice['preference_id'],
+                      'domain_id'     => $invoice['domain_id'],
                       'date'          => $dt_tm,
                       'note'          => $invoice['note'],
                       'custom_field1' => $invoice['custom_field1'],
                       'custom_field2' => $invoice['custom_field2'],
                       'custom_field3' => $invoice['custom_field3'],
                       'custom_field4' => $invoice['custom_field4']);
+error_log("Invoice.php 1321 - list: " . print_r($list, true));
         $new_id = self::insert($list);
 
         // insert each line item
         foreach ($invoice_items as $invoice_item) {
             $list = array('invoice_id' => $new_id,
+                          'domain_id'  => $invoice_item['domain_id'],
                           'quantity'   => $invoice_item['quantity'],
                           'product_id' => $invoice_item['product_id'],
                           'unit_price' => $invoice_item['unit_price'],

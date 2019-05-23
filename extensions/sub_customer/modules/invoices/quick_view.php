@@ -33,7 +33,7 @@ Util::directAccessAllowed();
 
 $invoice_id = $_GET['id'];
 // @formatter:off
-$invoice                 = Invoice::getInvoice($invoice_id);
+$invoice                 = Invoice::getOne($invoice_id);
 $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($invoice_id);
 $invoice_type            = Invoice::getInvoiceType($invoice['type_id']);
 $customer                = Customer::getOne($invoice['customer_id']);

@@ -13,6 +13,13 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-05-21 - <b>2019.2.1</b>
+            <ul>
+                <li>Fixed to set domain_id for invoice created by recurrence to value from original invoice.</li>
+                <li>Fixed setting of updated aging fields that array_merge() missed.</li>
+                <li>Remove Invoice::getInvoice() method so new standard method Invoice::getOne() is used.</li>
+            </ul>
+        </li>
         <li>2019-05-11 - <b>2019.2.1</b>
             <ul>
                 <li>Changed to use ZendFramework1 from composer, not library.</li>

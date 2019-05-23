@@ -164,29 +164,27 @@
             {$preference.pref_currency_sign}{$invoice.gross|siLocal_number}
         </td>
     </tr>
-    {if $invoice_number_of_taxes > 1 }
-        {foreach from=$invoice.tax_grouped item=taxg}
-            {if $taxg.tax_amount != 0}
-                <tr class="tr_tax">
-                    <td colspan="4"></td>
-                    <th class="si_right">{$taxg.tax_name|htmlsafe}</th>
-                    <td class="si_right">{$preference.pref_currency_sign}{$taxg.tax_amount|siLocal_number}</td>
-                </tr>
-            {/if}
-        {/foreach}
-        <tr class="tr_tax">
-            <td colspan="4"></td>
-            <th class="si_right">{$LANG.tax_total}</th>
-            <td class="si_right" style="text-decoration:underline;">
-                {$preference.pref_currency_sign}{$invoice.total_tax|siLocal_number}
-            </td>
-        </tr>
-        <tr class="tr_total">
-            <td colspan="4"></td>
-            <th class="si_right">{$preference.pref_inv_wording|htmlsafe} {$LANG.amount}</th>
-            <td class="si_right">{$preference.pref_currency_sign}{$invoice.total|siLocal_number}</td>
-        </tr>
-    {/if}
+    {foreach from=$invoice.tax_grouped item=taxg}
+        {if $taxg.tax_amount != 0}
+            <tr class="tr_tax">
+                <td colspan="4"></td>
+                <th class="si_right">{$taxg.tax_name|htmlsafe}</th>
+                <td class="si_right">{$preference.pref_currency_sign}{$taxg.tax_amount|siLocal_number}</td>
+            </tr>
+        {/if}
+    {/foreach}
+    <tr class="tr_tax">
+        <td colspan="4"></td>
+        <th class="si_right">{$LANG.tax_total}</th>
+        <td class="si_right" style="text-decoration:underline;">
+            {$preference.pref_currency_sign}{$invoice.total_tax|siLocal_number}
+        </td>
+    </tr>
+    <tr class="tr_total">
+        <td colspan="4"></td>
+        <th class="si_right">{$preference.pref_inv_wording|htmlsafe} {$LANG.amount}</th>
+        <td class="si_right">{$preference.pref_currency_sign}{$invoice.total|siLocal_number}</td>
+    </tr>
 </table>
 {/if}
 {* tax section - end *}

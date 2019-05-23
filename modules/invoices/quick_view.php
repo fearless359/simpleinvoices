@@ -33,7 +33,7 @@ Util::directAccessAllowed();
 
 $invoice_id = $_GET['id'];
 
-$invoice                 = Invoice::getInvoice($invoice_id);
+$invoice                 = Invoice::getOne($invoice_id);
 $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($invoice_id);
 $invoice_type            = Invoice::getInvoiceType($invoice['type_id']);
 $customer                = Customer::getOne($invoice['customer_id']);
@@ -48,7 +48,8 @@ $eway_pre_check      = $eway_check->pre_check();
 
 //Invoice Age - number of days
 if ($invoice['owing'] > 0 ) {
-    $invoice_age_days =  number_format((strtotime(date('Y-m-d')) - strtotime($invoice['calc_date'])) / (60 * 60 * 24),0);
+//    $invoice_age_days =  number_format((strtotime(date('Y-m-d')) - strtotime($invoice['calc_date'])) / (60 * 60 * 24),0);
+    $invoice_age_days = $invoice['age_days'];
     $invoice_age      = "$invoice_age_days {$LANG['days']}";
 }
 else {

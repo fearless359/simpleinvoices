@@ -23,7 +23,7 @@ $smarty->assign("payment", $payment);
 
 if ($numPymtRecs > 0) {
     /*Code to get the Invoice preference - so can link from this screen back to the invoice - START */
-    $invoice     = Invoice::getInvoice($payment['ac_inv_id']);
+    $invoice     = Invoice::getOne($payment['ac_inv_id']);
     $invoiceType = Invoice::getInvoiceType($invoice['type_id']);
     $paymentType = PaymentType::getOne($payment['ac_payment_type']);
 
