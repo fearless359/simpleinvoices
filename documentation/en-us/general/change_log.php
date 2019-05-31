@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-05-31 - <b>2019.2.1</b>
+            <ul>
+                <li>Fixed logic for cron when both the email biller and customer options are set to yes.</li>
+            </ul>
+        </li>
         <li>2019-05-21 - <b>2019.2.1</b>
             <ul>
                 <li>Fixed to set domain_id for invoice created by recurrence to value from original invoice.</li>

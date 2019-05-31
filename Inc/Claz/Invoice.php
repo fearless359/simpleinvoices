@@ -1289,7 +1289,6 @@ class Invoice
         }
 
         $invoice = self::getOne($invoice_id);
-error_log("Invoice.php 1308 - invoice: " . print_r($invoice, true));
         $invoice_items = self::getInvoiceItems($invoice_id);
         // @formatter:off
         $list = array('biller_id'     => $invoice['biller_id'],
@@ -1303,7 +1302,6 @@ error_log("Invoice.php 1308 - invoice: " . print_r($invoice, true));
                       'custom_field2' => $invoice['custom_field2'],
                       'custom_field3' => $invoice['custom_field3'],
                       'custom_field4' => $invoice['custom_field4']);
-error_log("Invoice.php 1321 - list: " . print_r($list, true));
         $new_id = self::insert($list);
 
         // insert each line item

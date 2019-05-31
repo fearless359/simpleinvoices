@@ -70,8 +70,8 @@ foreach ($LANG_en AS $k => $v) {
     }
 }
 
-$LANG_gen = Array();
-$LANG_title = Array();
+$LANG_gen = array();
+$LANG_title = array();
 foreach ($LANG as $k => $v) {
     $basestr = '$LANG[' . "'" . $k ."'" .  '] = "' . $v[0] . '";//' . $v[1];
     if (substr($k, 0, 5) == 'title') $LANG_title[$k] = $basestr;

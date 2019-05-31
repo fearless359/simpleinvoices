@@ -102,13 +102,14 @@ class Email {
 
         $message->setSubject($this->subject);
 
-        // Split multiple addresses that are separated by ";" or ",".
-        $to_addresses = preg_split('/\s*[,;]\s*/', $this->to);
-        if (empty($to_addresses)) {
-            $message->setTo($this->to);
-        } else {
-            $message->setTo($to_addresses);
-        }
+//        // Split multiple addresses that are separated by ";" or ",".
+//        $to_addresses = preg_split('/\s*[,;]\s*/', $this->to);
+//        if (empty($to_addresses)) {
+//            $message->setTo($this->to);
+//        } else {
+//            $message->setTo($to_addresses);
+//        }
+        $message->setTo($this->to);
 
         $result = $mailer->send($message);
         $results = self::makeResults($result);
@@ -369,8 +370,18 @@ class Email {
      */
     public function setTo($to): void
     {
-        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Invalid 'to' email address specified");
+        if (is_array($to)) {
+            foreach ($to as $addr) {
+                if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
+                    error_log("Email::setTo() - Invalid email address: " . print_r($to, true));
+                    throw new Exception("Invalid 'to' email address array");
+                }
+            }
+        } else {
+            if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+                error_log("Email::setTo() - Invalid email address: $to");
+                throw new Exception("Invalid 'to' email address specified");
+            }
         }
 
         $this->to = $to;

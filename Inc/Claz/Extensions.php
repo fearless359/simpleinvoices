@@ -82,9 +82,9 @@ class Extensions
             if ($include_all_dirs) {
                 // Add pseudo rows for extension directories not yet in the tabled (not registered).
                 $extension_dir = 'extensions';
-                $extension_entries = array_diff(scandir($extension_dir), Array(".", "..")); // Skip entries starting with a dot from dir list
+                $extension_entries = array_diff(scandir($extension_dir), array(".", "..")); // Skip entries starting with a dot from dir list
 
-                $available_extensions = Array();
+                $available_extensions = array();
                 foreach ($extension_entries as $entry) {
                     if (file_exists($extension_dir . "/" . $entry . "/DESCRIPTION")) {
                         $description = file_get_contents($extension_dir . "/" . $entry . "/DESCRIPTION");

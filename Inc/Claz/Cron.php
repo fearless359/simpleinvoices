@@ -167,13 +167,29 @@ class Cron {
      * @param $src_array
      * @param $customer_email
      * @param $biller_email
-     * @return string
+     * @return array
      */
     private static function getEmailSendAddresses($src_array, $customer_email, $biller_email) {
-        $email_to_addresses = Array ();
-        if ($src_array['email_customer'] == ENABLED) $email_to_addresses[] = $customer_email;
-        if ($src_array['email_biller']   == ENABLED) $email_to_addresses[] = $biller_email;
-        return implode(";", $email_to_addresses);
+        $email_to_addresses = array ();
+        if ($src_array['email_customer'] == ENABLED) {
+            self::breakMultiEmail($email_to_addresses, $customer_email);
+        }
+        if ($src_array['email_biller'] == ENABLED) {
+            self::breakMultiEmail($email_to_addresses, $biller_email);
+        }
+        return $email_to_addresses;
+    }
+
+    /**
+     * @param array $emailAddresses Array to update
+     * @param string $emailAddrLine Email address line with one or more email addresses separated
+     *          by a semi-colon.
+     */
+    private static function breakMultiEmail(&$emailAddresses, $emailAddrLine) {
+        $parts = explode(';', $emailAddrLine);
+        foreach ($parts as $part) {
+            $emailAddresses[] = $part;
+        }
     }
 
     /**
