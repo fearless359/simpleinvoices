@@ -102,7 +102,7 @@ class Payment
                 'invoice_id' => $invoice_id,
                 'customer' => $row['cname'],
                 'biller' => $row['bname'],
-                'amount' => $row['ac_amount'],
+                'amount_fmtd' => SiLocal::currency($row['ac_amount']),
                 'type' => $row['type'],
                 'date' => $row['date']
             );

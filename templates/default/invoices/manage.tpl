@@ -91,8 +91,8 @@
                     { "data": "biller" },
                     { "data": "customer" },
                     { "data": "date" },
-                    { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
-                    { "data": "owing", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
+                    { "data": "total_fmtd"},
+                    { "data": "owing_fmtd"},
                     { "data": "aging" }
                 ],
                 "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],

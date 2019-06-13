@@ -51,7 +51,7 @@
                     { "data": "invoice_id" },
                     { "data": "customer" },
                     { "data": "biller" },
-                    { "data": "amount", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
+                    { "data": "amount_fmtd" },
                     { "data": "type" },
                     { "data": "date" },
                 ],

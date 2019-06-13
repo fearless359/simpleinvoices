@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-06-13 - <b>2019.2.1</b>
+            <ul>
+                <li>Changed to format amounts in lists per local.locale setting in the custom.config.php file.</li>
+            </ul>
+        </li>
         <li>2019-05-31 - <b>2019.2.1</b>
             <ul>
                 <li>Fixed logic for cron when both the email biller and customer options are set to yes.</li>

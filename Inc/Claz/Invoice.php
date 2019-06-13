@@ -196,7 +196,9 @@ class Invoice
                 'customer' => $row['customer'],
                 'date' => SiLocal::date($row['date']),
                 'total' => $row['total'],
+                'total_fmtd' => SiLocal::currency($row['total']),
                 'owing' => (isset($row['status']) ? $row['owing'] : ''),
+                'owing_fmtd' => (isset($row['status']) ? SiLocal::currency($row['owing']) : ''),
                 'aging' => (isset($row['aging']) ? $row['aging'] : '')
             );
         }
@@ -301,6 +303,8 @@ class Invoice
                 new DbField("c.name", "customer"),
                 new DbField("pf.pref_description", "preference"),
                 new DbField("pf.status", "status"));
+                new DbField("pf.pref_currency_sign", "currency_sign");
+                new DbField("pf.currency_code", "currency_code");
             $pdoDb->setSelectList($expr_list);
 
             $pdoDb->setGroupBy($expr_list);
