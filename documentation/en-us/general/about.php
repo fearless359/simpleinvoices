@@ -3,7 +3,7 @@
 <head>
     <title>SimpleInvoices - About</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="../../../templates/default/css/main.css">
+    <link rel="stylesheet" href="../../../include/jquery/css/main.css">
     <link rel="stylesheet" href="../../../templates/default/css/info.css">
     <?php
     function printVersionInfo()
@@ -57,7 +57,7 @@
 <br/>
 <div class="si_center">
     <p><?php printVersionInfo();?></p>
-    <p>Homepage: <a href='https://simpleinvoices.group'>https://simpleinvoices.group</a></p>
+    <p>Homepage: <a href='https://simpleinvoices.group' target="_blank">https://simpleinvoices.group</a></p>
 </div>
 </body>
 </html>

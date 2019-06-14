@@ -3,7 +3,7 @@
 <head>
   <title>SimpleInvoices - Changelog</title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="../../../templates/default/css/main.css">
+  <link rel="stylesheet" href="../../../include/jquery/css/main.css">
   <link rel="stylesheet" href="../../../templates/default/css/info.css">
 </head>
 <body>
