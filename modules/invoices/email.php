@@ -64,7 +64,10 @@ if ($_GET['stage'] == 2 ) {
     $email->setPdfFileName($export->getFileName() . '.pdf');
     $email->setPdfString($pdf_string);
     $email->setSubject($_POST['email_subject']);
-    $email->setTo($_POST['email_to']);
+
+    // Check for multiple recipients
+    $email_to = array_filter(explode(';', $_POST['email_to']));
+    $email->setTo($email_to);
 
     $results = $email->send();
     $smarty->assign('display_block', $results['display_block']);

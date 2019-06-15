@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-06-15 - <b>2019.2.1</b>
+            <ul>
+                <li>Modified english email filter to allow multiple emails separated by a semi-colon.</li>
+            </ul>
+        </li>
         <li>2019-06-13 - <b>2019.2.1</b>
             <ul>
                 <li>Changed to format amounts in lists per local.locale setting in the custom.config.php file.</li>
