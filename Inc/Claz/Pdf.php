@@ -54,7 +54,6 @@ class Pdf
             if ($destination == Destination::STRING_RETURN) {
                 return $result;
             }
-            error_log("Pdf::generate() - Destination not STRING_RETURN - result: " . print_r($result,true));
         } catch (MpdfException $mpdfException) {
             error_log('Pdf::generate(): exception - ' . $mpdfException->getMessage());
         }
