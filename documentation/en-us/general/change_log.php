@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-07-02 - <b>2019.2.1</b>
+            <ul>
+                <li>Fix payment to update invoice aging info and remove debug stmt from pdf.</li>
+            </ul>
+        </li>
         <li>2019-06-15 - <b>2019.2.1</b>
             <ul>
                 <li>Modified english email filter to allow multiple emails separated by a semi-colon.</li>
