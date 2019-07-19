@@ -63,6 +63,9 @@ class Invoice
      *              Ex: array("date_between" => array($start_date, $end_date)), or
      *                  array("date_between" => array($start_date, $end_date),
      *                        "real" => array());
+     *          <b>array:</b> Sequential array containing one or more associative arrays:
+     *              Ex: array(array("date_between" => array($start_date, $end_date),
+     *                        array("real" => array());
      * @param string $sort field to order by (optional).
      * @param string $dir order by direction, "asc" or "desc" - (optional).
      * @param bool $manageTable true if select for manage.tpl table; false (default) if not.
@@ -76,10 +79,20 @@ class Invoice
             try {
                 if (is_array($having)) {
                     foreach ($having as $key => $value) {
-                        if (empty($value)) {
-                            $pdoDb->setHavings(Invoice::buildHavings($key));
+                        if (is_int($key) && is_array($value)) {
+                            foreach ($value as $key2 => $value2) {
+                                if (empty($value2)) {
+                                    $pdoDb->setHavings(Invoice::buildHavings($key2));
+                                } else {
+                                    $pdoDb->setHavings(Invoice::buildHavings($key2, $value2));
+                                }
+                            }
                         } else {
-                            $pdoDb->setHavings(Invoice::buildHavings($key, $value));
+                            if (empty($value)) {
+                                $pdoDb->setHavings(Invoice::buildHavings($key));
+                            } else {
+                                $pdoDb->setHavings(Invoice::buildHavings($key, $value));
+                            }
                         }
                     }
                 } else if (is_string($having)) {

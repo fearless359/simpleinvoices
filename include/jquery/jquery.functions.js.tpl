@@ -16,7 +16,7 @@
                 /*$('#state').html(data);*/
                 /*if ( (quantity.length==0) || (quantity.value==null) ) */
                 $("#json_html" + row_number).remove();
-                if (quantity == "") {
+                if (quantity === "") {
                     $("#quantity" + row_number).attr("value", "1");
                 }
                 $("#unit_price" + row_number).attr("value", data['unit_price']);
@@ -28,18 +28,21 @@
                     $("#tax_id\\[" + row_number + "\\]\\[1\\]").val(data['default_tax_id_2']);
                 }
                 //do the product matric code
-                if (data['show_description'] == "Y") {
+                if (data['show_description'] === "Y") {
                     $("tbody#row" + row_number + " tr.details").removeClass('si_hide');
                 } else {
                     $("tbody#row" + row_number + " tr.details").addClass('si_hide');
                 }
-                if ($("#description" + row_number).val() == $("#description" + row_number).attr('rel') || $("#description" + row_number).val() == '{/literal}{$LANG.description}{literal}') {
-                    if (data['notes_as_description'] == "Y") {
-                        $("#description" + row_number).val(data['notes']);
-                        $("#description" + row_number).attr('rel', data['notes']);
+                let desc_row = $("#description" + row_number);
+                let row_val = desc_row.val().trim();
+                let rel_attr = desc_row.attr('rel');
+                if (!row_val || row_val === rel_attr || row_val === '{/literal}{$LANG.description}{literal}') {
+                    if (data['notes_as_description'] === "Y") {
+                        desc_row.val(data['notes']);
+                        desc_row.attr('rel', data['notes']);
                     } else {
-                        $("#description" + row_number).val('{/literal}{$LANG.description}{literal}');
-                        $("#description" + row_number).attr('rel', '{/literal}{$LANG.description}{literal}');
+                        desc_row.val('{/literal}{$LANG.description}{literal}');
+                        desc_row.attr('rel', '{/literal}{$LANG.description}{literal}');
 
                     }
                 }
@@ -49,6 +52,6 @@
             }
 
         });
-    };
+    }
 </script>
 {/literal}

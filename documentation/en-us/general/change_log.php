@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-07-18 - <b>2019.2.1</b>
+            <ul>
+                <li>Fix issue of Invoice of getAllHavings selection logic.</li>
+                <li>Fix date range logic in Sales Report By Period.</li>
+            </ul>
+        </li>
         <li>2019-07-02 - <b>2019.2.1</b>
             <ul>
                 <li>Fix payment to update invoice aging info and remove debug stmt from pdf.</li>

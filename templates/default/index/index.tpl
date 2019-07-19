@@ -53,7 +53,6 @@
             <a href="">{$LANG.help_si_help} &gt;</a><br/>
             <a href="https://simpleinvoices.group/">{$LANG.help_community_forums} &gt;</a><br/>
             <a href="https://simpleinvoices.group/">{$LANG.help_blog} &gt;</a><br/>
-            <a href="https://simpleinvoices.group/">{$LANG.help_mailing_list} &gt;</a>
         </div>
         <h2>{$LANG.start_working}</h2>
         <div class="si_toolbar">
