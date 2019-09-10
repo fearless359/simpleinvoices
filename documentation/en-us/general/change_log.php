@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-09-08 - <b>2019.2.2</b>
+            <ul>
+                <li>Modify patch management to add si_invoice_item_attachments to database if it doesn't exist.</li>
+            </ul>
+        </li>
         <li>2019-07-18 - <b>2019.2.1</b>
             <ul>
                 <li>Fix issue of Invoice of getAllHavings selection logic.</li>

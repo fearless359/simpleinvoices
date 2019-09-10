@@ -17,7 +17,7 @@ class SubCustomers {
         try {
             $pdoDb->addTableConstraints('parent_customer_id', 'ADD ~ INT(11) NULL AFTER `custom_field4`');
             if (!$pdoDb->request('ALTER TABLE', 'customers')) {
-                throw new PdoDbException('Unable to add "parent_customer_id" column to customeres.');
+                throw new PdoDbException('Unable to add "parent_customer_id" column to customers.');
             }
         } catch (PdoDbException $pde) {
             error_log("SubCustomers::addParentCustomerId() - Error: " . $pde->getMessage());

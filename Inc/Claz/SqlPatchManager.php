@@ -229,6 +229,10 @@ class SqlPatchManager
                 }
             } else {
                 // Validate patches before being applied
+                if ($id == 308) {
+                    self::prePatch308();
+                }
+
                 if ($id == 318) {
                     self::prePatch318();
                 }
@@ -654,6 +658,32 @@ class SqlPatchManager
         } catch (PdoDbException $pde) {
             error_log("SqlPatchManager::postPatch304() - Error: " . $pde->getMessage());
             die ("SqlPatchManager::postPatch304() error. See error log for additional details.");
+        }
+    }
+
+    /**
+     * Create invoice_item_attachments table if it doesn't exist.
+     */
+    private static function prePatch308() {
+        global $pdoDb_admin;
+
+        if (!$pdoDb_admin->checkTableExists('invoice_item_attachments')) {
+            $pdoDb_admin->addTableColumns("id", "INT(10)", "NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Unique ID for this entry'");
+            $pdoDb_admin->addTableColumns("invoice_item_id", "INT(10)", "NOT NULL COMMENT 'ID of invoice item this attachment is associated with'");
+            $pdoDb_admin->addTableColumns("name", "VARCHAR(255)", "NOT NULL COMMENT 'Name of attached object'");
+            $pdoDb_admin->addTableColumns("attachment", "BLOB", "COMMENT 'Attached object'");
+            $pdoDb_admin->addTableEngine("InnoDB");
+            if (!$pdoDb_admin->request("CREATE TABLE", "invoice_item_attachments")) {
+                try {
+                    $pdoDb_admin->addTableConstraints('id', 'ADD UNIQUE KEY ~ (~)');
+                    $pdoDb_admin->addTableConstraints('invoice_item_id', 'ADD KEY ~ (~)');
+                    if (!$pdoDb_admin->request('ALTER TABLE', 'invoice_item_attachments')) {
+                        throw new PdoDbException('Unable to keys to invoice_item_attachments.');
+                    }
+                } catch (PdoDbException $pde) {
+                    error_log("SqlPatchManager::prePatch308() - Error: " . $pde->getMessage());
+                }
+            }
         }
     }
 
