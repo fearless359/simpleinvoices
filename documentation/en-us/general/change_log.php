@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-09-13 - <b>2019.2.3</b>
+            <ul>
+                <li>Modify sql patch 317 to set auto increment on si_payment_types table.</li>
+                <li>Update database structure and full definition files to reflect current settings.</li>
+            </ul>
+        </li>
         <li>2019-09-08 - <b>2019.2.2</b>
             <ul>
                 <li>Modify patch management to add si_invoice_item_attachments to database if it doesn't exist.</li>

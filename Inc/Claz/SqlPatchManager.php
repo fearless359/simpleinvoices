@@ -3960,7 +3960,7 @@ class SqlPatchManager
                 "ALTER TABLE `" . TB_PREFIX . "payment` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
                 "ALTER TABLE `" . TB_PREFIX . "payment_types` ALTER `domain_id` DROP DEFAULT;" .
                 "ALTER TABLE `" . TB_PREFIX . "payment_types` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
-                "ALTER TABLE `" . TB_PREFIX . "payment_types` MODIFY `pt_id` INT(11) UNSIGNED NULL;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_types` MODIFY `pt_id` INT(11) UNSIGNED NULL AUTO_INCREMENT;" .
                 "ALTER TABLE `" . TB_PREFIX . "preferences` ALTER `domain_id` DROP DEFAULT;" .
                 "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `domain_id` INT(11) UNSIGNED NOT NULL;" .
                 "ALTER TABLE `" . TB_PREFIX . "preferences` MODIFY `pref_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;" .
