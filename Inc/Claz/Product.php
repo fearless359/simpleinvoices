@@ -221,7 +221,7 @@ class Product {
                 'custom_field3' => (isset($_POST['custom_field3']) ? $_POST['custom_field3'] : ""),
                 'custom_field4' => (isset($_POST['custom_field4']) ? $_POST['custom_field4'] : ""),
                 'notes' => (isset($_POST['notes']) ? $_POST['notes'] : ""),
-                'default_tax_id' => (isset($_POST['default_tax_id']) ? $_POST['default_tax_id'] : ""),
+                'default_tax_id' => (empty($_POST['default_tax_id']) ? NULL : $_POST['default_tax_id']),
                 'custom_flags' => $custom_flags,
                 'enabled' => $enabled,
                 'visible' => $visible,

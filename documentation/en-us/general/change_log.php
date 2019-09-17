@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-09-16 - <b>2019.2.4</b>
+            <ul>
+                <li>Fix setting of no default tax on new product to NULL.</li>
+            </ul>
+        </li>
         <li>2019-09-13 - <b>2019.2.3</b>
             <ul>
                 <li>Modify sql patch 317 to set auto increment on si_payment_types table.</li>
