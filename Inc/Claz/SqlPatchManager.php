@@ -673,7 +673,7 @@ class SqlPatchManager
             $pdoDb_admin->addTableColumns("name", "VARCHAR(255)", "NOT NULL COMMENT 'Name of attached object'");
             $pdoDb_admin->addTableColumns("attachment", "BLOB", "COMMENT 'Attached object'");
             $pdoDb_admin->addTableEngine("InnoDB");
-            if (!$pdoDb_admin->request("CREATE TABLE", "invoice_item_attachments")) {
+            if ($pdoDb_admin->request("CREATE TABLE", "invoice_item_attachments")) {
                 try {
                     $pdoDb_admin->addTableConstraints('id', 'ADD UNIQUE KEY ~ (~)');
                     $pdoDb_admin->addTableConstraints('invoice_item_id', 'ADD KEY ~ (~)');
