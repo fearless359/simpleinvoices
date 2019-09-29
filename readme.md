@@ -17,12 +17,10 @@ For the Fearless359 releases, Zend Framework is incorporated in the download.
 ## Fearless359 Version Downloads
 * Master - [master](https://github.com/fearless359/simpleinvoices/archive/master.zip) (.zip) PHP 5.6 & 7.x
   * Library code updated to eliminate errors for current PHP versions.
-* Master 2019 - [master_2019](https://github.com/fearless359/simpleinvoices/archive/master_2019.zip) (.zip) PHP 7.x
+* Master 2019 - [master_2019](https://github.com/fearless359/simpleinvoices/archive/master_2019.zip) (.zip) PHP 7.2 and up.
   * Updated jquery, pdf, email, manage screen content lists, etc. Changed to us Composer for library maintenance and class autoload.
-* Master 2019 Foreign Key BETA - ***DEPRECATED - Use master_2019.2.1_beta version instead.***
-  * Major update to standardize and formalize common database fields. Adds Foreign Key support to the database.
-* Master 2019.2.1 BETA - [master_2019.2.1_beta](https://github.com/fearless359/simpleinvoices/archive/master_2019.2.1_beta.zip) (.zip) PHP 7.x
-  * Library update to move Zend Framework 1 library from locally maintained to Composer maintain version. ** ***USE ONLY IN TEST MODE FOR NOW*** **
+* Master 2019.2.1 BETA - [master_2019.2](https://github.com/fearless359/simpleinvoices/archive/master_2019.2.zip) (.zip) PHP 7.2 and up.
+  * Library update to move Zend Framework 1 library from locally maintained to Composer maintain version.
 
 ## Documentation
 * [All discussions & help have moved to SimpleInvoices Group Forum](https://simpleinvoices.group)
