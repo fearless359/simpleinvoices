@@ -54,26 +54,37 @@ if ($_GET['stage'] == 2 ) {
     $export->setModule('invoice');
     $export->setPreference($preference);
     $pdf_string = $export->execute();
+    Log::out("email.php - After execute", Zend_Log::DEBUG);
 
     $email = new Email;
-    $email->setBcc($_POST['email_bcc']);
-    $email->setBody($_POST['email_notes']);
-    $email->setFormat('invoice');
-    $email->setFrom($_POST['email_from']);
-    $email->setFromFriendly($biller['name']);
-    $email->setPdfFileName($export->getFileName() . '.pdf');
-    $email->setPdfString($pdf_string);
-    $email->setSubject($_POST['email_subject']);
+    try {
+        $email->setBcc($_POST['email_bcc']);
+        $email->setBody($_POST['email_notes']);
+        $email->setFormat('invoice');
+        $email->setFrom($_POST['email_from']);
+        $email->setFromFriendly($biller['name']);
+        $email->setPdfFileName($export->getFileName() . '.pdf');
+        $email->setPdfString($pdf_string);
+        $email->setSubject($_POST['email_subject']);
 
-    // Check for multiple recipients
-    $email_to = array_filter(explode(';', $_POST['email_to']));
-    $email->setTo($email_to);
+        // Check for multiple recipients
+        $email_to = array_filter(explode(';', $_POST['email_to']));
+        $email->setTo($email_to);
+    } catch (Exception $e) {
+        $message = $e->getMessage();
+        $error = true;
+    }
 
-    $results = $email->send();
-    $smarty->assign('display_block', $results['display_block']);
-    $smarty->assign('refresh_redirect', $results['refresh_redirect']);
+    if (!$error) {
+        Log::out("email.php - Before send", Zend_Log::DEBUG);
+        $results = $email->send();
 
-    $message = '';
+        Log::out("email.php - results" . print_r($results, true), Zend_Log::DEBUG);
+        $smarty->assign('display_block', $results['display_block']);
+        $smarty->assign('refresh_redirect', $results['refresh_redirect']);
+
+        $message = '';
+    }
 } else if ($_GET['stage'] == 3 ) {
     //stage 3 = assemble email and send
     $message = "Invalid routing to stage 3 of email processing. Probably a process error.";

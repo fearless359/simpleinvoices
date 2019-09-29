@@ -2,6 +2,7 @@
 namespace Inc\Claz;
 
 use Zend_Log;
+use Exception;
 
 /**
  * Class Export
@@ -180,7 +181,7 @@ class Export
                     $smarty->assign('statement'            , $statement);
                     $smarty->assign('menu'                 , false);
                     $data = $smarty->fetch($templatePath);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     error_log("Export::getData() - statement - error: " . $e->getMessage());
                 }
                 break;

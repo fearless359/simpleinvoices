@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-09-29 - <b>2019.2.6</b>
+            <ul>
+                <li>Add LOG messages to better follow email requests.</li>
+                <li>Report thrown exceptions from Email methods.</li>
+            </ul>
+        </li>
         <li>2019-09-16 - <b>2019.2.5</b>
             <ul>
                 <li>Fix prePatch308() result test to allow si_invoice_item_attachments creation if not present.</li>

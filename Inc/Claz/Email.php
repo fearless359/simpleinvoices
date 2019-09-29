@@ -8,6 +8,8 @@ use Swift_SmtpTransport;
 
 use Exception;
 
+use \Zend_Log;
+
 /**
  * Class Email
  * @package Inc\Claz
@@ -111,7 +113,10 @@ class Email {
 //        }
         $message->setTo($this->to);
 
+        Log::out("Email::send() - Before Swift_Mailer send()", Zend_Log::DEBUG);
         $result = $mailer->send($message);
+
+        Log::out("Email::send() - After Swift_Mailer send() result[{$result}]", Zend_Log::DEBUG);
         $results = self::makeResults($result);
         return $results;
     }
@@ -365,7 +370,7 @@ class Email {
     }
 
     /**
-     * @param string $to Email address to send message to.
+     * @param array/string $to Email address to send message to.
      * @throws Exception
      */
     public function setTo($to): void

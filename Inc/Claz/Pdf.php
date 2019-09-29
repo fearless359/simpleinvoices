@@ -24,7 +24,7 @@ class Pdf
      * Generates PDF output to specified destination.
      * @param string $html_to_pdf html path to source html file.
      * @param string $pdfname String path to file to save generated PDF to.
-     * @param Destination $destination Setting from \
+     * @param string $destination Setting from Mpdf\Output\Destination.
      * @return string/null If Destination::STRING_RETURN specified, then the
      *      string form of the PDF to attach to an email; otherwise null.
      */
@@ -38,7 +38,6 @@ class Pdf
             }
 
             Log::out("Pdf::generate() - pdfname[{$pdfname}] destination[{$destination}]", Zend_Log::DEBUG);
-            Log::out("Pdf::generate() - html_to_pdf[{$html_to_pdf}]", Zend_Log::DEBUG);
             $mpdf = new Mpdf([
                 'tempDir'           => 'tmp/pdf_tmp',
                 'format'            => $config->export->pdf->papersize,
@@ -48,15 +47,22 @@ class Pdf
                 'margin_top'        => $config->export->pdf->topmargin,
                 'margin_bottom'     => $config->export->pdf->bottommargin
             ]);
+
+            Log::out("Pdf::generate() - Before WriteHTML", Zend_Log::DEBUG);
             $mpdf->WriteHTML($html_to_pdf);
 
+            Log::out("Pdf::generate() - Before Output", Zend_Log::DEBUG);
             $result = $mpdf->Output($pdfname, $destination);
+
             if ($destination == Destination::STRING_RETURN) {
+                Log::out("Pdf::generate() - returning Output result", Zend_Log::DEBUG);
                 return $result;
             }
         } catch (MpdfException $mpdfException) {
             error_log('Pdf::generate(): exception - ' . $mpdfException->getMessage());
         }
+
+        Log::out("Pdf::generate() - returning NULL", Zend_Log::DEBUG);
         return null;
     }
 
