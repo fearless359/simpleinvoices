@@ -78,7 +78,15 @@ class Email {
             return $results;
         }
 
-        $transport = new Swift_SmtpTransport($config->email->host, $config->email->smtpport);
+        $encryption = null;
+        if (!empty($config->email->secure)) {
+            $encryption = strtolower($config->email->secure);
+            if ($encryption != 'tls' && $encryption != 'ssl') {
+                $encryption = null;
+            }
+        }
+
+        $transport = new Swift_SmtpTransport($config->email->host, $config->email->smtpport, $config->email->secure);
         $transport->setUsername($config->email->username);
         $transport->setPassword($config->email->password);
 
@@ -104,13 +112,6 @@ class Email {
 
         $message->setSubject($this->subject);
 
-//        // Split multiple addresses that are separated by ";" or ",".
-//        $to_addresses = preg_split('/\s*[,;]\s*/', $this->to);
-//        if (empty($to_addresses)) {
-//            $message->setTo($this->to);
-//        } else {
-//            $message->setTo($to_addresses);
-//        }
         $message->setTo($this->to);
 
         Log::out("Email::send() - Before Swift_Mailer send()", Zend_Log::DEBUG);

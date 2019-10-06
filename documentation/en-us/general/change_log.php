@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-10-06 - <b>2019.2.7</b>
+            <ul>
+                <li>Add email secure parameter to Swift Mailer transport class.</li>
+            </ul>
+        </li>
         <li>2019-09-29 - <b>2019.2.6</b>
             <ul>
                 <li>Add LOG messages to better follow email requests.</li>
