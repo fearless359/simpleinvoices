@@ -10,13 +10,11 @@ class Preferences {
     /**
      * Get a specific <b>si_preferences</b> record.
      * @param string $id Unique ID record to retrieve.
-     * @param bool $ret_one If true, only one payment record returned for the $id,
-     *              otherwise all payments for the $id are returned (multiple made on invoice).
      * @return array Row(s) retrieved. Empty array returned if nothing found.
      */
-    public static function getOne($id, $ret_one = true)
+    public static function getOne($id)
     {
-        return self::getPreferences($id, $ret_one);
+        return self::getPreferences($id);
     }
 
     /**
@@ -34,11 +32,9 @@ class Preferences {
     /**
      * Get preference records based on specified parameters.
      * @param int $id If not null, then id of records to retrieve.
-     * @param bool $ret_one If true and $id is not null, only one payment record will be
-     *             returned event if multiple payment made for this $id.
      * @return array Row(s) retrieved. Empty array returned if nothing found.
      */
-    private static function getPreferences($id = null, $ret_one = true)
+    private static function getPreferences($id = null)
     {
         global $LANG, $pdoDb;
 
@@ -69,6 +65,13 @@ class Preferences {
                 $row['ename'] = $LANG['edit'] . " " . $LANG['preference'] . " " . $row['pref_description'];
                 $row['image'] = ($row['pref_enabled'] == ENABLED ? "images/common/tick.png" :
                                                                    "images/common/cross.png");
+                $row['invoice_numbering_group'] = "";
+                foreach($rows as $r2) {
+                    if ($row['index_group'] == $r2['pref_id']) {
+                        $row['invoice_numbering_group'] = $r2['pref_description'];
+                        break;
+                    }
+                }
                 $preferences[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -78,7 +81,7 @@ class Preferences {
             return $preferences;
         }
 
-        return (isset($id) && $ret_one ? $preferences[0] : $preferences);
+        return (isset($id) ? $preferences[0] : $preferences);
     }
 
     /**

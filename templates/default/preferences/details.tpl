@@ -144,7 +144,7 @@
                             <img src="{$help_image_path}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td>{$index_group.pref_description} ({$preference.pref_id})</td>
+                    <td>{$index_group.pref_description} ({$index_group.pref_id})</td>
                 </tr>
                 <tr>
                     <th>{$LANG.language}

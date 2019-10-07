@@ -27,6 +27,7 @@
             <th>{$LANG.actions}</th>
             <th>{$LANG.id}</th>
             <th>{$LANG.description}</th>
+            <th>{$LANG.invoice_numbering_group}</th>
             <th class="si_center">{$LANG.language}</th>
             <th class="si_center">{$LANG.locale}</th>
             <th class="si_center">{$LANG.enabled}</th>
@@ -47,12 +48,13 @@
                 </td>
                 <td>{$preference['pref_id']}</td>
                 <td>{$preference['pref_description']}</td>
+                <td class="si_center">{$preference['invoice_numbering_group']}</td>
                 <td class="si_center">{$preference['language']}</td>
                 <td class="si_center">{$preference['locale']}</td>
                 <td class="si_center">
                     <!-- here so field can be sorted -->
                     <span style="display: none">{$preference['enabled_text']}</span>
-                    <img src="{$preference['image']}" alt="enaabled flag">
+                    <img src="{$preference['image']}" alt="enabled flag">
                 </td>
             </tr>
         {/foreach}
@@ -64,7 +66,7 @@
             $('#si-data-table').DataTable({
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
-                    [4, "desc"],
+                    [6, "desc"],
                     [1, "asc"]
                 ],
                 "columnDefs": [
