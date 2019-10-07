@@ -185,9 +185,9 @@
 				<p><em>{$LANG.no_preferences}</em></p>
 			{else}
 				<select name="index_group">
-					<option value="">-use this preference-</option>
+					<option value="">{$LANG.use_this_pref}</option>
 				{foreach from=$preferences item=preference}
-					<option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
+					<option {if $preference.pref_id == $defaults.preference} selected {/if} value="{$preference.pref_id|htmlsafe}">{$preference.pref_description|htmlsafe} ({$preference.pref_id|htmlsafe})</option>
 				{/foreach}
 				</select>
 			{/if}

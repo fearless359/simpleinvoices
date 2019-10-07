@@ -720,6 +720,7 @@ $LANG['unit_cost'] = "Unit Cost";//1
 $LANG['unit_price'] = "Unit Price";//1
 $LANG['unpaid_invoices'] = "Unpaid Invoices";//1
 $LANG['upgrading_simple_invoices'] = "Upgrading SimpleInvoices";//1
+$LANG['use_this_pref'] = "-use this preference-";//0
 $LANG['user_add'] = "Add User";//1
 $LANG['user_id'] = "User ID";//1
 $LANG['username'] = "User Name";//1

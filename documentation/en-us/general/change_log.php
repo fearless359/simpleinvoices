@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-10-07 - <b>2019.2.8</b>
+            <ul>
+                <li>Add pref_id field to the Inv Prefs screens.</li>
+            </ul>
+        </li>
         <li>2019-10-06 - <b>2019.2.7</b>
             <ul>
                 <li>Add email secure parameter to Swift Mailer transport class.</li>

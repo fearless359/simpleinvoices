@@ -380,7 +380,7 @@
                         {else}
                             <select name="index_group">
                                 {foreach $preferences as $p}
-                                    <option {if $p.pref_id == $preference.index_group} selected {/if} value="{if isset($p.pref_id)}{$p.pref_id|htmlsafe}{/if}">{$p.pref_description|htmlsafe}</option>
+                                    <option {if $p.pref_id == $preference.index_group} selected {/if} value="{$p.pref_id|htmlsafe}">{$p.pref_description|htmlsafe} ({$p.pref_id|htmlsafe})</option>
                                 {/foreach}
                             </select>
                         {/if}

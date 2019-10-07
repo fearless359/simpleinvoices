@@ -25,6 +25,7 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
+            <th>{$LANG.id}</th>
             <th>{$LANG.description}</th>
             <th class="si_center">{$LANG.language}</th>
             <th class="si_center">{$LANG.locale}</th>
@@ -44,6 +45,7 @@
                         <img src="images/common/edit.png" class="action" />
                     </a>
                 </td>
+                <td>{$preference['pref_id']}</td>
                 <td>{$preference['pref_description']}</td>
                 <td class="si_center">{$preference['language']}</td>
                 <td class="si_center">{$preference['locale']}</td>
