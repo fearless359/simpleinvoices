@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-10-08 - <b>2019.2.9</b>
+            <ul>
+                <li>Allow equal sign (=) in the config.php value.</li>
+            </ul>
+        </li>
         <li>2019-10-07 - <b>2019.2.8</b>
             <ul>
                 <li>Add pref_id field to the Inv Prefs screens.</li>

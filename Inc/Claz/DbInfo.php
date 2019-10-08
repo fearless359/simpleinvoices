@@ -148,7 +148,7 @@ class DbInfo {
      */
     private static function unjoin($line, $prefix) {
         $line = preg_replace('/^(.*);.*$/', '$1', $line);
-        $pieces = explode("=", $line);
+        $pieces = explode("=", $line, 2);
         if (count($pieces) != 2) return array("","");
 
         $parts = explode(".", $pieces[0]);
