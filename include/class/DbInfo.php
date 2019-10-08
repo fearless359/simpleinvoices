@@ -81,7 +81,7 @@ class DbInfo {
             $line = trim($secure_info[$i]);
             if (strstr($line,"=") === false) break;
 
-            $parts = explode("=", $line);
+            $parts = explode("=", $line, 2);
             if (count($parts) != 2) break;
 
             $pieces = MyCrypt::unjoin($line, $prefix);
