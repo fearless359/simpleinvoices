@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-10-15 - <b>2019.2.10</b>
+            <ul>
+                <li>Add logic to clean up DataTables json file if present.</li>
+            </ul>
+        </li>
         <li>2019-10-08 - <b>2019.2.9</b>
             <ul>
                 <li>Allow equal sign (=) in the config.php value.</li>

@@ -268,3 +268,11 @@ switch ($module) {
 
 // get the url - used for templates / pdf
 $siUrl = Util::getURL();
+
+if (file_exists("public/data.json")) {
+    Log::out("init.php - unlink public/data.json", Zend_Log::DEBUG);
+    if (!unlink("public/data.json")) {
+        Log::out("init.php - unlink failed", Zend_Log::DEBUG);
+    }
+}
+
