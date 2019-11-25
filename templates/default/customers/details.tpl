@@ -395,7 +395,7 @@
                         {*<input type="text" name="default_invoice"*}
                                {*value="{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}" size="8" tabindex="165"/>*}
                         <select name="default_invoice" tabindex="165">
-                            <option value=""></option>
+                            <option value="0"></option>
                             {foreach $invoices as $invoice}
                                 <option {if $invoice.index_id == $customer.default_invoice}selected{/if}
                                         value="{$invoice.index_id}">Inv#{$invoice.index_id} ({$invoice.name|htmlsafe} {$invoice.total|siLocal_number})</option>

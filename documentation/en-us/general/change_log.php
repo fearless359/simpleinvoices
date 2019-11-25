@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-11-25 - <b>2019.2.11</b>
+            <ul>
+                <li>Set customer default_invoice empty value to 0 so matched field type.</li>
+            </ul>
+        </li>
         <li>2019-10-15 - <b>2019.2.10</b>
             <ul>
                 <li>Add logic to clean up DataTables json file if present.</li>
