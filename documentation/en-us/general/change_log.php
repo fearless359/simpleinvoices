@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-11-28 - <b>2019.2.12</b>
+            <ul>
+                <li>Fix the templates/default/cron/add.tpl file domain_id hidden field.</li>
+            </ul>
+        </li>
         <li>2019-11-25 - <b>2019.2.11</b>
             <ul>
                 <li>Set customer default_invoice empty value to 0 so matched field type.</li>

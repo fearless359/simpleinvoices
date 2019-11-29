@@ -111,7 +111,7 @@
                 {$LANG.cancel}
             </a>
         </div>
-        <input type="hidden" name="domain_id" value={if isset($domain_id)}{$domain_id}{/if}/>
+        <input type="hidden" name="domain_id" value={if isset($domain_id)}{$domain_id}{/if}>
         <input type="hidden" name="op" value="add"/>
     </form>
 {/if}
