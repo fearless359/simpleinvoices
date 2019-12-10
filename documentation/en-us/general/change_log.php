@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2019-12-10 - <b>2019.2.13</b>
+            <ul>
+                <li>To include nebraska invoice template in the standard application.</li>
+            </ul>
+        </li>
         <li>2019-11-28 - <b>2019.2.12</b>
             <ul>
                 <li>Fix the templates/default/cron/add.tpl file domain_id hidden field.</li>

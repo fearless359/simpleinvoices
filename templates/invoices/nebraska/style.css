@@ -1,0 +1,354 @@
+/*  
+SimpleInvoices Template
+<http://www.simpleinvoices.org>
+
+name:       Nebraska
+type:       invoice
+author:     Jason Simanek
+date:       2012-08-11
+version:    1.2
+*/
+/* reset */
+/* style sheet for "A4" printing */
+
+page[size="A4"] {
+	background: white;
+	width: 21cm;
+	height: 29.7cm;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 0.5cm;
+	box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+}
+
+@media print {
+	body,
+	page[size="A4"] {
+		margin: 0;
+	}
+}
+
+@media print {
+	html {
+		background: none;
+		padding: 0;
+	}
+	body {
+		box-shadow: none;
+		margin: 0 ;
+	}
+	span:empty {
+		display: none;
+	}
+	.add,
+	.cut {
+		display: none;
+	}
+}
+
+body {
+	margin: 0px;
+	background: #FFF;
+	font-family: Helvetica, san-serif;
+	font-size: 10pt;
+	line-height: 110%;
+	font-style: normal;
+	color: #444;
+	padding: 5px;
+}
+
+#header {
+	clear: both;
+}
+
+
+/* heading */
+
+h1 {
+	font: bold 100% sans-serif;
+	letter-spacing: 0.5em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+h3 {
+	font: bold 100% sans-serif;
+	letter-spacing: 0.5em;
+	text-transform: uppercase;
+}
+
+
+/* table */
+
+table {
+	font-size: 10px;
+	table-layout: fixed;
+	width: 100%;
+}
+
+table .left {
+	text-align: left;
+}
+
+table .right {
+	text-align: right;
+}
+
+table .center {
+	text-align: center;
+	vertical-align: middle;
+}
+
+table .clean {
+	border: none;
+}
+
+table .bleft {
+	border: none;
+	border-right: 1px solid;
+}
+
+table .bleft .lastCell {
+	border-right: none;
+}
+
+table .bdown {
+	border-bottom: 1px solid;
+}
+
+table .btop {
+	border-top: 1px solid;
+}
+
+table .bdown tr.bdown {
+	border-bottom: 1px solid;
+}
+
+table .total {
+	font: bold 110% sans-serif;
+	padding-top: 25px;
+	text-align: right;
+}
+
+table .left p {
+	font-size: 8px;
+}
+
+table .clean img {
+	text-align: center;
+}
+
+article table {
+	border-collapse: collapse;
+}
+
+article table,
+tr,
+td {
+	border: 1px solid black;
+}
+
+
+/* header */
+
+header {
+	width: 100%;
+	/*margin: 0 auto;*/
+}
+
+header:after {
+	clear: both;
+	content: "";
+	display: table;
+	margin-bottom: 10px;
+}
+
+header .h1 {
+	border-bottom-style: solid;
+	border-color: #999;
+	font-size: 16px;
+	text-transform: uppercase;
+	padding-top: 75px;
+}
+
+header .h2 {
+	border: none;
+	border-width: 0 0 1px;
+	margin: 0 0 1em;
+	font: bold 150% sans-serif;
+	text-transform: uppercase;
+}
+
+header address .biller {
+	width: 33%;
+	/*float: left;*/
+	display: inline-block;
+	zoom: 1;
+	font-size: 75%;
+	font-style: normal;
+	line-height: 1.25;
+}
+
+header address .inv_details {
+	width: 33%;
+	/*float: left;*/
+	display: inline-block;
+	zoom: 1;
+	font-style: normal;
+	line-height: 1.25;
+}
+
+header address .customer {
+	width: 33%;
+	/*float: left;*/
+	display: inline-block;
+	zoom: 1;
+	font-style: normal;
+	line-height: 1.25;
+}
+
+header address p {
+	margin: 0 0 0.25em;
+}
+
+header input {
+	cursor: pointer;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	height: 100%;
+	left: 0;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+header li {
+	display: block;
+	margin: 0 auto;
+	width: 33%;
+	text-align: left;
+}
+
+
+/* article */
+
+article,
+article address,
+table.meta,
+table.inventory {
+	margin: 0 0.25em;
+}
+
+article:after {
+	clear: both;
+	content: "";
+	display: table;
+	margin-bottom: 10px;
+}
+
+article .h1 {
+	clip: rect(0 0 0 0);
+	position: absolute;
+}
+
+article address {
+	float: left;
+	font-size: 125%;
+	font-weight: bold;
+}
+
+
+/* table meta & balance */
+table td {
+    vertical-align: top;
+}
+table.meta,
+table.balance {
+	float: right;
+	width: 36%;
+}
+
+table.meta:after,
+table.balance:after {
+	clear: both;
+	content: "";
+	display: table;
+}
+
+
+/* table meta */
+
+table.meta th {
+	width: 40%;
+}
+
+table.meta td {
+	width: 60%;
+}
+
+
+/* table items */
+
+table.inventory {
+	clear: both;
+	width: 100%;
+}
+
+table.inventory th {
+	font-weight: bold;
+	text-align: center;
+}
+
+table.inventory td:nth-child(1) {
+	width: 20%;
+}
+
+table.inventory td:nth-child(2) {
+	width: 30%;
+}
+
+table.inventory td:nth-child(3) {
+	text-align: right;
+	width: 10%;
+}
+
+table.inventory td:nth-child(4) {
+	text-align: right;
+	width: 15%;
+}
+
+table.inventory td:nth-child(5) {
+	text-align: right;
+	width: 15%;
+}
+
+
+/* table balance */
+
+table.balance th,
+table.balance td {
+	width: 50%;
+}
+
+table.balance td {
+	text-align: right;
+}
+
+
+/* aside */
+
+aside .h1 {
+	border: none;
+	border-width: 0 0 1px;
+	margin: 0 0 1em;
+}
+
+aside .h1 {
+	border-color: #999;
+	border-bottom-style: solid;
+}
+
+.footer {
+	position: relative;
+	clear: both;
+}

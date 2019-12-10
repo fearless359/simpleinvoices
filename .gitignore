@@ -12,9 +12,8 @@ tmp/database_backups/*
 public/**
 .settings/**
 library/HTMLPurifier/DefinitionCache/Serializer/HTML/*
-templates/invoices/**
-!templates/invoices/default/**
-!templates/invoices/export/**
+templates/invoices/ftcc
+templates/invoices/logos/
 !templates/invoices/logos/_default_blank_logo.png
 !templates/invoices/logos/simple_invoices_logo.png
 !templates/invoices/logos/ubuntulogo.png
