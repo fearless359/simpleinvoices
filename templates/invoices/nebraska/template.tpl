@@ -188,7 +188,7 @@
                      Cnp:1790726513500, {if $biller.fax != null }{$LANG.CI}: {$biller.fax|htmlsafe}{/if}
                   </td>
                   <td class="clean center bleft bdown" style='font-weight:bold'>{$LANG.amount}:</td>
-                  <td class="clean center bleft bdown" style='font-weight:bold'>{$invoice.total|siLocal_number} {$preference.pref_currency_sign|htmlsafe}</td>
+                  <td class="clean center bleft bdown" style='font-weight:bold'>{$invoice.total|siLocal_number} {$preference.pref_currency_sign}</td>
                </tr>
                <tr class="clean left bleft">
                   <td class="clean left bleft" style="height: 23px" colspan="2">

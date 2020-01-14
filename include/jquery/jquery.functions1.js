@@ -173,7 +173,7 @@ function add_line_item() {
     $("#description" + rowID_new, clonedRow).attr("name", "description" + rowID_new);
     $("#description" + rowID_new, clonedRow).val("");
     $("#description" + rowID_new, clonedRow).css({color: "#b2adad"});
-    $(".details", clonedRow).hide();
+    // $(".details", clonedRow).hide();
 
     $("#tax_id\\[" + rowID_old + "\\]\\[0\\]", clonedRow).attr("id", "tax_id[" + rowID_new + "][0]");
     $("#tax_id\\[" + rowID_new + "\\]\\[0\\]", clonedRow).attr("name", "tax_id[" + rowID_new + "][0]");

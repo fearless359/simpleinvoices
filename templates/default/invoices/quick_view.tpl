@@ -87,9 +87,9 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align:right">{$preference.pref_currency_sign|htmlsafe}{$invoiceItems[0].gross_total|siLocal_number}</td>
-        <td style="text-align:right">{$preference.pref_currency_sign|htmlsafe}{$invoiceItems[0].tax_amount|siLocal_number}</td>
-        <td style="text-align:right"><u>{$preference.pref_currency_sign|htmlsafe}{$invoiceItems[0].total|siLocal_number}</u></td>
+        <td style="text-align:right">{$preference.pref_currency_sign}{$invoiceItems[0].gross_total|siLocal_number}</td>
+        <td style="text-align:right">{$preference.pref_currency_sign}{$invoiceItems[0].tax_amount|siLocal_number}</td>
+        <td style="text-align:right"><u>{$preference.pref_currency_sign}{$invoiceItems[0].total|siLocal_number}</u></td>
     </tr>
     <tr class="tr_head">
         <td colspan="6"><br/><br/></td>

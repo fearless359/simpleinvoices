@@ -13,6 +13,14 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-01-14 - <b>2019.2.14</b>
+            <ul>
+                <li>Fixed Add new row in invoice edit to leave detail description showing or
+                    hidden per the state of the other rows.</li>
+                <li>Fixed invoice view templates and invoice output templates to correctly
+                    display currency system enter using HTML code (aka Pound and Euro)</li>
+            </ul>
+        </li>
         <li>2019-12-10 - <b>2019.2.13</b>
             <ul>
                 <li>To include nebraska invoice template in the standard application.</li>
