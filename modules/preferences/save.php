@@ -44,6 +44,7 @@ if (  $op === 'insert_preference' ) {
             "locale"                       => $_POST['locale'],
             "language"                     => $_POST['locale'],
             "index_group"                  => (empty($_POST['index_group']) ? 0 : $_POST['index_group']),
+            "set_aging"                    => $_POST['set_aging'],
             "include_online_payment"       => $include_online_payment
         ));
 
@@ -85,6 +86,7 @@ if (  $op === 'insert_preference' ) {
                 "locale"                       => $_POST['locale'],
                 "language"                     => $_POST['language'],
                 "index_group"                  => $_POST['index_group'],
+                "set_aging"                    => $_POST['set_aging'],
                 "include_online_payment"       => $include_online_payment
             ));
             $pdoDb->addSimpleWhere("pref_id", $_GET['id']);

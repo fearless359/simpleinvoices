@@ -13,6 +13,13 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-01-23 - <b>2019.2.15</b>
+            <ul>
+                <li>Added set_aging field to the si_preferences table to control setting
+                    of aging information on invoices. Previously, aging information was
+                    updated only if the si_preferences pref_id was 1.</li>
+            </ul>
+        </li>
         <li>2020-01-14 - <b>2019.2.14</b>
             <ul>
                 <li>Fixed Add new row in invoice edit to leave detail description showing or

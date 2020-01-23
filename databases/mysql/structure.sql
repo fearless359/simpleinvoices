@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 13, 2019 at 04:34 AM
--- Server version: 10.1.41-MariaDB-cll-lve
--- PHP Version: 7.2.7
+-- Host: 127.0.0.1
+-- Generation Time: Jan 23, 2020 at 04:26 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -44,18 +44,18 @@ CREATE TABLE `si_biller` (
   `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `signature` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email signature',
   `logo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `footer` text COLLATE utf8_unicode_ci,
+  `footer` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `paypal_business_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `paypal_notify_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `paypal_return_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `eway_customer_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `paymentsgateway_api_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `notes` text COLLATE utf8_unicode_ci,
+  `notes` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field4` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -72,8 +72,8 @@ CREATE TABLE `si_cron` (
   `end_date` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `recurrence` int(11) NOT NULL,
   `recurrence_type` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
-  `email_biller` tinyint(1) NOT NULL DEFAULT '0',
-  `email_customer` tinyint(1) NOT NULL DEFAULT '0'
+  `email_biller` tinyint(1) NOT NULL DEFAULT 0,
+  `email_customer` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -115,14 +115,14 @@ CREATE TABLE `si_customers` (
   `credit_card_number` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `credit_card_expiry_month` varchar(2) COLLATE utf8_unicode_ci DEFAULT NULL,
   `credit_card_expiry_year` varchar(4) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `notes` text COLLATE utf8_unicode_ci,
-  `default_invoice` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Invoice index_id value to use as the default template',
+  `notes` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `default_invoice` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Invoice index_id value to use as the default template',
   `custom_field1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field4` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_customer_id` int(11) UNSIGNED DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -135,7 +135,7 @@ CREATE TABLE `si_custom_fields` (
   `cf_id` int(11) UNSIGNED NOT NULL,
   `cf_custom_field` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cf_custom_label` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `cf_display` tinyint(1) NOT NULL DEFAULT '1',
+  `cf_display` tinyint(1) NOT NULL DEFAULT 1,
   `domain_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -170,7 +170,7 @@ CREATE TABLE `si_expense` (
   `invoice_id` int(11) UNSIGNED DEFAULT NULL,
   `product_id` int(11) UNSIGNED DEFAULT NULL,
   `date` date NOT NULL,
-  `note` text COLLATE utf8_unicode_ci,
+  `note` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -212,7 +212,7 @@ CREATE TABLE `si_extensions` (
   `domain_id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '0'
+  `enabled` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -252,7 +252,7 @@ CREATE TABLE `si_inventory` (
   `quantity` decimal(25,6) NOT NULL,
   `cost` decimal(25,6) DEFAULT NULL,
   `date` date NOT NULL,
-  `note` text COLLATE utf8_unicode_ci
+  `note` text COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -274,11 +274,11 @@ CREATE TABLE `si_invoices` (
   `custom_field2` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field3` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field4` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `note` text COLLATE utf8_unicode_ci,
-  `owing` decimal(25,6) NOT NULL DEFAULT '0.000000' COMMENT 'Amount owing as of aging-date',
+  `note` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `owing` decimal(25,6) NOT NULL DEFAULT 0.000000 COMMENT 'Amount owing as of aging-date',
   `last_activity_date` datetime NOT NULL DEFAULT '2000-12-31 00:00:00' COMMENT 'Date last activity update to the invoice',
   `aging_date` datetime NOT NULL DEFAULT '2000-12-30 00:00:00' COMMENT 'Date aging was last calculated',
-  `age_days` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Age of invoice balance',
+  `age_days` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Age of invoice balance',
   `aging` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Aging string (1-14, 15-30, etc.',
   `sales_representative` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -293,13 +293,13 @@ CREATE TABLE `si_invoice_items` (
   `id` int(11) UNSIGNED NOT NULL,
   `invoice_id` int(11) UNSIGNED DEFAULT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
-  `quantity` decimal(25,6) NOT NULL DEFAULT '0.000000',
+  `quantity` decimal(25,6) NOT NULL DEFAULT 0.000000,
   `product_id` int(11) UNSIGNED DEFAULT NULL,
-  `unit_price` decimal(25,6) DEFAULT '0.000000',
-  `tax_amount` decimal(25,6) DEFAULT '0.000000',
-  `gross_total` decimal(25,6) DEFAULT '0.000000',
-  `description` text COLLATE utf8_unicode_ci,
-  `total` decimal(25,6) DEFAULT '0.000000',
+  `unit_price` decimal(25,6) DEFAULT 0.000000,
+  `tax_amount` decimal(25,6) DEFAULT 0.000000,
+  `gross_total` decimal(25,6) DEFAULT 0.000000,
+  `description` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `total` decimal(25,6) DEFAULT 0.000000,
   `attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -313,7 +313,7 @@ CREATE TABLE `si_invoice_item_attachments` (
   `id` int(11) UNSIGNED NOT NULL,
   `invoice_item_id` int(11) UNSIGNED DEFAULT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attachment` blob COMMENT 'Attached object'
+  `attachment` blob DEFAULT NULL COMMENT 'Attached object'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Objects attached to an invoice item';
 
 -- --------------------------------------------------------
@@ -351,9 +351,9 @@ CREATE TABLE `si_invoice_type` (
 CREATE TABLE `si_log` (
   `id` bigint(11) UNSIGNED NOT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) UNSIGNED DEFAULT NULL,
-  `sqlquerie` text COLLATE utf8_unicode_ci,
+  `sqlquerie` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_id` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -367,7 +367,7 @@ CREATE TABLE `si_payment` (
   `id` int(11) UNSIGNED NOT NULL,
   `ac_inv_id` int(11) UNSIGNED DEFAULT NULL,
   `ac_amount` decimal(25,6) NOT NULL,
-  `ac_notes` text COLLATE utf8_unicode_ci,
+  `ac_notes` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `ac_date` datetime NOT NULL,
   `ac_payment_type` int(11) UNSIGNED DEFAULT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
@@ -385,7 +385,7 @@ CREATE TABLE `si_payment_types` (
   `pt_id` int(11) UNSIGNED NOT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
   `pt_description` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `pt_enabled` tinyint(1) NOT NULL DEFAULT '1'
+  `pt_enabled` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -402,17 +402,18 @@ CREATE TABLE `si_preferences` (
   `pref_inv_heading` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pref_inv_wording` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pref_inv_detail_heading` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `pref_inv_detail_line` text COLLATE utf8_unicode_ci,
+  `pref_inv_detail_line` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `pref_inv_payment_method` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pref_inv_payment_line1_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pref_inv_payment_line1_value` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pref_inv_payment_line2_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pref_inv_payment_line2_value` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `pref_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `pref_enabled` tinyint(1) NOT NULL DEFAULT 1,
   `status` tinyint(1) NOT NULL,
   `locale` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `language` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `index_group` int(11) NOT NULL,
+  `set_aging` tinyint(1) NOT NULL DEFAULT 0,
   `currency_code` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
   `include_online_payment` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `currency_position` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL
@@ -427,19 +428,19 @@ CREATE TABLE `si_preferences` (
 CREATE TABLE `si_products` (
   `id` int(11) UNSIGNED NOT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `unit_price` decimal(25,6) DEFAULT '0.000000',
+  `description` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `unit_price` decimal(25,6) DEFAULT 0.000000,
   `default_tax_id` int(11) UNSIGNED DEFAULT NULL,
   `default_tax_id_2` int(11) UNSIGNED DEFAULT NULL,
-  `cost` decimal(25,6) DEFAULT '0.000000',
+  `cost` decimal(25,6) DEFAULT 0.000000,
   `reorder_level` int(11) DEFAULT NULL,
   `custom_field1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `custom_field4` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `notes` text COLLATE utf8_unicode_ci,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `notes` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `visible` tinyint(1) NOT NULL DEFAULT 1,
   `attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `notes_as_description` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `show_description` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -456,8 +457,8 @@ CREATE TABLE `si_products_attributes` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `type_id` int(11) UNSIGNED DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `visible` tinyint(1) NOT NULL DEFAULT '1'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `visible` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -481,7 +482,7 @@ CREATE TABLE `si_products_values` (
   `id` int(11) UNSIGNED NOT NULL,
   `attribute_id` int(11) UNSIGNED DEFAULT NULL,
   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -495,7 +496,7 @@ CREATE TABLE `si_sql_patchmanager` (
   `sql_patch_ref` int(11) NOT NULL,
   `sql_patch` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `sql_release` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `sql_statement` text COLLATE utf8_unicode_ci,
+  `sql_statement` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `source` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -522,9 +523,9 @@ CREATE TABLE `si_system_defaults` (
 CREATE TABLE `si_tax` (
   `tax_id` int(11) UNSIGNED NOT NULL,
   `tax_description` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tax_percentage` decimal(25,6) DEFAULT '0.000000',
+  `tax_percentage` decimal(25,6) DEFAULT 0.000000,
   `type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tax_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `tax_enabled` tinyint(1) NOT NULL DEFAULT 1,
   `domain_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -540,8 +541,8 @@ CREATE TABLE `si_user` (
   `role_id` int(11) UNSIGNED DEFAULT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
   `password` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `user_id` int(11) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `user_id` int(11) NOT NULL DEFAULT 0,
   `username` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

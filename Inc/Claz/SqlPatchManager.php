@@ -4024,6 +4024,15 @@ class SqlPatchManager
         );
         self::makePatch('318', $patch);
 
+        $patch = array(
+            'name' => "Add set_aging field to si_preferences",
+            'patch' => "ALTER TABLE `" . TB_PREFIX . "preferences` ADD COLUMN `set_aging` BOOL NOT NULL DEFAULT  '0' AFTER `index_group`;" .
+                "UPDATE `" . TB_PREFIX . "preferences` SET `set_aging` = 1 WHERE pref_id = '1';",
+            'date' => "20200123",
+            'source' => 'fearless359'
+        );
+        self::makePatch('319', $patch);
+
         // @formatter:on
     }
 

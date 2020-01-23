@@ -316,6 +316,7 @@ class Invoice
                 new DbField("c.name", "customer"),
                 new DbField("pf.pref_description", "preference"),
                 new DbField("pf.status", "status"));
+                new DbField("pf.set_aging", "set_aging");
                 new DbField("pf.pref_currency_sign", "currency_sign");
                 new DbField("pf.currency_code", "currency_code");
             $pdoDb->setSelectList($expr_list);
@@ -331,7 +332,7 @@ class Invoice
                     $row['owing'],
                     $row['last_activity_date'],
                     $row['aging_date'],
-                    $row['preference_id']);
+                    $row['set_aging']);
 
                 // The merge will update fields that exist and append those that don't.
                 self::updateAgingValues($row, $age_info);
@@ -416,7 +417,7 @@ class Invoice
      *          aging days was calculated.
      * @param string $last_activity_date yyyy-mm-dd date of last activity on this invoice.
      * @param string $aging_date yyyy-mm-dd date of last calculation of age_days.
-     * @param int $pref_id - Calculate for type_id of 1 (Invoice) only.
+     * @param bool $set_aging - If true, aging information will be calculated.
      * @return array age_info - associative array with updated key value pairs for
      *              "last_activity_date",
      *              "owing" ,
@@ -424,19 +425,19 @@ class Invoice
      *              "age_days"
      *              "aging" (aging is the wording such as 1-14).
      */
-    private static function calculateAgeDays($id, $invoice_date, $owing, $last_activity_date, $aging_date, $pref_id)
+    private static function calculateAgeDays($id, $invoice_date, $owing, $last_activity_date, $aging_date, $set_aging)
     {
         // Don't recalculate $owing unless you have to because it involves DB reads.
         // Note that there is a time value in the dates so they are typically equal only when
         // an account is created.
-        if ($pref_id == 1 && ($last_activity_date >= $aging_date || $owing > 0)) {
+        if ($set_aging && ($last_activity_date >= $aging_date || $owing > 0)) {
             $total = self::getInvoiceTotal($id);
             $paid = Payment::calcInvoicePaid($id);
             $owing = $total - $paid;
         }
 
         // We don't want create values here.
-        if ($owing < 0 || $pref_id != 1) $owing = 0;
+        if ($owing < 0 || !$set_aging) $owing = 0;
         $curr_dt_ymd_hms = '';
         try {
             $curr_dt = new DateTime();
@@ -444,7 +445,7 @@ class Invoice
             // date is greater than the aging date, set the invoice aging value.
             $curr_dt_ymd_hms = $curr_dt->format('Y-m-d h:i:s');
 
-            if ($pref_id == 1 && $owing > 0) {
+            if ($set_aging && $owing > 0) {
                 $inv_dt = new DateTime($invoice_date);
                 $date_diff = $curr_dt->diff($inv_dt);
                 $dys = $date_diff->days;
@@ -478,13 +479,19 @@ class Invoice
         global $pdoDb;
 
         try {
-            $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date', 'preference_id'));
+            $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date', 'pf.set_aging'));
+
+            $jn = new Join("LEFT", "preferences", "pf");
+            $jn->addSimpleItem("pf.pref_id", new DbField("preference_id"));
+            $pdoDb->addToJoins($jn);
+
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('id', $id);
             } else {
                 $pdoDb->addToWhere(new WhereItem(false, 'last_activity_date', '>=', new DbField('aging_date'), false, 'OR'));
                 $pdoDb->addToWhere(new WhereItem(false, 'owing', '>', 0, false));
             }
+
             $rows = $pdoDb->request("SELECT", "invoices");
 
             $pdoDb->begin();
@@ -495,7 +502,7 @@ class Invoice
                 $last_activity_date = $row['last_activity_date'];
                 $owing              = $row['owing'];
                 $aging_date         = $row['aging_date'];
-                $pref_id            = $row['preference_id'];
+                $set_aging          = $row['set_aging'];
                 // @formatter:on
                 $age_info = self::calculateAgeDays(
                     $id,
@@ -503,7 +510,7 @@ class Invoice
                     $owing,
                     $last_activity_date,
                     $aging_date,
-                    $pref_id);
+                    $set_aging);
 
                 try {
                     $pdoDb->setFauxPost(array(

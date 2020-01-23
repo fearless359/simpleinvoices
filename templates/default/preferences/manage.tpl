@@ -28,6 +28,7 @@
             <th>{$LANG.id}</th>
             <th>{$LANG.description}</th>
             <th>{$LANG.invoice_numbering_group}</th>
+            <th>{$LANG.set_aging}</th>
             <th class="si_center">{$LANG.language}</th>
             <th class="si_center">{$LANG.locale}</th>
             <th class="si_center">{$LANG.enabled}</th>
@@ -49,6 +50,11 @@
                 <td>{$preference['pref_id']}</td>
                 <td>{$preference['pref_description']}</td>
                 <td class="si_center">{$preference['invoice_numbering_group']}</td>
+                <td class="si_center">
+                    <!-- here so field can be sorted -->
+                    <span style="display: none">{$preference['set_aging_text']}</span>
+                    <img src="{$preference['set_aging_image']}" alt="set aging flag">
+                </td>
                 <td class="si_center">{$preference['language']}</td>
                 <td class="si_center">{$preference['locale']}</td>
                 <td class="si_center">
@@ -66,7 +72,7 @@
             $('#si-data-table').DataTable({
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
-                    [6, "desc"],
+                    [7, "desc"],
                     [1, "asc"]
                 ],
                 "columnDefs": [

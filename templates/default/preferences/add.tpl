@@ -193,7 +193,21 @@
 			{/if}
 			
 			</td>
-		</tr>	
+		</tr>
+		<tr>
+			<th>{$LANG.set_aging}
+				<a class="cluetip" href="#" title="{$LANG.set_enabled}"
+				   rel="index.php?module=documentation&amp;view=view&amp;page=help_set_aging">
+					<img src="{$help_image_path}help-small.png" alt="" />
+				</a>
+			</th>
+			<td>
+				<select name="set_aging">
+					<option value="1">{$LANG.enabled}</option>
+					<option value="0" selected>{$LANG.disabled}</option>
+				</select>
+			</td>
+		</tr>
 		<tr>
 			<th>{$LANG.locale} 
 				<a class="cluetip" href="#" title="{$LANG.locale}"

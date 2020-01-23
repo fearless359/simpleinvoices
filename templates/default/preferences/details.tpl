@@ -147,6 +147,15 @@
                     <td>{$index_group.pref_description} ({$index_group.pref_id})</td>
                 </tr>
                 <tr>
+                    <th>{$LANG.set_aging}
+                        <a class="cluetip" href="#" title="{$LANG.set_aging}"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=help_set_aging">
+                            <img src="{$help_image_path}help-small.png" alt=""/>
+                        </a>
+                    </th>
+                    <td>{$preference.set_aging_text}</td>
+                </tr>
+                <tr>
                     <th>{$LANG.language}
                         <a class="cluetip" href="#" title="{$LANG.language}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_language">
@@ -385,6 +394,20 @@
                             </select>
                         {/if}
 
+                    </td>
+                </tr>
+                <tr>
+                    <th>{$LANG.set_aging}
+                        <a class="cluetip" href="#" title="{$LANG.set_aging}"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=help_set_aging">
+                            <img src="{$help_image_path}help-small.png" alt=""/>
+                        </a>
+                    </th>
+                    <td>
+                        <select name="set_aging">
+                            <option value="{$smarty.const.ENABLED}" {if $preference.set_aging == $smarty.const.ENABLED}selected{/if}>{$LANG.enabled}</option>
+                            <option value="{$smarty.const.DISABLED}" {if $preference.set_aging != $smarty.const.ENABLED}selected{/if}>{$LANG.disabled}</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>

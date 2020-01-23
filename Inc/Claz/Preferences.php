@@ -57,6 +57,11 @@ class Preferences {
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
+            $ca = new CaseStmt("set_aging", "set_aging_text");
+            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
+            $pdoDb->addToCaseStmts($ca);
+
             $pdoDb->setSelectAll(true);
 
             $rows = $pdoDb->request("SELECT", "preferences");
@@ -72,6 +77,8 @@ class Preferences {
                         break;
                     }
                 }
+                $row['set_aging_image'] = ($row['set_aging'] == ENABLED ? "images/common/tick.png" :
+                                                                          "images/common/cross.png");
                 $preferences[] = $row;
             }
         } catch (PdoDbException $pde) {
