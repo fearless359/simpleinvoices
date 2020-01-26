@@ -315,10 +315,10 @@ class Invoice
                 new DbField("b.name", "biller"),
                 new DbField("c.name", "customer"),
                 new DbField("pf.pref_description", "preference"),
-                new DbField("pf.status", "status"));
-                new DbField("pf.set_aging", "set_aging");
-                new DbField("pf.pref_currency_sign", "currency_sign");
-                new DbField("pf.currency_code", "currency_code");
+                new DbField("pf.status", "status"),
+                new DbField("pf.set_aging", "set_aging"),
+                new DbField("pf.pref_currency_sign", "currency_sign"),
+                new DbField("pf.currency_code", "currency_code"));
             $pdoDb->setSelectList($expr_list);
 
             $pdoDb->setGroupBy($expr_list);
@@ -427,6 +427,9 @@ class Invoice
      */
     private static function calculateAgeDays($id, $invoice_date, $owing, $last_activity_date, $aging_date, $set_aging)
     {
+if ($id >= 490) {
+error_log("id[$id] owing[$owing] last_activity_date[$last_activity_date] aging_date[$aging_date] set_aging[$set_aging]");
+}
         // Don't recalculate $owing unless you have to because it involves DB reads.
         // Note that there is a time value in the dates so they are typically equal only when
         // an account is created.
@@ -479,7 +482,7 @@ class Invoice
         global $pdoDb;
 
         try {
-            $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date', 'pf.set_aging'));
+            $pdoDb->setSelectList(array('id', 'date', 'owing', 'last_activity_date', 'aging_date', new DbField('pf.set_aging', 'set_aging')));
 
             $jn = new Join("LEFT", "preferences", "pf");
             $jn->addSimpleItem("pf.pref_id", new DbField("preference_id"));

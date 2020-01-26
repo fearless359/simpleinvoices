@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-01-26 - <b>2019.2.18</b>
+            <ul>
+                <li>Fix error of set_aging setting not being read properly from database resulting
+                    in no aging information appearing on the invoice table.</li>
+            </ul>
+        </li>
         <li>2020-01-26 - <b>2019.2.17</b>
             <ul>
                 <li>Added domain name to top bar in addition to domain id currently shown
