@@ -66,8 +66,14 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
             $jn = new Join('LEFT', 'user_role', 'r');
             $jn->addSimpleItem('u.role_id', new DbField('r.id'));
             $pdoDb->addToJoins($jn);
+            
+            $jn = new Join('LEFT', 'user_domain', 'ud');
+            $jn->addSimpleItem('u.domain_id', new DbField('ud.id'));
+            $pdoDb->addToJoins($jn);
 
-            $pdoDb->setSelectList(array('u.id', 'u.username', 'u.email', new DbField('r.name', 'role_name'), 'u.domain_id', 'u.user_id'));
+            $pdoDb->setSelectList(array('u.id', 'u.username', 'u.email', new DbField('r.name', 'role_name'),
+                'u.domain_id', 'u.user_id', new DbField('ud.name', 'domain_name')));
+
             $pdoDb->addSimpleWhere('u.username', $username, 'AND');
             $pdoDb->addSimpleWhere('u.enabled', ENABLED);
 

@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-01-26 - <b>2019.2.17</b>
+            <ul>
+                <li>Added domain name to top bar in addition to domain id currently shown
+                    when logged in as a user for a domain other than 1.</li>
+            </ul>
+        </li>
         <li>2020-01-26 - <b>2019.2.16</b>
             <ul>
                 <li>Fixed issue with adding a new user.</li>
