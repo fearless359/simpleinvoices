@@ -155,6 +155,14 @@ class User
     {
         global $pdoDb;
 
+        // Default role to administrator. Can be changed in edit screen
+        // which must be performed to enable this user.
+        $pdoDb->addSimpleWhere('name', 'administrator');
+        $rows = $pdoDb->request('SELECT', 'user_role');
+        $_POST['role_id'] = $rows[0]['id'];
+        $_POST['enabled'] = DISABLED;
+        $_POST['user_id'] = 0;
+
         $id = 0;
         try {
             $_POST['password'] = self::hashPassword($_POST['password']); // OK. Save hashed password

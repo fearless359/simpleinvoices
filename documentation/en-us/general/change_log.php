@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-01-26 - <b>2019.2.16</b>
+            <ul>
+                <li>Fixed issue with adding a new user.</li>
+            </ul>
+        </li>
         <li>2020-01-23 - <b>2019.2.15</b>
             <ul>
                 <li>Added set_aging field to the si_preferences table to control setting
