@@ -249,7 +249,7 @@ class Export
                     $customFieldLabels = CustomFields::getLabels(true);
 
                     $past_due_date = (date("Y-m-d", strtotime('-30 days')) . ' 00:00:00');
-                    $past_due_amt  = CustomersPastDue::getCustomerPastDue($this->invoice['customer_id'], $this->id, $past_due_date);
+                    $past_due_amt  = CustomersPastDue::getCustomerPastDue($this->invoice['customer_id'], $past_due_date, $this->id);
 
                     // Set the template to the default
                     $template = $defaults['template'];

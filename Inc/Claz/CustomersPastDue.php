@@ -124,19 +124,28 @@ class CustomersPastDue {
     /**
      * Get the past dues amount for an invoice
      * @param integer $cid Customer ID value.
-     * @param integer $invoice_id Invoice ID value.
-     * @param string $invoice_dt Date before which invoices must have been issues.
-     *               Format is "yyyy-mm-dd hh:mm:ss".
+     * @param string $past_due_date Date before which invoices must have been issues.
+     *                              Format is "yyyy-mm-dd hh:mm:ss".
+     * @param integer $invoice_id ID of invoice NOT to include.
+     *                              Defaults to NULL (all invoices included).
      * @return number Past due amount.
      */
-    public static function getCustomerPastDue($cid, $invoice_id, $invoice_dt) {
+    public static function getCustomerPastDue($cid, $past_due_date, $invoice_id = NULL) {
         global $pdoDb;
 
         $owed = 0;
         try {
             $domain_id = DomainId::get();
 
-            $pdoDb->addToFunctions("SUM(IF(pr.status = 1, COALESCE(ii.total, 0), 0)) AS billed");
+            $pdoDb->addSimpleWhere('iv.customer_id', $cid, 'AND');
+            $pdoDb->addToWhere(new WhereItem(false, "iv.date", "<", $past_due_date, false, "AND"));
+            if (isset($invoice_id)) {
+                $pdoDb->addToWhere(new WhereItem(false, "iv.id", "<>", $invoice_id, false, "AND"));
+            }
+            $pdoDb->addSimpleWhere('iv.domain_id', $domain_id);
+
+            // Get previously billed on all invoices
+            $pdoDb->addToFunctions("SUM(IF(pr.set_aging = " . ENABLED . ", COALESCE(ii.total, 0), 0)) AS billed");
 
             $jn = new Join("LEFT", "preferences", "pr");
             $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
@@ -147,11 +156,6 @@ class CustomersPastDue {
             $jn->addSimpleItem("ii.invoice_id", new DbField("iv.id"), "AND");
             $jn->addSimpleItem("ii.domain_id", new DbField("iv.domain_id"));
             $pdoDb->addToJoins($jn);
-
-            $pdoDb->addSimpleWhere("iv.customer_id", $cid, "AND");
-            $pdoDb->addSimpleWhere("iv.id", $invoice_id, "AND");
-            $pdoDb->addToWhere(new WhereItem(false, "iv.date", "<", $invoice_dt, false, "AND"));
-            $pdoDb->addSimpleWhere("iv.domain_id", $domain_id);
 
             $pdoDb->setGroupBy("iv.id");
 
@@ -164,7 +168,15 @@ class CustomersPastDue {
                 $billed += doubleval($row['billed']);
             }
 
-            $pdoDb->addToFunctions("SUM(COALESCE(IF(pr.status = 1, p.ac_amount, 0), 0)) AS paid");
+            $pdoDb->addSimpleWhere('iv.customer_id', $cid, 'AND');
+            $pdoDb->addToWhere(new WhereItem(false, "iv.date", "<", $past_due_date, false, "AND"));
+            if (isset($invoice_id)) {
+                $pdoDb->addToWhere(new WhereItem(false, "iv.id", "<>", $invoice_id, false, "AND"));
+            }
+            $pdoDb->addSimpleWhere('iv.domain_id', $domain_id);
+
+            // Get paid on all invoices
+            $pdoDb->addToFunctions("SUM(IF(pr.set_aging = " . ENABLED . ", COALESCE(p.ac_amount, 0), 0)) AS paid");
 
             $jn = new Join("LEFT", "preferences", "pr");
             $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
@@ -175,11 +187,6 @@ class CustomersPastDue {
             $jn->addSimpleItem("p.ac_inv_id", new DbField("iv.id"), "AND");
             $jn->addSimpleItem("p.domain_id", new DbField("iv.domain_id"));
             $pdoDb->addToJoins($jn);
-
-            $pdoDb->addSimpleWhere("iv.customer_id", $cid, "AND");
-            $pdoDb->addSimpleWhere("iv.id", $invoice_id, "AND");
-            $pdoDb->addToWhere(new WhereItem(false, "iv.date", "<", $invoice_dt, false, "AND"));
-            $pdoDb->addSimpleWhere("iv.domain_id", $domain_id);
 
             $pdoDb->setGroupBy("iv.id");
 
@@ -194,7 +201,7 @@ class CustomersPastDue {
 
             $owed = round($billed - $paid, 2);
         } catch (PdoDbException $pde) {
-            error_log("CustomersPastDue::getCustomerPastDue() - cid[$cid]  invoice_id[$invoice_id] invoice_dt[$invoice_dt] - error: " . $pde->getMessage());
+            error_log("CustomersPastDue::getCustomerPastDue() - cid[$cid]  invoice_id[$invoice_id] past_due_date[$past_due_date] - error: " . $pde->getMessage());
         }
         return $owed;
     }

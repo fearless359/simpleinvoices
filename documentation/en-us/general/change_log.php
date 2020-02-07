@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-02-07 - <b>2019.2.19</b>
+            <ul>
+                <li>Modified getCustomerPastDue() function to add option to include
+                    or exclude a specified invoice.</li>
+            </ul>
+        </li>
         <li>2020-01-26 - <b>2019.2.18</b>
             <ul>
                 <li>Fix error of set_aging setting not being read properly from database resulting
