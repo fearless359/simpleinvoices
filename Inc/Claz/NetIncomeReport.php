@@ -15,7 +15,7 @@ class NetIncomeReport
      * @param $exclude_custom_flag_items
      * @return array
      */
-    public function select_rpt_items($start_date, $stop_date, $exclude_custom_flag_items)
+    public function select_rpt_items($start_date, $stop_date, $customer_id, $exclude_custom_flag_items)
     {
         global $pdoDb;
 
@@ -23,11 +23,11 @@ class NetIncomeReport
 
         if (isset($exclude_custom_flag_items) && $exclude_custom_flag_items > 0) {
             // Make a regex string that Tests for "0" in the specified position
-            $flgs = array('.', '.', '.', '.', '.', '.', '.', '.', '.', '.');
-            $flgs[$exclude_custom_flag_items - 1] = '0';
+            $cFlags = array('.', '.', '.', '.', '.', '.', '.', '.', '.', '.');
+            $cFlags[$exclude_custom_flag_items - 1] = '0';
             $pattern = '^';
-            foreach ($flgs as $flg) {
-                $pattern .= $flg;
+            foreach ($cFlags as $cFlag) {
+                $pattern .= $cFlag;
             }
         } else {
             $pattern = '.*'; // Basically ignores custom flag setting
@@ -66,7 +66,7 @@ class NetIncomeReport
 
                 $pdoDb->addSimpleWhere("iv.id", $id, "AND");
                 $pdoDb->addSimpleWhere("iv.domain_id", $domain_id);
-                $pdoDb->setSelectList(array("iv.id", "iv.index_id AS iv_number", "iv.date AS iv_date", "cu.name AS customer"));
+                $pdoDb->setSelectList(array("iv.id", "iv.index_id AS iv_number", "iv.date AS iv_date", "cu.name AS customer", 'iv.customer_id'));
 
                 $iv_recs = $pdoDb->request("SELECT", "invoices", "iv");
             } catch (PdoDbException $pde) {
@@ -74,6 +74,9 @@ class NetIncomeReport
             }
 
             foreach ($iv_recs as $iv) {
+                if ($customer_id > '0' && $iv['customer_id'] != $customer_id) {
+                    continue;
+                }
 
                 // Create an invoice object for the report. This object holds the payments and
                 // invoice items for the invoice. We know that a payment to this invoice was
