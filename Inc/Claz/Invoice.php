@@ -427,9 +427,6 @@ class Invoice
      */
     private static function calculateAgeDays($id, $invoice_date, $owing, $last_activity_date, $aging_date, $set_aging)
     {
-if ($id >= 490) {
-error_log("id[$id] owing[$owing] last_activity_date[$last_activity_date] aging_date[$aging_date] set_aging[$set_aging]");
-}
         // Don't recalculate $owing unless you have to because it involves DB reads.
         // Note that there is a time value in the dates so they are typically equal only when
         // an account is created.
