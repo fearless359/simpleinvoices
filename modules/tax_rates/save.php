@@ -14,13 +14,15 @@ $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=
 # Deal with op and add some basic sanity checking
 
 $op = empty($_POST['op']) ? '' : $_POST['op'];
-
 if ($op == 'add') {
     if (Taxes::verifyExists($_POST['tax_description'])) {
         $display_block = "<div class=\"si_message_error\">{$LANG['duplicate_tax_description']}</div>";
         $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=add' />";
-    } else if (Taxes::insertTaxRate() > 0) {
-        $display_block = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
+    } else {
+        $resultAdd = Taxes::insertTaxRate();
+        if ($resultAdd > 0) {
+            $display_block = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
+        }
     }
 
 } else if ($op == 'edit') {

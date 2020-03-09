@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-03-09 - <b>2019.2.21</b>
+            <ul>
+                <li>Fixed issue of adding tax rate didn't return to correct screen.</li>
+            </ul>
+        </li>
         <li>2020-02-16 - <b>2019.2.20</b>
             <ul>
                 <li>Modified Net Income Report to add customer selection feature.</li>
