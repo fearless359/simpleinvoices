@@ -1,14 +1,55 @@
+
+/* Product Change - updates line item with product price info */
+$(document).on("change", ".product_change", (function () {
+    let $row_number = $(this).attr("data-row-num");
+    let $product = $(this).val();
+    let $quantity = $("#quantity" + $row_number).attr("value");
+    invoice_product_change($product, $row_number, $quantity);
+}));
+
+// Click on export invoice button and build href for pdf, doc and xls
+$(document).on("click", ".invoice_export_dialog", (function () {
+    let row_number = $(this).attr("data-row-num");
+    let spreadsheet = $(this).attr("data-spreadsheet");
+    let wordprocessor = $(this).attr("data-wordprocessor");
+    export_invoice(row_number, spreadsheet, wordprocessor);
+    ShowDialog(true);
+}));
+
+// unhide.description, unhide.note, description
+//show invoice item line details
+$(document).on("click", "a.show_details", (function () {
+    let clonedRow = $('#itemtable tbody.line_item:first').clone();
+    let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+    if (rowID_old === undefined) {
+        alert('Invalid invoice. No existing rows to show.');
+        return false;
+    }
+    $('.details').show(); // Show the details
+    $('.hide_details').show(); // Show the hide details button
+    $('.show_details').hide(); // Hide the show details button
+}));
+
+//hide invoice item line details
+$(document).on("click", "a.hide_details", (function () {
+    let clonedRow = $('#itemtable tbody.line_item:first').clone();
+    let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+    if (rowID_old === undefined) {
+        alert('Invalid invoice. No existing rows to show.');
+        return false;
+    }
+    $('.details').hide(); // Hide the details
+    $('.hide_details').hide(); // Hide the hide details button
+    $('.show_details').show(); // Show the show details button
+}));
+
+//add new line item in invoices
+$(document).on("click", "a.add_line_item", (function (e) {
+    e.preventDefault();
+    add_line_item();
+}));
+
 $(document).ready(function () {
-
-    // Click on export invoice button and build href for pdf, doc and xls
-    $(document).on("click", ".invoice_export_dialog", (function () {
-        let row_number = $(this).attr("rel");
-        let spreadsheet = $(this).attr("data-spreadsheet");
-        let wordprocessor = $(this).attr("data-wordprocessor");
-        export_invoice(row_number, spreadsheet, wordprocessor);
-        ShowDialog(true);
-    }));
-
     // Export dialog window - onclick send href to create export file and close window
     $(".export_window").click(function() {
         HideDialog();
@@ -44,53 +85,12 @@ $(document).ready(function () {
         dateFormat: "yy-mm-dd"
     });
 
-    /* Product Change - updates line item with product price info */
-    $(document).on("change", ".product_change", (function () {
-        let $row_number = $(this).attr("rel");
-        let $product = $(this).val();
-        let $quantity = $("#quantity" + $row_number).attr("value");
-        invoice_product_change($product, $row_number, $quantity);
-    }));
-
     /* Product Inventory Change - updates line item with product price info */
     $(".product_inventory_change").change(function () {
         let $product = $(this).val();
         let $existing_cost = $("#cost").val();
         product_inventory_change($product, $existing_cost);
     });
-
-    //add new line item in invoices
-    $(document).on("click", "a.add_line_item", (function (e) {
-        e.preventDefault();
-        add_line_item();
-    }));
-
-    // unhide.description, unhide.note, description
-    //show invoice item line details
-    $(document).on("click", "a.show_details", (function () {
-        let clonedRow = $('#itemtable tbody.line_item:first').clone();
-        let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
-        if (rowID_old === undefined) {
-            alert('Invalid invoice. No existing rows to show.');
-            return false;
-        }
-        $('.details').show(); // Show the details
-        $('.hide_details').show(); // Show the hide details button
-        $('.show_details').hide(); // Hide the show details button
-    }));
-
-    //hide invoice item line details
-    $(document).on("click", "a.hide_details", (function () {
-        let clonedRow = $('#itemtable tbody.line_item:first').clone();
-        let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
-        if (rowID_old === undefined) {
-            alert('Invalid invoice. No existing rows to show.');
-            return false;
-        }
-        $('.details').hide(); // Hide the details
-        $('.hide_details').hide(); // Hide the hide details button
-        $('.show_details').show(); // Show the show details button
-    }));
 
     //calc number of line items
     $(".invoice_save").click(function () {

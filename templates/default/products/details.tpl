@@ -279,11 +279,9 @@
                         <tr>
                             <th>{$LANG.notes}</th>
                             <td>
-                                <!--
-                                <textarea name="notes" class="editor">{*$product.notes|unescape*}</textarea>
-                                -->
-                                <input name="notes" id="notes" {if isset($product.notes)}value="{$product.notes|outhtml}"{/if} type="hidden">
-                                <trix-editor input="notes"></trix-editor>
+                                <textarea name="notes" rows="3" cols="80">{if isset($product.notes)}{$product.notes|unescape}{/if}</textarea>
+{*                                <input name="notes" id="notes" {if isset($product.notes)}value="{$product.notes|outhtml}"{/if} type="hidden">*}
+{*                                <trix-editor input="notes"></trix-editor>*}
                             </td>
                         </tr>
                         <tr>

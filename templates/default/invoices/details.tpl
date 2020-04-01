@@ -171,28 +171,30 @@
                 {foreach $invoiceItems as $line => $invoiceItem}
                     <tbody class="line_item" id="row{$line|htmlsafe}">
                     <tr class="tr_{cycle name="rows" values="A,B"}">
-                        <input type="hidden" id="delete{$line|htmlsafe}" name="delete{$line|htmlsafe}" size="3"/>
+                        <input type="hidden" id="delete{$line|htmlsafe}" name="delete{$line|htmlsafe}"/>
                         <input type="hidden" name="line_item{$line|htmlsafe}" id="line_item{$line|htmlsafe}"
                                value="{if isset($invoiceItem.id)}{$invoiceItem.id|htmlsafe}{/if}"/>
                         <td>
-                            <a id="trash_link_edit{$line|htmlsafe}" class="trash_link_edit"
-                               title="{$LANG.delete_line_item}" href="#" style="display:inline;"
-                               rel="{$line|htmlsafe}" data_delete_line_item={$config->confirm->deleteLineItem}>
-                                <img id="delete_image{$line|htmlsafe}"
-                                     src="images/common/{if $line == "0"}blank.gif{else}delete_item.png{/if}" alt=""/>
+                            <a class="delete_link" id="delete_link{$line|htmlsafe}"
+                               title="{$LANG.delete_line_item}" href="#" style="display:{if $line == "0"}none{else}inline{/if};"
+                               data-row-num="{$line|htmlsafe}" data-delete-line-item={$config->confirm->deleteLineItem}>
+                                <img id="delete_image{$line|htmlsafe}" src="images/common/delete_item.png" alt=""/>
                             </a>
                         </td>
                         <td>
-                            <input class="si_right {if $line == 0}validate[required,min[.01],custom[number]]{/if}"
+                            <input class="si_right{if $line == 0} validate[required,min[.01],custom[number]]{/if}"
                                    type="text" name='quantity{$line|htmlsafe}' id='quantity{$line|htmlsafe}'
+                                   data-row-num="{$line|htmlsafe}"
                                    value='{$invoiceItem.quantity|siLocal_number_trim}' size="5"/>
                         </td>
                         <td>
                             {if !isset($products) }
                                 <em>{$LANG.no_products}</em>
                             {else}
-                                <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}" style="width:100%;"
-                                        rel="{$line|htmlsafe}" class="product_change" data-description="{$LANG.description}">
+                                <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}"
+                                        data-row-num="{$line|htmlsafe}"
+                                        class="product_change{if $line == 0} validate[required]{/if}"
+                                        data-description="{$LANG.description}">
                                     {foreach from=$products item=product}
                                         <option {if $product.id == $invoiceItem.product_id} selected {/if}
                                                 value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
@@ -203,6 +205,7 @@
                         {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
                             <td>
                                 <select id="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]"
+                                        data-row-num="{$line|htmlsafe}"
                                         name="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
                                     <option value=""></option>
                                     {assign var="index" value=$smarty.section.tax.index}
@@ -214,8 +217,8 @@
                             </td>
                         {/section}
                         <td>
-                            <input class="si_right" id="unit_price{$line|htmlsafe}" name="unit_price{$line|htmlsafe}" size="7"
-                                   value="{$invoiceItem.unit_price|siLocal_number_trim}"/>
+                            <input type="text" class="si_right" id="unit_price{$line|htmlsafe}" name="unit_price{$line|htmlsafe}" size="7"
+                                   data-row-num="{$line|htmlsafe}" value="{$invoiceItem.unit_price|siLocal_number}"/>
                         </td>
                     </tr>
                     {$invoiceItem.html}
@@ -224,6 +227,7 @@
                         <td colspan="4">
                         <textarea name="description{$line|htmlsafe}" style="overflow:scroll;"
                                   id="description{$line|htmlsafe}" rows="3" cols="100%"
+                                  data-row-num="{$line|htmlsafe}"
                                   data-description="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
                         </td>
                     </tr>
@@ -275,7 +279,7 @@
                     </td>
                     <th>{$LANG.sales_representative}</th>
                     <td>
-                        <input id="sales_representative}" name="sales_representative" size="30"
+                        <input type="text" id="sales_representative}" name="sales_representative" size="30"
                                value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
                     </td>
                 </tr>

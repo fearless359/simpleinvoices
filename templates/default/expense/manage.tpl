@@ -25,7 +25,7 @@
             <th>{$LANG.date_upper}</th>
             <th>{$LANG.amount}</th>
             <th>{$LANG.tax}</th>
-            <th>{$LANG.total}</th>
+            <th>{$LANG.tax} {$LANG.total}</th>
             <th>{$LANG.expense_accounts}</th>
             <th>{$LANG.biller}</th>
             <th>{$LANG.customer}</th>
@@ -47,9 +47,13 @@
                     </a>
                 </td>
                 <td>{$expense['date']}</td>
-                <td>{$expense['amount']}</td>
+                <td>{$expense['amount']|siLocal_number}</td>
                 <td>{$expense['tax']}</td>
-                <td>{$expense['total']}</td>
+                <td>
+                {if ($expense['total'] != 0)}
+                    {$expense['total']|siLocal_number}
+                {/if}
+                </td>
                 <td>{$expense['ea_name']}</td>
                 <td>{$expense['b_name']}</td>
                 <td>{$expense['c_name']}</td>
@@ -68,7 +72,11 @@
                     [1, "desc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    {"targets": 0,"width": "10%", "className": 'dt-body-center', "orderable": false},
+                    {"targets": 1,"width": "10%", "className": 'dt-body-center'},
+                    {"targets": 2,"className": 'dt-body-right'},
+                    {"targets": 3,"className": 'dt-body-right'},
+                    {"targets": 4,"className": 'dt-body-right'}
                 ],
                 "colReorder": true
             });

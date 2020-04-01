@@ -13,6 +13,13 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-04-01 - <b>2019.2.22</b>
+            <ul>
+                <li>Fixed logic for adding and deleting invoice item lines, and to
+                    fill in the unit price field when a new product is selected.</li>
+                <li>Cleaned up the expense handling and display logic.</li>
+            </ul>
+        </li>
         <li>2020-03-09 - <b>2019.2.21</b>
             <ul>
                 <li>Fixed issue of adding tax rate didn't return to correct screen.</li>

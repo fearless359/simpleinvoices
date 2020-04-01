@@ -10,8 +10,7 @@
         </div>
         <hr/>
     {/if}
-    <form name="frmpost" method="POST" id="frmpost"
-          action="index.php?module=products&amp;view=add">
+    <form name="frmpost" method="POST" id="frmpost" action="index.php?module=products&amp;view=add">
         <div class="si_form">
             <div id="tabs_customer">
                 <ul class="anchors">
@@ -171,11 +170,7 @@
                         <tr>
                             <th>{$LANG.notes}</th>
                             <td>
-                                <!--
-                                <textarea class="editor" name='notes'>{*if isset($smarty.post.notes)*}{*$smarty.post.notes|unescape*}{*/if*}</textarea>
-                                -->
-                                <input name="notes" id="notes" {if isset($smarty.post.notes)}value="{$smarty.post.notes|outhtml}"{/if} type="hidden">
-                                <trix-editor input="notes"></trix-editor>
+                                <textarea name='notes' rows="3" cols="80"></textarea>
                             </td>
                         </tr>
                         <tr>

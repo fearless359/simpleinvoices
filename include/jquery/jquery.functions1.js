@@ -24,13 +24,14 @@ function HideDialog()
     $("#dialog").fadeOut(300);
 }
 
-//delete line item in new invoice page
+// delete new rows not currently in the database
 function delete_row(row_number) {
     //	$('#row'+row_number).hide();
     $('#row' + row_number).remove();
 }
 
-//dlete line item in EDIT page
+// delete existing rows currently in the database.
+// This sets up to delete the item when the form is saved.
 function delete_line_item(row_number) {
     $('#row' + row_number).hide();
     $('#quantity' + row_number).removeAttr('value');
@@ -92,95 +93,83 @@ function add_line_item() {
     gmail_loading.show();
 
     //clone the last tr in the item table
-    let clonedRow = $('#itemtable tbody.line_item:first').clone();
-    let lastRow = $('#itemtable tbody.line_item:last').clone();
+    let jq_selector = '#itemtable tbody.line_item:last';
+    let lastRow = $(jq_selector).clone();
+    let clonedRow = $(jq_selector).clone();
 
     //find the Id for the row from the quantity if
     // let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
-    let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+    let rowID_old = $(".delete_link", clonedRow).attr("data-row-num");
     if (rowID_old === undefined) {
         alert('Invalid invoice. No existing rows to clone.');
         return false;
     }
-    let rowID_last = $("input[id^='quantity']", lastRow).attr("id");
-    rowID_old = parseInt(rowID_old.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number that is after that
-    rowID_last = parseInt(rowID_last.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number that is after that
+    let rowID_last = $(".delete_link", lastRow).attr("data-row-num");
+    rowID_old = parseInt(rowID_old);
+    rowID_last = parseInt(rowID_last);
 
     //create next row id
     let rowID_new = rowID_last + 1;
 
     siLog('debug', 'Line item ' + rowID_new + 'added');
-    //log.debug( 'Line item '+rowID_new+'added');
-
-    //console.log("Old row ID: "+rowID_old);
-    //console.log("New row ID:"+rowID_new);
-    //console.log("Last row ID:"+rowID_last);
-
-    //update all the row items
-    //
 
     clonedRow.attr("id", "row" + rowID_new);
-    //trash image
-    clonedRow.find("#trash_link" + rowID_old).attr("id", "trash_link" + rowID_new);
-    clonedRow.find("#trash_link" + rowID_new).attr("name", "trash_link" + rowID_new);
-    clonedRow.find("#trash_link_edit" + rowID_old).attr("id", "trash_link_edit" + rowID_new);
-    clonedRow.find("#trash_link_edit" + rowID_new).attr("name", "trash_link_edit" + rowID_new);
 
-    //update the hidden delete field
+    // update hidden delete field
     clonedRow.find("#delete" + rowID_old).attr("id", "delete" + rowID_new);
     clonedRow.find("#delete" + rowID_new).attr("name", "delete" + rowID_new);
-    //update the delete icon
-    clonedRow.find("#delete_image" + rowID_old).attr("id", "delete_image" + rowID_new);
-    clonedRow.find("#delete_image" + rowID_new).attr("name", "delete_image" + rowID_new);
-    clonedRow.find("#delete_image" + rowID_new).attr("src", "./images/common/delete_item.png");
+    clonedRow.find("#delete" + rowID_new).attr("value", "");
 
-    clonedRow.find("#trash_link" + rowID_new).attr("href", "#");
-    clonedRow.find("#trash_link" + rowID_new).attr("rel", rowID_new);
-    clonedRow.find("#trash_link_edit" + rowID_new).attr("href", "#");
-    clonedRow.find("#trash_link_edit" + rowID_new).attr("rel", rowID_new);
-
-    clonedRow.find("#trash_image" + rowID_old).attr("src", "./images/common/delete_item.png");
-    clonedRow.find("#trash_image" + rowID_old).attr("title", "Delete this row");
-
-    //edit invoice - newly added line item
+    // update hidden line_item field - is for id of invoice_items so must be cleared.
     clonedRow.find("#line_item" + rowID_old).attr("id", "line_item" + rowID_new);
     clonedRow.find("#line_item" + rowID_new).attr("name", "line_item" + rowID_new);
-    clonedRow.find("#line_item" + rowID_new).val('');
+    clonedRow.find("#line_item" + rowID_new).attr("value", "");
 
+    clonedRow.find("#delete_link" + rowID_old).attr("id", "delete_link" + rowID_new);
+    // clonedRow.find("#delete_link" + rowID_new).attr("name", "delete_link" + rowID_new);
+    clonedRow.find("#delete_link" + rowID_new).attr("href", "#");
+    clonedRow.find("#delete_link" + rowID_new).attr("data-row-num", rowID_new);
+    clonedRow.find("#delete_link" + rowID_new).attr("style", "display:inline;");
 
-    $("#quantity" + rowID_old, clonedRow).attr("id", "quantity" + rowID_new);
-    $("#quantity" + rowID_new, clonedRow).attr("name", "quantity" + rowID_new);
-    clonedRow.find("#quantity" + rowID_new).removeAttr("value");
-    clonedRow.find("#quantity" + rowID_new).removeClass("validate[required]");
+    // trash can image - it might be blank if only one item row.
+    clonedRow.find("#delete_image" + rowID_old).attr("id", "delete_image" + rowID_new);
+    clonedRow.find("#delete_image" + rowID_new).attr("src", "./images/common/delete_item.png");
 
-    //clonedRow.find("#products"+rowID_old).removeAttr("onchange");
-    clonedRow.find("#products" + rowID_old).attr("rel", rowID_new);
+    clonedRow.find("#quantity" + rowID_old).attr("id", "quantity" + rowID_new);
+    clonedRow.find("#quantity" + rowID_new).attr("name", "quantity" + rowID_new);
+    clonedRow.find("#quantity" + rowID_new).attr("value","");
+    clonedRow.find("#quantity" + rowID_new).attr("data-row-num", rowID_new);
+    clonedRow.find("#quantity" + rowID_new).removeClass("validate[required,min[.01],custom[number]]");
+
     clonedRow.find("#products" + rowID_old).attr("id", "products" + rowID_new);
     clonedRow.find("#products" + rowID_new).attr("name", "products" + rowID_new);
+    clonedRow.find("#products" + rowID_new).attr("data-row-num", rowID_new);
     clonedRow.find("#products" + rowID_new).find('option:selected').removeAttr("selected");
     clonedRow.find("#products" + rowID_new).prepend(new Option("", ""));
     clonedRow.find("#products" + rowID_new).find('option:eq(0)').attr('selected', true);
     clonedRow.find("#products" + rowID_new).removeClass("validate[required]");
 
-    //clonedRow.find("#products"+rowID_new).attr("onChange", "invoice_product_change_price($(this).val(), "+rowID_new+", jQuery('#quantity"+rowID_new+"').val() )");
+    clonedRow.find("#unit_price" + rowID_old).attr("id", "unit_price" + rowID_new);
+    clonedRow.find("#unit_price" + rowID_new).attr("name", "unit_price" + rowID_new);
+    clonedRow.find("#unit_price" + rowID_new).attr("value","");
+    clonedRow.find("#unit_price" + rowID_new).attr("data-row-num", rowID_new);
+    clonedRow.find("#unit_price" + rowID_new).removeClass("validate[required]");
 
-    $("#unit_price" + rowID_old, clonedRow).attr("id", "unit_price" + rowID_new);
-    $("#unit_price" + rowID_new, clonedRow).attr("name", "unit_price" + rowID_new);
-    $("#unit_price" + rowID_new, clonedRow).val("");
-    $("#unit_price" + rowID_new, clonedRow).removeClass("validate[required]");
+    clonedRow.find("#description" + rowID_old).attr("id", "description" + rowID_new);
+    clonedRow.find("#description" + rowID_new).attr("name", "description" + rowID_new);
+    clonedRow.find("#description" + rowID_new).css({color: "#b2adad"});
+    clonedRow.find("#description" + rowID_new).attr("data-row-num", rowID_new);
+    clonedRow.find("#description" + rowID_new).val("");
 
-    $("#description" + rowID_old, clonedRow).attr("id", "description" + rowID_new);
-    $("#description" + rowID_new, clonedRow).attr("name", "description" + rowID_new);
-    $("#description" + rowID_new, clonedRow).val("");
-    $("#description" + rowID_new, clonedRow).css({color: "#b2adad"});
-    // $(".details", clonedRow).hide();
+    clonedRow.find("#tax_id\\[" + rowID_old + "\\]\\[0\\]").attr("id", "tax_id[" + rowID_new + "][0]");
+    clonedRow.find("#tax_id\\[" + rowID_new + "\\]\\[0\\]").attr("name", "tax_id[" + rowID_new + "][0]");
+    clonedRow.find("#tax_id\\[" + rowID_new + "\\]\\[0\\]").attr("data-row-num", rowID_new);
 
-    $("#tax_id\\[" + rowID_old + "\\]\\[0\\]", clonedRow).attr("id", "tax_id[" + rowID_new + "][0]");
-    $("#tax_id\\[" + rowID_new + "\\]\\[0\\]", clonedRow).attr("name", "tax_id[" + rowID_new + "][0]");
-    $("#tax_id\\[" + rowID_old + "\\]\\[1\\]", clonedRow).attr("id", "tax_id[" + rowID_new + "][1]");
-    $("#tax_id\\[" + rowID_new + "\\]\\[1\\]", clonedRow).attr("name", "tax_id[" + rowID_new + "][1]");
+    clonedRow.find("#tax_id\\[" + rowID_old + "\\]\\[1\\]").attr("id", "tax_id[" + rowID_new + "][1]");
+    clonedRow.find("#tax_id\\[" + rowID_new + "\\]\\[1\\]").attr("name", "tax_id[" + rowID_new + "][1]");
+    clonedRow.find("#tax_id\\[" + rowID_new + "\\]\\[1\\]").attr("data-row-num", rowID_new);
 
-    $("#json_html" + rowID_old, clonedRow).remove();
+    clonedRow.find("#json_html" + rowID_old).remove();
 
     $('#itemtable').append(clonedRow);
 

@@ -9,20 +9,35 @@ global $smarty;
 Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$op = ! empty ( $_POST ['op'] ) ? addslashes ( $_POST ['op'] ) : NULL;
+$op = ! empty ( $_POST ['op'] ) ? addslashes ( $_POST ['op'] ) : null;
 
 $display_block = "<div class='si_message_error'>{$LANG['save_expense_failure']}</div>";
 $refresh_redirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=expense&amp;view=manage" />';
 
-$saved = false;
+if (empty($_POST['customer_id'])) {
+}
 
-if ($op === 'add') {
-    if (Expense::insert()) {
-        $display_block = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
+if (!$error) {
+    if (empty($_POST['customer_id'])) {
+        $_POST['customer_id'] = null;
     }
-} else if ($op === 'edit') {
-    if (Expense::update()) {
-        $display_block = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
+
+    if (empty($_POST['invoice_id'])) {
+        $_POST['invoice_id'] = null;
+    }
+
+    if (empty($_POST['product_id'])) {
+        $_POST['product_id'] = null;
+    }
+
+    if ($op === 'add') {
+        if (Expense::insert()) {
+            $display_block = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
+        }
+    } else if ($op === 'edit') {
+        if (Expense::update()) {
+            $display_block = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
+        }
     }
 }
 
