@@ -90,12 +90,12 @@
                     <th class="left">{$LANG.description}</th>
                 </tr>
                 <tr>
-                    <td class='si_invoice_notes' colspan="2">
-                        <!--
-                        <textarea class="editor" name="description0">{*$invoiceItems[0].description|outhtml*}</textarea>
-                        -->
-                        <input name="description0" id="description0" {if isset($invoiceItems[0].description)}value="{$invoiceItems[0].description|outhtml}"{/if} type="hidden">
-                        <trix-editor input="description0"></trix-editor>
+                    <td class='si_invoice_notes' colspan="5">
+{*                        <textarea class="editor" name="description0">{$invoiceItems[0].description|outhtml}</textarea>*}
+                        <textarea name="description0" style="overflow:scroll;"
+                                  id="description0" rows="3" cols="100%"
+                                  data-row-num="0"
+                                  data-description="{$LANG['description']}">{$invoiceItems[0].description|outhtml}</textarea>
                     </td>
                 </tr>
             </table>
@@ -103,32 +103,34 @@
                 <tr>
                     <th>{$LANG.gross_total}</th>
                     <td>
-                        <input type="text" name="unit_price0"
-                               value="{$invoiceItems[0].unit_price|siLocal_number_trim}" size="10"/>
+                        <input type="text" class="si_right" name="unit_price0"
+                               value="{$invoiceItems[0].unit_price|siLocal_number}" size="10"/>
                         <input type="hidden" name="quantity0" value="1"/>
                         <input type="hidden" name="id0" value="{$invoiceItems[0].id|htmlsafe}"/>
                         <input type="hidden" name="products0" value="{$invoiceItems[0].product_id|htmlsafe}"/>
                     </td>
-                    <th>{$LANG.tax}</th>
-                    <td>
-                        <table class="si_invoice_taxes">
-                            <tr>
-                                {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
-                                    <td>
-                                        <select id="tax_id[0][{$smarty.section.tax.index|htmlsafe}]"
-                                                name="tax_id[0][{$smarty.section.tax.index|htmlsafe}]">
-                                            <option value=""></option>
-                                            {assign var="index" value=$smarty.section.tax.index}
-                                            {foreach from=$taxes item=tax}
-                                                <option {if $tax.tax_id === $invoiceItems[0].tax.$index} selected {/if}
-                                                        value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
-                                            {/foreach}
-                                        </select>
-                                    </td>
-                                {/section}
-                            </tr>
-                        </table>
-                    </td>
+                    {if $defaults.tax_per_line_item > 0}
+                        <th>{$LANG.tax}</th>
+                        <td>
+                            <table class="si_invoice_taxes">
+                                <tr>
+                                    {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
+                                        <td>
+                                            <select id="tax_id[0][{$smarty.section.tax.index|htmlsafe}]"
+                                                    name="tax_id[0][{$smarty.section.tax.index|htmlsafe}]">
+                                                <option value=""></option>
+                                                {assign var="index" value=$smarty.section.tax.index}
+                                                {foreach from=$taxes item=tax}
+                                                    <option {if $tax.tax_id === $invoiceItems[0].tax.$index} selected {/if}
+                                                            value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
+                                                {/foreach}
+                                            </select>
+                                        </td>
+                                    {/section}
+                                </tr>
+                            </table>
+                        </td>
+                    {/if}
                 </tr>
                 {$customFields.1}
                 {$customFields.2}

@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-05-06 - <b>2019.2.23</b>
+            <ul>
+                <li>Cleaned up the total style invoice edit screen input and display logic.</li>
+            </ul>
+        </li>
         <li>2020-04-01 - <b>2019.2.22</b>
             <ul>
                 <li>Fixed logic for adding and deleting invoice item lines, and to
