@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-05-16 - <b>2019.2.24</b>
+            <ul>
+                <li>Updated the Dutch (nl_NL) language files using changes made by an SI user.</li>
+            </ul>
+        </li>
         <li>2020-05-06 - <b>2019.2.23</b>
             <ul>
                 <li>Cleaned up the total style invoice edit screen input and display logic.</li>
