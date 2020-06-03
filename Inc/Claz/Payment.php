@@ -102,9 +102,11 @@ class Payment
                 'invoice_id' => $invoice_id,
                 'customer' => $row['cname'],
                 'biller' => $row['bname'],
-                'amount_fmtd' => SiLocal::currency($row['ac_amount']),
+                'amount' => $row['ac_amount'],
                 'type' => $row['type'],
-                'date' => $row['date']
+                'date' => $row['ac_date'],
+                'currency_code' => $row['currency_code'],
+                'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $row['locale'])
             );
         }
         return $tableRows;
@@ -128,7 +130,10 @@ class Payment
                 new DbField('c.name', 'cname'),
                 new DbField('b.id', 'biller_id'),
                 new DbField('b.name', 'bname'),
-                new DbField('pt.pt_description', 'description')
+                new DbField('pt.pt_description', 'description'),
+                new DbField("pr.locale", "locale"),
+                new DbField("pr.pref_currency_sign", "currency_sign"),
+                new DbField("pr.currency_code", "currency_code")
             ));
 
             $jn = new Join('LEFT', 'invoices', 'iv');
@@ -184,7 +189,6 @@ class Payment
             $rows = $pdoDb->request("SELECT", "payment", "ap");
             foreach ($rows as $row) {
                 $row['notes_short'] = SiLocal::truncateStr($row['ac_notes'], '13', '...');
-                $row['date'] = SiLocal::date($row['ac_date']);
                 $payments[] = $row;
             }
         } catch (PdoDbException $pde) {

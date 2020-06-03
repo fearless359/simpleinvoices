@@ -18,8 +18,12 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$inventories = Inventory::getAll();
-$smarty->assign('inventories', $inventories);
+$inventories = Inventory::manageTableInfo();
+$data = json_encode(array('data' => $inventories));
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $smarty->assign("number_of_rows",count($inventories));
 
 $smarty->assign('pageActive', 'inventory');

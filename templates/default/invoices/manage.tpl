@@ -91,8 +91,25 @@
                     { "data": "biller" },
                     { "data": "customer" },
                     { "data": "date" },
-                    { "data": "total_fmtd"},
-                    { "data": "owing_fmtd"},
+                    {"data": "total",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currency_code']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    {
+                        "data": "owing",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currency_code']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
                     { "data": "aging" }
                 ],
                 "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],
@@ -101,11 +118,9 @@
                 ],
                 "columnDefs": [
                     { "targets": 0, "width": "12%", "className": 'dt-body-center', "orderable": false },
-                    { "targets": 1, "className": 'dt-body-center' },
+                    { "targets": [1,4,7], "className": 'dt-body-center' },
                     { "targets": 4, "width": "10%" },
-                    { "targets": 5, "className": 'dt-body-right' },
-                    { "targets": 6, "className": 'dt-body-right' },
-                    { "targets": 7, "className": 'dt-body-right' }
+                    { "targets": [5,6], "className": 'dt-body-right' }
                 ],
                 "colReorder": true
             });

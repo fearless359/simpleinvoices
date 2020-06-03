@@ -44,6 +44,41 @@ class Inventory {
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo()
+    {
+        global $config;
+
+        $rows = self::getInventories();
+        $tableRows = array();
+        foreach ($rows as $row) {
+            // @formatter:off
+            $action = "<a class='index_table' title=\"{$row['vname']}\" " .
+                         "href=\"index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
+                          "<img src=\"images/common/view.png\" class=\"action\" alt=\"{$row['vname']}\" />" .
+                      "</a>" .
+                      "<a class=\"index_table\" title=\"{$row['ename']}\" " .
+                         "href=\"index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
+                          "<img src=\"images/common/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
+                      "</a>";
+
+            $tableRows[] = array(
+                'action' => $action,
+                'date' => $row['date'],
+                'description' => $row['description'],
+                'quantity' => $row['quantity'],
+                'cost' => $row['cost'],
+                'total_cost' => $row['total_cost'],
+                'currency_code' => $config ->local->currency_code,
+                'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
+            );
+        }
+        return $tableRows;
+    }
+
+    /**
      * Retrieve inventory record(s).
      * @param int $inv_id If not null, the inventory id of the record to retrieve.
      * @return array Row(s) retrieved.

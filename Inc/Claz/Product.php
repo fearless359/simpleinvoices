@@ -46,6 +46,8 @@ class Product {
      */
     public static function manageTableInfo($inventory)
     {
+        global $config;
+
         $rows = self::getProducts();
         $tableRows = array();
         foreach ($rows as $row) {
@@ -67,16 +69,20 @@ class Product {
                 $tableRows[] = array(
                     'action' => $action,
                     'description' => $row['description'],
-                    'unit_price' => SiLocal::currency($row['unit_price']),
-                    'quantity' => SiLocal::numberTrim($row['quantity']),
-                    'enabled' => $enabled
+                    'unit_price' => $row['unit_price'],
+                    'quantity' => (isset($row['quantity']) ? $row['quantity'] : '0'),
+                    'enabled' => $enabled,
+                    'currency_code' => $config ->local->currency_code,
+                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
                 );
             } else {
                 $tableRows[] = array(
                     'action' => $action,
                     'description' => $row['description'],
-                    'unit_price' => SiLocal::currency($row['unit_price']),
-                    'enabled' => $enabled
+                    'unit_price' => $row['unit_price'],
+                    'enabled' => $enabled,
+                    'currency_code' => $config ->local->currency_code,
+                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
                 );
             }
         }

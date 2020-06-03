@@ -207,12 +207,12 @@ class Invoice
                 'index_id' => $row['index_id'],
                 'biller' => $row['biller'],
                 'customer' => $row['customer'],
-                'date' => SiLocal::date($row['date']),
+                'date' => $row['date'],
                 'total' => $row['total'],
-                'total_fmtd' => SiLocal::currency($row['total']),
                 'owing' => (isset($row['status']) ? $row['owing'] : ''),
-                'owing_fmtd' => (isset($row['status']) ? SiLocal::currency($row['owing']) : ''),
-                'aging' => (isset($row['aging']) ? $row['aging'] : '')
+                'aging' => (isset($row['aging']) ? $row['aging'] : ''),
+                'currency_code' => $row['currency_code'],
+                'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $row['locale'])
             );
         }
         return $tableRows;
@@ -317,6 +317,7 @@ class Invoice
                 new DbField("pf.pref_description", "preference"),
                 new DbField("pf.status", "status"),
                 new DbField("pf.set_aging", "set_aging"),
+                new DbField("pf.locale", "locale"),
                 new DbField("pf.pref_currency_sign", "currency_sign"),
                 new DbField("pf.currency_code", "currency_code"));
             $pdoDb->setSelectList($expr_list);

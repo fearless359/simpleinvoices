@@ -93,9 +93,33 @@
                         { "data": "name" },
                         { "data": "department" },
                         { "data": "quick_view" },
-                        { "data": "total" },
-                        { "data": "paid" },
-                        { "data": "owing" },
+                        { "data": "total",
+                            "render": function(data, type, row) {
+                                let formatter = new Intl.NumberFormat(row['locale'], {
+                                    'style': 'currency',
+                                    'currency': row['currency_code']
+                                });
+                                return formatter.format(data);
+                            }
+                        },
+                        { "data": "paid",
+                            "render": function(data, type, row) {
+                                let formatter = new Intl.NumberFormat(row['locale'], {
+                                    'style': 'currency',
+                                    'currency': row['currency_code']
+                                });
+                                return formatter.format(data);
+                            }
+                        },
+                        { "data": "owing",
+                            "render": function(data, type, row) {
+                                let formatter = new Intl.NumberFormat(row['locale'], {
+                                    'style': 'currency',
+                                    'currency': row['currency_code']
+                                });
+                                return formatter.format(data);
+                            }
+                        },
                         { "data": "enabled" },
                     ],
                     "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],

@@ -25,10 +25,11 @@ export.pdf.rightmargin              = 15
 export.pdf.topmargin                = 15
 export.pdf.bottommargin             = 15
 
-version.name                        = 2019.2.24
-version.update_date                 = 20200516
+version.name                        = 2019.2.25
+version.update_date                 = 20200603
 
 local.locale                        = en_US
+local.currency_code                 = USD
 local.precision                     = 2
 
 email.host                          = localhost

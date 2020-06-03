@@ -31,38 +31,49 @@
             <th>{$LANG.total_cost}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $inventories as $inventory}
-            <tr>
-                <td class="si_center">
-                    <a class="index_table" title="{$inventory['vname']}"
-                       href="index.php?module=inventory&amp;view=details&amp;id={$inventory['id']}&amp;action=view">
-                        <img src="images/common/view.png" alt="{$inventory['vname']}" height="16" border="-5px" />
-                    </a>
-                    <a class="index_table" title="{$inventory['ename']}"
-                       href="index.php?module=inventory&amp;view=details&amp;id={$inventory['id']}&amp;action=edit">
-                        <img src="images/common/edit.png" alt="{$inventory['ename']}" height="16" border="-5px"/>
-                    </a>
-                </td>
-                <td class="si_center">{$inventory['date']}</td>
-                <td>{$inventory['description']}</td>
-                <td class="si_right">{$inventory['quantity']|siLocal_number_trim:0}</td>
-                <td class="si_right">{$inventory['cost']|siLocal_currency}</td>
-                <td class="si_right">{$inventory['total_cost']|siLocal_currency}</td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "columns": [
+                    { "data": "action" },
+                    { "data": "date" },
+                    { "data": "description" },
+                    { "data": "quantity",
+                        "render": function(data, type, row) {
+                            let val = data.toString();
+                            return parseFloat(val);
+                        }
+                    },
+                    { "data": "cost",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currency_code']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    { "data": "total_cost",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currency_code']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
                     [2, "asc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    {"targets": 0, "orderable": false, "className": 'dt-body-center'},
+                    {"targets": 1, "className": 'dt-body-center'},
+                    {"targets": [3,4,5], "className": 'dt-body-right'}
                 ],
                 "colReorder": true
             });

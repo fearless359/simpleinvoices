@@ -51,9 +51,20 @@
                     { "data": "invoice_id" },
                     { "data": "customer" },
                     { "data": "biller" },
-                    { "data": "amount_fmtd" },
+                    { "data": "amount",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currency_code']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
                     { "data": "type" },
-                    { "data": "date" },
+                    { "data": "date",
+                        "render": function(data, type, row) {
+                            return data.replace(/^(.*) .*$/, '$1');
+                        } },
                 ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "columnDefs": [

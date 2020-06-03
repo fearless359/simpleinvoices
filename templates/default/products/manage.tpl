@@ -39,9 +39,22 @@
                 "columns": [
                     { "data": "action" },
                     { "data": "description" },
-                    { "data": "unit_price" },
+                    { "data": "unit_price",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currency_code']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
                     {/literal}{if $defaults.inventory == $smarty.const.ENABLED}{literal}
-                    { "data": "quantity" },
+                    { "data": "quantity",
+                        "render": function(data, type, row) {
+                            let val = data.toString();
+                            return parseFloat(val);
+                        }
+                    },
                     {/literal}{/if}{literal}
                     { "data": "enabled" },
                 ],

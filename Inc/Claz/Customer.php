@@ -55,7 +55,7 @@ class Customer {
      */
     public static function manageTableInfo()
     {
-        global $LANG, $pdoDb;
+        global $config, $LANG, $pdoDb;
 
         $viewcust = $LANG['view'] . " " . $LANG['customer'];
         $editcust = $LANG['edit'] . " " . $LANG['customer'];
@@ -101,10 +101,12 @@ class Customer {
                 'name' => $row['name'],
                 'department' => $row['department'],
                 'quick_view' => $quick_view,
-                'total' => SiLocal::currency($row['total']),
-                'paid' => SiLocal::currency($row['paid']),
-                'owing' => SiLocal::currency($row['owing']),
-                'enabled' => $enabled_col
+                'total' => $row['total'],
+                'paid' => $row['paid'],
+                'owing' => $row['owing'],
+                'enabled' => $enabled_col,
+                'currency_code' => $config ->local->currency_code,
+                'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
             );
         }
         return $tableRows;
@@ -113,7 +115,7 @@ class Customer {
     /**
      * Retrieve all <b>customers</b> records per specified option.
      * @param array $params Array of options for processing the request. Settings are:
-     *          id - id of customer to retrieve. Defauls to all customers to be considered.
+     *          id - id of customer to retrieve. Defaults to all customers to be considered.
      *          enabled_only - Set to <b>true</b> if only Customers that are <i>Enabled</i>
      *              will be selected. Set to <b>false</b> to select all <b>customers</b> records.
      *          incl_cust_id - If set, makes sure this customer is included regardless of the
@@ -383,7 +385,7 @@ class Customer {
 
         // decrypt the value
         $key = $config->encryption->default->key;
-        $enc = new Encryption();
+        $enc = new \Encryption();
         $decrypted_value = $enc->decrypt($key, $value);
 
         $len = strlen($decrypted_value);

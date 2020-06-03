@@ -13,6 +13,17 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-06-03 - <b>2019.2.25</b>
+            <ul>
+                <li>Modified the table lists for all screens to use formatting in javascript
+                    rather than php code to enhance performance.</li>
+                <li>Added local.currency code field to the config file to support properly
+                    formatting currency fields for non-invoice items such as costs for
+                    customers, and unit price for products. Note that invoice and payment
+                    tables get currency formatting information from the "Inv Prefs" link
+                    in the Settings tab.</li>
+            </ul>
+        </li>
         <li>2020-05-16 - <b>2019.2.24</b>
             <ul>
                 <li>Updated the Dutch (nl_NL) language files using changes made by an SI user.</li>
