@@ -57,34 +57,57 @@ if ($_GET['stage'] == 2 ) {
     Log::out("email.php - After execute", Zend_Log::DEBUG);
 
     $email = new Email;
-    try {
-        $email->setBcc($_POST['email_bcc']);
-        $email->setBody($_POST['email_notes']);
-        $email->setFormat('invoice');
-        $email->setFrom($_POST['email_from']);
-        $email->setFromFriendly($biller['name']);
-        $email->setPdfFileName($export->getFileName() . '.pdf');
-        $email->setPdfString($pdf_string);
-        $email->setSubject($_POST['email_subject']);
+    $email->setBody($_POST['email_notes']);
+    $email->setFormat('invoice');
+    $email->setFromFriendly($biller['name']);
+    $email->setPdfFileName($export->getFileName() . '.pdf');
+    $email->setPdfString($pdf_string);
+    $email->setSubject($_POST['email_subject']);
 
-        // Check for multiple recipients
-        $email_to = array_filter(explode(';', $_POST['email_to']));
-        $email->setTo($email_to);
-    } catch (Exception $e) {
-        $message = $e->getMessage();
-        $error = true;
+    $results = [];
+    if (!$email->setFrom($_POST['email_from'])) {
+        $message = "Invalid FROM field";
+        $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+        $display_block = "<div class=\"si_message_error\">{$message}</div>";
+        $results = [
+            "message" => $message,
+            "refresh_redirect" => $refresh_redirect,
+            "display_block" =>$display_block
+        ];
     }
 
-    if (!$error) {
+    if (empty($results) && !$email->setBcc($_POST['email_bcc'])) {
+        $message = "Invalid BCC field";
+        $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+        $display_block = "<div class=\"si_message_error\">{$message}</div>";
+        $results = [
+            "message" => $message,
+            "refresh_redirect" => $refresh_redirect,
+            "display_block" =>$display_block
+        ];
+    }
+
+Log::out("email.php after set BCC. results is " . (empty($results) ? "EMPTY" : "NOT EMPTY"), Zend_Log::DEBUG);
+    if (empty($results) && !$email->setTo($_POST['email_to'])) {
+        $message = "Invalid TO field";
+        $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+        $display_block = "<div class=\"si_message_error\">{$message}</div>";
+        $results = [
+            "message" => $message,
+            "refresh_redirect" => $refresh_redirect,
+            "display_block" =>$display_block
+        ];
+    }
+
+    if (empty($results)) {
         Log::out("email.php - Before send", Zend_Log::DEBUG);
         $results = $email->send();
-
-        Log::out("email.php - results" . print_r($results, true), Zend_Log::DEBUG);
-        $smarty->assign('display_block', $results['display_block']);
-        $smarty->assign('refresh_redirect', $results['refresh_redirect']);
-
-        $message = '';
     }
+    Log::out("email.php - results" . print_r($results, true), Zend_Log::DEBUG);
+    $smarty->assign('display_block', $results['display_block']);
+    $smarty->assign('refresh_redirect', $results['refresh_redirect']);
+
+    $message = '';
 } else if ($_GET['stage'] == 3 ) {
     //stage 3 = assemble email and send
     $message = "Invalid routing to stage 3 of email processing. Probably a process error.";

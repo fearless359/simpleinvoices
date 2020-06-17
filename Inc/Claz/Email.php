@@ -53,7 +53,7 @@ class Email {
             empty($this->to)) {
             $message = "One or more required fields is missing";
             error_log("Email::send() - " . $message);
-            $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=statement&amp;view=index\" />";
+            $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=invoices&amp;view=manage\" />";
             $display_block = "<div class=\"si_message_error\">{$message}</div>";
             $results = [
                 "message" => $message,
@@ -68,7 +68,7 @@ class Email {
             ( empty($this->pdf_string) && !empty($this->pdf_file_name))) {
             $message = "Both pdf_string and pdf_file_name must be set or left empty";
             error_log("Email::send() - " . $message);
-            $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=statement&amp;view=index\" />";
+            $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=invoices&amp;view=manage\" />";
             $display_block = "<div class=\"si_message_error\">{$message}</div>";
             $results = [
                 "message" => $message,
@@ -86,7 +86,7 @@ class Email {
             }
         }
 
-        $transport = new Swift_SmtpTransport($config->email->host, $config->email->smtpport, $config->email->secure);
+        $transport = new Swift_SmtpTransport($config->email->host, $config->email->smtpport, $encryption);
         $transport->setUsername($config->email->username);
         $transport->setPassword($config->email->password);
 
@@ -100,10 +100,17 @@ class Email {
         }
 
         if (!empty($this->bcc)) {
-            $message->setBcc([$this->bcc]);
+            if (is_array($this->bcc)) {
+                foreach($this->bcc as $name) {
+                    $message->addBcc($name);
+                }
+            } else {
+                $message->setBcc([$this->bcc]);
+            }
         }
 
         $message->setBody($this->body, 'text/html');
+
         if (empty($this->from_friendly)) {
             $message->setFrom($this->from);
         } else {
@@ -227,15 +234,31 @@ class Email {
 
     /**
      * @param mixed $bcc
-     * @throws Exception
+     * @return bool true if OK, false if not.
      */
-    public function setBcc($bcc): void
+    public function setBcc($bcc): bool
     {
-        if (!empty($bcc) && !filter_var($bcc, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Invalid 'bcc' email address specified");
+        if (empty($bcc)) {
+            $this->bcc = '';
+        } else {
+            $email_bcc = array_filter(explode(';', $bcc));
+            if (is_array($email_bcc) && count($email_bcc) > 1) {
+                foreach ($email_bcc as $addr) {
+                    if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
+                        error_log("Email::setBcc() - Invalid BCC address in list[{$addr}]");
+                        return false;
+                    }
+                }
+                $this->bcc = $email_bcc;
+            } else {
+                if (!filter_var($bcc, FILTER_VALIDATE_EMAIL)) {
+                    error_log("Email::setBcc() - Invalid BCC address[{$bcc}]");
+                    return false;
+                }
+                $this->bcc = $bcc;
+            }
         }
-
-        $this->bcc = $bcc;
+        return true;
     }
 
     /**
@@ -287,15 +310,17 @@ class Email {
 
     /**
      * @param string $from Valid email address of sender
-     * @throws Exception
+     * @return bool true if OK, false of not.
      */
-    public function setFrom($from): void
+    public function setFrom($from): bool
     {
-        if (!filter_var($from, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Invalid 'from' email address specified");
+        if (empty($from) || !filter_var($from, FILTER_VALIDATE_EMAIL)) {
+            error_log("Email::setFrom() - Invalid FROM address[{$from}]");
+            return false;
         }
 
         $this->from = $from;
+        return true;
     }
 
     /**
@@ -372,25 +397,32 @@ class Email {
 
     /**
      * @param array/string $to Email address to send message to.
-     * @throws Exception
+     * @return bool true if OK, false if not.
      */
-    public function setTo($to): void
+    public function setTo($to): bool
     {
-        if (is_array($to)) {
-            foreach ($to as $addr) {
-                if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
-                    error_log("Email::setTo() - Invalid email address: " . print_r($to, true));
-                    throw new Exception("Invalid 'to' email address array");
-                }
-            }
+        if (empty($to)) {
+            error_log("Email::setTo() - Empty TO address");
+            return false;
         } else {
-            if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
-                error_log("Email::setTo() - Invalid email address: $to");
-                throw new Exception("Invalid 'to' email address specified");
+            $email_to = array_filter(explode(';', $to));
+            if (is_array($email_to) && count($email_to) > 1) {
+                foreach ($email_to as $addr) {
+                    if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
+                        error_log("Email::setTo() - Invalid TO address in list[{$addr}]");
+                        return false;
+                    }
+                    $this->to = $email_to;
+                }
+            } else {
+                if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+                    error_log("Email::setTo() - Invalid TO address[{$to}]");
+                    return false;
+                }
+                $this->to = $to;
             }
         }
-
-        $this->to = $to;
+        return true;
     }
 
 }

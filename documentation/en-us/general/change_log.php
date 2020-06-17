@@ -13,6 +13,15 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-06-16 - <b>2019.2.26</b>
+            <ul>
+                <li>Modified code to handle multiple TO and BCC email addresses using a
+                    semi-colon, ";", to separate each address.</li>
+                <li>Added logic to report invalid email addresses in the FROM, TO and BCC
+                    fields as errors to the user rather than throwing an error that never
+                    displayed.</li>
+            </ul>
+        </li>
         <li>2020-06-03 - <b>2019.2.25</b>
             <ul>
                 <li>Modified the table lists for all screens to use formatting in javascript
