@@ -1,0 +1,70 @@
+
+body { background: white; color: #000000; font-style: normal; font-size: 10pt; font-family: Arial , Veranda, San-Serif; }
+
+hr {color: #444444;}
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table td, table td * {
+vertical-align: top;
+}
+
+td {margin: 0px;      padding: 0px 1px 0px 1px; text-align: left;}
+tr {margin: 0px;      padding: 1px; text-align: left;}
+.col1 { background-color: #EFEFEF; }
+
+.font1 { font-family: Arial; font-size: 12pt; }
+
+.font2 { color: #990000; font-size: 10pt; font-weight: bold; }
+
+.font3 { font-family: Arial; font-size: 7pt; }
+
+.tbl1 { border: #A0A0A0 1px solid; border-collapse:collapse; }
+.tbl1-left { border-left: #A0A0A0 1px solid; border-collapse:collapse; }
+.tbl1-right { border-right: #A0A0A0 1px solid; border-collapse:collapse; }
+.tbl1-bottom { border-bottom: #A0A0A0 1px solid; border-collapse:collapse; }
+.tbl1-top { border-top: #A0A0A0 1px solid; border-collapse:collapse; }
+
+.top-table {
+width: 100%;
+margin: 20px 0px 46px 0px;
+}
+
+.top-left {
+width: 100%;
+font-family: Arial; font-size: 10pt;
+display: inline-block;
+vertical-align: top;
+margin: 0 auto;
+text-align: left;
+}
+
+.top-right {
+width: 100%;
+font-family: Arial; font-size: 10pt;
+display: inline-block;
+vertical-align: top;
+margin: 0 auto;
+text-align: left;
+margin-left: 60px;}
+
+.double_underline
+{
+	border-bottom: 1px double #555;
+}
+
+.items {
+margin-top: 0px;
+}
+.description {
+margin-top: 0px;
+}
+.details {
+margin-top: 0px;
+}
+
+

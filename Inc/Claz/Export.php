@@ -102,9 +102,8 @@ class Export
                         break;
 
                     default:
-                        header('Content-Disposition: attachment; filename="' .
-                               addslashes($preference['pref_inv_heading'] . $this->id . '.' .
-                               $this->file_type) . '"');
+                        $filename = addslashes($preference['pref_inv_heading'] . '_' . $invoice['index_id'] . '.' . $this->file_type);
+                        header('Content-Disposition: attachment; filename="' . $filename . '"');
                         break;
                 }
 
@@ -232,6 +231,7 @@ class Export
                     }
 
                     $this->file_name = str_replace(" ", "_", $this->invoice['index_name']);
+                    Log::out("Export::getData() - file_name[$this->file_name]");
 
                     $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($this->id);
                     $invoiceItems = Invoice::getInvoiceItems($this->id);

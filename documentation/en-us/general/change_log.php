@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-06-24 - <b>2019.2.27</b>
+            <ul>
+                <li>Modified to correctly generate pdf, xls and doc files for invoices.</li>
+                <li>Update vendor libraries to current versions for PHP 7.2x and above.</li>
+            </ul>
+        </li>
         <li>2020-06-16 - <b>2019.2.26</b>
             <ul>
                 <li>Modified code to handle multiple TO and BCC email addresses using a

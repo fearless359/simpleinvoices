@@ -192,7 +192,7 @@ class Invoice
                           "<img src=\"images/common/printer.png\" class=\"action\" alt=\"print\" />" .
                       "</a>" .
                       "<a class=\"invoice_export_dialog\" id=\"btnShowSimple\" title=\"{$LANG['export_tooltip']} {$row['index_id']}\" " .
-                         "href=\"#\" rel=\"{$row['id']}\" data-spreadsheet=\"{$config->export->spreadsheet}\" " .
+                         "href=\"#\" data-row-num=\"{$row['id']}\" data-spreadsheet=\"{$config->export->spreadsheet}\" " .
                          "data-wordprocessor=\"{$config->export->wordprocessor}\">" .
                           "<img src=\"images/common/page_white_acrobat.png\" class=\"action\" alt=\"spreadsheet\"/>" .
                       "</a>" .

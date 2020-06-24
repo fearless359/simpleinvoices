@@ -11,7 +11,7 @@
     "phpunit/phpunit": "^7"
   },
   "require": {
-    "mpdf/mpdf": "^7.1",
+    "mpdf/mpdf": "^8.0",
     "swiftmailer/swiftmailer": "^6.0",
     "ext-json": "*",
     "zendframework/zendframework1": "1.12.*"
