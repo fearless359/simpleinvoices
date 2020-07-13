@@ -55,8 +55,9 @@ if ($_POST['action'] == "insert" ) {
             if ($type == TOTAL_INVOICE) {
                 $product_id = Product::insertProduct(DISABLED, DISABLED);
                 if ($product_id > 0) {
-                    $tax_id = (empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0]);
-                    Invoice::insertInvoiceItem($id, 1, $product_id, $tax_id, $_POST['description'], $_POST['unit_price']);
+                    $unitPrice = SiLocal::dbStd($_POST["unit_price"]);
+                    $tax_ids = (empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0]);
+                    Invoice::insertInvoiceItem($id, 1, $product_id, $tax_ids, $_POST['description'], $unitPrice);
                 } else {
                     error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
                 }
@@ -65,11 +66,12 @@ if ($_POST['action'] == "insert" ) {
                 while ($i <= $_POST['max_items']) {
                     if (!empty($_POST["quantity$i"])) {
                         // @formatter:off
-                    $tax_id = (empty($_POST["tax_id"][$i]) ? "" : $_POST["tax_id"][$i]);
-                    $attr = (empty($_POST["attribute"][$i]) ? "" : $_POST["attribute"][$i]);
-                    Invoice::insertInvoiceItem($id, $_POST["quantity$i"], $_POST["products$i"],
-                        $tax_id, $_POST["description$i"], $_POST["unit_price$i"], $attr);
-                    // @formatter:on
+                        $unitPrice = SiLocal::dbStd($_POST["unit_price$i"]);
+                        $tax_id = (empty($_POST["tax_id"][$i]) ? "" : $_POST["tax_id"][$i]);
+                        $attr = (empty($_POST["attribute"][$i]) ? "" : $_POST["attribute"][$i]);
+                        Invoice::insertInvoiceItem($id, $_POST["quantity$i"], $_POST["products$i"],
+                            $tax_id, $_POST["description$i"], $unitPrice, $attr);
+                        // @formatter:on
                     }
                     $i++;
                 }
@@ -87,7 +89,7 @@ if ($_POST['action'] == "insert" ) {
     try {
         if (Invoice::updateInvoice($id)) {
             if ($type == TOTAL_INVOICE) {
-                $unit_price = (empty($_POST['unit_price']) ? 0 : $_POST['unit_price']);
+                $unit_price = (empty($_POST['unit_price']) ? 0 : SiLocal::dbStd($_POST['unit_price']));
                 $pdoDb->setFauxPost(array("unit_price" => $unit_price, "description" => $_POST['description0']));
                 $pdoDb->addSimpleWhere("id", $_POST['products0'], "AND");
                 $pdoDb->addSimpleWhere("domain_id", DomainId::get());

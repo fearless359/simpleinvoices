@@ -78,7 +78,7 @@
                     </tr>
                     <!-- Biller section - end -->
                     <tr>
-                        <td colspan="4"><br/></td>
+                        <td colspan="4">&nbsp;</td>
                     </tr>
                 </table>
                 <!-- Biller section - end -->
@@ -210,7 +210,7 @@
     </table>
     <table class="left items" style="width:100%;">
         <tr>
-            <td colspan="6"><br/></td>
+            <td colspan="6">&nbsp;</td>
         </tr>
         {if $invoice.type_id == ITEMIZED_INVOICE}
             <tr>
@@ -348,11 +348,11 @@
         {if ($invoice.type_id == ITEMIZED_INVOICE   && $invoice.note != "") ||
             ($invoice.type_id == CONSULTING_INVOICE && $invoice.note != "" ) }
             <tr>
-                <td class="" colspan="6"><br/></td>
+                <td class="" colspan="6">&nbsp;</td>
             </tr>
         {/if}
         <tr class="">
-            <td class="" colspan="6"><br/></td>
+            <td class="" colspan="6">&nbsp;</td>
         </tr>
         {* tax section - start *}
         {if $invoice_number_of_taxes > 0}
@@ -366,7 +366,7 @@
         {/if}
         {if $invoice_number_of_taxes > 1 }
             <tr>
-                <td colspan="6"><br/></td>
+                <td colspan="6">&nbsp;</td>
             </tr>
         {/if}
         {section name=line start=0 loop=$invoice.tax_grouped step=1}
@@ -391,7 +391,7 @@
         {/if}
         {if $invoice_number_of_taxes > 1}
             <tr>
-                <td colspan="6"><br/></td>
+                <td colspan="6">&nbsp;</td>
             </tr>
         {/if}
         <tr>
@@ -446,10 +446,10 @@
         </tr>
         *************************************************************************** *}
         <tr>
-            <td colspan="6">
-                <br/>
-                <br/>
-            </td>
+            <td colspan="6">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="6">&nbsp;</td>
         </tr>
         <tr>
             <td class="tbl1-bottom col1" colspan="6" align="left"><b>{$LANG.notes}:</b></td>
@@ -472,18 +472,31 @@
         </tr>
         <tr>
             <td class="" colspan="6">
+                </br>
+            </td>
+        </tr>
+        <tr>
+            <td class="" colspan="6">
                 </br>{$preference.pref_inv_payment_line1_name|htmlsafe}</br>
+            </td>
+        </tr>
+        <tr>
+            <td class="" colspan="6">
                 {$preference.pref_inv_payment_line1_value|htmlsafe}
             </td>
         </tr>
         <tr>
             <td class="" colspan="6">
                 {$preference.pref_inv_payment_line2_name|htmlsafe}</br>
+            </td>
+        </tr>
+        <tr>
+            <td class="" colspan="6">
                 {$preference.pref_inv_payment_line2_value|htmlsafe}
             </td>
         </tr>
         <tr>
-            <td><br/></td>
+            <td>&nbsp</td>
         </tr>
         <tr>
             <td colspan="6">

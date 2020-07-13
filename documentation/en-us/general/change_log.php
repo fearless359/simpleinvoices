@@ -13,6 +13,15 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-07-13 - <b>2019.2.28</b>
+            <ul>
+                <li>Use dbStd function to convert amount input on invoice items or total
+                    input for Total style invoices to fix issue of amounts not storing
+                    correctly in the database.</li>
+                <li>Corrected new Total Style invoice handling of more than one tax item
+                    for the invoice.</li>
+            </ul>
+        </li>
         <li>2020-06-24 - <b>2019.2.27</b>
             <ul>
                 <li>Modified to correctly generate pdf, xls and doc files for invoices.</li>

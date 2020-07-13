@@ -47,12 +47,15 @@
                     {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
                         {assign var="taxNumber" value=$smarty.section.tax.index }
                         <td>
-                            <select id="tax_id[{$smarty.section.line.index|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]"
-                                    name="tax_id[{$smarty.section.line.index|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
+                            <select id="tax_id[0][{$smarty.section.tax.index|htmlsafe}]"
+                                    name="tax_id[0][{$smarty.section.tax.index|htmlsafe}]"
+                                    data-row-num="0" >
                                 <option value=""></option>
                                 {foreach from=$taxes item=tax}
                                     <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}"
-                                            {if $tax.tax_id == $defaultInvoiceItems[0].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlsafe}</option>
+                                            {if isset($defaultInvoiceItems[$line].tax[$taxNumber]) && $tax.tax_id == $defaultInvoiceItems[$line].tax[$taxNumber]}selected{/if}>
+                                        {$tax.tax_description|htmlsafe}
+                                    </option>
                                 {/foreach}
                             </select>
                         </td>
