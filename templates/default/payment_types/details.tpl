@@ -16,7 +16,7 @@
             </tr>
             <tr>
                 <th style="font-weight: bold;">{$LANG.status}</th>
-                <td>{$paymentType.enabled|htmlsafe}</td>
+                <td>{$paymentType.enabled_text|htmlsafe}</td>
             </tr>
         </table>
     </div>

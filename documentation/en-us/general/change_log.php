@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-07-15 - <b>2019.2.29</b>
+            <ul>
+                <li>Fixed display of status in Pymt Types view screen.</li>
+            </ul>
+        </li>
         <li>2020-07-13 - <b>2019.2.28</b>
             <ul>
                 <li>Use dbStd function to convert amount input on invoice items or total
