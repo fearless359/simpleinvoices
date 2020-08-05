@@ -36,6 +36,8 @@
         $(document).ready(function () {
             $('#si-data-table').DataTable({
                 "ajax": "./public/data.json",
+                "orderClasses": false,
+                "deferRender": true,
                 "columns": [
                     { "data": "action" },
                     { "data": "description" },

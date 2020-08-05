@@ -119,7 +119,6 @@ class PdoDb {
      * Reset class properties with the exception of the database object,
      * to their default (unset) state.
      * @param bool $clearTran
-     * @throws PdoDbException
      */
     public function clearAll($clearTran = true) {
         // @formatter:off
@@ -729,7 +728,11 @@ class PdoDb {
                    " AND `table_schema` = '{$this->table_schema}';";
             if ($sth = $this->pdoDb2->prepare($sql)) {
                 if ($sth->execute() !== false) {
-                    $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+                    $tmpResult = $sth->fetchAll(PDO::FETCH_ASSOC);
+                    $result = [];
+                    foreach ($tmpResult as $key=>$value) {
+                        $result[strtolower($key)] = $value;
+                    }
                     return (!empty($result));
                 }
             }
@@ -755,7 +758,11 @@ class PdoDb {
                    " AND `table_schema` = '{$this->table_schema}';";
             if (($sth = $this->pdoDb2->prepare($sql)) !== false) {
                 if ($sth->execute() !== false) {
-                    $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+                    $tmpResult = $sth->fetchAll(PDO::FETCH_ASSOC);
+                    $result = [];
+                    foreach ($tmpResult as $key=>$value) {
+                        $result[strtolower($key)] = $value;
+                    }
                     return (!empty($result));
                 }
             }
@@ -786,7 +793,7 @@ class PdoDb {
             if ($sth = $this->pdoDb2->prepare($sql)) {
                 if ($sth->execute($token_pairs)) {
                     while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-                        $nam = $row['column_name'];
+                        $nam = (isset($row['column_name']) ? $row['column_name'] : $row['COLUMN_NAME']);
                         $columns[$nam] = "";
                         $sql = "SELECT `constraint_name`" .
                                " FROM `information_schema`.`key_column_usage`" .
@@ -1049,7 +1056,6 @@ class PdoDb {
 
                 // Build LIMIT
                 $limit = (empty($this->limit) ? '' : " LIMIT $this->limit");
-
                 // Make an array of paired column name and values. The column name is the
                 // index and the value is the content at that column.
                 foreach ($columns as $column => $values) {
@@ -1062,7 +1068,6 @@ class PdoDb {
                 }
             }
         }
-
         // @formatter:off
         $useValueList = ($request != "ALTER TABLE"  &&
                          $request != "CREATE TABLE" &&
@@ -1144,15 +1149,15 @@ class PdoDb {
                 break;
 
             case "INSERT":
-                $sql  = "INSERT INTO `{$table}` \n";
+                $sql /** @lang TEXT */ = "INSERT INTO `{$table}` \n";
                 break;
 
             case "UPDATE":
-                $sql  = "UPDATE `{$table}` SET \n";
+                $sql /** @lang TEXT */ = "UPDATE `{$table}` SET \n";
                 break;
 
             case "DELETE":
-                $sql  = "DELETE FROM `{$table}` \n";
+                $sql /** @lang TEXT */  = "DELETE FROM `{$table}` \n";
                 break;
 
             default:
@@ -1160,8 +1165,10 @@ class PdoDb {
                 $this->clearAll();
                 throw new PdoDbException("PdoDb - request():  Request, $request, not implemented.");
         }
-
-        if ($useValueList) $sql .= $this->makeValueList($request, $valuePairs, $token_cnt) . "\n";
+        if ($useValueList) {
+            $lclValueList = $this->makeValueList($request, $valuePairs, $token_cnt) . "\n";
+            $sql .= $lclValueList;
+        }
 
         $sql .= (empty($onDuplicateKeyUpdate) ? "" : " " . $onDuplicateKeyUpdate) .
                 (empty($where  ) ? "" : " " . $where   . "\n") .
@@ -1170,7 +1177,6 @@ class PdoDb {
                 (empty($order  ) ? "" : " " . $order   . "\n") .
                 (empty($limit  ) ? "" : " " . $limit);
         // @formatter:on
-
         return $this->query($sql, $this->keyPairs);
     }
 
@@ -1202,7 +1208,6 @@ class PdoDb {
             $this->clearAll();
             throw new PdoDbException('PdoDb query(): Prepare error.');
         }
-
         if (isset($valuePairs) && is_array($valuePairs)) {
             foreach ($valuePairs as $key => $val) {
                 $pattern = "/[^a-zA-Z0-9_\-]" . $key . "[^a-zA-Z0-9_\-]|[^a-zA-Z0-9_\-]" . $key . "$/";
@@ -1214,7 +1219,6 @@ class PdoDb {
                 }
             }
         }
-
         if (!$sth->execute()) {
             $tmp = $this->debug;
             $this->debug = true;

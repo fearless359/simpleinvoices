@@ -172,9 +172,14 @@ class Config
 
         $filename_new = './' . self::CUSTOM_CONFIG_FILE . ".new";
         $fnew = fopen($filename_new, 'w');
+        if ($fnew === false) {
+            die("Config::updateCustomConfig() - Unable to open new './" . self::CUSTOM_CONFIG_FILE . ".new' file");
+        }
 
         $fcur = fopen('./' . self::CUSTOM_CONFIG_FILE, 'r');
-        if ($fcur === false) die("Cannot open custom config, " . self::CUSTOM_CONFIG_FILE);
+        if ($fcur === false) {
+            die("Config::updateCustomConfig() - Unable to open './" . self::CUSTOM_CONFIG_FILE . "'");
+        }
         $section = null;
         $unmatched_flagged = false;
         while (($line = fgets($fcur)) !== false) {

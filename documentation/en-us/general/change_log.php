@@ -13,6 +13,15 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-08-05 - <b>2019.2.30</b>
+            <ul>
+                <li>Change PdoDb class to handle information_schema column and table names
+                    to force them to be lower case. This is for UNIX like systems that
+                    enforce file name case sensitivity.</li>
+                <li>Modified all manage.tpl templates the use DataTables to set the
+                    deferred render to enhance performance with larger tables.</li>
+            </ul>
+        </li>
         <li>2020-07-15 - <b>2019.2.29</b>
             <ul>
                 <li>Fixed display of status in Pymt Types view screen.</li>
