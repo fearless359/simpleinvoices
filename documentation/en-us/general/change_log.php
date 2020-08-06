@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-08-06 - <b>2020.0.00</b>
+            <ul>
+                <li>New master branch based on PHP 7.4 standard.</li>
+            </ul>
+        </li>
         <li>2020-08-05 - <b>2019.2.30</b>
             <ul>
                 <li>Change PdoDb class to handle information_schema column and table names
