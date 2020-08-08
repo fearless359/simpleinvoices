@@ -8,7 +8,7 @@
     "datatables.net-dt": "^1.10.19",
     "datatables.net-fixedheader-dt": "^3.1.5",
     "datatables.net-scroller-dt": "^1.5.1",
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   },
   "devDependencies": {}
 }
