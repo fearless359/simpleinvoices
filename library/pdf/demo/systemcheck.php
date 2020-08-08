@@ -262,7 +262,7 @@ class CheckCurl extends CheckBinaryRecommended {
     if (is_array($version)) {
       $version = $version['version'];
     };
-    $this->setMessage(sprintf('Found Curl extension version %s.', $version['version']));
+    $this->setMessage(sprintf('Found Curl extension version %s.', $version));
     $this->setSuccess(true);
   }
 }
@@ -651,7 +651,7 @@ class CheckGDJPEG extends CheckGDFormat {
   }
 
   function _getInfoKey() {
-    return "JPG Support";
+    return "JPEG Support";
   }
 }
 
