@@ -97,7 +97,7 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     rack (1.6.5)
-    rake (10.0.4)
+    rake (12.3.3)
     rubyzip (1.2.1)
     sass (3.4.3)
     selenium-webdriver (3.2.2)
