@@ -10,7 +10,8 @@ class ApiAuth
      * @param $module
      * @param \Zend_Session_Namespace $auth_session
      */
-    public static function authenticate($module, $auth_session) {
+    public static function authenticate($module, $auth_session): void
+    {
         // API calls don't use the auth module
         if ($module != 'api') {
             Log::out("ApiAuth::authenticate() - auth_session - " . print_r($auth_session,true), Zend_Log::DEBUG);

@@ -3,6 +3,7 @@
 namespace Inc\Claz;
 
 use Exception;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Class Config
@@ -24,10 +25,11 @@ class Config
      * Make sure we have a custom.config.php file that is consistent with the config.php file.
      * @param string $environment
      * @param bool $updateCustomConfig
-     * @return mixed
+     * @return object Zend_Config_Ini class object
      * @throws Exception
      */
-    public static function init($environment, $updateCustomConfig) {
+    public static function init($environment, $updateCustomConfig): object
+    {
         try {
             if ($updateCustomConfig) {
                 self::makeCustomConfig();
@@ -43,7 +45,8 @@ class Config
     /**
      * Make sure we have a custom.config.php file. Copy config.php is needed.
      */
-    private static function makeCustomConfig() {
+    private static function makeCustomConfig(): void
+    {
         // Create custom.config.php file if it doesn't already exist
         if (!file_exists("./" . self::CUSTOM_CONFIG_FILE)) {
             copy("./" . self::CONFIG_FILE, "./" . self::CUSTOM_CONFIG_FILE);
@@ -54,8 +57,9 @@ class Config
      * Parse config files and generate the change list.
      * @throws Exception If invalid config file format.
      */
-    private static function updateConfig() {
-        $fp = fopen('./' . self::CONFIG_FILE,'r');
+    private static function updateConfig(): void
+    {
+        $fp = fopen('./' . self::CONFIG_FILE, 'r');
         if ($fp === false) {
             SiError::out('generic', 'Config::update_config()', "Unable to open " . self::CONFIG_FILE);
         }
@@ -83,11 +87,12 @@ class Config
      * @return array of key/value pair for sections within the configuration file.
      * @throws Exception if config file not formatted as expected.
      */
-    private static function loadFileInfo($filename, $fp) {
+    private static function loadFileInfo($filename, $fp): array
+    {
         $info = array();
         $section = null;
         while (($line = fgets($fp)) !== false) {
-            switch(ConfigLines::line_type($line)) {
+            switch (ConfigLines::line_type($line)) {
                 case 'section':
                     $section = trim(preg_replace('/^\[(.*)\]/', '$1', $line));
                     break;
@@ -127,7 +132,8 @@ class Config
      *      The "new" entries need to be added to the custom config file. The "old"
      *      entries need to be marked as not in standard config file.
      */
-    private static function genChanges($config_info, $custom_config_info) {
+    private static function genChanges($config_info, $custom_config_info): array
+    {
         $newitems = array();
         $olditems = array();
 
@@ -165,7 +171,8 @@ class Config
      *      "section|key_part_of_key_value_pair".
      * @throws Exception if irrecoverable error found.
      */
-    private static function updateCustomConfig($changes) {
+    private static function updateCustomConfig($changes): void
+    {
         $unmatched = $changes['old'];
         $newpairs = $changes['new'];
         $changed = false;
