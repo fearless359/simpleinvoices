@@ -9,9 +9,9 @@ class Biller
 {
     /**
      * Calculate the number of invoices in the database
-     * @return integer Count of invoices in the database
+     * @return int Count of invoices in the database
      */
-    public static function count()
+    public static function count(): int
     {
         global $pdoDb;
 
@@ -33,7 +33,7 @@ class Biller
      * @param string $id ID of the biller to retrieve.
      * @return array Associative array for record retrieved.
      */
-    public static function getOne($id)
+    public static function getOne($id): array
     {
         $rows = self::getBillers($id);
         return (empty($rows) ? array() : $rows[0]);
@@ -45,7 +45,7 @@ class Biller
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
      */
-    public static function getAll($active_only = false)
+    public static function getAll($active_only = false): array
     {
         return self::getBillers(null, $active_only);
     }
@@ -58,7 +58,7 @@ class Biller
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
      */
-    private static function getBillers($id, $active_only = false)
+    private static function getBillers($id, $active_only = false): array
     {
         global $LANG, $pdoDb;
 
@@ -93,7 +93,7 @@ class Biller
      * Get a default biller name.
      * @return array Default biller name
      */
-    public static function getDefaultBiller()
+    public static function getDefaultBiller(): array
     {
         global $pdoDb;
 
@@ -117,7 +117,7 @@ class Biller
      * Insert a new biller record
      * @return int ID of new record. 0 if failed to insert.
      */
-    public static function insertBiller()
+    public static function insertBiller(): int
     {
         global $pdoDb;
         $_POST['domain_id'] = DomainId::get();
@@ -140,9 +140,9 @@ class Biller
 
     /**
      * Update <b>biller</b> table record.
-     * @return boolean <b>true</b> if update successful
+     * @return bool <b>true</b> if update successful
      */
-    public static function updateBiller()
+    public static function updateBiller(): bool
     {
         global $pdoDb;
 

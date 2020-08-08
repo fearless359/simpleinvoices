@@ -143,12 +143,13 @@ class Acl
 
     /**
      * For extensions to add one or more resources to the list.
-     * Make extensions/<yourextname>/Inc/Claz/Acl.php wi
+     * Make extensions/<yourExtName>/Inc/Claz/Acl.php wi
      * @param $resources
      * @param Zend_Acl &$acl
      * @throws Zend_Acl_Exception
      */
-    public static function addResource($resources, &$acl) {
+    public static function addResource($resources, &$acl): void
+    {
         if (is_array($resources)) {
             foreach($resources as $resource) {
                 $acl->addResource($resource);

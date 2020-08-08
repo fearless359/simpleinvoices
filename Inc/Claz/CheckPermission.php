@@ -12,7 +12,7 @@ Class CheckPermission
      * @param string $module
      * @param \Zend_Acl $acl
      */
-    public static function isAllowed($module, $acl)
+    public static function isAllowed($module, $acl): void
     {
         global $LANG;
         $checkPermission = "";

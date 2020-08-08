@@ -13,7 +13,8 @@ class BackupDb {
      * BackupDb constructor.
      * @throws PdoDbException
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->output = "";
 
         $this->pdoDb = new PdoDb(new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX));
@@ -23,7 +24,8 @@ class BackupDb {
      * @param $filename
      * @throws PdoDbException
      */
-    public function start_backup($filename) {
+    public function start_backup($filename): void
+    {
         $fh = fopen($filename, "w");
         $rows = $this->pdoDb->query("SHOW TABLES");
         foreach ($rows as $row) {
@@ -33,40 +35,42 @@ class BackupDb {
     }
 
     /**
-     * @param $tablename
+     * @param $tableName
      * @param $fh
      * @throws PdoDbException
      */
-    private function show_create($tablename, $fh) {
-        $query = "SHOW CREATE TABLE `$tablename`";
+    private function show_create($tableName, $fh): void
+    {
+        $query = "SHOW CREATE TABLE `$tableName`";
         $row = $this->pdoDb->query($query);
         fwrite($fh, $row[0][1] . ";\n");
-        $insert = $this->retrieve_data($tablename);
+        $insert = $this->retrieve_data($tableName);
         fwrite($fh, $insert);
-        $this->output .= "<tr><td>Table: $tablename backed up successfully</td></tr>";
+        $this->output .= "<tr><td>Table: $tableName backed up successfully</td></tr>";
     }
 
     /**
-     * @param $tablename
+     * @param $tableName
      * @return string
      * @throws PdoDbException
      */
-    private function retrieve_data($tablename) {
-        $query = "SHOW COLUMNS FROM `{$tablename}`";
+    private function retrieve_data($tableName): string
+    {
+        $query = "SHOW COLUMNS FROM `{$tableName}`";
         $rows = $this->pdoDb->query($query);
         $i = 0;
         $columns = array();
         foreach($rows as $row) {
             $columns[$i++][0] = $row[0];
         }
-        $colcnt = count($columns);
+        $colCnt = count($columns);
         $query = "";
-        $rows = $this->pdoDb->request("SELECT", $tablename);
+        $rows = $this->pdoDb->request("SELECT", $tableName);
         foreach($rows as $row) {
-            $query .= "INSERT INTO `{$tablename}` VALUES(";
-            for ($i = 0; $i < $colcnt; $i++) {
+            $query .= "INSERT INTO `{$tableName}` VALUES(";
+            for ($i = 0; $i < $colCnt; $i++) {
                 $query .= "'" . addslashes($row[$columns[$i][0]]) . "'" .
-                         ($i + 1 == $colcnt ? ");\n" : ",");
+                         ($i + 1 == $colCnt ? ");\n" : ",");
             }
         }
         $query .= "\n";
@@ -76,7 +80,8 @@ class BackupDb {
     /**
      * @return string
      */
-    public function getOutput() {
+    public function getOutput(): string
+    {
         return $this->output;
     }
 }

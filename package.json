@@ -8,13 +8,13 @@
     "datatables.net-dt": "^1.10.19",
     "datatables.net-fixedheader-dt": "^3.1.5",
     "datatables.net-scroller-dt": "^1.5.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "npm": "^6.14.7"
   },
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/username/repository.git"
+    "url": "git://github.com/fearless359/repository.git"
   },
   "license": "(ISC OR GPL-3.0)"
 }
