@@ -71,8 +71,7 @@ class Taxes
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
                 $row['ename'] = $LANG['edit'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
-                $row['image'] = ($row['tax_enabled'] == ENABLED ? 'images/common/tick.png' :
-                                                                  'images/common/cross.png');
+                $row['image'] = ($row['tax_enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
                 $taxes[] = $row;
             }
         } catch (PdoDbException $pde) {

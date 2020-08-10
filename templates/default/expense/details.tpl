@@ -57,11 +57,11 @@
         <br/>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=expense&amp;view=details&amp;id={$expense.EID}&amp;action=edit" class="positive">
-                <img src="images/famfam/add.png" alt=""/>
+                <img src="../../../images/add.png" alt=""/>
                 {$LANG.edit}
             </a>
             <a href="index.php?module=expense&amp;view=manage"
-               class="negative"> <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+               class="negative"> <img src="../../../images/cross.png" alt="{$LANG.cancel}" />
                 {$LANG.cancel}
             </a>
         </div>
@@ -194,11 +194,11 @@
         </table>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_product" value="{$LANG.save}">
-                <img class="button_img" src="images/common/tick.png" alt=""/>
+                <img class="button_img" src="../../../images/tick.png" alt=""/>
                 {$LANG.save}
             </button>
             <a href="index.php?module=expense&amp;view=manage" class="negative">
-                <img src="images/common/cross.png" alt=""/>
+                <img src="../../../images/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>
         </div>

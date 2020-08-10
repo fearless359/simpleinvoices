@@ -71,7 +71,7 @@
       </table>
       <div class="si_toolbar si_toolbar_form">
         <button type="submit" class="positive" name="submit" value="statement_report">
-          <img class="button_img" src="images/common/tick.png" alt="" />
+          <img class="button_img" src="../../../images/tick.png" alt="" />
           {$LANG.run_report}
         </button>
       </div>
@@ -82,24 +82,24 @@
   <div class="si_toolbar si_toolbar_top">
     <a title="{$LANG.print_preview}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=print">
-      <img src='images/common/printer.png' class='action' />&nbsp;{$LANG.print_preview}
+      <img src='../../../images/printer.png' class='action' />&nbsp;{$LANG.print_preview}
     </a>
     <!-- EXPORT TO PDF -->
     <a title="{$LANG.export_pdf}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=pdf">
-      <img src='images/common/page_white_acrobat.png' class='action' />&nbsp;{$LANG.export_pdf}
+      <img src='../../../images/page_white_acrobat.png' class='action' />&nbsp;{$LANG.export_pdf}
     </a>
     <a title="{$LANG.export_tooltip} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet} {$LANG.format_tooltip}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file&amp;filetype={$config->export->spreadsheet}">
-       <img src='images/common/page_white_excel.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->spreadsheet}
+       <img src='../../../images/page_white_excel.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->spreadsheet}
     </a>
     <a title="{$LANG.export_tooltip} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor} {$LANG.format_tooltip}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file&amp;filetype={$config->export->wordprocessor}">
-       <img src='images/common/page_white_word.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->wordprocessor}
+       <img src='../../../images/page_white_word.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->wordprocessor}
     </a>
     <a title="{$LANG.email}"
        href="index.php?module=statement&amp;view=email&amp;stage=1&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file">
-       <img src='images/common/mail-message-new.png' class='action' />&nbsp;{$LANG.email}
+       <img src='../../../images/mail-message-new.png' class='action' />&nbsp;{$LANG.email}
     </a>
   </div>
   {/if}

@@ -10,7 +10,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=products&amp;view=add" class="">
-        <img src="images/famfam/add.png" alt=""/>
+        <img src="../../../images/add.png" alt=""/>
         {$LANG.add_new_product}
     </a>
 </div>

@@ -54,14 +54,14 @@ class Product {
             // @formatter:off
             $action = "<a class='index_table' title=\"{$row['vname']}\" " .
                          "href=\"index.php?module=products&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                          "<img src=\"images/common/view.png\" class=\"action\" alt=\"{$row['vname']}\" />" .
+                          "<img src=\"images/view.png\" class=\"action\" alt=\"{$row['vname']}\" />" .
                       "</a>" .
                       "<a class=\"index_table\" title=\"{$row['ename']}\" " .
                          "href=\"index.php?module=products&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
-                          "<img src=\"images/common/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
+                          " />" .
                       "</a>";
 
-            $image = ($row['enabled'] == ENABLED ? "images/common/tick.png" : "images/common/cross.png");
+            $image = ($row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png");
             $enabled = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
                        "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
 
@@ -160,8 +160,7 @@ class Product {
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['description'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['description'];
-                $row['image'] = ($row['enabled'] == ENABLED ? "images/common/tick.png" :
-                                                              "images/common/cross.png");
+                $row['image'] = ($row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png");
                 $products[] = $row;
             }
         } catch (PdoDbException $pde) {

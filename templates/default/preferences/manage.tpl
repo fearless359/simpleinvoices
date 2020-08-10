@@ -13,7 +13,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=preferences&amp;view=add" class="">
-        <img src="images/famfam/add.png" alt=""/>
+        <img src="../../../images/add.png" alt=""/>
         {$LANG.add_new_preference}
     </a>
 </div>
@@ -40,11 +40,11 @@
                 <td class="si_center">
                     <a class="index_table' title='{$preference.vname}"
                        href="index.php?module=preferences&amp;view=details&amp;id={$preference.pref_id}&amp;action=view" >
-                        <img src="images/common/view.png" class="action" />
+                        <img src="../../../images/view.png" class="action" />
                     </a>
                     <a class="index_table" title="{$preference.ename}"
                        href="index.php?module=preferences&amp;view=details&amp;id={$preference.pref_id}&amp;action=edit" >
-                        <img src="images/common/edit.png" class="action" />
+                        <img src="../../../images/edit.png" class="action" />
                     </a>
                 </td>
                 <td>{$preference['pref_id']}</td>

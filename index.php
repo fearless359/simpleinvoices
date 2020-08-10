@@ -108,7 +108,7 @@ $databasePopulated = false;
 
 // Will be set in the following init.php call to extensions that are enabled.
 $ext_names = array();
-$help_image_path = "images/common/";
+$help_image_path = "images/";
 
 include_once "include/init.php";
 global $smarty,

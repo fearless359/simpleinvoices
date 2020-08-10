@@ -198,7 +198,7 @@ pre {
 }
 
 input, select, textarea {
-    background: #FFFFFF url(../../../images/common/text-bg.gif) repeat-x scroll center top;
+    background: #FFFFFF url(../../../images/text-bg.gif) repeat-x scroll center top;
     border: 1px solid #CCCCCC;
     margin: 1px;
     padding: 0.2em 0.3em;
@@ -480,13 +480,13 @@ div#Container {
 }
 
 .si_message_ok {
-   background: #dff0d8 url(../../../images/common/tick.png) 47px 16px no-repeat;
+   background: #dff0d8 url(../../../images/tick.png) 47px 16px no-repeat;
    border-color: #d6e9c6;
    color: #468847;
 }
 
 .si_message_error {
-    background: #f2dede url(../../../images/common/cross.png) 47px 16px no-repeat;
+    background: #f2dede url(../../../images/cross.png) 47px 16px no-repeat;
     color: #b94a48;
     border-color: #eed3d7;
 }
@@ -546,7 +546,7 @@ div#Container {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    background: #fc0004 url(../../../images/common/important.png) no-repeat 5px 2px;
+    background: #fc0004 url(../../../images/important.png) no-repeat 5px 2px;
 }
 /* @end */
 
@@ -790,7 +790,7 @@ a.cluetip:hover img {
 .si_cust_invoices th {
     color: #666;
     font-weight: bold;
-    background: #fafafa url(../../../images/flexigrid/fhbg.gif) repeat-x bottom;
+    background: #fafafa url(../../../images/fhbg.gif) repeat-x bottom;
     padding-top: 6px;
     padding-bottom: 6px;
     border-top: 1px solid #DDD;
@@ -855,7 +855,7 @@ a.cluetip:hover img {
 .si_list thead th {
     color: #666;
     font-weight: bold;
-    background: #fafafa url(../../../images/flexigrid/fhbg.gif) repeat-x bottom;
+    background: #fafafa url(../../../images/fhbg.gif) repeat-x bottom;
     padding: 6px 5px;
     border-top: 1px solid #DDD;
     border-bottom: 0;
@@ -874,7 +874,7 @@ a.cluetip:hover img {
 .si_list tfoot td {
     color: #000;
     font-weight: bold;
-    background: #F0F0F0 url(../../../images/flexigrid/fhbg.gif) repeat-x bottom;
+    background: #F0F0F0 url(../../../images/fhbg.gif) repeat-x bottom;
     padding-top: 4px;
     padding-bottom: 4px;
 }
@@ -981,7 +981,7 @@ a.cluetip:hover img {
 .si_report_table thead th {
     color: #666;
     font-weight: bold;
-    background: #fafafa url(../../../images/flexigrid/fhbg.gif) repeat-x bottom;
+    background: #fafafa url(../../../images/fhbg.gif) repeat-x bottom;
     padding-top: 6px;
     padding-bottom: 6px;
     border-top: 1px solid #DDD;
@@ -1003,7 +1003,7 @@ a.cluetip:hover img {
 .si_report_table tfoot td {
     color: #000;
     font-weight: bold;
-    background: #F0F0F0 url(../../../images/flexigrid/fhbg.gif) repeat-x bottom;
+    background: #F0F0F0 url(../../../images/fhbg.gif) repeat-x bottom;
     padding-top: 4px;
     padding-bottom: 4px;
     border-bottom: 0;
@@ -1535,7 +1535,7 @@ td.si_invoice_notes {
 }
 
 #si_page_updates .si_list li.li_skip {
-    background: url(../../../images/common/tick.png) 6px 0 no-repeat;
+    background: url(../../../images/tick.png) 6px 0 no-repeat;
     opacity: 0.7;
 }
 
@@ -1544,7 +1544,7 @@ td.si_invoice_notes {
 }
 
 #si_page_updates .si_list li.li_done {
-    background: url(../../../images/common/tick.png) 6px 0 no-repeat;
+    background: url(../../../images/tick.png) 6px 0 no-repeat;
     color: #000;
 }
 

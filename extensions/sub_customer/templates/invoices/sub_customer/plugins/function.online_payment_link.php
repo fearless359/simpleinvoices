@@ -16,7 +16,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
 		
 		if($params['include_image'] == "true")
 		{
-			$link .= "<img border='0' src='".urlsafe($url)."/images/common/pay_with_paypal.gif'/>";
+			$link .= "<img border='0' src='".urlsafe($url)."/images/pay_with_paypal.gif'/>";
 		} else {
 			$link .= Util::htmlsafe($params['link_wording']);
 		} 
@@ -37,7 +37,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
 		
 		if($params['include_image'] == "true")
 		{
-			$link .= "<img border='0' src='".urlsafe($url)."/images/common/pay_with_eway.gif'/>";
+			$link .= "<img border='0' src='".urlsafe($url)."/images/pay_with_eway.gif'/>";
 		} else {
 			$link .= Util::htmlsafe($params['link_wording']);
 		} 

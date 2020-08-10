@@ -133,7 +133,7 @@ function add_line_item() {
 
     // trash can image - it might be blank if only one item row.
     clonedRow.find("#delete_image" + rowID_old).attr("id", "delete_image" + rowID_new);
-    clonedRow.find("#delete_image" + rowID_new).attr("src", "./images/common/delete_item.png");
+    clonedRow.find("#delete_image" + rowID_new).attr("src", "./images/delete_item.png");
 
     clonedRow.find("#quantity" + rowID_old).attr("id", "quantity" + rowID_new);
     clonedRow.find("#quantity" + rowID_new).attr("name", "quantity" + rowID_new);

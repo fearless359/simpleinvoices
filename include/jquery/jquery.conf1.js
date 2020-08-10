@@ -74,7 +74,7 @@ $(document).ready(function () {
                 },
                 arrows: true,
                 closePosition: 'title',
-                closeText: '<img src="./images/common/cross.png" alt="" />'
+                closeText: '<img src="../../images/cross.png" alt="" />'
             }
         );
     }

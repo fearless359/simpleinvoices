@@ -368,7 +368,7 @@ class SqlPatchManager
                              '</div>'.
                              '<div class="si_message_warning">Warning: Please backup your database before upgrading!</div>' .
                              '<div class="si_toolbar si_toolbar_form">' .
-                             '  <a href="index.php?case=run" class=""><img src="images/common/tick.png" alt="" />Update</a>' .
+            '  <a href="index.php?case=run" class=""><img src="../../images/tick.png" alt="" />Update</a>' .
                              '</div>';
         $i = 0;
         foreach(self::$patchLines as $patch) {

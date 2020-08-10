@@ -31,11 +31,11 @@ if ($databaseBuilt && !$databasePopulated) {
             '</div>' .
             '<div class="si_toolbar si_toolbar_form">' .
                 '<a href="index.php" class="positive">' .
-                    '<img src="images/common/tick.png" alt="" />' .
+            '<img src="../../images/tick.png" alt="" />' .
                     'Start using SimpleInvoices' .
                 '</a>' .
                 '<a href="index.php?module=install&amp;view=sample_data" class="positive">' .
-                    '<img src="images/common/tick.png" alt="" />' .
+            '<img src="../../images/tick.png" alt="" />' .
                     'Install Sample Data' .
                 '</a>' .
             '</div>';

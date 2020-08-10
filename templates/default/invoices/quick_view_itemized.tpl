@@ -3,11 +3,11 @@
     <td class="details_screen">
         <a href='#' class="show_itemised"
            onclick="$('.full_itemised').show();$('.hide_itemised').show();$('.abbrev_itemised').hide();$('.show_itemised').hide();">
-            <img src="images/common/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
+            <img src="../../../images/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
         </a>
         <a href='#' class="hide_itemised si_hide"
            onclick="$('.full_itemised').hide();$('.hide_itemised').hide();$('.abbrev_itemised').show();$('.show_itemised').show();">
-            <img src="images/common/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
+            <img src="../../../images/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
         </a>
 
     </td>

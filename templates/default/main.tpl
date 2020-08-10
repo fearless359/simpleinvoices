@@ -1,7 +1,7 @@
 {*
 TODO : delete this file
 
-please note that the "col" CSS class is still needed to calculate flexigrid table width (manage.js).
+please note that the "col" CSS class is still needed to calculate DataTable width (manage.js).
  
 *}
 

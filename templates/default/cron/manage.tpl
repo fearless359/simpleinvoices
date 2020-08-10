@@ -10,7 +10,7 @@
  *}
 
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=cron&amp;view=add" class=""><img src="images/common/add.png" alt=""/>{$LANG.new_recurrence}</a>
+    <a href="index.php?module=cron&amp;view=add" class=""><img src="../../../images/add.png" alt=""/>{$LANG.new_recurrence}</a>
 </div>
 
 {if $number_of_rows == 0}
@@ -35,15 +35,15 @@
                 <td class="si_center">
                     <a class='index_table' title='{$LANG['view']} {$cron['index_name']}'
                        href='index.php?module=cron&amp;view=details&amp;id={$cron['id']}&amp;action=view'>
-                        <img src='images/common/view.png' height='16' border='-5px'/>
+                        <img src='../../../images/view.png' height='16' border='-5px'/>
                     </a>
                     <a class='index_table' title='{$LANG['edit']} {$cron['index_name']}'
                        href='index.php?module=cron&amp;view=details&amp;id={$cron['id']}&amp;action=edit'>
-                        <img src='images/common/edit.png' height='16' border='-5px'/>
+                        <img src='../../../images/edit.png' height='16' border='-5px'/>
                     </a>
                     <a class='index_table' title='{$LANG['delete']} {$cron['index_name']}'
                        href='index.php?module=cron&amp;view=delete&amp;id={$cron['id']}&amp;stage=1&amp;err_message='>
-                        <img src='images/common/delete.png' height='16' border='-5px'/>
+                        <img src='../../../images/delete.png' height='16' border='-5px'/>
                     </a>
                 </td>
                 <td>{$cron['index_name']}</td>

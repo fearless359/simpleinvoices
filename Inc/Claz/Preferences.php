@@ -68,8 +68,7 @@ class Preferences {
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . " " . $LANG['preference'] . " " . $row['pref_description'];
                 $row['ename'] = $LANG['edit'] . " " . $LANG['preference'] . " " . $row['pref_description'];
-                $row['image'] = ($row['pref_enabled'] == ENABLED ? "images/common/tick.png" :
-                                                                   "images/common/cross.png");
+                $row['image'] = ($row['pref_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png");
                 $row['invoice_numbering_group'] = "";
                 foreach($rows as $r2) {
                     if ($row['index_group'] == $r2['pref_id']) {
@@ -77,8 +76,7 @@ class Preferences {
                         break;
                     }
                 }
-                $row['set_aging_image'] = ($row['set_aging'] == ENABLED ? "images/common/tick.png" :
-                                                                          "images/common/cross.png");
+                $row['set_aging_image'] = ($row['set_aging'] == ENABLED ? "images/tick.png" : "images/cross.png");
                 $preferences[] = $row;
             }
         } catch (PdoDbException $pde) {

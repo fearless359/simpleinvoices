@@ -33,7 +33,7 @@ try {
         '</div>' .
         '<div class="si_toolbar si_toolbar_form">' .
             '<a href="index.php" class="positive">' .
-                '<img src="images/common/tick.png" alt="" />' .
+        '<img src="../../images/tick.png" alt="" />' .
                 'Start Testing SimpleInvoices' .
             '</a>' .
         '</div>';

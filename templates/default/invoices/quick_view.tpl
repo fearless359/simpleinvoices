@@ -17,43 +17,43 @@
 <div class="si_toolbar si_toolbar_top">
     <a title="{$LANG.print_preview_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlencode}&amp;format=print">
-        <img src='images/common/printer.png' class='action'/>&nbsp;{$LANG.print_preview}
+        <img src='../../../images/printer.png' class='action'/>&nbsp;{$LANG.print_preview}
     </a>
     <a title="{$LANG.edit} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=invoices&amp;view=details&amp;id={$invoice.id|urlencode}&amp;action=view">
-        <img src='images/common/edit.png' class='action'/>&nbsp;{$LANG.edit}
+        <img src='../../../images/edit.png' class='action'/>&nbsp;{$LANG.edit}
     </a>
     <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=payments&amp;view=process&amp;id={$invoice.id|urlencode}&amp;op=pay_selected_invoice">
-        <img src='images/common/money_dollar.png' class='action'/>&nbsp;{$LANG.process_payment}
+        <img src='../../../images/money_dollar.png' class='action'/>&nbsp;{$LANG.process_payment}
     </a>
     {if $eway_pre_check == 'true'}
         <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
            href="index.php?module=payments&amp;view=eway&amp;id={$invoice.id|urlencode}">
-            <img src='images/common/money_dollar.png' class='action'/>&nbsp;{$LANG.process_payment_via_eway}
+            <img src='../../../images/money_dollar.png' class='action'/>&nbsp;{$LANG.process_payment_via_eway}
         </a>
     {/if}
     <!-- EXPORT TO PDF -->
     <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe} {$LANG.export_pdf_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=pdf">
-        <img src='images/common/page_white_acrobat.png' class='action'/>&nbsp;{$LANG.export_pdf}
+        <img src='../../../images/page_white_acrobat.png' class='action'/>&nbsp;{$LANG.export_pdf}
     </a>
     <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet|htmlsafe} {$LANG.format_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$spreadsheet|urlencode}">
-        <img src='images/common/page_white_excel.png' class='action'/>&nbsp;{$LANG.export_as}.{$spreadsheet|htmlsafe}
+        <img src='../../../images/page_white_excel.png' class='action'/>&nbsp;{$LANG.export_as}.{$spreadsheet|htmlsafe}
     </a>
     <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording} {$invoice.index_id|htmlsafe} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor|htmlsafe} {$LANG.format_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$wordprocessor|urlencode}">
-        <img src='images/common/page_white_word.png' class='action'/>&nbsp;{$LANG.export_as}.{$wordprocessor|htmlsafe}
+        <img src='../../../images/page_white_word.png' class='action'/>&nbsp;{$LANG.export_as}.{$wordprocessor|htmlsafe}
     </a>
     <a title="{$LANG.email} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice.id|urlencode}">
-        <img src='images/common/mail-message-new.png' class='action'/>&nbsp;{$LANG.email}
+        <img src='../../../images/mail-message-new.png' class='action'/>&nbsp;{$LANG.email}
     </a>
     {if $defaults.delete == '1'}
         <a title="{$LANG.delete} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
            href="index.php?module=invoices&amp;view=delete&amp;stage=1&amp;id={$invoice.id|urlencode}">
-            <img src='images/common/delete.png' class='action'/>&nbsp;{$LANG.delete}
+            <img src='../../../images/delete.png' class='action'/>&nbsp;{$LANG.delete}
         </a>
     {/if}
 </div>
@@ -126,11 +126,11 @@
             <td class="si_switch">
                 <a href='#' class="show_notes"
                    onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
-                    <img src="images/common/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
+                    <img src="../../../images/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
                 </a>
                 <a href='#' class="hide_notes si_hide"
                    onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
-                    <img src="images/common/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
+                    <img src="../../../images/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
                 </a>
             </td>
         </tr>

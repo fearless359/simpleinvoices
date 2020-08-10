@@ -8,7 +8,7 @@
                 <th>{$LANG.setup_as_biller}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=billers&amp;view=add" class="positive">
-                        <img src="images/common/user_add.png" alt=""/>
+                        <img src="../../../images/user_add.png" alt=""/>
                         {$LANG.add_new_biller}
                     </a>
                 </td>
@@ -19,7 +19,7 @@
                 <th>{$LANG.setup_add_customer}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=customers&amp;view=add" class="positive">
-                        <img src="images/common/vcard_add.png" alt=""/>
+                        <img src="../../../images/vcard_add.png" alt=""/>
                         {$LANG.customer_add}
                     </a>
                 </td>
@@ -30,7 +30,7 @@
                 <th>{$LANG.setup_add_products}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=products&amp;view=add" class="positive">
-                        <img src="images/common/cart_add.png" alt=""/>
+                        <img src="../../../images/cart_add.png" alt=""/>
                         {$LANG.add_new_product}
                     </a>
                 </td>
@@ -40,7 +40,7 @@
             <th>{$LANG.setup_customisation}</th>
             <td class="si_toolbar">
                 <a href="index.php?module=system_defaults&amp;view=manage" class="">
-                    <img src="images/common/cog_edit.png" alt=""/>
+                    <img src="../../../images/cog_edit.png" alt=""/>
                     {$LANG.si_defaults}
                 </a>
             </td>
@@ -56,14 +56,14 @@
         </div>
         <h2>{$LANG.start_working}</h2>
         <div class="si_toolbar">
-            <a href="index.php?module=invoices&amp;view=itemised" class="positive"><img src="images/common/add.png" alt=""/>{$LANG.add_new_invoice}</a>
-            <a href="index.php?module=customers&amp;view=add" class=""><img src="images/common/vcard_add.png" alt=""/>{$LANG.add_customer}</a>
-            <a href="index.php?module=products&amp;view=add" class=""><img src="images/common/cart_add.png" alt=""/>{$LANG.add_new_product}</a>
+            <a href="index.php?module=invoices&amp;view=itemised" class="positive"><img src="../../../images/add.png" alt=""/>{$LANG.add_new_invoice}</a>
+            <a href="index.php?module=customers&amp;view=add" class=""><img src="../../../images/vcard_add.png" alt=""/>{$LANG.add_customer}</a>
+            <a href="index.php?module=products&amp;view=add" class=""><img src="../../../images/cart_add.png" alt=""/>{$LANG.add_new_product}</a>
         </div>
         <h2 class="align_left">{$LANG.dont_forget_to}</h2>
         <div class="si_toolbar">
-            <a href="index.php?module=options&amp;view=index" class=""><img src="images/common/cog_edit.png" alt=""/>{$LANG.customise_settings}</a>
-            <a href="index.php?module=options&amp;view=backup_database" class=""><img src="images/common/database_save.png" alt=""/>{$LANG.backup_your_database}</a>
+            <a href="index.php?module=options&amp;view=index" class=""><img src="../../../images/cog_edit.png" alt=""/>{$LANG.customise_settings}</a>
+            <a href="index.php?module=options&amp;view=backup_database" class=""><img src="../../../images/database_save.png" alt=""/>{$LANG.backup_your_database}</a>
         </div>
     </div>
 {/if}

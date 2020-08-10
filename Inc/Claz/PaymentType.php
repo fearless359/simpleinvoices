@@ -63,8 +63,7 @@ class PaymentType {
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
                 $row['ename'] = $LANG['edit'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
-                $row['image'] = ($row['pt_enabled'] == ENABLED ? "images/common/tick.png" :
-                                                                 "images/common/cross.png");
+                $row['image'] = ($row['pt_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png");
                 $payment_types[] = $row;
             }
         } catch (PdoDbException $pde) {

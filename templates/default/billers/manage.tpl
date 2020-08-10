@@ -13,7 +13,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=billers&amp;view=add" class="">
-        <img src="images/famfam/add.png" alt=""/>
+        <img src="../../../images/add.png" alt=""/>
         {$LANG.add_new_biller}
     </a>
 </div>
@@ -38,10 +38,10 @@
             <tr>
                 <td>
                     <a class="index_table" title="{$biller['vname']}" href="index.php?module=billers&amp;view=details&amp;id={$biller['id']}&amp;action=view">
-                        <img src="images/common/view.png" class="action" alt="view"/>
+                        <img src="../../../images/view.png" class="action" alt="view"/>
                     </a>
                     <a class="index_table" title="{$biller['ename']}" href="index.php?module=billers&amp;view=details&amp;id={$biller['id']}&amp;action=edit">
-                        <img src="images/common/edit.png" class="action" alt="edit"/>
+                        <img src="../../../images/edit.png" class="action" alt="edit"/>
                     </a>
                 </td>
                 <td>{$biller['name']}</td>

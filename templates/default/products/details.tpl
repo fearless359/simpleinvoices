@@ -111,7 +111,7 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=products&amp;view=details&amp;id={$product.id|htmlsafe}&amp;action=edit" class="positive">
-                <img src="images/famfam/report_edit.png" alt=""/>
+                <img src="../../../images/report_edit.png" alt=""/>
                 {$LANG.edit}
             </a>
         </div>
@@ -313,11 +313,11 @@
             </div>
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="positive" name="save_product" value="{$LANG.save}">
-                    <img class="button_img" src="images/common/tick.png" alt=""/>
+                    <img class="button_img" src="../../../images/tick.png" alt=""/>
                     {$LANG.save}
                 </button>
                 <a href="index.php?module=products&amp;view=manage" class="negative">
-                    <img src="images/common/cross.png" alt="" />
+                    <img src="../../../images/cross.png" alt="" />
                     {$LANG.cancel}
                 </a>
             </div>

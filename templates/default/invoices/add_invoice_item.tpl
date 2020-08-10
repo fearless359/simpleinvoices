@@ -21,7 +21,7 @@
 {else}
     <div id="top"><h3>{$LANG.add_invoice_item}</h3></div>
     <div id="gmail_loading" class="gmailLoader" style="float:right; display: none;">
-        <img src="images/common/gmail-loader.gif" alt="{$LANG.loading} ..."/>
+        <img src="../../../images/gmail-loader.gif" alt="{$LANG.loading} ..."/>
         {$LANG.loading}
     </div>
     <hr/>

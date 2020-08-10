@@ -15,7 +15,7 @@
           <tr>
             <td>
               <button type="submit" class="positive" name="submit" value="report_past_due">
-                <img class="button_img" src="images/common/tick.png" alt="" />
+                <img class="button_img" src="../../../images/tick.png" alt="" />
                 Run Report
               </button>
             </td>

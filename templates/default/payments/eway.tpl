@@ -22,7 +22,7 @@
 
 {if $saved == false}
     {if $smarty.post.op == 'add' AND $smarty.post.invoice_id == ''}
-        <div class="validation_alert"><img src="images/common/important.png" alt="" />
+        <div class="validation_alert"><img src="../../../images/important.png" alt="" />
         You must select an invoice</div>
         <hr />
     {/if}
@@ -54,12 +54,12 @@
             <tr>
                 <td>
                     <button type="submit" class="positive" name="submit" value="{$LANG.save}">
-                        <img class="button_img" src="images/common/tick.png" alt="" />
+                        <img class="button_img" src="../../../images/tick.png" alt="" />
                         {$LANG.save}
                     </button>
                     <input type="hidden" name="op" value="add" />
                     <a href="index.php?module=cron&amp;view=manage" class="negative">
-                        <img src="images/common/cross.png" alt="" />
+                        <img src="../../../images/cross.png" alt="" />
                         {$LANG.cancel}
                     </a>
                 </td>

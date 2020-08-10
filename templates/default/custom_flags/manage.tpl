@@ -33,11 +33,11 @@
                 <td class="si_center">
                     <a class="index_table" title="{$cflg['vname']}"
                        href="index.php?module=custom_flags&amp;view=details&amp;id={$cflg['id']}&amp;action=view">
-                        <img src="images/common/view.png" alt="{$cflg['vname']}" height="16" border="-5px" />
+                        <img src="../../../images/view.png" alt="{$cflg['vname']}" height="16" border="-5px" />
                     </a>
                     <a class="index_table" title="{$cflg['ename']}"
                        href="index.php?module=custom_flags&amp;view=details&amp;id={$cflg['id']}&amp;action=edit" >
-                        <img src="images/common/edit.png" alt="{$cflg['ename']} height="16" border="-5px" />
+                        <img src="../../../images/edit.png" alt="{$cflg['ename']} height=" 16" border="-5px" />
                     </a>
                 </td>
                 <td>{$cflg['associated_table']}</td>

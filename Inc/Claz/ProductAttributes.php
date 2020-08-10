@@ -79,8 +79,8 @@ class ProductAttributes {
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['name'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['name'];
-                $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
-                $row['visible_image'] = ($row['visible'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
+                $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
+                $row['visible_image'] = ($row['visible'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
                 $product_attributes[] = $row;
             }
         } catch (PdoDbException $pde) {

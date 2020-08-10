@@ -73,16 +73,16 @@ class Customer {
             // @formatter:off
             $action = "<a class='index_table' title=\"{$viewcust} {$row['name']}\" " .
                          "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                          "<img src=\"images/common/view.png\" class=\"action\" alt=\"view\" />" .
+                          " />" .
                       "</a>" .
                       "<a class=\"index_table\" title=\"{$editcust} {$row['name']}\" " .
                          "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
-                          "<img src=\"images/common/edit.png\" class=\"action\" alt=\"edit\" />" .
+                          "<img src=\"images/edit.png\" class=\"action\" alt=\"edit\" />" .
                       "</a>";
             if ($enabled) {
                 $action .= "<a class=\"index_table\" title=\"{$defaultinv}\" " .
                               "href=\"index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view\">" .
-                               "<img src=\"images/common/add.png\" class=\"action\" alt=\"add\" />" .
+                               " />" .
                            "</a>";
             }
 
@@ -91,7 +91,7 @@ class Customer {
                               "{$row['last_index_id']}" .
                           "</a>";
 
-            $image = ($enabled ? "images/common/tick.png" : "images/common/cross.png");
+            $image = ($enabled ? "images/tick.png" : "images/cross.png");
             $enabled_col = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
                            "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
             // @formatter::on
@@ -171,7 +171,7 @@ class Customer {
                     self::getLastInvoiceIds($row['id'], $last_index_id, $last_id);
                     $row['last_index_id'] = $last_index_id;
                     $row['last_inv_id'] = $last_id;
-                    $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
+                    $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
                     $row['total'] = self::calcCustomerTotal($row['id']);
                     $row['paid'] = Payment::calcCustomerPaid($row['id']);
                     $row['owing'] = $row['total'] - $row['paid'];

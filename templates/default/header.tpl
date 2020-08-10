@@ -13,7 +13,7 @@
     <meta charset="UTF-8"/>
     <meta name="robots" content="noindex, nofollow"/>
 
-    <link rel="shortcut icon" href="images/common/favicon.ico"/>
+    <link rel="shortcut icon" href="../../images/favicon.ico"/>
     {literal}
         <link href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
         <link href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>

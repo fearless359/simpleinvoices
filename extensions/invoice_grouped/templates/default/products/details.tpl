@@ -70,7 +70,7 @@
             <tr>
                 <th>
                     <a href="index.php?module=products&amp;view=details&amp;id={$product.id}&amp;action=edit" class="positive">
-                        <img src="images/famfam/add.png" alt=""/>
+                        <img src="../../../../../images/add.png" alt=""/>
                         {$LANG.edit}
                     </a>
                 </th>
@@ -170,13 +170,13 @@
             <tr>
                 <td>
                     <button type="submit" class="positive" name="save_product" value="{$LANG.save}">
-                        <img class="button_img" src="images/common/tick.png" alt=""/>
+                        <img class="button_img" src="../../../../../images/tick.png" alt=""/>
                         {$LANG.save}
                     </button>
 
                     <input type="hidden" name="op" value="edit_product">
                     <a href="index.php?module=products&amp;view=manage" class="negative">
-                        <img src="images/common/cross.png" alt=""/>
+                        <img src="../../../../../images/cross.png" alt=""/>
                         {$LANG.cancel}
                     </a>
                 </td>

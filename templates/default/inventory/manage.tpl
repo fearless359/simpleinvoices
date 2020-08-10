@@ -13,7 +13,7 @@
 *}
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=inventory&amp;view=add" class="">
-        <img src="images/common/add.png" alt=""/>
+        <img src="../../../images/add.png" alt=""/>
         {$LANG.new_inventory_movement}
     </a>
 </div>

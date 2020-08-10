@@ -57,11 +57,11 @@ class Inventory {
             // @formatter:off
             $action = "<a class='index_table' title=\"{$row['vname']}\" " .
                          "href=\"index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                          "<img src=\"images/common/view.png\" class=\"action\" alt=\"{$row['vname']}\" />" .
+                          " />" .
                       "</a>" .
                       "<a class=\"index_table\" title=\"{$row['ename']}\" " .
                          "href=\"index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
-                          "<img src=\"images/common/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
+                          "<img src=\"images/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
                       "</a>";
 
             $tableRows[] = array(

@@ -21,7 +21,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
                                                         "&custom=domain_id:" . urlencode($domain_id) . "; \">";
 
         if ($params['include_image'] == "true") {
-            $link .= "<img border='0' src='" . urlsafe($url) . "/images/common/pay_with_paypal.gif'/>";
+            $link .= "<img border='0' src='" . urlsafe($url) . "/images/pay_with_paypal.gif'/>";
         } else {
             $link .= Util::htmlsafe($params['link_wording']);
         }
@@ -41,7 +41,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
                                                         "&no_note=1\">";
         // $formatter:on
         if ($params['include_image'] == "true") {
-            $link .= "<img border='0' src='" . urlsafe($url) . "/images/common/pay_with_eway.gif'/>";
+            $link .= "<img border='0' src='" . urlsafe($url) . "/images/pay_with_eway.gif'/>";
         } else {
             $link .= Util::htmlsafe($params['link_wording']);
         }
@@ -70,7 +70,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
                                                                         "&pg_save_client=2'>";
         // @formatter:on
         if ($params['include_image'] == "true") {
-            $link .= "<img border='0' src='" . urlsafe($url) . "/images/common/pay_with_ach.gif'/>";
+            $link .= "<img border='0' src='" . urlsafe($url) . "/images/pay_with_ach.gif'/>";
         } else {
             $link .= Util::htmlsafe($params['link_wording']);
         }

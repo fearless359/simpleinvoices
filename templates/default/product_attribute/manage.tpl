@@ -13,7 +13,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
   <a href="index.php?module=product_attribute&amp;view=add" class="">
-    <img src="images/common/add.png" alt="" />
+    <img src="../../../images/add.png" alt="" />
     {$LANG.add_product_attribute}
   </a>
 </div>
@@ -35,11 +35,11 @@
         <td class="si_center">
           <a class="index_table" title="{$product_attribute['vname']}"
              href="index.php?module=product_attribute&amp;view=details&amp;id={$product_attribute['id']}&amp;action=view">
-            <img src="images/common/view.png" alt="{$product_attribute['vname']}" height="16" border="-5px" />
+            <img src="../../../images/view.png" alt="{$product_attribute['vname']}" height="16" border="-5px" />
           </a>
           <a class="index_table" title="{$product_attribute['ename']}"
              href="index.php?module=product_attribute&amp;view=details&amp;id={$product_attribute['id']}&amp;action=edit">
-            <img src="images/common/edit.png" alt="{$product_attribute['ename']}" height="16" border="-5px"/>
+            <img src="../../../images/edit.png" alt="{$product_attribute['ename']}" height="16" border="-5px"/>
           </a>
         </td>
         <td>{$product_attribute['name']}</td>

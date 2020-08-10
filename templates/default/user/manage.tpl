@@ -13,7 +13,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=user&amp;view=add" class="">
-        <img src="images/common/add.png" alt=""/>
+        <img src="../../../images/add.png" alt=""/>
         {$LANG.user_add}
     </a>
 </div>
@@ -38,11 +38,11 @@
                 <td class="si_center">
                     <a class="index_table" title="{$user['vname']}"
                        href="index.php?module=user&amp;view=details&amp;id={$user['id']}&amp;action=view">
-                        <img src="images/common/view.png" height="16" border="-5px" />
+                        <img src="../../../images/view.png" height="16" border="-5px" />
                     </a>
                     <a class="index_table" title="{$user['ename']}"
                        href="index.php?module=user&amp;view=details&amp;id={$user['id']}&amp;action=edit">
-                        <img src="images/common/edit.png" height="16" border="-5px" />
+                        <img src="../../../images/edit.png" height="16" border="-5px" />
                     </a>
                 </td>
                 <td>{$user['username']}</td>

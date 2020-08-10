@@ -56,11 +56,11 @@
     </div>
     <div class="si_toolbar si_toolbar_form">
         <button type="submit" class="positive" name="submit" value="{$LANG.delete}">
-            <img class="button_img" src="images/common/tick.png" alt=""/>
+            <img class="button_img" src="../../../images/tick.png" alt=""/>
             {$LANG.delete}
         </button>
         <a href="index.php?module=cron&amp;view=manage" class="negative">
-            <img src="images/common/cross.png" alt=""/>
+            <img src="../../../images/cross.png" alt=""/>
             {$LANG.cancel}
         </a>
     </div>

@@ -22,7 +22,7 @@
         </table>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=product_value&amp;view=details&amp;id={$product_value.id|htmlsafe}&amp;action=edit">
-                <img src="images/famfam/report_edit.png" alt=""/>
+                <img src="../../../images/report_edit.png" alt=""/>
                 {$LANG.edit}
             </a>
         </div>
@@ -54,10 +54,10 @@
         </table>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="submit" value="{$LANG.save}">
-                <img class="button_img" src="images/common/tick.png" alt=""/>{$LANG.save}
+                <img class="button_img" src="../../../images/tick.png" alt=""/>{$LANG.save}
             </button>
             <a href="index.php?module=product_value&amp;view=manage" class="negative">
-                <img src="images/common/cross.png" alt="" />
+                <img src="../../../images/cross.png" alt="" />
                 {$LANG.cancel}
             </a>
         </div>

@@ -54,7 +54,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "{$LANG['backup_howto']}" .
             "<div class='si_toolbar si_toolbar_top'><br/>" .
                 "<a href='index.php?module=options&amp;view=backup_database&amp;op=backup_db'>" .
-                    "<img src='./images/common/database_save.png' alt=''/>" .
+        "<img src='../../images/database_save.png' alt=''/>" .
                     "{$LANG['backup_database_now']}" .
                 "</a>" .
             "</div>" .
@@ -63,7 +63,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
         "<div class='si_help_div'>" .
             "<a class='cluetip' href='#' title='{$LANG['database_backup']}'" .
                "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database' >" .
-                "<img src='./images/common/important.png' alt='' />" .
+        "<img src='../../images/important.png' alt='' />" .
                 "{$LANG['more_info']}" .
             "</a>" .
         "</div>";

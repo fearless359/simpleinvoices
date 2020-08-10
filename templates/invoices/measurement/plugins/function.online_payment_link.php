@@ -20,7 +20,7 @@ function smarty_function_online_payment_link($params, &$smarty)
                     '&no_shipping=1&no_note=1&custom=domain_id:' . $domain_id . ';" >';
 
         if ($params['include_image'] == "true") {
-            $link .= "<img src='{$url}/images/common/pay_with_paypal.gif'/>";
+            $link .= "<img src='{$url}/images/pay_with_paypal.gif'/>";
         } else {
             $link .= $params['link_wording'];
         }
@@ -39,7 +39,7 @@ function smarty_function_online_payment_link($params, &$smarty)
 				   '&return=http://vcsweb.com.au&no_shipping=1&no_note=1" >';
 
         if ($params['include_image'] == "true") {
-            $link .= "<img src='{$url}/images/common/pay_with_eway.gif'/>";
+            $link .= "<img src='{$url}/images/pay_with_eway.gif'/>";
         } else {
             $link .= $params['link_wording'];
         }

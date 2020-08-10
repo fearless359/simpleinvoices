@@ -207,11 +207,11 @@
                             <tr class="index_table">
                                 <td class="first">
                                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
-                                        <img src='images/common/view.png' class='action'/>
+                                        <img src='../../../../../images/view.png' class='action'/>
                                     </a>
                                     <a title="{$LANG.process_payment_for} {$invoice.preference} {$invoice.index_id}"
                                        href='index.php?module=payments&amp;view=process&amp;id={$invoice.id}&amp;op=pay_selected_invoice'>
-                                        <img src='images/common/money_dollar.png' class='action'/>
+                                        <img src='../../../../../images/money_dollar.png' class='action'/>
                                     </a>
                                 </td>
                                 <td>
@@ -259,11 +259,11 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=customers&amp;view=details&amp;id={$customer.id|urlencode}&amp;action=edit" class="positive">
-                <img src="images/common/tick.png" alt="{$LANG.edit}"/>
+                <img src="../../../../../images/tick.png" alt="{$LANG.edit}"/>
                 {$LANG.edit}
             </a>
             <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
-                <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                <img src="../../../../../images/cross.png" alt="{$LANG.cancel}" />
                 {$LANG.cancel}
             </a>
         </div>
@@ -516,11 +516,11 @@
             </table>
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="positive" name="save_customer" value="{$LANG.save_customer}" tabindex="230">
-                    <img class="button_img" src="images/common/tick.png" alt="{$LANG.save}"/>
+                    <img class="button_img" src="../../../../../images/tick.png" alt="{$LANG.save}"/>
                     {$LANG.save}
                 </button>
                 <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
-                    <img src="images/common/cross.png" alt="{$LANG.cancel}" />
+                    <img src="../../../../../images/cross.png" alt="{$LANG.cancel}" />
                     {$LANG.cancel}
                 </a>
             </div>

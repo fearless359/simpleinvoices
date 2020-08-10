@@ -78,11 +78,11 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=user&amp;view=details&amp;id={$user.id|urlencode}&amp;action=edit" class="positive">
-                <img src="images/famfam/report_edit.png" alt="" />
+                <img src="../../../images/report_edit.png" alt="" />
                 {$LANG.edit}
             </a>
             <a href="index.php?module=user&amp;view=manage" class="negative">
-                <img src="images/common/cross.png" alt="" />
+                <img src="../../../images/cross.png" alt="" />
                 {$LANG.cancel}
             </a>
         </div>
@@ -217,11 +217,11 @@
             </table>
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="positive" name="save_user" tabindex="100">
-                    <img class="button_img" src="images/common/tick.png" alt="" />
+                    <img class="button_img" src="../../../images/tick.png" alt="" />
                     {$LANG.save}
                 </button>
                 <a href="index.php?module=user&amp;view=manage" class="negative" tabindex="110">
-                    <img src="images/common/cross.png" alt="" />
+                    <img src="../../../images/cross.png" alt="" />
                     {$LANG.cancel}
                 </a>
             </div>

@@ -22,7 +22,7 @@ $rows = User::getAll();
 foreach ($rows as $row) {
     $row['vname'] = $LANG['view'] . ' ' . $row['username'];
     $row['ename'] = $LANG['edit'] . ' ' . $row['username'];
-    $row['image'] = ($row['enabled'] == ENABLED ? 'images/common/tick.png' : 'images/common/cross.png');
+    $row['image'] = ($row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
     $users[] = $row;
 }
 

@@ -11,7 +11,7 @@
 {if $number_of_invoices == 0}
     <div class="si_toolbar si_toolbar_top si_toolbar_top_left">
         <a href="index.php?module=invoices&amp;view=itemised" class="">
-            <img src="images/common/add.png" alt="" />
+            <img src="../../../images/add.png" alt="" />
             {$LANG.new_invoice}
         </a>
     </div>
@@ -44,7 +44,7 @@
     </div>
     <div class="si_toolbar si_toolbar_top si_toolbar_top_left">
         <a href="index.php?module=invoices&amp;view=itemised" class="">
-            <img src="images/common/add.png" alt=""/>
+            <img src="../../../images/add.png" alt=""/>
             {$LANG.new_invoice}
         </a>
     </div>
@@ -66,15 +66,15 @@
     <div id="dialog" class="web_dialog flora" title="Export" style="display: none;">
         <div class="si_toolbar si_toolbar_dialog">
             <a title="{$LANG.export_tooltip} {$LANG.export_pdf_tooltip}" class="export_pdf export_window">
-                <img src="images/common/page_white_acrobat.png" alt=""/>
+                <img src="../../../images/page_white_acrobat.png" alt=""/>
                 {$LANG.export_pdf}
             </a>
             <a title="{$LANG.export_tooltip} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet}" class="export_xls export_window">
-                <img src="images/common/page_white_excel.png" alt=""/>
+                <img src="../../../images/page_white_excel.png" alt=""/>
                 {$LANG.export_xls}
             </a>
             <a title="{$LANG.export_tooltip} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor}" class="export_doc export_window">
-                <img src="images/common/page_white_word.png" alt=""/>
+                <img src="images/page_white_word.png" alt=""/>
                 {$LANG.export_doc}
             </a>
             <button id="webDialogClose">Close</button>

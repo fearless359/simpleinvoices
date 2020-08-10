@@ -54,7 +54,7 @@
 </table>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=install&amp;view=structure" class="positive">
-        <img src="images/common/tick.png" alt=""/>
+        <img src="../../../images/tick.png" alt=""/>
         Install Database
     </a>
 </div>

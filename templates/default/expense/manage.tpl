@@ -10,7 +10,7 @@
  *}
 <div class="si_toolbar si_toolbar_form">
     <a href="{$add_button_link}" class="positive">
-        <img src="images/famfam/add.png" alt=""/>
+        <img src="../../../images/add.png" alt=""/>
         {$add_button_msg}
     </a>
 </div>
@@ -39,11 +39,11 @@
                 <td class="si_center">
                     <a class='index_table' title='{$expense['vname']}'
                        href='index.php?module=expense&amp;view=details&amp;id={$expense['EID']}&amp;action=view'>
-                        <img src='images/common/view.png' class='action' />
+                        <img src='../../../images/view.png' class='action' />
                     </a>
                     <a class='index_table' title='{$expense['ename']}'
                         href='index.php?module=expense&amp;view=details&amp;id={$expense['EID']}&amp;action=edit'>
-                        <img src='images/common/edit.png' class='action' />
+                        <img src='../../../images/edit.png' class='action' />
                     </a>
                 </td>
                 <td>{$expense['date']}</td>

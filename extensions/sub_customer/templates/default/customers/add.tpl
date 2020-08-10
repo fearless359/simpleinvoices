@@ -245,11 +245,11 @@
             </table>
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="positive" name="submit" value="{$LANG.save}" tabindex="240">
-                    <img class="button_img" src="images/common/tick.png" alt=""/>
+                    <img class="button_img" src="../../../../../images/tick.png" alt=""/>
                     {$LANG.save}
                 </button>
                 <a href="index.php?module=customers&amp;view=manage" class="negative" tabindex="250">
-                    <img src="images/common/cross.png" alt=""/>
+                    <img src="../../../../../images/cross.png" alt=""/>
                     {$LANG.cancel}
                 </a>
             </div>

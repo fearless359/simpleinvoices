@@ -9,7 +9,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=company_logo'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaults.company_logo}</td>
@@ -24,7 +24,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=company_name_item'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaults.company_name_item}</td>
@@ -39,7 +39,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=biller'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaultBiller.name}</td>
@@ -54,7 +54,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=customer'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaultCustomer.name}</td>
@@ -69,7 +69,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=default_invoice'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaults.default_invoice}</td>
@@ -84,7 +84,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=preference_id'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaultPreference.pref_description}</td>
@@ -99,7 +99,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=def_inv_template'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaults.template}</td>
@@ -114,7 +114,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=line_items'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaults.line_items}</td>
@@ -129,7 +129,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=def_payment_type'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaultPaymentType}</td>
@@ -144,7 +144,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=tax'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaultTax.tax_description}</td>
@@ -159,7 +159,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=delete'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultDelete == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -174,7 +174,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=expense'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultExpense == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -189,7 +189,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=inventory'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultInventory == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -204,7 +204,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=language'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaultLanguage}</td>
@@ -219,7 +219,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=logging'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultLogging == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -234,7 +234,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_min_length'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaultPasswordMinLength}</td>
@@ -249,7 +249,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=tax_per_line_item'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaults.tax_per_line_item}</td>
@@ -264,7 +264,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_attributes'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultProductAttributes == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -279,7 +279,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_lower'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultPasswordLower == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -294,7 +294,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_number'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultPasswordNumber == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -309,7 +309,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_special'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultPasswordSpecial == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -324,7 +324,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_upper'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{if $defaultPasswordUpper == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -339,7 +339,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=session_timeout'>
-                    <img src="images/common/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td>{$defaults.session_timeout}</td>

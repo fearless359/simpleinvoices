@@ -5,7 +5,7 @@
     {* Verify the a description was entered. *}
     {if isset($smarty.post.description) && !empty($smarty.post.description)}
         <div class="validation_alert">
-            <img src="images/common/important.png" alt=""/>
+            <img src="../../../images/important.png" alt=""/>
             {$LANG.product_description_prompt}
         </div>
         <hr/>
@@ -197,11 +197,11 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_product" value="{$LANG.save}">
-                <img class="button_img" src="images/common/tick.png" alt=""/>
+                <img class="button_img" src="../../../images/tick.png" alt=""/>
                 {$LANG.save}
             </button>
             <a href="index.php?module=products&amp;view=manage" class="negative">
-                <img src="images/common/cross.png" alt=""/>
+                <img src="../../../images/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>
         </div>
