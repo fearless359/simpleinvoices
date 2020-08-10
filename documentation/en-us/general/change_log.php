@@ -18,7 +18,7 @@
                 <li>New master branch based on PHP 7.4 standard.</li>
                 <li>Removed mini and measurement extensions. Mini didn't work and measurement
                     is a template type, not an extension.</li>
-                <li>Removed flexigrid images.</li>
+                <li>Removed flexigrid images and moved used images to images directory.</li>
             </ul>
         </li>
         <li>2020-08-05 - <b>2019.2.30</b>
