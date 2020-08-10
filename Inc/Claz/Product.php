@@ -58,7 +58,7 @@ class Product {
                       "</a>" .
                       "<a class=\"index_table\" title=\"{$row['ename']}\" " .
                          "href=\"index.php?module=products&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
-                          " />" .
+                          "<img src=\"images/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
                       "</a>";
 
             $image = ($row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png");

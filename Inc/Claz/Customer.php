@@ -73,7 +73,7 @@ class Customer {
             // @formatter:off
             $action = "<a class='index_table' title=\"{$viewcust} {$row['name']}\" " .
                          "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                          " />" .
+                          "<img src=\"images/view.png\" class=\"action\" alt=\"view\" />" .
                       "</a>" .
                       "<a class=\"index_table\" title=\"{$editcust} {$row['name']}\" " .
                          "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
@@ -82,7 +82,7 @@ class Customer {
             if ($enabled) {
                 $action .= "<a class=\"index_table\" title=\"{$defaultinv}\" " .
                               "href=\"index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view\">" .
-                               " />" .
+                               "<img src=\"images/add.png\" class=\"action\" alt=\"add\" />" .
                            "</a>";
             }
 

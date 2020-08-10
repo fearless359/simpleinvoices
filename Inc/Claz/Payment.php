@@ -84,12 +84,12 @@ class Payment
             $action =
                 "<a class=\"index_table\" title=\"{$LANG['view']} {$LANG['payment']}# {$row['id']}\" " .
                    "href=\"index.php?module=payments&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                " />" .
+                    "<img src=\"images/view.png\" alt=\"view\" height=\"16\" />" .
                 "</a>" .
                 "&nbsp;&nbsp;" .
                 "<a class=\"index_table\" title=\"{$LANG['print_preview_tooltip']} {$LANG['payment']}# {$row['id']}\" " .
                    "href=\"index.php?module=payments&amp;view=print&amp;id={$row['id']}\">" .
-                " />" .
+                    "<img src=\"images/printer.png\" alt=\"print\" height=\"16\" />" .
                 "</a>";
 
             $invoice_id =
