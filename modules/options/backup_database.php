@@ -11,10 +11,11 @@ $smarty->assign('active_tab', '#setting');
 if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
     $today = date("YmdGisa");
     $ok = true;
+    $oBack = null;
+    $filename = "tmp/database_backups/simple_invoices_backup_$today.sql"; // output file name
     try {
         $oBack = new BackupDb();
-        $filename = "tmp/database_backups/simple_invoices_backup_$today.sql"; // output file name
-        $oBack->start_backup($filename);
+        $oBack->startBackup($filename);
     } catch (PdoDbException $pde) {
         error_log("modules/options/backup_database.php - error: " . $pde->getMessage());
         $ok = false;
@@ -31,7 +32,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "</div>" .
             $txt .
             "<div class='si_help_div'>" .
-                "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}'" .
+                "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}' " .
                    "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database_fwrite'>" .
                     "<img src='{$help_image_path}help-small.png' alt=''/>" .
                     "{$LANG['fwrite_error']}" .
@@ -41,7 +42,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
         $display_block =
             "<div class='si_message_error'>ERROR: Unable to complete the backup. See error log for details.</div>" .
             "<div class='si_help_div'>" .
-                "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}'" .
+                "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}' " .
                    "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database_fwrite'>" .
                     "<img src='{$help_image_path}help-small.png' alt=''/>" .
                     "{$LANG['failure']}" .
@@ -61,7 +62,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "{$LANG['note']}: {$LANG['backup_note_to_file']}" .
         "</div>" .
         "<div class='si_help_div'>" .
-            "<a class='cluetip' href='#' title='{$LANG['database_backup']}'" .
+            "<a class='cluetip' href='#' title='{$LANG['database_backup']}' " .
                "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database' >" .
         "<img src='../../images/important.png' alt='' />" .
                 "{$LANG['more_info']}" .

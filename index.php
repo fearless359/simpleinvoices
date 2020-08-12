@@ -95,11 +95,13 @@ try {
     exit();
 }
 
+$auth_session = null;
 try {
     Zend_Session::start();
     $auth_session = new Zend_Session_Namespace('Zend_Auth');
 } catch (Zend_Session_Exception $zse) {
     SiError::out('generic', 'Zend_Session_Exception', $zse->getMessage());
+    die("Unable to access Zend session namespace");
 }
 
 // globals set in the init.php logic
@@ -442,7 +444,11 @@ if ($menu) {
     $my_path = Util::getCustomPath('menu');
     if (isset($my_path)) {
         Log::out("index.php - menu my_path[$my_path]", Zend_Log::DEBUG);
-        $menutpl = $smarty->fetch($my_path);
+        try {
+            $menutpl = $smarty->fetch($my_path);
+        } catch (Exception $e) {
+            die("Unable to fetch menu path. Error: " . $e->getMessage());
+        }
         $lines = array();
         $sections = array();
         Funcs::menuSections($menutpl, $lines, $sections);
@@ -520,7 +526,8 @@ foreach ($ext_names as $ext_name) {
             } else {
                 $pos += 14;
                 $str = substr($content, $pos);
-                if (preg_match('/^BEFORE \{\$LANG\./', $str)) {
+                $exp = "^BEFORE \{\$LANG\.";
+                if (preg_match($exp, $str)) {
                     $pos += 14;
                     $type = "BEFORE ";
                 } else {

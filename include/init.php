@@ -6,19 +6,15 @@ use Inc\Claz\CheckPermission;
 use Inc\Claz\Db;
 use Inc\Claz\Extensions;
 use Inc\Claz\Log;
-use Inc\Claz\PdoDb;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\SiError;
 use Inc\Claz\SqlPatchManager;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
-/**
- * @var PdoDb $pdoDb_admin
- */
-global $auth_session, $config, $pdoDb_admin;
+global $api_request, $auth_session, $config, $module, $pdoDb_admin, $view;
 
-require_once 'smarty/libs/Smarty.class.php';
+require_once "library/smarty/libs/Smarty.class.php";
 require_once 'library/paypal/paypal.class.php';
 require_once 'library/HTMLPurifier/HTMLPurifier.standalone.php';
 
@@ -68,6 +64,7 @@ Log::out("init.php - frontendOptions - " . print_r($frontendOptions,true), Zend_
 $backendOptions = array('cache_dir' => './tmp/cache'); // Directory where to put the cache files
 
 // getting a Zend_Cache_Core object
+$cache = null;
 try {
     $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
 } catch (Zend_Cache_Exception $zce) {
@@ -76,7 +73,7 @@ try {
 
 // required for some servers
 try {
-    Zend_Date::setOptions(array('cache' => $cache)); // Active per Zend_Locale
+    Zend_Date::setOptions(['cache' => $cache]); // Active per Zend_Locale
 } catch (Zend_Date_Exception $zde) {
     SiError::out('generic', 'Zend_Date_Exception', $zde->getMessage());
 }
@@ -225,7 +222,11 @@ if (!$api_request) {
 
 if ($config->authentication->enabled == ENABLED) {
     $acl = null;
-    Acl::init($acl);
+    try {
+        Acl::init($acl);
+    } catch (Zend_Acl_Exception $zae) {
+        die("Unable to perform Acl::init() - error: " . $zae->getMessage());
+    }
 
     // if authentication enabled then do acl check etc..
     foreach ($ext_names as $ext_name) {
@@ -235,7 +236,11 @@ if ($config->authentication->enabled == ENABLED) {
             include_once($filePath);
             // In the Acl.php file for your extension, have a getResource() method
             // that returns each resource to add to the default.
-            Acl::addResource($fileName::getResources(), $acl);
+            try {
+                Acl::addResource($fileName, $acl);
+            } catch (Zend_Acl_Exception $zae) {
+                die("Unable to add Acl resource. Error: " . $zae->getMessage());
+            }
         }
     }
 

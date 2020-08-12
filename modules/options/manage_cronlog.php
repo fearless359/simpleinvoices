@@ -9,8 +9,8 @@ global $pdoDb, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$cronlogs = CronLog::getOne($pdoDb, DomainId::get());
-$smarty -> assign("cronlogs",$cronlogs);
+$cronLogs = CronLog::getAll($pdoDb, DomainId::get());
+$smarty -> assign("cronLogs",$cronLogs);
 
 $smarty -> assign('pageActive', 'options');
 $smarty -> assign('active_tab', '#setting');

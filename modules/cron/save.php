@@ -29,7 +29,7 @@ $display_block = "<div class=\"si_message_error\">{$LANG['save_cron_failure']}</
 $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=cron&amp;view=manage\" />";
 
 if ( $op === 'add') {
-    if (Cron::insert() > 0) {
+    if (!empty(Cron::insert())) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_cron_success']}</div>";
     }
 } else if ($op === 'edit') {

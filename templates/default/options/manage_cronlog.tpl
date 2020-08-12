@@ -32,7 +32,7 @@
       <!--    <th class="sortable">Invoice No</th> -->
     </tr>
   </thead>
-  {foreach from=$cronlogs item=cronlog}
+  {foreach from=$cronLogs item=cronlog}
   <tr>
     <td class='index_table'>{$cronlog.id|htmlsafe}</td>
     <td class='index_table'>{$cronlog.run_date|htmlsafe}</td>

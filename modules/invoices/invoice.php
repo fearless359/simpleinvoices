@@ -42,7 +42,6 @@ $defaultCustomer   = Customer::getDefaultCustomer();
 $defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
-
 $first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
     $first_run_wizard =true;

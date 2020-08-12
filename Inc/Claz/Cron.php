@@ -3,6 +3,8 @@ namespace Inc\Claz;
 
 use Mpdf\Output\Destination;
 
+use \DateTime;
+use \DateTimeZone;
 use \Exception;
 use \Zend_Log;
 
@@ -17,23 +19,23 @@ class Cron {
      * @param int $id of record to retrieve.
      * @return array
      */
-    public static function getOne($id) {
+    public static function getOne(int $id): array {
         return self::getCrons($id);
     }
 
     /**
      * Retrieve all records for the domain
-     * @return array|mixed
+     * @return array
      */
-    public static function getAll() {
+    public static function getAll(): array  {
         return self::getCrons();
     }
 
     /**
-     * @param int $id If not null, the id of the record to retrieve.
-     * @return array|mixed
+     * @param int|null $id If not null, the id of the record to retrieve.
+     * @return array
      */
-    private static function getCrons($id = null) {
+    private static function getCrons(int $id = null): array {
         global $LANG, $pdoDb;
 
         $crons = array();
@@ -100,12 +102,13 @@ class Cron {
     /**
      * @return int ID of inserted record. 0 if insert failed.
      */
-    public static function insert() {
+    public static function insert(): int {
         global $pdoDb;
-        $result = 0;
+        $result = null;
         try {
             $pdoDb->setExcludedFields("id");
-            $result = $pdoDb->request("INSERT", "cron");
+            $id = $pdoDb->request("INSERT", "cron");
+            $result = (empty($id) ? null : $id);
         } catch (PdoDbException $pde) {
             error_log("Cron insert error - " . $pde->getMessage());
         }
@@ -114,10 +117,11 @@ class Cron {
 
     /**
      * @param $id
-     * @return bool|mixed
+     * @return bool
      */
-    public static function update($id) {
+    public static function update(int $id): bool {
         global $pdoDb;
+        $result = false;
         try {
             $pdoDb->setExcludedFields(array("id", "domain_id"));
             $pdoDb->addSimpleWhere("id", $id, "AND");
@@ -125,7 +129,6 @@ class Cron {
             $result = $pdoDb->request("UPDATE", "cron");
         } catch (PdoDbException $pde) {
             error_log("Cron update error - " . $pde->getMessage());
-            return false;
         }
         return $result;
     }
@@ -135,7 +138,7 @@ class Cron {
      * @param int $id of record record to delete.
      * @return bool true if succeeded; otherwise false.
      */
-    public static function delete($id) {
+    public static function delete(int $id): bool {
         global $pdoDb;
 
         try {
@@ -164,12 +167,12 @@ class Cron {
     }
 
     /**
-     * @param $src_array
-     * @param $customer_email
-     * @param $biller_email
+     * @param array $src_array
+     * @param string $customer_email
+     * @param string $biller_email
      * @return array
      */
-    private static function getEmailSendAddresses($src_array, $customer_email, $biller_email) {
+    private static function getEmailSendAddresses(array $src_array, string $customer_email, string $biller_email): array {
         $email_to_addresses = array ();
         if ($src_array['email_customer'] == ENABLED) {
             self::breakMultiEmail($email_to_addresses, $customer_email);
@@ -181,11 +184,10 @@ class Cron {
     }
 
     /**
-     * @param array $emailAddresses Array to update
-     * @param string $emailAddrLine Email address line with one or more email addresses separated
-     *          by a semi-colon.
+     * @param array $emailAddresses
+     * @param string $emailAddrLine
      */
-    private static function breakMultiEmail(&$emailAddresses, $emailAddrLine) {
+    private static function breakMultiEmail(array &$emailAddresses, string $emailAddrLine): void {
         $parts = explode(';', $emailAddrLine);
         foreach ($parts as $part) {
             $emailAddresses[] = $part;
@@ -194,16 +196,16 @@ class Cron {
 
     /**
      * @return array
-     * @throws
+     * @throws Exception
      */
-    public static function run() {
+    public static function run(): array {
         global $pdoDb;
         $result = array();
 
         $today = date('Y-m-d');
-        $rows  = self::select_crons_to_run();
+        $rows  = self::selectCronsToRun();
         $result['cron_message'] = "Cron started";
-        $number_of_crons_run = "0";
+        $numberOfCronsRun = 0;
         $i = 0; // set here so accessible outside of the loop
         Log::out("Cron::run() - today[$today] row count[" . count($rows) . "]", Zend_Log::DEBUG);
 
@@ -211,11 +213,11 @@ class Cron {
             $cron_id   = $value['id'];
             $domain_id = $value['domain_id'];
 
-            $check_cron_log = CronLog::check($pdoDb, $domain_id, $cron_id, $today);
-            Log::out("Cron::run() - cron_id[$cron_id] domain_id[$domain_id] check_cron_log[$check_cron_log]", Zend_Log::DEBUG);
+            $checkCronLog = CronLog::check($pdoDb, $domain_id, $cron_id, $today);
+            Log::out("Cron::run() - cron_id[$cron_id] domain_id[$domain_id] checkCronLog[$checkCronLog]", Zend_Log::DEBUG);
 
             $i = "0";
-            if ($check_cron_log == 0) {
+            if (!$checkCronLog) {
                 // only proceed if Cron has not been run for today
                 $start_date = date('Y-m-d', strtotime($value['start_date']));
                 $end_date   = $value['end_date'];
@@ -281,7 +283,7 @@ class Cron {
                     // run the recurrence for this invoice
                     Log::out("Cron::run() - run_cron[$run_cron]", Zend_Log::DEBUG);
                     if ($run_cron) {
-                        $number_of_crons_run++;
+                        $numberOfCronsRun++;
                         $cron_msg = "Cron ID: $value[id] - Cron for $value[index_name] with ";
                         $cron_msg .= (empty($value['start_date']) ? "no start date" : "start date of $value[start_date] ") . "and ";
                         $cron_msg .= (empty($value['end_date']  ) ? "no end date"   : "an end date of $value[end_date] ");
@@ -297,8 +299,6 @@ class Cron {
                         $preference = Preferences::getOne($invoice['preference_id']);
                         $biller = Biller::getOne($invoice['biller_id']);
                         $customer = Customer::getOne($invoice['customer_id']);
-                        $spc2us_pref = str_replace(" ", "_", $invoice['index_name']);
-                        $pdf_file_name_invoice = $spc2us_pref . ".pdf";
 
                         // email invoice
                         if (($value['email_biller'] == ENABLED) || ($value['email_customer'] == ENABLED)) {
@@ -308,13 +308,7 @@ class Cron {
                             $export->setModule('invoice');
                             $pdf_string = $export->execute();
 
-                            // $attachment = file_get_contents('./tmp/cache/' . $pdf_file_name);
-
-                            $email_body = new EmailBody();
-                            $email_body->email_type    = 'cron_invoice';
-                            $email_body->customer_name = $customer['name'];
-                            $email_body->invoice_name  = $invoice['index_name'];
-                            $email_body->biller_name   = $biller['name'];
+                            $email_body = self::emailBodyGen('cron_invoice', $customer['name'], $invoice['index_name'], $biller['name']);
 
                             $email = new Email();
                             $email->setBody($email_body->create());
@@ -361,11 +355,12 @@ class Cron {
 
                                     $pdf_string = $export_rec->execute();
 
-                                    $email_body_rec = new EmailBody();
-                                    $email_body_rec->email_type    = 'cron_invoice_receipt';
-                                    $email_body_rec->customer_name = $customer['name'];
-                                    $email_body_rec->invoice_name  = $invoice['index_name'];
-                                    $email_body_rec->biller_name   = $biller['name'];
+//                                    $email_body_rec = new EmailBody();
+//                                    $email_body_rec->email_type    = 'cron_invoice_receipt';
+//                                    $email_body_rec->customer_name = $customer['name'];
+//                                    $email_body_rec->invoice_name  = $invoice['index_name'];
+//                                    $email_body_rec->biller_name   = $biller['name'];
+                                    $email_body_rec = self::emailBodyGen('cron_invoice_receipt', $customer['name'], $invoice['index_name'], $biller['name']);
 
                                     $email_rec = new Email();
                                     $email_rec->setBody($email_body_rec->create());
@@ -423,7 +418,7 @@ class Cron {
         }
 
         // no crons scheduled for today
-        if ($number_of_crons_run == '0') {
+        if ($numberOfCronsRun == 0) {
             $result['id'] = $i;
             $result['cron_message'] = "No invoices recurred for this Cron run for domain: " . DomainId::get() . " for the date: {$today}";
             $result['email_message'] = "";
@@ -431,10 +426,19 @@ class Cron {
         return $result;
     }
 
+    private static function emailBodyGen(string $type, string $customerName, string $invIndexName, string $billerName): object {
+        $emailBody = new EmailBody();
+        $emailBody->email_type    = $type;
+        $emailBody->customer_name = $customerName;
+        $emailBody->invoice_name  = $invIndexName;
+        $emailBody->biller_name   = $billerName;
+        return $emailBody;
+    }
+
     /**
      * @return array|mixed
      */
-    public static function select_crons_to_run() {
+    private static function selectCronsToRun() {
         global $config, $pdoDb;
 
         $timezone = $config->phpSettings->date->timezone;
@@ -457,7 +461,7 @@ class Cron {
             $se = new Select($fn, null, null, null, "index_name");
             $pdoDb->addToSelectStmts($se);
 
-            $dtm = new \DateTime(null, new \DateTimeZone($timezone));
+            $dtm = new DateTime(null, new DateTimeZone($timezone));
             $dt = $dtm->format("Y-m-d");
             $pdoDb->addToWhere(new WhereItem(true, "cron.start_date", "=", "", false, "OR"));
             $pdoDb->addToWhere(new WhereItem(false, "cron.start_date", "<=", $dt, true, "AND"));

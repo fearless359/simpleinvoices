@@ -17,8 +17,11 @@ class Config
     const CONFIG_FILE = "config/config.php";
     const CUSTOM_CONFIG_FILE = "config/custom.config.php";
 
+    /** @var object|null  */
     private static $custom_config = null;
+    /** @var string|null  */
     private static $version_name = null;
+    /** @var string|null  */
     private static $version_update_date = null;
 
     /**
@@ -28,7 +31,7 @@ class Config
      * @return object Zend_Config_Ini class object
      * @throws Exception
      */
-    public static function init($environment, $updateCustomConfig): object
+    public static function init(string $environment, bool $updateCustomConfig): object
     {
         try {
             if ($updateCustomConfig) {
@@ -87,7 +90,7 @@ class Config
      * @return array of key/value pair for sections within the configuration file.
      * @throws Exception if config file not formatted as expected.
      */
-    private static function loadFileInfo($filename, $fp): array
+    private static function loadFileInfo(string $filename, $fp): array
     {
         $info = array();
         $section = null;
@@ -132,7 +135,7 @@ class Config
      *      The "new" entries need to be added to the custom config file. The "old"
      *      entries need to be marked as not in standard config file.
      */
-    private static function genChanges($config_info, $custom_config_info): array
+    private static function genChanges(array $config_info, array $custom_config_info): array
     {
         $newitems = array();
         $olditems = array();
@@ -171,7 +174,7 @@ class Config
      *      "section|key_part_of_key_value_pair".
      * @throws Exception if irrecoverable error found.
      */
-    private static function updateCustomConfig($changes): void
+    private static function updateCustomConfig(array $changes): void
     {
         $unmatched = $changes['old'];
         $newpairs = $changes['new'];
@@ -277,8 +280,11 @@ class Config
 
 class ConfigLines
 {
+    /** @var string  */
     private $section;
+    /** @var string  */
     private $key;
+    /** @var string  */
     private $value;
 
     /**
@@ -287,7 +293,7 @@ class ConfigLines
      * @param string $key
      * @param string $value
      */
-    public function __construct($section, $key, $value)
+    public function __construct(string $section, string $key, string $value)
     {
         $this->section = $section;
         $this->key = $key;
@@ -299,7 +305,7 @@ class ConfigLines
      * @param string $line from file to test
      * @return string "other", "section" or "pair"
      */
-    public static function line_type($line): string
+    public static function line_type(string $line): string
     {
         $line = trim($line);
         if (preg_match('/^\[.*\]$/', $line) == 1) return 'section';

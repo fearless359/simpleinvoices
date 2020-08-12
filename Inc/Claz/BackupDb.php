@@ -6,8 +6,8 @@ namespace Inc\Claz;
  * @package Inc\Claz
  */
 class BackupDb {
-    private $output;
-    private $pdoDb;
+    private string $output;
+    private PdoDb $pdoDb;
 
     /**
      * BackupDb constructor.
@@ -21,40 +21,40 @@ class BackupDb {
     }
 
     /**
-     * @param $filename
+     * @param string $filename
      * @throws PdoDbException
      */
-    public function start_backup($filename): void
+    public function startBackup(string $filename): void
     {
-        $fh = fopen($filename, "w");
+        $fileHandle = fopen($filename, "w");
         $rows = $this->pdoDb->query("SHOW TABLES");
         foreach ($rows as $row) {
-            $this->show_create($row[0], $fh);
+            $this->showCreate($row[0], $fileHandle);
         }
-        fclose($fh);
+        fclose($fileHandle);
     }
 
     /**
-     * @param $tableName
-     * @param $fh
+     * @param string $tableName
+     * @param resource $fileHandle
      * @throws PdoDbException
      */
-    private function show_create($tableName, $fh): void
+    private function showCreate(string $tableName, $fileHandle): void
     {
         $query = "SHOW CREATE TABLE `$tableName`";
         $row = $this->pdoDb->query($query);
-        fwrite($fh, $row[0][1] . ";\n");
-        $insert = $this->retrieve_data($tableName);
-        fwrite($fh, $insert);
+        fwrite($fileHandle, $row[0][1] . ";\n");
+        $insert = $this->retrieveData($tableName);
+        fwrite($fileHandle, $insert);
         $this->output .= "<tr><td>Table: $tableName backed up successfully</td></tr>";
     }
 
     /**
-     * @param $tableName
+     * @param string $tableName
      * @return string
      * @throws PdoDbException
      */
-    private function retrieve_data($tableName): string
+    private function retrieveData(string $tableName): string
     {
         $query = "SHOW COLUMNS FROM `{$tableName}`";
         $rows = $this->pdoDb->query($query);
@@ -67,7 +67,7 @@ class BackupDb {
         $query = "";
         $rows = $this->pdoDb->request("SELECT", $tableName);
         foreach($rows as $row) {
-            $query .= "INSERT INTO `{$tableName}` VALUES(";
+            $query .= "INSERT INTO `$tableName` VALUES(";
             for ($i = 0; $i < $colCnt; $i++) {
                 $query .= "'" . addslashes($row[$columns[$i][0]]) . "'" .
                          ($i + 1 == $colCnt ? ");\n" : ",");
@@ -77,9 +77,6 @@ class BackupDb {
         return $query;
     }
 
-    /**
-     * @return string
-     */
     public function getOutput(): string
     {
         return $this->output;

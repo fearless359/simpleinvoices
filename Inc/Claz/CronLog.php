@@ -11,11 +11,12 @@ class CronLog
 {
 
     /**
+     * Get all cron_log records for the specified domain.
      * @param PdoDb $pdoDb
-     * @param $domain_id
-     * @return array|mixed
+     * @param int $domain_id
+     * @return array
      */
-    public static function getOne(PdoDb $pdoDb, $domain_id) {
+    public static function getAll(PdoDb $pdoDb, int $domain_id): array {
         $rows = array();
         try {
             $pdoDb->addSimpleWhere("domain_id", $domain_id);
@@ -28,33 +29,32 @@ class CronLog
     }
 
     /**
+     * Insert a new log record for run history.
      * @param PdoDb $pdoDb
-     * @param $domain_id
-     * @param $cron_id
-     * @param $run_date
-     * @return mixed|string
+     * @param int $domain_id
+     * @param int $cron_id
+     * @param string $run_date
      */
-    public static function insert(PdoDb $pdoDb, $domain_id, $cron_id, $run_date) {
-        $id = '';
+    public static function insert(PdoDb $pdoDb, int $domain_id, int $cron_id, string $run_date): void {
         try {
             $pdoDb->setFauxPost(array("domain_id" => $domain_id,
                 "cron_id" => $cron_id,
                 "run_date" => $run_date));
-            $id = $pdoDb->request("INSERT", "cron_log");
+            $pdoDb->request("INSERT", "cron_log");
         } catch (PdoDbException $pde) {
             error_log("CronLog::insert() - Error: " . $pde->getMessage());
         }
-        return $id;
     }
 
     /**
+     * Check to see if any cron_log records exist for specified parameters.
      * @param PdoDb $pdoDb
-     * @param $domain_id
-     * @param $cron_id
-     * @param $run_date
-     * @return int
+     * @param int $domain_id
+     * @param int $cron_id
+     * @param string $run_date
+     * @return bool true if records exist; false if not.
      */
-    public static function check(PdoDb $pdoDb, $domain_id, $cron_id, $run_date) {
+    public static function check(PdoDb $pdoDb, int $domain_id, int $cron_id, string $run_date): bool {
         $rows = array();
         try {
             $pdoDb->addSimpleWhere('cron_id', $cron_id, "AND");
@@ -65,6 +65,6 @@ class CronLog
         } catch (PdoDbException $pde) {
             error_log("CronLog::check() - Error: " . $pde->getMessage());
         }
-        return (empty($rows) ? 0 : $rows[0]['count']);
+        return !empty($rows);
     }
 }

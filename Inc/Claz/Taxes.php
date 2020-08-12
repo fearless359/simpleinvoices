@@ -11,10 +11,10 @@ class Taxes
 
     /**
      * Get a tax record.
-     * @param string $id Unique ID record to retrieve.
+     * @param int $id Unique ID record to retrieve.
      * @return array Row retrieved. Test for empty row for failure.
      */
-    public static function getOne($id)
+    public static function getOne(int $id): array
     {
         return self::getTaxes($id);
     }
@@ -23,7 +23,7 @@ class Taxes
      * Get all tax table rows.
      * @return array Rows retrieved. Test for empty rows for failure.
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::getTaxes();
     }
@@ -32,17 +32,17 @@ class Taxes
      * Get all active taxes records.
      * @return array Rows retrieved.
      */
-    public static function getActiveTaxes()
+    public static function getActiveTaxes(): array
     {
         return self::getTaxes(null, true);
     }
 
     /**
      * @param int $id If not null, id of record to retrieve
-     * @param bool $active_only if true get enabled records only; false (default) for all records.
+     * @param bool $activeOnly if true get enabled records only; false (default) for all records.
      * @return array rows retrieved.
      */
-    private static function getTaxes($id = null, $active_only = false)
+    private static function getTaxes($id = null, bool $activeOnly = false): array
     {
         global $LANG, $pdoDb;
 
@@ -52,7 +52,7 @@ class Taxes
                 $pdoDb->addSimpleWhere('tax_id', $id, 'AND');
             }
 
-            if ($active_only) {
+            if ($activeOnly) {
                 $pdoDb->addSimpleWhere('tax_enabled', ENABLED, 'AND');
             }
 
@@ -85,19 +85,18 @@ class Taxes
 
     /**
      * Get tax types
-     * @return string[] Types of tax records (% - percentage, $ - dollars)
+     * @return array Types of tax records (% => percentage, $ => dollars)
      */
-    public static function getTaxTypes()
+    public static function getTaxTypes(): array
     {
-        $types = array('%' => '%', '$' => '$');
-        return $types;
+        return ['%' => '%', '$' => '$'];
     }
 
     /**
      * Get a default tax record.
      * @return array Default tax record.
      */
-    public static function getDefaultTax()
+    public static function getDefaultTax(): array
     {
         global $pdoDb;
 
@@ -114,7 +113,7 @@ class Taxes
         } catch (PdoDbException $pde) {
             error_log("Taxes::getDefaultTax() - error: " . $pde->getMessage());
         }
-        return (empty($rows) ? array() : $rows[0]);
+        return (empty($rows) ? [] : $rows[0]);
     }
 
     /**
@@ -122,7 +121,7 @@ class Taxes
      * @param string $description of tax to check for.
      * @return bool true if record exists; false if not.
      */
-    public static function verifyExists($description)
+    public static function verifyExists(string $description): bool
     {
         global $pdoDb;
 
@@ -140,7 +139,7 @@ class Taxes
      * Insert a new tax rate.
      * @return int ID of new record. 0 if insert failed.
      */
-    public static function insertTaxRate()
+    public static function insertTaxRate(): int
     {
         global $pdoDb;
 
@@ -162,7 +161,7 @@ class Taxes
      * Update tax rate.
      * @return bool true if processed successfully, false if not.
      */
-    public static function updateTaxRate()
+    public static function updateTaxRate(): bool
     {
         global $pdoDb;
 
@@ -186,35 +185,35 @@ class Taxes
 
     /**
      * Calculate the total tax for the line item
-     * @param array $line_item_tax_id Tax values to apply.
+     * @param array $lintItemTaxId Tax values to apply.
      * @param int $quantity Number of units.
-     * @param int $unit_price Price of each unit.
+     * @param float $unitPrice Price of each unit.
      * @return float Total tax
      */
-    public static function getTaxesPerLineItem($line_item_tax_id, $quantity, $unit_price)
+    public static function getTaxesPerLineItem(array $lintItemTaxId, int $quantity, float $unitPrice): float
     {
-        $tax_total = 0;
-        if (is_array($line_item_tax_id)) {
-            foreach ($line_item_tax_id as $value) {
+        $taxTotal = 0;
+        if (!empty($lintItemTaxId)) {
+            foreach ($lintItemTaxId as $value) {
                 $tax = self::getOne($value);
-                $tax_total += self::lineItemTaxCalc($tax, $unit_price, $quantity);
+                $taxTotal += self::lineItemTaxCalc($tax, $unitPrice, $quantity);
             }
         }
-        return $tax_total;
+        return $taxTotal;
     }
 
     /**
      * Calculate the total tax for this line item.
      * @param array $tax Taxes for the line item.
-     * @param int $unit_price Price for each unit.
+     * @param float $unitPrice Price for each unit.
      * @param int $quantity Number of units to tax.
      * @return float Total tax for the line item.
      */
-    public static function lineItemTaxCalc($tax, $unit_price, $quantity)
+    public static function lineItemTaxCalc(array $tax, float $unitPrice, int $quantity): float
     {
         // Calculate tax as a percentage of unit price or dollars per unit.
         if ($tax['type'] == "%") {
-            return (($tax['tax_percentage'] / 100) * $unit_price) * $quantity;
+            return (($tax['tax_percentage'] / 100) * $unitPrice) * $quantity;
         }
         return $tax['tax_percentage'] * $quantity;
     }
