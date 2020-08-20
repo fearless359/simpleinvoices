@@ -36,12 +36,12 @@ class Biller
     public static function getOne($id): array
     {
         $rows = self::getBillers($id);
-        return (empty($rows) ? array() : $rows[0]);
+        return empty($rows) ? [] : $rows[0];
     }
 
     /**
      * Get all biller records.
-     * @param boolean $active_only Set to <b>true</b> to get active billers only.
+     * @param bool $active_only Set to <b>true</b> to get active billers only.
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
      */
@@ -54,7 +54,7 @@ class Biller
      * Get all biller records.
      * @param int $id if not null, get record for that id; otherwise get all records
      *        based on $active_only setting.
-     * @param boolean $active_only Set to <b>true</b> to get active billers only.
+     * @param bool $active_only Set to <b>true</b> to get active billers only.
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
      */
@@ -62,7 +62,7 @@ class Biller
     {
         global $LANG, $pdoDb;
 
-        $billers = array();
+        $billers = [];
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('id', $id, 'AND');
@@ -97,20 +97,20 @@ class Biller
     {
         global $pdoDb;
 
-        $billers = array();
+        $billers = [];
         try {
             $pdoDb->addSimpleWhere("s.name", "biller", "AND");
             $pdoDb->addSimpleWhere("s.domain_id", DomainId::get());
             $rows = $pdoDb->request('SELECT', 'system_defaults', 's');
             if (!empty($rows)) {
-                $biller_id = $rows[0]['value'];
-                $pdoDb->addSimpleWhere('id', $biller_id);
+                $billerId = $rows[0]['value'];
+                $pdoDb->addSimpleWhere('id', $billerId);
                 $billers = $pdoDb->request('SELECT', 'biller');
             }
         } catch (PdoDbException $pde) {
             error_log("Biller::getDefaultBiller(): error: " . $pde->getMessage());
         }
-        return (empty($billers) ? array("name" => '') : $billers[0]);
+        return empty($billers) ? ["name" => ''] : $billers[0];
     }
 
     /**
@@ -121,12 +121,20 @@ class Biller
     {
         global $pdoDb;
         $_POST['domain_id'] = DomainId::get();
-        if (empty($_POST['custom_field1'])) $_POST['custom_field1'] = "";
-        if (empty($_POST['custom_field2'])) $_POST['custom_field2'] = "";
-        if (empty($_POST['custom_field3'])) $_POST['custom_field3'] = "";
-        if (empty($_POST['custom_field4'])) $_POST['custom_field4'] = "";
+        if (empty($_POST['custom_field1'])) {
+            $_POST['custom_field1'] = "";
+        }
+        if (empty($_POST['custom_field2'])) {
+            $_POST['custom_field2'] = "";
+        }
+        if (empty($_POST['custom_field3'])) {
+            $_POST['custom_field3'] = "";
+        }
+        if (empty($_POST['custom_field4'])) {
+            $_POST['custom_field4'] = "";
+        }
 
-        $_POST['notes'] = (empty($_POST['note']) ? "" : trim($_POST['note']));
+        $_POST['notes'] = empty($_POST['note']) ? "" : trim($_POST['note']);
 
         $id = 0;
         try {
@@ -150,7 +158,7 @@ class Biller
         try {
             // The fields to be update must be in the $_POST array indexed by their
             // actual field name.
-            $pdoDb->setExcludedFields(array("id", "domain_id"));
+            $pdoDb->setExcludedFields(["id", "domain_id"]);
 
             $pdoDb->addSimpleWhere("id", $_GET['id']);
 

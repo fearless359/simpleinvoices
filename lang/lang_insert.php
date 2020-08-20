@@ -18,7 +18,7 @@ $langs_defined = get_defined_langs();
 $lang_cmp = '';
 if (!empty($_REQUEST['1'])) {
     $lang_cmp = $_REQUEST['1'];
-} else if (!empty($argv[1])) {
+} elseif (!empty($argv[1])) {
     $lang_cmp = trim($argv[1]);
 }
 if (!preg_match('/^[a-z]{2}_[a-z]{2}$/i', $lang_cmp)) {

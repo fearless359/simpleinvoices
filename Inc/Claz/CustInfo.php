@@ -6,25 +6,17 @@ namespace Inc\Claz;
  * @author Rich
  */
 class CustInfo {
-    public $name;
-    public $billed;
-    public $paid;
-    public $owed;
-    public $inv_info;
+    public string $name;
+    public string $fmtdBilled;
+    public string $fmtdPaid;
+    public string $fmtdOwed;
+    public array $invInfo;
 
-    /**
-     * CustInfo constructor.
-     * @param $name
-     * @param $billed
-     * @param $paid
-     * @param $owed
-     * @param InvInfo $inv_info
-     */
-    public function __construct($name, $billed, $paid, $owed, $inv_info) {
-        $this->name     = $name;
-        $this->billed   = $billed;
-        $this->paid     = $paid;
-        $this->owed     = $owed;
-        $this->inv_info = $inv_info;
+    public function __construct(string $name, string $fmtdBilled, string $fmtdPaid, string $fmtdOwed, array $invInfo) {
+        $this->name       = $name;
+        $this->fmtdBilled = $fmtdBilled;
+        $this->fmtdPaid   = $fmtdPaid;
+        $this->fmtdOwed   = $fmtdOwed;
+        $this->invInfo    = $invInfo;
     }
 }

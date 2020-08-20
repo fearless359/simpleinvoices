@@ -10,22 +10,22 @@ use Exception;
  */
 class Export
 {
-    private $biller;
-    private $biller_id;
-    private $customer;
-    private $customer_id;
-    private $destination;
-    private $do_not_filter_by_date;
-    private $end_date;
-    private $file_name;
-    private $file_type;
-    private $format;
-    private $id;
-    private $invoice;
-    private $module;
-    private $preference;
-    private $show_only_unpaid;
-    private $start_date;
+    private array $biller;
+    private int $billerId;
+    private array $customer;
+    private int $customerId;
+    private string $destination;
+    private string $doNotFilterByDate;
+    private string $endDate;
+    private string $fileName;
+    private string $fileType;
+    private string $format;
+    private int $recId;
+    private array $invoice;
+    private string $module;
+    private array $preference;
+    private string $showOnlyUnpaid;
+    private string $startDate;
 
     /**
      * Export constructor.
@@ -35,28 +35,29 @@ class Export
     public function __construct(string $destination)
     {
         // @formatter:off
-        $this->biller                = null;
-        $this->biller_id             = null;
-        $this->customer              = null;
-        $this->customer_id           = null;
-        $this->destination           = $destination;
-        $this->do_not_filter_by_date = "no";
-        $this->end_date              = "";
-        $this->file_name             = "";
-        $this->file_type             = "";
-        $this->format                = "";
-        $this->id                    = null;
-        $this->invoice               = null;
-        $this->module                = "";
-        $this->preference            = null;
-        $this->show_only_unpaid      = "no";
-        $this->start_date            = "";
+        $this->biller            = [];
+        $this->billerId          = 0;
+        $this->customer          = [];
+        $this->customerId        = 0;
+        $this->destination       = $destination;
+        $this->doNotFilterByDate = "no";
+        $this->endDate           = "";
+        $this->fileName          = "";
+        $this->fileType          = "";
+        $this->format            = "";
+        $this->recId                = 0;
+        $this->invoice           = [];
+        $this->module            = "";
+        $this->preference        = [];
+        $this->showOnlyUnpaid    = "no";
+        $this->startDate         = "";
         // @formatter:on
     }
 
     /**
-     * @param $data
-     * @return string/null String returned if PDF for Destination::STRING_RETURN, otherwise null;
+     * @param mixed $data
+     * @return string|null String returned if PDF for Destination::STRING_RETURN, otherwise null;
+     * @throws PdoDbException
      */
     private function showData($data)
     {
@@ -68,22 +69,23 @@ class Export
             return null;
         }
 
-        if ($this->file_name == '' && $this->module == 'payment') {
-            $this->file_name = 'payment' . $this->id;
+        if (empty($this->fileName) && $this->module == 'payment') {
+            $this->fileName = 'payment' . $this->recId;
         }
 
         // @formatter:off
         Log::out("Export::showData() - format[{$this->format}]", Zend_Log::DEBUG);
         switch ($this->format) {
             case "print":
-                echo ($data);
+                echo $data;
                 break;
 
             case "pdf":
-                return Pdf::generate($data, $this->file_name, $this->destination);
+                return Pdf::generate($data, $this->fileName, $this->destination);
 
             case "file":
-                $invoice    = Invoice::getOne($this->id);
+            default:
+                $invoice    = Invoice::getOne($this->recId);
                 $preference = Preferences::getOne($invoice['preference_id']);
 
                 // xls/doc export no longer uses the export template $template = "export";
@@ -93,23 +95,23 @@ class Export
                 switch ($this->module) {
                     case "statement":
                         header('Content-Disposition: attachment; filename="statement.' .
-                               addslashes($this->file_type) . '"');
+                               addslashes($this->fileType) . '"');
                         break;
 
                     case "payment":
                         header('Content-Disposition: attachment; filename="payment' .
-                               addslashes($this->id . '.' . $this->file_type) . '"');
+                               addslashes($this->recId . '.' . $this->fileType) . '"');
                         break;
 
                     default:
-                        $filename = addslashes($preference['pref_inv_heading'] . '_' . $invoice['index_id'] . '.' . $this->file_type);
+                        $filename = addslashes($preference['pref_inv_heading'] . '_' . $invoice['index_id'] . '.' . $this->fileType);
                         header('Content-Disposition: attachment; filename="' . $filename . '"');
                         break;
                 }
 
                 header("Pragma: no-cache");
                 header("Expires: 0");
-                echo ($data);
+                echo $data;
                 break;
         }
         // @formatter:on
@@ -117,31 +119,38 @@ class Export
     }
 
     /**
-     * @return null|string
+     * Get the data to report for the module to report.
+     * @return string
      */
-    private function getData()
+    private function getData(): string
     {
         global $config, $smarty, $pdoDb, $siUrl;
+
         Log::out("Export::getData() module:[{$this->module}]", Zend_Log::DEBUG);
 
         // @formatter:off
-        $data = null;
+        $data = "";
         switch ($this->module) {
             case "statement":
                 try {
-                    if ($this->do_not_filter_by_date != "yes" && !empty($this->start_date) && !empty($this->end_date)) {
-                        $pdoDb->setHavings(Invoice::buildHavings("date_between", array($this->start_date, $this->end_date)));
+                    if ($this->doNotFilterByDate != "yes" && !empty($this->startDate) && !empty($this->endDate)) {
+                        $pdoDb->setHavings(Invoice::buildHavings("date_between", [$this->startDate, $this->endDate]));
                     }
 
-                    if ($this->show_only_unpaid == "yes") {
+                    if ($this->showOnlyUnpaid == "yes") {
                         $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
                     }
 
-                    if (!empty($this->biller_id)  ) $pdoDb->addSimpleWhere("biller_id"  , $this->biller_id  , "AND");
-                    if (!empty($this->customer_id)) $pdoDb->addSimpleWhere("customer_id", $this->customer_id, "AND");
+                    if (!empty($this->billerId)  ) {
+                        $pdoDb->addSimpleWhere("biller_id"  , $this->billerId  , "AND");
+                    }
+
+                    if (!empty($this->customerId)) {
+                        $pdoDb->addSimpleWhere("customer_id", $this->customerId, "AND");
+                    }
 
                     $invoices  = Invoice::getAll("date", "desc");
-                    $statement = array("total" => 0, "owing" => 0, "paid" => 0);
+                    $statement = ["total" => 0, "owing" => 0, "paid" => 0];
                     foreach ( $invoices as $row ) {
                         if ($row ['status'] > 0) {
                             $statement ['total'] += $row ['total'];
@@ -151,52 +160,56 @@ class Export
                     }
 
                     $templatePath     = "templates/default/statement/index.tpl";
-                    $biller_details   = Biller::getOne($this->biller_id);
-                    $billers          = $biller_details;
-                    $customer_details = Customer::getOne($this->customer_id);
-                    if (empty($this->file_name)) {
-                        $pdf_file_name = 'statement';
-                        if (!empty($this->biller_id)  ) $pdf_file_name .= '_' . $this->biller_id;
-                        if (!empty($this->customer_id)) $pdf_file_name .= '_' . $this->customer_id;
-                        if ($this->do_not_filter_by_date != "yes") {
-                            if (!empty($this->start_date) && !empty($this->end_date)) {
-                                $pdf_file_name .= '_' . $this->start_date;
-                                $pdf_file_name .= '_' . $this->end_date;
+                    $billerDetails   = Biller::getOne($this->billerId);
+                    $billers          = $billerDetails;
+                    $customerDetails = Customer::getOne($this->customerId);
+                    if (empty($this->fileName)) {
+                        $pdfFileName = 'statement';
+                        if (!empty($this->billerId)  ) {
+                            $pdfFileName .= '_' . $this->billerId;
+                        }
+                        if (!empty($this->customerId)) {
+                            $pdfFileName .= '_' . $this->customerId;
+                        }
+                        if ($this->doNotFilterByDate != "yes") {
+                            if (!empty($this->startDate) && !empty($this->endDate)) {
+                                $pdfFileName .= '_' . $this->startDate;
+                                $pdfFileName .= '_' . $this->endDate;
                             }
                         }
-                        $this->file_name = $pdf_file_name;
+                        $this->fileName = $pdfFileName;
                     }
 
-                    $smarty->assign('biller_id'            , $this->biller_id);
-                    $smarty->assign('biller_details'       , $biller_details);
+                    $smarty->assign('biller_id'            , $this->billerId);
+                    $smarty->assign('biller_details'       , $billerDetails);
                     $smarty->assign('billers'              , $billers);
-                    $smarty->assign('customer_id'          , $this->customer_id);
-                    $smarty->assign('customer_details'     , $customer_details);
-                    $smarty->assign('show_only_unpaid'     , $this->show_only_unpaid);
-                    $smarty->assign('do_not_filter_by_date', $this->do_not_filter_by_date);
+                    $smarty->assign('customer_id'          , $this->customerId);
+                    $smarty->assign('customer_details'     , $customerDetails);
+                    $smarty->assign('show_only_unpaid'     , $this->showOnlyUnpaid);
+                    $smarty->assign('do_not_filter_by_date', $this->doNotFilterByDate);
                     $smarty->assign('invoices'             , $invoices);
-                    $smarty->assign('start_date'           , $this->start_date);
-                    $smarty->assign('end_date'             , $this->end_date);
+                    $smarty->assign('start_date'           , $this->startDate);
+                    $smarty->assign('end_date'             , $this->endDate);
                     $smarty->assign('statement'            , $statement);
                     $smarty->assign('menu'                 , false);
                     $data = $smarty->fetch($templatePath);
-                } catch (Exception $e) {
-                    error_log("Export::getData() - statement - error: " . $e->getMessage());
+                } catch (Exception $exp) {
+                    error_log("Export::getData() - statement - error: " . $exp->getMessage());
                 }
                 break;
 
             case "payment":
                 try {
-                    $payment = Payment::getOne($this->id);
+                    $payment = Payment::getOne($this->recId);
 
                     // Get Invoice preference to link from this screen back to the invoice
                     $invoice = Invoice::getOne($payment['ac_inv_id']);
-                    $biller  = Biller::getOne($payment['biller_id']);
+                    $biller  = Biller::getOne($payment['billerId']);
 
                     $logo = Util::getLogo($biller);
                     $logo = str_replace(" ", "%20", trim($logo));
 
-                    $customer          = Customer::getOne($payment['customer_id']);
+                    $customer          = Customer::getOne($payment['customerId']);
                     $invoiceType       = Invoice::getInvoiceType($invoice['type_id']);
                     $customFieldLabels = CustomFields::getLabels(true);
                     $paymentType       = PaymentType::getOne($payment['ac_payment_type']);
@@ -219,26 +232,32 @@ class Export
 
                     $templatePath = "templates/default/payments/print.tpl";
                     $data = $smarty->fetch($templatePath);
-                } catch (\Exception $e) {
-                    error_log("Export::getData() - payment - error: " . $e->getMessage());
+                } catch (Exception $exp) {
+                    error_log("Export::getData() - payment - error: " . $exp->getMessage());
                 }
                 break;
 
             case "invoice":
                 try {
                     if (empty($this->invoice)) {
-                        $this->invoice = Invoice::getOne($this->id);
+                        $this->invoice = Invoice::getOne($this->recId);
                     }
 
-                    $this->file_name = str_replace(" ", "_", $this->invoice['index_name']);
-                    Log::out("Export::getData() - file_name[$this->file_name]");
+                    $this->fileName = str_replace(" ", "_", $this->invoice['index_name']);
+                    Log::out("Export::getData() - file_name[$this->fileName]");
 
-                    $invoice_number_of_taxes = Invoice::numberOfTaxesForInvoice($this->id);
-                    $invoiceItems = Invoice::getInvoiceItems($this->id);
+                    $invoiceNumberOfTaxes = Invoice::numberOfTaxesForInvoice($this->recId);
+                    $invoiceItems = Invoice::getInvoiceItems($this->recId);
 
-                    if (!isset($this->customer)) $this->customer = Customer::getOne($this->invoice['customer_id']);
-                    if (!isset($this->biller)) $this->biller = Biller::getOne($this->invoice['biller_id']);
-                    if (!isset($this->preference)) $this->preference = Preferences::getOne($this->invoice['preference_id']);
+                    if (empty($this->customer)) {
+                        $this->customer = Customer::getOne($this->invoice['customer_id']);
+                    }
+                    if (empty($this->biller)) {
+                        $this->biller = Biller::getOne($this->invoice['biller_id']);
+                    }
+                    if (empty($this->preference)) {
+                        $this->preference = Preferences::getOne($this->invoice['preference_id']);
+                    }
 
                     $defaults = SystemDefaults::loadValues();
 
@@ -248,52 +267,54 @@ class Export
 
                     $customFieldLabels = CustomFields::getLabels(true);
 
-                    $past_due_date = (date("Y-m-d", strtotime('-30 days')) . ' 00:00:00');
-                    $past_due_amt  = CustomersPastDue::getCustomerPastDue($this->invoice['customer_id'], $past_due_date, $this->id);
+                    $pastDueDate = date("Y-m-d", strtotime('-30 days')) . ' 00:00:00';
+                    $pastDueAmt  = CustomersPastDue::getCustomerPastDue($this->invoice['customer_id'], $pastDueDate, $this->recId);
 
                     // Set the template to the default
                     $template = $defaults['template'];
 
                     $templatePath  = "templates/invoices/{$template}/template.tpl";
-                    $template_path = "templates/invoices/{$template}";
+                    $templateDir = "templates/invoices/{$template}";
                     $css           = $siUrl . "templates/invoices/{$template}/style.css";
 
                     $pageActive = "invoices";
                     $smarty->assign('pageActive', $pageActive);
 
-                    $orig_locale = $this->assignTemplateLanguage($this->preference);
+                    $origLocale = $this->assignTemplateLanguage($this->preference);
 
                     $smarty->assign('biller'                 , $this->biller);
                     $smarty->assign('customer'               , $this->customer);
                     $smarty->assign('invoice'                , $this->invoice);
-                    $smarty->assign('invoice_number_of_taxes', $invoice_number_of_taxes);
+                    $smarty->assign('invoice_number_of_taxes', $invoiceNumberOfTaxes);
                     $smarty->assign('preference'             , $this->preference);
                     $smarty->assign('logo'                   , $logo);
                     $smarty->assign('template'               , $template);
                     $smarty->assign('invoiceItems'           , $invoiceItems);
-                    $smarty->assign('template_path'          , $template_path);
+                    $smarty->assign('template_path'          , $templateDir);
                     $smarty->assign('css'                    , $css);
                     $smarty->assign('customFieldLabels'      , $customFieldLabels);
-                    $smarty->assign('past_due_amt'           , $past_due_amt);
+                    $smarty->assign('past_due_amt'           , $pastDueAmt);
 
                     // Plugins specifically associated with your invoice template.
-                    $template_plugins_dir = "templates/invoices/${template}/plugins/";
-                    if (is_dir($template_plugins_dir)) {
-                        $plugins_dirs = $smarty->getPluginsDir();
-                        if (!is_array($plugins_dirs)) $plugins_dirs = array($plugins_dirs);
-                        $plugins_dirs[] = $template_plugins_dir;
-                        $smarty->setPluginsDir($plugins_dirs);
+                    $templatePluginsDir = "templates/invoices/${template}/plugins/";
+                    if (is_dir($templatePluginsDir)) {
+                        $pluginsDirs = $smarty->getPluginsDir();
+                        if (!is_array($pluginsDirs)) {
+                            $pluginsDirs = [$pluginsDirs];
+                        }
+                        $pluginsDirs[] = $templatePluginsDir;
+                        $smarty->setPluginsDir($pluginsDirs);
                     }
                     Log::out("Export::getData() - templatePath[$templatePath]", Zend_Log::DEBUG);
 
                     $data = $smarty->fetch($templatePath);
 
                     // Restore configured locale
-                    if (!empty($orig_locale)) {
-                        $config->local->locale = $orig_locale;
+                    if (!empty($origLocale)) {
+                        $config->local->locale = $origLocale;
                     }
-                } catch (\Exception $e) {
-                    error_log("Export::getData() - invoice - error: " . $e->getMessage());
+                } catch (Exception $exp) {
+                    error_log("Export::getData() - invoice - error: " . $exp->getMessage());
                 }
                 break;
 
@@ -308,7 +329,8 @@ class Export
 
     /**
      * Execute the request by getting the data and the showing it.
-     * @return string/null String returned if PDF for Destination::STRING_RETURN, otherwise null;
+     * @return string|null String returned if PDF for Destination::STRING_RETURN, otherwise null;
+     * @throws PdoDbException
      */
     public function execute()
     {
@@ -317,17 +339,17 @@ class Export
 
     /**
      * Assign the language and set the locale from the preference
-     * @param $preference
-     * @return mixed
+     * @param array $preference
+     * @return string
      */
-    private function assignTemplateLanguage($preference)
+    private function assignTemplateLanguage(array $preference): string
     {
         global $config;
 
         // get and assign the language file from the preference table
-        $pref_language = $preference['language'];
-        if (!empty($pref_language)) {
-            $LANG = getLanguageArray($pref_language);
+        $prefLanguage = $preference['language'];
+        if (!empty($prefLanguage)) {
+            $LANG = getLanguageArray($prefLanguage);
             if (isset($LANG) && is_array($LANG) && count($LANG) > 0) {
                 global $smarty;
                 $smarty->assign('LANG', $LANG);
@@ -335,12 +357,12 @@ class Export
         }
 
         // Override config's locale with the one assigned from the preference table
-        $orig_locale = $config->local->locale;
-        $pref_locale = $preference['locale'];
-        if (isset($pref_language) && strlen($pref_locale) > 4) {
-            $config->local->locale = $pref_locale;
+        $origLocale = $config->local->locale;
+        $prefLocale = $preference['locale'];
+        if (isset($prefLanguage) && strlen($prefLocale) > 4) {
+            $config->local->locale = $prefLocale;
         }
-        return $orig_locale;
+        return $origLocale;
     }
 
     /**
@@ -351,252 +373,159 @@ class Export
         return $this->biller;
     }
 
-    /**
-     * @param null $biller
-     */
-    public function setBiller($biller): void
+    public function setBiller(array $biller): void
     {
         $this->biller = $biller;
     }
 
-    /**
-     * @return null
-     */
-    public function getBillerId()
+    public function getBillerId(): int
     {
-        return $this->biller_id;
+        return $this->billerId;
     }
 
-    /**
-     * @param null $biller_id
-     */
-    public function setBillerId($biller_id): void
+    public function setBillerId(int $billerId): void
     {
-        $this->biller_id = $biller_id;
+        $this->billerId = $billerId;
     }
 
-    /**
-     * @return null
-     */
-    public function getCustomer()
+    public function getCustomer(): array
     {
         return $this->customer;
     }
 
-    /**
-     * @param null $customer
-     */
-    public function setCustomer($customer): void
+    public function setCustomer(array $customer): void
     {
         $this->customer = $customer;
     }
 
-    /**
-     * @return null
-     */
-    public function getCustomerId()
+    public function getCustomerId(): int
     {
-        return $this->customer_id;
+        return $this->customerId;
     }
 
-    /**
-     * @param null $customer_id
-     */
-    public function setCustomerId($customer_id): void
+    public function setCustomerId(int $customerId): void
     {
-        $this->customer_id = $customer_id;
+        $this->customerId = $customerId;
     }
 
-    /**
-     * @return string
-     */
     public function getDestination(): string
     {
         return $this->destination;
     }
 
-    /**
-     * @param string $destination
-     */
     public function setDestination(string $destination): void
     {
         $this->destination = $destination;
     }
 
-    /**
-     * @return string
-     */
     public function getDoNotFilterByDate(): string
     {
-        return $this->do_not_filter_by_date;
+        return $this->doNotFilterByDate;
     }
 
-    /**
-     * @param string $do_not_filter_by_date
-     */
-    public function setDoNotFilterByDate(string $do_not_filter_by_date): void
+    public function setDoNotFilterByDate(string $doNotFilterByDate): void
     {
-        $this->do_not_filter_by_date = $do_not_filter_by_date;
+        $this->doNotFilterByDate = $doNotFilterByDate;
     }
 
-    /**
-     * @return string
-     */
     public function getEndDate(): string
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    /**
-     * @param string $end_date
-     */
-    public function setEndDate(string $end_date): void
+    public function setEndDate(string $endDate): void
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
     }
 
-    /**
-     * @return string
-     */
     public function getFileName(): string
     {
-        return $this->file_name;
+        return $this->fileName;
     }
 
-    /**
-     * @param string $file_name
-     */
-    public function setFileName(string $file_name): void
+    public function setFileName(string $fileName): void
     {
-        $this->file_name = $file_name;
+        $this->fileName = $fileName;
     }
 
-    /**
-     * @return string
-     */
     public function getFileType(): string
     {
-        return $this->file_type;
+        return $this->fileType;
     }
 
-    /**
-     * @param string $file_type
-     */
-    public function setFileType(string $file_type): void
+    public function setFileType(string $fileType): void
     {
-        $this->file_type = $file_type;
+        $this->fileType = $fileType;
     }
 
-    /**
-     * @return string
-     */
     public function getFormat(): string
     {
         return $this->format;
     }
 
-    /**
-     * @param string $format
-     */
     public function setFormat(string $format): void
     {
         $this->format = $format;
     }
 
-    /**
-     * @return null
-     */
-    public function getId()
+    public function geRecId(): int
     {
-        return $this->id;
+        return $this->recId;
     }
 
-    /**
-     * @param null $id
-     */
-    public function setId($id): void
+    public function setRecId(int $recId): void
     {
-        $this->id = $id;
+        $this->recId = $recId;
     }
 
-    /**
-     * @return null
-     */
-    public function getInvoice()
+    public function getInvoice(): array
     {
         return $this->invoice;
     }
 
-    /**
-     * @param null $invoice
-     */
-    public function setInvoice($invoice): void
+    public function setInvoice(array $invoice): void
     {
         $this->invoice = $invoice;
     }
 
-    /**
-     * @return string
-     */
     public function getModule(): string
     {
         return $this->module;
     }
 
-    /**
-     * @param string $module
-     */
     public function setModule(string $module): void
     {
         $this->module = $module;
     }
 
-    /**
-     * @return null
-     */
-    public function getPreference()
+    public function getPreference(): array
     {
         return $this->preference;
     }
 
-    /**
-     * @param null $preference
-     */
-    public function setPreference($preference): void
+    public function setPreference(array $preference): void
     {
         $this->preference = $preference;
     }
 
-    /**
-     * @return string
-     */
     public function getShowOnlyUnpaid(): string
     {
-        return $this->show_only_unpaid;
+        return $this->showOnlyUnpaid;
     }
 
-    /**
-     * @param string $show_only_unpaid
-     */
-    public function setShowOnlyUnpaid(string $show_only_unpaid): void
+    public function setShowOnlyUnpaid(string $showOnlyUnpaid): void
     {
-        $this->show_only_unpaid = $show_only_unpaid;
+        $this->showOnlyUnpaid = $showOnlyUnpaid;
     }
 
-    /**
-     * @return string
-     */
     public function getStartDate(): string
     {
-        return $this->start_date;
+        return $this->startDate;
     }
 
-    /**
-     * @param string $start_date
-     */
-    public function setStartDate(string $start_date): void
+    public function setStartDate(string $startDate): void
     {
-        $this->start_date = $start_date;
+        $this->startDate = $startDate;
     }
 
 }

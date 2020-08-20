@@ -1,11 +1,15 @@
 <?php
+
 namespace Inc\Claz;
+
+use Exception;
 
 /**
  * General functions class
  * @author Rich Rowley
  */
-class Funcs {
+class Funcs
+{
     /**
      * Break the <b>menu.tpl</b> into sections.
      * @param string $menutpl <b>menu.tpl</b> file contents.
@@ -14,28 +18,27 @@ class Funcs {
      *        Ex: <i>&lt;!-- SECTION:tax_rates&gt;</i> makes <b>tax_rates</b> the <i>key</i> and the <i>values</i> is the
      *            offset in the <b>$lines</b> array for the <b>tax_rates</b> section.
      */
-    public static function menuSections($menutpl, &$lines, &$sections) {
-        $divs = preg_split ('/(< *div *id=|< *div *class=)/', $menutpl, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        $i = 0;
-        $sections = array ();
-        $lines = array ();
+    public static function menuSections(string $menutpl, array &$lines, array &$sections): void
+    {
+        $divs = preg_split('/(< *div *id=|< *div *class=)/', $menutpl, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $idx = 0;
+        $sections = [];
+        $lines = [];
         foreach ($divs as $dsec) {
-            $parts = preg_split ('/(<!-- *SECTION:)/', $dsec, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-            $hit_section = false;
+            $parts = preg_split('/(<!-- *SECTION:)/', $dsec, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+            $hitSection = false;
             foreach ($parts as $part) {
-                if ($hit_section) {
-                    $sects = preg_split ('/ *-->/', $part, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-                    $sections[$sects[0]] = $i;
-                    $hit_section = false;
+                if ($hitSection) {
+                    $sects = preg_split('/ *-->/', $part, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+                    $sections[$sects[0]] = $idx;
+                    $hitSection = false;
                     $lines[] = $sects[1];
-                    $i++;
+                    $idx++;
+                } elseif (preg_match('/^<!-- *SECTION:/', $part)) {
+                    $hitSection = true;
                 } else {
-                    if (preg_match ('/^<!-- *SECTION:/', $part)) {
-                        $hit_section = true;
-                    } else {
-                        $lines[] = $part;
-                        $i++;
-                    }
+                    $lines[] = $part;
+                    $idx++;
                 }
             }
         }
@@ -43,30 +46,34 @@ class Funcs {
 
     /**
      * Merge extension sections with the main <b>menu.tpl<b> file.
-     * @param array $ext_names Extension names.
+     * @param array $extNames Extension names.
      * @param array $lines Lines from <b>menu.tpl</b> broken by <i>&lt;!-- SECTION:</i> tag.
      * @param array $sections Associative array with the index of each <i>&lt;!-- SECTION:</i> tag name.
      * @return string <b>menu.tpl</b> file content with active extension menus merged.
      */
-    public static function mergeMenuSections($ext_names, $lines, $sections) {
+    public static function mergeMenuSections(array $extNames, array $lines, array $sections): string
+    {
         global $smarty;
 
         try {
-            foreach ($ext_names as $ext_name) {
-                if (file_exists("extensions/$ext_name/templates/default/menu.tpl")) {
-                    $menu_extension = $smarty->fetch("extensions/$ext_name/templates/default/menu.tpl");
-                    $ext_sects = preg_split('/<!\-\- BEFORE:/', $menu_extension, -1, PREG_SPLIT_NO_EMPTY);
-                    foreach ($ext_sects as $sect) {
-                        $parts = preg_split('/ *-->/', $sect);
-                        $sec_ndx = trim($parts[0]);
-                        $pieces = preg_split('/^ *-->/', $parts[1]);
-                        $ndx = $sections[$sec_ndx];
+            foreach ($extNames as $extName) {
+                if (file_exists("extensions/$extName/templates/default/menu.tpl")) {
+                    $menuExtension = $smarty->fetch("extensions/$extName/templates/default/menu.tpl");
+                    $pattern = '/<!\-\- BEFORE:/';
+                    $extSects = preg_split($pattern, $menuExtension, -1, PREG_SPLIT_NO_EMPTY);
+                    foreach ($extSects as $sect) {
+                        $pattern = '/ *-->/';
+                        $parts = preg_split($pattern, $sect);
+                        $secNdx = trim($parts[0]);
+                        $pattern = '/^ *-->/';
+                        $pieces = preg_split($pattern, $parts[1]);
+                        $ndx = $sections[$secNdx];
                         $lines[$ndx] = $pieces[0] . $lines[$ndx];
                     }
                 }
             }
-        } catch (\Exception $e) {
-            error_log("Funcs::mergeMenuSections() - Error: " . $e->getMessage());
+        } catch (Exception $exp) {
+            error_log("Funcs::mergeMenuSections() - Error: " . $exp->getMessage());
         }
         $menutpl = "";
         foreach ($lines as $line) {

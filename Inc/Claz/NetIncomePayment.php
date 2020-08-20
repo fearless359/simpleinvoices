@@ -7,24 +7,24 @@ namespace Inc\Claz;
  */
 class NetIncomePayment
 {
-    public $amount;
-    public $cflags;
-    public $date;
+    public float $amount;
+    public array $cflags;
+    public string $date;
 
     /**
      * NetIncomePayment constructor.
-     * @param $amount
-     * @param $date
-     * @param null $cflags
+     * @param float $amount
+     * @param string $date
+     * @param string $cflags
      */
-    public function __construct($amount, $date, $cflags = null)
+    public function __construct(float $amount, string $date, string $cflags = "")
     {
         $this->amount = $amount;
         $this->date = $date;
-        $this->cflags = array();
-        if (isset($cflags)) {
-            for ($i = 0; $i < 10; $i++) {
-                $this->cflags[$i] = substr($cflags, $i, 1);
+        $this->cflags = [];
+        if (!empty($cflags)) {
+            for ($idx = 0; $idx < 10; $idx++) {
+                $this->cflags[$idx] = substr($cflags, $idx, 1);
             }
         }
     }

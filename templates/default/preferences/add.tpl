@@ -12,7 +12,7 @@
 			<th>{$LANG.description} 
 				<a class="cluetip" href="#" title="{$LANG.required_field}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_description">
-				  <img src="{$help_image_path}required-small.png" alt="" />
+				  <img src="{$helpImagePath}required-small.png" alt="" />
 				</a>	
 			</th>
 			<td>
@@ -23,7 +23,7 @@
 			<th>{$LANG.currency_sign} 
 				<a class="cluetip" href="#" title="{$LANG.currency_sign}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_currency_sign">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -31,7 +31,7 @@
 				<a class="cluetip" href="#" title="{$LANG.currency_sign}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_currency_sign">
 					{$LANG.currency_sign_non_dollar}
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</td>
 		</tr>
@@ -39,7 +39,7 @@
 			<th>{$LANG.currency_code} 
 				<a class="cluetip" href="#" title="{$LANG.currency_code}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_currency_code">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -50,7 +50,7 @@
 			<th>{$LANG.invoice_heading} 
 				<a class="cluetip" href="#" title="{$LANG.invoice_heading}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_heading">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -61,7 +61,7 @@
 			<th>{$LANG.invoice_wording}
 				<a class="cluetip" href="#" title="{$LANG.invoice_wording}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_wording">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -72,7 +72,7 @@
 			<th>{$LANG.invoice_detail_heading}
 				<a class="cluetip" href="#" title="{$LANG.invoice_detail_heading}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_heading">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -83,7 +83,7 @@
 			<th>{$LANG.invoice_detail_line}
 				<a class="cluetip" href="#" title="{$LANG.invoice_detail_line}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_line">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			</td>
@@ -95,7 +95,7 @@
 			<th>{$LANG.include_online_payment}
 				<a class="cluetip" href="#" title="{$LANG.invoice_detail_line}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_line">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -108,7 +108,7 @@
 			<th>{$LANG.invoice_payment_method}
 				<a class="cluetip" href="#" title="{$LANG.invoice_payment_method}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_payment_method">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -119,7 +119,7 @@
 			<th>{$LANG.invoice_payment_line_1_name}
 				<a class="cluetip" href="#" title="{$LANG.invoice_payment_line_1_name}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line1_name">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -130,7 +130,7 @@
 			<th>{$LANG.invoice_payment_line_1_value}
 				<a class="cluetip" href="#" title="{$LANG.invoice_payment_line_1_value}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line1_value">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -141,7 +141,7 @@
 			<th>{$LANG.invoice_payment_line_2_name}
 				<a class="cluetip" href="#" title="{$LANG.invoice_payment_line_2_name}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line2_name">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -152,7 +152,7 @@
 			<th>{$LANG.invoice_payment_line_2_value}
 				<a class="cluetip" href="#" title="{$LANG.invoice_payment_line_2_value}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line2_value">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -163,7 +163,7 @@
 			<th>{$LANG.status}
 				<a class="cluetip" href="#" title="{$LANG.status}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_status">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -177,7 +177,7 @@
 			<th>{$LANG.invoice_numbering_group} 
 				<a class="cluetip" href="#" title="{$LANG.invoice_numbering_group}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_numbering_group">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td >
@@ -198,7 +198,7 @@
 			<th>{$LANG.set_aging}
 				<a class="cluetip" href="#" title="{$LANG.set_enabled}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_set_aging">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>
@@ -212,7 +212,7 @@
 			<th>{$LANG.locale} 
 				<a class="cluetip" href="#" title="{$LANG.locale}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_locale">
-				<img src="{$help_image_path}help-small.png" alt="" /></a>
+				<img src="{$helpImagePath}help-small.png" alt="" /></a>
 			</th>
 			<td >
 				<select name="locale">
@@ -226,7 +226,7 @@
 			<th>{$LANG.enabled}
 				<a class="cluetip" href="#" title="{$LANG.enabled}"
 				   rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_enabled">
-					<img src="{$help_image_path}help-small.png" alt="" />
+					<img src="{$helpImagePath}help-small.png" alt="" />
 				</a>
 			</th>
 			<td>

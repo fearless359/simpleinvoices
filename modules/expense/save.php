@@ -34,7 +34,7 @@ if (!$error) {
         if (Expense::insert()) {
             $display_block = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
         }
-    } else if ($op === 'edit') {
+    } elseif ($op === 'edit') {
         if (Expense::update()) {
             $display_block = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
         }

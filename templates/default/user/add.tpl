@@ -29,12 +29,12 @@
                         <a class="cluetip" href="#" tabindex="910"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_username"
                            title="{$LANG.username}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
+                            <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td>
                         <input type="text" name="username" size="35" id="username" tabindex="10"
-                               pattern="{$username_pattern}" title="See help for details."
+                               pattern="{$usernamePattern}" title="See help for details."
                                autocomplete="off" class="validate[required]" autofocus />
                     </td>
                 </tr>
@@ -43,7 +43,7 @@
                         <a class="cluetip" href="#" tabindex="920"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_new_password"
                            title="{$LANG.new_password}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
+                            <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td><input type="password" name="password" size="20" pattern="{$pwd_pattern}"
@@ -56,7 +56,7 @@
                         <a class="cluetip" href="#" tabindex="930"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_confirm_password"
                            title="{$LANG.confirm_password}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
+                            <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td><input type="password" name="confirm_password" size="20" tabindex="30"
@@ -68,7 +68,7 @@
                         <a class="cluetip" href="#" tabindex="940"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_email_address"
                            title="{$LANG.required_field}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
+                            <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td>

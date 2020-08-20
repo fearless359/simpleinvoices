@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -6,66 +7,57 @@ namespace Inc\Claz;
  * @author Rich
  * Apr 28, 2016
  */
-class Requests {
-    /**
-     * @var PdoDb
-     */
-    private $pdoDb;
-    private $requests;
-    private $addIds;
+class Requests
+{
+    private PdoDb $pdoDb;
+    private array $requests;
+    private array $addIds;
 
     /**
      * Class constructor.
      * Opens database and initializes class properties.
      * @throws PdoDbException
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->pdoDb = new PdoDb(new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX));
         $this->reset();
     }
 
     /**
-     * Class destructor
-     */
-    public function __destruct() {
-        $this->pdoDb = null;
-    }
-
-    /**
      * Reset class properties.
      */
-    public function reset() {
-        $this->requests = array();
-        $this->addIds = array();
-        try {
-            $this->pdoDb->clearAll(true);
-        } catch (PdoDbException $pde) {
-            error_log("Requests::reset() - Error: " . $pde->getMessage());
-        }
+    public function reset(): void
+    {
+        $this->requests = [];
+        $this->addIds = [];
+        $this->pdoDb->clearAll(true);
     }
 
     /**
      * Turn database debug on.
      */
-    public function debugOn() {
+    public function debugOn(): void
+    {
         $this->pdoDb->debugOn();
     }
 
     /**
      * Turn database debug off.
      */
-    public function debugOff() {
+    public function debugOff(): void
+    {
         $this->pdoDb->debugOff();
     }
 
     /**
      * Add a <b>Request</b> to be processed.
      * @param Request $request
-     * @return integer Number of request. Keep for retrieval of the
-     *         record ID automatically assigned to new records assuming
-     *         the table the record was added to has an auto assign field.
+     * @return int Number of request. Keep for retrieval of the record ID automatically assigned
+     *             to new records assuming the table the record was added to has an auto assign field.
      */
-    public function add(Request $request) {
+    public function add(Request $request): int
+    {
         $this->requests[] = $request;
         return count($this->requests);
     }
@@ -77,36 +69,37 @@ class Requests {
      *       success will all changes be applied.
      * @throws PdoDbException If an error occurs while processing requests.
      */
-    public function process() {
-            $idx = 0;
-            $this->pdoDb->begin();
-            /**
-             * @var Request $request
-             */
-            foreach ($this->requests as $request) {
-                try {
-                    $result = $request->performRequest($this->pdoDb);
-                    if ($request->isAdd()) {
-                        $this->addIds[$idx] = $result;
-                    }
-                    $idx++;
-                } catch (PdoDbException $pde) {
-                    $this->pdoDb->rollback();
-                    $str = "Requests process(): " . $request->describe() . ". Error: " . $pde->getMessage();
-                    error_log($str);
-                    throw new PdoDbException($str);
+    public function process(): void
+    {
+        $idx = 0;
+        $this->pdoDb->begin();
+        foreach ($this->requests as $request) {
+            try {
+                $result = $request->performRequest($this->pdoDb);
+                if ($request->isAdd()) {
+                    $this->addIds[$idx] = $result;
                 }
+                $idx++;
+            } catch (PdoDbException $pde) {
+                $this->pdoDb->rollback();
+                $str = "Requests process(): " . $request->describe() . ". Error: " . $pde->getMessage();
+                error_log($str);
+                throw new PdoDbException($str);
             }
-            $this->pdoDb->commit();
+        }
+        $this->pdoDb->commit();
     }
 
     /**
      * Get the ID value assigned to a new record.
-     * @param integer $idx Number of the request to get the ID associated with it.
-     * @return integer ID assigned or 0 if no ID exists.
+     * @param int $idx Number of the request to get the ID associated with it.
+     * @return int ID assigned or 0 if no ID exists.
      */
-    public function getAddId($idx) {
-        if (array_key_exists($idx, $this->addIds)) return $this->addIds[$idx];
+    public function getAddId(int $idx): int
+    {
+        if (array_key_exists($idx, $this->addIds)) {
+            return $this->addIds[$idx];
+        }
         return 0;
     }
 }

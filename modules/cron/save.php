@@ -32,11 +32,11 @@ if ( $op === 'add') {
     if (!empty(Cron::insert())) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_cron_success']}</div>";
     }
-} else if ($op === 'edit') {
+} elseif ($op === 'edit') {
     if (Cron::update($_GET['id'])) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_cron_success']}</div>";
     }
-} else if ($op === 'delete') {
+} elseif ($op === 'delete') {
     if (Cron::delete($_GET['id'])) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['cron_delete_success']}</div>";
     } else {

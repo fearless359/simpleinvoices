@@ -1,7 +1,9 @@
 <?php
+
 namespace Inc\Claz;
 
 use Zend_Config;
+use Zend_Config_Ini;
 
 /**
  * @name Extensions.php
@@ -21,16 +23,18 @@ class Extensions
      * @param int $id for extension record to retrieve.
      * @return array of selected rows
      */
-    public static function getOne($id) {
-        return self::getExtenstions($id);
+    public static function getOne(int $id): array
+    {
+        return self::getExtensions($id);
     }
 
     /**
      * Get all rows from the extensions table.
      * @return array rows selected.
      */
-    public static function getAll() {
-        return self::getExtenstions();
+    public static function getAll(): array
+    {
+        return self::getExtensions();
     }
 
     /**
@@ -38,24 +42,26 @@ class Extensions
      *          for extension directories that are not yet registered (not in
      *          the table).
      */
-    public static function getAllWithDirs() {
-        return self::getExtenstions(null, true);
+    public static function getAllWithDirs(): array
+    {
+        return self::getExtensions(null, true);
     }
 
     /**
      * Retrieve requested records from the extensions tables.
-     * @param int $id If not null, id of specified record to retrieve.
+     * @param int|null $id If not null, id of specified record to retrieve.
      * @param bool $include_all_dirs (Defaults to false). If true, the records in the
-     *          table plus psuedo records for extension directories not in the table
+     *          table plus pseudo records for extension directories not in the table
      *          (aka not registered), will be returned.
      * @return array row(s) selected from the extensions table. Note that rows in the
      *          table will have the registered field set to ENABLED whereas pseudo
      *          entries will have the registered field set to DISABLED.
      */
-    private static function getExtenstions($id = null, $include_all_dirs = false) {
+    private static function getExtensions(?int $id = null, bool $include_all_dirs = false): array
+    {
         global $LANG, $pdoDb;
 
-        $extensions = array();
+        $extensions = [];
         try {
             $pdoDb->setOrderBy('name');
             if (isset($id)) {
@@ -65,34 +71,34 @@ class Extensions
             $pdoDb->addToWhere(new WhereItem(false, 'domain_id', '=', DomainId::get(), true));
 
             $ca = new CaseStmt("enabled", "enabled_text");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
-            $pdoDb->setSelectList(array(
+            $pdoDb->setSelectList([
                 'id',
                 'domain_id',
                 'name',
                 'description',
                 'enabled',
                 new DbField(ENABLED, 'registered')
-            ));
+            ]);
 
             $rows = $pdoDb->request('SELECT', 'extensions');
             if ($include_all_dirs) {
                 // Add pseudo rows for extension directories not yet in the tabled (not registered).
-                $extension_dir = 'extensions';
-                $extension_entries = array_diff(scandir($extension_dir), array(".", "..")); // Skip entries starting with a dot from dir list
+                $extensionDir = 'extensions';
+                $extensionEntries = array_diff(scandir($extensionDir), [".", ".."]); // Skip entries starting with a dot from dir list
 
-                $available_extensions = array();
-                foreach ($extension_entries as $entry) {
-                    if (file_exists($extension_dir . "/" . $entry . "/DESCRIPTION")) {
-                        $description = file_get_contents($extension_dir . "/" . $entry . "/DESCRIPTION");
+                $availableExtensions = [];
+                foreach ($extensionEntries as $entry) {
+                    if (file_exists($extensionDir . "/" . $entry . "/DESCRIPTION")) {
+                        $description = file_get_contents($extensionDir . "/" . $entry . "/DESCRIPTION");
                     } else {
-                        $description = "DESCRIPTION not available (in $extension_dir/$entry/)";
+                        $description = "DESCRIPTION not available (in $extensionDir/$entry/)";
                     }
 
-                    $available_extensions[$entry] = array(
+                    $availableExtensions[$entry] = [
                         "id" => 0,
                         "domain_id" => DomainId::get(),
                         "name" => $entry,
@@ -100,29 +106,29 @@ class Extensions
                         "enabled" => DISABLED,
                         "registered" => DISABLED,
                         "enabled_text" => $LANG['disabled']
-                    );
+                    ];
                 }
 
                 // $rows (registered_extensions) have all extensions in the database
-                // $available_extensions have all extensions in the distribution
+                // $availableExtensions have all extensions in the distribution
                 foreach ($rows as $row) {
                     $name = $row['name'];
-                    if (isset($available_extensions[$name])) {
+                    if (isset($availableExtensions[$name])) {
                         // This is a registered row (in the database) so drop from unregistered array
-                        unset($available_extensions[$name]);
+                        unset($availableExtensions[$name]);
                     }
                 }
 
                 // $extensions set to a complete list of the extensions,
                 // with status info (enabled, registered)
-                $rows = array_merge($rows, $available_extensions);
+                $rows = array_merge($rows, $availableExtensions);
 
                 foreach ($rows as $row) {
-                    $ext_row_name = $LANG['extensions'] . " " . $row['name'];
-                    $row['plugin_registered'] = $LANG['plugin_register'] . ' ' . $ext_row_name;
-                    $row['plugin_unregister'] = $LANG['plugin_unregister'] . ' ' . $ext_row_name;
-                    $row['plugin_disable'] = $LANG['disable'] . ' ' . $ext_row_name;
-                    $row['plugin_enable'] = $LANG['enable'] . ' ' . $ext_row_name;
+                    $extRowName = $LANG['extensions'] . " " . $row['name'];
+                    $row['plugin_registered'] = $LANG['plugin_register'] . ' ' . $extRowName;
+                    $row['plugin_unregister'] = $LANG['plugin_unregister'] . ' ' . $extRowName;
+                    $row['plugin_disable'] = $LANG['disable'] . ' ' . $extRowName;
+                    $row['plugin_enable'] = $LANG['enable'] . ' ' . $extRowName;
                     $extensions[] = $row;
                 }
             } else {
@@ -134,30 +140,32 @@ class Extensions
         }
 
         if (empty($extensions)) {
-            return array();
+            return [];
         }
 
-        return (isset($id) ? $extensions[0] : $extensions);
+        return isset($id) ? $extensions[0] : $extensions;
     }
 
     /**
+     * Get id for the specified extension.
      * @param string $extension_name
      * @return int
      */
-    public static function getExtensionId($extension_name) {
-        global $pdoDb_admin;
+    public static function getExtensionId(string $extension_name): int
+    {
+        global $pdoDbAdmin;
 
-        $rows = array();
+        $rows = [];
         try {
-            $pdoDb_admin->addSimpleWhere('name', $extension_name, 'AND');
-            $pdoDb_admin->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
-            $pdoDb_admin->addToWhere(new WhereItem(false, 'domain_id', '=', DomainId::get(), true));
+            $pdoDbAdmin->addSimpleWhere('name', $extension_name, 'AND');
+            $pdoDbAdmin->addToWhere(new WhereItem(true, 'domain_id', '=', 0, false, 'OR'));
+            $pdoDbAdmin->addToWhere(new WhereItem(false, 'domain_id', '=', DomainId::get(), true));
 
-            $pdoDb_admin->setOrderBy(array('domain_id', 'D'));
+            $pdoDbAdmin->setOrderBy(['domain_id', 'D']);
 
-            $pdoDb_admin->setLimit(1);
+            $pdoDbAdmin->setLimit(1);
 
-            $rows = $pdoDb_admin->request('SELECT', 'extensions');
+            $rows = $pdoDbAdmin->request('SELECT', 'extensions');
         } catch (PdoDbException $pde) {
             error_log("Extensions::getExtensionId() - Error: " . $pde->getMessage());
         }
@@ -166,49 +174,51 @@ class Extensions
             return -2;
         }
 
-        $extension_info = $rows[0];
-        if ($extension_info['enabled'] != ENABLED) {
+        $extensionInfo = $rows[0];
+        if ($extensionInfo['enabled'] != ENABLED) {
             return -1; // -1 = extension not enabled
         }
-        return $extension_info['id']; // 0 = core, >0 is extension id
+        return $extensionInfo['id']; // 0 = core, >0 is extension id
     }
 
     /**
+     * Set the status for a specified extension ID.
      * @param $extension_id
      * @param int $status
      * @return bool
      */
-    public static function setStatusExtension($extension_id, $status = 2) {
-        global $pdoDb_admin;
+    public static function setStatusExtension(int $extension_id, int $status = 2): bool
+    {
+        global $pdoDbAdmin;
 
-        $domain_id = DomainId::get();
+        $domainId = DomainId::get();
 
         // status=2 = toggle status
         if ($status == 2) {
-            $rows = array();
+            $rows = [];
             try {
-                $pdoDb_admin->setSelectList('enabled');
-                $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
-                $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
+                $pdoDbAdmin->setSelectList('enabled');
+                $pdoDbAdmin->addSimpleWhere('id', $extension_id, 'AND');
+                $pdoDbAdmin->addSimpleWhere('domain_id', $domainId);
 
-                $pdoDb_admin->setLimit(1);
+                $pdoDbAdmin->setLimit(1);
 
-                $rows = $pdoDb_admin->request('SELECT', 'extensions');
+                $rows = $pdoDbAdmin->request('SELECT', 'extensions');
             } catch (PdoDbException $pde) {
                 error_log("Extensions::setStatusExtension() - Error: " . $pde->getMessage());
             }
-            $extension_info = (empty($rows) ? $rows : $rows[0]);
-            $status = 1 - $extension_info['enabled'];
+            $extensionInfo = empty($rows) ? $rows : $rows[0];
+            $status = 1 - $extensionInfo['enabled'];
         }
 
         $result = false;
         try {
-            $pdoDb_admin->addSimpleWhere('id', $extension_id, 'AND');
-            $pdoDb_admin->addSimpleWhere('domain_id', $domain_id);
+            $pdoDbAdmin->addSimpleWhere('id', $extension_id, 'AND');
+            $pdoDbAdmin->addSimpleWhere('domain_id', $domainId);
 
-            $pdoDb_admin->setFauxPost(array("enabled" => $status));
+            $pdoDbAdmin->setFauxPost(["enabled" => $status]);
 
-            $result = $pdoDb_admin->request("UPDATE", 'extensions');
+            $result = $pdoDbAdmin->request("UPDATE", 'extensions');
         } catch (PdoDbException $pde) {
             error_log("Extensions::setStatusExtension() - Error(2): " . $pde->getMessage());
         }
@@ -217,65 +227,79 @@ class Extensions
 
     /**
      * Load SI Extension information into $config->extension.
-     * @param &array Reference to the extension names array.
+     * @param Zend_Config_Ini $config
+     * @param bool $databaseBuilt
+     * @param int $patchCount
+     * @return array extension names array.
+     * @noinspection PhpUndefinedFieldInspection
      */
-    public static function loadSiExtensions(&$ext_names, $config, $databaseBuilt, $patchCount) {
-        global $pdoDb_admin;
+    public static function loadSiExtensions(Zend_Config_Ini $config, bool $databaseBuilt, int $patchCount): array
+    {
+        global $pdoDbAdmin;
 
         if ($databaseBuilt && $patchCount > "196") {
-            $rows = array();
+            $rows = [];
             try {
-                $pdoDb_admin->addSimpleWhere("domain_id", DomainId::get(), "OR");
-                $pdoDb_admin->addSimpleWhere("domain_id", 0);
-                $pdoDb_admin->setOrderBy("domain_id");
-                $rows = $pdoDb_admin->request("SELECT", "extensions");
+                $pdoDbAdmin->addSimpleWhere("domain_id", DomainId::get(), "OR");
+                $pdoDbAdmin->addSimpleWhere("domain_id", 0);
+                $pdoDbAdmin->setSelectAll(true);
+                $pdoDbAdmin->setOrderBy("domain_id");
+                $rows = $pdoDbAdmin->request("SELECT", "extensions");
             } catch (PdoDbException $pde) {
                 error_log("loadSiExtensions() - Error: " . $pde->getMessage());
             }
-            $extensions = array();
+
+            $extensions = [];
             foreach ($rows as $extension) {
                 $extensions[$extension['name']] = $extension;
             }
+
             $config->extension = $extensions;
         }
 
         // If no extension loaded, load Core
         if (!$config->extension) {
             // @formatter:off
-        $extension_core = new Zend_Config(
-            array('core' => array('id'         => 1,
-                                  'domain_id'  => 1,
-                                  'name'       => 'core',
-                                  'description'=> 'Core part of SimpleInvoices - always enabled',
-                                  'enabled'    => 1)));
-        $config->extension = $extension_core;
-        // @formatter:on
+            $extensionCore = new Zend_Config([
+                'core' => [
+                    'id'         => 1,
+                    'domain_id'  => 1,
+                    'name'       => 'core',
+                    'description'=> 'Core part of SimpleInvoices - always enabled',
+                    'enabled'    => 1
+                ]
+            ]);
+            $config->extension = $extensionCore;
+            // @formatter:on
         }
 
         // Populate the array of enabled extensions.
-        $ext_names = array();
+        $extNames = [];
         foreach ($config->extension as $extension) {
             if ($extension->enabled == "1") {
-                $ext_names[] = $extension->name;
+                $extNames[] = $extension->name;
             }
         }
+
+        return $extNames;
     }
 
     /**
      * Insert a new record in the extensions table.
      * @return int ID assigned to new record, 0 is insert failed.
      */
-    public static function insert() {
+    public static function insert()
+    {
         global $pdoDb;
 
         $result = 0;
         try {
-            $pdoDb->setFauxPost(array(
+            $pdoDb->setFauxPost([
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
                 'domain_id' => DomainId::get(),
                 'enabled' => DISABLED
-            ));
+            ]);
             $result = $pdoDb->request('INSERT', 'extensions');
         } catch (PdoDbException $pde) {
             error_log("Extensions::insert() - Error: " . $pde->getMessage());
@@ -288,7 +312,8 @@ class Extensions
      * @param $id
      * @return bool true if delete succeeded, otherwise false.
      */
-    public static function delete($id) {
+    public static function delete($id)
+    {
         global $pdoDb;
 
         $result = false;

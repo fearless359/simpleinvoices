@@ -7,18 +7,18 @@ namespace Inc\Claz;
  */
 class User
 {
-    private static $hash_algo = "sha256";
-    public static $username_pattern = "(?=^.{4,}$)([A-Za-z0-9][A-Za-z0-9@_\-\.#\$]+)$";
+    private static string $hashAlgorithm = "sha256";
+    public static string $usernamePattern = "(?=^.{4,}$)([A-Za-z0-9][A-Za-z0-9@_\-\.#\$]+)$";
 
     /**
      * Calculate the count of user records.
-     * @return integer
+     * @return int
      */
-    public static function count()
+    public static function count(): int
     {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->setSelectList('id');
             $rows = $pdoDb->request("SELECT", "user");
@@ -33,31 +33,31 @@ class User
      * @param int $id of the record to retrieve.
      * @return array of User fields else empty array.
      */
-    public static function getOne($id)
+    public static function getOne(int $id): array
     {
         return self::getUsers($id);
     }
 
     /**
      * Retrieve all users based on $enabled setting
-     * @param boolean $enabled if true only enabled user records will be returned.
+     * @param bool $enabled if true only enabled user records will be returned.
      * @return array
      */
-    public static function getAll($enabled = false)
+    public static function getAll(bool $enabled = false): array
     {
         return self::getUsers(null, $enabled);
     }
 
     /**
      * Retrieve all user records
-     * @param int $id If no null, the id of the specifiec user record to retrieve.
-     * @param boolean Set to true if only enabled user records should be retrieved.
+     * @param int|null $id If no null, the id of the specific user record to retrieve.
+     * @param bool Set to true if only enabled user records should be retrieved.
      * @return array Rows retrieved
      */
-    private static function getUsers($id = null, $enabled = false) {
+    private static function getUsers(?int $id = null, bool $enabled = false): array {
         global $LANG, $pdoDb;
 
-        $results = array();
+        $results = [];
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('u.id', $id, 'AND');
@@ -69,7 +69,7 @@ class User
 
             $pdoDb->setOrderBy('username');
 
-            $list = array(
+            $list = [
                 'id',
                 'username',
                 'email',
@@ -77,7 +77,7 @@ class User
                 'enabled',
                 'role_id',
                 'ur.name AS role_name'
-            );
+            ];
             $pdoDb->setSelectList($list);
 
             $caseStmt = new CaseStmt("u.enabled", "enabled_text");
@@ -98,12 +98,12 @@ class User
                     $pdoDb->addSimpleWhere("id", $cid);
                     $cust = $pdoDb->request("SELECT", "customers");
                     $uid = $cid . " - " . (empty($cust[0]['name']) ? "Unknown Customer" : $cust[0]['name']);
-                } else if ($row['role_name'] == 'biller') {
+                } elseif ($row['role_name'] == 'biller') {
                     $bid = $row['user_id'];
                     $pdoDb->addSimpleWhere("domain_id", DomainId::get(), "AND");
                     $pdoDb->addSimpleWhere("id", $bid);
-                    $bilr = $pdoDb->request("SELECT", "biller");
-                    $uid = $bid . " - " . (empty($bilr[0]['name']) ? "Unknown Biller" : $bilr[0]['name']);
+                    $biller = $pdoDb->request("SELECT", "biller");
+                    $uid = $bid . " - " . (empty($biller[0]['name']) ? "Unknown Biller" : $biller[0]['name']);
                 } else {
                     $uid = "0 - Standard User";
                 }
@@ -114,21 +114,21 @@ class User
             error_log("User::getAll() - error: " . $pde->getMessage());
         }
         if (empty($results)) {
-            return array();
+            return [];
         }
-        return (isset($id) ? $results[0] : $results);
+        return isset($id) ? $results[0] : $results;
     }
 
     /**
      * Update user record.
-     * @param $exclude_pwd
+     * @param bool $exclude_pwd
      * @return bool true if update succeeded, otherwise false.
      */
-    public static function updateUser($exclude_pwd)
+    public static function updateUser(bool $exclude_pwd): bool
     {
         global $pdoDb;
         try {
-            $excludedFields = array('id', 'domain_id');
+            $excludedFields = ['id', 'domain_id'];
             if ($exclude_pwd) {
                 $excludedFields[] = 'password';
             } else {
@@ -149,9 +149,10 @@ class User
 
     /**
      * Insert a new user record using field in the $_POST global.
-     * @return integer ID assigned to new record or 0 if insert failed.
+     * @return int ID assigned to new record or 0 if insert failed.
+     * @throws PdoDbException
      */
-    public static function insertUser()
+    public static function insertUser(): int
     {
         global $pdoDb;
 
@@ -176,27 +177,24 @@ class User
         return $id;
     }
 
-    /**
-     * @param $password
-     * @return string
-     */
-    private static function hashPassword($password)
+    private static function hashPassword(string $password): string
     {
         return hash("sha256", $password);
     }
 
     /**
+     * Verify password for specified username.
      * @param string $username
-     * @param $password
-     * @return bool
+     * @param string $password
+     * @return bool true if password is valid; false if not.
      */
-    public static function verifyPassword($username, $password)
+    public static function verifyPassword(string $username, string $password): bool
     {
-        global $pdoDb_admin;
+        global $pdoDbAdmin;
 
         try {
-            $pdoDb_admin->addSimpleWhere("username", $username);
-            $rows = $pdoDb_admin->request('SELECT', 'user');
+            $pdoDbAdmin->addSimpleWhere("username", $username);
+            $rows = $pdoDbAdmin->request('SELECT', 'user');
             if (empty($rows)) {
                 return false;
             }
@@ -206,21 +204,21 @@ class User
             return false;
         }
 
-        $user_password = $user['password'];
-        $hash = hash(self::$hash_algo, $password);
-        if ($user_password == $hash) {
+        $userPassword = $user['password'];
+        $hash = hash(self::$hashAlgorithm, $password);
+        if ($userPassword == $hash) {
             return true;
         }
 
         // Use for old password hashes.
-        $md5_pwd = MD5($password);
-        if ($user_password == $md5_pwd) {
+        $md5Password = MD5($password);
+        if ($userPassword == $md5Password) {
             try {
                 // Old password match. Update user with new password.
-                $pdoDb_admin->addSimpleWhere('username', $username);
-                $pdoDb_admin->setFauxPost(array('password' => $hash));
+                $pdoDbAdmin->addSimpleWhere('username', $username);
+                $pdoDbAdmin->setFauxPost(['password' => $hash]);
 
-                $result = $pdoDb_admin->request('UPDATE', 'user');
+                $result = $pdoDbAdmin->request('UPDATE', 'user');
                 if ($result) {
                     return true;
                 }
@@ -242,11 +240,11 @@ class User
         global $pdoDb;
         try {
             $pdoDb->setOrderBy(new OrderBy("id"));
-            $pdoDb->setSelectList(array("id", "name"));
+            $pdoDb->setSelectList(["id", "name"]);
             $rows = $pdoDb->request("SELECT", "user_role");
         } catch (PdoDbException $pde) {
             error_log("User::getRoles() - PdoDbException: " . $pde->getMessage());
-            return array();
+            return [];
         }
         return $rows;
     }

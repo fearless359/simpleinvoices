@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -9,38 +10,33 @@ namespace Inc\Claz;
  * @author Rich
  * Apr 16, 2016
  */
-class Request {
-    private $excludedFields;
-    private $fauxPostList;
-    private $limit;
-    /**
-     * @var OrderBy
-     */
-    private $orderBy;
-    private $request;
-    private $selectList;
-    private $table;
-    /**
-     * @var WhereClause/WhereItem
-     */
-    private $whereClause;
+class Request
+{
+    private array $excludedFields;
+    private array $fauxPostList;
+    private int $limit;
+    private OrderBy $orderBy;
+    private string $request;
+    private array $selectList;
+    private string $table;
+    private WhereClause $whereClause;
 
     /**
      * Class constructor
      * @param string $request Valid values are "SELECT", "INSERT", "UPDATE", "DELETE".
      * @param string $table Name of database table to perform <b>$request</b> on.
      */
-    public function __construct($request, $table) {
+    public function __construct(string $request, string $table)
+    {
         // @formatter:off
-        $this->request      = $request;
-        $this->table        = $table;
-
-        $this->limit        = 0;
-        $this->excludedFields = array();
-        $this->orderBy      = null;
-        $this->selectList   = array();
-        $this->fauxPostList = array();
-        $this->whereClause  = null;
+        $this->request        = $request;
+        $this->table          = $table;
+        $this->limit          = 0;
+        $this->excludedFields = [];
+        $this->orderBy        = new OrderBy();
+        $this->selectList     = [];
+        $this->fauxPostList   = [];
+        $this->whereClause    = new WhereClause();
         // @formatter:on
     }
 
@@ -48,38 +44,37 @@ class Request {
      * Add a simple <b>WhereItem</b> that test for equality.
      * @param string $field The actual name of the field (column) in the table. This is
      *        a required parameter and <b>MUST</b> exist in the table.
-     * @param mixed $value Value to use in the test. Note for <b>BETWEEN</b> this will be:
-     *        <b>array(beginval,endval)</b>.
+     * @param array|string $value Value to use in the test. Note for <b>BETWEEN</b> this will be:
+     *        <b>array(beginVal,endVal)</b>.
      * @param string $connector The "AND" or "OR" connector if additional terms will be
      *        clause. Optional parameter.
      * @throws PdoDbException
      */
-    public function addSimpleWhere($field, $value, $connector = null) {
+    public function addSimpleWhere(string $field, $value, string $connector = ""): void
+    {
         $this->addWhereItem(false, $field, "=", $value, false, $connector);
     }
 
     /**
      * addWhereItem
-     * @param boolean $open_paren Set to <b>true</b> if an opening parenthesis should be
+     * @param bool $open_paren Set to <b>true</b> if an opening parenthesis should be
      *        inserted before this term; otherwise set to <b>false</b>.
      * @param string $field The actual name of the field (column) in the table. This is
      *        a required parameter and <b>MUST</b> exist in the table.
      * @param string $operator Valid SQL comparison operator to the <b>$field</b> record
      *        content test against the <b>$value</b> parameter. Currently only the relational
      *        operator are allowed: <b>=</b>, <b><></b>, <b><</b>, <b>></b>, <b><=</b> and <b>>=</b>.
-     * @param mixed $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginval,endval)</b>.
-     * @param boolean $close_paren Set to <b>true</b> if a closing parenthesis should be
+     * @param array|string|int|DbField $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginVal,endVal)</b>.
+     * @param bool $close_paren Set to <b>true</b> if a closing parenthesis should be
      *        inserted after this term; otherwise set to <b>false</b>.
-     * @param string $connector The "AND" or "OR" connector if additional terms will be
-     *        clause. Optional parameter.
+     * @param string $connector The "AND" or "OR" connector if additional terms will be clause. Optional parameter.
      * @throws PdoDbException
      */
-    public function addWhereItem($open_paren, $field, $operator, $value, $close_paren, $connector=null) {
-        if (empty($this->whereClause)) {
-            $this->whereClause = new WhereClause(new WhereItem($open_paren, $field, $operator, $value, $close_paren, $connector));
-        } else {
-            $this->whereClause->addItem(new WhereItem($open_paren, $field, $operator, $value, $close_paren, $connector));
-        }
+    public function addWhereItem(bool $open_paren, string $field, string $operator, $value, bool $close_paren,
+                                 string $connector = ""): void
+    {
+        $whereItem = new WhereItem($open_paren, $field, $operator, $value, $close_paren, $connector);
+        $this->whereClause->addItem($whereItem);
     }
 
     /**
@@ -101,34 +96,30 @@ class Request {
      * @param string $order Order <b>A</b> ascending, <b>D</b> descending. Defaults to <b>A</b>.
      * @throws PdoDbException if either parameter does not contain the form and values specified for them.
      */
-    public function addOrderBy($field, $order="A") {
-        if (empty($this->orderBy)) {
-            $this->orderBy= new OrderBy($field, $order);
-        } else {
-            $this->orderBy->addField($field, $order);
-        }
+    public function addOrderBy($field, string $order = "A"): void
+    {
+        $this->orderBy->addField($field, $order);
     }
 
     /**
      * Specify the subset of fields that a <i>SELECT</i> is to access.
      * Note that default is to select all fields.
-     * @param mixed $selectList Can take one of two forms.
+     * @param array|string $selectList Can take one of two forms.
      *        1) A string with the field name to select from the table.
      *           Ex: "street_address".
      *        2) An array of field names to select from the table.
      *           Ex: array("name", "street_address", "city", "state", "zip").
      */
-    public function addSelectList($selectList) {
+    public function addSelectList($selectList): void
+    {
         if (is_array($selectList)) {
             foreach ($selectList as $field) {
                 if (!in_array($field, $this->selectList)) {
                     $this->selectList[] = $field;
                 }
             }
-        } else {
-            if (!in_array($selectList, $this->selectList)) {
-                $this->selectList[] = $selectList;
-            }
+        } elseif (!in_array($selectList, $this->selectList)) {
+            $this->selectList[] = $selectList;
         }
     }
 
@@ -138,20 +129,22 @@ class Request {
      *              index and the <b>field value</b> as the content. Note that if the <b>request</b>
      *              is an <i>INSERT</i>, the <b>field value</b> is not used.
      */
-    public function addFauxPostList($fauxPostList) {
-        foreach($fauxPostList as $field => $value) {
+    public function addFauxPostList(array $fauxPostList): void
+    {
+        foreach ($fauxPostList as $field => $value) {
             $this->fauxPostList[$field] = $value;
         }
     }
 
     /**
      * Set faux post mode and file.
-     * @param array $fauxPost Array to use in place of the <b>$_POST</b> superglobal.
+     * @param array $fauxPost Array to use in place of the <b>$_POST</b> Superglobal.
      *        Use the <b>table column name</b> as the index and the value to set the
      *        column to as the value of the array at the column name index.
      *        Ex: $fauxPost['name'] = "New name";
      */
-    public function setFauxPost($fauxPost) {
+    public function setFauxPost(array $fauxPost): void
+    {
         if (empty($this->fauxPostList)) {
             $this->fauxPostList = $fauxPost;
         } else {
@@ -165,7 +158,7 @@ class Request {
      * clause but are to be excluded from the <i>INSERT</i> or </i>UPDATE</i> fields. Typically
      * excluded fields are the unique identifier for the record which cannot be updated. However,
      * any field may be specified for exclusion..
-     * @param mixed $excludedFields Can be one of the following:
+     * @param string|array $excludedFields Can be one of the following:
      *        <ol>
      *          <li>A string with <i><u>one</u> field name</i> in it. Ex: <b>"name"</b>.</li>
      *          <li>An ordered array of <i>field names</i>. Ex: <b>array("id", "user_id")</b></li>
@@ -175,17 +168,18 @@ class Request {
      *        </ol>
      * @throws PdoDbException if the parameter is not an array.
      */
-    public function setExcludedFields($excludedFields) {
+    public function setExcludedFields($excludedFields): void
+    {
         if (is_array($excludedFields)) {
-            $i = 0;
+            $idx = 0;
             foreach ($excludedFields as $key => $val) {
-                if (is_numeric($key) && intval(($key)) == $i) {
+                if (is_numeric($key) && intval($key) == $idx) {
                     $this->excludedFields[$val] = 1;
                 } else {
                     $this->excludedFields[$key] = $val;
                 }
             }
-        } else if (is_string($excludedFields)) {
+        } elseif (is_string($excludedFields)) {
             $this->excludedFields[$excludedFields] = 1;
         } else {
             $str = "PdoDb - setExcludedFields(): \"\$excludedFields\" parameter is not an array.";
@@ -196,18 +190,20 @@ class Request {
 
     /**
      * Set a limit on records accessed
-     * @param integer $limit Value to specify in the <i>LIMIT</i> parameter.
-     * @param integer $offset Number of records to skip before reading the next $limit amount.
+     * @param int $limit Value to specify in the <i>LIMIT</i> parameter.
+     * @param int $offset Number of records to skip before reading the next $limit amount.
      */
-    public function setLimit($limit, $offset=0) {
+    public function setLimit(int $limit, int $offset = 0): void
+    {
         $this->limit = ($offset > 0 ? $offset . ", " : "") . $limit;
     }
 
     /**
-     * getter for class property
-     * @return string $request
+     * Test to see if this is an add request.
+     * @return bool $request
      */
-    public function isAdd() {
+    public function isAdd(): bool
+    {
         return $this->request == "INSERT";
     }
 
@@ -215,7 +211,8 @@ class Request {
      * getter for class property
      * @return string $table Table processed by this request.
      */
-    public function getTable() {
+    public function getTable(): string
+    {
         return $this->table;
     }
 
@@ -225,15 +222,28 @@ class Request {
      * @return mixed Result of the request.
      * @throws PdoDbException if an error is thrown when the <b>request</b> is performed.
      */
-    public function performRequest(PdoDb $pdoDb) {
+    public function performRequest(PdoDb $pdoDb)
+    {
         try {
             // @formatter:off
-            if (!empty($this->fauxPostList)  ) $pdoDb->setFauxPost($this->fauxPostList);
-            if ($this->limit > 0             ) $pdoDb->setLimit($this->limit);
-            if (!empty($this->orderBy)       ) $pdoDb->setOrderBy($this->orderBy);
-            if (!empty($this->selectList)    ) $pdoDb->setSelectList($this->selectList);
-            if (!empty($this->whereClause)   ) $pdoDb->addToWhere($this->whereClause);
-            if (!empty($this->excludedFields)) $pdoDb->setExcludedFields($this->excludedFields);
+            if (!empty($this->fauxPostList)  ) {
+                $pdoDb->setFauxPost($this->fauxPostList);
+            }
+            if ($this->limit > 0) {
+                $pdoDb->setLimit($this->limit);
+            }
+            if (!empty($this->orderBy)) {
+                $pdoDb->setOrderBy($this->orderBy);
+            }
+            if (!empty($this->selectList)) {
+                $pdoDb->setSelectList($this->selectList);
+            }
+            if (!empty($this->whereClause)) {
+                $pdoDb->addToWhere($this->whereClause);
+            }
+            if (!empty($this->excludedFields)) {
+                $pdoDb->setExcludedFields($this->excludedFields);
+            }
             // @formatter:on
             return $pdoDb->request($this->request, $this->table);
         } catch (PdoDbException $pde) {
@@ -242,10 +252,11 @@ class Request {
     }
 
     /**
-     * describe
+     * Describe what the table the request is for.
      * @return string Description of the request
      */
-    public function describe() {
+    public function describe(): string
+    {
         return "$this->request for $this->table";
     }
 }

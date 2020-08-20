@@ -21,7 +21,7 @@
                     <th>{$LANG.biller_name}
                         <a class="cluetip" href="#" title="{$LANG.required_field}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field" >
-                            <img src="{$help_image_path}required-small.png" alt=""/>
+                            <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="text" name="name" size="25" id="name" class="validate[required] text-input"
@@ -38,7 +38,7 @@
                     <th>{$LANG.street2}
                         <a class="cluetip" href="#" title="{$LANG.street2}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_street2">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="text" name="street_address2" size="25"
@@ -128,7 +128,7 @@
                         <th>{$customFieldLabel.biller_cf1|htmlsafe}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" >
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td><input type="text" name="custom_field1"
@@ -140,7 +140,7 @@
                         <th>{$customFieldLabel.biller_cf2}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" >
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td><input type="text" name="custom_field2"
@@ -152,7 +152,7 @@
                         <th>{$customFieldLabel.biller_cf3|htmlsafe}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" >
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td><input type="text" name="custom_field3"
@@ -164,7 +164,7 @@
                         <th>{$customFieldLabel.biller_cf4|htmlsafe}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" >
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td><input type="text" name="custom_field4"
@@ -175,7 +175,7 @@
                     <th>{$LANG.logo_file}
                         <a class="cluetip" href="#" title="{$LANG.logo_file}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_insert_biller_text" >
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>{html_options name=logo output=$files values=$files selected=$files[0] }</td>
@@ -217,6 +217,6 @@
             </div>
         </div>
         <input type="hidden" name="op" value="add"/>
-        <input type="hidden" name="domain_id" value="{$domain_id}"/>
+        <input type="hidden" name="domain_id" value="{$domainId}"/>
     </form>
 {/if}

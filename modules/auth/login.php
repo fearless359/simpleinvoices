@@ -31,31 +31,32 @@ if (!defined("STD_LOGIN_FAILED_MSG")) {
 }
 
 try {
-    \Zend_Session::start();
-} catch (\Zend_Session_Exception $zse) {
+    Zend_Session::start();
+} catch (Zend_Session_Exception $zse) {
     error_log("modules.auth.login.php: Error: " . $zse->getMessage());
     die("modules.auth.login.php - Unable to start a session.");
 }
+
 $errorMessage = '';
 Util::loginLogo($smarty);
-Log::out("login.php _POST - " . print_r($_POST,true), Zend_Log::DEBUG);
+Log::out("login.php _POST - " . print_r($_POST, true), Zend_Log::DEBUG);
 if (empty($_POST['user']) || empty($_POST['pass'])) {
     if (isset($_POST['action']) && $_POST['action'] == 'login') {
         $errorMessage = STD_LOGIN_FAILED_MSG;
     }
 } else {
     $username = $_POST['user'];
-    $password  = $_POST['pass'];
+    $password = $_POST['pass'];
     if (User::verifyPassword($username, $password)) {
         try {
             Zend_Session::start();
 
-            $timeout = SystemDefaults::getDefaultSessionTimeout();
+            $timeout = SystemDefaults::getSessionTimeout();
             if ($timeout <= 0) {
                 $timeout = 60;
             }
 
-            $authNamespace = new \Zend_Session_Namespace('Zend_Auth');
+            $authNamespace = new Zend_Session_Namespace('Zend_Auth');
             $authNamespace->setExpirationSeconds($timeout * 60);
         } catch (Zend_Session_Exception $zse) {
             error_log("modules.auth.login.php: Error(2): " . $zse->getMessage());
@@ -66,23 +67,31 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
             $jn = new Join('LEFT', 'user_role', 'r');
             $jn->addSimpleItem('u.role_id', new DbField('r.id'));
             $pdoDb->addToJoins($jn);
-            
+
             $jn = new Join('LEFT', 'user_domain', 'ud');
             $jn->addSimpleItem('u.domain_id', new DbField('ud.id'));
             $pdoDb->addToJoins($jn);
 
-            $pdoDb->setSelectList(array('u.id', 'u.username', 'u.email', new DbField('r.name', 'role_name'),
-                'u.domain_id', 'u.user_id', new DbField('ud.name', 'domain_name')));
+            $pdoDb->setSelectList([
+                'u.id',
+                'u.username',
+                'u.email',
+                new DbField('r.name', 'role_name'),
+                'u.domain_id',
+                'u.user_id',
+                new DbField('ud.name', 'domain_name')
+            ]);
 
             $pdoDb->addSimpleWhere('u.username', $username, 'AND');
             $pdoDb->addSimpleWhere('u.enabled', ENABLED);
-
+            $pdoDb->debugOn("login.php");
             $rows = $pdoDb->request('SELECT', 'user', 'u');
+            $pdoDb->debugOff();
         } catch (PdoDbException $pde) {
             error_log("modules.auth.login.php: Error(3): " . $pde->getMessage());
             die("modules.auth.login.php(3) - Database access error");
         }
-
+        var_dump("user table columns", $rows);
         foreach ($rows[0] as $key => $value) {
             $authNamespace->$key = $value;
         }
@@ -90,13 +99,13 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
         if (isset($authNamespace->role_name) &&
             $authNamespace->role_name == 'customer' &&
             $authNamespace->user_id > 0) {
-            header('Location: index.php?module=customers&view=details&action=view&id='.$authNamespace->user_id);
+            header('Location: index.php?module=customers&view=details&action=view&id=' . $authNamespace->user_id);
         } else {
             header('Location: .');
         }
     } else {
         $errorMessage = STD_LOGIN_FAILED_MSG;
-	}
+    }
 }
 // No translations for login since user's lang not known as yet
-$smarty->assign("errorMessage",$errorMessage);
+$smarty->assign("errorMessage", $errorMessage);

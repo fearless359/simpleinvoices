@@ -29,7 +29,7 @@ use Inc\Claz\WhereItem;
 Util::directAccessAllowed();
 
 $max_years = 10;
-$domain_id = DomainId::get();
+$domainId = DomainId::get();
 
 // Get earliest invoice date
 $rows = array();
@@ -42,7 +42,7 @@ try {
     $pdoDb->addToJoins($jn);
 
     $pdoDb->addSimpleWhere("pr.status", ENABLED, "AND");
-    $pdoDb->addSimpleWhere("iv.domain_id", $domain_id);
+    $pdoDb->addSimpleWhere("iv.domain_id", $domainId);
 
     $rows = $pdoDb->request("SELECT", "invoices", "iv");
 } catch (PdoDbException $pde) {
@@ -115,7 +115,7 @@ while($year <= $this_year) {
         $rows = array();
         try {
             $pdoDb->addToFunctions(new FunctionStmt("SUM", new DbField("ac_amount"), "month_total_payments"));
-            $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
+            $pdoDb->addSimpleWhere("domain_id", $domainId, "AND");
             $pdoDb->addToWhere(new WhereItem(false, "ac_date", "LIKE", "$year-$month%", false));
 
             $rows = $pdoDb->request("SELECT", "payment");
@@ -144,7 +144,7 @@ while($year <= $this_year) {
         $pdoDb->addToJoins($jn);
 
         $pdoDb->addSimpleWhere("pr.status", ENABLED, "AND");
-        $pdoDb->addSimpleWhere("ii.domain_id", $domain_id, "AND");
+        $pdoDb->addSimpleWhere("ii.domain_id", $domainId, "AND");
         $pdoDb->addToWhere(new WhereItem(false, "iv.date", "LIKE", "$year%", false));
         $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
     } catch (PdoDbException $pde) {
@@ -158,7 +158,7 @@ while($year <= $this_year) {
     $rows = array();
     try {
         $pdoDb->addToFunctions(new FunctionStmt("SUM", "ac_amount", "year_total_payments"));
-        $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
+        $pdoDb->addSimpleWhere("domain_id", $domainId, "AND");
         $pdoDb->addToWhere(new WhereItem(false, "ac_date", "LIKE", "$year%", false));
         $rows = $pdoDb->request("SELECT", "payment");
     } catch (PdoDbException $pde) {

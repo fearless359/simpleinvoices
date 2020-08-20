@@ -23,7 +23,7 @@ global $db, $smarty;
 
 Util::directAccessAllowed();
 
-$domain_id = DomainId::get();
+$domainId = DomainId::get();
 
 function firstOfMonth() {
     return date("Y-m-d", strtotime('01-'.date('m').'-'.date('Y').' 00:00:00'));
@@ -47,7 +47,7 @@ $sql="SELECT e.amount AS expense
     AND e.date BETWEEN '$start_date' AND '$end_date' 
     GROUP BY account 
     ORDER BY account ASC;";
-$sth = $db->query($sql, ':domain_id', $domain_id);
+$sth = $db->query($sql, ':domain_id', $domainId);
 $accounts = $sth->fetchAll();
 
 $smarty -> assign('accounts', $accounts);

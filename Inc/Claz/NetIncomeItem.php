@@ -7,26 +7,26 @@ namespace Inc\Claz;
  */
 class NetIncomeItem
 {
-    public $amount;
-    public $description;
-    public $cflags;
-    public $non_inc_amt;
+    public float $amount;
+    public array $cFlags;
+    public string $description;
+    public float $nonIncAmt;
 
     /**
      * NetIncomeItem constructor.
-     * @param $amount
-     * @param $description
-     * @param $cflags
+     * @param float $amount
+     * @param string $description
+     * @param string $cFlags
      */
-    public function __construct($amount, $description, $cflags)
+    public function __construct(float $amount, string $description, string $cFlags)
     {
         $this->amount = $amount;
         $this->description = $description;
-        $this->non_inc_amt = 0;
-        $this->cflags = array();
-        if (isset($cflags)) {
-            for ($i = 0; $i < 10; $i++) {
-                $this->cflags[$i] = substr($cflags, $i, 1);
+        $this->nonIncAmt = 0;
+        $this->cFlags = [];
+        if (!empty($cFlags)) {
+            for ($idx = 0; $idx < 10; $idx++) {
+                $this->cFlags[$idx] = substr($cFlags, $idx, 1);
             }
         }
     }

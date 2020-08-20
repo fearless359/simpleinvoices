@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -10,20 +11,20 @@ class ExpenseTax
 
     /**
      * Get expense_item_tax rows for a specified expense_id.
-     * @param int $expense_id value to select records for.
+     * @param int $expenseId value to select records for.
      * @return array $rows for expense_item_tax with specified expense_id.
      */
-    public static function getAll($expense_id)
+    public static function getAll(int $expenseId): array
     {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->setOrderBy("id");
-            $pdoDb->addSimpleWhere("expense_id", $expense_id);
+            $pdoDb->addSimpleWhere("expense_id", $expenseId);
             $rows = $pdoDb->request("SELECT", "expense_item_tax");
         } catch (PdoDbException $pde) {
-            error_log("ExpanseTax::get_all() - expense_id[$expense_id] error: " . $pde->getMessage());
+            error_log("ExpanseTax::get_all() - expense_id[$expenseId] error: " . $pde->getMessage());
         }
         return $rows;
     }
@@ -31,44 +32,44 @@ class ExpenseTax
     /**
      * Calculate and return the sum of tax_amount in all expense_item_tax
      * records selected by the expense_id.
-     * @param int $expense_id value to select rows by.
-     * @return int sum of tax_amount for specified $expense_id
+     * @param int $expenseId value to select rows by.
+     * @return int sum of tax_amount for specified $expenseId
      */
-    public static function getSum($expense_id)
+    public static function getSum(int $expenseId): int
     {
         global $pdoDb;
 
         $sum = 0;
         try {
             $pdoDb->addToFunctions("SUM(tax_amount) AS sum");
-            $pdoDb->addSimpleWhere("expense_id", $expense_id);
+            $pdoDb->addSimpleWhere("expense_id", $expenseId);
             $rows = $pdoDb->request("SELECT", "expense_item_tax");
             $sum = $rows[0]['sum'];
         } catch (PdoDbException $pde) {
-            error_log("ExpenseTax::getSum() - expense_id[$expense_id] error: " . $pde->getMessage());
+            error_log("ExpenseTax::getSum() - expense_id[$expenseId] error: " . $pde->getMessage());
         }
         return $sum;
     }
 
     /**
-     * Get expense_item_tax records for the specified $expense_id, grouped by the tax_id.
-     * @param int $expense_id to select rows for.
-     * @return array $rows selected for $expense_id.
+     * Get expense_item_tax records for the specified $expenseId, grouped by the tax_id.
+     * @param int $expenseId to select rows for.
+     * @return array $rows selected for $expenseId.
      */
-    public static function grouped($expense_id)
+    public static function grouped(int $expenseId): array
     {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
-            $pdoDb->addToJoins(array("INNER", "expense", "e", "e.id", "et.expense_id"));
+            $pdoDb->addToJoins(["INNER", "expense", "e", "e.id", "et.expense_id"]);
 
             $onClause = new OnClause();
             $onClause->addSimpleItem("t.tax_id", "et.tax_id", "AND");
             $onClause->addSimpleItem("t.domain_id", "e.domain_id");
-            $pdoDb->addToJoins(array("INNER", "tax", "t", $onClause));
+            $pdoDb->addToJoins(["INNER", "tax", "t", $onClause]);
 
-            $pdoDb->addSimpleWhere("e.id", $expense_id, "AND");
+            $pdoDb->addSimpleWhere("e.id", $expenseId, "AND");
             $pdoDb->addSimpleWhere("e.domain_id", DomainId::get());
 
             $pdoDb->setGroupBy("t.tax_id");
@@ -80,7 +81,7 @@ class ExpenseTax
 
             $rows = $pdoDb->request("SELECT", "expense_item_tax", "et");
         } catch (PdoDbException $pde) {
-            error_log("ExpenseTax::grouped() - expense_id[$expense_id] error: " . $pde->getMessage());
+            error_log("ExpenseTax::grouped() - expense_id[$expenseId] error: " . $pde->getMessage());
         }
         return $rows;
     }

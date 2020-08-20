@@ -3,7 +3,7 @@
 use Inc\Claz\BackupDb;
 use Inc\Claz\PdoDbException;
 
-global $help_image_path, $smarty, $LANG;
+global $helpImagePath, $smarty, $LANG;
 
 $smarty->assign('pageActive', 'backup');
 $smarty->assign('active_tab', '#setting');
@@ -34,7 +34,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "<div class='si_help_div'>" .
                 "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}' " .
                    "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database_fwrite'>" .
-                    "<img src='{$help_image_path}help-small.png' alt=''/>" .
+                    "<img src='{$helpImagePath}help-small.png' alt=''/>" .
                     "{$LANG['fwrite_error']}" .
                 "</a>" .
             "</div>";
@@ -44,7 +44,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "<div class='si_help_div'>" .
                 "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}' " .
                    "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database_fwrite'>" .
-                    "<img src='{$help_image_path}help-small.png' alt=''/>" .
+                    "<img src='{$helpImagePath}help-small.png' alt=''/>" .
                     "{$LANG['failure']}" .
                 "</a>" .
             "</div>";

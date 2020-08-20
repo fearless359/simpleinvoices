@@ -30,7 +30,7 @@
                     let tmp = cust_vals[i].split(" ");
                     newlist += '<option value="' + tmp[0] + '">' + cust_vals[i] + '</option>';
                 }
-            } else if (role_text === "biller") {
+            } elseif (role_text === "biller") {
                 let billers = document.getElementById("bilr1");
                 let billers_value = billers.value;
                 let billers_vals = billers_value.split("~");
@@ -99,13 +99,13 @@
                         <a class="cluetip" href="#" tabindex="910"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_username"
                            title="{$LANG.required_field}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
+                            <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td>
                         <input type="text" name="username" autocomplete="off" tabindex="10"
                                value="{if isset($user.username)}{$user.username|htmlsafe}{/if}" size="35" id="username"
-                               pattern="{$username_pattern}" title="See help for details."
+                               pattern="{$usernamePattern}" title="See help for details."
                                class="validate[required]" autofocus />
                     </td>
                 </tr>
@@ -114,7 +114,7 @@
                         <a class="cluetip" href="#" tabindex="920"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_new_password"
                            title="{$LANG.new_password}">
-                            <img src="{$help_image_path}help-small.png" alt="" />
+                            <img src="{$helpImagePath}help-small.png" alt="" />
                         </a>
                     </th>
                     <td>
@@ -128,7 +128,7 @@
                         <a class="cluetip" href="#" tabindex="930"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_confirm_password"
                            title="{$LANG.confirm_password}">
-                            <img src="{$help_image_path}help-small.png" alt="" />
+                            <img src="{$helpImagePath}help-small.png" alt="" />
                         </a>
                     </th>
                     <td>
@@ -142,7 +142,7 @@
                         <a class="cluetip" href="#" tabindex="940"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_email_address"
                            title="{$LANG.required_field}">
-                            <img src="{$help_image_path}required-small.png" alt="" />
+                            <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td>
@@ -156,7 +156,7 @@
                         <a class="cluetip" href="#" tabindex="950"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_user_role"
                            title="{$LANG.role}">
-                            <img src="{$help_image_path}help-small.png" alt="" />
+                            <img src="{$helpImagePath}help-small.png" alt="" />
                         </a>
                     </th>
                     <td>
@@ -175,7 +175,7 @@
                         <a class="cluetip" href="#" tabindex="960"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_user_id"
                            title="{$LANG.user_id}">
-                            <img src="{$help_image_path}help-small.png" alt="" />
+                            <img src="{$helpImagePath}help-small.png" alt="" />
                         </a>
                     </th>
                     <td>
@@ -209,7 +209,7 @@
                         <a class="cluetip" href="#" tabindex="970"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_user_enabled"
                            title="{$LANG.enabled} / {$LANG.disabled}">
-                            <img src="{$help_image_path}help-small.png" alt="" />
+                            <img src="{$helpImagePath}help-small.png" alt="" />
                         </a>
                     </th>
                     <td>{html_options name=enabled options=$enabled_options selected=$user.enabled tabindex=70}</td>

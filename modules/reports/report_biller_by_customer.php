@@ -14,9 +14,9 @@ global $pdoDb;
 $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
 $pdoDb->addSimpleWhere('b.domain_id', DomainId::get());
 
-$pdoDb->setSelectList(array(new DbField('b.name', 'Biller'), new DbField('c.name', 'Customer')));
+$pdoDb->setSelectList([new DbField('b.name', 'Biller'), new DbField('c.name', 'Customer')]);
 
-$pdoDb->setGroupBy(array('b.name', 'c.name'));
+$pdoDb->setGroupBy(['b.name', 'c.name']);
 
 $fn = new FunctionStmt('SUM', new DbField('ii.total'), 'SUM_TOTAL');
 $pdoDb->addToFunctions($fn);

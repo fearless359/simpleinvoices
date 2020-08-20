@@ -253,7 +253,7 @@
                     <th>{$LANG.customer_name}
                         <a class="cluetip" href="#" title="{$LANG.required_field}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
-                            <img src="{$help_image_path}required-small.png" alt=""/>
+                            <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -272,7 +272,7 @@
                     <th>{$LANG.attention_short}
                         <a rel="index.php?module=documentation&amp;view=view&amp;page=help_customer_contact"
                            href="#" class="cluetip" title="{$LANG.customer_contact}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -289,7 +289,7 @@
                     <th>{$LANG.street2}
                         <a class="cluetip" href="#" title="{$LANG.street2}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_street2">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -344,7 +344,7 @@
                     <th>{$LANG.email}
                         <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.email}" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_customer_email">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -388,7 +388,7 @@
                     <th>{$LANG.default_invoice}
                         <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_invoice}" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_default_invoice">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -409,7 +409,7 @@
                         <th>{$customFieldLabel.customer_cf1|htmlsafe}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>
@@ -423,7 +423,7 @@
                         <th>{$customFieldLabel.customer_cf2|htmlsafe}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>
@@ -437,7 +437,7 @@
                         <th>{$customFieldLabel.customer_cf3|htmlsafe}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>
@@ -451,7 +451,7 @@
                         <th>{$customFieldLabel.customer_cf4|htmlsafe}
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
-                                <img src="{$help_image_path}help-small.png" alt=""/>
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>

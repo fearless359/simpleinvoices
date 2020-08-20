@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -12,15 +13,17 @@ namespace Inc\Claz;
  * Class ProductAttributeType
  * @package Inc\Claz
  */
-class ProductAttributeType {
+class ProductAttributeType
+{
     /**
      * Get all product_attribute_type records.
-     * @return array|mixed
+     * @return array
      */
-    public static function getAll() {
+    public static function getAll(): array
+    {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->setSelectAll(true);
             $rows = $pdoDb->request('SELECT', 'products_attribute_type');

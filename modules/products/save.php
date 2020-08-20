@@ -17,7 +17,7 @@ if ($op === 'insert_product') {
             $display_message = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
         }
     }
-} else if ($op === 'edit_product') {
+} elseif ($op === 'edit_product') {
     if (isset($_POST ['save_product'])) {
         if (Product::updateProduct()) {
             $display_message = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";

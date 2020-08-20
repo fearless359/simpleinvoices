@@ -1,14 +1,16 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  *  ProductAttributes class.
- *  @author Richard Rowley
+ * @author Richard Rowley
  *
  *  Last modified:
  *      2016-08-15
  */
-class ProductAttributes {
+class ProductAttributes
+{
 
     /**
      * Retrieve a specific products_attributes record and associated product_attributes_type
@@ -16,43 +18,45 @@ class ProductAttributes {
      * @param int $id of record to retrieve.
      * @return array Associative array for record retrieved. Test for empty for no matching record.
      */
-    public static function getOne($id) {
+    public static function getOne(int $id): array
+    {
         return self::getProductAttributes($id);
     }
 
     /**
      * Retrieve all <b>products_attributes</b> records
      * @param bool $enabled Set to true to retrieve enabled records only.
-     *          Set to false (default) to retureve all records.
+     *          Set to false (default) to retrieve all records.
      * @return array Rows from table. Test for empty result for nothing found.
      */
-    public static function getAll($enabled=false) {
+    public static function getAll(bool $enabled = false): array
+    {
         return self::getProductAttributes(null, $enabled);
     }
 
     /**
      * Retrieve product_attributes record(s) and associated information.
-     * @param int $id ID of record to retrieve.
+     * @param int|null $id ID of record to retrieve.
      * @param bool $enabled true if only enabled records are to be retrieved;
      *              false if all records are to be retrieved.
      * @return array Records retrieved. Test empty result for no records found.
      */
-    private static function getProductAttributes($id = null, $enabled = false)
+    private static function getProductAttributes(?int $id = null, $enabled = false): array
     {
         global $LANG, $pdoDb;
 
-        $product_attributes = array();
+        $productAttributes = [];
         try {
-            $pdoDb->setSelectList(array(
+            $pdoDb->setSelectList([
                 'pa.id',
                 'pa.name',
                 'pa.type_id',
                 'pa.enabled',
                 'pa.visible',
                 new DbField('pat.name', 'type_name')
-            ));
+            ]);
 
-            $connector = (isset($id) && $enabled ? 'AND' : '');
+            $connector = isset($id) && $enabled ? 'AND' : '';
             if ($enabled) {
                 $pdoDb->addSimpleWhere('enabled', ENABLED, $connector);
             }
@@ -66,12 +70,12 @@ class ProductAttributes {
             $pdoDb->addToJoins($jn);
 
             $ca = new CaseStmt("visible", "visible_text");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
             $ca = new CaseStmt("enabled", "enabled_text");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
@@ -79,28 +83,29 @@ class ProductAttributes {
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['name'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['name'];
-                $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
-                $row['visible_image'] = ($row['visible'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
-                $product_attributes[] = $row;
+                $row['enabled_image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
+                $row['visible_image'] = $row['visible'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
+                $productAttributes[] = $row;
             }
         } catch (PdoDbException $pde) {
             error_log("ProductAttributes::getOne() - id[$id] error: " . $pde->getMessage());
         }
 
-        if (empty($product_attributes)) {
-            return array();
+        if (empty($productAttributes)) {
+            return [];
         }
-        return (isset($id) ? $product_attributes[0] : $product_attributes);
+        return isset($id) ? $productAttributes[0] : $productAttributes;
     }
 
     /**
      * Get matrix of product attributes.
      * @return array Matrix values array of <i>product_attributes</i> with associated <i>products_values</i>.
      */
-    public static function getMatrix() {
+    public static function getMatrix(): array
+    {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $fn = new FunctionStmt(null, "CONCAT(a.id, '-', v.id)", "id");
             $pdoDb->addToFunctions($fn);
@@ -124,7 +129,8 @@ class ProductAttributes {
      * Note: DO NOT include the 'id' field in the $_POST as it is auto assigned.
      * @return int 0 if insert failed, otherwise the 'id' assigned to the new row.
      */
-    public static function insert() {
+    public static function insert(): int
+    {
         global $pdoDb;
 
         $result = 0;
@@ -140,7 +146,8 @@ class ProductAttributes {
      * Update the product_attributes record from values in $_POST global for
      * the "id" in the $_GET['id'] global.
      */
-    public static function update() {
+    public static function update(): bool
+    {
         global $pdoDb;
 
         $result = false;

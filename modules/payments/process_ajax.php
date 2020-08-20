@@ -1,5 +1,6 @@
 <?php
 
+use Inc\Claz\Invoice;
 use Inc\Claz\Util;
 
 /*
@@ -14,7 +15,7 @@ Util::allowDirectAccess();
 
 //if this page has error with auth remove the above line and figure out how to do it right
 
-$lines = array();
+$lines = [];
 $invoices = Invoice::getInvoicesWithHtmlTotals($_GET["q"]);
 foreach($invoices as $invoice) {
     $total = Util::htmlsafe(number_format($invoices['total'],2));

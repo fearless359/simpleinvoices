@@ -19,7 +19,7 @@ if ($op === 'add') {
     if (PaymentType::insert()) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
     }
-} else if ($op === 'edit') {
+} elseif ($op === 'edit') {
     if (PaymentType::update($_GET['id'])) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
     }

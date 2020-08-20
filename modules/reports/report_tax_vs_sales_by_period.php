@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode */
 
 use Inc\Claz\DbField;
 use Inc\Claz\DomainId;
@@ -28,13 +28,13 @@ global$pdoDb, $smarty;
 
 Util::directAccessAllowed();
 
-$domain_id = DomainId::get();
+$domainId = DomainId::get();
 
 // Get earliest invoice date
-$rows = array();
+$rows = [];
 try {
     $pdoDb->addToFunctions(new FunctionStmt("MIN", new DbField("date"), 'date'));
-    $pdoDb->addSimpleWhere("domain_id", $domain_id);
+    $pdoDb->addSimpleWhere("domain_id", $domainId);
 
     $rows = $pdoDb->request("SELECT", "invoices");
 } catch (PdoDbException $pde) {
@@ -48,21 +48,21 @@ if (empty($rows)) {
 }
 
 // Get total for each month of each year from first invoice
-$this_year = date('Y');
+$thisYear = date('Y');
 
 // loop for each year
-$total_sales    = array();
-$tax_summary    = array();
-$total_payments = array();
-$years          = array();
-while($year <= $this_year) {
+$totalSales    = [];
+$taxSummary    = [];
+$totalPayments = [];
+$years         = [];
+while($year <= $thisYear) {
     // loop for each month
-    for ($i = 1; $i <= 12; $i++) {
+    for ($idx = 1; $idx <= 12; $idx++) {
         // make month nice for mysql - accounts table doesn't like it if not 08 etc..
-        if ($i < 10) {
-            $month = "0" . $i;
+        if ($idx < 10) {
+            $month = "0" . $idx;
         } else {
-            $month = $i;
+            $month = $idx;
         }
 
         try {
@@ -92,14 +92,14 @@ while($year <= $this_year) {
         }
 
         if (empty($rows)) {
-            $month_totals = 0;
+            $monthTotals = 0;
         } else {
-            $month_totals = $rows[0]['month_total'];
+            $monthTotals = $rows[0]['month_total'];
         }
 
-        $total_sales[$year][$month] = $month_totals;
-        if (empty($total_sales[$year][$month])) {
-            $total_sales[$year][$month] = "-";
+        $totalSales[$year][$month] = $monthTotals;
+        if (empty($totalSales[$year][$month])) {
+            $totalSales[$year][$month] = "-";
         }
 
         // Payment
@@ -130,14 +130,14 @@ while($year <= $this_year) {
         }
 
         if (empty($rows)) {
-            $month_total_payments = 0;
+            $monthTotalPayments = 0;
         } else {
-            $month_total_payments = $rows[0]['month_total_payments'];
+            $monthTotalPayments = $rows[0]['month_total_payments'];
         }
 
-        $tax_summary[$year][$month] = $month_totals - $month_total_payments;
+        $taxSummary[$year][$month] = $monthTotals - $monthTotalPayments;
         if (empty($total_summary[$year][$month])) {
-            $tax_summary[$year][$month] = "-";
+            $taxSummary[$year][$month] = "-";
         }
     }
 
@@ -159,20 +159,20 @@ while($year <= $this_year) {
         $jn->addSimpleItem('i.domain_id', new DbField('p.domain_id'));
         $pdoDb->addToJoins($jn);
 
-        $pdoDb->addSimpleWhere('ii.domain_id', $domain_id, 'AND');
+        $pdoDb->addSimpleWhere('ii.domain_id', $domainId, 'AND');
         $pdoDb->addSimpleWhere('p.status', ENABLED, 'AND');
         $pdoDb->addToWhere(new WhereItem(false, 'i.date', 'LIKE', "{$year}%", false));
 
         $rows = $pdoDb->request('SELECT', 'invoice_item_tax', 'iit');
-        $year_total = (empty($rows) ? 0 : $rows[0]['year_total']);
+        $yearTotal = empty($rows) ? 0 : $rows[0]['year_total'];
     } catch (PdoDbException $pde) {
         error_log('report_tax_vs_sales_by_period.php - error(4): ' . $pde->getMessage());
-        $year_total = 0;
+        $yearTotal = 0;
     }
 
-    $total_sales[$year]['Total'] = $year_total;
-    if (empty($total_sales[$year]['Total'])) {
-        $total_sales[$year]['Total'] = "-";
+    $totalSales[$year]['Total'] = $yearTotal;
+    if (empty($totalSales[$year]['Total'])) {
+        $totalSales[$year]['Total'] = "-";
     }
 
     // Payment
@@ -183,33 +183,33 @@ while($year <= $this_year) {
         $jn->addSimpleItem('e.id', new DbField('et.expense_id'));
         $pdoDb->addToJoins($jn);
 
-        $pdoDb->addSimpleWhere('e.domain_id', $domain_id, 'AND');
+        $pdoDb->addSimpleWhere('e.domain_id', $domainId, 'AND');
         $pdoDb->addToWhere(new WhereItem(false, 'e.date', 'LIKE', "{$year}%", false));
 
         $rows = $pdoDb->request('SELECT', 'expense_item_tax', 'et');
-        $year_total_payments = (empty($rows) ? 0 : $rows['year_total_payments']);
+        $yearTotalPayments = empty($rows) ? 0 : $rows['year_total_payments'];
     } catch (PdoDbException $pde) {
         error_log('report_tax_vs_sales_by_period.php - error(5): ' . $pde->getMessage());
-        $year_total_payments = 0;
+        $yearTotalPayments = 0;
     }
 
-    $total_payments[$year]['Total'] = $year_total_payments;
-    if (empty($total_payments[$year]['Total'])) {
-        $total_payments[$year]['Total'] = "-";
+    $totalPayments[$year]['Total'] = $yearTotalPayments;
+    if (empty($totalPayments[$year]['Total'])) {
+        $totalPayments[$year]['Total'] = "-";
     }
     
-    $tax_summary[$year]['Total'] = $year_tota - $year_total_payments;
-    if (empty($tax_summary[$year]['Total'])) {
-        $tax_summary[$year]['Total'] = "-";
+    $taxSummary[$year]['Total'] = $yearTotal - $yearTotalPayments;
+    if (empty($taxSummary[$year]['Total'])) {
+        $taxSummary[$year]['Total'] = "-";
     }
 
     $years[] = $year;
     $year++;
 }
 
-$smarty->assign('total_sales', $total_sales);
-$smarty->assign('total_payments', $total_payments);
-$smarty->assign('tax_summary', $tax_summary);
+$smarty->assign('total_sales', $totalSales);
+$smarty->assign('total_payments', $totalPayments);
+$smarty->assign('tax_summary', $taxSummary);
 // $years = array(2006,2007,2008);
 $years = array_reverse($years);
 $smarty->assign('years', $years);

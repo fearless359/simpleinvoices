@@ -1,65 +1,43 @@
 <?php
-/**
- * @name Setup.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20181115
- */
 
 namespace Inc\Claz;
+
+use Exception;
+use Zend_Config_Ini;
+use Zend_Log;
 
 include_once 'vendor/autoload.php';
 include_once 'config/define.php';
 
+/**
+ * Class Setup
+ * @package Inc\Claz
+ */
 class Setup
 {
-    /**
-     * Add directories to include files from to the path.
-     * TODO: Use namespace for all and eliminate this.
-     */
-    public static function setPath()
-    {
-        $lcl_path = get_include_path() .
-            PATH_SEPARATOR . "./library/" .
-            PATH_SEPARATOR . "./include/";
-        if (set_include_path($lcl_path) === false) {
-            error_log("Error reported by set_include_path() for path: {$lcl_path}");
-        }
-    }
+    private DbInfo $dbInfo;
+    private PdoDb $pdoDb;
+    private PdoDb $pdoDbAdmin;
+    private Zend_Config_Ini $zendConfigIni;
 
     /**
-     * @param bool $updateCustomConfig true if you want custom.config.php updated with new
-     *              values from config.php. false if it should not be updated.
-     * @param object &$config
-     * @param DbInfo &$dbInfo
-     * @param PdoDb &$pdoDb
-     * @param PdoDb &$pdoDb_admin
+     * Setup constructor.
+     * @param bool $updateCustomConfig
      * @throws PdoDbException
+     * @throws Exception
      */
-    public static function init($updateCustomConfig, &$config, &$dbInfo, &$pdoDb, &$pdoDb_admin)
+    public function __construct(bool $updateCustomConfig)
     {
-        try {
-            $config = Config::init(CONFIG_SECTION, $updateCustomConfig);
-        } catch (\Exception $e) {
-            echo "<h1 style='font-weight:bold;color:red;'>";
-            echo "  " . $e->getMessage() . " (Error code: {$e->getCode()})";
-            echo "</h1>";
-        }
+        $this->zendConfigIni = Config::init(CONFIG_SECTION, $updateCustomConfig);
 
-        $logger_level = (isset($config->zend->logger_level) ? strtoupper($config->zend->logger_level) : 'EMERG');
-        Log::open($logger_level);
-        Log::out("Setup::init() - logger has been setup", \Zend_Log::DEBUG);
+        $loggerLevel = isset($this->zendConfigIni->zend->logger_level) ? strtoupper($this->zendConfigIni->zend->logger_level) : 'EMERG';
+        Log::open($loggerLevel);
+        Log::out("Setup::init() - logger has been setup", Zend_Log::DEBUG);
 
         try {
-            $dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX);
-
-            $pdoDb = new PdoDb($dbInfo);
-            $pdoDb->clearAll(); // to eliminate never used warning.
-
-            // For use by admin functions only. This avoids issues of
-            // concurrent use with user app object, <i>$pdoDb</i>.
-            $pdoDb_admin = new PdoDb($dbInfo);
-            $pdoDb_admin->clearAll();
+            $this->dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX);
+            $this->pdoDb = new PdoDb($this->dbInfo);
+            $this->pdoDbAdmin = new PdoDb($this->dbInfo);
         } catch (PdoDbException $pde) {
             if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
                 echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
@@ -84,12 +62,34 @@ class Setup
             throw new PdoDbException($pde->getMessage());
         }
 
-        date_default_timezone_set($config->phpSettings->date->timezone);
-        error_reporting($config->debug->error_reporting);
+        date_default_timezone_set($this->zendConfigIni->phpSettings->date->timezone);
+        error_reporting($this->zendConfigIni->debug->error_reporting);
 
-        ini_set('display_startup_errors', $config->phpSettings->display_startup_errors);
-        ini_set('display_errors',         $config->phpSettings->display_errors);
-        ini_set('log_errors',             $config->phpSettings->log_errors);
-        ini_set('error_log',              $config->phpSettings->error_log);
+        ini_set('display_startup_errors', $this->zendConfigIni->phpSettings->display_startup_errors);
+        ini_set('display_errors', $this->zendConfigIni->phpSettings->display_errors);
+        ini_set('log_errors', $this->zendConfigIni->phpSettings->log_errors);
+        ini_set('error_log', $this->zendConfigIni->phpSettings->error_log);
+
     }
+
+    public function getConfig(): Zend_Config_Ini
+    {
+        return $this->zendConfigIni;
+    }
+
+    public function getDbInfo(): DbInfo
+    {
+        return $this->dbInfo;
+    }
+
+    public function getPdoDb(): PdoDb
+    {
+        return $this->pdoDb;
+    }
+
+    public function getPdoDbAdmin(): PdoDb
+    {
+        return $this->pdoDbAdmin;
+    }
+
 }

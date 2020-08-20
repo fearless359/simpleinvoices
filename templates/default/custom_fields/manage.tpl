@@ -54,12 +54,12 @@
     <div class="si_help_div">
         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_what_are_custom_fields" title="{$LANG.what_are_custom_fields}">
             {$LANG.what_are_custom_fields}
-            <img src="{$help_image_path}help-small.png" alt=""/>
+            <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
         ::
         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_manage_custom_fields" title="{$LANG.whats_this_page_about}">
             {$LANG.whats_this_page_about}
-            <img src="{$help_image_path}help-small.png" alt=""/>
+            <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
     </div>
 {/if}

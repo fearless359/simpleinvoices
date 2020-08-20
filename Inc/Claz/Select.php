@@ -1,35 +1,41 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class Select
  * @package Inc\Claz
  */
-class Select {
-    private $alias;
-    private $fromStmt;
-    private $groupBy;
-    private $joins;
+class Select
+{
+    private string $alias;
+    private FromStmt $fromStmt;
+    private GroupBy $groupBy;
+    private array $joins;
     private $list;
-    private $token_cnt;
-    private $whereClause;
+    private int $tokenCnt;
+    private WhereClause $whereClause;
 
     /**
      * Class constructor
-     * @param FunctionStmt/array $list One of several objects.
+     * @param FunctionStmt|CaseStmt|array $list One of several objects.
      *        <ol>
      *          <li><b>array()</b>: Ordered array of strings containing field names to include in the list.</li>
      *          <li><b>FunctionStmt</b> object</li>
      *          <li><b>CaseStmt</b> object</li>
      *        </ol>
-     * @param FromStmt $fromStmt (Optional) Table being selected from.
-     * @param WhereClause $whereClause (Optional - can be a WhereItem object). Constraints for the selection.
-     * @param GroupBy $groupBy (Optional) GroupBy object.
+     * @param FromStmt|null $fromStmt (Optional) Table being selected from.
+     * @param WhereClause|WhereItem|null $whereClause (Optional - can be a WhereItem object). Constraints for the selection.
+     * @param GroupBy|null $groupBy (Optional) GroupBy object.
      * @param string $alias (Optional) Alias to assign to the select statement.
      * @throws PdoDbException if invalid parameter types are submitted.
      */
-    public function __construct($list, $fromStmt = null, $whereClause = null, $groupBy = null, $alias = null) {
-        if (empty($list) || (!is_array($list) && !is_a($list, "Inc\Claz\FunctionStmt") && !is_a($list, "Inc\Claz\CaseStmt"))) {
+    public function __construct($list, ?FromStmt $fromStmt = null, $whereClause = null,
+                                ?GroupBy $groupBy = null, string $alias = "")
+    {
+
+        if (!is_array($list) && !is_a($list, "Inc\Claz\FunctionStmt") &&
+            !is_a($list, "Inc\Claz\CaseStmt")) {
             $str = "Select - __construct(): \$list parameter is not a non-empty, array or FunctionStmt object. ";
             error_log($str . print_r($list, true));
             throw new PdoDbException($str);
@@ -41,8 +47,9 @@ class Select {
             throw new PdoDbException($str);
         }
 
-        if (isset($whereClause) && !is_a($whereClause, "Inc\Claz\WhereClause")) {
-            if (!is_a($whereClause, "Inc\Claz\WhereItem")) {
+        if (isset($whereClause)) {
+            if (!is_a($whereClause, "Inc\Claz\WhereClause") &&
+                !is_a($whereClause, "Inc\Claz\WhereItem")) {
                 $str = "Select - __construct(): \$whereClause parameter is not a \"WhereClause\" object. ";
                 error_log($str . print_r($whereClause, true));
                 throw new PdoDbException($str);
@@ -52,27 +59,28 @@ class Select {
 
         if (isset($groupBy) && !is_a($groupBy, "Inc\Claz\GroupBy")) {
             $str = "Select - __construct(): \$groupBy parameter is not a non-empty, GroupBy object. ";
-            error_log($str . print_r($fromStmt, true));
+            error_log($str . print_r($groupBy, true));
             throw new PdoDbException($str);
         }
 
         $this->list = $list;
-        $this->fromStmt = $fromStmt;
-        $this->whereClause = $whereClause;
-        $this->groupBy = $groupBy;
-        $this->joins = null;
+        $this->fromStmt = isset($fromStmt) ? $fromStmt : new FromStmt();
+        $this->whereClause = isset($whereClause) ? $whereClause : new WhereClause();
+        $this->groupBy = isset($groupBy) ? $groupBy : new GroupBy();
+        $this->joins = [];
         $this->alias = $alias;
-        $this->token_cnt = 0;
+        $this->tokenCnt = 0;
     }
 
     /**
-     * getter for $token_cnt.
+     * getter for $tokenCnt.
      * Note that the current token count value has <b>NOT</b> been used to
      * make a unique token.
-     * @return integer Current token count value.
+     * @return int Current token count value.
      */
-    public function getTokenCnt() {
-        return $this->token_cnt;
+    public function getTokenCnt(): int
+    {
+        return $this->tokenCnt;
     }
 
     /**
@@ -80,22 +88,24 @@ class Select {
      * @param Join $join <b>JOIN</b> statement to include.
      * @throws PdoDbException
      */
-    public function addJoin(Join $join) {
+    public function addJoin(Join $join): void
+    {
         if (!is_a($join, "Inc\Claz\Join")) {
             error_log("Select - addJoin(): Invalid parameter type. " . print_r($join, true));
             throw new PdoDbException("Select - addJoin(): Parameter is not a <b>JOIN</b> statement. See error log for details.");
         }
-        if (empty($this->joins)) $this->joins = array();
+
         $this->joins[] = $join;
     }
 
     /**
      * Build select statement.
-     * @param mixed $keyPairs
+     * @param array|null $keyPairs
      * @return string <b>SELECT</b> statement created by specified values.
      * @throws PdoDbException
      */
-    public function build(&$keyPairs) {
+    public function build(?array &$keyPairs)
+    {
         $select = "(SELECT ";
 
         if (is_array($this->list)) {
@@ -109,19 +119,19 @@ class Select {
 
                 if (is_object($item)) {
                     if (is_a($item, "Inc\Claz\DbField")) {
-                            $select .= $item->genParm();
+                        $select .= $item->genParm();
                     } else {
-                        $select .= $item->build($keyPairs);
+                        $select .= $item->build();
                     }
                 } else {
                     $select .= PdoDb::formatField($item);
                 }
             }
         } else {
-            $select .= $this->list->build($keyPairs);
+            $select .= $this->list->build();
         }
 
-        if (!empty($this->fromStmt)) {
+        if (!$this->fromStmt->isEmpty()) {
             $select .= " " . $this->fromStmt->build();
         }
 
@@ -130,12 +140,13 @@ class Select {
                 $select .= " " . $join->build($keyPairs);
             }
         }
-        if (!empty($this->whereClause)) {
+
+        if (!$this->whereClause->isEmpty()) {
             $select .= " " . $this->whereClause->build($keyPairs);
-            $this->token_cnt += $this->whereClause->getTokenCnt();
+            $this->tokenCnt += $this->whereClause->getTokenCnt();
         }
 
-        if (!empty($this->groupBy)) {
+        if (!$this->groupBy->isEmpty()) {
             $select .= " " . $this->groupBy->build();
         }
         $select .= ")";

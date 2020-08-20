@@ -12,14 +12,14 @@
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=expense_account&amp;view=add">
         <input type="hidden" name="op" value="insert"/>
-        <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
+        <input type="hidden" name="domain_id" value="{if isset($domainId)}{$domainId}{/if}"/>
         <br/>
         <table class="center">
             <tr>
                 <td class="details_screen">{$LANG.name}
                     <a class="cluetip" href="#" title="{$LANG.required_field}"
                        rel="index.php?module=documentation&amp;view=view&amp;page=help_expense_accounts">
-                        <img src="{$help_image_path}required-small.png" alt=""/>
+                        <img src="{$helpImagePath}required-small.png" alt=""/>
                     </a>
                     &nbsp;
                 </td>

@@ -25,12 +25,12 @@ if ($op == 'add') {
         }
     }
 
-} else if ($op == 'edit') {
+} elseif ($op == 'edit') {
     if ($_POST['orig_description'] != $_POST['tax_description'] &&
         Taxes::verifyExists($_POST['tax_description'])) {
         $display_block = "<div class=\"si_message_error\">{$LANG['duplicate_tax_description']}</div>";
         $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=details&amp;id={$_GET['id']}&amp;action=edit' />";
-    } else if (Taxes::updateTaxRate()) {
+    } elseif (Taxes::updateTaxRate()) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
     }
 }

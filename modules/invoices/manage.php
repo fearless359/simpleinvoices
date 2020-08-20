@@ -13,19 +13,19 @@ use Inc\Claz\Util;
  * Website:
  * https://simpleinvoices.group
  */
-global $smarty;
+global $authSession, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$having = (isset($_GET['having'])) ? $_GET['having'] : "";
+$having = isset($_GET['having']) ? $_GET['having'] : "";
 
 // If user role is customer or biller, then restrict invoices to those they have access to.
 // Make customer access read only. Billers change work only on those invoices generated for them.
-$read_only = ($auth_session->role_name == 'customer');
+$readOnly = $authSession->role_name == 'customer';
 
 $invoices = Invoice::getAllWithHavings($having, '', '', true);
-$data = json_encode(array('data' => $invoices));
+$data = json_encode(['data' => $invoices]);
 if (file_put_contents("public/data.json", $data) === false) {
     die("Unable to create public/data.json file");
 }

@@ -5,7 +5,7 @@ use Inc\Claz\PdoDbException;
 use Inc\Claz\SiLocal;
 use Inc\Claz\Util;
 
-global $pdoDb, $auth_session;
+global $pdoDb, $authSession;
 
 $row_id = Util::htmlsafe($_GET['row']);
 $id = $_GET['id'];
@@ -14,7 +14,7 @@ if (!empty($id)) {
     $rows = array();
     try {
         $pdoDb->addSimpleWhere("id", $id, "AND");
-        $pdoDb->addSimpleWhere("domain_id", $auth_session->domain_id);
+        $pdoDb->addSimpleWhere("domain_id", $authSession->domain_id);
         $pdoDb->setLimit(1);
         $rows = $pdoDb->request("SELECT", "products");
     } catch (PdoDbException $pde) {
@@ -71,11 +71,11 @@ if (!empty($id)) {
                             }
                             $html .= "           </select>";
                             $html .= "         </td>";
-                        } else if ($attr_name['type'] == 'free') {
+                        } elseif ($attr_name['type'] == 'free') {
                             $html .= "        <td>" . $attr_name['name'];
                             $html .= "          <input name='attribute[$row_id][$k]' />";
                             $html .= "        </td>";
-                        } else if ($attr_name['type'] == 'decimal') {
+                        } elseif ($attr_name['type'] == 'decimal') {
                             $html .= "        <td>" . $attr_name['name'];
                             $html .= "          <input name='attribute[$row_id][$k]' size='5'/>";
                             $html .= "        </td>";

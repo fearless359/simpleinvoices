@@ -1,6 +1,6 @@
 <?php
 
-//function smarty_function_do_tr($params, &$smarty)
+//function smartyFunctionsDoTr($params, &$smarty)
 /**
 * Function: merge_address
 * 

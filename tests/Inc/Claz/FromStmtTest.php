@@ -6,19 +6,31 @@
  * Created: 20190310
  */
 
-namespace test\Inc\Claz;
+namespace Inc\Claz;
 
-use Inc\Claz\FromStmt;
 use PHPUnit\Framework\TestCase;
 
+const TB_PREFIX = "si_";
+
+/**
+ * Class FromStmtTest
+ * @package Inc\Claz
+ */
 class FromStmtTest extends TestCase
 {
-
     public function testBuild()
     {
-        $fr = new FromStmt("myTable", "myAlias");
-        $fr->addTable("myTable2", "myAlias2");
+        $fr = new FromStmt();
+        static::assertTrue($fr->isEmpty(), "Failed FromStmtTest build of empty table.");
+
+        $fr->addTable("myTable", "myAlias");
         $result = $fr->build();
-        $this->assertEquals("FROM `si_myTable` `myAlias`, `si_myTable2` `myAlias2`", $result);
+        static::assertEquals("FROM `si_myTable` `myAlias`", $result,
+            "Failed FromStmtTest addTable() & build()");
+
+        $fr = new FromStmt("myTable2", "myAlias2");
+        $result = $fr->build();
+        static::assertEquals("FROM `si_myTable2` `myAlias2`", $result,
+            "Failed FromStmtTest FromStmt() & build()");
     }
 }

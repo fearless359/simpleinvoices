@@ -1,14 +1,14 @@
 <?php
 function smarty_function_online_payment_link($params, &$smarty) {
 	global $LANG;
-	$domain_id = domain_id::get($params['domain_id']);
+	$domainId = domain_id::get($params['domain_id']);
 
 	$url = getURL();
         if (in_array("paypal",explode(",", $params['type'])))
 	{
 
 		$link = "<a 
-				href=\"https://www.paypal.com/xclick/?business=".urlencode($params['business'])."&item_name=".urlencode($params['item_name'])."&invoice=".urlencode($params['invoice'])."&amount=".urlencode(number_format($params['amount'], 2, '.', ''))."&currency_code=".urlencode($params['currency_code'])."&notify_url=".urlencode($params['notify_url'])."&return=".urlencode($params['return_url'])."&no_shipping=1&no_note=1&custom=domain_id:".urlencode($domain_id)."; \">";
+				href=\"https://www.paypal.com/xclick/?business=".urlencode($params['business'])."&item_name=".urlencode($params['item_name'])."&invoice=".urlencode($params['invoice'])."&amount=".urlencode(number_format($params['amount'], 2, '.', ''))."&currency_code=".urlencode($params['currency_code'])."&notify_url=".urlencode($params['notify_url'])."&return=".urlencode($params['return_url'])."&no_shipping=1&no_note=1&custom=domain_id:".urlencode($domainId)."; \">";
 		
 		if($params['include_image'] == "true")
 		{

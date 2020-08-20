@@ -14,7 +14,7 @@ if ($_POST['action'] == "register") {
     if (Extensions::insert() > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
     }
-} else if ($_POST['action'] == "unregister") {
+} elseif ($_POST['action'] == "unregister") {
     $extension_id = $_POST['id'];
     if (Extensions::delete($extension_id)) {
         if (SystemDefaults::delete($extension_id)) {

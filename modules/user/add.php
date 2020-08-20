@@ -26,9 +26,9 @@ global $smarty;
 Util::directAccessAllowed();
 
 if (!empty($_POST['username'])) {
-    include ("modules/user/save.php");
+    include "modules/user/save.php";
 } else {
-    $smarty->assign('username_pattern', User::$username_pattern);
+    $smarty->assign('usernamePattern', User::$usernamePattern);
     $smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
 
     $smarty->assign('pageActive', 'user');

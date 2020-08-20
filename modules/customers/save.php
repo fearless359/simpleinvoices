@@ -51,7 +51,7 @@ if (!$error) {
         if (Customer::insertCustomer($excludeCreditCardNumber)) {
             $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }
-    } else if ($op === 'edit') {
+    } elseif ($op === 'edit') {
         if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
             $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }

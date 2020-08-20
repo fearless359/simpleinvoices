@@ -10,17 +10,17 @@ $debug = false;
 $file = "databases/json/sample_data.json";
 // Note that the "si_" in the find list is replaced by TB_PREFIX which by default is "si_".
 // However, it could be another value and the replacement supports this option.
-$find = array('si_','DOMAIN-ID','LOCALE','LANGUAGE');
-$replace = array(TB_PREFIX,'1','en_US','en_US');
+$find = ['si_','DOMAIN-ID','LOCALE','LANGUAGE'];
+$replace = [TB_PREFIX,'1','en_US','en_US'];
 
-$sample_json = new ImportJson($file, $find, $replace, $debug);
-error_log("sample_json - " . print_r($sample_json, true));
-$collated = $sample_json->collate();
+$sampleJson = new ImportJson($file, $find, $replace, $debug);
+error_log("sample_json - " . print_r($sampleJson, true));
+$collated = $sampleJson->collate();
 error_log("================================================");
 error_log("collated - " . print_r($collated, true));
 try {
     $pdoDb->query($collated);
-    $display_block =
+    $displayBlock =
         '<div style="margin:0 auto 40px auto;width:50%;text-align:left;">' .
             '<p>Sample data has been successfully imported. You are now able to begin ' .
                 'testing SimpleInvoices. When you have completed your test and want to ' .
@@ -40,12 +40,12 @@ try {
 
 } catch (PdoDbException $pde) {
     error_log("sample_data.php: " . $pde->getMessage());
-    $display_block =
+    $displayBlock =
         '<div class="si_message_error">' .
             '<p>Something bad happened. Sample data has NOT been imported into SimpleInvoices</p>' .
             '<p>Check the error log for information about this issue</p>' .
         '</div>';
 }
 
-$smarty->assign('display_block', $display_block);
+$smarty->assign('display_block', $displayBlock);
 

@@ -6,7 +6,7 @@
  *          <a class="cluetip" href="#"
  *             rel="index.php?module=documentation&amp;view=view&amp;page=help_company_logo"
  *             title="{$LANG.company_logo}">
- *            <img src="{$help_image_path}help-small.png" alt="" />
+ *            <img src="{$helpImagePath}help-small.png" alt="" />
  *          </a>
  *
  *  2) Custom help messages specified in on the page in the 'help' attribute in the
@@ -14,7 +14,7 @@
  *          <a class="cluetip" href="#"
  *             rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
  *             title="{$LANG.custom_flags_upper}">
- *            <img src="{$help_image_path}help-small.png" alt="" />
+ *            <img src="{$helpImagePath}help-small.png" alt="" />
  *          </a>
  */
 global $LANG, $smarty;

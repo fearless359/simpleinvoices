@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -6,28 +7,31 @@ namespace Inc\Claz;
  * @author Rich
  * Jul 21, 2016
  */
-class DbField {
-    private $alias;
-    private $field;
+class DbField
+{
+    private string $alias;
+    private string $field;
 
     /**
      * Class constructor
-     * @param string/int $field Field name or integer constant.
+     * @param string $field Field name or integer constant.
      * @param string $alias (Optional) Alias for this field. Specify only if needed.
      */
-    public function __construct($field, $alias="") {
+    public function __construct(string $field, string $alias = "")
+    {
         $this->field = $field;
         $this->alias = $alias;
     }
 
     /**
      * Generate the parameter for this field to use in SQL statements.
-     * @param boolean $aliasOnly (Optional) <b>true</b> if specified, only the alias
+     * @param bool $aliasOnly (Optional) <b>true</b> if specified, only the alias
      *        is returned. <b>false</b> (default) the full phrase is returned.
      *        The <b>true</b> setting is for generating the <i>GROUP BY</i> statement.
      * @return string Field name encapsulated in back-tic for use in SQL statement.
      */
-    public function genParm($aliasOnly=false) {
+    public function genParm(bool $aliasOnly = false): string
+    {
         if (is_int($this->field)) {
             $result = $this->field;
         } else {

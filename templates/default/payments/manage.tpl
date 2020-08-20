@@ -23,8 +23,8 @@
     </a>
 {/if}
 </div>
-{if $number_of_rows == 0}
-    <div class="si_message">{$no_entry_msg}</div>
+{if $numberOfRows == 0}
+    <div class="si_message">{$noEntryMsg}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
@@ -49,15 +49,15 @@
                 "deferRender": true,
                 "columns": [
                     { "data": "action" },
-                    { "data": "payment_id" },
-                    { "data": "invoice_id" },
+                    { "data": "paymentId" },
+                    { "data": "invoiceId" },
                     { "data": "customer" },
                     { "data": "biller" },
                     { "data": "amount",
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
-                                'currency': row['currency_code']
+                                'currency': row['currencyCode']
                             });
                             return formatter.format(data);
                         }
@@ -65,7 +65,8 @@
                     { "data": "type" },
                     { "data": "date",
                         "render": function(data, type, row) {
-                            return data.replace(/^(.*) .*$/, '$1');
+                            var dtParts = data.split(' ');
+                            return dtParts[0];
                         } },
                 ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],

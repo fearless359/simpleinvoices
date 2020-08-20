@@ -6,20 +6,29 @@
  * Created: 20190314
  */
 
-namespace test\Inc\Claz;
+namespace Inc\Claz;
 
-use Inc\Claz\OnItem;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class OnItemTest
+ * @package Inc\Claz
+ */
 class OnItemTest extends TestCase
 {
 
     public function testOnItemClass()
     {
-        $oi = new OnItem(true, 'db_field', "=", 10, false, 'OR');
-        $stmt = $oi->build($cnt, $keyPairs);
-        $this->assertEquals("(`db_field` = :db_field_000  OR ", $stmt, 'OnItem build test failed');
-        $this->assertEquals(1, $cnt, 'OnItem cnt test failed');
-        $this->assertEquals(10, $keyPairs[':db_field_000'], 'OnItem keyPairs test failed');
+        try {
+            $oi = new OnItem(true, 'db_field', "=", 10, false, 'OR');
+            $cnt = 0;
+            $keyPairs = [];
+            $stmt = $oi->build($cnt, $keyPairs);
+            static::assertEquals("(`db_field` = :db_field_000  OR ", $stmt, 'OnItem build test failed');
+            static::assertEquals(1, $cnt, 'OnItem cnt test failed');
+            static::assertEquals(10, $keyPairs[':db_field_000'], 'OnItem keyPairs test failed');
+        } catch (PdoDbException $pde) {
+            static::assertTrue(false, "testOnItemCLass() Unexpected error thrown. Error: {$pde->getMessage()}");
+        }
     }
 }

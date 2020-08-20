@@ -31,11 +31,13 @@
                 <th>{$LANG.date_formatted}</th>
                 {if !isset($invoice.id)}
                     <td>
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" size="10" class="date-picker" name="date" id="date1"
                                value="{$smarty.now|date_format:'%Y-%m-%d'}"/>
                     </td>
                 {else}
                     <td>
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" size="10" class="date-picker" name="date" id="date1"
                                value="{if isset($invoice.calc_date)}{$invoice.calc_date|htmlsafe}{/if}"/>
                     </td>
@@ -47,6 +49,7 @@
                     {if !isset($billers) }
                         <em>{$LANG.no_billers}</em>
                     {else}
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="biller_id">
                             {foreach from=$billers item=biller}
                                 <option {if $biller.id == $invoice.biller_id} selected {/if}
@@ -62,6 +65,7 @@
                     {if !isset($customers)}
                         <em>{$LANG.no_customers}</em>
                     {else}
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="customer_id">
                             {foreach from=$customers item=customer}
                                 <option {if $customer.id == $invoice.customer_id} selected {/if}
@@ -71,18 +75,6 @@
                     {/if}
                 </td>
             </tr>
-            {* TODO: implement status
-            <tr>
-              <th>Invoice Status</th>
-              <td>
-                <select name="status_id">
-                  <option value="0">New</option>
-                  <option {if $invoice.status_id == 1} selected{/if} value="1">Sent</option>
-                  <option {if $invoice.status_id == 2} selected{/if} value="1">Paid</option>
-                </select>
-              </td>
-            </tr>
-            *}
         </table>
         {if $invoice.type_id == TOTAL_INVOICE }
             <table id="itemtable" class="si_invoice_items">
@@ -91,7 +83,7 @@
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="5">
-{*                        <textarea class="editor" name="description0">{$invoiceItems[0].description|outhtml}</textarea>*}
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <textarea name="description0" style="overflow:scroll;"
                                   id="description0" rows="3" cols="100%"
                                   data-row-num="0"
@@ -103,6 +95,7 @@
                 <tr>
                     <th>{$LANG.gross_total}</th>
                     <td>
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" class="si_right" name="unit_price0"
                                value="{$invoiceItems[0].unit_price|siLocal_number}" size="10"/>
                         <input type="hidden" name="quantity0" value="1"/>
@@ -116,6 +109,7 @@
                                 <tr>
                                     {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
                                         <td>
+                                            <!--suppress HtmlFormInputWithoutLabel -->
                                             <select id="tax_id[0][{$smarty.section.tax.index|htmlsafe}]"
                                                     name="tax_id[0][{$smarty.section.tax.index|htmlsafe}]">
                                                 <option value=""></option>
@@ -142,6 +136,7 @@
                         {if !isset($preferences) }
                             <em>{$LANG.no_preferences}</em>
                         {else}
+                            <!--suppress HtmlFormInputWithoutLabel -->
                             <select name="preference_id">
                                 {foreach from=$preferences item=preference}
                                     <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
@@ -152,6 +147,7 @@
                     </td>
                     <th>{$LANG.sales_representative}</th>
                     <td>
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <input id="sales_representative}" name="sales_representative" size="30"
                                value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
                     </td>
@@ -184,6 +180,7 @@
                             </a>
                         </td>
                         <td>
+                            <!--suppress HtmlFormInputWithoutLabel -->
                             <input class="si_right{if $line == 0} validate[required,min[.01],custom[number]]{/if}"
                                    type="text" name='quantity{$line|htmlsafe}' id='quantity{$line|htmlsafe}'
                                    data-row-num="{$line|htmlsafe}"
@@ -193,6 +190,7 @@
                             {if !isset($products) }
                                 <em>{$LANG.no_products}</em>
                             {else}
+                                <!--suppress HtmlFormInputWithoutLabel -->
                                 <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}"
                                         data-row-num="{$line|htmlsafe}"
                                         class="product_change{if $line == 0} validate[required]{/if}"
@@ -206,6 +204,7 @@
                         </td>
                         {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
                             <td>
+                                <!--suppress HtmlFormInputWithoutLabel -->
                                 <select id="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]"
                                         data-row-num="{$line|htmlsafe}"
                                         name="tax_id[{$line|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
@@ -219,6 +218,7 @@
                             </td>
                         {/section}
                         <td>
+                            <!--suppress HtmlFormInputWithoutLabel -->
                             <input type="text" class="si_right" id="unit_price{$line|htmlsafe}" name="unit_price{$line|htmlsafe}" size="7"
                                    data-row-num="{$line|htmlsafe}" value="{$invoiceItem.unit_price|siLocal_number}"/>
                         </td>
@@ -227,7 +227,8 @@
                     <tr class="details si_hide">
                         <td></td>
                         <td colspan="4">
-                        <textarea name="description{$line|htmlsafe}" style="overflow:scroll;"
+                        <!--suppress HtmlFormInputWithoutLabel -->
+                            <textarea name="description{$line|htmlsafe}" style="overflow:scroll;"
                                   id="description{$line|htmlsafe}" rows="3" cols="100%"
                                   data-row-num="{$line|htmlsafe}"
                                   data-description="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
@@ -258,10 +259,8 @@
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="4">
-                        <!--
-                        <textarea class="editor" name="note">{*$invoice.note|outhtml*}</textarea>
-                        -->
                         <input name="note" id="note" {if isset($invoice.note)}value="{$invoice.note|outhtml}"{/if} type="hidden">
+                        <!--suppress HtmlUnknownTag -->
                         <trix-editor input="note"></trix-editor>
                     </td>
                 </tr>
@@ -271,6 +270,7 @@
                         {if !isset($preferences) }
                             <em>{$LANG.no_preferences}</em>
                         {else}
+                            <!--suppress HtmlFormInputWithoutLabel -->
                             <select name="preference_id">
                                 {foreach from=$preferences item=preference}
                                     <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
@@ -281,6 +281,7 @@
                     </td>
                     <th>{$LANG.sales_representative}</th>
                     <td>
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" id="sales_representative}" name="sales_representative" size="30"
                                value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlsafe}{/if}"/>
                     </td>

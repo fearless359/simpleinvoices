@@ -25,7 +25,7 @@
     <span class="si_filters_title">
         <a class="cluetip" href="#" title="{$LANG.invoice_type}"
            rel="index.php?module=documentation&amp;view=view&amp;page=help_invoice_types">
-            <img class="" src="{$help_image_path}help-small.png" alt=""/>
+            <img class="" src="{$helpImagePath}help-small.png" alt=""/>
         </a>
     </span>
 </div>

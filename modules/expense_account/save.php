@@ -18,7 +18,7 @@ if ($op === 'insert') {
     if (ExpenseAccount::insert()) {
         $display_block = "<div class='si_message_ok'>{$LANG['save_expense_account_success']}</div>";
     }
-} else if ($op === 'edit') {
+} elseif ($op === 'edit') {
     if (ExpenseAccount::update()) {
         $display_block = "<div class='si_message_ok'>{$LANG['save_expense_account_success']}</div>";
     }

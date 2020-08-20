@@ -18,7 +18,7 @@ if ($op === 'add') {
     if (Inventory::insert() > 0) {
         $display_block = "<div class='si_message_ok'>{$LANG['save_inventory_success']}</div>";
     }
-} else if ($op === 'edit') {
+} elseif ($op === 'edit') {
     if (Inventory::update()) {
         $display_block = "<div class='si_message_ok'>{$LANG['save_inventory_success']}</div>";
     }

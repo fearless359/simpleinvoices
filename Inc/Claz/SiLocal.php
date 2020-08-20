@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 use Zend_Currency;
@@ -14,7 +15,7 @@ use Zend_Locale_Format;
  */
 class SiLocal
 {
-    const DATE_FORMAT_PARAMETER = "/(full|long|date_short|short|month|month_short|medium)/";
+    private const DATE_FORMAT_PARAMETER = "/(full|long|date_short|short|month|month_short|medium)/";
 
     /**
      * Format numbers.
@@ -25,7 +26,7 @@ class SiLocal
      * @param string $symbol Currency symbol. Defaults to no symbol used.
      * @return string Formatted number.
      */
-    public static function number($number, $precision = "", $locale = "", $symbol = "")
+    public static function number(string $number, string $precision = "", string $locale = "", string $symbol = ""): string
     {
         global $config;
 
@@ -33,7 +34,9 @@ class SiLocal
             try {
                 $locale = new Zend_Locale($config->local->locale);
             } catch (Zend_Locale_Exception $zle) {
-                error_log("SiLocal::numberTrim() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage());
+                $str = "SiLocal::numberTrim() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage();
+                error_log($str);
+                exit($str);
             }
         }
 
@@ -41,16 +44,19 @@ class SiLocal
             $precision = $config->local->precision;
         }
 
-        $formatted_number = $number;
         try {
-            $formatted_number = Zend_Locale_Format::toNumber($number, array('precision' => $precision, 'locale' => $locale));
+            $formattedNumber = Zend_Locale_Format::toNumber($number, ['precision' => $precision, 'locale' => $locale]);
         } catch (Zend_Locale_Exception $zle) {
-            error_log("SiLocal::number() - locale[{$config->local->locale}] (input number returned) error: " . $zle->getMessage());
+            $str = "SiLocal::number() - locale[{$config->local->locale}] (input number returned) error: " . $zle->getMessage();
+            error_log($str);
+            exit($str);
         }
 
-        if (!empty($symbol)) $formatted_number = $symbol . $formatted_number;
+        if (!empty($symbol)) {
+            $formattedNumber = $symbol . $formattedNumber;
+        }
 
-        return (empty($formatted_number) ? '0' : $formatted_number);
+        return empty($formattedNumber) ? '0' : $formattedNumber;
     }
 
     /**
@@ -62,7 +68,7 @@ class SiLocal
      * @param string $symbol Currency symbol to use. Optional, specify if want included in formatted number.
      * @return string Formatted string.
      */
-    public static function numberTrim($number, $precision = "", $locale = "", $symbol = "")
+    public static function numberTrim(string $number, string $precision = "", string $locale = "", string $symbol = ""): string
     {
         global $config;
 
@@ -70,27 +76,31 @@ class SiLocal
             try {
                 $locale = new Zend_Locale($config->local->locale);
             } catch (Zend_Locale_Exception $zle) {
-                error_log("SiLocal::numberTrim() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage());
+                $str = "SiLocal::numberTrim() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage();
+                error_log($str);
+                exit($str);
             }
         }
 
-        if (empty($precision)) $precision = $config->local->precision;
+        if (empty($precision)) {
+            $precision = $config->local->precision;
+        }
 
-        $formatted_number = self::number($number, $precision, $locale, $symbol);
+        $formattedNumber = self::number($number, $precision, $locale, $symbol);
 
         // Calculate the decimal point right offset.
-        $position = ($precision + 1) * (-1);
+        $position = ($precision + 1) * -1;
 
         // Get character in the decimal point position. Check if it is a
         // decimal point. If so, remove it if it is followed only by zeros.
         // Note this differs in that it won't trim trailing zeroes if there
         // are non-zero characters following the decimal point. (ex: 1.10 won't trim).
-        $chr = substr($formatted_number, $position, 1);
+        $chr = substr($formattedNumber, $position, 1);
         if ($chr == '.' || $chr == ',') {
-            $formatted_number = rtrim(trim($formatted_number, '0'), '.,');
+            $formattedNumber = rtrim(trim($formattedNumber, '0'), '.,');
         }
 
-        return (empty($formatted_number) ? '0' : $formatted_number);
+        return empty($formattedNumber) ? '0' : $formattedNumber;
     }
 
     /**
@@ -100,7 +110,7 @@ class SiLocal
      *          Optional, locale from $config file used if not specified.
      * @return string Formatted string.
      */
-    public static function currency($number, $locale = "")
+    public static function currency(string $number, string $locale = ""): string
     {
         global $config;
 
@@ -108,17 +118,20 @@ class SiLocal
             try {
                 $locale = new Zend_Locale($config->local->locale);
             } catch (Zend_Locale_Exception $zle) {
-                error_log("SiLocal::currency() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage());
+                $str = "SiLocal::currency() - locale[{$config->local->locale}] (default used) error: " . $zle->getMessage();
+                error_log($str);
+                exit($str);
             }
         }
 
-        $currency = 0;
         try {
-            $formatted_currency = New Zend_Currency($locale);
-            $currency = $formatted_currency->toCurrency($number);
+            $formattedCurrency = new Zend_Currency($locale);
+            $currency = $formattedCurrency->toCurrency($number);
         } catch (Zend_Currency_Exception $zce) {
-            error_log("SiLocal::currency() - locale[{$config->local->locale}] " .
-                "number[$number] - 0 returned. Error: " . $zce->getMessage());
+            $str = "SiLocal::currency() - locale[{$config->local->locale}] " .
+                "number[$number] - 0 returned. Error: " . $zce->getMessage();
+            error_log($str);
+            exit($str);
         }
         return $currency;
     }
@@ -128,20 +141,21 @@ class SiLocal
      * @param string $number
      * @return string Number formatted for database storage (ex: 12.345,67 converts to 12345.67)
      */
-    public static function dbStd($number)
+    public static function dbStd(string $number): string
     {
         global $config;
 
-        $new_number = $number;
         try {
             $locale = new Zend_Locale($config->local->locale);
-            $new_number = (empty($number) ? "0" : $number);
-            $new_number = Zend_Locale_Format::getNumber($new_number, ['locale' => $locale, 'precision' => $config->local->precision]);
+            $newNumber = empty($number) ? "0" : $number;
+            $newNumber = Zend_Locale_Format::getNumber($newNumber, ['locale' => $locale, 'precision' => $config->local->precision]);
         } catch (Zend_Locale_Exception $zle) {
-            error_log("SiLocal::dbStd() - locale[{$config->local->locale}] (input number returned) error: " . $zle->getMessage());
+            $str = "SiLocal::dbStd() - locale[{$config->local->locale}] (input number returned) error: " . $zle->getMessage();
+            error_log($str);
+            exit($str);
         }
 
-        return $new_number;
+        return $newNumber;
     }
 
     /**
@@ -166,13 +180,14 @@ class SiLocal
      *        Ex: en_US.
      * @return string <b>$date</b> formatted per option settings.
      */
-    public static function date($date, $date_format = "medium", $locale = "")
+    public static function date(string $date, string $date_format = "medium", string $locale = ""): string
     {
         global $config;
 
         if (!preg_match(self::DATE_FORMAT_PARAMETER, $date_format)) {
-            error_log("SiLocal::date() - Invalid date format, $date_format, specified.");
-            return '';
+            $str = "SiLocal::date() - Invalid date format, {$date_format}, specified.";
+            error_log($str);
+            exit($str);
         }
 
         try {
@@ -180,41 +195,44 @@ class SiLocal
                 $locale = new Zend_Locale($config->local->locale);
             }
 
-            $temp_date = new Zend_Date($date, 'yyyy-MM-dd');
+            $tempDate = new Zend_Date($date, 'yyyy-MM-dd');
         } catch (Zend_Locale_Exception $zle) {
-            error_log("SiLocal::date() - Zend_Locale_Exception thrown by Zend_Locale. Error: " . $zle->getMessage());
-            return "";
+            $str = "SiLocal::date() - Zend_Locale_Exception thrown by Zend_Locale. Error: " . $zle->getMessage();
+            error_log($str);
+            exit($str);
         } catch (Zend_Date_Exception $zde) {
-            error_log("SiLocal::date() - Zend_Date_Exception thrown by Zend_Date. Error: " . $zde->getMessage());
-            return "";
+            $str = "SiLocal::date() - Zend_Date_Exception thrown by Zend_Date. Error: " . $zde->getMessage();
+            error_log($str);
+            exit($str);
         }
 
         // @formatter:off
         switch ($date_format) {
-            case "full"        : return $temp_date->get(Zend_Date::DATE_FULL       , $locale);
-            case "long"        : return $temp_date->get(Zend_Date::DATE_LONG       , $locale);
+            case "full"        : return $tempDate->get(Zend_Date::DATE_FULL       , $locale);
+            case "long"        : return $tempDate->get(Zend_Date::DATE_LONG       , $locale);
             case "date_short"  : // Same as "short".
-            case "short"       : return $temp_date->get(Zend_Date::DATE_SHORT      , $locale);
-            case "month"       : return $temp_date->get(Zend_Date::MONTH_NAME      , $locale);
-            case "month_short" : return $temp_date->get(Zend_Date::MONTH_NAME_SHORT, $locale);
+            case "short"       : return $tempDate->get(Zend_Date::DATE_SHORT      , $locale);
+            case "month"       : return $tempDate->get(Zend_Date::MONTH_NAME      , $locale);
+            case "month_short" : return $tempDate->get(Zend_Date::MONTH_NAME_SHORT, $locale);
             case "medium"      : // Same as default for any undefined parameter setting.
             default            :
                 break;
         }
         // @formatter:on
-        return $temp_date->get(Zend_Date::DATE_MEDIUM, $locale);
+        return $tempDate->get(Zend_Date::DATE_MEDIUM, $locale);
     }
 
     /**
      * Truncate a given string
      *
-     * @param $string - the string to truncate
-     * @param $max - the max length in characters to truncate the string to
-     * @param $rep - characters to be added at end of truncated string
+     * @param string $string - the string to truncate
+     * @param int $max - the max length in characters to truncate the string to
+     * @param string $rep - characters to be added at end of truncated string
      * @return string truncated to specified length.
      */
-    public static function truncateStr($string, $max = 20, $rep = '') {
-        if (strlen($string) <= ($max + strlen($rep))) {
+    public static function truncateStr(string $string, int $max = 20, string $rep = ''): string
+    {
+        if (strlen($string) <= $max + strlen($rep)) {
             return $string;
         }
         $leave = $max - strlen($rep);
@@ -228,15 +246,16 @@ class SiLocal
      *        Note: If time part is "00:00:00" it will be set to the current time.
      * @return string Datetime string with time set.
      */
-    public static function sqlDateWithTime($in_date) {
+    public static function sqlDateWithTime(string $in_date): string
+    {
         $parts = explode(' ', $in_date);
-        $date  = (isset($parts[0]) ? $parts[0] : "");
-        $time  = (isset($parts[1]) ? $parts[1] : "00:00:00");
+        $date = isset($parts[0]) ? $parts[0] : "";
+        $time = isset($parts[1]) ? $parts[1] : "00:00:00";
         if (!$time || $time == '00:00:00') {
             $time = date('H:i:s');
         }
-        $out_date = "$date $time";
-        return $out_date;
+
+        return "{$date} {$time}";
     }
 
 }

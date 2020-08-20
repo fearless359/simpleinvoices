@@ -21,11 +21,11 @@
         <div class="si_message">
             {$LANG.thank_you} {$LANG.before_starting}
         </div>
-        {include file="$real_path/itemised_setup_toolbar_table.tpl"}
+        {include file="$realPath/itemised_setup_toolbar_table.tpl"}
     {else}
         <div class="si_invoice_form">
             {include file="$path/header.tpl" }
-            {include file="$real_path/itemised_itemtable.tpl" }
+            {include file="$realPath/itemised_itemtable.tpl" }
             <div class="si_toolbar si_toolbar_inform">
                 <a href="#" class="add_line_item" data-description="{$LANG.description}">
                     <img src="../../../../../images/add.png" alt=""/>
@@ -40,7 +40,7 @@
                     {$LANG.hide_details}
                 </a>
             </div>
-            {include file="$real_path/itemised_invoice_bot.tpl" }
+            {include file="$realPath/itemised_invoice_bot.tpl" }
             <br/>
             <input type="hidden" id="max_items" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlsafe}{/if}"/>
             <input type="hidden" name="type" value="2"/>
@@ -56,7 +56,7 @@
             <div class="si_help_div">
                 <a class="cluetip" href="#" title="{$LANG.want_more_fields}"
                    rel="index.php?module=documentation&amp;view=view&amp;page=help_invoice_custom_fields">
-                    <img src="{$help_image_path}help-small.png" alt=""/>
+                    <img src="{$helpImagePath}help-small.png" alt=""/>
                     {$LANG.want_more_fields}
                 </a>
             </div>

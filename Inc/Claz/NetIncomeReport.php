@@ -7,24 +7,23 @@ namespace Inc\Claz;
  */
 class NetIncomeReport
 {
-    public $domain_id;
-
     /**
-     * @param $start_date
-     * @param $stop_date
-     * @param $exclude_custom_flag_items
+     * @param string $startDate
+     * @param string $stopDate
+     * @param int $customerId
+     * @param bool $excludeCustomFlagItems
      * @return array
      */
-    public function select_rpt_items($start_date, $stop_date, $customer_id, $exclude_custom_flag_items)
+    public function selectRptItems(string $startDate, string $stopDate, int $customerId, bool $excludeCustomFlagItems)
     {
         global $pdoDb;
 
-        $domain_id = DomainId::get($this->domain_id);
+        $domainId = DomainId::get();
 
-        if (isset($exclude_custom_flag_items) && $exclude_custom_flag_items > 0) {
+        if (isset($excludeCustomFlagItems) && $excludeCustomFlagItems > 0) {
             // Make a regex string that Tests for "0" in the specified position
-            $cFlags = array('.', '.', '.', '.', '.', '.', '.', '.', '.', '.');
-            $cFlags[$exclude_custom_flag_items - 1] = '0';
+            $cFlags = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'];
+            $cFlags[$excludeCustomFlagItems - 1] = '0';
             $pattern = '^';
             foreach ($cFlags as $cFlag) {
                 $pattern .= $cFlag;
@@ -34,30 +33,31 @@ class NetIncomeReport
         }
 
         // Find all invoices that received payments in this reporting period.
-        $iv_ids = array();
+        $ivIds = [];
 
-        $pv_recs = array();
+        $pvRecs = [];
         try {
             $pdoDb->setOrderBy("ac_inv_id");
-            $pdoDb->addSimpleWhere("domain_id", $domain_id, "AND");
-            $pdoDb->addToWhere(new WhereItem(false, "ac_date", "BETWEEN", array($start_date, $stop_date), false));
-            $pv_recs = $pdoDb->request("SELECT", "payment");
+            $pdoDb->addSimpleWhere("domain_id", $domainId, "AND");
+            $pdoDb->addToWhere(new WhereItem(false, "ac_date", "BETWEEN", [$startDate, $stopDate], false));
+            $pvRecs = $pdoDb->request("SELECT", "payment");
         } catch (PdoDbException $pde) {
             error_log("Inc/Claz/NetIncomeReport.php - error(1): " . $pde->getMessage());
         }
-        $last_inv_id = 0;
-        foreach ($pv_recs as $row) {
-            $curr_inv_id = $row['ac_inv_id'];
-            if ($last_inv_id != $curr_inv_id) {
-                $last_inv_id = $curr_inv_id;
-                $iv_ids[] = $curr_inv_id;
+
+        $lastInvId = 0;
+        foreach ($pvRecs as $row) {
+            $currInvId = $row['ac_inv_id'];
+            if ($lastInvId != $currInvId) {
+                $lastInvId = $currInvId;
+                $ivIds[] = $currInvId;
             }
         }
 
         // Get all invoices that had payments made in the current reporting period.
-        $invoices = array();
-        foreach ($iv_ids as $id) {
-            $iv_recs = array();
+        $netIncInvs = [];
+        foreach ($ivIds as $id) {
+            $ivRecs = [];
             try {
                 $jn = new Join("INNER", "customers", "cu");
                 $jn->addSimpleItem("cu.id", new DbField("iv.customer_id"), "AND");
@@ -65,16 +65,16 @@ class NetIncomeReport
                 $pdoDb->addToJoins($jn);
 
                 $pdoDb->addSimpleWhere("iv.id", $id, "AND");
-                $pdoDb->addSimpleWhere("iv.domain_id", $domain_id);
-                $pdoDb->setSelectList(array("iv.id", "iv.index_id AS iv_number", "iv.date AS iv_date", "cu.name AS customer", 'iv.customer_id'));
+                $pdoDb->addSimpleWhere("iv.domain_id", $domainId);
+                $pdoDb->setSelectList(["iv.id", "iv.index_id AS iv_number", "iv.date AS iv_date", "cu.name AS customer", 'iv.customer_id']);
 
-                $iv_recs = $pdoDb->request("SELECT", "invoices", "iv");
+                $ivRecs = $pdoDb->request("SELECT", "invoices", "iv");
             } catch (PdoDbException $pde) {
                 error_log("Inc/Claz/NetIncomeReport.php - error(3): " . $pde->getMessage());
             }
 
-            foreach ($iv_recs as $iv) {
-                if ($customer_id > '0' && $iv['customer_id'] != $customer_id) {
+            foreach ($ivRecs as $iv) {
+                if ($customerId > '0' && $iv['customer_id'] != $customerId) {
                     continue;
                 }
 
@@ -83,39 +83,39 @@ class NetIncomeReport
                 // made in this reporting period. However, it is possible that not all payments
                 // were made in this reporting period. So we will keep the payment info so we can
                 // report only the payment that were made in this period.
-                $invoice = new NetIncomeInvoice($id, $iv['iv_number'], $iv['iv_date'], $iv['customer']);
+                $netIncInv = new NetIncomeInvoice($id, $iv['iv_number'], $iv['iv_date'], $iv['customer']);
 
                 // Get all the payments made for this invoice. We do this so we can calculate what
                 // if any payments are left for the invoice, as well as have payment detail to
                 // include in the report.
                 // @formatter:off
-                $py_recs = array();
+                $pyRecs = [];
                 try {
                     $pdoDb->setOrderBy("ac_date");
                     $pdoDb->addSimpleWhere("ac_inv_id", $id, "AND");
-                    $pdoDb->addSimpleWhere("domain_id", $domain_id);
-                    $pdoDb->setSelectList(array("ac_amount", "ac_date"));
-                    $py_recs = $pdoDb->request("SELECT", "payment");
+                    $pdoDb->addSimpleWhere("domain_id", $domainId);
+                    $pdoDb->setSelectList(["ac_amount", "ac_date"]);
+                    $pyRecs = $pdoDb->request("SELECT", "payment");
                 } catch (PdoDbException $pde) {
                     error_log("Inc/Claz/NetIncomeReport.php - error(4): " . $pde->getMessage());
                 }
                 // @formatter:on
 
-                foreach ($py_recs as $py) {
-                    $in_period = ($start_date <= $py['ac_date'] && $stop_date >= $py['ac_date']);
-                    $invoice->addPayment($py['ac_amount'], $py['ac_date'], $in_period);
+                foreach ($pyRecs as $py) {
+                    $inPeriod = $startDate <= $py['ac_date'] && $stopDate >= $py['ac_date'];
+                    $netIncInv->addPayment($py['ac_amount'], $py['ac_date'], $inPeriod);
                 }
 
                 // Now get all the invoice items with the exception of those flagged
                 // as non-income items provided the option to exclude them was specified.
                 // @formatter:off
-                $ii_recs = array();
+                $iiRecs = [];
                 try {
                     $pdoDb->setOrderBy("ii.invoice_id");
                     $pdoDb->setOrderBy("pr.description");
                     $pdoDb->addSimpleWhere("ii.invoice_id", $id, "AND");
-                    $pdoDb->addSimpleWhere("ii.domain_id", $domain_id, "AND");
-                    $list = array("ii.total AS amount", "pr.description AS description");
+                    $pdoDb->addSimpleWhere("ii.domain_id", $domainId, "AND");
+                    $list = ["ii.total AS amount", "pr.description AS description"];
                     $pdoDb->addToWhere(new WhereItem(false, "pr.custom_flags", "REGEXP", $pattern, false));
                     $list[] = "pr.custom_flags";
 
@@ -125,20 +125,26 @@ class NetIncomeReport
                     $pdoDb->addToJoins($join);
                     $pdoDb->setSelectList($list);
 
-                    $ii_recs = $pdoDb->request("SELECT", "invoice_items", "ii");
+                    $iiRecs = $pdoDb->request("SELECT", "invoice_items", "ii");
                 } catch (PdoDbException $pde) {
                     error_log("Inc/Claz/NetIncomeReport.php - error(5): " . $pde->getMessage());
                 }
 
-                foreach ($ii_recs as $py) {
-                    $invoice->addItem($py['amount'], $py['description'], $py['custom_flags']);
+                foreach ($iiRecs as $py) {
+                    $netIncInv->addItem($py['amount'], $py['description'], $py['custom_flags']);
                 }
 
-                if ($invoice->total_amount < $invoice->total_payments) $invoice->total_payments = $invoice->total_amount;
-                if ($invoice->total_amount < $invoice->total_period_payments) $invoice->total_period_payments = $invoice->total_amount;
-                if ($invoice->total_amount != 0) $invoices[] = $invoice;
+                if ($netIncInv->totalAmount < $netIncInv->totalPayments) {
+                    $netIncInv->totalPayments = $netIncInv->totalAmount;
+                }
+                if ($netIncInv->totalAmount < $netIncInv->totalPeriodPayments) {
+                    $netIncInv->totalPeriodPayments = $netIncInv->totalAmount;
+                }
+                if ($netIncInv->totalAmount != 0) {
+                    $netIncInvs[] = $netIncInv;
+                }
             }
         }
-        return $invoices;
+        return $netIncInvs;
     }
 }

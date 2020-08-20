@@ -10,9 +10,6 @@ const TOTAL_INVOICE = 1;
 const ITEMIZED_INVOICE = 2;
 const CONSULTING_INVOICE = 3;
 
-//To turn logging on set the below to true - not needed as it is set in System Defaults
-const LOGGING = false;
-
 ####################
 /* Environment*/
 ####################

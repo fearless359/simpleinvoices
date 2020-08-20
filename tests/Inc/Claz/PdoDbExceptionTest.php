@@ -5,29 +5,33 @@
  * @license GPL V3 or above
  * Created: 20181114
  */
+namespace Inc\Claz;
 
-use Inc\Claz\PdoDbException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class PdoDbExceptionTest
+ * @package Inc\Claz
+ */
 class PdoDbExceptionTest extends TestCase
 {
 
-    public function test__construct()
+    public function testConstruct()
     {
         $msg = "This is the test message";
         $code = 3;
         $pde = new PdoDbException($msg, $code);
-        $this->assertEquals($pde->getMessage(), $msg);
-        $this->assertEquals($pde->getCode(), $code);
+        static::assertEquals($pde->getMessage(), $msg);
+        static::assertEquals($pde->getCode(), $code);
     }
 
-    public function test__toString()
+    public function testToString()
     {
         $str = "Inc\Claz\PdoDbException: [3]: This is the test message\n";
         $msg = "This is the test message";
         $code = 3;
         $pde = new PdoDbException($msg, $code);
-        $this->assertEquals($pde->__toString(), $str);
+        static::assertEquals($pde->__toString(), $str);
     }
 
 }

@@ -6,11 +6,14 @@
  * Created: 20190314
  */
 
-namespace test\Inc\Claz;
+namespace Inc\Claz;
 
-use Inc\Claz\DbField;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class DbFieldTest
+ * @package Inc\Claz
+ */
 class DbFieldTest extends TestCase
 {
 
@@ -18,9 +21,9 @@ class DbFieldTest extends TestCase
     {
         $dbf = new DbField('ivl.customer_id', 'cid');
         $parm = $dbf->genParm();
-        $this->assertEquals('`ivl`.`customer_id` AS cid', $parm, 'Generate full parameter failed');
+        static::assertEquals('`ivl`.`customer_id` AS cid', $parm, 'Generate full parameter failed');
 
         $alias = $dbf->genParm(true);
-        $this->assertEquals('cid', $alias, 'Generate alias failed');
+        static::assertEquals('cid', $alias, 'Generate alias failed');
     }
 }

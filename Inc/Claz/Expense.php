@@ -1,16 +1,20 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class Expense
  * @package Inc\Claz
  */
-class Expense {
+class Expense
+{
 
     /**
+     * Get count of the number of expense records.
      * @return int count of expense records.
      */
-    public static function count() {
+    public static function count(): int
+    {
         $rows = self::getExpenses();
         return count($rows);
     }
@@ -20,28 +24,31 @@ class Expense {
      * @param int $id of expense record to retrieve.
      * @return array Expense record.
      */
-    public static function getOne($id) {
+    public static function getOne(int $id): array
+    {
         $rows = self::getExpenses($id);
-        return (empty($rows) ? array() : $rows[0]);
+        return empty($rows) ? [] : $rows[0];
     }
 
     /**
      * Get all expense records.
      * @return array $rows of expense records.
      */
-    public static function getAll() {
+    public static function getAll(): array
+    {
         return self::getExpenses();
     }
 
     /**
      * Get all expense records.
-     * @param int $id If not null, id of record to retrieve.
+     * @param int|null $id ID of record to retrieve, Omit to get all records.
      * @return array $rows of expense records.
      */
-    private static function getExpenses($id = null) {
+    private static function getExpenses(?int $id = null): array
+    {
         global $LANG, $pdoDb;
 
-        $expenses = array();
+        $expenses = [];
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('e.id', $id, 'AND');
@@ -79,11 +86,11 @@ class Expense {
             $pdoDb->addToCaseStmts($case);
 
             // This is a fudge until sub-select can be added to the features.
-            $exp_item_tax = TB_PREFIX . "expense_item_tax";
-            $pdoDb->addToFunctions("(SELECT SUM(tax_amount) FROM $exp_item_tax WHERE expense_id = id) AS tax");
+            $expItemTax = TB_PREFIX . "expense_item_tax";
+            $pdoDb->addToFunctions("(SELECT SUM(tax_amount) FROM $expItemTax WHERE expense_id = id) AS tax");
             $pdoDb->addToFunctions("(SELECT tax + e.amount) AS total");
 
-            $selectList = array(
+            $selectList = [
                 new DbField('e.id', 'EID'),
                 new DbField('e.domain_id', 'domain_id'),
                 new DbField('e.status', 'status'),
@@ -99,14 +106,14 @@ class Expense {
                 new DbField('ea.name', 'ea_name'),
                 new DbField('c.name', 'c_name'),
                 new DbField('p.description', 'p_desc')
-            );
+            ];
             $pdoDb->setSelectList($selectList);
 
             $rows = $pdoDb->request("SELECT", "expense", 'e');
-            foreach($rows as $row) {
+            foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['p_desc'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['p_desc'];
-                $row['status_wording'] = ($row['status'] == ENABLED ? $LANG['paid'] : $LANG['not_paid']);
+                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paid'] : $LANG['not_paid'];
                 $expenses[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -118,34 +125,37 @@ class Expense {
     /**
      * Get information needed when adding a new expense.
      * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
+     * @throws PdoDbException
      */
-    public static function additionalInfo() {
+    public static function additionalInfo(): array
+    {
         // @formatter:off
-        $add_info = array();
-        $add_info['expense_accounts'] = ExpenseAccount::getAll();
-        $add_info['customers']        = Customer::getAll(['enabled_only' => true]);
-        $add_info['billers']          = Biller::getAll();
-        $add_info['invoices']         = Invoice::getAll();
-        $add_info['products']         = Product::getAll(true);
+        $addInfo = [];
+        $addInfo['expense_accounts'] = ExpenseAccount::getAll();
+        $addInfo['customers']        = Customer::getAll(['enabled_only' => true]);
+        $addInfo['billers']          = Biller::getAll();
+        $addInfo['invoices']         = Invoice::getAll();
+        $addInfo['products']         = Product::getAll(true);
         // @formatter:on
-        return $add_info;
+        return $addInfo;
     }
 
     /**
      * Insert a new expense record.
      * @return bool true if record inserted correctly; false if not.
      */
-    public static function insert() {
+    public static function insert(): bool
+    {
         global $pdoDb;
 
         try {
             $pdoDb->setExcludedFields("id");
             $id = $pdoDb->request("INSERT", "expense");
 
-            $line_item_tax_id = (isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "");
-            self::expenseItemTax($id, $line_item_tax_id, $_POST['amount'], "1", "insert");
+            $lineItemTaxId = isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "";
+            self::expenseItemTax($id, $lineItemTaxId, $_POST['amount'], "1", "insert");
         } catch (PdoDbException $pde) {
-            error_log("Expense::insert() - error: " . $pde->getMessage() . " _POST info - " . print_r($_POST,true));
+            error_log("Expense::insert() - error: " . $pde->getMessage() . " _POST info - " . print_r($_POST, true));
             return false;
         }
         return true;
@@ -155,17 +165,20 @@ class Expense {
      * Update an expense record.
      * @return bool true if update succeeded; false if not.
      */
-    public static function update() {
+    public static function update(): bool
+    {
         global $pdoDb;
 
         try {
-            $pdoDb->setExcludedFields(array("id", "domain_id"));
+            $pdoDb->setExcludedFields(["id", "domain_id"]);
             $pdoDb->addSimpleWhere("domain_id", $_POST['domain_id'], "AND");
             $pdoDb->addSimpleWhere("id", $_GET['id']);
-            if (!$pdoDb->request("UPDATE", "expense")) return false;
+            if (!$pdoDb->request("UPDATE", "expense")) {
+                return false;
+            }
 
-            $line_item_tax_id = (isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "");
-            self::expenseItemTax($_GET['id'], $line_item_tax_id, $_POST['amount'], "1", "update");
+            $lineItemTaxId = isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "";
+            self::expenseItemTax($_GET['id'], $lineItemTaxId, $_POST['amount'], "1", "update");
         } catch (PdoDbException $pde) {
             error_log("Expense::update() - id[{$_GET['id']}] error: " . $pde->getMessage());
             return false;
@@ -175,37 +188,42 @@ class Expense {
 
     /**
      * Insert/update the multiple taxes per line item into the si_expense_item_tax table
-     * @param int $expense_id
-     * @param int $line_item_tax_id
-     * @param float $unit_price
+     * @param int $expenseId
+     * @param int $lineItemTaxId
+     * @param float $unitPrice
      * @param int $quantity
      * @param string $action
      * @return bool true if processed without error; false otherwise.
      */
-    public static function expenseItemTax($expense_id, $line_item_tax_id, $unit_price, $quantity, $action="") {
-        if (!is_array($line_item_tax_id)) return false;
+    public static function expenseItemTax(int $expenseId, int $lineItemTaxId, float $unitPrice, int $quantity, string $action = ""): bool
+    {
+        if (!is_array($lineItemTaxId)) {
+            return false;
+        }
 
         // if editing invoice delete all tax info then insert updated info.
         try {
             $requests = new Requests();
             if ($action == "update") {
                 $request = new Request("DELETE", "expense_item_tax");
-                $request->addSimpleWhere("expense_id", $expense_id);
+                $request->addSimpleWhere("expense_id", $expenseId);
             }
 
-            foreach($line_item_tax_id as $value) {
-                if($value !== "") {
+            foreach ($lineItemTaxId as $value) {
+                if ($value !== "") {
                     $tax = Taxes::getOne($value);
 
-                    $tax_amount = Taxes::lineItemTaxCalc($tax, $unit_price,$quantity);
+                    $taxAmount = Taxes::lineItemTaxCalc($tax, $unitPrice, $quantity);
 
                     $request = new Request("INSERT", "expense_item_tax");
                     $request->setExcludedFields("id");
-                    $request->setFauxPost(array("expense_id" => $expense_id,
-                                                "tax_id"     => $tax['tax_id'],
-                                                "tax_type"   => $tax['type'],
-                                                "tax_rate"   => $tax['tax_percentage'],
-                                                "tax_amount" => $tax_amount));
+                    $request->setFauxPost([
+                        "expense_id" => $expenseId,
+                        "tax_id" => $tax['tax_id'],
+                        "tax_type" => $tax['type'],
+                        "tax_rate" => $tax['tax_percentage'],
+                        "tax_amount" => $taxAmount
+                    ]);
                     $requests->add($request);
                 }
             }

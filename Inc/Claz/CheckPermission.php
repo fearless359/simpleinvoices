@@ -3,28 +3,31 @@
 namespace Inc\Claz;
 
 use Exception;
+use Zend_Acl;
 use Zend_Log;
 use Zend_Session_Namespace;
 
-Class CheckPermission
+/**
+ * Class CheckPermission
+ * @package Inc\Claz
+ */
+class CheckPermission
 {
-    /**
-     * @param string $module
-     * @param \Zend_Acl $acl
-     */
-    public static function isAllowed($module, $acl): void
+
+    public static function isAllowed(?string $module, Zend_Acl $acl): void
     {
         global $LANG;
         $checkPermission = "";
         try {
-            $auth_session = new Zend_Session_Namespace('Zend_Auth');
-            $acl_view = (isset($_GET['view']) ? $_GET['view'] : null);
-            $acl_action = (isset($_GET['action']) ? $_GET['action'] : null);
-            if (empty($acl_action)) {
+            $authSession = new Zend_Session_Namespace('Zend_Auth');
+            $aclView = isset($_GET['view']) ? $_GET['view'] : null;
+            $aclAction = isset($_GET['action']) ? $_GET['action'] : null;
+            if (empty($aclAction)) {
                 // no action is given
-                if (!empty($acl_view)) {
+                if (!empty($aclView)) {
                     // view is available with no action
-                    if ($acl->isAllowed($auth_session->role_name, $module, $acl_view)) {
+                    /** @noinspection PhpUndefinedFieldInspection */
+                    if ($acl->isAllowed($authSession->role_name, $module, $aclView)) {
                         $checkPermission = "allowed";
                     } else {
                         $checkPermission = "denied";
@@ -32,24 +35,28 @@ Class CheckPermission
                 }
             } else {
                 // action available
-                $checkPermission = $acl->isAllowed($auth_session->role_name,
-                    $module, $acl_action) ? "allowed" : "denied"; // allowed
+                /** @noinspection PhpUndefinedFieldInspection */
+                $checkPermission = $acl->isAllowed($authSession->role_name,
+                    $module, $aclAction) ? "allowed" : "denied"; // allowed
             }
 
             // basic customer page check
-            if ($auth_session->role_name == 'customer' && $module == 'customers' &&
-                $_GET['id'] != $auth_session->user_id) {
+            /** @noinspection PhpUndefinedFieldInspection */
+            if ($authSession->role_name == 'customer' && $module == 'customers' &&
+                $_GET['id'] != $authSession->user_id) {
                 $checkPermission = "denied";
             }
 
             // customer invoice page add/edit check since no acl for invoices
             // @formatter:off
-            if (($auth_session->role_name == 'customer') && ($module == 'invoices')) {
-                if ($acl_view == 'itemised'   ||
-                    $acl_view == 'total'      ||
-                    $acl_view == 'consulting' ||
-                    $acl_action == 'view'     ||
-                   ($acl_action != '' && isset($_GET['id']) && $_GET['id'] != $auth_session->user_id)) {
+            /** @noinspection PhpUndefinedFieldInspection */
+            if ($authSession->role_name == 'customer' && $module == 'invoices') {
+                /** @noinspection PhpUndefinedFieldInspection */
+                if ($aclView == 'itemised'   ||
+                    $aclView == 'total'      ||
+                    $aclView == 'consulting' ||
+                    $aclAction == 'view'     ||
+                   $aclAction != '' && isset($_GET['id']) && $_GET['id'] != $authSession->user_id) {
                     $checkPermission = "denied";
                 }
             }

@@ -7,18 +7,18 @@ global $smarty;
 
 $saved = false;
 
-$invoice_all = Invoice::getAll();
+$invoiceAll = Invoice::getAll();
 
-if (($_POST ['op'] == 'add') && (! empty ( $_POST ['invoice_id'] ))) {
+if ($_POST ['op'] == 'add' && ! empty ( $_POST ['invoice_id'] )) {
     $invoice = Invoice::getOne( $_POST ['invoice_id'] );
 
-    $eway_check = new Eway ();
-    $eway_check->invoice = $invoice;
-    $eway_pre_check = $eway_check->pre_check ();
+    $ewayCheck = new Eway();
+    $ewayCheck->invoice = $invoice;
+    $ewayPreCheck = $ewayCheck->preCheck ();
 
-    if ($eway_pre_check == 'true') {
+    if ($ewayPreCheck == 'true') {
         // do eway payment
-        $eway = new Eway ();
+        $eway = new Eway();
         $eway->invoice = $invoice;
         $saved = $eway->payment ();
     } else {
@@ -26,7 +26,7 @@ if (($_POST ['op'] == 'add') && (! empty ( $_POST ['invoice_id'] ))) {
     }
 }
 
-$smarty->assign ( 'invoice_all', $invoice_all );
+$smarty->assign ( 'invoice_all', $invoiceAll );
 $smarty->assign ( 'saved', $saved );
 
 $smarty->assign ( 'pageActive', 'payment' );

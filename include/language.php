@@ -1,4 +1,5 @@
 <?php
+
 use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
 
@@ -11,7 +12,7 @@ use Inc\Claz\SystemDefaults;
  */
 global $LANG, $databaseBuilt, $pdoDb;
 unset($LANG);
-$LANG = array();
+$LANG = [];
 
 if ($databaseBuilt) {
     $found = false;
@@ -31,7 +32,7 @@ if ($databaseBuilt) {
     }
 
     if ($found) {
-        $language = SystemDefaults::getDefaultLanguage();
+        $language = SystemDefaults::getLanguage();
     } else {
         $language = "en_US";
     }
@@ -39,8 +40,14 @@ if ($databaseBuilt) {
     $language = "en_US";
 }
 
-function getLanguageArray($lang = '') {
-    global $ext_names, $LANG;
+/**
+ * Update global array for language elements from all pertinent sources.
+ * @param string $lang
+ * @return array
+ */
+function getLanguageArray(string $lang = ''): array
+{
+    global $extNames, $LANG;
 
     if (!empty($lang)) {
         $language = $lang;
@@ -50,41 +57,42 @@ function getLanguageArray($lang = '') {
 
     $langPath = "lang/";
     $langFile = "/lang.php";
-    include ($langPath . "en_US" . $langFile);
+    include($langPath . "en_US" . $langFile);
     if (file_exists($langPath . $language . $langFile)) {
-        include ($langPath . $language . $langFile);
+        include($langPath . $language . $langFile);
     }
 
-    foreach ($ext_names as $ext_name) {
-        if (file_exists("extensions/$ext_name/lang/$language/lang.php")) {
-            include_once ("extensions/$ext_name/lang/$language/lang.php");
+    foreach ($extNames as $extName) {
+        if (file_exists("extensions/$extName/lang/$language/lang.php")) {
+            include_once "extensions/$extName/lang/$language/lang.php";
         }
     }
 
     return $LANG;
 }
 
-function getLanguageList() {
+function getLanguageList(): array
+{
     $xmlFile = "info.xml";
     $langPath = "lang/";
     $folders = null;
 
     if ($handle = opendir($langPath)) {
-        for ($i = 0; $file = readdir($handle); $i++) {
-            $folders[$i] = $file;
+        for ($idx = 0; $file = readdir($handle); $idx++) {
+            $folders[$idx] = $file;
         }
         closedir($handle);
     }
 
-    $languages = null;
-    $i = 0;
+    $languages = [];
+    $idx = 0;
 
     foreach ($folders as $folder) {
         $file = $langPath . $folder . "/" . $xmlFile;
         if (file_exists($file)) {
             $values = simplexml_load_file($file);
-            $languages[$i] = $values;
-            $i++;
+            $languages[$idx] = $values;
+            $idx++;
         }
     }
 

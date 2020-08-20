@@ -6,25 +6,32 @@
  * Created: 20190314
  */
 
-namespace test\Inc\Claz;
+namespace Inc\Claz;
 
-use Inc\Claz\Having;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class HavingTest
+ * @package Inc\Claz
+ */
 class HavingTest extends TestCase
 {
     public function testHavingClass()
     {
-        $having = new Having(true, 'db_field', '<>', 5, false, 'AND');
+        try {
+            $having = new Having(true, 'db_field', '<>', 5, false, 'AND');
 
-        $this->assertEquals('db_field', $having->getField(), 'Invalid getField test');
-        $this->assertEquals('<>', $having->getOperator(), 'Invalid getOperator test');
-        $this->assertEquals(5, $having->getValue(), 'Invalid getValue test');
-        $this->assertEquals('AND', $having->getConnector(), 'Invalid getConnector test');
-        $this->assertTrue($having->isLeftParen(), 'Invalid isLeftParen test');
-        $this->assertFalse($having->isRightParen(), 'Invalid isRightParen test');
+            static::assertEquals('db_field', $having->getField(), 'Invalid getField test');
+            static::assertEquals('<>', $having->getOperator(), 'Invalid getOperator test');
+            static::assertEquals(5, $having->getValue(), 'Invalid getValue test');
+            static::assertEquals('AND', $having->getConnector(), 'Invalid getConnector test');
+            static::assertTrue($having->isLeftParen(), 'Invalid isLeftParen test');
+            static::assertFalse($having->isRightParen(), 'Invalid isRightParen test');
 
-        $stmt = $having->build($keyPairs);
-        $this->assertEquals("(db_field <> '5' AND", $stmt);
+            $stmt = $having->build();
+            static::assertEquals("(db_field <> '5' AND", $stmt);
+        } catch (PdoDbException $pde) {
+            static::assertTrue(false, "Unexpected error thrown by Having instantiation. Error: {$pde->getMessage()}");
+        }
     }
 }

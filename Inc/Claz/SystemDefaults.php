@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -7,9 +8,9 @@ namespace Inc\Claz;
  */
 class SystemDefaults
 {
-    protected static $values_arrays = array();
-    protected static $values = array();
-    protected static $initialized = false;
+    protected static array $valuesArrays = [];
+    protected static array $values = [];
+    protected static bool $initialized = false;
 
     /**
      * Load content of the system defaults table into this object.
@@ -20,89 +21,96 @@ class SystemDefaults
      * @return array with system_defaults values or values with extension_id per
      *      parameter settings. Can be empty array if database not built.
      */
-    public static function loadValues(bool $databaseBuilt = true, bool $valuesOnly = true)
+    public static function loadValues(bool $databaseBuilt = true, bool $valuesOnly = true): array
     {
-        global $pdoDb_admin;
+        global $pdoDbAdmin;
+
         if (self::$initialized) {
-            return ($valuesOnly ? self::$values : self::$values_arrays);
+            return $valuesOnly ? self::$values : self::$valuesArrays;
         }
 
-        if (!$databaseBuilt) return array();
+        if (!$databaseBuilt) {
+            return [];
+        }
 
         try {
             // Logic for patch count >= 198
-            $pdoDb_admin->setSelectList(array('def.name', 'def.value'));
+            $pdoDbAdmin->setSelectList(['def.name', 'def.value']);
 
             $jn = new Join("INNER", "extensions", "ext");
             $jn->addSimpleItem("def.domain_id", new DbField("ext.domain_id"));
-            $pdoDb_admin->addToJoins($jn);
+            $pdoDbAdmin->addToJoins($jn);
 
-            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
-            $pdoDb_admin->addSimpleWhere('ext.name', 'core', 'AND');
-            $pdoDb_admin->addSimpleWhere('def.domain_id', 0);
+            $pdoDbAdmin->addSimpleWhere('enabled', ENABLED, 'AND');
+            $pdoDbAdmin->addSimpleWhere('ext.name', 'core', 'AND');
+            $pdoDbAdmin->addSimpleWhere('def.domain_id', 0);
 
-            $pdoDb_admin->setOrderBy("extension_id");
+            $pdoDbAdmin->setOrderBy("extension_id");
 
-            $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
+            $rows = $pdoDbAdmin->request('SELECT', 'system_defaults', 'def');
 
             foreach ($rows as $row) {
                 self::$values[$row['name']] = stripslashes($row['value']);
-                self::$values_arrays[$row['name']] = array(
+                self::$valuesArrays[$row['name']] = [
                     'value' => stripslashes($row['value']),
                     'extension_id' => $row['extension_id'],
-                    'domain_id' => $row['domain_id']);
+                    'domain_id' => $row['domain_id']
+                ];
 
             }
 
             // Logic for patch count > 198
             // Why the overlap, I don't know. But items duplicate with ones
             // found previously will be overloaded. (RCR 20181004)
-            $pdoDb_admin->setSelectList(array(
+            $pdoDbAdmin->setSelectList([
                 'def.name',
                 'def.value',
                 'def.extension_id',
-                'def.domain_id'));
+                'def.domain_id'
+            ]);
 
             $jn = new Join('INNER', 'extensions', 'ext');
             $jn->addSimpleItem('def.extension_id', new DbField('ext.id'));
-            $pdoDb_admin->addToJoins($jn);
+            $pdoDbAdmin->addToJoins($jn);
 
-            $pdoDb_admin->addSimpleWhere('enabled', ENABLED, 'AND');
-            $pdoDb_admin->addSimpleWhere('def.domain_id', DomainId::get());
+            $pdoDbAdmin->addSimpleWhere('enabled', ENABLED, 'AND');
+            $pdoDbAdmin->addSimpleWhere('def.domain_id', DomainId::get());
 
-            $pdoDb_admin->setOrderBy('extension_id');
+            $pdoDbAdmin->setOrderBy('extension_id');
 
-            $rows = $pdoDb_admin->request('SELECT', 'system_defaults', 'def');
+            $rows = $pdoDbAdmin->request('SELECT', 'system_defaults', 'def');
             foreach ($rows as $row) {
                 self::$values[$row['name']] = stripslashes($row['value']);
-                self::$values_arrays[$row['name']] = array(
+                self::$valuesArrays[$row['name']] = [
                     'value' => stripslashes($row['value']),
                     'extension_id' => $row['extension_id'],
-                    'domain_id' => $row['domain_id']);
+                    'domain_id' => $row['domain_id']
+                ];
             }
         } catch (PdoDbException $pde) {
             error_log("SystemDefaults::loadValues() error thrown: " . $pde->getMessage());
-            return array();
+            return [];
         }
 
         self::$initialized = true;
-        return ($valuesOnly ? self::$values : self::$values_arrays);
+
+        return $valuesOnly ? self::$values : self::$valuesArrays;
     }
 
     /**
      * Update the default value for the specified name.
      * @param string $name of system default row
      * @param string $value of system default row
-     * @param string $extension_name Key to extensions row to obtain extension_id for this row
-     * @return boolean true if processed correctly, false if not.
+     * @param string $extensionName Key to extensions row to obtain extension_id for this row
+     * @return bool true if processed correctly, false if not.
      */
-    public static function updateDefault($name, $value, $extension_name = "core")
+    public static function updateDefault(string $name, string $value, string $extensionName = "core"): bool
     {
         global $pdoDb;
 
-        $extension_id = Extensions::getExtensionId($extension_name);
-        if (!($extension_id >= 0)) {
-            error_log("SystemDefaults::updateDefault(): No such extension_name[$extension_name]");
+        $extensionId = Extensions::getExtensionId($extensionName);
+        if (!($extensionId >= 0)) {
+            error_log("SystemDefaults::updateDefault(): No such extension_name[$extensionName]");
             return false;
         }
 
@@ -112,10 +120,10 @@ class SystemDefaults
         }
 
         try {
-            $pdoDb->setFauxPost(array(
+            $pdoDb->setFauxPost([
                 'value' => addslashes($value),
-                'extension_id' => $extension_id
-            ));
+                'extension_id' => $extensionId
+            ]);
             $pdoDb->addSimpleWhere('name', $name, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
             $pdoDb->request("UPDATE", "system_defaults");
@@ -123,26 +131,26 @@ class SystemDefaults
             error_log("SystemDefaults::updateDefault(): Unable to add name[$name] value[$value] to database. " . $pde->getMessage());
             return false;
         }
-        self::$values[$name] = array($value, $extension_id);
+        self::$values[$name] = [$value, $extensionId];
         return true;
     }
 
     /**
      * @param string $name Name of row to get the value for.
-     * @param int $extension_id If specified (not null), the system default must
+     * @param string $extensionId If specified (not empty), the system default must
      *          contain this extension id.
      * @param bool $ret_string true if failed flag to return as 'DISABLED' string, false returns 0.
-     * @return mixed Value of system_defaults row for specified name.
+     * @return string|int Value of system_defaults row for specified name.
      */
-    public static function getValue(string $name, $extension_id = null, $ret_string = true)
+    public static function getValue(string $name, $extensionId = "", bool $ret_string = true)
     {
         global $LANG;
 
-        // This is needed as getDefaultLangauge is called in the language.php file
+        // This is needed as getDefaultLanguage is called in the language.php file
         // before the $LANG global has been set up. If $LANG is set up, use it so
         // a local language is reported.
-        $disabled = (empty($LANG['disabled']) ? "Disabled" : $LANG['disabled']);
-        $failed = ($ret_string ? $disabled : 0);
+        $disabled = empty($LANG['disabled']) ? "Disabled" : $LANG['disabled'];
+        $failed = $ret_string ? $disabled : 0;
         if (empty(self::$values)) {
             return $failed;
         }
@@ -152,8 +160,8 @@ class SystemDefaults
             return $failed;
         }
 
-        $values = self::$values_arrays[$name];
-        if (isset($extension_id) && $extension_id != $values['extension_id']) {
+        $values = self::$valuesArrays[$name];
+        if (!empty($extensionId) && $extensionId != $values['extension_id']) {
             return $failed;
         }
 
@@ -162,14 +170,14 @@ class SystemDefaults
 
     /**
      * Count the system_default records for a specified extension id.
-     * @param int $extension_id to count.
-     * @return int Count of records for the specified $extension_id
+     * @param int $extensionId to count.
+     * @return int Count of records for the specified $extensionId
      */
-    public static function extensionCount($extension_id)
+    public static function extensionCount(int $extensionId): int
     {
         $count = 0;
-        foreach (self::$values_arrays as $values) {
-            if ($values['extension_id'] == $extension_id &&
+        foreach (self::$valuesArrays as $values) {
+            if ($values['extension_id'] == $extensionId &&
                 ($values['domain_id'] == 0 || $values['domain_id'] == DomainId::get())) {
                 $count++;
             }
@@ -179,47 +187,49 @@ class SystemDefaults
 
     /**
      * Delete a specific record from the system_defaults table.
-     * @param int $extension_id for record to delete.
+     * @param int $extensionId for record to delete.
      * @return bool true if delete succeeded; otherwise false.
      */
-    public static function delete($extension_id) {
+    public static function delete(int $extensionId): bool
+    {
         global $pdoDb;
 
         $result = false;
         try {
-            $pdoDb->addSimpleWhere('extension_id', $extension_id, 'AND');
+            $pdoDb->addSimpleWhere('extension_id', $extensionId, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
 
             $result = $pdoDb->request('DELETE', 'system_defaults');
         } catch (PdoDbException $pde) {
-            error_log("SystemDefaults::delete() - extension_id[$extension_id] - error: " . $pde->getMessage());
+            error_log("SystemDefaults::delete() - extension_id[$extensionId] - error: " . $pde->getMessage());
         }
 
         return $result;
     }
+
     /**
      * Get "delete" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int 1 if enabled or 0 if not enabled
      */
-    public static function getDefaultDelete()
+    public static function getDelete(): int
     {
         return self::getValue('delete');
     }
 
     /**
      * Get "expense" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int 1 if enabled or 0 if not enabled
      */
-    public static function getDefaultExpense()
+    public static function getExpense(): int
     {
         return self::getValue('expense');
     }
 
     /**
      * Get "inventory" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int 1 if enabled or 0 if not enabled
      */
-    public static function getDefaultInventory()
+    public static function getInventory(): int
     {
         return self::getValue('inventory');
     }
@@ -228,71 +238,61 @@ class SystemDefaults
      * Get "language" entry from the system_defaults table.
      * @return string Language setting (ex: en_US)
      */
-    public static function getDefaultLanguage()
+    public static function getLanguage(): string
     {
-        $result = self::getValue('language');
-        return $result;
+        return self::getValue('language');
     }
 
     /**
      * Get "logging" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int 1 if enabled or 0 if not enabled
      */
-    public static function getDefaultLogging()
+    public static function getLogging(): int
     {
         return self::getValue('logging');
     }
 
     /**
-     * Get "logging" entry from the system_defaults table.
-     * @return boolean <b>true</b> "1" or "0"
-     */
-    public static function getDefaultLoggingStatus()
-    {
-        return (self::getValue('logging', null, false) == ENABLED);
-    }
-
-    /**
      * Get "password_lower" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int Number of lower case letters required in the password.
      */
-    public static function getDefaultPasswordLower()
+    public static function getPasswordLower(): int
     {
         return self::getValue('password_lower');
     }
 
     /**
      * Get "password_min_length" entry from the system_defaults table.
-     * @return string number setting.
+     * @return int Minimum number of characters required in the password.
      */
-    public static function getDefaultPasswordMinLength()
+    public static function getPasswordMinLength(): int
     {
         return self::getValue('password_min_length', null, false);
     }
 
     /**
      * Get "password_number" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int Number of digits required in the password
      */
-    public static function getDefaultPasswordNumber()
+    public static function getPasswordNumber(): int
     {
         return self::getValue('password_number');
     }
 
     /**
      * Get "password_special" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int Number of special characters required in the password.
      */
-    public static function getDefaultPasswordSpecial()
+    public static function getPasswordSpecial(): int
     {
         return self::getValue('password_special');
     }
 
     /**
      * Get "password_upper" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int Number of upper case letters required in the password.
      */
-    public static function getDefaultPasswordUpper()
+    public static function getPasswordUpper(): int
     {
         return self::getValue('password_upper');
     }
@@ -300,27 +300,27 @@ class SystemDefaults
 
     /**
      * Get "preference" entry from the system_defaults table.
-     * @return mixed
+     * @return int 1 if enabled or 0 if not enabled
      */
-    public static function getDefaultPreference()
+    public static function getPreference(): int
     {
         return self::getValue('preference');
     }
 
     /**
      * Get "product_attributes" entry from the system_defaults table.
-     * @return string "Enabled" or "Disabled"
+     * @return int 1 if enabled or 0 if not enabled
      */
-    public static function getDefaultProductAttributes()
+    public static function getProductAttributes(): int
     {
         return self::getValue('product_attributes');
     }
 
     /**
      * Get "session_timeout" entry from the system_defaults table.
-     * @return int Session timeout setting
+     * @return int Session timeout setting in seconds
      */
-    public static function getDefaultSessionTimeout()
+    public static function getSessionTimeout(): int
     {
         return self::getValue('session_timeout', null, false);
     }

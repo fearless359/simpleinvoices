@@ -21,7 +21,7 @@ if ( $op === 'add') {
         $refresh_redirect = "<meta http-equiv='refresh' content='5;url=index.php?module=product_value&amp;view=add' />";
         $display_block = "<div class=\"si_message_error\">{$LANG['duplicate_product_value']}</div>";
         $pageActive = 'product_value_add';
-    } else if (ProductValues::insert() > 0) {
+    } elseif (ProductValues::insert() > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_product_value_success']}</div>";
     }
 }else if ( $op === 'edit') {

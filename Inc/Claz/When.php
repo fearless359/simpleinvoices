@@ -1,28 +1,31 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class When
  * @package Inc\Claz
  */
-class When {
-    const OPERATORS = '/^(=|!=|<>|<|>|<=|>=)$/';
+class When
+{
+    private const OPERATORS = '/^(=|!=|<>|<|>|<=|>=)$/';
 
-    private $field;
-    private $operator;
-    private $value;
-    private $result;
+    private string $field;
+    private string $operator;
+    private string $value;
+    private string $result;
 
-   /**
-    * Class constructor
-    * @param string $field to place left of the operator.
-    * @param string $operator Limited to <b>=</b>, <b>!=</b>, <b>&lt;=</b>, <b>&lt;&gt;</b>, <b>&lt;</b>,
-    *        <b>&gt;</b> and <b>&gt;=</b>.
-    * @param string $value Value or field to place on the right side of the operator.
-    * @param string $result Value to assign if the test is true.
-    * @throws PdoDbException If the operator is not on of those currently supported.
-    */
-    public function __construct($field, $operator, $value, $result) {
+    /**
+     * Class constructor
+     * @param string $field to place left of the operator.
+     * @param string $operator Limited to <b>=</b>, <b>!=</b>, <b>&lt;=</b>, <b>&lt;&gt;</b>, <b>&lt;</b>,
+     *        <b>&gt;</b> and <b>&gt;=</b>.
+     * @param string $value Value or field to place on the right side of the operator.
+     * @param string $result Value to assign if the test is true.
+     * @throws PdoDbException If the operator is not on of those currently supported.
+     */
+    public function __construct(string $field, string $operator, string $value, string $result)
+    {
         // @formatter:off
         $this->field    = $field;
         $this->operator = $operator;
@@ -37,17 +40,10 @@ class When {
 
     /**
      * Build this clause.
-     * @param array $keypairs (Optional) Parameter exists for function call compatibility
-     *        with other <i>PdoDb</i> class SQL build objects. 
      * @return string <b>WHEN</b> clause rendered from values in this object.
      */
-    public function build($keypairs=null) {
-        // Statement here to eliminate unused parameter warning
-        if (!isset($keypairs)) {
-            $keypairs = null;
-        }
-        $when = "WHEN " . $this->field . " " . $this->operator . " " .
-                          $this->value . " THEN '" . $this->result . "' ";
-        return $when;
+    public function build(): string
+    {
+        return "WHEN {$this->field} {$this->operator} {$this->value} THEN '{$this->result}' ";
     }
 }

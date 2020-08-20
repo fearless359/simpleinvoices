@@ -51,7 +51,7 @@
                         {$LANG.associated_table}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_associated_table"
                            title="{$LANG.associated_table}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>{$cflg.associated_table|htmlsafe}</td>
@@ -61,7 +61,7 @@
                         {$LANG.flag_number}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_flag_number"
                            title="{$LANG.flag_number}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>{$cflg.flg_id|htmlsafe}</td>
@@ -71,7 +71,7 @@
                         {$LANG.field_label_upper}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_field_label"
                            title="{$LANG.field_label_upper}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="text" name="{$LANG.field_label_upper|lower}" value="{if isset($cflg.field_label)}{$cflg.field_label|escape}{/if}" size="20"/></td>
@@ -80,7 +80,7 @@
                     <th>{$LANG.enabled}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_enable"
                            title="{$LANG.custom_flags_upper}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td style="float:left;margin-left:auto;width:10px;">
@@ -92,7 +92,7 @@
                         {$LANG.reset_custom_flags}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_reset_custom_flags_products"
                            title="{$LANG.reset_custom_flags}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="checkbox" name="clear_custom_flags_{$cflg.flg_id}" value="1"/></td>
@@ -102,7 +102,7 @@
                         {$LANG.field_help_upper}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_field_help"
                            title="{$LANG.field_help_upper}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>

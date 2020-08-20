@@ -17,43 +17,43 @@
 <div class="si_toolbar si_toolbar_top">
     <a title="{$LANG.print_preview_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlencode}&amp;format=print">
-        <img src='../../../images/printer.png' class='action'/>&nbsp;{$LANG.print_preview}
+        <img src='../../../images/printer.png' class='action' alt="{$LANG.print_preview}"/>&nbsp;{$LANG.print_preview}
     </a>
     <a title="{$LANG.edit} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=invoices&amp;view=details&amp;id={$invoice.id|urlencode}&amp;action=view">
-        <img src='../../../images/edit.png' class='action'/>&nbsp;{$LANG.edit}
+        <img src='../../../images/edit.png' class='action' alt="{$LANG.edit}"/>&nbsp;{$LANG.edit}
     </a>
     <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=payments&amp;view=process&amp;id={$invoice.id|urlencode}&amp;op=pay_selected_invoice">
-        <img src='../../../images/money_dollar.png' class='action'/>&nbsp;{$LANG.process_payment}
+        <img src='../../../images/money_dollar.png' class='action' alt="{$LANG.process_payment}"/>&nbsp;{$LANG.process_payment}
     </a>
-    {if $eway_pre_check == 'true'}
+    {if $ewayPreCheck == 'true'}
         <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
            href="index.php?module=payments&amp;view=eway&amp;id={$invoice.id|urlencode}">
-            <img src='../../../images/money_dollar.png' class='action'/>&nbsp;{$LANG.process_payment_via_eway}
+            <img src='../../../images/money_dollar.png' class='action' alt="{$LANG.process_payment_via_eway}"/>&nbsp;{$LANG.process_payment_via_eway}
         </a>
     {/if}
     <!-- EXPORT TO PDF -->
     <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe} {$LANG.export_pdf_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=pdf">
-        <img src='../../../images/page_white_acrobat.png' class='action'/>&nbsp;{$LANG.export_pdf}
+        <img src='../../../images/page_white_acrobat.png' class='action' alt="{$LANG.export_pdf}"/>&nbsp;{$LANG.export_pdf}
     </a>
     <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet|htmlsafe} {$LANG.format_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$spreadsheet|urlencode}">
-        <img src='../../../images/page_white_excel.png' class='action'/>&nbsp;{$LANG.export_as}.{$spreadsheet|htmlsafe}
+        <img src='../../../images/page_white_excel.png' class='action' alt="{$LANG.export_as} {$spreadsheet|htmlsafe}"/>&nbsp;{$LANG.export_as}.{$spreadsheet|htmlsafe}
     </a>
     <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording} {$invoice.index_id|htmlsafe} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor|htmlsafe} {$LANG.format_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$wordprocessor|urlencode}">
-        <img src='../../../images/page_white_word.png' class='action'/>&nbsp;{$LANG.export_as}.{$wordprocessor|htmlsafe}
+        <img src='../../../images/page_white_word.png' class='action' alt="{$LANG.export_as} {$wordprocessor|htmlsafe}"/>&nbsp;{$LANG.export_as}.{$wordprocessor|htmlsafe}
     </a>
     <a title="{$LANG.email} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
        href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice.id|urlencode}">
-        <img src='../../../images/mail-message-new.png' class='action'/>&nbsp;{$LANG.email}
+        <img src='../../../images/mail-message-new.png' class='action' alt="{$LANG.email}"/>&nbsp;{$LANG.email}
     </a>
     {if $defaults.delete == '1'}
         <a title="{$LANG.delete} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
            href="index.php?module=invoices&amp;view=delete&amp;stage=1&amp;id={$invoice.id|urlencode}">
-            <img src='../../../images/delete.png' class='action'/>&nbsp;{$LANG.delete}
+            <img src='../../../images/delete.png' class='action' alt="{$LANG.delete}"/>&nbsp;{$LANG.delete}
         </a>
     {/if}
 </div>
@@ -79,17 +79,17 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align:right"><b>{$LANG.gross_total}</b></td>
-        <td style="text-align:right"><b>{$LANG.tax}</b></td>
-        <td style="text-align:right"><b>{$LANG.total_uppercase}</b></td>
+        <td class="align_right"><b>{$LANG.gross_total}</b></td>
+        <td class="align_right"><b>{$LANG.tax}</b></td>
+        <td class="align_right"><b>{$LANG.total_uppercase}</b></td>
     </tr>
     <tr class="tr_head">
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align:right">{$preference.pref_currency_sign}{$invoiceItems[0].gross_total|siLocal_number}</td>
-        <td style="text-align:right">{$preference.pref_currency_sign}{$invoiceItems[0].tax_amount|siLocal_number}</td>
-        <td style="text-align:right"><u>{$preference.pref_currency_sign}{$invoiceItems[0].total|siLocal_number}</u></td>
+        <td class="align_right">{$preference.pref_currency_sign}{$invoiceItems[0].gross_total|siLocal_number}</td>
+        <td class="align_right">{$preference.pref_currency_sign}{$invoiceItems[0].tax_amount|siLocal_number}</td>
+        <td class="align_right"><u>{$preference.pref_currency_sign}{$invoiceItems[0].total|siLocal_number}</u></td>
     </tr>
     <tr class="tr_head">
         <td colspan="6"><br/><br/></td>
@@ -126,11 +126,11 @@
             <td class="si_switch">
                 <a href='#' class="show_notes"
                    onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
-                    <img src="../../../images/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
+                    <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.show_details}"/>
                 </a>
                 <a href='#' class="hide_notes si_hide"
                    onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
-                    <img src="../../../images/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
+                    <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hide_details}"/>
                 </a>
             </td>
         </tr>
@@ -145,9 +145,9 @@
     </table>
     {/if}
     <br/>
-    <table class="si_invoice_view_items" width="50%" style="text-align: left;">
+    <table class="si_invoice_view_items" style="width:50%;text-align: left;">
         <tr>
-            <th width="25%">{$LANG.sales_representative}:</th>
+            <th style="width:25%;">{$LANG.sales_representative}:</th>
             <td>{$invoice.sales_representative|htmlsafe}</td>
             <td colspan="4">&nbsp;</td>
         </tr>
@@ -155,12 +155,12 @@
 {* end itemized invoice *}
 {/if}
     {* tax section - start --------------------- *}
-{if $invoice_number_of_taxes > 0}
+{if $invoiceNumberOfTaxes > 0}
 <table class="si_invoice_view_items">
     <tr class="tr_tax">
         <td colspan="4"></td>
         <th class="si_right">{$LANG.sub_total}</th>
-        <td class="si_right" {if $invoice_number_of_taxes > 1}style="text-decoration:underline;"{/if}>
+        <td class="si_right" {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
             {$preference.pref_currency_sign}{$invoice.gross|siLocal_number}
         </td>
     </tr>
@@ -205,8 +205,8 @@
                     <th>{$LANG.age}
                         <a class="cluetip" href="#"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_age"
-                           title="{$LANG.age}"><img
-                                    src="{$help_image_path}help-small.png" alt=""/>
+                           title="{$LANG.age}">
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                 </tr>
@@ -214,7 +214,7 @@
                     <td>{$preference.pref_currency_sign}{$invoice.total|siLocal_number}</td>
                     <td>{$preference.pref_currency_sign}{$invoice.paid|siLocal_number}</td>
                     <td>{$preference.pref_currency_sign}{$invoice.owing|siLocal_number}</td>
-                    <td>{$invoice_age|htmlsafe}</td>
+                    <td>{$invoiceAge|htmlsafe}</td>
                 </tr>
             </table>
         </div>

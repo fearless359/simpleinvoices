@@ -1,47 +1,52 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class PaymentType
  * @package Inc\Claz
  */
-class PaymentType {
+class PaymentType
+{
 
     /**
      * Retrieve a specific payment_type record.
-     * @param int $pt_id ID of record to retrieve.
+     * @param int $ptId ID of record to retrieve.
      * @return array Rows retrieved. Note that an empty array is returned if no
      *         records are found.
      */
-    public static function getOne($pt_id) {
-        return self::getPaymentTypes($pt_id);
+    public static function getOne(int $ptId): array
+    {
+        return self::getPaymentTypes($ptId);
     }
 
     /**
      * Get payment type records.
-     * @param boolean $active Set to <b>true</b> if you only want active payment types.
+     * @param bool $active Set to <b>true</b> if you only want active payment types.
      *        Set to <b>false</b> or don't specify if you want all payment types.
      * @return array Rows retrieved. Note that an empty array is returned if no
      *         records are found.
      */
-    public static function getAll($active=false) {
+    public static function getAll(bool $active = false): array
+    {
         return self::getPaymentTypes(null, $active);
     }
 
     /**
      * Common data access method. Retrieve record(s) per specified parameters.
-     * @param int $pt_id If not null, the id of the record to retrieve.
+     * @param int|null $ptId If not null, the id of the record to retrieve.
      * @param bool $enabled If true, only enabled records are retrieved.
      * @return array Qualified record(s) retrieved. Test for empty array when
      *          no qualified records found.
      */
-    private static function getPaymentTypes($pt_id = null, $enabled = false) {
+    private static function getPaymentTypes(?int $ptId = null, bool $enabled = false): array
+    {
         global $LANG, $pdoDb;
 
-        $payment_types = array();
+        $paymentTypes = [];
         try {
-            if (isset($pt_id)) {
-                $pdoDb->addSimpleWhere('pt_id', $pt_id, 'AND');
+            if (isset($ptId)) {
+                $pdoDb->addSimpleWhere('pt_id', $ptId, 'AND');
             }
 
             if ($enabled) {
@@ -63,17 +68,17 @@ class PaymentType {
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
                 $row['ename'] = $LANG['edit'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
-                $row['image'] = ($row['pt_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png");
-                $payment_types[] = $row;
+                $row['image'] = $row['pt_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
+                $paymentTypes[] = $row;
             }
         } catch (PdoDbException $pde) {
             error_log("PaymentType::getPaymentTypes - error: " . $pde->getMessage());
         }
 
-        if (empty($payment_types)) {
-            return array();
+        if (empty($paymentTypes)) {
+            return [];
         }
-        return (isset($pt_id) ? $payment_types[0] : $payment_types);
+        return isset($ptId) ? $paymentTypes[0] : $paymentTypes;
     }
 
     /**
@@ -81,10 +86,11 @@ class PaymentType {
      * @param string $description This is the payment type.
      * @return string ID of payment type record.
      */
-    public static function selectOrInsertWhere($description) {
+    public static function selectOrInsertWhere(string $description): string
+    {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->addSimpleWhere("pt_description", $description, "AND");
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
@@ -97,24 +103,25 @@ class PaymentType {
             $rows = $pdoDb->request("SELECT", "payment_types");
             if (empty($rows)) {
                 //add new payment type if no Paypal type
-                self::insert($description, ENABLED);
+                self::insert();
                 return self::selectOrInsertWhere($description);
             }
         } catch (PdoDbException $pde) {
             error_log("PaymentType::selectOrInsertWhere() - description[$description] - error: " . $pde->getMessage());
         }
 
-        return (empty($rows) ? '' : $rows[0]['pt_id']);
+        return empty($rows) ? '' : $rows[0]['pt_id'];
     }
 
     /**
      * Get a default payment type.
      * @return string Default payment type.
      */
-    public static function getDefaultPaymentType() {
+    public static function getDefaultPaymentType(): string
+    {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->setSelectList(new DbField('p.pt_description', 'pt_description'));
 
@@ -131,14 +138,15 @@ class PaymentType {
             error_log("PaymentType::getDefaultPaymentType() - Error: " . $pde->getMessage());
         }
 
-        return (empty($rows) ? '' : $rows[0]['pt_description']);
+        return empty($rows) ? '' : $rows[0]['pt_description'];
     }
 
     /**
      * Insert a new record using the values in the class properties.
-     * @return integer Unique <b>pt_id</b> value assigned to the new record.
+     * @return int Unique <b>pt_id</b> value assigned to the new record.
      */
-    public static function insert() {
+    public static function insert(): int
+    {
         global $pdoDb;
 
         $result = 0;
@@ -153,22 +161,24 @@ class PaymentType {
 
     /**
      * Update an existing record using the values in the class properties.
-     * @param string $pt_id Unique ID for this record.
-     * @return boolean <b>true</b> if update was successful; otherwise <b>false</b>.
+     * @param int $ptId Unique ID for this record.
+     * @return bool <b>true</b> if update was successful; otherwise <b>false</b>.
      */
-    public static function update($pt_id) {
+    public static function update(int $ptId): bool
+    {
         global $pdoDb;
 
+        $result = false;
         try {
-            $pdoDb->setExcludedFields(array("pt_id", "domain_id"));
+            $pdoDb->setExcludedFields(["pt_id", "domain_id"]);
 
             // Note that we don't need to include the domain_id in the key since this is a unique key.
-            $pdoDb->addSimpleWhere("pt_id", $pt_id);
+            $pdoDb->addSimpleWhere("pt_id", $ptId);
 
-            return $pdoDb->request("UPDATE", "payment_types");
+            $result = $pdoDb->request("UPDATE", "payment_types");
         } catch (PdoDbException $pde) {
-            error_log("PaymentType::update() - pt_id[$pt_id] error: " . $pde->getMessage());
+            error_log("PaymentType::update() - pt_id[{$ptId}] error: " . $pde->getMessage());
         }
-        return false;
+        return $result;
     }
 }

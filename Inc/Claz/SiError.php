@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -14,17 +15,15 @@ namespace Inc\Claz;
  */
 class SiError
 {
-    /**
-     * @var bool
-     */
-    private static $returnMessage = false;
+    private static bool $returnMessage = false;
 
     /**
      * Set class property to determine whether or not message generated in the
      * out() function should be returned to the caller or sent to an exit() call.
      * @param bool $returnMessage
      */
-    public static function setReturnMessage($returnMessage) {
+    public static function setReturnMessage(bool $returnMessage): void
+    {
         self::$returnMessage = $returnMessage;
     }
 
@@ -37,7 +36,7 @@ class SiError
      * @param string $info2 Varies with $type setting.
      * @return string Error message formatted for html output.
      */
-    public static function out($type, $info1 = "", $info2 = "")
+    public static function out(string $type, string $info1 = "", string $info2 = ""): string
     {
         $dbname = '';
         if ($type == "dbConnection" && strstr($info1, "Unknown database") !== false) {
@@ -97,7 +96,7 @@ class SiError
             case "install":
                 $mess = "<div id='Container' class='col si_wrap'>" .
                             "<div id='si_install_logo'>" .
-                                "<img src='templates/invoices/logos/simple_invoices_logo.png' class='si_install_logo' width='300'/>" .
+                                "<img src='templates/invoices/logos/simple_invoices_logo.png' alt='' class='si_install_logo' width='300'/>" .
                             "</div>" .
                             "<table class='center' style='width:50%'>" .
                                 "<tr>" .
@@ -204,17 +203,19 @@ class SiError
                         "<br />===========================================";
                 break;
         }
-        // @formatter:off
+        // @formatter:on
 
         return self::terminate($mess);
     }
 
     /**
-     * Exit or return message depending on class setting.
+     * If the $returnMessage property is true, the $mess string is returned.
+     * Otherwise and exit($mess) is performed to terminate the process.
      * @param string $mess
      * @return string
      */
-    private static function terminate($mess) {
+    private static function terminate(string $mess): string
+    {
         if (self::$returnMessage) {
             return $mess;
         }

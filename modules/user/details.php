@@ -32,14 +32,14 @@ global $smarty, $LANG;
 $user = User::getOne($_GET['id']);
 $roles = User::getUserRoles();
 
-$domain_id = DomainId::get();
+$domainId = DomainId::get();
 
 $cust_info = Customer::getAll(['no_totals' => true]);
 $billers = Biller::getAll();
 
 if ($user['user_id'] == 0) {
     $user_id_desc = '0 - User';
-} else if ($user['role_name'] == 'customer') {
+} elseif ($user['role_name'] == 'customer') {
     $user_id_desc = $user['user_id'] . " - Undefined";
     foreach($cust_info as $cust) {
         if ($cust['id'] == $user['user_id']) {
@@ -76,7 +76,7 @@ $smarty->assign('user_id_desc', $user_id_desc);
 $smarty->assign('orig_role_name', $user['role_name']);
 $smarty->assign('orig_user_id', $user['user_id']);
 
-$smarty->assign('username_pattern', User::$username_pattern);
+$smarty->assign('usernamePattern', User::$usernamePattern);
 $smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
 $smarty->assign('user', $user);
 $smarty->assign('roles', $roles);

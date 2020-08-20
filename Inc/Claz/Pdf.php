@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpClassNamingConventionInspection */
 
 namespace Inc\Claz;
 
@@ -22,13 +22,13 @@ class Pdf
 
     /**
      * Generates PDF output to specified destination.
-     * @param string $html_to_pdf html path to source html file.
+     * @param string $htmlToPdf html path to source html file.
      * @param string $pdfname String path to file to save generated PDF to.
      * @param string $destination Setting from Mpdf\Output\Destination.
-     * @return string/null If Destination::STRING_RETURN specified, then the
+     * @return string|null If Destination::STRING_RETURN specified, then the
      *      string form of the PDF to attach to an email; otherwise null.
      */
-    public static function generate($html_to_pdf, $pdfname, $destination)
+    public static function generate(string $htmlToPdf, string $pdfname, string $destination)
     {
         global $config;
 
@@ -49,7 +49,7 @@ class Pdf
             ]);
 
             Log::out("Pdf::generate() - Before WriteHTML", Zend_Log::DEBUG);
-            $mpdf->WriteHTML($html_to_pdf);
+            $mpdf->WriteHTML($htmlToPdf);
 
             Log::out("Pdf::generate() - Before Output", Zend_Log::DEBUG);
             $result = $mpdf->Output($pdfname, $destination);
@@ -62,7 +62,7 @@ class Pdf
             error_log('Pdf::generate(): exception - ' . $mpdfException->getMessage());
         }
 
-        Log::out("Pdf::generate() - returning NULL", Zend_Log::DEBUG);
+        Log::out("Pdf::generate() - returning null", Zend_Log::DEBUG);
         return null;
     }
 

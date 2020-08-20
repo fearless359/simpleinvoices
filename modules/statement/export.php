@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Export;
+use Mpdf\Output\Destination;
 
 /*
  * Script: template.php
@@ -12,25 +13,25 @@ use Inc\Claz\Export;
  * Website:
  * https://simpleinvoices.group */
 // @formatter:off
-$biller_id             = (isset($_GET ['biller_id'])             ? $_GET ['biller_id']             : "");
-$customer_id           = (isset($_GET ['customer_id'])           ? $_GET ['customer_id']           : "");
-$start_date            = (isset($_GET ['start_date'])            ? $_GET ['start_date']            : "");
-$end_date              = (isset($_GET ['end_date'])              ? $_GET ['end_date']              : "");
-$show_only_unpaid      = (isset($_GET ['show_only_unpaid'])      ? $_GET ['show_only_unpaid']      : "no");
-$do_not_filter_by_date = (isset($_GET ['do_not_filter_by_date']) ? $_GET ['do_not_filter_by_date'] : "no");
-$format                = (isset($_GET ['format'])                ? $_GET ['format']                : "");
-$file_type             = (isset($_GET ['filetype'])              ? $_GET ['filetype']              : "");
+$billerId          = isset($_GET ['biller_id'])             ? $_GET ['biller_id']             : "";
+$customerId        = isset($_GET ['customer_id'])           ? $_GET ['customer_id']           : "";
+$startDate         = isset($_GET ['start_date'])            ? $_GET ['start_date']            : "";
+$endDate           = isset($_GET ['end_date'])              ? $_GET ['end_date']              : "";
+$showOnlyUnpaid    = isset($_GET ['show_only_unpaid'])      ? $_GET ['show_only_unpaid']      : "no";
+$doNotFilterByDate = isset($_GET ['do_not_filter_by_date']) ? $_GET ['do_not_filter_by_date'] : "no";
+$format            = isset($_GET ['format'])                ? $_GET ['format']                : "";
+$fileType          = isset($_GET ['filetype'])              ? $_GET ['filetype']              : "";
+// @formatter:on
 
 // get the invoice id
-$export = new Export(Mpdf\Output\Destination::DOWNLOAD);
+$export = new Export(Destination::DOWNLOAD);
 $export->setFormat($format);
-$export->setFileType($file_type);
+$export->setFileType($fileType);
 $export->setModule('statement');
-$export->setBillerId($biller_id);
-$export->setCustomerId($customer_id);
-$export->setStartDate($start_date);
-$export->setEndDate($end_date);
-$export->setShowOnlyUnpaid($show_only_unpaid);
-$export->setDoNotFilterByDate($do_not_filter_by_date);
+$export->setBillerId($billerId);
+$export->setCustomerId($customerId);
+$export->setStartDate($startDate);
+$export->setEndDate($endDate);
+$export->setShowOnlyUnpaid($showOnlyUnpaid);
+$export->setDoNotFilterByDate($doNotFilterByDate);
 $export->execute();
-// @formatter:on

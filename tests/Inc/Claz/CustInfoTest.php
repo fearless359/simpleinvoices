@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name CustInfoTest.php
  * @author Richard Rowley
@@ -6,22 +7,26 @@
  * Created: 20190310
  */
 
-namespace test\Inc\Claz;
+namespace Inc\Claz;
 
-use Inc\Claz\CustInfo;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class CustInfoTest
+ * @package test\Inc\Claz
+ */
 class CustInfoTest extends TestCase
 {
 
-    public function test__construct()
+    public static function testConstruct()
     {
-        $custInfo = new CustInfo('myName', '50.49', '50.00', '.49', null);
+        $custInfo = new CustInfo('myName', '50.49', '50.00', '.49', []);
 
-        $this->assertEquals('myName', $custInfo->name);
-        $this->assertEquals('50.49', $custInfo->billed);
-        $this->assertEquals('50.00', $custInfo->paid);
-        $this->assertEquals('.49', $custInfo->owed);
-        $this->assertNull($custInfo->inv_info);
+        Assert::assertEquals('myName', $custInfo->name);
+        Assert::assertEquals('50.49', $custInfo->fmtdBilled);
+        Assert::assertEquals('50.00', $custInfo->fmtdPaid);
+        Assert::assertEquals('.49', $custInfo->fmtdOwed);
+        Assert::assertEmpty($custInfo->invInfo);
     }
 }

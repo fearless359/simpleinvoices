@@ -1,40 +1,47 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class Import
  * @package Inc\Claz
  */
-class Import {
-    public $file;
-    public $debug;
-    public $pattern_find;
-    public $pattern_replace;
+class Import
+{
+    public string $file;
+    public bool $debug;
+    /**
+     * @var array|string
+     */
+    public $patternFind;
+    /**
+     * @var array|string
+     */
+    public $patternReplace;
 
     /**
-     * @return bool|string
+     * @return bool|string Read data string or false on failure.
      */
-    private function getFile() {
-        $json = file_get_contents($this->file, true);
-        return $json;
+    private function getFile()
+    {
+        return file_get_contents($this->file, true);
     }
 
     /**
      * @param $string
-     * @return mixed
+     * @return string|array
      */
-    public function replace($string) {
-        $string_replaced = str_replace($this->pattern_find, $this->pattern_replace, $string);
-        
-        return $string_replaced;
+    public function replace(string $string)
+    {
+        return str_replace($this->patternFind, $this->patternReplace, $string);
     }
 
     /**
-     * @return mixed
+     * @return string|array
      */
-    public function collate() {
+    public function collate()
+    {
         $json = $this->getFile();
-        $replace = $this->replace($json);
-        return $replace;
+        return $this->replace($json);
     }
 }

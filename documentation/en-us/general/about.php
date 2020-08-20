@@ -25,13 +25,13 @@
                 $len = strpos($line, ']') - $beg;
                 $section = substr($line, $beg, $len);
                 $fnd_section = ($section == "production");
-            } else if ($fnd_section) {
+            } elseif ($fnd_section) {
                 $parts = explode('=', $line);
                 if (count($parts) == 2) {
                     if (trim($parts[0]) == "version.name") {
                         $v_name = trim($parts[1]);
                         $info_fnd_cnt++;
-                    } else if (trim($parts[0]) == "version.update_date") {
+                    } elseif (trim($parts[0]) == "version.update_date") {
                         $v_date = trim($parts[1]);
                         $info_fnd_cnt++;
                     }

@@ -38,15 +38,15 @@ class Taxes
     }
 
     /**
-     * @param int $id If not null, id of record to retrieve
+     * @param int|null $id If not null, id of record to retrieve
      * @param bool $activeOnly if true get enabled records only; false (default) for all records.
      * @return array rows retrieved.
      */
-    private static function getTaxes($id = null, bool $activeOnly = false): array
+    private static function getTaxes(?int $id = null, bool $activeOnly = false): array
     {
         global $LANG, $pdoDb;
 
-        $taxes = array();
+        $taxes = [];
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('tax_id', $id, 'AND');
@@ -71,16 +71,16 @@ class Taxes
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
                 $row['ename'] = $LANG['edit'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
-                $row['image'] = ($row['tax_enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
+                $row['image'] = $row['tax_enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
                 $taxes[] = $row;
             }
         } catch (PdoDbException $pde) {
             error_log("Taxes::getAll() - error: " . $pde->getMessage());
         }
         if (empty($taxes)) {
-            return array();
+            return [];
         }
-        return (isset($id) ? $taxes[0] : $taxes);
+        return isset($id) ? $taxes[0] : $taxes;
     }
 
     /**
@@ -113,7 +113,7 @@ class Taxes
         } catch (PdoDbException $pde) {
             error_log("Taxes::getDefaultTax() - error: " . $pde->getMessage());
         }
-        return (empty($rows) ? [] : $rows[0]);
+        return empty($rows) ? [] : $rows[0];
     }
 
     /**
@@ -125,7 +125,7 @@ class Taxes
     {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->addSimpleWhere('tax_description', $description, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
@@ -133,7 +133,7 @@ class Taxes
         } catch (PdoDbException $pde) {
             error_log("Tax::verifyExists(): description[$description] error - " . $pde->getMessage());
         }
-        return (!empty($rows));
+        return !empty($rows);
     }
     /**
      * Insert a new tax rate.
@@ -145,11 +145,12 @@ class Taxes
 
         $result = 0;
         try {
-            $pdoDb->setFauxPost(array('domain_id' => DomainId::get(),
+            $pdoDb->setFauxPost(['domain_id' => DomainId::get(),
                 'tax_description' => $_POST['tax_description'],
                 'tax_percentage' => $_POST['tax_percentage'],
                 'type' => $_POST['type'],
-                'tax_enabled' => $_POST['tax_enabled']));
+                'tax_enabled' => $_POST['tax_enabled']
+            ]);
             $result = $pdoDb->request("INSERT", "tax");
         } catch (PdoDbException $pde) {
             error_log("Taxes::insertTaxRate() - Error: " . $pde->getMessage());
@@ -168,10 +169,12 @@ class Taxes
         try {
             // @formatter:off
             $pdoDb->addSimpleWhere("tax_id", $_GET['id']);
-            $pdoDb->setFauxPost(array('tax_description' => $_POST['tax_description'],
-                                      'tax_percentage'  => $_POST['tax_percentage'],
-                                      'type'            => $_POST['type'],
-                                      'tax_enabled'     => $_POST['tax_enabled']));
+            $pdoDb->setFauxPost([
+                'tax_description' => $_POST['tax_description'],
+                'tax_percentage'  => $_POST['tax_percentage'],
+                'type'            => $_POST['type'],
+                'tax_enabled'     => $_POST['tax_enabled']
+            ]);
             // @formatter:on
             if ($pdoDb->request("UPDATE", "tax") === false) {
                 return false;
@@ -213,7 +216,7 @@ class Taxes
     {
         // Calculate tax as a percentage of unit price or dollars per unit.
         if ($tax['type'] == "%") {
-            return (($tax['tax_percentage'] / 100) * $unitPrice) * $quantity;
+            return $tax['tax_percentage'] / 100 * $unitPrice * $quantity;
         }
         return $tax['tax_percentage'] * $quantity;
     }

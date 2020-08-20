@@ -25,7 +25,7 @@ $refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?modu
 if (  $op === 'insert_preference' ) {
     // @formatter:off
     try {
-        $pdoDb->setFauxPost(array(
+        $pdoDb->setFauxPost([
             "domain_id"                    => DomainId::get(),
             "pref_description"             => $_POST['p_description'],
             "pref_currency_sign"           => $_POST['p_currency_sign'],
@@ -43,10 +43,10 @@ if (  $op === 'insert_preference' ) {
             "status"                       => $_POST['status'],
             "locale"                       => $_POST['locale'],
             "language"                     => $_POST['locale'],
-            "index_group"                  => (empty($_POST['index_group']) ? 0 : $_POST['index_group']),
+            "index_group"                  => empty($_POST['index_group']) ? 0 : $_POST['index_group'],
             "set_aging"                    => $_POST['set_aging'],
             "include_online_payment"       => $include_online_payment
-        ));
+        ]);
 
         $id = $pdoDb->request("INSERT", "preferences");
         if ($id == 0) {
@@ -55,7 +55,7 @@ if (  $op === 'insert_preference' ) {
             $display_block = "<div class=\"si_message_ok\">{$LANG['save_preference_success']}</div>";
             // If index_group is empty, assign the pref_id assigned to it.
             if (empty($_POST['index_group'])) {
-                $pdoDb->setFauxPost(array("index_group" => $id));
+                $pdoDb->setFauxPost(["index_group" => $id]);
                 $pdoDb->addSimpleWhere('pref_id', $id);
                 $pdoDb->request("UPDATE", "preferences");
             }
@@ -65,10 +65,10 @@ if (  $op === 'insert_preference' ) {
         // Set $display_block as it might have been set to insert success but error from update
         $display_block = "<div class=\"si_message_error\">{$LANG['save_preference_failure']}</div>";
     }
-} else if ($op === 'edit_preference' ) {
+} elseif ($op === 'edit_preference' ) {
     if (isset($_POST['save_preference'])) {
         try {
-            $pdoDb->setFauxPost(array(
+            $pdoDb->setFauxPost([
                 "pref_description"             => $_POST['pref_description'],
                 "pref_currency_sign"           => $_POST['pref_currency_sign'],
                 "currency_code"                => $_POST['currency_code'],
@@ -88,7 +88,7 @@ if (  $op === 'insert_preference' ) {
                 "index_group"                  => $_POST['index_group'],
                 "set_aging"                    => $_POST['set_aging'],
                 "include_online_payment"       => $include_online_payment
-            ));
+            ]);
             $pdoDb->addSimpleWhere("pref_id", $_GET['id']);
             if ($pdoDb->request("UPDATE", "preferences") === false) {
                 error_log("preferences save.php edit_preference id[{$_GET['id']}] update failed");

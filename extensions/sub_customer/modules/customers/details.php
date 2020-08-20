@@ -33,12 +33,12 @@ $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($custome
 $smarty->assign('customer',$customer);
 
 // Get the customers that have this customer as their parent
-$sub_customers = SubCustomers::getSubCustomers($cid);
-$smarty->assign('sub_customers',$sub_customers);
-$smarty->assign('sub_customer_count', count($sub_customers));
+$subCustomers = SubCustomers::getSubCustomers($cid);
+$smarty->assign('subCustomers',$subCustomers);
+$smarty->assign('subCustomerCount', count($subCustomers));
 
-$parent_customers = Customer::getAll(['enabled_only' => true]);
-$smarty->assign('parent_customers', $parent_customers);
+$parentCustomers = Customer::getAll(['enabled_only' => true]);
+$smarty->assign('parent_customers', $parentCustomers);
 
 $invoices = Customer::getCustomerInvoices($cid);
 $smarty->assign('invoices',$invoices);
@@ -46,11 +46,11 @@ $smarty->assign('invoices',$invoices);
 $customFieldLabel = CustomFields::getLabels(true);
 $smarty->assign('customFieldLabel',$customFieldLabel);
 
-$invoices_owing = Invoice::getInvoicesOwing($cid);
-$smarty->assign('invoices_owing'  , $invoices_owing);
-$smarty->assign('invoices_owing_count', count($invoices_owing));
+$invoicesOwing = Invoice::getInvoicesOwing($cid);
+$smarty->assign('invoices_owing'  , $invoicesOwing);
+$smarty->assign('invoices_owing_count', count($invoicesOwing));
 
 $smarty->assign('pageActive', 'customer');
-$subPageActive  = ($_GET['action'] == "view"  ? "customer_view" : "customer_edit");
+$subPageActive  = $_GET['action'] == "view"  ? "customer_view" : "customer_edit";
 $smarty->assign('subPageActive', $subPageActive);
 $smarty->assign('active_tab', '#people');

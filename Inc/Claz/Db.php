@@ -1,20 +1,27 @@
 <?php
+/** @noinspection PhpClassNamingConventionInspection */
+
 namespace Inc\Claz;
 
+use Exception;
 use PDO;
 use PDOException;
+use PDOStatement;
 
 /**
  * Class Db
  * @package Inc\Claz
  */
-class Db {
-    private $_db;
-    private $_pdoAdapter;
-    private static $_instance;
+class Db
+{
+    private static Db $instance;
+
+    private PDO $db;
+    private string $pdoAdapter;
 
     // public $connection = null;
-    function __construct() {
+    public function __construct()
+    {
         global $config;
 
         // check if PDO is available
@@ -23,21 +30,21 @@ class Db {
         }
 
         // Strip the pdo_ section from the adapter
-        $this->_pdoAdapter = substr($config->database->adapter, 4);
-        if ($this->_pdoAdapter != "mysql") {
+        $this->pdoAdapter = substr($config->database->adapter, 4);
+        if ($this->pdoAdapter != "mysql") {
             SiError::out("PDO_not_mysql");
         }
 
         // @formatter:off
         try {
-            $this->_db = new PDO(
+            $this->db = new PDO(
                     'mysql:host=' . $config->database->params->host . '; ' .
                     'port='       . $config->database->params->port . '; ' .
                     'dbname='     . $config->database->params->dbname,
                                     $config->database->params->username,
                                     $config->database->params->password,
-                                    array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8;"));
-            $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                    [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8;"]);
+            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $exception) {
             SiError::out("dbConnection", $exception->getMessage());
             die($exception->getMessage());
@@ -49,39 +56,43 @@ class Db {
      * Otherwise return the existing instance.
      * @return Db
      */
-    public static function getInstance() {
-        if (!(self::$_instance instanceof self)) {
-            self::$_instance = new self();
+    public static function getInstance(): Db
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
-        return self::$_instance;
+        return self::$instance;
     }
 
     /**
      * @param $sqlQuery
-     * @return bool|null|\PDOStatement
+     * @return bool|null|PDOStatement
      */
-    public function query($sqlQuery) {
+    public function query($sqlQuery)
+    {
         try {
             $argc = func_num_args();
             $binds = func_get_args();
-            $sth = $this->_db->prepare($sqlQuery);
+            $sth = $this->db->prepare($sqlQuery);
             if ($argc > 1) {
                 array_shift($binds);
-                for ($i = 0; $i < count($binds); $i++) {
-                    $sth->bindValue($binds[$i], $binds[++$i]);
+                for ($idx = 0; $idx < count($binds); $idx++) {
+                    $sth->bindValue($binds[$idx], $binds[++$idx]);
                 }
             }
 
             $sth->execute();
             if ($sth->errorCode() > '0') {
-                SiError::out('sql', $sth->errorInfo(), $sqlQuery);
+                $val = $sth->errorInfo();
+                SiError::out('sql', $val[2], $sqlQuery);
             }
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        } catch (Exception $exp) {
+            echo $exp->getMessage();
+            $val = $this->db->errorInfo();
             echo "Not sure what happened with your query?:<br /><br /> " .
                   Util::htmlsafe($sqlQuery) . "<br />" .
-                  Util::htmlsafe(end($this->_db->errorInfo()));
-            $sth = NULL;
+                  Util::htmlsafe($val[2]);
+            $sth = null;
         }
         return $sth;
     }

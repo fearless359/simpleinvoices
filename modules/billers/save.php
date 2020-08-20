@@ -32,7 +32,7 @@ if ( $op === 'add') {
     if (Biller::insertBiller() > 0) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
     }
-} else if ($op === 'edit') {
+} elseif ($op === 'edit') {
     if (Biller::updateBiller()) {
         $display_block = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
     }

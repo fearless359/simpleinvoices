@@ -58,19 +58,19 @@ class BackupDb {
     {
         $query = "SHOW COLUMNS FROM `{$tableName}`";
         $rows = $this->pdoDb->query($query);
-        $i = 0;
-        $columns = array();
+        $idx = 0;
+        $columns = [];
         foreach($rows as $row) {
-            $columns[$i++][0] = $row[0];
+            $columns[$idx++][0] = $row[0];
         }
         $colCnt = count($columns);
         $query = "";
         $rows = $this->pdoDb->request("SELECT", $tableName);
         foreach($rows as $row) {
             $query .= "INSERT INTO `$tableName` VALUES(";
-            for ($i = 0; $i < $colCnt; $i++) {
-                $query .= "'" . addslashes($row[$columns[$i][0]]) . "'" .
-                         ($i + 1 == $colCnt ? ");\n" : ",");
+            for ($idx = 0; $idx < $colCnt; $idx++) {
+                $query .= "'" . addslashes($row[$columns[$idx][0]]) . "'" .
+                         ($idx + 1 == $colCnt ? ");\n" : ",");
             }
         }
         $query .= "\n";

@@ -25,7 +25,7 @@
     <span class="si_filters_title">
         <a class="cluetip" href="#" title="{$LANG.invoice_type}"
            rel="index.php?module=documentation&amp;view=view&amp;page=help_invoice_types">
-            <img class="" src="{$help_image_path}help-small.png" alt=""/>
+            <img class="" src="{$helpImagePath}help-small.png" alt=""/>
         </a>
     </span>
 </div>
@@ -74,13 +74,13 @@
     <tr>
         <th>{$LANG.sub_customer}</th>
         <td>
-            {if !isset($sub_customers) || empty($sub_customers) }
+            {if !isset($subCustomers) || empty($subCustomers) }
                 <em>{$LANG.no_sub_customers}</em>
             {else}
                 <select name="custom_field1" id="custom_field1">
-                    {foreach $sub_customers as $sub_customer}
-                        <option {if isset($sub_customer.id) && $sub_customer.id == $defaultCustomerID}selected{/if} value="{if isset($sub_customer.id)}{$sub_customer.id|htmlsafe}{/if}">
-                            {$sub_customer.attention|htmlsafe}
+                    {foreach $subCustomers as $subCustomer}
+                        <option {if isset($subCustomer.id) && $subCustomer.id == $defaultCustomerID}selected{/if} value="{if isset($subCustomer.id)}{$subCustomer.id|htmlsafe}{/if}">
+                            {$subCustomer.attention|htmlsafe}
                         </option>
                     {/foreach}
                 </select>

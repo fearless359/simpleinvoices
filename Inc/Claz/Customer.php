@@ -1,17 +1,22 @@
 <?php
+
 namespace Inc\Claz;
+
+use Encryption;
 
 /**
  * Class Customer
  * @package Inc\Claz
  */
-class Customer {
+class Customer
+{
 
     /**
      * Calculate count of customer records.
-     * @return integer
+     * @return int
      */
-    public static function count() {
+    public static function count(): int
+    {
         global $pdoDb;
 
         try {
@@ -22,15 +27,16 @@ class Customer {
             error_log("Customer::count() - Error: " . $pde->getMessage());
             return 0;
         }
-        return (empty($rows) ? 0 : $rows[0]['count']);
+        return empty($rows) ? 0 : $rows[0]['count'];
     }
 
     /**
      * Get a customer record.
-     * @param string $id Unique ID record to retrieve.
-     * @return array Row retrieved. Test for "=== false" to check for failure.
+     * @param int $id Unique ID record to retrieve.
+     * @return array Row retrieved. Empty array returned if no record for $id.
      */
-    public static function getOne($id) {
+    public static function getOne(int $id): array
+    {
         return self::getCustomers(['id' => $id]);
     }
 
@@ -43,9 +49,11 @@ class Customer {
      *              <b>enabled_only</b> option setting.
      *          no_totals - Set to <b>true</b> if only customer record fields to be returned.
      *              Set to <b>false</b> to add calculated totals field (Default if not specified).
+     *          An empty array if none of these parameters needed.
      * @return array Customers selected.
      */
-    public static function getAll($params = null) {
+    public static function getAll(array $params = []): array
+    {
         return self::getCustomers($params);
     }
 
@@ -62,12 +70,14 @@ class Customer {
         $defaultinv = $LANG['new_uppercase'] . " " . $LANG['default_invoice'];
 
         try {
-            $pdoDb->setOrderBy(array(array('enabled', 'D'), array('name', 'A')));
+            $pdoDb->setOrderBy([['enabled', 'D'], ['name', 'A']]);
         } catch (PdoDbException $pde) {
             error_log("Customer::manageTableInfo(): Unable to set OrderBy - " . $pde->getMessage());
         }
+
         $rows = self::getCustomers(['order_by_set' => true]);
-        $tableRows = array();
+
+        $tableRows = [];
         foreach ($rows as $row) {
             $enabled = $row['enabled'] == ENABLED;
             // @formatter:off
@@ -86,29 +96,32 @@ class Customer {
                            "</a>";
             }
 
-            $quick_view = "<a class=\"index_table\" title=\"quick view\" " .
+            $quickView = "<a class=\"index_table\" title=\"quick view\" " .
                              "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['last_inv_id']}\">" .
                               "{$row['last_index_id']}" .
-                          "</a>";
+                         "</a>";
 
-            $image = ($enabled ? "images/tick.png" : "images/cross.png");
-            $enabled_col = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
-                           "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $enabledCol = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
+                          "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
             // @formatter::on
 
-            $tableRows[] = array(
+            $pattern = '/^(.*)_(.*)$/';
+            $replPattern = '$1-$2';
+            $tableRows[] = [
                 'action' => $action,
                 'name' => $row['name'],
                 'department' => $row['department'],
-                'quick_view' => $quick_view,
+                'quick_view' => $quickView,
                 'total' => $row['total'],
                 'paid' => $row['paid'],
                 'owing' => $row['owing'],
-                'enabled' => $enabled_col,
+                'enabled' => $enabledCol,
                 'currency_code' => $config ->local->currency_code,
-                'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
-            );
+                'locale' => preg_replace($pattern, $replPattern, $config->local->locale)
+            ];
         }
+
         return $tableRows;
     }
 
@@ -126,28 +139,28 @@ class Customer {
      *              <b>false</b> to order by name (default if not specified.
      * @return array Customers selected.
      */
-    private static function getCustomers($params) {
+    private static function getCustomers(array $params): array {
         global $LANG, $pdoDb;
 
         // @formatter::off
-        $id           = (empty($params['id'])           ? null  : $params['id']);
-        $enabled_only = (empty($params['enabled_only']) ? false : $params['enabled_only']);
-        $incl_cust_id = (empty($params['incl_cust_id']) ? null  : $params['incl_cust_id']);
-        $no_totals    = (empty($params['no_totals'])    ? false : $params['no_totals']);
-        $order_by_set = (empty($params['order_by_set']) ? false : $params['order_by_set']);
+        $id          = empty($params['id'])           ? null  : $params['id'];
+        $enabledOnly = empty($params['enabled_only']) ? false : $params['enabled_only'];
+        $inclCustId  = empty($params['incl_cust_id']) ? null  : $params['incl_cust_id'];
+        $noTotals    = empty($params['no_totals'])    ? false : $params['no_totals'];
+        $orderBySet  = empty($params['order_by_set']) ? false : $params['order_by_set'];
         // @formatter:on
 
-        $customers = array();
+        $customers = [];
         try {
-            if ($enabled_only) {
-                if (!empty($incl_cust_id)) {
-                    $pdoDb->addToWhere(new WhereItem(true, "id", "=", $incl_cust_id, false, "OR"));
+            if ($enabledOnly) {
+                if (!empty($inclCustId)) {
+                    $pdoDb->addToWhere(new WhereItem(true, "id", "=", $inclCustId, false, "OR"));
                     $pdoDb->addToWhere(new WhereItem(false, "enabled", "=", ENABLED, true, "AND"));
                 } else {
                     $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
                 }
             }
-            if (isset($id)) {
+            if (!empty($id)) {
                 $pdoDb->addSimpleWhere('id', $id, 'AND');
             }
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
@@ -157,21 +170,21 @@ class Customer {
             $case->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($case);
 
-            if (!$order_by_set) {
+            if (!$orderBySet) {
                 $pdoDb->setOrderBy('name');
             }
 
             $pdoDb->setSelectAll(true);
 
             $rows = $pdoDb->request("SELECT", "customers");
-            if ($no_totals) {
+            if ($noTotals) {
                 $customers = $rows;
             } else {
                 foreach ($rows as $row) {
-                    self::getLastInvoiceIds($row['id'], $last_index_id, $last_id);
-                    $row['last_index_id'] = $last_index_id;
-                    $row['last_inv_id'] = $last_id;
-                    $row['enabled_image'] = ($row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
+                    self::getLastInvoiceIds($row['id'], $lastIndexId, $lastId);
+                    $row['last_index_id'] = $lastIndexId;
+                    $row['last_inv_id'] = $lastId;
+                    $row['enabled_image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
                     $row['total'] = self::calcCustomerTotal($row['id']);
                     $row['paid'] = Payment::calcCustomerPaid($row['id']);
                     $row['owing'] = $row['total'] - $row['paid'];
@@ -183,21 +196,23 @@ class Customer {
         }
 
         if (empty($customers)) {
-            return array();
+            return [];
         }
 
-        return (isset($id) ? $customers[0] : $customers);
+        return !empty($id) ? $customers[0] : $customers;
     }
 
     /**
-     * @param $id
-     * @return array
+     * Get the invoices for a specified customer id.
+     * @param int $id of Customer.
+     * @return array Invoices retrieved.
      */
-    public static function getCustomerInvoices($id) {
+    public static function getCustomerInvoices(int $id): array
+    {
         global $pdoDb;
 
 
-        $invoices = array();
+        $invoices = [];
         try {
             // Using a trick here to add a selection key then call get all with
             // no parameters so the selection key set here is applied in the
@@ -214,7 +229,8 @@ class Customer {
      * Get a default customer name.
      * @return array Default customer row
      */
-    public static function getDefaultCustomer() {
+    public static function getDefaultCustomer(): array
+    {
         global $pdoDb;
 
         try {
@@ -226,12 +242,12 @@ class Customer {
             $jn->addSimpleItem("c.domain_id", new DbField("s.domain_id"));
             $pdoDb->addToJoins($jn);
 
-            $pdoDb->setSelectList(array("c.name AS name", "s.value AS id"));
+            $pdoDb->setSelectList(["c.name AS name", "s.value AS id"]);
             $rows = $pdoDb->request("SELECT", "system_defaults", "s");
         } catch (PdoDbException $pde) {
             error_log("Customer::getDefaultCustomer() - error: " . $pde->getMessage());
         }
-        return (empty($rows) ? array() : $rows[0]);
+        return empty($rows) ? [] : $rows[0];
     }
 
     /**
@@ -241,7 +257,8 @@ class Customer {
      *          If false (default), selection by ID and user's domain.
      * @return float total for customer.
      */
-    public static function calcCustomerTotal($id, $is_real = false) {
+    public static function calcCustomerTotal(int $id, bool $is_real = false): float
+    {
         global $pdoDb;
 
         $total = 0;
@@ -278,15 +295,16 @@ class Customer {
 
     /**
      * Find the last invoice index_id for a customer.
-     * @param int $customer_id
-     * @param int $last_index_id
-     * @param int $last_id
+     * @param int $customer_id ID of customer to get info for.
+     * @param int $lastIndexId Last index-id value for this customer
+     * @param int $lastId Last id value for this customer
      */
-    public static function getLastInvoiceIds($customer_id, &$last_index_id, &$last_id) {
+    public static function getLastInvoiceIds(int $customer_id, &$lastIndexId, &$lastId): void
+    {
         global $pdoDb;
 
-        $last_index_id = 0;
-        $last_id = 0;
+        $lastIndexId = 0;
+        $lastId = 0;
         try {
             $pdoDb->addSimpleWhere('customer_id', $customer_id, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
@@ -306,8 +324,8 @@ class Customer {
             return;
         }
 
-        $last_index_id = $rows[0]['last_index_id'];
-        $last_id = $rows[0]['last_id'];
+        $lastIndexId = $rows[0]['last_index_id'];
+        $lastId = $rows[0]['last_id'];
     }
 
     /**
@@ -315,7 +333,8 @@ class Customer {
      * @param bool $excludeCreditCardNumber true if no credit card number to store, false otherwise.
      * @return bool true if insert succeeded, false if failed.
      */
-    public static function insertCustomer($excludeCreditCardNumber) {
+    public static function insertCustomer(bool $excludeCreditCardNumber): bool
+    {
         global $pdoDb;
 
         try {
@@ -347,12 +366,15 @@ class Customer {
      * @param array $fauxPostList If specified, the associative array of fields to update.
      * @return bool true if update ok, false otherwise.
      */
-    public static function updateCustomer($id, $excludeCreditCardNumber, $fauxPostList = null) {
+    public static function updateCustomer(int $id, bool $excludeCreditCardNumber, array $fauxPostList = []): bool
+    {
         global $pdoDb;
 
         try {
-            $excludedFields = array('id', 'domain_id');
-            if ($excludeCreditCardNumber) $excludedFields[] = 'credit_card_number';
+            $excludedFields = ['id', 'domain_id'];
+            if ($excludeCreditCardNumber) {
+                $excludedFields[] = 'credit_card_number';
+            }
             $pdoDb->setExcludedFields($excludedFields);
 
             if (!empty($fauxPostList)) {
@@ -375,7 +397,7 @@ class Customer {
      * @param int $num_to_show Number of characters to leave exposed.
      * @return string Masked value.
      */
-    public static function maskCreditCardNumber($value, $chr='x', $num_to_show=4)
+    public static function maskCreditCardNumber(string $value, string $chr = 'x', int $num_to_show = 4): string
     {
         global $config;
 
@@ -385,21 +407,21 @@ class Customer {
 
         // decrypt the value
         $key = $config->encryption->default->key;
-        $enc = new \Encryption();
-        $decrypted_value = $enc->decrypt($key, $value);
+        $enc = new Encryption();
+        $decryptedValue = $enc->decrypt($key, $value);
 
-        $len = strlen($decrypted_value);
+        $len = strlen($decryptedValue);
         if ($len <= $num_to_show) {
-            return $decrypted_value;
+            return $decryptedValue;
         }
 
-        $mask_len = $len - $num_to_show;
-        $masked_value = "";
-        for ($i = 0; $i < $mask_len; $i++) {
-            $masked_value .= $chr;
+        $maskLen = $len - $num_to_show;
+        $maskedValue = "";
+        for ($ndx = 0; $ndx < $maskLen; $ndx++) {
+            $maskedValue .= $chr;
         }
-        $masked_value .= substr($value, $mask_len);
-        return $masked_value;
+        $maskedValue .= substr($value, $maskLen);
+        return $maskedValue;
     }
 
 }

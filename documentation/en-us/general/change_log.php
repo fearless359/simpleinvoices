@@ -447,7 +447,7 @@
                     message support via the "help" keyword.<br/>
                     Ex:<br/>
                     &lt;a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
-                       title="{$LANG.custom_flags_upper}"&gt;&lt;img src="{$help_image_path}help-small.png" alt="" /&gt;&lt;/a&gt;
+                       title="{$LANG.custom_flags_upper}"&gt;&lt;img src="{$helpImagePath}help-small.png" alt="" /&gt;&lt;/a&gt;
                 </li>
                 <li>Created SystemDefaults class to consolidate function from sql_queries.php.</li>
             </ul>

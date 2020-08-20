@@ -6,18 +6,21 @@
  * Created: 20190314
  */
 
-namespace test\Inc\Claz;
+namespace Inc\Claz;
 
-use Inc\Claz\GroupBy;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class GroupByTest
+ * @package Inc\Claz
+ */
 class GroupByTest extends TestCase
 {
 
     public function testGroupByClass()
     {
-        $gr = new GroupBy(array('ivl.customer_id', 'apl.domain_id'));
+        $gr = new GroupBy(['ivl.customer_id', 'apl.domain_id']);
         $stmt = $gr->build();
-        $this->assertEquals('GROUP BY `ivl`.`customer_id`, `apl`.`domain_id`', $stmt);
+        static::assertEquals('GROUP BY `ivl`.`customer_id`, `apl`.`domain_id`', $stmt);
     }
 }

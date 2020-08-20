@@ -25,8 +25,8 @@ function lastOfMonth() {
     return date("Y-m-d", strtotime('31-12-' . date('Y') . ' 00:00:00'));
 }
 
-$start_date = (isset($_POST['start_date']) ? $_POST['start_date'] : firstOfMonth());
-$end_date   = (isset($_POST['end_date']  ) ? $_POST['end_date']   : lastOfMonth());
+$start_date = isset($_POST['start_date']) ? $_POST['start_date'] : firstOfMonth();
+$end_date   = isset($_POST['end_date']  ) ? $_POST['end_date']   : lastOfMonth();
 
 $rows = array();
 try {

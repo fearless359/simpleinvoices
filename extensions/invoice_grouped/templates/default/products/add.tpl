@@ -18,7 +18,7 @@
             <tr>
                 <th>{$LANG.description}
                     <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field" title="{$LANG.required_field}">
-                        <img src="{$help_image_path}required-small.png"/></a>
+                        <img src="{$helpImagePath}required-small.png"/></a>
                 </th>
                 <td><input type="text" name="description" value="{if isset($smarty.post.description)}{$smarty.post.description}{/if}" size="50" id="description" class="required edit" onblur="checkField(this);"/></td>
             </tr>
@@ -41,7 +41,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf1}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png"/></a>
+                            <img src="{$helpImagePath}help-small.png"/></a>
                     </th>
                     <td>
                         <select name="custom_field1">
@@ -57,7 +57,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf2}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/></a>
+                            <img src="{$helpImagePath}help-small.png" alt=""/></a>
                     </th>
                     <td><input type="text" class="edit" name="custom_field2" value="{if isset($smarty.post.custom_field2)}{$smarty.post.custom_field2}{/if}" size="50"/></td>
                 </tr>
@@ -66,7 +66,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf3}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/></a>
+                            <img src="{$helpImagePath}help-small.png" alt=""/></a>
                     </th>
                     <td><input type="text" class="edit" name="custom_field3" value="{if isset($smarty.post.custom_field3)}{$smarty.post.custom_field3}{/if}" size="50"/></td>
                 </tr>
@@ -75,7 +75,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf4}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/></a>
+                            <img src="{$helpImagePath}help-small.png" alt=""/></a>
                     </th>
                     <td><input type="text" class="edit" name="custom_field4" value="{if isset($smarty.post.custom_field4)}{$smarty.post.custom_field4}{/if}" size="50"/></td>
                 </tr>

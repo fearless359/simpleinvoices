@@ -10,8 +10,8 @@ use Inc\Claz\Util;
 
 global $LANG,
        $smarty,
-       $extension_php_insert_files,
-       $perform_extension_php_insertions;
+       $extensionPhpInsertFiles,
+       $performExtensionPhpInsertions;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
@@ -180,7 +180,7 @@ switch ($get_val) {
     case "language":
         $default   = "language";
         $languages = getLanguageList();
-        $lang      = SystemDefaults::getDefaultLanguage();
+        $lang      = SystemDefaults::getLanguage();
 
         usort($languages, "compareNameIndex");
         $description  = $LANG['language'];
@@ -319,8 +319,8 @@ switch ($get_val) {
         // loaded below and all the generic edit template to display them.
         // The $get_val variable contains the field name that is to be edited.
         $found = false;
-        if ($perform_extension_php_insertions) {
-            foreach ($extension_php_insert_files as $phpfile) {
+        if ($performExtensionPhpInsertions) {
+            foreach ($extensionPhpInsertFiles as $phpfile) {
                 if ($phpfile['module'] == 'system_defaults' &&
                     $phpfile['view'] == 'edit') {
                     include_once $phpfile['file'];

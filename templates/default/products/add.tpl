@@ -25,7 +25,7 @@
                                 <a class="cluetip" href="#"
                                    rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
                                    title="{$LANG.required_field}">
-                                    <img src="{$help_image_path}required-small.png" alt=""/>
+                                    <img src="{$helpImagePath}required-small.png" alt=""/>
                                 </a>
                             </th>
                             <td>
@@ -47,7 +47,7 @@
                                     <a class="cluetip" href="#"
                                        rel="index.php?module=documentation&amp;view=view&amp;page=help_cost"
                                        title="{$LANG.cost}">
-                                        <img src="{$help_image_path}help-small.png" alt=""/>
+                                        <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
                                 <td>
@@ -88,7 +88,7 @@
                                     <a class="cluetip" href="#"
                                        rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                        title="{$LANG.custom_fields}">
-                                        <img src="{$help_image_path}help-small.png" alt=""/>
+                                        <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
                                 <td><input type="text" class="edit" name="custom_field1"
@@ -101,7 +101,7 @@
                                     <a class="cluetip" href="#"
                                        rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                        title="{$LANG.custom_fields}">
-                                        <img src="{$help_image_path}help-small.png" alt=""/>
+                                        <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
                                 <td><input type="text" class="edit" name="custom_field2"
@@ -113,7 +113,7 @@
                                     <a class="cluetip" href="#"
                                        rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                        title="{$LANG.custom_fields}">
-                                        <img src="{$help_image_path}help-small.png" alt=""/>
+                                        <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
                                 <td><input type="text" class="edit" name="custom_field3"
@@ -126,7 +126,7 @@
                                     <a class="cluetip" href="#"
                                        rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                        title="{$LANG.custom_fields}">
-                                        <img src="{$help_image_path}help-small.png" alt=""/>
+                                        <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
                                 <td><input type="text" class="edit" name="custom_field4"
@@ -141,7 +141,7 @@
                                         <a class="cluetip" href="#"
                                            rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
                                            title="{$cflg.field_label}">
-                                            <img src="{$help_image_path}help-small.png" alt=""/>
+                                            <img src="{$helpImagePath}help-small.png" alt=""/>
                                         </a>
                                     {/if}
                                 </th>

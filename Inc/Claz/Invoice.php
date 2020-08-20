@@ -16,20 +16,21 @@ class Invoice
     /**
      * Calculate the number of invoices in the database
      * @return int Count of invoices in the database
+     * @throws PdoDbException
      */
     public static function count(): int
     {
         global $pdoDb;
 
-        DomainId::get();
-
-        $rows = 0;
         try {
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $pdoDb->setSelectList("id");
             $rows = $pdoDb->request("SELECT", "invoices");
-        } catch (PdoDbException $pdoDbException) {
-            error_log("Invoice::count() - Error: " . $pdoDbException->getMessage());
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::count() - Error: " . $pde->getMessage());
+            throw $pde;
         }
+
         return count($rows);
     }
 
@@ -37,6 +38,7 @@ class Invoice
      * Retrieve an invoice.
      * @param int $id
      * @return array $invoice
+     * @throws PdoDbException
      */
     public static function getOne(int $id): array
     {
@@ -49,6 +51,7 @@ class Invoice
      * @param string $sort field to order by, defaults to index_name.
      * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
      * @return array invoice records.
+     * @throws PdoDbException
      */
     public static function getAll(string $sort="index_name", string $dir="asc"): array
     {
@@ -70,8 +73,9 @@ class Invoice
      * @param string $dir order by direction, "asc" or "desc" - (optional).
      * @param bool $manageTable true if select for manage.tpl table; false (default) if not.
      * @return array Invoices retrieved.
+     * @throws PdoDbException
      */
-    public static function getAllWithHavings($having, string $sort="", string $dir="", bool $manageTable = false): array
+    public static function getAllWithHavings($having, string $sort = "", string $dir = "", bool $manageTable = false): array
     {
         global $pdoDb;
 
@@ -81,14 +85,8 @@ class Invoice
                     foreach ($having as $key => $value) {
                         if (is_int($key) && is_array($value)) {
                             foreach ($value as $key2 => $value2) {
-                                if (empty($value2)) {
-                                    $pdoDb->setHavings(Invoice::buildHavings($key2));
-                                } else {
-                                    $pdoDb->setHavings(Invoice::buildHavings($key2, $value2));
-                                }
+                                $pdoDb->setHavings(Invoice::buildHavings($key2, $value2));
                             }
-                        } elseif (empty($value)) {
-                            $pdoDb->setHavings(Invoice::buildHavings($key));
                         } else {
                             $pdoDb->setHavings(Invoice::buildHavings($key, $value));
                         }
@@ -101,6 +99,7 @@ class Invoice
                 }
             } catch (PdoDbException $pde) {
                 error_log("Invoice::getAllWithHavings() - Error: " . $pde->getMessage());
+                throw $pde;
             }
         }
 
@@ -116,24 +115,27 @@ class Invoice
      * @param int|null $customer_id Filters invoices selected if specified.
      * @return array Invoices with an ENABLED preferences status and
      *          a non-zero owing amount.
+     * @throws PdoDbException
      */
-    public static function getInvoicesOwing($customer_id = null): array
+    public static function getInvoicesOwing(?int $customer_id = null): array
     {
         global $pdoDb;
 
-        $invoiceOwing = [];
         try {
             $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
             $rows = Invoice::getAll("id", "desc");
+
+            $invoiceOwing = [];
             foreach ($rows as $row) {
                 if ($row['status'] == ENABLED && $row['owing'] != 0) {
-                    if (empty($customer_id) || $customer_id == $row['customer_id']) {
+                    if (!isset($customer_id) || $customer_id == $row['customer_id']) {
                         $invoiceOwing[] = $row;
                     }
                 }
             }
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoicesOwing() - Error: " . $pde->getMessage());
+            throw $pde;
         }
         return $invoiceOwing;
     }
@@ -141,13 +143,13 @@ class Invoice
     /**
      * Minimize the amount of data returned to the manage table.
      * @return array Data for the manage table rows.
+     * @throws PdoDbException
      */
     public static function manageTableInfo(): array
     {
-        global $auth_session, $config, $LANG;
+        global $authSession, $config, $LANG;
 
-        $readOnly = $auth_session->role_name == 'customer';
-
+        $readOnly = $authSession->role_name == 'customer';
         $rows = self::getInvoices();
         $tableRows = [];
         foreach ($rows as $row) {
@@ -156,12 +158,12 @@ class Invoice
                 $invEdit = '';
                 $invPymt = '';
             } else {
-                $invEdit =   "<a class=\"index_table\" title=\"{$LANG['edit_view_tooltip']} {$row['index_id']}\" " .
-                                   "href=\"index.php?module=invoices&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                                    "<img src=\"images/edit.png\" class=\"action\" alt=\"edit\">" .
-                              "</a>";
+                $invEdit = "<a class=\"index_table\" title=\"{$LANG['edit_view_tooltip']} {$row['index_id']}\" " .
+                              "href=\"index.php?module=invoices&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
+                               "<img src=\"images/edit.png\" class=\"action\" alt=\"edit\">" .
+                           "</a>";
 
-                $invPymt =   "<!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->";
+                $invPymt = "<!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->";
                 if ($row['status'] == ENABLED && $row['owing'] > 0) {
                     $invPymt .= "<!-- Real Invoice Has Owing - Process payment -->" .
                                  "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
@@ -225,29 +227,28 @@ class Invoice
      * @param string $sort field to order by, defaults to index_name.
      * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
      * @return array Selected rows.
+     * @throws PdoDbException
      */
-    private static function getInvoices($id = null, string $sort = "", string $dir = ""): array
+    private static function getInvoices(?int $id = null, string $sort = "", string $dir = ""): array
     {
-        global $auth_session, $pdoDb;
+        global $authSession, $pdoDb;
 
-        $invoices = [];
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('iv.id', $id, 'AND');
             }
 
             // If user role is customer or biller, then restrict invoices to those they have access to.
-            if ($auth_session->role_name == 'customer') {
-                $pdoDb->addSimpleWhere("c.id", $auth_session->user_id, "AND");
-            } elseif ($auth_session->role_name == 'biller') {
-                $pdoDb->addSimpleWhere("b.id", $auth_session->user_id, "AND");
+            if ($authSession->role_name == 'customer') {
+                $pdoDb->addSimpleWhere("c.id", $authSession->user_id, "AND");
+            } elseif ($authSession->role_name == 'biller') {
+                $pdoDb->addSimpleWhere("b.id", $authSession->user_id, "AND");
             }
 
             // If caller pass a null value, that mean there is no limit.
             $pdoDb->addSimpleWhere("iv.domain_id", DomainId::get());
 
-            if (empty($sort) ||
-                !in_array($sort, ['index_id', 'b.name', 'c.name', 'date', 'total', 'owing', 'aging'])) {
+            if (empty($sort) || !in_array($sort, ['index_id', 'b.name', 'c.name', 'date', 'total', 'owing', 'aging'])) {
                 $sort = "index_id";
             }
             if (empty($dir)) {
@@ -256,18 +257,18 @@ class Invoice
             $pdoDb->setOrderBy([$sort, $dir]);
 
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.gross_total,0)", "gross"));
-
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.total,0)", "total"));
-
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.tax_amount,0)", "total_tax"));
 
-            $join = new Join("LEFT", "invoice_items", "ii");
-            $join->addSimpleItem("ii.invoice_id", new DbField("iv.id"), 'AND');
-            $join->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("LEFT", "invoice_items", "ii");
+            $jn->addSimpleItem("ii.invoice_id", new DbField("iv.id"), 'AND');
+            $jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
+            $pdoDb->addToJoins($jn);
 
             $funcStmt = new FunctionStmt("SUM", "COALESCE(ac_amount,0)");
+
             $fromStmt = new FromStmt("payment", "ap");
+
             $whereClause = new WhereClause();
             $whereClause->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), 'AND');
             $whereClause->addSimpleItem('ap.domain_id', new DbField('iv.domain_id'));
@@ -276,24 +277,23 @@ class Invoice
 
             $funcStmt = new FunctionStmt("DATE_FORMAT", "date, '%Y-%m-%d'", "date");
             $pdoDb->addToFunctions($funcStmt);
-
             $funcStmt = new FunctionStmt("CONCAT", "pf.pref_inv_wording, ' ', iv.index_id", 'index_name');
             $pdoDb->addToFunctions($funcStmt);
 
-            $join = new Join("LEFT", "biller", "b");
-            $join->addSimpleItem("b.id", new DbField("iv.biller_id"), 'AND');
-            $join->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("LEFT", "biller", "b");
+            $jn->addSimpleItem("b.id", new DbField("iv.biller_id"), 'AND');
+            $jn->addSimpleItem('b.domain_id', new DbField('iv.domain_id'));
+            $pdoDb->addToJoins($jn);
 
-            $join = new Join("LEFT", "customers", "c");
-            $join->addSimpleItem("c.id", new DbField("iv.customer_id"), 'AND');
-            $join->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("LEFT", "customers", "c");
+            $jn->addSimpleItem("c.id", new DbField("iv.customer_id"), 'AND');
+            $jn->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
+            $pdoDb->addToJoins($jn);
 
-            $join = new Join("LEFT", "preferences", "pf");
-            $join->addSimpleItem("pf.pref_id", new DbField("iv.preference_id"), 'AND');
-            $join->addSimpleItem('pf.domain_id', new DbField("iv.domain_id"));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("LEFT", "preferences", "pf");
+            $jn->addSimpleItem("pf.pref_id", new DbField("iv.preference_id"), 'AND');
+            $jn->addSimpleItem('pf.domain_id', new DbField("iv.domain_id"));
+            $pdoDb->addToJoins($jn);
 
             $exprList = [
                 "iv.id",
@@ -329,6 +329,8 @@ class Invoice
             $pdoDb->setGroupBy($exprList);
 
             $rows = $pdoDb->request("SELECT", "invoices", "iv");
+
+            $invoices = [];
             foreach ($rows as $row) {
                 $row['owing'] = $row['total'] - $row['paid'];
                 $ageInfo = self::calculateAgeDays(
@@ -348,6 +350,7 @@ class Invoice
             }
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoices() - Error: " . $pde->getMessage());
+            throw $pde;
         }
 
         if (empty($invoices)) {
@@ -429,6 +432,7 @@ class Invoice
      *              "aging_date",
      *              "age_days"
      *              "aging" (aging is the wording such as 1-14).
+     * @throws PdoDbException
      */
     private static function calculateAgeDays(int $id, string $invoiceDate, float $owing, string $lastActivityDate,
                                              string $agingDate, bool $setAging): array
@@ -447,7 +451,7 @@ class Invoice
         if ($owing < 0 || !$setAging) {
             $owing = 0;
         }
-        $currDtYmdHis = '';
+
         try {
             $currDt = new DateTime();
             // We have the last activity date and the last aging date. If the activity
@@ -461,8 +465,9 @@ class Invoice
             } else {
                 $dys = 0;
             }
-        } catch (Exception $exception) {
-            $dys = 0;
+        } catch (Exception $exp) {
+            error_log("Invoice::calculateAgeDays() - Unable to get current date. Error: {$exp->getMessage()}");
+            throw new PdoDbException("Invoice::calculateAgeDays() - " . $exp->getMessage());
         }
 
         return [
@@ -478,17 +483,18 @@ class Invoice
      * Update aging information on all invoices that have had activity since the information was last set.
      * @param int|null $id if specified, the fields for a specified invoice will be updated. Otherwise, all
      *      invoices that need to be updated, will be updated.
+     * @throws PdoDbException
      */
-    public static function updateAging($id = null): void
+    public static function updateAging(?int $id = null): void
     {
         global $pdoDb;
 
         try {
             $pdoDb->setSelectList(['id', 'date', 'owing', 'last_activity_date', 'aging_date', new DbField('pf.set_aging', 'set_aging')]);
 
-            $join = new Join("LEFT", "preferences", "pf");
-            $join->addSimpleItem("pf.pref_id", new DbField("preference_id"));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("LEFT", "preferences", "pf");
+            $jn->addSimpleItem("pf.pref_id", new DbField("preference_id"));
+            $pdoDb->addToJoins($jn);
 
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('id', $id);
@@ -528,16 +534,19 @@ class Invoice
                     $pdoDb->addSimpleWhere('id', $id);
                     if (!$pdoDb->request('UPDATE', 'invoices')) {
                         // Note that will be caught by following catch block and message added to its output.
+                        $pdoDb->rollback();
                         throw new PdoDbException("Unable to update invoice aging information for id[$id].");
                     }
                 } catch (PdoDbException $pde) {
                     $pdoDb->rollback();
-                    throw new PdoDbException("Invoice::updateAging() - Update error. " . $pde->getMessage());
+                    // Caught below
+                    throw $pde;
                 }
             }
             $pdoDb->commit();
         } catch (PdoDbException $pde) {
             error_log("Invoice::updateAging() - Error: " . $pde->getMessage());
+            throw $pde;
         }
     }
 
@@ -545,10 +554,12 @@ class Invoice
      * Insert a new invoice record
      * @param array Associative array of items to insert into invoice record.
      * @return int Unique ID of the new invoice record. 0 if insert failed.
+     * @throws PdoDbException
      */
     public static function insert(array $list): int
     {
         global $pdoDb;
+
         $lclList = $list;
         if (empty($lclList['domain_id'])) {
             $lclList['domain_id'] = DomainId::get();
@@ -560,8 +571,10 @@ class Invoice
         try {
             $currDate = new DateTime();
         } catch (Exception $exp) {
-            $currDate = '';
+            error_log("Invoice::insert() - Unable to set current date. Error - " . $exp->getMessage());
+            throw new PdoDbException($exp->getMessage());
         }
+
         $lastActivityDate = $currDate->format('Y-m-d h:i:s');
 
         $lclList['date'] = SiLocal::sqlDateWithTime($lclList['date']);
@@ -571,13 +584,14 @@ class Invoice
         $lclList['age_days'] = 0;
         $lclList['aging'] = '';
         $pdoDb->setFauxPost($lclList);
-        $id = 0;
+
         try {
             $pdoDb->setExcludedFields("id");
             $id = $pdoDb->request("INSERT", "invoices");
             Index::increment('invoice', $prefGroup['index_group'], $lclList['domain_id']);
         } catch (PdoDbException $pde) {
             error_log("Invoice::insert() - Error: " . $pde->getMessage());
+            throw $pde;
         }
 
         return $id;
@@ -588,6 +602,7 @@ class Invoice
      * @param array Associative array keyed by field name with its assigned value.
      * @param array $taxIds
      * @return int Unique ID of the new invoice_item record.
+     * @throws PdoDbException
      */
     private static function insertItem(array $list, array $taxIds): int
     {
@@ -598,7 +613,6 @@ class Invoice
             $lclList['domain_id'] = DomainId::get();
         }
 
-        $id = 0;
         try {
             $pdoDb->setFauxPost($list);
             $pdoDb->setExcludedFields("id");
@@ -607,6 +621,7 @@ class Invoice
             self::chgInvoiceItemTax($id, $taxIds, $list['unit_price'], $list['quantity'], false);
         } catch (PdoDbException $pde) {
             error_log("Invoice::insertItem() - Error: " . $pde->getMessage());
+            throw $pde;
         }
         return $id;
     }
@@ -618,12 +633,13 @@ class Invoice
      * @param int $productId
      * @param mixed $taxIds
      * @param string $description
-     * @param string $unitPrice
+     * @param float $unitPrice
      * @param array|null $attribute
      * @return int <b>id</b> of new <i>invoice_items</i> record. 0 if insert failed.
+     * @throws PdoDbException
      */
     public static function insertInvoiceItem(int $invoiceId, int $quantity, int $productId, array $taxIds,
-                                             string $description = "", string $unitPrice = "", $attribute = null): int
+                                             string $description = "", float $unitPrice = 0, ?array $attribute = null): int
     {
         global $LANG;
 
@@ -663,6 +679,7 @@ class Invoice
      *
      * @param int $invoiceId
      * @return bool <b>true</b> if update successful; otherwise <b>false</b>.
+     * @throws PdoDbException
      */
     public static function updateInvoice(int $invoiceId): bool
     {
@@ -670,13 +687,12 @@ class Invoice
 
         $currentInvoice = Invoice::getOne($_POST['id']);
         $currentPrefGroup = Preferences::getOne($currentInvoice['preference_id']);
-
         $newPrefGroup = Preferences::getOne($_POST['preference_id']);
-
-        $indexId = $currentInvoice['indexId'];
 
         if ($currentPrefGroup['index_group'] != $newPrefGroup['index_group']) {
             $indexId = Index::increment('invoice', $newPrefGroup['index_group']);
+        } else {
+            $indexId = $currentInvoice['index_id'];
         }
 
         // Note that this will make the last activity date greater than the aging_date which will force the
@@ -686,10 +702,11 @@ class Invoice
         } catch (Exception $exp) {
             $str = "Invoice::updateInvoice() - Unable to access current DateTime - error: " . $exp->getMessage();
             error_log($str);
-            exit($str);
+            throw new PdoDbException($str);
         }
+
         $lastActivityDate = $curDateTime->format('Y-m-d h:i:s');
-        $result = false;
+
         try {
             $pdoDb->addSimpleWhere("id", $invoiceId);
             $pdoDb->setFauxPost([
@@ -711,6 +728,7 @@ class Invoice
             $result = $pdoDb->request("UPDATE", "invoices");
         } catch (PdoDbException $pde) {
             error_log("Invoice::updateInvoice() - Error: " . $pde->getMessage());
+            throw $pde;
         }
 
         return $result;
@@ -725,6 +743,7 @@ class Invoice
      * @param string $description Extended description for this line item.
      * @param float $unitPrice Price of each unit of this item.
      * @param string $attribute Attributes for invoice.
+     * @throws PdoDbException
      */
     public static function updateInvoiceItem(int $id, int $quantity, int $productId, array $taxIds,
                                              string $description, float $unitPrice, string$attribute): void
@@ -739,6 +758,7 @@ class Invoice
                 }
             }
         }
+
         $taxAmount = Taxes::getTaxesPerLineItem($taxIds, $quantity, $unitPrice);
         $grossTotal = $unitPrice * $quantity;
         $total = $grossTotal + $taxAmount;
@@ -766,6 +786,7 @@ class Invoice
             self::chgInvoiceItemTax($id, $taxIds, $unitPrice, $quantity, true);
         } catch (PdoDbException $pde) {
             error_log("Invoice::updateInvoiceItem() - Error: " . $pde->getMessage());
+            throw $pde;
         }
     }
 
@@ -780,8 +801,9 @@ class Invoice
      * @param string $idField
      * @param int $id
      * @return bool true if delete processed, false if not.
+     * @throws PdoDbException
      */
-    public static function delete($module, $idField, $id)
+    public static function delete(string $module, string $idField, int $id): bool
     {
         global $pdoDb;
 
@@ -812,7 +834,6 @@ class Invoice
                     return false;
                 }
 
-                $rows = [];
                 try {
                     // Check for use of product
                     $pdoDb->addSimpleWhere('product_id', $id, 'AND');
@@ -823,6 +844,7 @@ class Invoice
                     $rows = $pdoDb->request('SELECT', 'invoice_items');
                 } catch (PdoDbException $pde) {
                     error_log('Invoice::delete() - Failed products - error: ' . $pde->getMessage());
+                    throw $pde;
                 }
 
                 if (count($rows) > 0) {
@@ -835,20 +857,14 @@ class Invoice
 
             case 'invoices':
                 // Check for existing payments and line items
-                $rows = [];
                 try {
                     $pdoDb->addSimpleWhere('invoice_id', $id, 'AND');
                     $pdoDb->addSimpleWhere('domain_id', DomainId::get());
 
                     $pdoDb->setSelectList('invoice_id');
                     $rows = $pdoDb->request('SELECT', 'invoice_items');
-                } catch (PdoDbException $pde) {
-                    error_log('Invoice::delete() - Failed invoices(1) - error: ' . $pde->getMessage());
-                }
-                $count = count($rows);
+                    $count = count($rows);
 
-                $rows = [];
-                try {
                     $pdoDb->addSimpleWhere('ac_inv_id', $id, 'AND');
                     $pdoDb->addSimpleWhere('domain_id', DomainId::get());
 
@@ -856,6 +872,7 @@ class Invoice
                     $rows = $pdoDb->request('SELECT', 'payment');
                 } catch (PdoDbException $pde) {
                     error_log('Invoice::delete() - Failed invoices(1) - error: ' . $pde->getMessage());
+                    throw $pde;
                 }
 
                 $count += count($rows);
@@ -878,7 +895,6 @@ class Invoice
             return false; // Fail, column whitelisting not performed
         }
 
-        $result = false;
         try {
             if ($hasDomainId) {
                 $pdoDb->addSimpleWhere('domain_id', DomainId::get(), 'AND');
@@ -888,6 +904,7 @@ class Invoice
             $result = $pdoDb->request('DELETE', $module);
         } catch (PdoDbException $pde) {
             error_log('Invoice::delete() - Failed delete - error: ' . $pde->getMessage());
+            throw $pde;
         }
 
         return $result;
@@ -900,9 +917,10 @@ class Invoice
      * @param float $unitPrice
      * @param int $quantity
      * @param bool $update
-     * @return bool <b>true</b> if successful, <b>false</b> if not.
+     * @throws PdoDbException
      */
-    public static function chgInvoiceItemTax(int $invoiceItemId, array $lineItemTaxIds, float $unitPrice, int $quantity, bool $update): bool
+    public static function chgInvoiceItemTax(int $invoiceItemId, array $lineItemTaxIds, float $unitPrice,
+                                             int $quantity, bool $update): void
     {
         try {
             $requests = new Requests();
@@ -931,18 +949,19 @@ class Invoice
                     }
                 }
             }
+
             $requests->process();
         } catch (PdoDbException $pde) {
             error_log("Invoice::invoice_item_tax(): Unable to process requests. Error: " . $pde->getMessage());
-            return false;
+            throw $pde;
         }
-        return true;
     }
 
     /**
      * Get the invoice record by the index_id and current domain_id.
      * @param int $indexId
      * @return array empty if no such record otherwise invoices record.
+     * @throws PdoDbException
      */
     public static function getInvoiceByIndexId(int $indexId): array
     {
@@ -954,18 +973,24 @@ class Invoice
             $rows = $pdoDb->request('SELECT', 'invoices');
         } catch (PdoDbException $pde) {
             error_log("Invoice::  getInvoiceByIndexId() - error: " . $pde->getMessage());
-            return [];
+            throw $pde;
         }
+
         if (empty($rows)) {
             return [];
         }
         return $rows[0];
     }
 
-    public static function getInvoicesWithHtmlTotals(string $q): array
+    /**
+     * @param string $que
+     * @return array
+     * @throws PdoDbException
+     */
+    public static function getInvoicesWithHtmlTotals(string $que): array
     {
         $results = [];
-        if (empty($q)) {
+        if (empty($que)) {
             $rows = self::getAll();
             foreach ($rows as $row) {
                 $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
@@ -979,12 +1004,14 @@ class Invoice
                     $row['owing'],
                     $row['last_activity_date'],
                     $row['aging_date'],
-                    $row['preference_id']);
+                    $row['preference_id']
+                );
+
                 self::updateAgingValues($row, $ageInfo);
 
                 $results[] = $row;
 
-                if (strpos(strtolower($row['index_id']), strtolower($q)) !== false) {
+                if (strpos(strtolower($row['index_id']), strtolower($que)) !== false) {
                     // @formatter:off
                     $total = Util::htmlsafe(number_format($row['total'],2));
                     $paid  = Util::htmlsafe(number_format($row['paid'],2));
@@ -1031,10 +1058,11 @@ class Invoice
      * <tr><td><b>real</b></td><td>n/a</td><tr>
      * </table>
      * @param string $option A valid option from the list above.
-     * @param mixed|null $parms Parameter values required by the specified option.
-     * @return object havings SQL statement
+     * @param array|null $parms Parameter values required by the specified option.
+     * @return Havings havings SQL statement
+     * @throws PdoDbException
      */
-    public static function buildHavings(string $option, $parms = null): object
+    public static function buildHavings(string $option, ?array $parms = null): Havings
     {
         try {
             $havings = new Havings();
@@ -1061,19 +1089,20 @@ class Invoice
                     error_log("Invoice::buildHavings() - Undefined option[{$option}]");
             }
         } catch (PdoDbException $pde) {
-            $str = "Invoice::buildHavings() - Error: " . $pde->getMessage();
-            error_log($str);
-            exit($str);
+            error_log("Invoice::buildHavings() - Error: " . $pde->getMessage());
+            throw $pde;
         }
+
         return $havings;
     }
 
     /**
      * Get the invoice-items associated with a specific invoice.
-     * @param $id
+     * @param int $id
      * @return array
+     * @throws PdoDbException
      */
-    public static function getInvoiceItems($id)
+    public static function getInvoiceItems(int $id): array
     {
         global $pdoDb;
 
@@ -1109,6 +1138,7 @@ class Invoice
             }
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoiceItems() - id[$id] error: " . $pde->getMessage());
+            throw $pde;
         }
 
         return $invoiceItems;
@@ -1116,20 +1146,22 @@ class Invoice
 
     /**
      * Get Invoice type.
-     * @param string $id Invoice type ID.
+     * @param int $id Invoice type ID.
      * @return array Associative array for <i>invoice_type</i> record accessed.
+     * @throws PdoDbException
      */
-    public static function getInvoiceType($id)
+    public static function getInvoiceType(int $id): array
     {
         global $pdoDb;
 
-        $result = [];
         try {
             $pdoDb->addSimpleWhere("inv_ty_id", $id);
             $result = $pdoDb->request("SELECT", "invoice_type");
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoiceType() - id[$id] - error: " . $pde->getMessage());
+            throw $pde;
         }
+
         return $result;
     }
 
@@ -1138,8 +1170,9 @@ class Invoice
      * @param int $invoiceId Unique ID (si_invoices id value) of invoice for which
      *        totals from si_invoice_items will be summed.
      * @return float
+     * @throws PdoDbException
      */
-    private static function getInvoiceTotal($invoiceId)
+    private static function getInvoiceTotal(int $invoiceId): float
     {
         global $pdoDb;
 
@@ -1153,6 +1186,7 @@ class Invoice
             }
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoiceTotal() - invoice_id[$invoiceId] - error: " . $pde->getMessage());
+            throw $pde;
         }
         return $total;
     }
@@ -1161,25 +1195,25 @@ class Invoice
      * Purpose: to show a nice summary of total $ for tax for an invoice
      * @param int $invoiceId
      * @return int Count of records found.
+     * @throws PdoDbException
      */
-    public static function numberOfTaxesForInvoice($invoiceId)
+    public static function numberOfTaxesForInvoice(int $invoiceId): int
     {
         global $pdoDb;
 
-        $count = 0;
         try {
             $pdoDb->addSimpleWhere("item.invoice_id", $invoiceId, 'AND');
             $pdoDb->addSimpleWhere('item.domain_id', DomainId::get());
 
             $pdoDb->addToFunctions(new FunctionStmt("DISTINCT", new DbField("tax.tax_id")));
 
-            $join = new Join("INNER", "invoice_item_tax", "item_tax");
-            $join->addSimpleItem("item_tax.invoice_item_id", new DbField("item.id"));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("INNER", "invoice_item_tax", "item_tax");
+            $jn->addSimpleItem("item_tax.invoice_item_id", new DbField("item.id"));
+            $pdoDb->addToJoins($jn);
 
-            $join = new Join("INNER", "tax", "tax");
-            $join->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("INNER", "tax", "tax");
+            $jn->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
+            $pdoDb->addToJoins($jn);
 
             $pdoDb->setGroupBy("tax.tax_id");
 
@@ -1187,7 +1221,9 @@ class Invoice
             $count = count($rows);
         } catch (PdoDbException $pde) {
             error_log("Invoice::numberOfTaxesForInvoice() - invoice_id[$invoiceId] - error: " . $pde->getMessage());
+            throw $pde;
         }
+
         return $count;
     }
 
@@ -1195,12 +1231,12 @@ class Invoice
      * Generates a nice summary of total $ for tax for an invoice
      * @param int $invoiceId The <b>id</b> column for the invoice to get info for.
      * @return array Rows retrieve.
+     * @throws PdoDbException
      */
-    private static function taxesGroupedForInvoice($invoiceId)
+    private static function taxesGroupedForInvoice(int $invoiceId): array
     {
         global $pdoDb;
 
-        $rows = [];
         try {
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "item_tax.tax_amount", "tax_amount"));
             $pdoDb->addToFunctions(new FunctionStmt("COUNT", "*", "count"));
@@ -1208,13 +1244,13 @@ class Invoice
             $pdoDb->addSimpleWhere("item.invoice_id", $invoiceId, 'AND');
             $pdoDb->addSimpleWhere('item.domain_id', DomainId::get());
 
-            $join = new Join("INNER", "invoice_item_tax", "item_tax");
-            $join->addSimpleItem("item_tax.invoice_item_id", new DbField("item.id"));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("INNER", "invoice_item_tax", "item_tax");
+            $jn->addSimpleItem("item_tax.invoice_item_id", new DbField("item.id"));
+            $pdoDb->addToJoins($jn);
 
-            $join = new Join("INNER", "tax", "tax");
-            $join->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("INNER", "tax", "tax");
+            $jn->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
+            $pdoDb->addToJoins($jn);
 
             $exprList = [
                 new DbField("tax.tax_id", "tax_id"),
@@ -1228,6 +1264,7 @@ class Invoice
             $rows = $pdoDb->request("SELECT", "invoice_items", "item");
         } catch (PdoDbException $pde) {
             error_log("Invoice::taxesGroupedForInvoice() - invoice_id[$invoiceId] - error: " . $pde->getMessage());
+            throw $pde;
         }
 
         return $rows;
@@ -1239,12 +1276,12 @@ class Invoice
      * Used for invoice editing
      * @param int Invoice item ID
      * @return array Items found
+     * @throws PdoDbException
      */
-    private static function taxesGroupedForInvoiceItem($invoiceItemId)
+    private static function taxesGroupedForInvoiceItem(int $invoiceItemId): array
     {
         global $pdoDb;
 
-        $rows = [];
         try {
             $pdoDb->setSelectList([
                 "item_tax.id AS row_id",
@@ -1254,15 +1291,16 @@ class Invoice
 
             $pdoDb->addSimpleWhere("item_tax.invoice_item_id", $invoiceItemId);
 
-            $join = new Join("LEFT", "tax", "tax");
-            $join->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
-            $pdoDb->addToJoins($join);
+            $jn = new Join("LEFT", "tax", "tax");
+            $jn->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
+            $pdoDb->addToJoins($jn);
 
             $pdoDb->setOrderBy("row_id");
 
             $rows = $pdoDb->request("SELECT", "invoice_item_tax", "item_tax");
         } catch (PdoDbException $pde) {
             error_log("Invoice::taxesGroupedForInvoiceItem() - invoice_item_id[$invoiceItemId] - error: " . $pde->getMessage());
+            throw $pde;
         }
         return $rows;
     }
@@ -1270,12 +1308,12 @@ class Invoice
     /**
      * Retrieve maximum invoice number assigned.
      * @return int Maximum invoice number assigned.
+     * @throws PdoDbException
      */
-    public static function maxIndexId()
+    public static function maxIndexId(): int
     {
         global $pdoDb;
 
-        $maxIndexId = 0;
         try {
             $pdoDb->addToFunctions(new FunctionStmt("MAX", "index_id", "maxIndexId"));
 
@@ -1285,16 +1323,19 @@ class Invoice
             $maxIndexId = $rows[0]['maxIndexId'];
         } catch (PdoDbException $pde) {
             error_log("Invoice::maxIndexId() - Error: " . $pde->getMessage());
+            throw $pde;
         }
+
         return $maxIndexId;
     }
 
     /**
      * Process a recurring item
-     * @param $invoiceId
+     * @param int $invoiceId
      * @return int
+     * @throws PdoDbException
      */
-    public static function recur($invoiceId)
+    public static function recur(int $invoiceId): int
     {
         global $config;
 

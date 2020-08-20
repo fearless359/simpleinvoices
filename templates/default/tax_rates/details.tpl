@@ -11,7 +11,7 @@
                     <th>{$LANG.rate}
                         <a class="cluetip" href="#" title="{$LANG.tax_rate}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
-                            <img src="{$help_image_path}help-small.png"/>
+                            <img src="{$helpImagePath}help-small.png"/>
                         </a>
                     </th>
                     <td>
@@ -44,7 +44,7 @@
                     <th>{$LANG.rate}
                         <a class="cluetip" href="#" title="{$LANG.tax_rate}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
-                            <img src="{$help_image_path}help-small.png"/>
+                            <img src="{$helpImagePath}help-small.png"/>
                         </a>
                     </th>
                     <td>

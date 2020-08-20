@@ -1,14 +1,16 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class ImportJson
  */
-class ImportJson {
-    private $debug;
-    private $file;
-    private $find;
-    private $replace;
+class ImportJson
+{
+    private bool $debug;
+    private string $file;
+    private array $find;
+    private array $replace;
 
     /**
      * ImportJson constructor.
@@ -17,7 +19,7 @@ class ImportJson {
      * @param array $replace list of value to replace corresponding field in $find list.
      * @param bool $debug true if debug info to display, false (default) if not.
      */
-    public function __construct($file, $find, $replace, $debug = false)
+    public function __construct(string $file, array $find, array $replace, bool $debug=false)
     {
         $this->debug = $debug;
         $this->file = $file;
@@ -26,73 +28,82 @@ class ImportJson {
     }
 
     /**
-     * @return bool|string
+     * @return bool|string Read data or false if failure.
      */
-    private function getFile() {
-        $json = file_get_contents($this->file, true);
-        return $json;
+    private function getFile()
+    {
+        return file_get_contents($this->file, true);
     }
 
     /**
-     * @param $string
+     * @param string $str
      * @return mixed
      */
-    private function replace($string) {
-        $string_replaced = str_replace($this->find, $this->replace, $string);
-        return $string_replaced;
+    private function replace(string $str)
+    {
+        return str_replace($this->find, $this->replace, $str);
     }
 
     /**
-     * @param $json
+     * @param string $json
      * @return mixed
+     * @noinspection PhpMethodMayBeStaticInspection
      */
-    private function decode($json) {
-        $a = json_decode($json, true);
-        return $a;
+    private function decode(string $json)
+    {
+        return json_decode($json, true);
     }
 
     /**
      * @return string
      */
-    public function collate() {
+    public function collate()
+    {
         $json = $this->getFile();
         $replace = $this->replace($json);
         $decode = $this->decode($replace);
         return $this->process($decode);
     }
 
-    /**
-     * @param $a
-     * @return string
-     */
-    private function process($a) {
+    private function process(array $aList): string
+    {
         $sql = "";
-        foreach($a as $k => $v) {
-            $table = $k;
+        foreach ($aList as $key => $val) {
+            $table = $key;
 
-            if ($this->debug) echo "<br>";
-            if ($this->debug) echo "<b>Table: " . $table . "</b>";
+            if ($this->debug) {
+                echo "<br>";
+            }
+            if ($this->debug) {
+                echo "<b>Table: " . $table . "</b>";
+            }
 
             $columns = "";
             $values = "";
-            foreach($a[$k] as $v2) {
-                if ($this->debug) echo "<br>";
-                $i = "1";
-                foreach($v2 as $k3 => $v3) {
-                    $v3 = addslashes($v3); // Fix issue of single quotes used in input value.
-                    // TODO: IF NULL don't ''
-                    $i == "1" ? $columns .= $k3 : $columns .= ", " . $k3;
-                    $i == "1" ? $values .= "'" . $v3 . "'" : $values .= ", '" . $v3 . "'";
-                    $i++;
+            foreach ($aList[$key] as $val2) {
+                if ($this->debug) {
+                    echo "<br>";
+                }
+                $idx = "1";
+                foreach ($val2 as $key3 => $val3) {
+                    $val3 = addslashes($val3); // Fix issue of single quotes used in input value.
+                    // TODO: IF null don't ''
+                    $idx == "1" ? $columns .= $key3 : $columns .= ", " . $key3;
+                    $idx == "1" ? $values .= "'" . $val3 . "'" : $values .= ", '" . $val3 . "'";
+                    $idx++;
                 }
 
-                $sql_print = "INSERT into " . $table . " (" . $columns . ") VALUES (" . $values . ");";
-                $sql .= $sql_print;
-                if ($this->debug) echo "SQL: " . $sql_print;
+                $sqlPrint = "INSERT into " . $table . " (" . $columns . ") VALUES (" . $values . ");";
+                $sql .= $sqlPrint;
+                if ($this->debug) {
+                    echo "SQL: " . $sqlPrint;
+                }
                 $columns = "";
                 $values = "";
             }
-            if ($this->debug) echo "<br>";
+            if ($this->debug) {
+                echo "<br>";
+            }
         }
 
         return $sql;

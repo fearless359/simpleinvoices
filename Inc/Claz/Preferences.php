@@ -1,18 +1,20 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class Preferences
  * @package Inc\Claz
  */
-class Preferences {
+class Preferences
+{
 
     /**
      * Get a specific <b>si_preferences</b> record.
-     * @param string $id Unique ID record to retrieve.
+     * @param int $id Unique ID record to retrieve.
      * @return array Row(s) retrieved. Empty array returned if nothing found.
      */
-    public static function getOne($id)
+    public static function getOne(int $id): array
     {
         return self::getPreferences($id);
     }
@@ -24,21 +26,21 @@ class Preferences {
      *         enable or disabled word depending on the "pref_enabled" setting
      *         of the record.
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::getPreferences();
     }
 
     /**
      * Get preference records based on specified parameters.
-     * @param int $id If not null, then id of records to retrieve.
+     * @param int|null $id If not null, then id of records to retrieve.
      * @return array Row(s) retrieved. Empty array returned if nothing found.
      */
-    private static function getPreferences($id = null)
+    private static function getPreferences(?int $id = null): array
     {
         global $LANG, $pdoDb;
 
-        $preferences = array();
+        $preferences = [];
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere("pref_id", $id, "AND");
@@ -53,12 +55,12 @@ class Preferences {
             $pdoDb->addToCaseStmts($ca);
 
             $ca = new CaseStmt("pref_enabled", "enabled_text");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
             $ca = new CaseStmt("set_aging", "set_aging_text");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
@@ -68,15 +70,15 @@ class Preferences {
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . " " . $LANG['preference'] . " " . $row['pref_description'];
                 $row['ename'] = $LANG['edit'] . " " . $LANG['preference'] . " " . $row['pref_description'];
-                $row['image'] = ($row['pref_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png");
+                $row['image'] = $row['pref_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
                 $row['invoice_numbering_group'] = "";
-                foreach($rows as $r2) {
+                foreach ($rows as $r2) {
                     if ($row['index_group'] == $r2['pref_id']) {
                         $row['invoice_numbering_group'] = $r2['pref_description'];
                         break;
                     }
                 }
-                $row['set_aging_image'] = ($row['set_aging'] == ENABLED ? "images/tick.png" : "images/cross.png");
+                $row['set_aging_image'] = $row['set_aging'] == ENABLED ? "images/tick.png" : "images/cross.png";
                 $preferences[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -86,17 +88,18 @@ class Preferences {
             return $preferences;
         }
 
-        return (isset($id) ? $preferences[0] : $preferences);
+        return isset($id) ? $preferences[0] : $preferences;
     }
 
     /**
      * Get active preferences records for the current domain.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function getActivePreferences() {
+    public static function getActivePreferences(): array
+    {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->addSimpleWhere("pref_enabled", ENABLED, "AND");
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
@@ -113,10 +116,11 @@ class Preferences {
      * Get a default preference information.
      * @return array Preference row and system default setting for it.
      */
-    public static function getDefaultPreference() {
+    public static function getDefaultPreference(): array
+    {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->addSimpleWhere("s.domain_id", DomainId::get());
             $jn = new Join("LEFT", "preferences", "p");
@@ -129,7 +133,7 @@ class Preferences {
             error_log("Preferences::getDefaultPreference() - Error: " . $pde->getMessage());
         }
 
-        return (empty($rows) ? $rows : $rows[0]);
+        return empty($rows) ? $rows : $rows[0];
     }
 
 }

@@ -83,7 +83,7 @@
     </tr>
     <tr>
         <td align=left>
-            <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}"><img src="{$help_image_path}help-small.png" alt=""/> {$LANG.want_more_fields}</a>
+            <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}"><img src="{$helpImagePath}help-small.png" alt=""/> {$LANG.want_more_fields}</a>
         </td>
     </tr>
     <hr/>

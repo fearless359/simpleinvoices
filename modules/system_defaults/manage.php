@@ -14,7 +14,7 @@ global $smarty;
 Util::directAccessAllowed();
 
 // gets the long language name out of the short name
-$lang = SystemDefaults::getDefaultLanguage();
+$lang = SystemDefaults::getLanguage();
 $languages = getLanguageList();
 foreach ($languages as $language) {
     if ($language->shortname == $lang) {
@@ -25,16 +25,16 @@ foreach ($languages as $language) {
 $smarty->assign("defaultLanguage"         , $lang);
 
 $smarty->assign("defaults"                , SystemDefaults::loadValues());
-$smarty->assign("defaultDelete"           , SystemDefaults::getDefaultDelete());
-$smarty->assign("defaultExpense"          , SystemDefaults::getDefaultExpense());
-$smarty->assign("defaultInventory"        , SystemDefaults::getDefaultInventory());
-$smarty->assign("defaultLogging"          , SystemDefaults::getDefaultLogging());
-$smarty->assign("defaultPasswordLower"    , SystemDefaults::getDefaultPasswordLower());
-$smarty->assign("defaultPasswordMinLength", SystemDefaults::getDefaultPasswordMinLength());
-$smarty->assign("defaultPasswordNumber"   , SystemDefaults::getDefaultPasswordNumber());
-$smarty->assign("defaultPasswordSpecial"  , SystemDefaults::getDefaultPasswordSpecial());
-$smarty->assign("defaultPasswordUpper"    , SystemDefaults::getDefaultPasswordUpper());
-$smarty->assign("defaultProductAttributes", SystemDefaults::getDefaultProductAttributes());
+$smarty->assign("defaultDelete"           , SystemDefaults::getDelete());
+$smarty->assign("defaultExpense"          , SystemDefaults::getExpense());
+$smarty->assign("defaultInventory"        , SystemDefaults::getInventory());
+$smarty->assign("defaultLogging"          , SystemDefaults::getLogging());
+$smarty->assign("defaultPasswordLower"    , SystemDefaults::getPasswordLower());
+$smarty->assign("defaultPasswordMinLength", SystemDefaults::getPasswordMinLength());
+$smarty->assign("defaultPasswordNumber"   , SystemDefaults::getPasswordNumber());
+$smarty->assign("defaultPasswordSpecial"  , SystemDefaults::getPasswordSpecial());
+$smarty->assign("defaultPasswordUpper"    , SystemDefaults::getPasswordUpper());
+$smarty->assign("defaultProductAttributes", SystemDefaults::getProductAttributes());
 
 $smarty->assign("defaultBiller"           , Biller::getDefaultBiller());
 $smarty->assign("defaultCustomer"         , Customer::getDefaultCustomer());

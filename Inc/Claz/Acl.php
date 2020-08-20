@@ -17,7 +17,7 @@ class Acl
      * @param Zend_Acl &$acl
      * @throws Zend_Acl_Exception
      */
-    public static function init(&$acl)
+    public static function init(?Zend_Acl &$acl)
     {
         $acl = new Zend_Acl();
 
@@ -73,8 +73,8 @@ class Acl
         $acl->addResource('expense_account');
         // actions: view, edit
 
-        // If no action exists, then check with $acl->isAllowed($auth_session->role_name, $module, $acl_view)
-        // Otherwise, check with $acl->isAllowed($auth_session->role_name, $module, $acl_action)
+        // If no action exists, then check with $acl->isAllowed($authSession->role_name, $module, $acl_view)
+        // Otherwise, check with $acl->isAllowed($authSession->role_name, $module, $acl_action)
         // All checks are set in include/check_permission.php
 
         //assign roles to resources
@@ -148,7 +148,7 @@ class Acl
      * @param Zend_Acl &$acl
      * @throws Zend_Acl_Exception
      */
-    public static function addResource($resources, &$acl): void
+    public static function addResource($resources, Zend_Acl &$acl): void
     {
         if (is_array($resources)) {
             foreach($resources as $resource) {

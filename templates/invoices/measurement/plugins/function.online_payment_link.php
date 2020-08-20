@@ -5,7 +5,7 @@ use Inc\Claz\Util;
 
 function smarty_function_online_payment_link($params, &$smarty)
 {
-    $domain_id = DomainId::get($params['domain_id']);
+    $domainId = DomainId::get($params['domain_id']);
 
     $url = Util::getURL();
     if (in_array("paypal", explode(",", $params['type']))) {
@@ -17,7 +17,7 @@ function smarty_function_online_payment_link($params, &$smarty)
                     '&currency_code=' . $params['currency_code'] .
                     '&notify_url=' . $params['notify_url'] .
                     '&return=' . $params['return_url'] .
-                    '&no_shipping=1&no_note=1&custom=domain_id:' . $domain_id . ';" >';
+                    '&no_shipping=1&no_note=1&custom=domain_id:' . $domainId . ';" >';
 
         if ($params['include_image'] == "true") {
             $link .= "<img src='{$url}/images/pay_with_paypal.gif'/>";

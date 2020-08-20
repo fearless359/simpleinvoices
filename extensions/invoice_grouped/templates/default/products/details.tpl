@@ -20,7 +20,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf1}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>{$product.custom_field1}</td>
@@ -30,7 +30,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf2}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>{$product.custom_field2}</td>
@@ -40,7 +40,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf3}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt="">
+                            <img src="{$helpImagePath}help-small.png" alt="">
                         </a>
                     </th>
                     <td>{$product.custom_field3}</td>
@@ -50,7 +50,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf4}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>{$product.custom_field4}</td>
@@ -104,7 +104,7 @@
                     <th>{$customFieldLabel.product_cf1}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                            title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -122,7 +122,7 @@
                     <th>{$customFieldLabel.product_cf2}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                            title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="text" name="custom_field2" size="50" value="{if isset($product.custom_field2)}{$product.custom_field2}{/if}"/></td>
@@ -133,7 +133,7 @@
                     <th>{$customFieldLabel.product_cf3}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                            title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="text" name="custom_field3" size="50" value="{if isset($product.custom_field3)}{$product.custom_field3}{/if}"/></td>
@@ -144,7 +144,7 @@
                     <th>{$customFieldLabel.product_cf4}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                            title="{$LANG.custom_fields}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="text" name="custom_field4" size="50" value="{if isset($product.custom_field4)}{$product.custom_field4}{/if}"/></td>

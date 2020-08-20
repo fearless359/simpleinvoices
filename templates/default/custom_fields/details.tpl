@@ -69,7 +69,7 @@
                         {$LANG.clear_data}
                         <a class="cluetip" title="{$LANG.reset_custom_flags}" tabindex="-1"
                            href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_reset_custom_flags_products">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="checkbox" name="clear_data" id="clear_data_option" value="yes" disabled/></td>

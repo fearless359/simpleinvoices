@@ -3,22 +3,26 @@
 namespace Inc\Claz;
 
 use Zend_Log;
+use Zend_Session_Namespace;
 
+/**
+ * Class ApiAuth
+ * @package Inc\Claz
+ */
 class ApiAuth
 {
-    /**
-     * @param $module
-     * @param \Zend_Session_Namespace $auth_session
-     */
-    public static function authenticate($module, $auth_session): void
+    public static function authenticate(?string $module, Zend_Session_Namespace $authSession): void
     {
+Log::out("ApiAuth - in authenticate module[{$module}]", Zend_Log::DEBUG);
+
         // API calls don't use the auth module
         if ($module != 'api') {
-            Log::out("ApiAuth::authenticate() - auth_session - " . print_r($auth_session,true), Zend_Log::DEBUG);
-            Log::out("ApiAuth::authenticate() - auth_session->id[{$auth_session->id}]", Zend_Log::DEBUG);
+            Log::out("ApiAuth::authenticate() - auth_session - " . print_r($authSession,true), Zend_Log::DEBUG);
+            /** @noinspection PhpUndefinedFieldInspection */
+            Log::out("ApiAuth::authenticate() - auth_session->id[{$authSession->id}]", Zend_Log::DEBUG);
             Log::out("ApiAuth::authenticate() - _GET - " . print_r($_GET,true), Zend_Log::DEBUG);
             // If we don't have an active session, force login screen.
-            if (!isset($auth_session->id)) {
+            if (!isset($authSession->id)) {
                 // Make sure we have a module entry in the $_GET array.
                 if (!isset($_GET['module'])) {
                     $_GET['module'] = '';

@@ -1,10 +1,12 @@
 <tr class="tr_head">
     <td colspan="6" class="details_screen align_right">
-        <a href='#' class="show-consulting" onclick="$('.consulting').show();$('.show-consulting').hide();">
-            <img src="../../../images/magnifier_zoom_in.png" title="{$LANG.show_details}"/>
+        <a href='#' class="show-consulting" onclick="$('.consulting').show();$('.show-consulting').hide();"
+           title="{$LANG.show_details}">
+            <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.show_details}"/>
         </a>
-        <a href='#' class="consulting" onclick="$('.consulting').hide();$('.show-consulting').show();">
-            <img src="../../../images/magnifier_zoom_out.png" title="{$LANG.hide_details}"/>
+        <a href='#' class="consulting" onclick="$('.consulting').hide();$('.show-consulting').show();"
+           title="{$LANG.hide_details}">
+            <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hide_details}"/>
         </a>
     </td>
 </tr>

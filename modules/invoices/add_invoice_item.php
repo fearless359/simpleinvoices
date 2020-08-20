@@ -17,9 +17,8 @@ use Inc\Claz\Product;
 /**
  * @deprecated 20181106 by Richard Rowley
  */
-error_log("modules/invoices/add_invoice_item.php used. _POST: " . print_r($_POST,true));
-
 global $smarty;
+
 if(isset($_POST['submit'])) {
     $id = $_POST['id'];
     Invoice::insertInvoiceItem($id, $_POST['quantity1'], $_POST['product1'],

@@ -52,7 +52,7 @@ $defaults['preference'] = (isset($_GET['preference'])) ? $_GET['preference'] : $
 $defaultTax        = Taxes::getDefaultTax();
 $defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
-$sub_customers     = SubCustomers::getSubCustomers($defaults['customer']);
+$subCustomers      = SubCustomers::getSubCustomers($defaults['customer']);
 if (!empty( $_GET['line_items'] )) {
     $dynamic_line_items = $_GET['line_items'];
 } else {
@@ -69,7 +69,7 @@ for($i=1;$i<=4;$i++) {
 $smarty->assign('matrix'            , $matrix);
 $smarty->assign('billers'           , $billers);
 $smarty->assign('customers'         , $customers);
-$smarty->assign('sub_customers'     , $sub_customers);
+$smarty->assign('subCustomers'      , $subCustomers);
 $smarty->assign('taxes'             , $taxes);
 $smarty->assign('defaultTax'        , $defaultTax);
 $smarty->assign('products'          , $products);

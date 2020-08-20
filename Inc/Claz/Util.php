@@ -1,20 +1,18 @@
 <?php
-/**
- * @name Util.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20181123
- */
-
 namespace Inc\Claz;
 
 use Exception;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use Smarty;
 
+/**
+ * Class Util
+ * @package Inc\Claz
+ */
 class Util
 {
-    public static $timebreaks = array();
+    public static array $timebreaks = [];
 
     /**
      * Verify page access via valid path. The PHP files that can be directly
@@ -22,8 +20,9 @@ class Util
      * So all other php files should check this function to prevent a user from
      * trying to access that file directly.
      */
-    public static function directAccessAllowed() {
-        $allowDirectAccess = (isset($GLOBALS['allow_direct_access']) ? $GLOBALS['allow_direct_access'] : false);
+    public static function directAccessAllowed(): void
+    {
+        $allowDirectAccess = isset($GLOBALS['allow_direct_access']) ? $GLOBALS['allow_direct_access'] : false;
         if (!$allowDirectAccess) {
             header("HTTP/1.0 404 Not Found");
             exit();
@@ -38,7 +37,8 @@ class Util
      * due to no autoloader defined or the Util::directAccessAllowed() method rejects
      * the request.;
      */
-    public static function allowDirectAccess() {
+    public static function allowDirectAccess(): void
+    {
         $GLOBALS['allow_direct_access'] = true;
     }
 
@@ -48,12 +48,13 @@ class Util
      * @param string $defVal Default value to selected option in list for.
      * @return String containing the HTML code for the drop down list.
      */
-    public static function dropDown($choiceArray, $defVal) {
+    public static function dropDown(array $choiceArray, string $defVal): string
+    {
         $line = "<select name='value'>\n";
         foreach ($choiceArray as $key => $value) {
-            $key_parm = Util::htmlsafe($key) . "' " . ($key == $defVal ? "selected style='font-weight: bold'" : "");
-            $val_parm = Util::htmlsafe($value);
-            $line .= "<option value='{$key_parm}'>{$val_parm}</option>\n";
+            $keyParm = Util::htmlsafe($key) . "' " . ($key == $defVal ? "selected style='font-weight: bold'" : "");
+            $valParm = Util::htmlsafe($value);
+            $line .= "<option value='{$keyParm}'>{$valParm}</option>\n";
         }
         $line .= "</select>\n";
         return $line;
@@ -64,11 +65,11 @@ class Util
      * @param string $str String to be escaped.
      * @return string Escaped string.
      */
-    public static function filenameEscape($str)
+    public static function filenameEscape(string $str): string
     {
         // Returns an escaped value.
-        $safe_str = preg_replace('/[^a-z0-9\-_\.]/i','_',$str);
-        return $safe_str;
+        $pattern = '/[^a-z0-9\-_\.]/i';
+        return preg_replace($pattern, '_', $str);
     }
 
     /**
@@ -78,21 +79,22 @@ class Util
      * existing file is the path returned.
      * @param string $name Name or dir/name of file without an extension.
      * @param string $mode Set to "template" or "module".
-     * @return mixed File path or NULL if no file path determined.
+     * @return string|null File path or NULL if no file path determined.
      */
-    public static function getCustomPath($name, $mode = 'template') {
-        $my_custom_path = "custom/";
-        $out = NULL;
+    public static function getCustomPath(string $name, string $mode = 'template'): ?string
+    {
+        $myCustomPath = "custom/";
+        $out = null;
         if ($mode == 'template') {
-            if (file_exists("{$my_custom_path}default_template/{$name}.tpl")) {
-                $out = "{$my_custom_path}default_template/{$name}.tpl";
+            if (file_exists("{$myCustomPath}default_template/{$name}.tpl")) {
+                $out = "{$myCustomPath}default_template/{$name}.tpl";
             } elseif (file_exists("templates/default/{$name}.tpl")) {
                 $out = "templates/default/{$name}.tpl";
             }
         }
         if ($mode == 'module') {
-            if (file_exists("{$my_custom_path}modules/{$name}.php")) {
-                $out = "{$my_custom_path}modules/{$name}.php";
+            if (file_exists("{$myCustomPath}modules/{$name}.php")) {
+                $out = "{$myCustomPath}modules/{$name}.php";
             } elseif (file_exists("modules/{$name}.php")) {
                 $out = "modules/{$name}.php";
             }
@@ -104,7 +106,8 @@ class Util
      * @param array $biller
      * @return string path to biller logo if present, else default SI logo.
      */
-    public static function getLogo($biller) {
+    public static function getLogo(array $biller): string
+    {
         $url = self::getURL();
 
         if (empty($biller['logo'])) {
@@ -116,16 +119,19 @@ class Util
     /**
      * @return array List of logo files.
      */
-    public static function getLogoList() {
+    public static function getLogoList(): array
+    {
         $dirname = "templates/invoices/logos";
-        $ext = array("jpg", "png", "jpeg", "gif");
-        $files = array();
+        $ext = ["jpg", "png", "jpeg", "gif"];
+        $files = [];
         $handle = opendir($dirname);
         if ($handle !== false) {
             while (false !== ($file = readdir($handle))) {
-                for ($i = 0; $i < sizeof($ext); $i++) {
+                for ($ndx = 0; $ndx < sizeof($ext); $ndx++) {
                     // NOT case sensitive: OK with JpeG, JPG, ecc.
-                    if (stristr($file, "." . $ext[$i])) $files[] = $file;
+                    if (stristr($file, "." . $ext[$ndx])) {
+                        $files[] = $file;
+                    }
                 }
             }
             closedir($handle);
@@ -135,10 +141,8 @@ class Util
         return $files;
     }
 
-    /**
-     * @param object $smarty
-     */
-    public static function loginLogo($smarty) {
+    public static function loginLogo(Smarty $smarty): void
+    {
         $defaults = SystemDefaults::loadValues();
         // Not a post action so set up company logo and name to display on login screen.
         //<img src="extensions/user_security/images/{$defaults.company_logo}" alt="User Logo">
@@ -148,14 +152,15 @@ class Util
             $imgHeight = 0;
             $maxWidth = 100;
             $maxHeight = 100;
+            /** @noinspection PhpUnusedLocalVariableInspection */
             list($width, $height, $type, $attr) = getimagesize($image);
 
-            if (($width > $maxWidth || $height > $maxHeight)) {
+            if ($width > $maxWidth || $height > $maxHeight) {
                 $wp = $maxWidth / $width;
                 $hp = $maxHeight / $height;
-                $percent = ($wp > $hp ? $hp : $wp);
-                $imgWidth = ($width * $percent);
-                $imgHeight = ($height * $percent);
+                $percent = $wp > $hp ? $hp : $wp;
+                $imgWidth = $width * $percent;
+                $imgHeight = $height * $percent;
             }
             if ($imgWidth > 0 && $imgWidth > $imgHeight) {
                 $w1 = "20%";
@@ -164,35 +169,33 @@ class Util
                 $w1 = "18%";
                 $w2 = "80%";
             }
-            $comp_logo_lines =
+            $compLogoLines =
                 "<div style='display:inline-block;width:$w1;'>" .
-                    "<img src='$image' alt='Company Logo' " .
-                         ($imgHeight == 0 ? "" : "height='$imgHeight' ") .
-                         ($imgWidth  == 0 ? "" : "width='$imgWidth' ") . "/>" .
+                "<img src='$image' alt='Company Logo' " .
+                ($imgHeight == 0 ? "" : "height='$imgHeight' ") .
+                ($imgWidth == 0 ? "" : "width='$imgWidth' ") . "/>" .
                 "</div>";
-            $smarty->assign('comp_logo_lines', $comp_logo_lines);
-            $txt_align = "left";
+            $smarty->assign('comp_logo_lines', $compLogoLines);
+            $txtAlign = "left";
         } else {
             $w2 = "100%";
-            $txt_align = "center";
+            $txtAlign = "center";
         }
-        $comp_name_lines =
+        $compNameLines =
             "<div style='display:inline-block;width:$w2;vertical-align:middle;'>" .
-                "<h1 style='margin-left:20px;text-align:$txt_align;'>" .
-                    $defaults['company_name_item'] .
-                "</h1>" .
+            "<h1 style='margin-left:20px;text-align:$txtAlign;'>" .
+            $defaults['company_name_item'] .
+            "</h1>" .
             "</div>";
 
-        $smarty->assign('comp_name_lines', $comp_name_lines);
+        $smarty->assign('comp_name_lines', $compNameLines);
     }
 
-    /**
-     * @return string
-     */
-    public static function getURL() {
-        global $api_request, $config;
+    public static function getURL(): string
+    {
+        global $apiRequest, $config;
 
-        if ($api_request) {
+        if ($apiRequest) {
             $_SERVER['FULL_URL'] = "";
             return "";
         }
@@ -208,30 +211,37 @@ class Util
             $_SERVER['FULL_URL'] = "http://";
         }
 
-        $http_host = (empty($_SERVER['HTTP_HOST']) ? "" : $_SERVER['HTTP_HOST']);
-        $_SERVER['FULL_URL'] .= $config->authentication->http . $http_host . $dir;
+        $httpHost = empty($_SERVER['HTTP_HOST']) ? "" : $_SERVER['HTTP_HOST'];
+        $_SERVER['FULL_URL'] .= $config->authentication->http . $httpHost . $dir;
 
-        if (strlen($_SERVER['FULL_URL']) > 1 &&
-            substr($_SERVER['FULL_URL'], -1, 1) != '/') $_SERVER['FULL_URL'] .= '/';
+        if (strlen($_SERVER['FULL_URL']) > 1 && substr($_SERVER['FULL_URL'], -1, 1) != '/') {
+            $_SERVER['FULL_URL'] .= '/';
+        }
 
         return $_SERVER['FULL_URL'];
     }
 
     /**
-     * @param $str
-     * @return string
+     * Make sure $str is properly encoded for html display.
+     * @param string $str String to make safe.
+     * @return string Safe string for html display.
      */
-    public static function htmlsafe($str) {
+    public static function htmlsafe(string $str): string
+    {
         return htmlentities($str, ENT_QUOTES, 'UTF-8');
     }
 
     /**
-     * @param $str
+     * Make sure URL is safe for html use.
+     * @param string|array $str
      * @return bool|null|string|string[]
      */
-    public static function urlsafe($str) {
-        $str = preg_replace('/[^a-zA-Z0-9@;:%_\+\.~#\?\/\=\&\/\-]/', '', $str);
-        if (preg_match('/^\s*javascript/i', $str)) {
+    public static function urlsafe($str)
+    {
+        $pattern = '/[^a-zA-Z0-9@;:%_\+\.~#\?\/\=\&\/\-]/';
+        $str = preg_replace($pattern, '', $str);
+        $pattern = '/^\s*javascript/i';
+        if (preg_match($pattern, $str)) {
             return false;  // no javascript urls
         }
         $str = self::htmlsafe($str);
@@ -239,10 +249,11 @@ class Util
     }
 
     /**
-     * @param $html
+     * @param string $html
      * @return string Purified HTML
      */
-    public static function outhtml($html) {
+    public static function outhtml(string $html): string
+    {
         try {
             $config = HTMLPurifier_Config::createDefault();
 
@@ -252,8 +263,8 @@ class Util
 
             $purifier = new HTMLPurifier($config);
             return $purifier->purify($html);
-        } catch (Exception $e) {
-            error_log("Util::outhtml() - Error: " . $e->getMessage());
+        } catch (Exception $exp) {
+            error_log("Util::outhtml() - Error: " . $exp->getMessage());
         }
         return '';
     }
@@ -264,37 +275,38 @@ class Util
      * @param string Descriptive label to the break.
      * @return string;
      */
-    public static function timer($action, $label) {
+    public static function timer(string $action, string $label): string
+    {
         $result = '';
         $action = strtolower($action);
         if ($action == 'set') {
             $label = empty($label) ? 'Break ' . (count(Util::$timebreaks) + 1) : $label;
-            Util::$timebreaks[] = array($label, microtime(true));
-        } else if ($action == 'report') {
+            Util::$timebreaks[] = [$label, microtime(true)];
+        } elseif ($action == 'report') {
             $label = empty($label) ? 'End' : $label;
-            Util::$timebreaks[] = array($label, microtime(true));
+            Util::$timebreaks[] = [$label, microtime(true)];
             $result = '';
-            for ($i = 1; $i < count(Util::$timebreaks); $i++) {
-                $cur = Util::$timebreaks[$i];
-                $cur_label = $cur[0];
-                $cur_time = $cur[1];
-                $prev = Util::$timebreaks[$i-1];
-                $prev_label = $prev[0];
-                $prev_time = $prev[1];
+            for ($ndx = 1; $ndx < count(Util::$timebreaks); $ndx++) {
+                $cur = Util::$timebreaks[$ndx];
+                $curLabel = $cur[0];
+                $curTime = $cur[1];
+                $prev = Util::$timebreaks[$ndx - 1];
+                $prevLabel = $prev[0];
+                $prevTime = $prev[1];
 
-                $diff = ($cur_time - $prev_time) * 60;
+                $diff = ($curTime - $prevTime) * 60;
 
-                if ($i == 1) {
-                    $result = "\nTime initially set by $prev_label";
+                if ($ndx == 1) {
+                    $result = "\nTime initially set by $prevLabel";
                 }
                 $result .= "\n";
 
-                $result .= "$cur_label: $diff seconds";
+                $result .= "$curLabel: $diff seconds";
             }
             if (empty($result)) {
                 $result = 'No time interval set.';
             }
-            Util::$timebreaks = array(); // Clear the reported info
+            Util::$timebreaks = []; // Clear the reported info
         } else {
             $result = "Util::timer() - Invalid action[$action].";
         }

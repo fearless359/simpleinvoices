@@ -18,7 +18,7 @@
                     <th>{$LANG.rate}
                         <a class="cluetip" href="#"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>

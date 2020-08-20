@@ -25,7 +25,7 @@
                     <th>Payment type description
                         <a class="cluetip" href="#" title="{$LANG.required_field}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
-                            <img src="{$help_image_path}required-small.png" alt=""/>
+                            <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -54,6 +54,6 @@
             </div>
         </div>
         <input type="hidden" name="op" value="add"/>
-        <input type="hidden" name="domain_id" value="{$domain_id}" />
+        <input type="hidden" name="domain_id" value="{$domainId}" />
     </form>
 {/if}

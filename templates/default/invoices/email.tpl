@@ -28,7 +28,7 @@
                     <th>{$LANG.email_from}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_from"
                            title="{$LANG.email_from} {$LANG.required_field}">
-                            <img src="{$help_image_path}required-small.png" alt=""/>
+                            <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -40,7 +40,7 @@
                     <th>{$LANG.email_to}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_to"
                            title="{$LANG.email_to} {$LANG.required_field}">
-                            <img src="{$help_image_path}required-small.png" alt=""/>
+                            <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -52,7 +52,7 @@
                     <th>{$LANG.email_bcc}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_bcc"
                            title="{$LANG.email_bcc}">
-                            <img src="{$help_image_path}help-small.png" alt=""/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td><input type="text" name="email_bcc" size="50" value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}" tabindex="30"/></td>
@@ -61,7 +61,7 @@
                     <th>{$LANG.subject}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
                            title="{$LANG.subject} {$LANG.required_field}">
-                            <img src="{$help_image_path}required-small.png" alt=""/>
+                            <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>

@@ -39,7 +39,7 @@
                     <td class="details_screen">{$LANG.description}
                         <a class="cluetip cluetip-clicked" href="#" title="Payment Type Description"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
-                            <img src="{$help_image_path}required-small.png" alt="(required)"/>
+                            <img src="{$helpImagePath}required-small.png" alt="(required)"/>
                         </a>
                     </td>
                     <td>

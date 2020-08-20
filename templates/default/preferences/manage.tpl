@@ -87,7 +87,7 @@
 <div class="si_help_div">
     <a class="cluetip" href="#" title="{$LANG.whats_all_this_inv_pref}"
        rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_what_the">
-        <img src="{$help_image_path}help-small.png" alt=""/>
+        <img src="{$helpImagePath}help-small.png" alt=""/>
         {$LANG.whats_all_this_inv_pref}
     </a>
 </div>

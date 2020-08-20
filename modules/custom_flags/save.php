@@ -26,7 +26,7 @@ $op = empty($_POST['op']) ? '' : $_POST['op'];
 $display_block = "<div class=\"si_message_error\">{$LANG['save_custom_field_failure']}</div>";
 if (isset($_POST['cancel'])) {
     $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
-} else if ($op === 'edit_custom_flag') {
+} elseif ($op === 'edit_custom_flag') {
     if (isset($_POST['save_custom_flag'])) {
         $flg_id = intval($_POST['flg_id']);
         $clear_field = (isset($_POST["clear_custom_flags_{$flg_id}"]) ? $_POST["clear_custom_flags_{$flg_id}"] : DISABLED);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
@@ -9,13 +10,13 @@ class ProductValues
 {
     /**
      * Get count of products_values records.
-     * @return integer
+     * @return int count of products_values records
      */
-    public static function count()
+    public static function count(): int
     {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             $rows = $pdoDb->request("SELECT", "products_values");
         } catch (PdoDbException $pde) {
@@ -29,17 +30,16 @@ class ProductValues
      * @param int $id of record to retrieve.
      * @return array Record retrieved. Check for empty for no records found.
      */
-    public static function getOne($id)
+    public static function getOne(int $id): array
     {
         return self::getProductValues($id);
     }
 
     /**
      * Retrieve all product_values records.
-     * Retrieve all product_values records.
      * @return array Records retrieved.
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::getProductValues();
     }
@@ -47,54 +47,56 @@ class ProductValues
     /**
      * Retrieve the value for a specified product attribute and value id.
      *
-     * @param int $attribute_id for product_attributes record to get the value for.
-     * @param int $value_id of product_values record containing the value to return.
+     * @param int $attributeId for product_attributes record to get the value for.
+     * @param int $valueId of product_values record containing the value to return.
      * @return string If <b>attribute_id</b> is for a type, <i>list</i>, product,
      *         return the value from the <i>products_values</i> record for the
      *         specified <b>value_id</b>. Otherwise return the <b>value_id</b> parameter.
      */
-    public static function getValue($attribute_id, $value_id)
+    public static function getValue(int $attributeId, int $valueId): string
     {
-        $row = ProductAttributes::getOne($attribute_id);
+        $row = ProductAttributes::getOne($attributeId);
 
         if (!empty($row) && $row['type'] == 'list') {
-            $row = self::getOne($value_id);
+            $row = self::getOne($valueId);
             if (!empty($row)) {
                 return $row['value'];
             }
         }
-        return $value_id;
+        return $valueId;
     }
 
     /**
-     * Check for duplicate record based on $attribute_id and $value.
-     * @param int $attribute_id to test for.
+     * Check for duplicate record based on $attributeId and $value.
+     * @param int $attributeId to test for.
      * @param string $value to test for.
-     * @return bool true if the $value exists for the $attribute_id; false if not.
+     * @return bool true if the $value exists for the $attributeId; false if not.
      */
-    public static function isDuplicate($attribute_id, $value)
+    public static function isDuplicate(int $attributeId, string $value): bool
     {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
-            $pdoDb->addSimpleWhere('attribute_id', $attribute_id, 'AND');
+            $pdoDb->addSimpleWhere('attribute_id', $attributeId, 'AND');
             $pdoDb->addSimpleWhere('value', $value);
             $rows = $pdoDb->request('SELECT', 'products_values');
         } catch (PdoDbException $pde) {
-            error_log("ProductValues::isDuplicate() - attribute_id[$attribute_id] value[$value] - error: " . $pde->getMessage());
+            error_log("ProductValues::isDuplicate() - attribute_id[$attributeId] value[$value] - error: " . $pde->getMessage());
         }
 
-        return (!empty($rows));
+        return !empty($rows);
     }
+
     /**
-     * @param int $id If not null, id of record to retrieve.
+     * @param int|null $id If not null, id of record to retrieve.
      * @return array Record retrieved.
      */
-    private static function getProductValues($id = null) {
+    private static function getProductValues(?int $id = null): array
+    {
         global $LANG, $pdoDb;
 
-        $product_values = array();
+        $productValues = [];
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('pv.id', $id);
@@ -102,16 +104,16 @@ class ProductValues
 
             $pdoDb->setOrderBy('name');
 
-            $pdoDb->setSelectList(array(
+            $pdoDb->setSelectList([
                 new DbField('pv.id', 'id'),
                 new DbField('pa.name', 'name'),
                 new DbField('pv.value', 'value'),
                 new DbField('pv.enabled', 'enabled'),
                 new DbField('pv.attribute_id', 'attribute_id')
-            ));
+            ]);
 
             $ca = new CaseStmt("pv.enabled", "enabled_text");
-            $ca->addWhen( "=", ENABLED, $LANG['enabled']);
+            $ca->addWhen("=", ENABLED, $LANG['enabled']);
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
@@ -123,17 +125,17 @@ class ProductValues
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['name'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['name'];
-                $row['image'] = ($row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
-                $product_values[] = $row;
+                $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
+                $productValues[] = $row;
             }
         } catch (PdoDbException $pde) {
             error_log("ProductValues::getProductValues() - Error: " . $pde->getMessage());
         }
 
-        if (empty($product_values)) {
-            return array();
+        if (empty($productValues)) {
+            return [];
         }
-        return (isset($id) ? $product_values[0] : $product_values);
+        return isset($id) ? $productValues[0] : $productValues;
     }
 
     /**
@@ -141,7 +143,8 @@ class ProductValues
      * Note: DO NOT include the 'id' field in the $_POST as it is auto assigned.
      * @return int 0 if insert failed, otherwise the 'id' assigned to the new row.
      */
-    public static function insert() {
+    public static function insert(): int
+    {
         global $pdoDb;
 
         $result = 0;
@@ -157,8 +160,10 @@ class ProductValues
     /**
      * Update the product_values record from values in $_POST global for
      * the "id" in the $_GET['id'] global.
+     * @return bool
      */
-    public static function update() {
+    public static function update(): bool
+    {
         global $pdoDb;
 
         $result = false;

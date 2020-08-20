@@ -22,7 +22,7 @@ if (isset($_POST['btnProcess'])){
   $txtAmount = $_POST['txtAmount'];
 
   // Set the payment details
-  $eway = new Eway($eWAY_CustomerID, $eWAY_PaymentMethod, $eWAY_UseLive);
+  $eway = new Eway($ewayCustomerID, $ewayPaymentMethod, $ewayUseLive);
 
   $eway->setTransactionData("TotalAmount", $txtAmount); //mandatory field
   $eway->setTransactionData("CustomerFirstName", $txtFirstName);

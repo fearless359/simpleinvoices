@@ -1,25 +1,30 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * Class for a single test item in the <b>WHERE</b> clause.
  * @author Rich Rowley
  */
-class WhereItem {
-    const CONNECTORS = '/^(AND|OR)$/';
-    const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|REGEXP|IS NULL|IS NOT NULL|REGEXP)$/';
+class WhereItem
+{
+    private const CONNECTORS = '/^(AND|OR)$/';
+    private const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|REGEXP|IS NULL|IS NOT NULL|REGEXP)$/';
 
-    private $close_paren;
-    private $connector;
-    private $field;
-    private $open_paren;
-    private $operator;
-    private $token;
+    private bool $closeParen;
+    private string $connector;
+    private string $field;
+    private bool $openParen;
+    private string $operator;
+    private string $token;
+    /**
+     * @var array|DbField|int|string
+     */
     private $value;
 
     /**
      * Class constructor
-     * @param boolean $open_paren Set to <b>true</b> if an opening parenthesis should be
+     * @param bool $openParen Set to <b>true</b> if an opening parenthesis should be
      *        inserted before this term; otherwise set to <b>false</b>.
      * @param string $field The actual name of the field (column) in the table. This is
      *        a required parameter and <b>MUST</b> exist in the table.
@@ -27,19 +32,20 @@ class WhereItem {
      *        content test against the <b>$value</b> parameter. Allowed operators:
      *          <b>=</b>, <b><></b>, <b><</b>, <b>></b>, <b><=</b> and <b>>=</b>,
      *          <b>BETWEEN</b>, <b>LIKE</b>, <b>IN</b>, <b>IS</b>, <b>IS NOT</b>, <b>REGEXP</b>
-     * @param mixed $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginval,endval)</b>.
-     * @param boolean $close_paren Set to <b>true</b> if a closing parenthesis should be
+     * @param array|string|int|DbField $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginVal,endVal)</b>.
+     * @param bool $closeParen Set to <b>true</b> if a closing parenthesis should be
      *        inserted after this term; otherwise set to <b>false</b>.
      * @param string $connector The "AND" or "OR" connector if additional terms will be
      *        clause. Optional parameter.
      * @throws PdoDbException If an invalid operator or connector is found.
      */
-    public function __construct($open_paren, $field, $operator, $value, $close_paren, $connector = NULL) {
-        $this->open_paren = $open_paren;
+    public function __construct(bool $openParen, string $field, string $operator, $value, bool $closeParen, string $connector = "")
+    {
+        $this->openParen = $openParen;
         $this->field = $field;
         $this->operator = strtoupper($operator);
-        $this->connector = (isset($connector) ? strtoupper($connector) : '');
-        $this->close_paren = $close_paren;
+        $this->connector = strtoupper($connector);
+        $this->closeParen = $closeParen;
 
         if (!preg_match(self::OPERATORS, $this->operator)) {
             throw new PdoDbException("WhereItem - Invalid operator, $this->operator, specified.");
@@ -81,7 +87,7 @@ class WhereItem {
 
     /**
      * Builds the formatted selection criterion for this object.
-     * @param integer $cnt Number of tokens processed in this build.
+     * @param int $tokenCnt Number of tokens processed in this build.
      *        Note this parameter is <i>passed by reference</i> so it's updated
      *        value will be returned in it. Set it to <b>0</b> on the initial call and
      *        return the updated variable in subsequent calls.
@@ -90,15 +96,18 @@ class WhereItem {
      *        a value of <b>1</b>.
      * @return string Formatted <b>WHERE</b> clause component for this criterion.
      */
-    public function build(&$cnt, &$keyPairs) {
+    public function build(int &$tokenCnt, array &$keyPairs)
+    {
         $item = '';
-        if ($this->open_paren) $item .= '(';
+        if ($this->openParen) {
+            $item .= '(';
+        }
         $field = PdoDb::formatField($this->field);
         $item .= "$field $this->operator ";
         switch ($this->operator) {
             case 'BETWEEN':
-                $tk1 = PdoDb::makeToken($this->token, $cnt);
-                $tk2 = PdoDb::makeToken($this->token, $cnt);
+                $tk1 = PdoDb::makeToken($this->token, $tokenCnt);
+                $tk2 = PdoDb::makeToken($this->token, $tokenCnt);
                 $item .= "$tk1 AND $tk2";
                 $keyPairs[$tk1] = $this->value[0];
                 $keyPairs[$tk2] = $this->value[1];
@@ -107,18 +116,18 @@ class WhereItem {
             case 'IN':
                 // Make array if not one already
                 $item .= '(';
-                for($i=0; $i<count($this->value); $i++) {
-                    $tk = PdoDb::makeToken($this->token, $cnt);
-                    $item .= ($i == 0 ? '' : ', ');
+                for ($idx = 0; $idx < count($this->value); $idx++) {
+                    $tk = PdoDb::makeToken($this->token, $tokenCnt);
+                    $item .= $idx == 0 ? '' : ', ';
                     $item .= $tk;
-                    $keyPairs[$tk] = $this->value[$i];
+                    $keyPairs[$tk] = $this->value[$idx];
                 }
                 $item .= ')';
                 break;
 
             case 'REGEXP':
                 $item = '(' . $item;
-                $tk = PdoDb::makeToken($this->token, $cnt);
+                $tk = PdoDb::makeToken($this->token, $tokenCnt);
                 $item .= $tk . ' ';
                 $keyPairs[$tk] = $this->value;
                 $item .= ')';
@@ -133,38 +142,47 @@ class WhereItem {
                 if (is_a($this->value, "Inc\Claz\DbField")) {
                     $item .= $this->value->genParm();
                 } else {
-                    $tk = PdoDb::makeToken($this->token, $cnt);
+                    $tk = PdoDb::makeToken($this->token, $tokenCnt);
                     $item .= $tk . ' ';
                     $keyPairs[$tk] = $this->value;
                 }
                 break;
         }
 
-        if ($this->close_paren) $item .= ') ';
+        if ($this->closeParen) {
+            $item .= ') ';
+        }
 
-        $item .= (empty($this->connector) ? '' : ' ' . $this->connector . ' ');
+        $item .= empty($this->connector) ? '' : ' ' . $this->connector . ' ';
 
         return $item;
     }
 
     /**
      * Calculates unmatched parenthesis in this object.
-     * @return integer Count of unmatched parenthesis in this object. A positive result
+     * @return int Count of unmatched parenthesis in this object. A positive result
      *         is count of unmatched opening parenthesis, a negative result is count of
      *         unmatched closing parenthesis and a result of 0 means all parenthesis if
      *         any are matched.
      */
-    public function parenCount() {
+    public function parenCount(): int
+    {
         $cnt = 0;
-        if ($this->open_paren) $cnt++;
-        if ($this->close_paren) $cnt--;
+        if ($this->openParen) {
+            $cnt++;
+        }
+        if ($this->closeParen) {
+            $cnt--;
+        }
         return $cnt;
     }
 
     /**
      * Flags the end of items for the <b>WHERE</b> clause.
+     * @return bool true if end of clause, false if not (AND or OR specified).
      */
-    public function endOfClause() {
+    public function endOfClause(): bool
+    {
         return empty($this->connector);
     }
 }

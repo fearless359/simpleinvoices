@@ -1,12 +1,14 @@
 <?php
+
 namespace Inc\Claz;
 
 /**
  * OrderBy class
  * @author Rich
  */
-class OrderBy {
-    private $orderByFields;
+class OrderBy
+{
+    private array $orderByFields;
 
     /**
      * Class constructor.
@@ -16,14 +18,26 @@ class OrderBy {
      * @throws PdoDbException object if an invalid value is specified for the
      *         <b>order</b> parameter.
      */
-    public function __construct($field = null, $order = 'A') {
-        $this->orderByFields = array();
-        if (isset($field)) $this->addField($field, $order);
+    public function __construct(string $field = "", string $order = 'A')
+    {
+        $this->orderByFields = [];
+        if (!empty($field)) {
+            $this->addField($field, $order);
+        }
+    }
+
+    /**
+     * Test object to see if it is empty (no values added yet).
+     * @return bool true if empty; false if not.
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->orderByFields);
     }
 
     /**
      * Add a field and order attribute.
-     * @param mixed $field Either an <i>array</i> or <i>string</i>.
+     * @param array|string $field Either an <i>array</i> or <i>string</i>.
      *        The following forms are valid:
      *          <i>string</i> - A <i>field name</i> to be added to the collection
      *                          of ordered items with the specified <b>$order</b>.
@@ -40,41 +54,46 @@ class OrderBy {
      * @param string $order Order <b>A</b> ascending, <b>D</b> descending. Defaults to <b>A</b>.
      * @throws PdoDbException if either parameter does not contain the form and values specified for them.
      */
-    public function addField($field, $order = 'A') {
-        $lcl_order = strtoupper($order);
-        if (!preg_match('/^(A|D|ASC|DESC)$/', $lcl_order)) {
-            $str = "OrderBy - addField(): Invalid order, $lcl_order, specified.";
+    public function addField($field, string $order = 'A'): void
+    {
+        $lclOrder = strtoupper($order);
+        if (!preg_match('/^(A|D|ASC|DESC)$/', $lclOrder)) {
+            $str = "OrderBy - addField(): Invalid order, $lclOrder, specified.";
             error_log($str);
             throw new PdoDbException($str);
         }
 
-        $lcl_order = (preg_match('/^(A|ASC)$/', $lcl_order) ? 'ASC' : 'DESC');
+        $lclOrder = preg_match('/^(A|ASC)$/', $lclOrder) ? 'ASC' : 'DESC';
 
         if (is_array($field)) {
-            foreach($field as $item) {
+            foreach ($field as $item) {
                 if (is_array($item)) {
                     if (count($item) == 2 && is_string($item[0]) &&
                         ($item[1] == 'A' || $item[1] == 'D')) {
-                        $this->orderByFields[] = array($item[0], ($item[1] == 'A' ? 'ASC' : 'DESC'));
-                    } else if (count($item) == 1 && is_string($item[0])) {
-                        $this->orderByFields[] = array($item[0], $lcl_order);
+                        $this->orderByFields[] = [$item[0], $item[1] == 'A' ? 'ASC' : 'DESC'];
+                    } elseif (count($item) == 1 && is_string($item[0])) {
+                        $this->orderByFields[] = [$item[0], $lclOrder];
                     } else {
-                        $str  = "OrderBy - addField(): Invalid array content. ";
-                        $str .= (count($item) == 2 ? "field name: $item[0], order: $item[1]" :
-                                 count($item) == 1 ? "field name: $item[0]" :
-                                                     "Too many elements. Dimensions: " . count($item));
+                        $str = "OrderBy - addField(): Invalid array content. ";
+                        if (count($item) == 2) {
+                            $str .= "field name: {$item[0]}, order: {$item[1]}";
+                        } elseif (count($item) == 1) {
+                            $str .= "field name: $item[0]";
+                        } else {
+                            $str .= "Too many elements. Dimensions: " . count($item);
+                        }
                         error_log($str);
                         throw new PdoDbException($str);
                     }
                 } else {
-                    $this->orderByFields[] = array($field, $lcl_order);
+                    $this->orderByFields[] = [$field, $lclOrder];
                 }
             }
-        } else if (is_string($field)) {
-            $item = array($field, $lcl_order);
+        } elseif (is_string($field)) {
+            $item = [$field, $lclOrder];
             $this->orderByFields[] = $item;
         } else {
-            $str = "OrderBy - addField(): Invalid <b>\$field</b> type. Field value is $field.";
+            $str = "OrderBy - addField(): Invalid <b>\$field</b> type. Field value is {$field}.";
             error_log($str);
             throw new PdoDbException($str);
         }
@@ -82,23 +101,20 @@ class OrderBy {
 
     /**
      * Build the <b>ORDER BY</b> statement.
-     * @param array $keypairs (Optional) Parameter exists for function call compatibility
-     *        with other <i>PdoDb</i> class SQL build objects.
      * @return string Formatted <b>ORDER by</b> string.
      */
-    public function build($keypairs = null) {
-        // Eliminates unused warning
-        if (!is_array($keypairs)) {
-            $keypairs = null;
-        }
+    public function build(): string
+    {
         $orderBy = '';
-        foreach ($this->orderByFields as $items) {
-            if (empty($orderBy)) {
-                $orderBy = "ORDER BY ";
-            } else {
-                $orderBy .= ', ';
+        if (!empty($this->orderByFields)) {
+            foreach ($this->orderByFields as $items) {
+                if (empty($orderBy)) {
+                    $orderBy = "ORDER BY ";
+                } else {
+                    $orderBy .= ', ';
+                }
+                $orderBy .= PdoDb::formatField($items[0]) . ' ' . $items[1];
             }
-            $orderBy .= PdoDb::formatField($items[0]) . ' ' . $items[1];
         }
         return $orderBy;
     }

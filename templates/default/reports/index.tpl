@@ -1,10 +1,10 @@
 <div class="si_index si_index_reports">
     {assign var=before value='BEFORE '}
-    {if $perform_extension_insertions == true}
-        {section name=idx loop=$extension_insertion_files}
-            {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $before|cat:$LANG.statements}
-                {include file=$extension_insertion_files[idx].file}
+    {if $performExtensionInsertions == true}
+        {section name=idx loop=$extensionInsertionFiles}
+            {if $extensionInsertionFiles[idx].module  == 'reports' &&
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.statements}
+                {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
@@ -15,21 +15,21 @@
             <img src="../../../images/money.png" alt=""/>
             {$LANG.statement_of_invoices}
         </a>
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $LANG.statements}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $LANG.statements}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
     </div>
 
-    {if $perform_extension_insertions == true}
-        {section name=idx loop=$extension_insertion_files}
-            {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $before|cat:$LANG.sales}
-                {include file=$extension_insertion_files[idx].file}
+    {if $performExtensionInsertions == true}
+        {section name=idx loop=$extensionInsertionFiles}
+            {if $extensionInsertionFiles[idx].module  == 'reports' &&
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.sales}
+                {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
@@ -57,22 +57,22 @@
             <span>{$LANG.sales_by_representative}</span>
         </a>
 
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $LANG.sales}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $LANG.sales}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
     </div>
 
     {if $defaults.inventory == $smarty.const.ENABLED}
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $before|cat:$LANG.profit}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $before|cat:$LANG.profit}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
@@ -82,22 +82,22 @@
                 <img src="../../../images/money.png" alt=""/>
                 {$LANG.profit_per_invoice}
             </a>
-            {if $perform_extension_insertions == true}
-                {section name=idx loop=$extension_insertion_files}
-                    {if $extension_insertion_files[idx].module  == 'reports' &&
-                    $extension_insertion_files[idx].section == $LANG.debtors}
-                        {include file=$extension_insertion_files[idx].file}
+            {if $performExtensionInsertions == true}
+                {section name=idx loop=$extensionInsertionFiles}
+                    {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                    $extensionInsertionFiles[idx].section == $LANG.debtors}
+                        {include file=$extensionInsertionFiles[idx].file}
                     {/if}
                 {/section}
             {/if}
         </div>
     {/if}
 
-    {if $perform_extension_insertions == true}
-        {section name=idx loop=$extension_insertion_files}
-            {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $before|cat:$LANG.tax}
-                {include file=$extension_insertion_files[idx].file}
+    {if $performExtensionInsertions == true}
+        {section name=idx loop=$extensionInsertionFiles}
+            {if $extensionInsertionFiles[idx].module  == 'reports' &&
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.tax}
+                {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
@@ -108,21 +108,21 @@
             <img src="../../../images/money_delete.png" alt=""/>
             {$LANG.total_taxes}
         </a>
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $LANG.tax}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $LANG.tax}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
     </div>
 
-    {if $perform_extension_insertions == true}
-        {section name=idx loop=$extension_insertion_files}
-            {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $before|cat:$LANG.products}
-                {include file=$extension_insertion_files[idx].file}
+    {if $performExtensionInsertions == true}
+        {section name=idx loop=$extensionInsertionFiles}
+            {if $extensionInsertionFiles[idx].module  == 'reports' &&
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.products}
+                {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
@@ -137,21 +137,21 @@
             <img src="../../../images/cart.png" alt=""/>
             {$LANG.products_by_customer}
         </a>
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $LANG.products}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $LANG.products}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
     </div>
 
-    {if $perform_extension_insertions == true}
-        {section name=idx loop=$extension_insertion_files}
-            {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $before|cat:$LANG.biller_sales}
-                {include file=$extension_insertion_files[idx].file}
+    {if $performExtensionInsertions == true}
+        {section name=idx loop=$extensionInsertionFiles}
+            {if $extensionInsertionFiles[idx].module  == 'reports' &&
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.biller_sales}
+                {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
@@ -166,21 +166,21 @@
             <img src="../../../images/user_suit.png" alt=""/>
             {$LANG.biller_sales_by_customer_totals} {* TODO change this - remove total *}
         </a>
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $LANG.biller_sales}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $LANG.biller_sales}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
     </div>
 
-    {if $perform_extension_insertions == true}
-        {section name=idx loop=$extension_insertion_files}
-            {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $before|cat:$LANG.debtors}
-                {include file=$extension_insertion_files[idx].file}
+    {if $performExtensionInsertions == true}
+        {section name=idx loop=$extensionInsertionFiles}
+            {if $extensionInsertionFiles[idx].module  == 'reports' &&
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.debtors}
+                {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
@@ -207,11 +207,11 @@
             <img src="../../../images/vcard.png" alt=""/>
             {$LANG.past_due_report}
         </a>
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $LANG.debtors}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $LANG.debtors}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
@@ -232,22 +232,22 @@
                 <img src="../../../images/money_delete.png" alt=""/>
                 Expense accounts summary
             </a>
-            {if $perform_extension_insertions == true}
-                {section name=idx loop=$extension_insertion_files}
-                    {if $extension_insertion_files[idx].module  == 'reports' &&
-                    $extension_insertion_files[idx].section == $LANG.expenses}
-                        {include file=$extension_insertion_files[idx].file}
+            {if $performExtensionInsertions == true}
+                {section name=idx loop=$extensionInsertionFiles}
+                    {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                    $extensionInsertionFiles[idx].section == $LANG.expenses}
+                        {include file=$extensionInsertionFiles[idx].file}
                     {/if}
                 {/section}
             {/if}
         </div>
     {/if}
 
-    {if $perform_extension_insertions == true}
-        {section name=idx loop=$extension_insertion_files}
-            {if $extension_insertion_files[idx].module  == 'reports' &&
-            $extension_insertion_files[idx].section == $before|cat:$LANG.other}
-                {include file=$extension_insertion_files[idx].file}
+    {if $performExtensionInsertions == true}
+        {section name=idx loop=$extensionInsertionFiles}
+            {if $extensionInsertionFiles[idx].module  == 'reports' &&
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.other}
+                {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
@@ -258,11 +258,11 @@
             <img src="../../../images/database.png" alt=""/>
             {$LANG.database_log}
         </a>
-        {if $perform_extension_insertions == true}
-            {section name=idx loop=$extension_insertion_files}
-                {if $extension_insertion_files[idx].module  == 'reports' &&
-                $extension_insertion_files[idx].section == $LANG.other}
-                    {include file=$extension_insertion_files[idx].file}
+        {if $performExtensionInsertions == true}
+            {section name=idx loop=$extensionInsertionFiles}
+                {if $extensionInsertionFiles[idx].module  == 'reports' &&
+                $extensionInsertionFiles[idx].section == $LANG.other}
+                    {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}

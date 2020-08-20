@@ -2,6 +2,7 @@
 
 use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Product;
 use Inc\Claz\SiLocal;
 use Inc\Claz\Util;
@@ -22,9 +23,6 @@ global $LANG, $smarty, $pdoDb;
 
 Util::directAccessAllowed();
 
-$smarty -> assign('pageActive', 'invoice_new');
-$smarty -> assign('active_tab', '#money');
-
 $displayBlock = "<div class=\"si_message_error\">{$LANG['save_invoice_failure']}</div>";
 $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
 
@@ -35,6 +33,7 @@ if(!isset( $_POST['type']) && !isset($_POST['action'])) {
 }
 
 $type = $_POST['type'];
+
 $id = null;
 if ($_POST['action'] == "insert" ) {
     $list = [
@@ -50,43 +49,53 @@ if ($_POST['action'] == "insert" ) {
         'custom_field4' => empty($_POST['custom_field4']) ? "" : $_POST['custom_field4'],
         'sales_representative' => $_POST['sales_representative']
     ];
+
     try {
         $id = Invoice::insert($list);
-        if ($id > 0) {
-            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";
-            $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($id) . "\" />";
-            if ($type == TOTAL_INVOICE) {
-                $productId = Product::insertProduct(DISABLED, DISABLED);
-                if ($productId > 0) {
-                    $unitPrice = SiLocal::dbStd($_POST["unit_price"]);
-                    $taxIds = empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0];
-                    Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice);
-                } else {
-                    error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
-                }
-            } else { // itemized invoice
-                $ndx = 0;
-                while ($ndx <= $_POST['max_items']) {
-                    if (!empty($_POST["quantity$ndx"])) {
-                        // @formatter:off
-                        $unitPrice = SiLocal::dbStd($_POST["unit_price$ndx"]);
-                        $taxId = empty($_POST["tax_id"][$ndx]) ? "" : $_POST["tax_id"][$ndx];
-                        $attr = empty($_POST["attribute"][$ndx]) ? "" : $_POST["attribute"][$ndx];
-                        Invoice::insertInvoiceItem($id, $_POST["quantity$ndx"], $_POST["products$ndx"],
-                            $taxId, $_POST["description$ndx"], $unitPrice, $attr);
-                        // @formatter:on
-                    }
-                    $ndx++;
-                }
-            }
-
-            // Have to set the value after invoice items have been posted.
-            Invoice::updateAging($id);
+        if ($id == 0) {
+            $str = "modules/invoices/save.php - Unable to insert new Invoice.";
+            error_log($str);
+            exit($str);
         }
-    } catch (Exception $exp) {
-        error_log("modules/invoices/save.php - insert exception error: " . $exp->getMessage());
+
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";
+        $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($id) . "\" />";
+        if ($type == TOTAL_INVOICE) {
+            $productId = Product::insertProduct(DISABLED, DISABLED);
+            if ($productId > 0) {
+                $unitPrice = SiLocal::dbStd($_POST["unit_price"]);
+                $taxIds = empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0];
+                Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice);
+            } else {
+                error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
+            }
+        } else { // itemized invoice
+            $idx = 0;
+            while ($idx <= $_POST['max_items']) {
+                if (!empty($_POST["quantity{$idx}"])) {
+                    // @formatter:off
+                    $unitPrice = SiLocal::dbStd($_POST["unit_price{$idx}"]);
+                    $taxId = empty($_POST["tax_id"][$idx]) ? "" : $_POST["tax_id"][$idx];
+                    $attr = empty($_POST["attribute"][$idx]) ? "" : $_POST["attribute"][$idx];
+                    Invoice::insertInvoiceItem($id, $_POST["quantity{$idx}"], $_POST["products{$idx}"],
+                                               $taxId, $_POST["description{$idx}"], $unitPrice, $attr);
+                    // @formatter:on
+                }
+                $idx++;
+            }
+        }
+
+        // Have to set the value after invoice items have been posted.
+        Invoice::updateAging($id);
+    } catch (PdoDbException $pde) {
+        error_log("modules/invoices/save.php - insert exception error: " . $pde->getMessage());
+        exit("Unable to process request. See error log for details.");
     }
+
+    $pageActive = 'invoice_new';
+
 } elseif ( $_POST['action'] == "edit") {
+var_dump("In edit");
     $id = $_POST['id'];
     $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($_POST['id']) . "\" />";
     try {
@@ -104,19 +113,19 @@ if ($_POST['action'] == "insert" ) {
                 }
             }
 
-            $ndx = 0;
-            while ($ndx <= $_POST['max_items']) {
-                if (isset($_POST["delete$ndx"]) && $_POST["delete$ndx"] == "yes") {
-                    Invoice::delete('invoice_items', 'id', $_POST["line_item$ndx"]);
-                } elseif (isset($_POST["quantity$ndx"]) && $_POST["quantity$ndx"] != null) {
+            $idx = 0;
+            while ($idx <= $_POST['max_items']) {
+                if (isset($_POST["delete{$idx}"]) && $_POST["delete{$idx}"] == "yes") {
+                    Invoice::delete('invoice_items', 'id', $_POST["line_item{$idx}"]);
+                } elseif (isset($_POST["quantity{$idx}"])) {
                     //new line item added in edit page
-                    $item = isset($_POST["line_item$ndx"]) ? $_POST["line_item$ndx"] : "";
-                    $qty = isset($_POST["quantity$ndx"]) ? SiLocal::dbStd($_POST["quantity$ndx"]) : "";
-                    $product = isset($_POST["products$ndx"]) ? $_POST["products$ndx"] : "";
-                    $desc = isset($_POST["description$ndx"]) ? $_POST["description$ndx"] : "";
-                    $price = isset($_POST["unit_price$ndx"]) ? SiLocal::dbStd($_POST["unit_price$ndx"]) : "";
-                    $attr = isset($_POST["attribute$ndx"]) ? $_POST["attribute$ndx"] : "";
-                    $taxIds = isset($_POST["tax_id"][$ndx]) ? $_POST["tax_id"][$ndx] : [];
+                    $item = isset($_POST["line_item{$idx}"]) ? $_POST["line_item{$idx}"] : "";
+                    $qty = isset($_POST["quantity{$idx}"]) ? SiLocal::dbStd($_POST["quantity{$idx}"]) : "";
+                    $product = isset($_POST["products{$idx}"]) ? $_POST["products{$idx}"] : "";
+                    $desc = isset($_POST["description{$idx}"]) ? $_POST["description{$idx}"] : "";
+                    $price = isset($_POST["unit_price{$idx}"]) ? SiLocal::dbStd($_POST["unit_price{$idx}"]) : "";
+                    $attr = isset($_POST["attribute{$idx}"]) ? $_POST["attribute{$idx}"] : "";
+                    $taxIds = isset($_POST["tax_id"][$idx]) ? $_POST["tax_id"][$idx] : [];
 
                     if (empty($item)) {
                         Invoice::insertInvoiceItem($id, $qty, $product, $taxIds, $desc, $price, $attr);
@@ -124,19 +133,33 @@ if ($_POST['action'] == "insert" ) {
                         Invoice::updateInvoiceItem($item, $qty, $product, $taxIds, $desc, $price, $attr);
                     }
                 }
-                $ndx++;
+                $idx++;
             }
 
             // Have to update values after the invoice items are updated.
             Invoice::updateAging($id);
 
             $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";
+            $pageActive = 'invoice';
+        } else {
+            $str = "modules/invoices/save.php - Unable to update existing Invoice.";
+            error_log($str);
+            exit($str);
         }
-    } catch (Exception $exp) {
-        error_log("modules/invoices/save.php - edit exception error: " . $exp->getMessage());
+    } catch (PdoDbException $pde) {
+        $str = "modules/invoices/save.php - edit exception error: " . $pde->getMessage();
+        error_log($str);
+        exit($str);
     }
+} else {
+    $str = "modules/invoices/save.php - Invalid \$_POST action[{$_POST['action']}]. Expected 'insert' or 'edit'";
+    error_log($str);
+    exit($str);
 }
 
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 $smarty->assign('id', $id);
+
+$smarty -> assign('pageActive', $pageActive);
+$smarty -> assign('active_tab', '#money');

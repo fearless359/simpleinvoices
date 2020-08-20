@@ -7,12 +7,14 @@ use Exception;
 /**
  * Class Inventory
  */
-class Inventory {
+class Inventory
+{
 
     /**
      * @return int Count of rows in table.
      */
-    public static function count() {
+    public static function count(): int
+    {
         global $pdoDb;
 
         $rows = 0;
@@ -30,7 +32,8 @@ class Inventory {
      * @param int $inv_id of Inventory record to retrieve.
      * @return array Row retrieved. Test for empty for no record found.
      */
-    public static function getOne($inv_id) {
+    public static function getOne(int $inv_id)
+    {
         return self::getInventories($inv_id);
     }
 
@@ -52,7 +55,7 @@ class Inventory {
         global $config;
 
         $rows = self::getInventories();
-        $tableRows = array();
+        $tableRows = [];
         foreach ($rows as $row) {
             // @formatter:off
             $action = "<a class='index_table' title=\"{$row['vname']}\" " .
@@ -63,31 +66,32 @@ class Inventory {
                          "href=\"index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
                           "<img src=\"images/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
                       "</a>";
+            // @formatter:on
 
-            $tableRows[] = array(
+            $tableRows[] = [
                 'action' => $action,
                 'date' => $row['date'],
                 'description' => $row['description'],
                 'quantity' => $row['quantity'],
                 'cost' => $row['cost'],
                 'total_cost' => $row['total_cost'],
-                'currency_code' => $config ->local->currency_code,
-                'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
-            );
+                'currency_code' => $config->local->currency_code,
+                'locale' => preg_replace('/^(.*)_(.*)$/', '$1-$2', $config->local->locale)
+            ];
         }
         return $tableRows;
     }
 
     /**
      * Retrieve inventory record(s).
-     * @param int $inv_id If not null, the inventory id of the record to retrieve.
+     * @param int|null $inv_id ID of the inventory to retrieve or 0 if all records to be retrieved..
      * @return array Row(s) retrieved.
      */
-    private static function getInventories($inv_id = null)
+    private static function getInventories(?int $inv_id = null): array
     {
         global $LANG, $pdoDb;
 
-        $inventories = array();
+        $inventories = [];
         try {
             if (isset($inv_id)) {
                 $pdoDb->addSimpleWhere('inv.id', $inv_id, 'AND');
@@ -103,16 +107,17 @@ class Inventory {
 
             $pdoDb->addToFunctions(new FunctionStmt('COALESCE', 'p.reorder_level,0', 'reorder_level'));
             $pdoDb->addToFunctions(new FunctionStmt('COALESCE', 'inv.quantity * inv.cost,0', 'total_cost'));
-            $expr_list = array(
+            $exprList = [
                 'inv.id',
                 'inv.product_id',
                 'inv.quantity',
                 'inv.cost',
                 'inv.date',
                 'inv.note',
-                'p.description');
-            $pdoDb->setSelectList($expr_list);
-            $pdoDb->setGroupBy($expr_list);
+                'p.description'
+            ];
+            $pdoDb->setSelectList($exprList);
+            $pdoDb->setGroupBy($exprList);
 
             $rows = $pdoDb->request('SELECT', 'inventory', 'inv');
             foreach ($rows as $row) {
@@ -124,15 +129,16 @@ class Inventory {
             error_log("Inventory::getInventories() - Error: " . $pde->getMessage());
         }
         if (empty($inventories)) {
-            return array();
+            return [];
         }
-        return (isset($inv_id) ? $inventories[0] : $inventories);
+        return isset($inv_id) ? $inventories[0] : $inventories;
     }
 
     /**
      * @return int|mixed
      */
-    public static function insert() {
+    public static function insert()
+    {
         global $pdoDb;
 
         $result = 0;
@@ -148,12 +154,13 @@ class Inventory {
     /**
      * @return bool|mixed
      */
-    public static function update() {
+    public static function update()
+    {
         global $pdoDb;
 
         $result = false;
         try {
-            $pdoDb->setExcludedFields(array('id', 'domain_id'));
+            $pdoDb->setExcludedFields(['id', 'domain_id']);
             $pdoDb->addSimpleWhere('id', $_GET['id'], 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
             $result = $pdoDb->request('UPDATE', 'inventory');
@@ -166,17 +173,19 @@ class Inventory {
     /**
      * @throws Exception
      */
-    public static function delete() {
+    public static function delete()
+    {
         throw new Exception("inventory.php delete(): delete not supported.");
     }
 
     /**
      * @return array
      */
-    public static function sendReorderNotificationEmail() {
+    public static function sendReorderNotificationEmail()
+    {
         $rows = self::getAll();
-        $result = array();
-        $email_message = '';
+        $result = [];
+        $emailMessage = '';
         foreach ($rows as $row) {
             if (($qty = SiLocal::number($row['quantity'])) < 0) {
                 $qty = 0;
@@ -184,19 +193,19 @@ class Inventory {
 
             if ($qty <= $row['reorder_level']) {
                 $message = "Time to reorder product, {$row['description']}. " .
-                           "Quantity on hand is " . SiLocal::number($row['quantity']) .
-                           ". , which is equal to or below its reorder level of {$row['reorder_level']}";
+                    "Quantity on hand is " . SiLocal::number($row['quantity']) .
+                    ". , which is equal to or below its reorder level of {$row['reorder_level']}";
                 $result[$row['id']]['message'] = $message;
-                $email_message .= $message . "<br />\n";
+                $emailMessage .= $message . "<br />\n";
             }
         }
 
         $email = new Email();
-        $email->setBody($email_message);
-        $email->setFrom($email->getAdminEmail());
-        $email->setTo($email->getAdminEmail());
+        $email->setBody($emailMessage);
+        $email->setFrom($email->getFrom());
+        $email->setEmailTo($email->getEmailTo());
         $email->setSubject("SimpleInvoices inventory reorder level email");
-        $email->send ();
+        $email->send();
 
         return $result;
     }

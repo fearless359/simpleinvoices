@@ -12,7 +12,7 @@
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=expense&amp;view=add">
         <input type="hidden" name="op" value="add"/>
-        <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
+        <input type="hidden" name="domain_id" value="{if isset($domainId)}{$domainId}{/if}"/>
         <table class="left" width="100%">
             <tr>
                 <th class="left">{$LANG.amount}</th>
