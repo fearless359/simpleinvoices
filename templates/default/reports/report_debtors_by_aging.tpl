@@ -25,7 +25,7 @@
 				<th>{$LANG.customer|htmlsafe}</th>
 				<th>{$LANG.total|htmlsafe}</th>
 				<th>{$LANG.paid|htmlsafe}</th>
-				<th>{$LANG.owing|htmlsafe}</th>
+				<th>{$LANG.owing_uc|htmlsafe}</th>
 				<th>{$LANG.date|htmlsafe|ucfirst}</th>
 				<th>{$LANG.age|htmlsafe}</th>
 				<th>{$LANG.aging|htmlsafe}</th>

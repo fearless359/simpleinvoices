@@ -9,23 +9,14 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 // @formatter:off
-$payments    = [];
-$invId      = null;
-$cId        = null;
-$preference = null;
-$customer   = null;
-// @formatter:on
-
 if (!empty($_GET['id'])) {
     // Filter by just one invoice
-    $invId         = $_GET['id'];
-    $payments      = Payment::getInvoicePayments($invId, true);
+    $payments      = Payment::getInvoicePayments($_GET['id'], true);
     $subPageActive = "payment_filter_invoice";
     $noEntryMsg    = $LANG['no_payments_invoice'];
 } elseif (!empty($_GET['c_id'])) {
     // Filter by just one customer
-    $cId           = $_GET['c_id'];
-    $payments      = Payment::getCustomerPayments($cId, true);
+    $payments      = Payment::getCustomerPayments($_GET['c_id'], true);
     $subPageActive = "payment_filter_customer";
     $noEntryMsg    = $LANG['no_payments_customer'];
 } else {
@@ -34,6 +25,7 @@ if (!empty($_GET['id'])) {
     $subPageActive = "payment_manage";
     $noEntryMsg    = $LANG['no_payments'];
 }
+// @formatter:on
 
 $data = json_encode(['data' => $payments]);
 if (file_put_contents("public/data.json", $data) === false) {

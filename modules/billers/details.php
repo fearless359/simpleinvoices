@@ -26,8 +26,8 @@ global $smarty;
 Util::directAccessAllowed();
 
 //get the invoice id
-$biller_id = $_GET['id'];
-$biller = Biller::getOne($biller_id);
+$billerId = $_GET['id'];
+$biller = Biller::getOne($billerId);
 
 // Drop down list code for invoice logo
 $files = Util::getLogoList();

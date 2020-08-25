@@ -1,10 +1,11 @@
+<!--suppress HtmlFormInputWithoutLabel, HtmlUnknownTag -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id}">
     {if $smarty.get.action== 'view' }
         <br/>
         <table class="center">
             <tr>
-                <th class="left">{$LANG.amount}:</th>
+                <th class="left">{$LANG.amount_uc}:</th>
                 <td>{$expense.amount|siLocal_number}</td>
             </tr>
             <tr>
@@ -24,7 +25,7 @@
                 <td>{$detail.expense_account.name}</td>
             </tr>
             <tr>
-                <th class="left">{$LANG.date_upper}:</th>
+                <th class="left">{$LANG.date}:</th>
                 <td>{$expense.date|siLocal_date}</td>
             </tr>
             <tr>
@@ -40,7 +41,7 @@
                 <td>{$detail.invoice.index_name}</td>
             </tr>
             <tr>
-                <th class="left">{$LANG.product}:</th>
+                <th class="left">{$LANG.product_uc}:</th>
                 <td>{$detail.product.description}</td>
             </tr>
             <tr>
@@ -51,7 +52,7 @@
                 <th class="left" colspan="2">{$LANG.notes}:</th>
             </tr>
             <tr>
-                <td colspan="2">{$expense.note|htmlsafe}</td>
+                <td colspan="2">{$expense.note|outhtml}</td>
             </tr>
         </table>
         <br/>
@@ -69,9 +70,9 @@
         <br/>
         <input type="hidden" name="op" value="edit"/>
         <input type="hidden" name="domain_id" value="{if isset($expense.domain_id)}{$expense.domain_id}{/if}"/>
-        <table class="left" width="100%">
+        <table class="left" style="width:100%;">
             <tr>
-                <th class="left">{$LANG.amount}</th>
+                <th class="left">{$LANG.amount_uc}</th>
                 <td>
                     <input name="amount" class="validate[required]" value="{$expense.amount|siLocal_number}"/>
                 </td>
@@ -125,14 +126,17 @@
                     <select name="invoice_id">
                         <option value=''></option>
                         {foreach from=$detail.invoices item=invoice}
-                            <option {if $invoice.id == $expense.iv_id} selected {/if}
-                                    value="{$invoice.id}">{$invoice.index_name}</option>
+{*                            <option {if $invoice.id == $expense.iv_id} selected {/if}*}
+{*                                    value="{$invoice.id}">{$invoice.index_name}</option>*}
+                            <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}" {if $invoice.id ==  $expense.iv_id}selected{/if} >
+                                Inv#{$invoice.index_id}: ({$invoice.biller|htmlsafe}, {$invoice.customer|htmlsafe})
+                            </option>
                         {/foreach}
                     </select>
                 </td>
             </tr>
             <tr>
-                <th class="left">{$LANG.product}</th>
+                <th class="left">{$LANG.product_uc}</th>
                 <td>
                     <select name="product_id">
                         <option value=''></option>
@@ -183,9 +187,6 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <!--
-                    <textarea class="editor" name='note'>{*$expense.note|htmlsafe*}</textarea>
-                    -->
                     <input name="note" id="note" {if isset($expense.note)}value="{$expense.note|outhtml}"{/if} type="hidden">
                     <trix-editor input="note"></trix-editor>
                 </td>

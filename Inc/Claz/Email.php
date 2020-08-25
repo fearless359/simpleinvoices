@@ -369,7 +369,7 @@ class Email
     public function setEmailTo(string $emailTo): bool
     {
         if (empty($emailTo)) {
-            error_log("Email::setEmalTo() - Empty emailTo address");
+            error_log("Email::setEmailTo() - Empty emailTo address");
             return false;
         } else {
             $emailTo = array_filter(explode(';', $emailTo));
@@ -382,6 +382,9 @@ class Email
                     $this->emailTo = $emailTo;
                 }
             } else {
+                if (is_array($emailTo)) {
+                    $emailTo = $emailTo[0];
+                }
                 if (!filter_var($emailTo, FILTER_VALIDATE_EMAIL)) {
                     error_log("Email::setEmailTo() - Invalid emailTo address[{$emailTo}]");
                     return false;

@@ -30,5 +30,5 @@ $rows = $pdoDb->request('SELECT', 'invoice_items', 'ii');
 
 $smarty->assign('total_taxes', $rows);
 
-$smarty -> assign('pageActive', 'report');
-$smarty -> assign('active_tab', '#home');
+$smarty->assign('pageActive', 'report');
+$smarty->assign('active_tab', '#home');

@@ -142,7 +142,7 @@ class CustomFields
     /**
      * Build screen values for displaying a custom field.
      * @param string $customField Name of the database field.
-     * @param string $customFieldValue The value of this field.
+     * @param string|null $customFieldValue The value of this field.
      * @param string $permission Maintenance permission (read or write)
      * @param string $cssClassTr CSS class the the table row (tr)
      * @param string $cssClassTh CSS class of the table heading (th)
@@ -153,7 +153,7 @@ class CustomFields
      *         display the data. For "write" permission, the formatted label and field.
      * @throws PdoDbException
      */
-    public static function showCustomField(string $customField, string $customFieldValue, string $permission, string $cssClassTr,
+    public static function showCustomField(string $customField, ?string $customFieldValue, string $permission, string $cssClassTr,
                                            string $cssClassTh, string $cssClassTd, string $tdColSpan, string $separator): string
     {
         global $helpImagePath, $pdoDb;

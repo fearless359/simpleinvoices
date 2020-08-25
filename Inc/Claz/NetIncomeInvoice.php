@@ -20,17 +20,17 @@ class NetIncomeInvoice
 
     /**
      * NetIncomeInvoice constructor.
-     * @param $id
-     * @param $indexId
-     * @param $date
-     * @param $customerId
+     * @param int $id
+     * @param int $indexId
+     * @param string $date
+     * @param string $customerId
      */
-    public function __construct(int $id, int $indexId, string $date, int $customerId)
+    public function __construct(int $id, int $indexId, string $date, string $customerName)
     {
         $this->id = $id;
         $this->indexId = $indexId;
         $this->date = $date;
-        $this->customerId = $customerId;
+        $this->customerName = $customerName;
         $this->totalAmount = 0;
         $this->totalPayments = 0;
         $this->totalPeriodPayments = 0;
@@ -44,6 +44,12 @@ class NetIncomeInvoice
         $this->totalAmount += $amount;
     }
 
+    /**
+     * Add a payment and update total payments.
+     * @param float $amount
+     * @param string $date
+     * @param bool $in_period
+     */
     public function addPayment(float $amount, string $date, bool $in_period): void
     {
         $this->pymts[] = new NetIncomePayment($amount, $date);

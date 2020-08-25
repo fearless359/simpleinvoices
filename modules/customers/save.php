@@ -27,8 +27,8 @@ Util::directAccessAllowed();
 // Deal with op and add some basic sanity checking
 $op = !empty( $_POST['op'] ) ? $_POST['op'] : null;
 
-$display_block = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
-$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
+$refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
 
 $error = false;
 // The field is only non-empty if the user entered a value.
@@ -40,8 +40,8 @@ if (!empty($_POST['credit_card_number'])) {
         $enc = new Encryption();
         $_POST['credit_card_number'] = $enc->encrypt($key, $_POST['credit_card_number']);
         $excludeCreditCardNumber = false;
-    } catch (Exception $e) {
-        error_log("Unable to encrypt the credit card number. Error reported: " . $e->getMessage());
+    } catch (Exception $exp) {
+        error_log("Unable to encrypt the credit card number. Error reported: " . $exp->getMessage());
         $error = true;
     }
 }
@@ -49,17 +49,17 @@ if (!empty($_POST['credit_card_number'])) {
 if (!$error) {
     if ($op === "add") {
         if (Customer::insertCustomer($excludeCreditCardNumber)) {
-            $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }
     } elseif ($op === 'edit') {
         if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
-            $display_block = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
         }
     }
 }
 
-$smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_redirect', $refresh_redirect);
+$smarty->assign('display_block', $displayBlock);
+$smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('active_tab', '#people');

@@ -11,6 +11,7 @@
 {if !empty($smarty.post.invoice_id)}
     {include file="templates/default/cron/save.tpl"}
 {else}
+    <!--suppress HtmlFormInputWithoutLabel -->
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=cron&amp;view=add">
         <table class="center">
@@ -73,12 +74,12 @@
                         <option value="{$smarty.const.ENABLED}"
                                 {if isset($smarty.post.email_biller) &&
                                     $smarty.post.email_biller == $smarty.const.ENABELD}selected{/if}>
-                                {$LANG.yes_uppercase}
+                                {$LANG.yes_uc}
                         </option>
                         <option value="{$smarty.const.DISABLED}"
                                 {if isset($smarty.post.email_biller) &&
                                     $smarty.post.email_biller == $smarty.const.DISABLED}selected{/if}>
-                            {$LANG.no_uppercase}
+                            {$LANG.no_uc}
                         </option>
                     </select>
                 </td>
@@ -90,12 +91,12 @@
                         <option value="{$smarty.const.ENABLED}"
                                 {if isset($smarty.post.email_customer) &&
                                 $smarty.post.email_customer == $smarty.const.ENABELD}selected{/if}>
-                            {$LANG.yes_uppercase}
+                            {$LANG.yes_uc}
                         </option>
                         <option value="{$smarty.const.DISABLED}"
                                 {if isset($smarty.post.email_customer) &&
                                 $smarty.post.email_customer == $smarty.const.DISABLED}selected{/if}>
-                            {$LANG.no_uppercase}
+                            {$LANG.no_uc}
                     </select>
                 </td>
             </tr>
@@ -111,7 +112,7 @@
                 {$LANG.cancel}
             </a>
         </div>
-        <input type="hidden" name="domain_id" value={if isset($domainId)}{$domainId}{/if}>
+        <input type="hidden" name="domain_id" value={if isset($domain_id)}{$domain_id}{/if}>
         <input type="hidden" name="op" value="add"/>
     </form>
 {/if}

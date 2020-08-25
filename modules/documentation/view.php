@@ -13,7 +13,7 @@
  *     'cluetip' link. Ex:
  *          <a class="cluetip" href="#"
  *             rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
- *             title="{$LANG.custom_flags_upper}">
+ *             title="{$LANG.custom_flags_uc}">
  *            <img src="{$helpImagePath}help-small.png" alt="" />
  *          </a>
  */
@@ -25,8 +25,8 @@ if (isset($_GET['help'])) {
     $page = $_GET['help'];
 }
 else {
-    $get_page = $_GET['page'];
-    $page = isset($LANG[$get_page]) ? $LANG[$get_page] : $LANG['no_help_page'];
+    $getPage = $_GET['page'];
+    $page = isset($LANG[$getPage]) ? $LANG[$getPage] : $LANG['no_help_page'];
 }
 
 $smarty->assign("page", $page);

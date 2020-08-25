@@ -1,6 +1,6 @@
 {include file=$path|cat:'inc_head.tpl'}
 
-<table class="center" style="width:60%;">
+<table class="center" style="width:60%;;">
     <tr>
         <th style="font-weight: bold; text-align:center;">
             To install SimpleInvoices please:

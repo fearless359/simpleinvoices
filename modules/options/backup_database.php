@@ -24,7 +24,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
     if ($ok) {
         $txt = sprintf($LANG['backup_done'], $filename);
 
-        $display_block =
+        $displayBlock =
             "<div class='si_center'>" .
                 "<pre>" .
                     "<table>{" . $oBack->getOutput() . "}</table>" .
@@ -39,7 +39,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
                 "</a>" .
             "</div>";
     } else {
-        $display_block =
+        $displayBlock =
             "<div class='si_message_error'>ERROR: Unable to complete the backup. See error log for details.</div>" .
             "<div class='si_help_div'>" .
                 "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}' " .
@@ -50,7 +50,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "</div>";
     }
 } else {
-    $display_block =
+    $displayBlock =
         "<div class='si_center'>" .
             "{$LANG['backup_howto']}" .
             "<div class='si_toolbar si_toolbar_top'><br/>" .
@@ -71,4 +71,4 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
 }
 
 $oBack = null;
-$smarty->assign('display_block', $display_block);
+$smarty->assign('display_block', $displayBlock);

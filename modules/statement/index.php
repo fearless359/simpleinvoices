@@ -40,75 +40,92 @@ function lastOfMonth() {
     return date ( "Y-m-d", strtotime ( '31-12-' . date ( 'Y' ) . ' 00:00:00' ) );
 }
 
-$start_date  = (isset($_POST['start_date'] ) ? $_POST['start_date']  : firstOfMonth());
-$end_date    = (isset($_POST['end_date']   ) ? $_POST['end_date']    : lastOfMonth ());
-$biller_id   = (isset($_POST['biller_id']  ) ? $_POST['biller_id']   : "");
-$customer_id = (isset($_POST['customer_id']) ? $_POST['customer_id'] : "");
+$startDate  = isset($_POST['start_date'] ) ? $_POST['start_date']: firstOfMonth();
+$endDate    = isset($_POST['end_date']   ) ? $_POST['end_date']  : lastOfMonth ();
+$billerId   = isset($_POST['biller_id']  ) ? intval($_POST['biller_id'])  : null;
+$customerId = isset($_POST['customer_id']) ? intval($_POST['customer_id']): null;
 
-$show_only_unpaid      = "no";
-$do_not_filter_by_date = "no";
-$invoices              = array();
-$statement             = array ("total" => 0, "owing" => 0, "paid" => 0);
+$showOnlyUnpaid    = "no";
+$doNotFilterByDate = "no";
+$invoices          = [];
+$statement         = ["total" => 0, "owing" => 0, "paid" => 0];
 
 if (isset($_POST['submit'])) {
     try {
-        $havings = array();
+        $havings = [];
         if (isset($_POST['do_not_filter_by_date'])) {
-            $do_not_filter_by_date = "yes";
+            $doNotFilterByDate = "yes";
         } else {
-            $do_not_filter_by_date = "no";
-            $havings[] = array("date_between" => array($start_date, $end_date));
+            $doNotFilterByDate = "no";
+            $havings[] = ["date_between" => [$startDate, $endDate]];
         }
 
         if (isset($_POST['show_only_unpaid'])) {
-            $show_only_unpaid = "yes";
-            $havings[] = array("money_owed" => '');
+            $showOnlyUnpaid = "yes";
+            $havings[] = ["money_owed" => ''];
         } else {
-            $show_only_unpaid = "no";
+            $showOnlyUnpaid = "no";
         }
 
-        if (!empty($biller_id)) $pdoDb->addSimpleWhere("biller_id", $biller_id, "AND");
-        if (!empty($customer_id)) $pdoDb->addSimpleWhere("customer_id", $customer_id, "AND");
+        if (!empty($billerId)) {
+            $pdoDb->addSimpleWhere("biller_id", $billerId, "AND");
+        }
+        if (!empty($customerId)) {
+            $pdoDb->addSimpleWhere("customer_id", $customerId, "AND");
+        }
+
+        $invoices = Invoice::getAllWithHavings($havings, "date", "desc");
+        foreach ( $invoices as $row ) {
+            if ($row ['status'] > 0) {
+                $statement ['total'] += $row ['total'];
+                $statement ['owing'] += $row ['owing'];
+                $statement ['paid']  += $row ['paid'];
+            }
+        }
     } catch (PdoDbException $pde) {
         error_log("modules/statement/index.php - error: " . $pde->getMessage());
-    }
-    $invoices = Invoice::getAllWithHavings($havings, "date", "desc");
-    foreach ( $invoices as $row ) {
-        if ($row ['status'] > 0) {
-            $statement ['total'] += $row ['total'];
-            $statement ['owing'] += $row ['owing'];
-            $statement ['paid']  += $row ['paid'];
-        }
     }
 }
 
 // @formatter:off
-$billers          = Biller::getAll(true);
-$biller_count     = count($billers);
-$customers        = Customer::getAll(['enabled_only' => true]);
-$customer_count   = count($customers);
-$biller_details   = Biller::getOne($biller_id);
-$customer_details = Customer::getOne($customer_id);
+$billers         = Biller::getAll(true);
+$billerCount     = count($billers);
+$customers       = Customer::getAll(['enabled_only' => true]);
+$customerCount   = count($customers);
 
-$smarty->assign('biller_id'       , $biller_id);
+if (empty($billerId)) {
+    $billerDetails = [];
+} else {
+    $billerDetails   = Biller::getOne($billerId);
+}
+
+if (empty($customerId)) {
+    $customerDetails = [];
+} else {
+    $customerDetails = Customer::getOne($customerId);
+}
+
+$smarty->assign('biller_id'       , $billerId);
 $smarty->assign('billers'         , $billers);
-$smarty->assign('biller_count'    , $biller_count);
-$smarty->assign('biller_details'  , $biller_details);
-$smarty->assign('customer_id'     , $customer_id);
+$smarty->assign('biller_count'    , $billerCount);
+$smarty->assign('biller_details'  , $billerDetails);
+$smarty->assign('customer_id'     , $customerId);
 $smarty->assign('customers'       , $customers);
-$smarty->assign('customer_count'  , $customer_count);
-$smarty->assign('customer_details', $customer_details);
+$smarty->assign('customer_count'  , $customerCount);
+$smarty->assign('customer_details', $customerDetails);
 
-$smarty->assign('show_only_unpaid'     , $show_only_unpaid);
-$smarty->assign('do_not_filter_by_date', $do_not_filter_by_date);
+$smarty->assign('show_only_unpaid'     , $showOnlyUnpaid);
+$smarty->assign('do_not_filter_by_date', $doNotFilterByDate);
 
 $smarty->assign('invoices'  , $invoices);
 $smarty->assign('statement' , $statement);
-$smarty->assign('start_date', $start_date);
-$smarty->assign('end_date'  , $end_date);
+$smarty->assign('start_date', $startDate);
+$smarty->assign('end_date'  , $endDate);
 
 $smarty->assign('pageActive', 'report');
 $smarty->assign('active_tab', '#home');
 
-if (!isset($menu)) $menu = true; // Causes menu section of report gen page to display.
+if (!isset($menu)) {
+    $menu = true; // Causes menu section of report gen page to display.
+}
 $smarty->assign('menu', $menu);

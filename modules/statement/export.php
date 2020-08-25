@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Export;
+use Inc\Claz\PdoDbException;
 use Mpdf\Output\Destination;
 
 /*
@@ -34,4 +35,8 @@ $export->setStartDate($startDate);
 $export->setEndDate($endDate);
 $export->setShowOnlyUnpaid($showOnlyUnpaid);
 $export->setDoNotFilterByDate($doNotFilterByDate);
-$export->execute();
+try {
+    $export->execute();
+} catch (PdoDbException $pde) {
+    exit("modules/statement/export.php Unexpected error: {$pde->getMessage()}");
+}

@@ -167,7 +167,7 @@
                             <th>{$LANG.date_created}</th>
                             <th>{$LANG.total}</th>
                             <th>{$LANG.paid}</th>
-                            <th>{$LANG.owing}</th>
+                            <th>{$LANG.owing_uc}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -199,7 +199,7 @@
                             <th>{$LANG.date_created}</th>
                             <th class="si_center">{$LANG.total}</th>
                             <th class="si_center">{$LANG.paid}</th>
-                            <th class="si_center">{$LANG.owing}</th>
+                            <th class="si_center">{$LANG.owing_uc}</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -6,6 +6,7 @@
 {else}
     {* if  name was inserted *}
     {if isset($smarty.post.submit)}
+        <!--suppress HtmlFormInputWithoutLabel -->
         <div class="validation_alert">
             <img src="images/important.png"/>
             You must enter a description for the product
@@ -41,7 +42,7 @@
                 <tr>
                     <th>{$customFieldLabel.product_cf1}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
-                            <img src="{$helpImagePath}help-small.png"/></a>
+                            <img src="{$helpImagePath}help-small.png" alt=""/></a>
                     </th>
                     <td>
                         <select name="custom_field1">

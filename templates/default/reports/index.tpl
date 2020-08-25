@@ -9,7 +9,7 @@
         {/section}
     {/if}
 
-    <h2>{$LANG.statements}<a name="statement" href=""></a></h2>
+    <h2>{$LANG.statements}<a id="statement" href=""></a></h2>
     <div class="si_toolbar">
         <a href="index.php?module=statement&amp;view=index" class="">
             <img src="../../../images/money.png" alt=""/>
@@ -34,7 +34,7 @@
         {/section}
     {/if}
 
-    <h2>{$LANG.sales}<a name="sales" href=""></a></h2>
+    <h2>{$LANG.sales}<a id="sales" href=""></a></h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=report_sales_total" class="">
             <img src="../../../images/money.png" alt=""/>
@@ -218,24 +218,24 @@
     </div>
 
     {if $defaults.expense == $smarty.const.ENABLED}
-        <h2>{$LANG.expenses}</h2>
+        <h2>{$LANG.expenses_uc}</h2>
         <div class="si_toolbar">
             <a href="index.php?module=reports&amp;view=report_tax_vs_sales_by_period" class="">
                 <img src="../../../images/money_delete.png" alt=""/>
-                Monthly tax summary per year
+                {$LANG.monthly_tax_summary_per_year}
             </a>
             <a href="index.php?module=reports&amp;view=report_expense_account_by_period" class="">
                 <img src="../../../images/money_delete.png" alt=""/>
-                Expense accounts summary
+                {$LANG.expense_uc} {$LANG.accounts_uc} {$LANG.by} {$LANG.period_uc}
             </a>
             <a href="index.php?module=reports&amp;view=report_summary" class="">
                 <img src="../../../images/money_delete.png" alt=""/>
-                Expense accounts summary
+                {$LANG.expense_uc} {$LANG.account_uc} {$LANG.summary_uc}
             </a>
             {if $performExtensionInsertions == true}
                 {section name=idx loop=$extensionInsertionFiles}
                     {if $extensionInsertionFiles[idx].module  == 'reports' &&
-                    $extensionInsertionFiles[idx].section == $LANG.expenses}
+                    $extensionInsertionFiles[idx].section == $LANG.expenses_uc}
                         {include file=$extensionInsertionFiles[idx].file}
                     {/if}
                 {/section}

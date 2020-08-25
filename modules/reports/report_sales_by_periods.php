@@ -25,14 +25,28 @@ use Inc\Claz\WhereItem;
  * Website:
  * 	https://simpleinvoices.group
  */
+global $smarty, $pdoDb;
 
 Util::directAccessAllowed();
 
-$max_years = 10;
+/**
+ * @param $thisYearAmount
+ * @param $lastYearAmount
+ * @param int $precision
+ * @return float
+ */
+function calcMyRate($thisYearAmount, $lastYearAmount, $precision = 2) {
+    if (!$lastYearAmount) {
+        return 0;
+    }
+    return round(($thisYearAmount - $lastYearAmount) / $lastYearAmount * 100, $precision);
+}
+
+$maxYears = 10;
 $domainId = DomainId::get();
 
 // Get earliest invoice date
-$rows = array();
+$rows = [];
 try {
     $pdoDb->addToFunctions(new FunctionStmt("MIN", new DbField("iv.date"), "date"));
 
@@ -48,35 +62,22 @@ try {
 } catch (PdoDbException $pde) {
     error_log("module/reports/report_sales_by_period.php - error(1): " . $pde->getMessage());
 }
-$first_invoice_year = date('Y', strtotime($rows[0]['date']));
+
+$firstInvoiceYear = intval(date('Y', strtotime($rows[0]['date'])));
 
 // Get total for each month of each year from first invoice
-$this_year = date('Y');
-$year = $first_invoice_year;
+$thisYear = intval(date('Y'));
+$year = $firstInvoiceYear;
 
-$total_years = $this_year - $first_invoice_year + 1;
-if ($total_years > $max_years) {
-    $year = $this_year - $max_years + 1;
-}
-
-/**
- * @param $this_year_amount
- * @param $last_year_amount
- * @param int $precision
- * @return float|string
- */
-function _myRate($this_year_amount, $last_year_amount, $precision = 2) {
-    if (!$last_year_amount) {return '';}
-    $rate = round(($this_year_amount - $last_year_amount) / $last_year_amount * 100, $precision);
-    return $rate;
+$totalYears = $thisYear - $firstInvoiceYear + 1;
+if ($totalYears > $maxYears) {
+    $year = $thisYear - $maxYears + 1;
 }
 
 // loop for each year
-
-$years = array();
-$data = array();
-
-while($year <= $this_year) {
+$years = [];
+$data = [];
+while($year <= $thisYear) {
     // loop for each month
     $month = 1;
     while($month <= 12) {
@@ -86,7 +87,7 @@ while($year <= $this_year) {
         }
 
         // Monthly Sales ----------------------------
-        $rows = array();
+        $rows = "";
         try {
             $pdoDb->addToFunctions(new FunctionStmt("SUM", new DbField("ii.total"), "month_total"));
 
@@ -108,11 +109,11 @@ while($year <= $this_year) {
         } catch (PdoDbException $pde) {
             error_log("modules/reports/report_sales_by_periods.php - error(2): " . $pde->getMessage());
         }
-        $data['sales']['months'     ][$month][$year] = $rows[0]['month_total'];
-        $data['sales']['months_rate'][$month][$year] = _myRate($data['sales']['months'][$month][$year], $data['sales']['months'][$month][$year - 1]);
+        $data['sales']['months'     ][$month][$year] = isset($rows[0]['month_total']) ? $rows[0]['month_total'] : 0;
+        $data['sales']['months_rate'][$month][$year] = calcMyRate($data['sales']['months'][$month][$year], $data['sales']['months'][$month][$year - 1]);
 
         // Monthly Payment ----------------------------
-        $rows = array();
+        $rows = [];
         try {
             $pdoDb->addToFunctions(new FunctionStmt("SUM", new DbField("ac_amount"), "month_total_payments"));
             $pdoDb->addSimpleWhere("domain_id", $domainId, "AND");
@@ -122,14 +123,14 @@ while($year <= $this_year) {
         } catch (PdoDbException $pde) {
             error_log("modules/reports/report_sales_by_periods.php - error(3): " . $pde->getMessage());
         }
-        $data['payments']['months'     ][$month][$year] = $rows[0]['month_total_payments'];
-        $data['payments']['months_rate'][$month][$year] = _myRate($data['payments']['months'][$month][$year], $data['payments']['months'][$month][$year - 1]);
+        $data['payments']['months'     ][$month][$year] = isset($rows[0]['month_total_payments']) ? $rows[0]['month_total_payments'] : 0;
+        $data['payments']['months_rate'][$month][$year] = calcMyRate($data['payments']['months'][$month][$year], $data['payments']['months'][$month][$year - 1]);
 
         $month++;
     }
 
     // Total Annual Sales ----------------------------
-    $rows = array();
+    $rows = [];
     try {
         $pdoDb->addToFunctions(new FunctionStmt("SUM", new DbField("ii.total"), "year_total"));
 
@@ -152,10 +153,10 @@ while($year <= $this_year) {
     }
 
     $data['sales']['total'     ][$year] = $rows[0]['year_total'];
-    $data['sales']['total_rate'][$year] = _myRate($data['sales']['total'][$year], $data['sales']['total'][$year - 1]);
+    $data['sales']['total_rate'][$year] = calcMyRate($data['sales']['total'][$year], $data['sales']['total'][$year - 1]);
 
     // Total Annual Payment ----------------------------
-    $rows = array();
+    $rows = [];
     try {
         $pdoDb->addToFunctions(new FunctionStmt("SUM", "ac_amount", "year_total_payments"));
         $pdoDb->addSimpleWhere("domain_id", $domainId, "AND");
@@ -166,13 +167,13 @@ while($year <= $this_year) {
     }
 
     $data['payments']['total'     ][$year] = $rows[0]['year_total_payments'];
-    $data['payments']['total_rate'][$year] = _myRate($data['payments']['total'][$year], $data['payments']['total'][$year - 1]);
+    $data['payments']['total_rate'][$year] = calcMyRate($data['payments']['total'][$year], $data['payments']['total'][$year - 1]);
 
     $years[] = $year;
     $year++;
 }
-
 $years = array_reverse($years);
+
 $smarty->assign('data'     , $data);
 $smarty->assign('all_years', $years);
 

@@ -1,10 +1,12 @@
 
+<!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=reports&amp;view=report_summary">
 <table class="center">
     <tr>
-        <td>Start date (YYYY-MM-DD)
-                <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{if isset($start_date)}{$start_date}{/if}' />
+        <td>{$LANG.Start_date}
+                <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
+                       name="start_date" id="date1" value='{if isset($start_date)}{$start_date}{/if}' />
          </td>
         <td>
             &nbsp;
@@ -13,8 +15,9 @@
             &nbsp;
             &nbsp;
         </td>
-        <td>End date (YYYY-MM-DD)
-          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{if isset($end_date)}{$end_date}{/if}' />
+        <td>{$LANG.end_date}
+          <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
+                 name="end_date" id="date1" value='{if isset($end_date)}{$end_date}{/if}' />
         </td>
     </tr>
 </table>
@@ -24,47 +27,50 @@
         <td>
             <button type="submit" class="positive" name="submit" value="{$LANG.insert_biller}">
                 <img class="button_img" src="../../../images/tick.png" alt="" />
-                Run report
+                {$LANG.run_report}
             </button>
 
         </td>
     </tr>
 </table>
 </form>
-<div id="top"><h3>Expense account summary for the period {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}</h3></div>
+<div id="top">
+    <h3>{$LANG.expense} {$LANG.account} {$LANG.summary} {$LANG.for} {$LANG.the} {$LANG.period}
+        {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}
+    </h3>
+</div>
 
 <table class="center">
     <tr>
         <td  class="details_screen">
-            <b>Account</b>
+            <b>{$LANG.account_uc}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td class="details_screen">
-            <b>Amount</b>
+            <b>{$LANG.amount_uc}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td class="details_screen">
-            <b>Tax</b>
+            <b>{$LANG.tax}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td class="details_screen">
-            <b>Total</b>
+            <b>{$LANG.total}</b>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td class="details_screen">
-            <b>Status</b>
-        </td>
+            <b>{$LANG.status}</b>
         </td>
 	</tr>
  {foreach item=account from=$accounts}
@@ -110,26 +116,27 @@
  {/foreach}
  </table>
 
-<div id="top"><h3>Invoice/Quote summary for the period {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}</h3></div>
+<div id="top"><h3>{$LANG.invoice_uc}/{$LANG.quote_uc} {$LANG.summary} {$LANG.for} {$LANG.the} {$LANG.period}
+        {if isset($start_date)}{$start_date}{/if} {$LANG.to} {if isset($end_date)}{$end_date}{/if}</h3></div>
 
 <table class="center">
     <tr>
         <td  class="details_screen">
-            <b>ID</b>
+            <b>{$LANG.id}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td  class="details_screen">
-            <b>Biller</b>
+            <b>{$LANG.biller}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td  class="details_screen">
-            <b>Customer</b>
+            <b>{$LANG.customer}</b>
         </td>
         <td>
             &nbsp;
@@ -139,11 +146,11 @@
             &nbsp;
         </td>
         <td class="details_screen">
-            <b>Amount</b>
+            <b>{$LANG.amount_uc}</b>
         </td>
 	</tr>
  {section name=invoice loop=$invoices}
-    {if $invoices[invoice].preference != $invoices[invoice.index_prev].preference AND $smarty.section.invoice.index != 0}   
+    {if $invoices[invoice].preference != $invoices[invoice][index_prev].preference AND $smarty.section.invoice.index != 0}
         <tr><td><br /></td></tr>
     {/if}
     <tr>
@@ -180,40 +187,45 @@
  </table>
 
 
-<div id="top"><h3>Payment summary for the period {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}</h3></div>
+<div id="top">
+    <h3>
+        {$LANG.payment_uc} {$LANG.summary} {$LANG.for} {$LANG.the} {$LANG.period}
+        {if isset($start_date)}{$start_date}{/if} to {if isset($end_date)}{$end_date}{/if}
+    </h3>
+</div>
 
 <table class="center">
     <tr>
         <td  class="details_screen">
-            <b>ID</b>
+            <b>{$LANG.id}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td  class="details_screen">
-            <b>Biller</b>
+            <b>{$LANG.biller}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td  class="details_screen">
-            <b>Customer</b>
+            <b>{$LANG.customer}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td  class="details_screen">
-            <b>Type</b>
+            <b>{$LANG.type}</b>
         </td>
         <td>
             &nbsp;
             &nbsp;
         </td>
         <td class="details_screen">
-            <b>Amount</b>
+            <b>{$LANG.amount_uc}</b>
         </td>
 	</tr>
  {foreach item=payment from=$payments}

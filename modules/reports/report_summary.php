@@ -46,7 +46,13 @@ function firstOfMonth() {
  * @return false|string
  */
 function lastOfMonth() {
-	return date("Y-m-d", strtotime('-1 second',strtotime('+1 month',strtotime('01-'.date('m').'-'.date('Y').' 00:00:00'))));
+	return date("Y-m-d",
+        strtotime('-1 second',
+            strtotime('+1 month',
+                strtotime('01-'.date('m').'-'.date('Y').' 00:00:00')
+            )
+        )
+    );
 }
 
 $startDate = isset($_POST['start_date']) ? $_POST['start_date'] : firstOfMonth() ;

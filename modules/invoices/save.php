@@ -95,7 +95,6 @@ if ($_POST['action'] == "insert" ) {
     $pageActive = 'invoice_new';
 
 } elseif ( $_POST['action'] == "edit") {
-var_dump("In edit");
     $id = $_POST['id'];
     $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($_POST['id']) . "\" />";
     try {
@@ -161,5 +160,5 @@ $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 $smarty->assign('id', $id);
 
-$smarty -> assign('pageActive', $pageActive);
-$smarty -> assign('active_tab', '#money');
+$smarty->assign('pageActive', $pageActive);
+$smarty->assign('active_tab', '#money');

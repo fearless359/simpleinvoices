@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
         $invoices = Invoice::getAllWithHavings(array("date_between" => array($start_date, $end_date)), "date");
         $filter_by_date = "yes";
     } else {
-        $invoices = Invoice::getAll("date");
+        $invoices = Invoice::getAll("date", "asc");
     }
 
     foreach ( $invoices as $row ) {

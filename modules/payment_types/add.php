@@ -3,7 +3,7 @@
 use Inc\Claz\DomainId;
 use Inc\Claz\Util;
 
-global $LANG, $smarty;
+global $smarty;
 
 // Stop the direct browsing to this file.
 // Let index.php handle which files get displayed.

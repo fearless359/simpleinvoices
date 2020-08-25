@@ -30,10 +30,10 @@ class Biller
 
     /**
      * Retrieve a specified biller record.
-     * @param string $id ID of the biller to retrieve.
+     * @param int $id ID of the biller to retrieve.
      * @return array Associative array for record retrieved.
      */
-    public static function getOne($id): array
+    public static function getOne(int $id): array
     {
         $rows = self::getBillers($id);
         return empty($rows) ? [] : $rows[0];
@@ -45,20 +45,20 @@ class Biller
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
      */
-    public static function getAll($active_only = false): array
+    public static function getAll(bool $active_only = false): array
     {
         return self::getBillers(null, $active_only);
     }
 
     /**
      * Get all biller records.
-     * @param int $id if not null, get record for that id; otherwise get all records
+     * @param int|null $id if not null, get record for that id; otherwise get all records
      *        based on $active_only setting.
      * @param bool $active_only Set to <b>true</b> to get active billers only.
      *        Set to <b>false</b> or don't specify anything if you want all billers.
      * @return array Biller records retrieved.
      */
-    private static function getBillers($id, $active_only = false): array
+    private static function getBillers(?int $id, bool $active_only = false): array
     {
         global $LANG, $pdoDb;
 

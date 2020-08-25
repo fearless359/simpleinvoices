@@ -15,14 +15,14 @@ use Inc\Claz\User;
  *  Website:
  *      https://simpleinvoices.group
  */
-global $smarty;
+global $LANG, $smarty;
 
-$users = array();
+$users = [];
 $rows = User::getAll();
 foreach ($rows as $row) {
     $row['vname'] = $LANG['view'] . ' ' . $row['username'];
     $row['ename'] = $LANG['edit'] . ' ' . $row['username'];
-    $row['image'] = ($row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png');
+    $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
     $users[] = $row;
 }
 

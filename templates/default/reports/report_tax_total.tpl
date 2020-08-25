@@ -1,6 +1,3 @@
-<h3>{$LANG.total_taxes}</h3>
-<hr />
-
 <table class="si_report_table">
 	<thead>
 		<tr>

@@ -11,9 +11,7 @@ global $menu, $smarty;
 
 Util::directAccessAllowed();
 $language = $smarty->tpl_vars['defaults']->language;
-
-$cust_info = CustomersPastDue::getCustInfo($language);
-$smarty->assign('cust_info', $cust_info);
+$smarty->assign('cust_info', CustomersPastDue::getCustInfo($language));
 
 $smarty->assign('pageActive', 'report');
 $smarty->assign('active_tab', '#home');

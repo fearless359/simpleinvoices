@@ -1,4 +1,5 @@
-<div class="si_center"><h2>Statement of Invoices</h2></div>
+<!--suppress HtmlFormInputWithoutLabel -->
+<div class="si_center"><h2>{$LANG.statement_of_invoices}</h2></div>
 {if $menu}
   <form name="frmpost" method="POST" id="frmpost"
         action="index.php?module=statement&amp;view=index">
@@ -55,7 +56,8 @@
           </td>
         </tr>
         <tr>
-          <th>Do not {$LANG.filter_by_dates}</th>
+          {* Note the $LANG['not'] notation used intentionally as other syntax is looked as a NOT statment. *}
+          <th>{$LANG.do_uc} {$LANG['not']} {$LANG.filter_by_dates}</th>
           <td>
             <input type="checkbox" name="do_not_filter_by_date" tabindex="50"
                    {if $do_not_filter_by_date== "yes"} checked {/if} value="yes">
@@ -82,24 +84,24 @@
   <div class="si_toolbar si_toolbar_top">
     <a title="{$LANG.print_preview}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=print">
-      <img src='../../../images/printer.png' class='action' />&nbsp;{$LANG.print_preview}
+      <img src='../../../images/printer.png' class='action'  alt=""/>&nbsp;{$LANG.print_preview}
     </a>
     <!-- EXPORT TO PDF -->
     <a title="{$LANG.export_pdf}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=pdf">
-      <img src='../../../images/page_white_acrobat.png' class='action' />&nbsp;{$LANG.export_pdf}
+      <img src='../../../images/page_white_acrobat.png' class='action'  alt=""/>&nbsp;{$LANG.export_pdf}
     </a>
     <a title="{$LANG.export_tooltip} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet} {$LANG.format_tooltip}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file&amp;filetype={$config->export->spreadsheet}">
-       <img src='../../../images/page_white_excel.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->spreadsheet}
+       <img src='../../../images/page_white_excel.png' class='action'  alt=""/>&nbsp;{$LANG.export_as}.{$config->export->spreadsheet}
     </a>
     <a title="{$LANG.export_tooltip} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor} {$LANG.format_tooltip}"
        href="index.php?module=statement&amp;view=export&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file&amp;filetype={$config->export->wordprocessor}">
-       <img src='../../../images/page_white_word.png' class='action' />&nbsp;{$LANG.export_as}.{$config->export->wordprocessor}
+       <img src='../../../images/page_white_word.png' class='action'  alt=""/>&nbsp;{$LANG.export_as}.{$config->export->wordprocessor}
     </a>
     <a title="{$LANG.email}"
        href="index.php?module=statement&amp;view=email&amp;stage=1&amp;biller_id={$biller_id|urlencode}&amp;customer_id={$customer_id|urlencode}&amp;start_date={$start_date|urlencode}&amp;end_date={$end_date|urlencode}&amp;show_only_unpaid={$show_only_unpaid|urlencode}&amp;do_not_filter_by_date={$do_not_filter_by_date|urlencode}&amp;format=file">
-       <img src='../../../images/mail-message-new.png' class='action' />&nbsp;{$LANG.email}
+       <img src='../../../images/mail-message-new.png' class='action'  alt=""/>&nbsp;{$LANG.email}
     </a>
   </div>
   {/if}
@@ -113,11 +115,11 @@
       <table>
         <tr>
           <th>{$LANG.biller}:</th>
-          <td>{if empty($biller_details.name)}All{else}{$biller_details.name|htmlsafe}{/if}</td>
+          <td>{if empty($biller_details.name)}{$LANG.all}{else}{$biller_details.name|htmlsafe}{/if}</td>
         </tr>
         <tr>
           <th>{$LANG.customer}:</th>
-          <td>{if empty($customer_details.name)}All{else}{$customer_details.name|htmlsafe}{/if}</td>
+          <td>{if empty($customer_details.name)}{$LANG.all}{else}{$customer_details.name|htmlsafe}{/if}</td>
         </tr>
       </table>
     </div>
@@ -132,7 +134,7 @@
           <td>{$statement.paid|siLocal_number}</td>
         </tr>
         <tr>
-          <th>{$LANG.owing}:</th>
+          <th>{$LANG.owing_uc}:</th>
           <td>{$statement.owing|siLocal_number}</td>
         </tr>
       </table>
@@ -140,21 +142,21 @@
   </div>
   {if $do_not_filter_by_date != "yes"}
   <div>
-    <strong>{$LANG.statement_for_the_period} {if isset($start_date)}{$start_date|htmlsafe}{/if} {$LANG.to_lowercase} {if isset($end_date)}{$end_date|htmlsafe}{/if}</strong>
+    <strong>{$LANG.statement_for_the_period} {if isset($start_date)}{$start_date|htmlsafe}{/if} {$LANG.to} {if isset($end_date)}{$end_date|htmlsafe}{/if}</strong>
   </div>
   <br />
   {/if}
   <div class="si_list">
-    <table class="center" width="100%">
+    <table class="center" style="width:100%;">
       <thead>
         <tr>
           <th class="si_right">{$LANG.id}</th>
-          <th class="si_right">{$LANG.date_upper}</th>
+          <th class="si_right">{$LANG.date}</th>
           <th>{$LANG.biller}</th>
           <th>{$LANG.customer}</th>
           <th class="si_right">{$LANG.total}</th>
           <th class="si_right">{$LANG.paid}</th>
-          <th class="si_right">{$LANG.owing}</th>
+          <th class="si_right">{$LANG.owing_uc}</th>
         </tr>
       </thead>
       <tbody>

@@ -10,6 +10,11 @@ use Zend_Json;
  */
 class Encode
 {
+    /**
+     * @param array|string $array
+     * @param int $level
+     * @return string
+     */
     public static function xml(array $array, int $level = 1): string
     {
         $xml = '';

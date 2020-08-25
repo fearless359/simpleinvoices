@@ -3,40 +3,40 @@
 use Inc\Claz\Taxes;
 use Inc\Claz\Util;
 
-global $smarty;
+global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$display_block = "<div class=\"si_message_error\">{$LANG['save_tax_rate_failure']}</div>";
-$refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=manage' />";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['save_tax_rate_failure']}</div>";
+$refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=manage' />";
 
 # Deal with op and add some basic sanity checking
 
 $op = empty($_POST['op']) ? '' : $_POST['op'];
 if ($op == 'add') {
     if (Taxes::verifyExists($_POST['tax_description'])) {
-        $display_block = "<div class=\"si_message_error\">{$LANG['duplicate_tax_description']}</div>";
-        $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=add' />";
+        $displayBlock = "<div class=\"si_message_error\">{$LANG['duplicate_tax_description']}</div>";
+        $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=add' />";
     } else {
         $resultAdd = Taxes::insertTaxRate();
         if ($resultAdd > 0) {
-            $display_block = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
         }
     }
 
 } elseif ($op == 'edit') {
     if ($_POST['orig_description'] != $_POST['tax_description'] &&
         Taxes::verifyExists($_POST['tax_description'])) {
-        $display_block = "<div class=\"si_message_error\">{$LANG['duplicate_tax_description']}</div>";
-        $refresh_redirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=details&amp;id={$_GET['id']}&amp;action=edit' />";
+        $displayBlock = "<div class=\"si_message_error\">{$LANG['duplicate_tax_description']}</div>";
+        $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=details&amp;id={$_GET['id']}&amp;action=edit' />";
     } elseif (Taxes::updateTaxRate()) {
-        $display_block = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_tax_rate_success']}</div>";
     }
 }
 
-$smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_redirect', $refresh_redirect);
+$smarty->assign('display_block', $displayBlock);
+$smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'tax_rate');
 $smarty->assign('active_tab', '#setting');

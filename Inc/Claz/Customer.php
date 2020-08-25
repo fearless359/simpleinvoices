@@ -67,7 +67,7 @@ class Customer
 
         $viewcust = $LANG['view'] . " " . $LANG['customer'];
         $editcust = $LANG['edit'] . " " . $LANG['customer'];
-        $defaultinv = $LANG['new_uppercase'] . " " . $LANG['default_invoice'];
+        $defaultinv = $LANG['new_uc'] . " " . $LANG['default_invoice'];
 
         try {
             $pdoDb->setOrderBy([['enabled', 'D'], ['name', 'A']]);

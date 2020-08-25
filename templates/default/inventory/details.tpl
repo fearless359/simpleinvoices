@@ -4,11 +4,11 @@
         <div class="si_form si_form_view">
             <table>
                 <tr>
-                    <th>{$LANG.product}</th>
+                    <th>{$LANG.product_uc}</th>
                     <td>{$inventory.description|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.date_upper}</th>
+                    <th>{$LANG.date}</th>
                     <td>{$inventory.date|htmlsafe}</td>
                 </tr>
                 <tr>
@@ -16,7 +16,7 @@
                     <td>{$inventory.quantity|siLocal_number_trim}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.cost}</th>
+                    <th>{$LANG.cost_uc}</th>
                     <td>{$inventory.cost|siLocal_number}</td>
                 </tr>
                 <tr>
@@ -39,7 +39,7 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <td class="details_screen">{$LANG.date_upper}</td>
+                    <td class="details_screen">{$LANG.date}</td>
                     <td>
                         <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
                                size="10" name="date" id="date"
@@ -47,7 +47,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="details_screen">{$LANG.product}</td>
+                    <td class="details_screen">{$LANG.product_uc}</td>
                     <td>
                         <select name="product_id" class="validate[required] product_inventory_change">
                             <option value=''></option>
@@ -66,7 +66,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="details_screen">{$LANG.cost}</td>
+                    <td class="details_screen">{$LANG.cost_uc}</td>
                     <td>
                         <input id="cost" name="cost" size="10" class="validate[required]"
                                value='{$inventory.cost|siLocal_number}'>

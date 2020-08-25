@@ -1,3 +1,4 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=tax_rates&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     {if $smarty.get.action === 'view' }
@@ -11,7 +12,7 @@
                     <th>{$LANG.rate}
                         <a class="cluetip" href="#" title="{$LANG.tax_rate}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
-                            <img src="{$helpImagePath}help-small.png"/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
@@ -44,11 +45,11 @@
                     <th>{$LANG.rate}
                         <a class="cluetip" href="#" title="{$LANG.tax_rate}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
-                            <img src="{$helpImagePath}help-small.png"/>
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="tax_percentage" class="validate[required,custom[number]]" size="10"
+                        <input type="text" name="tax_percentage" class="validate[required,custom[number]]"
                                value="{$tax.tax_percentage|siLocal_number}" size="10"/>
                         {html_options name=type options=$types selected=$tax.type}
                     </td>

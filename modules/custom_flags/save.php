@@ -13,37 +13,37 @@ use Inc\Claz\Util;
  *  Website:
  *      https://simpleinvoices.group
  */
-global $smarty;
+global $LANG, $smarty;
 
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$refresh_redirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=custom_flags&amp;view=manage' />";
+$refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=custom_flags&amp;view=manage' />";
 
 $op = empty($_POST['op']) ? '' : $_POST['op'];
 
-$display_block = "<div class=\"si_message_error\">{$LANG['save_custom_field_failure']}</div>";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['save_custom_field_failure']}</div>";
 if (isset($_POST['cancel'])) {
-    $display_block = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
+    $displayBlock = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
 } elseif ($op === 'edit_custom_flag') {
     if (isset($_POST['save_custom_flag'])) {
-        $flg_id = intval($_POST['flg_id']);
-        $clear_field = (isset($_POST["clear_custom_flags_{$flg_id}"]) ? $_POST["clear_custom_flags_{$flg_id}"] : DISABLED);
+        $flgId = intval($_POST['flg_id']);
+        $clearField = isset($_POST["clear_custom_flags_{$flgId}"]) ? $_POST["clear_custom_flags_{$flgId}"] : DISABLED;
         if (CustomFlags::updateCustomFlags(
                 $_POST["associated_table"],
-                $flg_id,
+                $flgId,
                 $_POST["field_label"],
                 $_POST["enabled"],
-                $clear_field,
+                $clearField,
                 $_POST["field_help"])) {
-            $display_block = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";
         }
     }
 }
 
-$smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_redirect', $refresh_redirect);
+$smarty->assign('display_block', $displayBlock);
+$smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'custom_flags');
 $smarty->assign('active_tab', '#settings');

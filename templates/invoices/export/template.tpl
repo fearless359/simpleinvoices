@@ -19,7 +19,7 @@
     </table>
     <table>
       <tr>
-        <td colspan="4"><b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.summary}</b></td>
+        <td colspan="4"><b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.summary_uc}</b></td>
       </tr>
       <tr>
         <td>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.number_short}:</td>
@@ -63,7 +63,7 @@
         <td colspan="3">{$preference.pref_currency_sign}{$invoice.paid|siLocal_number:2}</td>
       </tr>
       <tr>
-        <td nowrap>{$LANG.owing}:</td>
+        <td nowrap>{$LANG.owing_uc}:</td>
         <td colspan="3">{$preference.pref_currency_sign}{$invoice.owing|siLocal_number:2}</td>
       </tr>
     </table>
@@ -76,14 +76,14 @@
       </tr>
       {if isset($biller.street_address)}
       <tr>
-        <td>{$LANG.address}:</td>
+        <td>{$LANG.address_uc_uc}:</td>
         <td align="left" colspan="3">{$biller.street_address|htmlsafe}</td>
       </tr>
       {/if}
       {if isset($biller.street_address2) }
         {if !isset($biller.street_address) }
         <tr>
-          <td>{$LANG.address}:</td>
+          <td>{$LANG.address_uc_uc}:</td>
           <td align="left" colspan="3">{$biller.street_address2|htmlsafe}</td>
         </tr>
         {/if}
@@ -173,14 +173,14 @@
       {/if}
       {if isset($customer.street_address) }
       <tr>
-        <td>{$LANG.address}:</td>
+        <td>{$LANG.address_uc_uc}:</td>
         <td align="left" colspan="3">{$customer.street_address|htmlsafe}</td>
       </tr>
       {/if}
       {if isset($customer.street_address2) }
         {if !isset($customer.street_address) }
         <tr>
-          <td>{$LANG.address}:</td>
+          <td>{$LANG.address_uc_uc}:</td>
           <td align="left" colspan="3">{$customer.street_address2|htmlsafe}</td>
         </tr>
         {/if}
@@ -253,7 +253,7 @@
       </tr>
       <!-- Customer section - end -->
     </table>
-    <table style="width:100%;">
+    <table style="width:100%;;">
       <tr>
         <td colspan="6"><br /></td>
       </tr>
@@ -310,7 +310,7 @@
       <tr>
         <td colspan="2"></td>
         <td colspan="3" align="right">
-          <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount}&nbsp;</b>
+          <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount_uc}&nbsp;</b>
         </td>
         <td colspan="1" align="right">
           <span class="double_underline">
@@ -342,7 +342,7 @@
       <tr>
         <td colspan="3"></td>
         <td align="right" colspan="2">
-          <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount}</b>
+          <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount_uc}</b>
         </td>
         <td align="right" style="text-decoration:underline;">
           {$preference.pref_currency_sign}{$invoice.total|siLocal_number:2}

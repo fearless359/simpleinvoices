@@ -5,11 +5,8 @@ use Inc\Claz\Product;
 
 global $smarty;
 
-$inventory = Inventory::getOne($_GET['id']);
-$product_all = Product::getAll(true);
-
-$smarty->assign('inventory', $inventory);
-$smarty->assign('product_all', $product_all);
+$smarty->assign('inventory', Inventory::getOne($_GET['id']));
+$smarty->assign('product_all', Product::getAll(true));
 
 $smarty->assign('pageActive', 'inventory');
 $smarty->assign('subPageActive', 'inventory_edit');

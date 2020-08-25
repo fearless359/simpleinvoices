@@ -10,7 +10,7 @@
 	<tbody>
 	{foreach item=customer from=$data}
 		<tr>
-			<td colspan="2">{$customer.name|htmlsafe}</td>
+			<td class="bold" colspan="2">{$customer.name|htmlsafe}</td>
 		</tr>
 		{foreach item=product from=$customer.products}
 			<tr>

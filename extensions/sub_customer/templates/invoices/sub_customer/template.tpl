@@ -8,7 +8,7 @@
   <br />
   <div id="container">
     <div id="header"></div>
-    <table width="100%" class="center">
+    <table style="width:100%;" class="center">
       <tr>
         <td colspan="5"><img src="{$logo|urlsafe}" border="0" hspace="0" align="left"></td>
         <th align="right"><span class="font1">{$preference.pref_inv_heading|htmlsafe}</span></th>
@@ -20,7 +20,7 @@
     <!-- Summary - start -->
     <table class="right">
       <tr>
-        <td class="col1 tbl1-bottom" colspan="4"><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.summary}</b></td>
+        <td class="col1 tbl1-bottom" colspan="4"><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.summary_uc}</b></td>
       </tr>
       <tr>
         <td class="">{$preference.pref_inv_wording|htmlsafe} {$LANG.number_short}:</td>
@@ -66,7 +66,7 @@
         <td class="" align="right" colspan="3">{$preference.pref_currency_sign} {$invoice.paid|siLocal_number}</td>
       </tr>
       <tr>
-        <td nowrap class="">{$LANG.owing}:</td>
+        <td nowrap class="">{$LANG.owing_uc}:</td>
         <td class="" align="right" colspan="3">{$preference.pref_currency_sign} {$invoice.owing|siLocal_number}</td>
       </tr>
     </table>
@@ -79,14 +79,14 @@
       </tr>
       {if isset($biller.street_address)}
       <tr>
-        <td class=''>{$LANG.address}:</td>
+        <td class=''>{$LANG.address_uc}:</td>
         <td class='' align=left colspan="3">{$biller.street_address|htmlsafe}</td>
       </tr>
       {/if}
       {if isset($biller.street_address2) }
         {if !isset($biller.street_address) }
         <tr>
-          <td class=''>{$LANG.address}:</td>
+          <td class=''>{$LANG.address_uc}:</td>
           <td class='' align=left colspan="3">{$biller.street_address2|htmlsafe}</td>
         </tr>
         {/if}
@@ -141,14 +141,14 @@
       {/if}
       {if isset($customer.street_address) }
       <tr>
-        <td class=''>{$LANG.address}:</td>
+        <td class=''>{$LANG.address_uc}:</td>
         <td class='' align=left colspan="3">{$customer.street_address|htmlsafe}</td>
       </tr>
       {/if}
       {if isset($customer.street_address2)}
         {if !isset($customer.street_address)}
         <tr>
-          <td class=''>{$LANG.address}:</td>
+          <td class=''>{$LANG.address_uc}:</td>
           <td class='' align=left colspan="3">{$customer.street_address2|htmlsafe}</td>
         </tr>
         {/if}
@@ -188,7 +188,7 @@
       </tr>
     </table>
     <!-- Customer section - end -->
-    <table class="left" width="100%">
+    <table class="left" style="width:100%;">
       <tr>
         <td colspan="6"><br /></td>
       </tr>
@@ -215,7 +215,7 @@
         <tr class="tbl1-bottom">
           <td class=""></td>
           <td class="" colspan="5">
-            <table width="100%">
+            <table style="width:100%;">
               <tr>
               {if !empty($customFieldLabels.product_cf1)}
                 {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
@@ -255,7 +255,7 @@
         <tr>
           <td class=""></td>
           <td class="" colspan="5">
-            <table width="100%">
+            <table style="width:100%;">
               <tr>
               {if !empty($customFieldLabels.product_cf1)}
                 {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
@@ -292,7 +292,7 @@
         {/foreach}
       {/if}
       {if $invoice.type_id == TOTAL_INVOICE}
-      <table class="left" width="100%">
+      <table class="left" style="width:100%;">
         <tr class="col1">
           <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description}</b></td>
         </tr>
@@ -356,7 +356,7 @@
       {/if}
       <tr>
         <td colspan="2"></td>
-        <td colspan="3" align="right"><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.amount}&nbsp;</b></td>
+        <td colspan="3" align="right"><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.amount_uc}&nbsp;</b></td>
         <td colspan="1" align="right">
           <span class="double_underline"><u>{$preference.pref_currency_sign} {$invoice.total|siLocal_number}</u></span>
         </td>
@@ -387,7 +387,7 @@
         </tr>
         <tr class="">
           <td class="" colspan="2"></td>
-          <td class="" align="right" colspan="3"><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.amount}</b></td>
+          <td class="" align="right" colspan="3"><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.amount_uc}</b></td>
           <td class="" align="right">
             <span class="double_underline" >{$preference.pref_currency_sign} {$invoice.total|siLocal_number}</span>
           </td>

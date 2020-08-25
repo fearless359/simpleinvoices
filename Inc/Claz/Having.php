@@ -27,7 +27,7 @@ class Having
      *        statement; else <b>false</b> (default) if no left parenthesis is to be added.
      * @param string $field
      * @param string $operator
-     * @param DbField|number|array $value Can be a string, number or an array as needed by the specified <b>$operator</b>.
+     * @param DbField|number|array|string $value Can be a string, number or an array as needed by the specified <b>$operator</b>.
      * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
      *        not specified, it will be set automatically to <b>AND</b> if a subsequent
      *        criterion is added.

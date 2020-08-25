@@ -60,6 +60,7 @@ class ExpenseAccount
         } catch (PdoDbException $pde) {
             error_log("ExpenseAccount::getAll() - error: " . $pde->getMessage());
         }
+
         if (empty($rows)) {
             return [];
         }

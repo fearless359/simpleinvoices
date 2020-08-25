@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Export;
+use Inc\Claz\PdoDbException;
 use Mpdf\Output\Destination;
 
 /*
@@ -23,4 +24,8 @@ $export->setFormat($format);
 $export->setFileType($fileType);
 $export->setRecId($recId);
 $export->setModule('payment');
-$export->execute();
+try {
+    $export->execute();
+} catch (PdoDbException $pde) {
+    exit("modules/export/payment.php Unexpected error: {$pde->getMessage()}");
+}

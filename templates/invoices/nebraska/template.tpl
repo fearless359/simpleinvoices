@@ -9,12 +9,12 @@
    <body>
       <header>
          <!-- Parties -->
-		 <table style="table-layout: fixed; border-collapse:collapse; margin-left: auto; margin-right: auto; width: 100%;">
+		 <table style="table-layout: fixed; border-collapse:collapse; margin-left: auto; margin-right: auto; width: 100%;;">
             <tbody>
                <tr>
 				  <!-- Biller -->
                   <td colspan="2"  style="text-align: left; width:300px;">
-                     <table width="50%">
+                     <table style="width:50%;">
                         <tr>
                            <td class='clean left'><strong>{$LANG.biller}</strong></td>
                            <td class='clean left' style='font-weight:bold'>{$biller.name|htmlsafe}</td>
@@ -41,14 +41,14 @@
                         </tr>
                         {/if}
                         <tr>
-                           <td class='clean left'>{$LANG.address}:</td>
+                           <td class='clean left'>{$LANG.address_uc}:</td>
                            <td class='clean left'>
                               {if $biller.street_address != null}{$biller.street_address|htmlsafe}{/if} {if $biller.city != null }{$biller.city|htmlsafe},{/if} {if $biller.state != null } {$biller.state|htmlsafe},{/if} {if $biller.zip_code != null } {$biller.zip_code|htmlsafe} {/if} {if $biller.country != null }, {$biller.country|htmlsafe}{/if}
                            </td>
                         </tr>
                         {if $biller.street_address2 != null}
                         <tr>
-                           <td class='clean left'>{$LANG.address}:</td>
+                           <td class='clean left'>{$LANG.address_uc}:</td>
                            <td class='clean left'>{$biller.street_address2|htmlsafe}</td>
                         </tr>
                         {/if} 
@@ -72,7 +72,7 @@
                   </td>
                   <!-- Customer -->
                   <td colspan="2"  style="text-align: right; width:300px;">
-                     <table width="50%">
+                     <table style="width:50%;">
                         <tr>
                            <td class='clean left'><b>{$LANG.customer}</b></td>
                            <td class='clean left' style='font-weight:bold'>{$customer.name|htmlsafe}</td>
@@ -99,14 +99,14 @@
                         </tr>
                         {/if}
                         <tr>
-                           <td class='clean left'>{$LANG.address}:</td>
+                           <td class='clean left'>{$LANG.address_uc}:</td>
                            <td class='clean left'>
                               {if $customer.street_address != null}{$customer.street_address|htmlsafe}{/if} {if $customer.city != null }{$customer.city|htmlsafe},{/if} {if $customer.state != null } {$customer.state|htmlsafe},{/if} {if $customer.zip_code != null } {$customer.zip_code|htmlsafe} {/if} {if $customer.country != null }, {$customer.country|htmlsafe}{/if}
                            </td>
                         </tr>
                         {if $customer.street_address2 != null}
                         <tr>
-                           <td class='clean left'>{$LANG.address2}:</td>
+                           <td class='clean left'>{$LANG.address_uc2}:</td>
                            <td class='clean left'>{$customer.street_address2|htmlsafe}</td>
                         </tr>
                         {/if} {if $customer.phone != null }
@@ -131,7 +131,7 @@
             </tbody>
          </table>
          <!-- Logo -->
-         <table style="margin-left: auto; margin-right: auto;" width="30%">
+         <table style="margin-left: auto; margin-right: auto;" style="width:30%;">
             <tbody>
                <tr>
                   <td class="clean center" width="30%">
@@ -148,7 +148,7 @@
       </header>
       <!-- Itemization -->
       <article>
-         <table style="table-layout: fixed; border-collapse:collapse; margin-left: auto; margin-right: auto; width: 100%;">
+         <table style="table-layout: fixed; border-collapse:collapse; margin-left: auto; margin-right: auto; width: 100%;;">
             <thead>
                <tr>
                   {if ($invoice.type_id == 2) || ($invoice.type_id == 3) }
@@ -187,7 +187,7 @@
                   <td class="clean left bleft" colspan="2">Intocmit de Cristian Sava <br>
                      Cnp:1790726513500, {if $biller.fax != null }{$LANG.CI}: {$biller.fax|htmlsafe}{/if}
                   </td>
-                  <td class="clean center bleft bdown" style='font-weight:bold'>{$LANG.amount}:</td>
+                  <td class="clean center bleft bdown" style='font-weight:bold'>{$LANG.amount_uc}:</td>
                   <td class="clean center bleft bdown" style='font-weight:bold'>{$invoice.total|siLocal_number} {$preference.pref_currency_sign}</td>
                </tr>
                <tr class="clean left bleft">
@@ -198,7 +198,7 @@
                   </td>
                </tr>
                <tr class="clean left bleft">
-                  <td class="clean left bleft" colspan="2">{$LANG.date_upper}: {$invoice.date|date_format:"%d.%m.%Y"}<br>Semnaturile:</td>
+                  <td class="clean left bleft" colspan="2">{$LANG.date}: {$invoice.date|date_format:"%d.%m.%Y"}<br>Semnaturile:</td>
                </tr>
             </tbody>
          </table>

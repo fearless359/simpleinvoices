@@ -24,10 +24,10 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.date_upper}</th>
-            <th>{$LANG.product}</th>
+            <th>{$LANG.date}</th>
+            <th>{$LANG.product_uc}</th>
             <th>{$LANG.quantity}</th>
-            <th>{$LANG.cost}</th>
+            <th>{$LANG.cost_uc}</th>
             <th>{$LANG.total_cost}</th>
         </tr>
         </thead>

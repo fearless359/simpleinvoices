@@ -37,13 +37,13 @@ $pdoDb->addToJoins($jn);
 
 $rows = $pdoDb->request('SELECT', 'invoice_items', 'ii');
 
-$total_quantity = 0;
+$totalQuantity = 0;
 foreach ($rows as $row) {
-    $total_quantity += $row['sum_quantity'];
+    $totalQuantity += $row['sum_quantity'];
 }
 
 $smarty->assign('data', $rows);
-$smarty->assign('total_quantity', $total_quantity);
+$smarty->assign('total_quantity', $totalQuantity);
 
 $smarty->assign('pageActive', 'report');
 $smarty->assign('active_tab', '#home');

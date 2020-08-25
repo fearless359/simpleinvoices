@@ -27,7 +27,7 @@ Util::directAccessAllowed();
 
 //if valid then do save
 if (!empty($_POST['op']) && $_POST['op'] == 'add' && !empty($_POST['name'])) {
-    include("modules/customers/save.php");
+    include "modules/customers/save.php";
 } else {
     $customFieldLabel = CustomFields::getLabels(true);
     $smarty->assign('customFieldLabel', $customFieldLabel);

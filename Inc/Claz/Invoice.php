@@ -53,14 +53,14 @@ class Invoice
      * @return array invoice records.
      * @throws PdoDbException
      */
-    public static function getAll(string $sort="index_name", string $dir="asc"): array
+    public static function getAll(string $sort="index_name", string $dir="desc"): array
     {
         return self::getInvoices(null, $sort, $dir);
     }
 
     /**
      * Retrieve all the invoices with using a having value if specified.
-     * @param mixed $having Can be:
+     * @param array|string $having Can be:
      *          <b>string:</b> One of the values defined in the buildHavings() method.
      *          <b>array:</b> Associative array with an array element:
      *              Ex: array("date_between" => array($start_date, $end_date)), or
@@ -1058,11 +1058,11 @@ class Invoice
      * <tr><td><b>real</b></td><td>n/a</td><tr>
      * </table>
      * @param string $option A valid option from the list above.
-     * @param array|null $parms Parameter values required by the specified option.
+     * @param array|string $parms Parameter values required by the specified option.
      * @return Havings havings SQL statement
      * @throws PdoDbException
      */
-    public static function buildHavings(string $option, ?array $parms = null): Havings
+    public static function buildHavings(string $option, $parms = ""): Havings
     {
         try {
             $havings = new Havings();

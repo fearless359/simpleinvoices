@@ -6,19 +6,18 @@ use Inc\Claz\FromStmt;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\GroupBy;
 use Inc\Claz\Join;
-use Inc\Claz\OnClause;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Select;
 use Inc\Claz\WhereClause;
 
 global $pdoDb, $smarty;
 
-$rows = array();
 try {
-    $pdoDb->setSelectList(array(
+    $rows = [];
+    $pdoDb->setSelectList([
         new DbField('c.id', 'cid'),
         new DbField('c.name', 'customer')
-    ));
+    ]);
     $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total,0)', 'inv_total'));
     $pdoDb->addToFunctions(new FunctionStmt('COALESCE', 'ap.inv_paid, 0', 'inv_paid'));
 
@@ -41,15 +40,12 @@ try {
     $jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
     $pdoDb->addToJoins($jn);
 
-    /*******************************************************************
-     * Begin -Build the LEFT JOIN containing a complex SELECT clause
-     *******************************************************************/
-    $ls = array(new DbField('ivl.customer_id'), new DbField('apl.domain_id'));
+    $ls = [new DbField('ivl.customer_id'), new DbField('apl.domain_id')];
     $ls[] = new FunctionStmt("SUM", "COALESCE(apl.ac_amount, 0)", "inv_paid");
     $fr = new FromStmt("payment", 'apl');
     $wh = new WhereClause();
     $wh->addSimpleItem('prl.status', ENABLED);
-    $gr = new GroupBy(array('ivl.customer_id', 'apl.domain_id'));
+    $gr = new GroupBy(['ivl.customer_id', 'apl.domain_id']);
     $se = new Select($ls, $fr, $wh, $gr, "ap");
 
     $jn = new Join("LEFT", 'invoices', 'ivl');
@@ -65,10 +61,8 @@ try {
     $jn = new Join('LEFT', $se);
     $jn->addSimpleItem('ap.customer_id', new DbField('c.id'), 'AND');
     $jn->addSimpleItem('ap.domain_id', new DbField('c.domain_id'));
+
     $pdoDb->addToJoins($jn);
-    /*******************************************************************
-     * End - Build the LEFT JOIN
-     *******************************************************************/
 
     $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
     $pdoDb->addSimpleWhere('c.domain_id', DomainId::get());
@@ -76,17 +70,17 @@ try {
     $pdoDb->setGroupBy('c.id');
 
     $rows = $pdoDb->request('SELECT', 'customers', 'c');
+
+    $totalOwed = 0;
+    foreach ($rows as $row) {
+        $totalOwed += $row['inv_owing'];
+    }
+
+    $smarty->assign('data', $rows);
+    $smarty->assign('total_owed', $totalOwed);
 } catch (PdoDbException $pde) {
-    error_log('report_debtors_by_amount - error: ' . $pde->getMessage());
+    error_log("modules/reports/report_debtors_by_amount.php Unexpected error: {$pde->getMessage()}");
 }
 
-$total_owed = 0;
-foreach ($rows as $row) {
-    $total_owed += $row['inv_owing'];
-}
-
-$smarty -> assign('data', $rows);
-$smarty -> assign('total_owed', $total_owed);   
-
-$smarty -> assign('pageActive', 'report');
-$smarty -> assign('active_tab', '#home');
+$smarty->assign('pageActive', 'report');
+$smarty->assign('active_tab', '#home');

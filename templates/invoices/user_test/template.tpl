@@ -31,14 +31,14 @@
                     </tr>
                     {if isset($biller.street_address)}
                         <tr>
-                            <td class=''>{$LANG.address}:</td>
+                            <td class=''>{$LANG.address_uc}:</td>
                             <td class='' align=left colspan="3">{$biller.street_address|htmlsafe}</td>
                         </tr>
                     {/if}
                     {if isset($biller.street_address2) }
                         {if !isset($biller.street_address) }
                             <tr>
-                                <td class=''>{$LANG.address}:</td>
+                                <td class=''>{$LANG.address_uc}:</td>
                                 <td class='' align=left colspan="3">{$biller.street_address2|htmlsafe}</td>
                             </tr>
                         {/if}
@@ -96,14 +96,14 @@
                     {/if}
                     {if isset($customer.street_address) }
                         <tr>
-                            <td class=''>{$LANG.address}:</td>
+                            <td class=''>{$LANG.address_uc}:</td>
                             <td class='' align=left colspan="3">{$customer.street_address|htmlsafe}</td>
                         </tr>
                     {/if}
                     {if isset($customer.street_address2)}
                         {if !isset($customer.street_address)}
                             <tr>
-                                <td class=''>{$LANG.address}:</td>
+                                <td class=''>{$LANG.address_uc}:</td>
                                 <td class='' align=left colspan="3">{$customer.street_address2|htmlsafe}</td>
                             </tr>
                         {/if}
@@ -149,7 +149,7 @@
                 <table class="top-right">
                     <tr style="text-align: left; max-width:250px;">
                         <td class="col1 tbl1-bottom" colspan="4" style="text-align: left;vertical-align: top;">
-                            <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.summary}</b>
+                            <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.summary_uc}</b>
                         </td>
                     </tr>
                     <tr style="text-align: left;">
@@ -157,7 +157,7 @@
                         <td class="" style="text-align:right;" colspan="3">{$invoice.index_id}</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.date_upper}:</td>
+                        <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.date}:</td>
                         <td class="" style="text-align:right;" colspan="3">{$invoice.date|siLocal_date}</td>
                     </tr>
                     <!-- Show the Invoice Custom Fields if valid -->
@@ -198,7 +198,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="">{$LANG.owing}:</td>
+                        <td class="">{$LANG.owing_uc}:</td>
                         <td class="" style="text-align:right;" colspan="3">
                             {$preference.pref_currency_sign}{$invoice.owing|siLocal_number}
                         </td>
@@ -208,7 +208,7 @@
             </td>
         </tr>
     </table>
-    <table class="left items" style="width:100%;">
+    <table class="left items" style="width:100%;;">
         <tr>
             <td colspan="6"><br/></td>
         </tr>
@@ -253,7 +253,7 @@
                 <tr class="tbl1-bottom">
                     <td class=""></td>
                     <td class="" colspan="5">
-                        <table style="width:100%;">
+                        <table style="width:100%;;">
                             <tr>
                                 {if !empty($customFieldLabels.product_cf1)}
                                     {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
@@ -293,7 +293,7 @@
                 <tr>
                     <td class=""></td>
                     <td class="" colspan="5">
-                        <table style="width:100%;">
+                        <table style="width:100%;;">
                             <tr>
                                 {if !empty($customFieldLabels.product_cf1)}
                                     {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
@@ -332,7 +332,7 @@
         {if $invoice.type_id == TOTAL_INVOICE}
             <tr>
                 <td>
-                    <table class="left" style="width:100%;">
+                    <table class="left" style="width:100%;;">
                         <tr class="col1">
                             <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description}</b></td>
                         </tr>
@@ -397,7 +397,7 @@
         <tr>
             <td colspan="2"></td>
             <td colspan="3" style="text-align:right">
-                <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount}</b>
+                <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount_uc}</b>
             </td>
             <td colspan="1" style="text-align:right">
                 <span class="double_underline" style="text-decoration:underline;">
@@ -436,7 +436,7 @@
         <tr class="">
           <td class="" colspan="2"></td>
           <td class="" align="right" colspan="3">
-            <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount}</b>
+            <b>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.amount_uc}</b>
           </td>
           <td class="" align="right">
             <span class="double_underline">

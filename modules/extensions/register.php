@@ -10,10 +10,10 @@ global $pdoDb, $smarty;
 Util::directAccessAllowed();
 
 // @formatter:off
-$id          = (empty($_GET['id']         ) ? "" : $_GET['id']);
-$name        = (empty($_GET['name']       ) ? "" : $_GET['name']);
-$action      = (empty($_GET['action']     ) ? "" : $_GET['action']);
-$description = (empty($_GET['description']) ? "" : $_GET['description']);
+$id          = empty($_GET['id']         ) ? "" : $_GET['id'];
+$name        = empty($_GET['name']       ) ? "" : $_GET['name'];
+$action      = empty($_GET['action']     ) ? "" : $_GET['action'];
+$description = empty($_GET['description']) ? "" : $_GET['description'];
 // @formatter:on
 
 $count = 0;

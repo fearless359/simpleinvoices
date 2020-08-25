@@ -12,23 +12,23 @@ Util::directAccessAllowed();
 // If id is specified, it contains both the associated_table and flg_id. So explode
 // them to get these fields.
 if (empty($_GET['id'])) {
-    $associated_table = $_GET['associated_table'];
-    $flg_id = $_GET['flg_id'];
+    $associatedTable = $_GET['associated_table'];
+    $flgId = $_GET['flg_id'];
 } else {
     $parts = explode(':', $_GET['id']);
-    $associated_table = $parts[0];
-    $flg_id = $parts[1];
+    $associatedTable = $parts[0];
+    $flgId = $parts[1];
 }
 
-$cflg = CustomFlags::getOne($associated_table, $flg_id);
+$cflg = CustomFlags::getOne($associatedTable, $flgId);
 
 $smarty->assign('cflg', $cflg);
 
-$enable_options = array(DISABLED => 'Disabled', ENABLED => 'Enabled');
-$smarty->assign('enable_options', $enable_options);
+$enableOptions = [DISABLED => 'Disabled', ENABLED => 'Enabled'];
+$smarty->assign('enable_options', $enableOptions);
 
 $smarty->assign('pageActive', 'custom_flags');
-$subPageActive = ($_GET['action'] == "view" ? "custom_flag_view" : "custom_flag_edit");
+$subPageActive = $_GET['action'] == "view" ? "custom_flag_view" : "custom_flag_edit";
 $smarty->assign('subPageActive', $subPageActive);
 $smarty->assign('active_tab', '#settings');
 

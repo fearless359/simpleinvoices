@@ -22,10 +22,10 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.date_upper}</th>
-            <th>{$LANG.amount}</th>
+            <th>{$LANG.date}</th>
+            <th>{$LANG.amount_uc}</th>
             <th>{$LANG.tax}</th>
-            <th>{$LANG.tax} {$LANG.total}</th>
+            <th>{$LANG.total}</th>
             <th>{$LANG.expense_accounts}</th>
             <th>{$LANG.biller}</th>
             <th>{$LANG.customer}</th>
@@ -39,18 +39,22 @@
                 <td class="si_center">
                     <a class='index_table' title='{$expense['vname']}'
                        href='index.php?module=expense&amp;view=details&amp;id={$expense['EID']}&amp;action=view'>
-                        <img src='../../../images/view.png' class='action' />
+                        <img src='../../../images/view.png' class='action' alt="{$expense['vname']}"/>
                     </a>
                     <a class='index_table' title='{$expense['ename']}'
                         href='index.php?module=expense&amp;view=details&amp;id={$expense['EID']}&amp;action=edit'>
-                        <img src='../../../images/edit.png' class='action' />
+                        <img src='../../../images/edit.png' class='action' alt="{$expense['ename']}"/>
                     </a>
                 </td>
                 <td>{$expense['date']}</td>
-                <td>{$expense['amount']|siLocal_number}</td>
-                <td>{$expense['tax']}</td>
-                <td>
-                {if ($expense['total'] != 0)}
+                <td class="right">{$expense['amount']|siLocal_number}</td>
+                <td class="right">
+                {if (!empty($expense['tax']))}
+                    {$expense['tax']|siLocal_number}
+                {/if}
+                </td>
+                <td class="right">
+                {if (!empty($expense['total']))}
                     {$expense['total']|siLocal_number}
                 {/if}
                 </td>

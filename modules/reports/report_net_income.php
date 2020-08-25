@@ -37,21 +37,28 @@ function lastOfMonth()
     return date('Y-m-d', strToTime('last day of this month'));
 }
 
+/**
+ * Compare last activity dates for sorting
+ * @param array $a
+ * @param array $b
+ * @return bool true if $a['last_activity_date'] > $b['last_activity_date']
+ */
 function custCmp(array $a, array $b): bool
 {
     return $b['last_activity_date'] > $a['last_activity_date'];
 }
 
-$startDate     = isset($_POST['start_date'])  ? $_POST['start_date']  : firstOfMonth();
-$endDate       = isset($_POST['end_date'])    ? $_POST['end_date']    : lastOfMonth();
-$customFlag    = isset($_POST['custom_flag']) ? $_POST['custom_flag'] : "";
-$customerId    = isset($_POST['customer_id']) ? $_POST['customer_id'] : 0;
+$startDate = isset($_POST['start_date']) ? $_POST['start_date']  : firstOfMonth();
+$endDate = isset($_POST['end_date']) ? $_POST['end_date'] : lastOfMonth();
+$customFlag = isset($_POST['custom_flag']) ? $_POST['custom_flag'] : "";
+$customerId = isset($_POST['customer_id']) ? intval($_POST['customer_id']) : 0;
 $displayDetail = isset($_POST['display_detail']);
 
 $customFlagLabels = CustomFlags::getCustomFlagLabels();
 
 $customers = [];
 $rows = Customer::getAll(['no_totals' => true]);
+
 foreach ($rows as $row) {
     $row['last_activity_date'] = '0000-01-01'; // Default to no activity date equivalent
     try {
@@ -78,7 +85,7 @@ if (isset($_POST['submit'])) {
     $invoices = $netIncome->selectRptItems($startDate, $endDate, $customerId, $customFlag);
 
     foreach ($invoices as $invoice) {
-        $totIncome += $invoice->total_period_payments;
+        $totIncome += $invoice->totalPeriodPayments;
     }
 }
 

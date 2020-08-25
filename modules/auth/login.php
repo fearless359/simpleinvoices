@@ -84,14 +84,13 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
 
             $pdoDb->addSimpleWhere('u.username', $username, 'AND');
             $pdoDb->addSimpleWhere('u.enabled', ENABLED);
-            $pdoDb->debugOn("login.php");
+
             $rows = $pdoDb->request('SELECT', 'user', 'u');
-            $pdoDb->debugOff();
         } catch (PdoDbException $pde) {
             error_log("modules.auth.login.php: Error(3): " . $pde->getMessage());
             die("modules.auth.login.php(3) - Database access error");
         }
-        var_dump("user table columns", $rows);
+
         foreach ($rows[0] as $key => $value) {
             $authNamespace->$key = $value;
         }

@@ -9,12 +9,12 @@
 
         <a href="index.php?module=custom_fields&amp;view=manage" class="">
             <img src="../../../images/brick_edit.png" alt=""/>
-            {$LANG.custom_fields_upper}
+            {$LANG.custom_fields_uc}
         </a>
 
         <a href="index.php?module=custom_flags&amp;view=manage" class="">
             <img src="../../../images/brick_edit.png" alt=""/>
-            {$LANG.custom_flags_upper}
+            {$LANG.custom_flags_uc}
         </a>
 
         <a href="index.php?module=extensions&amp;view=manage" class="">

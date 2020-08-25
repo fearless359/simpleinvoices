@@ -78,7 +78,7 @@
                     <th>{$LANG.last_invoice}</th>
                     <th>{$LANG.total}</th>
                     <th>{$LANG.paid}</th>
-                    <th>{$LANG.owing}</th>
+                    <th>{$LANG.owing_uc}</th>
                     <th>{$LANG.enabled}</th>
                 </tr>
             </thead>

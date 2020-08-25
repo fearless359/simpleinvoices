@@ -20,11 +20,9 @@ global $pdoDb, $smarty;
 Util::directAccessAllowed();
 
 //get the invoice id
-$cf_id = $_GET["id"];
-
-$rows = array();
+$rows = [];
 try {
-    $pdoDb->addSimpleWhere('cf_id', $cf_id, 'AND');
+    $pdoDb->addSimpleWhere('cf_id', $_GET["id"], 'AND');
     $pdoDb->addSimpleWhere('domain_id', DomainId::get());
     $rows = $pdoDb->request('SELECT', 'custom_fields');
 } catch (PdoDbException $pde) {
@@ -32,7 +30,7 @@ try {
 }
 
 if (empty($rows)) {
-    $cf = array();
+    $cf = [];
 } else {
     $cf = $rows[0];
     $cf['name'] = CustomFields::getCustomFieldName($cf['cf_custom_field']);

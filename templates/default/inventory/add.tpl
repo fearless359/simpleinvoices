@@ -7,7 +7,7 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.product}</th>
+                    <th>{$LANG.product_uc}</th>
                     <td>
                         <select name="product_id" class="validate[required] product_inventory_change">
                             <option value=''></option>
@@ -26,7 +26,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.date_upper}</th>
+                    <th>{$LANG.date}</th>
                     <td>
                         <input type="text" size="10" name="date" id="date"
                                class="validate[required,custom[date],length[0,10]] date-picker"
@@ -34,7 +34,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.cost}</th>
+                    <th>{$LANG.cost_uc}</th>
                     <td>
                         <input class="validate[required]" name="cost" id="cost" size="10"
                                {if !empty($smarty.post.cost)}value="{$smarty.post.cost}"{/if}>
@@ -63,6 +63,6 @@
             </div>
         </div>
         <input type="hidden" name="op" value="add"/>
-        <input type="hidden" name="domain_id" value="{$domainId}"/>
+        <input type="hidden" name="domain_id" value="{$domain_id}"/>
     </form>
 {/if}

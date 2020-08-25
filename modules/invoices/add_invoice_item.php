@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Product;
 
 /*
@@ -21,12 +22,16 @@ global $smarty;
 
 if(isset($_POST['submit'])) {
     $id = $_POST['id'];
-    Invoice::insertInvoiceItem($id, $_POST['quantity1'], $_POST['product1'],
-                               $_POST['tax_id'], trim($_POST['description']), $_POST['unit_price1']);
-    Invoice::updateAging($id);
+    try {
+        Invoice::insertInvoiceItem($id, $_POST['quantity1'], $_POST['product1'],
+            $_POST['tax_id'], trim($_POST['description']), $_POST['unit_price1']);
+        Invoice::updateAging($id);
+    } catch (PdoDbException $pde) {
+        exit("modules/invoices/add_invoice_item.php Unexpected error: {$pde->getMessage()}");
+    }
 } else {
     $products = Product::getAll(true);
-    $smarty -> assign("products",$products);
+    $smarty->assign("products",$products);
 }
 
 $type = $_GET['type'];

@@ -6,30 +6,35 @@ use Inc\Claz\Expense;
 use Inc\Claz\ExpenseAccount;
 use Inc\Claz\ExpenseTax;
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Product;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
 use Inc\Claz\Util;
 
-global $smarty, $LANG;
+global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-// @formatter:off
-$expense_id  = $_GET['id'];
+$expenseId  = $_GET['id'];
+$action     = $_GET['action'];
 
-$expense = Expense::getOne($expense_id);
+$expense = Expense::getOne($expenseId);
+try {
+    // @formatter:of
+    if ($action == 'view') {
+        $detail = Expense::additionalInfo($expense);
+    } else {
+        $detail = Expense::additionalInfo();
+    }
 
-$detail  = Expense::additionalInfo();
-$detail['customer']            = Customer::getOne($expense['c_id']);
-$detail['biller']              = Biller::getOne($expense['b_id']);
-$detail['invoice']             = Invoice::getOne($expense['iv_id']);
-$detail['product']             = Product::getOne($expense['p_id']);
-$detail['expense_account']     = ExpenseAccount::getOne($expense['ea_id']);
-$detail['expense_tax']         = ExpenseTax::getAll($expense_id);
-$detail['expense_tax_total']   = $expense['amount'] + ExpenseTax::getSum($expense_id);
-$detail['expense_tax_grouped'] = ExpenseTax::grouped($expense_id);
+    $detail['expense_tax']         = ExpenseTax::getAll($expenseId);
+    $detail['expense_tax_total']   = $expense['amount'] + ExpenseTax::getSum($expenseId);
+    $detail['expense_tax_grouped'] = ExpenseTax::grouped($expenseId);
+} catch (PdoDbException $pde) {
+    exit("modules/expense/details.php Unexpected error: [{$pde->getMessage()}]");
+}
 
 $taxes = Taxes::getActiveTaxes();
 $defaults = SystemDefaults::loadValues();
@@ -45,4 +50,3 @@ $subPageActive = $_GET['action'] =="view"  ? "view" : "edit" ;
 
 $smarty->assign('subPageActive', $subPageActive);
 $smarty->assign('active_tab', '#money');
-// @formatter:on

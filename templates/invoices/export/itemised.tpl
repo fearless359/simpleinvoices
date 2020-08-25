@@ -20,7 +20,7 @@
   <tr>
     <td class="tbl1-left"></td>
     <td class="tbl1-right" colspan="5">
-      <table style="width:100%;">
+      <table style="width:100%;;">
         <tr>
         {if !empty($customFieldLabels.product_cf1)}
           {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}

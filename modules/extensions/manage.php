@@ -5,37 +5,37 @@ use Inc\Claz\Util;
 
 global $LANG, $smarty;
 
-//stop the direct browsing to this file - let index.php handle which files get displayed
+// Stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-isset($_GET['id']) && $extension_id = $_GET['id'];
-isset($_GET['action']) && $action = $_GET['action'];
+$extensionId = isset($_GET['id']) ? $_GET['id'] : null;
+$action = isset($_GET['action']) ? $_GET['action'] : null;
 
 if ($action == 'toggle') {
-    if (!Extensions::setStatusExtension($extension_id)) {
+    if (empty($extensionId) || !Extensions::setStatusExtension($extensionId)) {
         die(Util::htmlsafe("Something went wrong with the status change!"));
     }
 }
 
-$plugins = array();
-$plugins[] = " />";
-$plugins[] = " />";
-$plugins[] = " />";
-$plugins[] = " />";
-$smarty->assign('plugins', $plugins);
+$plugins = [];
+$plugins[] = "<img src=\"images/plugin_disabled.png\" alt=\"{$LANG['plugin_not_registered']}\" title=\"{$LANG['plugin_not_registered']}\" />";
+$plugins[] = "<img src=\"images/plugin.png\"          alt=\"{$LANG['plugin_registered']}\" title=\"{$LANG['plugin_registered']}\" />";
+$plugins[] = "<img src=\"images/plugin_delete.png\"   alt=\"{$LANG['plugin_unregister']}\" title=\"{$LANG['plugin_unregister']}\" />";
+$plugins[] = "<img src=\"images/plugin_add.png\"      alt=\"{$LANG['plugin_register']}\" title=\"{$LANG['plugin_register']}\" />";$smarty->assign('plugins', $plugins);
 
-$lights = array();
-$lights[] = " />";
-$lights[] = " />";
-$lights[] = " />";
-$smarty->assign('lights', $lights);
+$lights = [];
+$lights[] = "<img src=\"images/lightbulb_off.png\"    alt=\"{$LANG['disabled']}\" title=\"{$LANG['disabled']}\" />";
+$lights[] = "<img src=\"images/lightbulb.png\"        alt=\"{$LANG['enabled']}\" title=\"{$LANG['enabled']}\" />";
+$lights[] = "<img src=\"images/lightswitch16x16.png\" alt=\"{$LANG['toggle_status']}\" title=\"{$LANG['toggle_status']}\" />";$smarty->assign('lights', $lights);
 
 $rows = Extensions::getAllWithDirs();
-$extensions = array();
+
+$extensions = [];
 foreach ($rows as $row) {
     $row['image'] = $plugins[3 - $row['registered']];
     $extensions[] = $row;
 }
+
 $smarty->assign("extensions", $extensions);
 $smarty->assign('number_of_rows', count($extensions));
 

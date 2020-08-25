@@ -3,27 +3,28 @@
 use Inc\Claz\DomainId;
 use Inc\Claz\PdoDbException;
 
-global $pdoDb, $smarty;
+global $LANG, $pdoDb, $smarty;
 
 // Deal with op and add some basic sanity checking
 $op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : NULL;
 
-$include_online_payment = '';
+$includeOnlinePayment = '';
 if (isset($_POST['include_online_payment']) &&
     is_array($_POST['include_online_payment'])) {
-    foreach ($_POST['include_online_payment'] as $k => $v) {
-        $include_online_payment .= $v;
-        if ($k !=  end(array_keys($_POST['include_online_payment']))) {
-            $include_online_payment .= ',';
+    foreach ($_POST['include_online_payment'] as $key => $val) {
+        $includeOnlinePayment .= $val;
+        $keys = array_keys($_POST['include_online_payment']);
+        if ($key !=  end($keys)) {
+            $includeOnlinePayment .= ',';
         }
     }
 }
 
-$display_block = "<div class=\"si_message_error\">{$LANG['save_preference_failure']}</div>";
-$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=preferences&amp;view=manage\" />";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['save_preference_failure']}</div>";
+$refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=preferences&amp;view=manage\" />";
 
+// @formatter:off
 if (  $op === 'insert_preference' ) {
-    // @formatter:off
     try {
         $pdoDb->setFauxPost([
             "domain_id"                    => DomainId::get(),
@@ -45,14 +46,14 @@ if (  $op === 'insert_preference' ) {
             "language"                     => $_POST['locale'],
             "index_group"                  => empty($_POST['index_group']) ? 0 : $_POST['index_group'],
             "set_aging"                    => $_POST['set_aging'],
-            "include_online_payment"       => $include_online_payment
+            "include_online_payment"       => $includeOnlinePayment
         ]);
 
         $id = $pdoDb->request("INSERT", "preferences");
         if ($id == 0) {
             error_log("preferences save.php insert_preference failed");
         } else {
-            $display_block = "<div class=\"si_message_ok\">{$LANG['save_preference_success']}</div>";
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_preference_success']}</div>";
             // If index_group is empty, assign the pref_id assigned to it.
             if (empty($_POST['index_group'])) {
                 $pdoDb->setFauxPost(["index_group" => $id]);
@@ -62,8 +63,8 @@ if (  $op === 'insert_preference' ) {
         }
     } catch (PdoDbException $pde) {
         error_log("preferences save.php insert_preference insert error: " . $pde->getMessage());
-        // Set $display_block as it might have been set to insert success but error from update
-        $display_block = "<div class=\"si_message_error\">{$LANG['save_preference_failure']}</div>";
+        // Set $displayBlock as it might have been set to insert success but error from update
+        $displayBlock = "<div class=\"si_message_error\">{$LANG['save_preference_failure']}</div>";
     }
 } elseif ($op === 'edit_preference' ) {
     if (isset($_POST['save_preference'])) {
@@ -87,23 +88,23 @@ if (  $op === 'insert_preference' ) {
                 "language"                     => $_POST['language'],
                 "index_group"                  => $_POST['index_group'],
                 "set_aging"                    => $_POST['set_aging'],
-                "include_online_payment"       => $include_online_payment
+                "include_online_payment"       => $includeOnlinePayment
             ]);
             $pdoDb->addSimpleWhere("pref_id", $_GET['id']);
             if ($pdoDb->request("UPDATE", "preferences") === false) {
                 error_log("preferences save.php edit_preference id[{$_GET['id']}] update failed");
             } else {
-                $display_block = "<div class=\"si_message_ok\">{$LANG['save_preference_success']}</div>";
+                $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_preference_success']}</div>";
             }
         } catch (PdoDbException $pde) {
             error_log("preferences save.php edit_preference insert error: " . $pde->getMessage());
         }
-        // @formatter:on
     }
 }
+// @formatter:on
 
-$smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_redirect', $refresh_redirect);
+$smarty->assign('display_block', $displayBlock);
+$smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'preference');
 $smarty->assign('active_tab', '#setting');

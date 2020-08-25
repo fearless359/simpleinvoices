@@ -22,9 +22,9 @@
             <th>{$LANG.actions}</th>
             <th>{$LANG.associated_table}</th>
             <th>{$LANG.flag_number}</th>
-            <th>{$LANG.field_label_upper}</th>
+            <th>{$LANG.field_label_uc}</th>
             <th>{$LANG.enabled}</th>
-            <th>{$LANG.field_help_upper}</th>
+            <th>{$LANG.field_help_uc}</th>
         </tr>
         </thead>
         <tbody>

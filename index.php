@@ -35,8 +35,8 @@ require_once 'vendor/autoload.php';
 Util::allowDirectAccess();
 
 $module = isset($_GET['module']) ? Util::filenameEscape($_GET['module']) : null;
-$view   = isset($_GET['view'])   ? Util::filenameEscape($_GET['view'])   : null;
-$action = isset($_GET['case'])   ? Util::filenameEscape($_GET['case'])   : null;
+$view = isset($_GET['view']) ? Util::filenameEscape($_GET['view']) : null;
+$action = isset($_GET['case']) ? Util::filenameEscape($_GET['case']) : null;
 
 $apiRequest = $module == 'api';
 
@@ -93,7 +93,7 @@ try {
     $dbInfo = $setup->getDbInfo();
     $pdoDb = $setup->getPdoDb();
     $pdoDbAdmin = $setup->getPdoDbAdmin();
-} catch (PdoDbException $pde) {
+} catch (Exception $exp) {
     // Error already reported so simply exit.
     exit();
 }
@@ -108,7 +108,7 @@ try {
 }
 
 // globals set in the init.php logic
-$databaseBuilt     = false;
+$databaseBuilt = false;
 $databasePopulated = false;
 
 // Will be set in the following init.php call to extensions that are enabled.
@@ -131,18 +131,18 @@ foreach ($extNames as $extName) {
 }
 Log::out("index.php - After processing init.php for extensions", Zend_Log::DEBUG);
 
-$smarty->assign("help_image_path", $helpImagePath);
+$smarty->assign("helpImagePath", $helpImagePath);
 // **********************************************************
 // The include configs and requirements stuff section - END
 // **********************************************************
 
 $smarty->assign("ext_names", $extNames);
-$smarty->assign("config"   , $config);
-$smarty->assign("module"   , $module);
-$smarty->assign("view"     , $view);
-$smarty->assign("siUrl"    , $siUrl);
-$smarty->assign("LANG"     , $LANG);
-$smarty->assign("enabled"  , [$LANG['disabled'], $LANG['enabled']]);
+$smarty->assign("config", $config);
+$smarty->assign("module", $module);
+$smarty->assign("view", $view);
+$smarty->assign("siUrl", $siUrl);
+$smarty->assign("LANG", $LANG);
+$smarty->assign("enabled", [$LANG['disabled'], $LANG['enabled']]);
 
 // Menu - hide or show menu
 if (!isset($menu)) {
@@ -152,7 +152,7 @@ if (!isset($menu)) {
 // Check for any unapplied SQL patches when going home
 // TODO - redo this code
 Log::out("index.php - module[$module] view[$view] " .
-             "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", Zend_Log::DEBUG);
+    "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]", Zend_Log::DEBUG);
 
 if ($module == "options" && $view == "database_sqlpatches") {
     SqlPatchManager::donePatchesMessage();
@@ -167,7 +167,7 @@ if ($module == "options" && $view == "database_sqlpatches") {
         $module = "install";
         $view == "essential" ? $view = "essential" : $view = "structure";
         $applyDbPatches = false; // do installer
-    } elseif($module == 'install' && $view == 'sample_data') {
+    } elseif ($module == 'install' && $view == 'sample_data') {
         $applyDbPatches = false;
     }
 
@@ -176,7 +176,7 @@ if ($module == "options" && $view == "database_sqlpatches") {
     // See if we need to verify patches have been loaded.
     if ($applyDbPatches) {
         Log::out("index.php - config->authentication->enabled[{$config->authentication->enabled}] auth_session->id: " .
-            print_r($authSession->id,true), Zend_Log::DEBUG);
+            print_r($authSession->id, true), Zend_Log::DEBUG);
         // If default user or an active session exists, proceed with check.
         if ($config->authentication->enabled == DISABLED || isset($authSession->id)) {
             // Check if there are patches to process
@@ -191,7 +191,7 @@ if ($module == "options" && $view == "database_sqlpatches") {
                 }
                 $menu = false;
             } else {
-                Log::out("index.php - module - " . print_r($module,true), Zend_Log::DEBUG);
+                Log::out("index.php - module - " . print_r($module, true), Zend_Log::DEBUG);
                 // All patches have been applied. Now check to see if the database has been set up.
                 // It is considered setup when there is at least one biller, one customer and one product.
                 // If it has not been set up, allow the user to add a biller, customer, product or to
@@ -202,12 +202,12 @@ if ($module == "options" && $view == "database_sqlpatches") {
                         $stillDoingSetup = false;
                     } else {
                         $stillDoingSetup = false;
-                        if (Invoice::count() == 0) {
-                            $stillDoingSetup = true;
-                            if (Biller::count() > 0 && Customer::count() > 0 && Product::count()  > 0) {
-                                $stillDoingSetup = false;
+                        try {
+                            if (Invoice::count() == 0) {
+                                $stillDoingSetup = true;
+                                if (Biller::count() > 0 && Customer::count() > 0 && Product::count() > 0) {
+                                    $stillDoingSetup = false;
 
-                                try {
                                     // Biller, Customer and Product set up but no invoices. Check to
                                     // see if this is the first time we've encountered this. If so,
                                     // flag $stillDoingSetup but set install completed status in
@@ -222,11 +222,11 @@ if ($module == "options" && $view == "database_sqlpatches") {
                                         }
                                         $stillDoingSetup = true;
                                     }
-                                } catch(PdoDbException $pde) {
-                                    error_log("index.php: Unable to set install_complete flag. Error: " . $pde->getMessage());
-                                    die("Unable to set install complete flag. See error log for additional information.");
                                 }
                             }
+                        } catch (PdoDbException $pde) {
+                            error_log("index.php: Unable to set install_complete flag. Error: " . $pde->getMessage());
+                            die("Unable to set install complete flag. See error log for additional information.");
                         }
                     }
                 } else {
@@ -236,13 +236,18 @@ if ($module == "options" && $view == "database_sqlpatches") {
                 Log::out("index.php - stillDoingSetup[$stillDoingSetup]", Zend_Log::DEBUG);
 
                 if ($stillDoingSetup) {
-                    if (Invoice::count() > 0) {
-                        Invoice::updateAging();
-                        $module = "invoices";
-                        $view = "manage";
-                    } else {
-                        $module = "index";
-                        $view = "index";
+                    try {
+                        if (Invoice::count() > 0) {
+                            Invoice::updateAging();
+                            $module = "invoices";
+                            $view = "manage";
+                        } else {
+                            $module = "index";
+                            $view = "index";
+                        }
+                    } catch (PdoDbException $pde) {
+                        error_log("index.php: Unable to get Invoice count to set default module and view. Error: " . $pde->getMessage());
+                        die("Unable to set install complete flag. See error log for additional information.");
                     }
                 }
             }
@@ -251,10 +256,10 @@ if ($module == "options" && $view == "database_sqlpatches") {
 }
 
 Log::out("index.php - module[" . (empty($module) ? "" : $module) .
-                          "] view[" . (empty($view) ? "" : $view) .
-                        "] action[" . (empty($action) ? "" : $action) .
-                            "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
-                          "] menu[$menu]", Zend_Log::DEBUG);
+    "] view[" . (empty($view) ? "" : $view) .
+    "] action[" . (empty($action) ? "" : $action) .
+    "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
+    "] menu[$menu]", Zend_Log::DEBUG);
 
 // This logic is for the default_invoice where the invoice "template" (aka record)
 // is used to make the new invoice.
@@ -422,7 +427,7 @@ if ($menu) {
     // <!-- BEFORE:tax_rates -->
     // <li>
     // <a {if $pageActive == "custom_flags"} class="active"{/if} href="index.php?module=custom_flags&amp;view=manage">
-    // {$LANG.custom_flags_upper}
+    // {$LANG.custom_flags_uc}
     // </a>
     // </li>
     // {if $subPageActive == "custom_flags_view"}
@@ -513,7 +518,7 @@ $realPath = '';
 // to the attribute.
 $extensionInsertionFiles = [];
 $performExtensionInsertions =
-    $module == 'reports'         && $view == 'index' ||
+    $module == 'reports' && $view == 'index' ||
     $module == 'system_defaults' && $view == 'manage';
 
 foreach ($extNames as $extName) {
@@ -551,6 +556,7 @@ foreach ($extNames as $extName) {
                 "module"  => $module,
                 "section" => $type . $section
             ];
+
             $extensionInsertionFiles[] = $vals;
             // @formatter:on
         } else {
@@ -577,13 +583,13 @@ if ($extensionTemplates == 0) {
     }
 }
 
-$smarty->assign("extension_insertion_files"   , $extensionInsertionFiles);
+$smarty->assign("extension_insertion_files", $extensionInsertionFiles);
 $smarty->assign("perform_extension_insertions", $performExtensionInsertions);
 
 // If this is not an extension, $path and $realPath are the same. If it is an extension,
 // $path is relative to the extension and $realPath is relative to the standard library path.
-$smarty->assign("path"                        , $path);
-$smarty->assign("real_path"                   , $realPath);
+$smarty->assign("path", $path);
+$smarty->assign("real_path", $realPath);
 
 Log::out("index.php - path[$path] my_tpl_path[$myTplPath]", Zend_Log::DEBUG);
 $smarty->$smartyOutput($myTplPath);

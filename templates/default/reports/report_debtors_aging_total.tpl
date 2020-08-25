@@ -8,7 +8,7 @@
 		<tr>
 			<th>{$LANG.total}</th>
 			<th>{$LANG.paid}</th>
-			<th>{$LANG.owing}</th>
+			<th>{$LANG.owing_uc}</th>
 			<th>{$LANG.aging}</th>
 		</tr>
 	</thead>

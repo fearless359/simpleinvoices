@@ -1,3 +1,4 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <h2 class="si_report_title">{$LANG.sales_representative} {$LANG.report}</h2>
 {if $menu}
     <div class="welcome">
@@ -8,16 +9,17 @@
                     <th>{$LANG.sales_representative}</th>
                     <td>
                         <select name="sales_rep">
-                            <option value="">Unassigned</option>
+                            <option value="">{$LANG.unassigned}</option>
                             {foreach from=$sales_reps item=list_sales_rep}
-                                <option {if $list_sales_rep == $sales_rep}selected{/if} value="{if isset($list_sales_rep)}{$list_sales_rep}{/if}">
+                                <option {if $list_sales_rep == $sales_rep}selected{/if}
+                                        value="{if isset($list_sales_rep)}{$list_sales_rep}{/if}">
                                     {$list_sales_rep}
                                 </option>
                             {/foreach}
                         </select>
                     </td>
                     <td>&nbsp;&nbsp;</td>
-                    <th>{$LANG.filter_by_dates}:</th>
+                    <th>{$LANG.filter_by_dates_uc}:</th>
                     <td>
                         <input type="checkbox" name="filter_by_date" {if $filter_by_date == "yes"}checked{/if} value="yes">
                     </td>
@@ -27,12 +29,14 @@
                 </tr>
                 <tr>
                     <th>{$LANG.start_date}
-                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlsafe}{/if}'/>
+                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
+                               name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlsafe}{/if}'/>
                     </th>
                     <td>&nbsp;&nbsp;</td>
                     <td>&nbsp;&nbsp;</td>
                     <th>{$LANG.end_date}
-                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlsafe}{/if}'/>
+                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
+                               name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlsafe}{/if}'/>
                     </th>
                 </tr>
                 <tr>
@@ -71,17 +75,17 @@
     {/if}
     <br/>
     {if $filter_by_date == "yes"}
-        <div class="align_left"><strong>{$LANG.selection_period} {if isset($start_date)}{$start_date}{/if} {$LANG.to_lowercase} {if isset($end_date)}{$end_date}{/if}</strong></div>
+        <div class="align_left"><strong>{$LANG.selection_period} {if isset($start_date)}{$start_date}{/if} {$LANG.to} {if isset($end_date)}{$end_date}{/if}</strong></div>
         <br/>
     {/if}
-    <table width="100%">
+    <table style="width:100%;">
         <tr>
-            <td width="75%" align="left">
+            <td style="width:75%;">
                 <strong>{$LANG.sales_representative}:</strong> {if isset($sales_rep)}{$sales_rep}{/if}
                 <br/>
                 <br/>
             </td>
-            <td width="25%">
+            <td style="width:25%;">
                 <strong>{$LANG.sales_summary}:</strong>
                 <br/>
                 <strong>{$LANG.total}:</strong> {$statement.total|siLocal_number}
@@ -89,11 +93,11 @@
             </td>
         </tr>
     </table>
-    <table class="center" width="100%">
+    <table class="center" style="width:100%;">
         <tr>
             <td class="details_screen"><b>{$LANG.id}</b></td>
             <td>&nbsp;&nbsp;</td>
-            <td class="details_screen"><b>{$LANG.date_upper}</b></td>
+            <td class="details_screen"><b>{$LANG.date}</b></td>
             <td>&nbsp;&nbsp;</td>
             <td class="details_screen"><b>{$LANG.biller}</b></td>
             <td>&nbsp;&nbsp;</td>

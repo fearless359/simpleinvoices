@@ -6,16 +6,14 @@ use Inc\Claz\FromStmt;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\GroupBy;
 use Inc\Claz\Join;
-use Inc\Claz\OnClause;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Select;
-use Inc\Claz\WhereClause;
 
 global $pdoDb, $smarty;
 
-$rows = array();
+$rows = [];
 try {
-    $pdoDb->setSelectList(array(
+    $pdoDb->setSelectList([
         'iv.id',
         'iv.domain_id',
         'iv.index_id',
@@ -23,7 +21,8 @@ try {
         'iv.date',
         new DbField('b.name', 'biller'),
         new DbField('c.name', 'customer')
-    ));
+    ]);
+
     $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total,0)', 'inv_total'));
     $pdoDb->addToFunctions(new FunctionStmt('COALESCE', 'ap.inv_paid, 0', 'inv_paid'));
 
@@ -51,10 +50,10 @@ try {
     $jn->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
     $pdoDb->addToJoins($jn);
 
-    $ls = array('ac_inv_id', 'domain_id');
+    $ls = ['ac_inv_id', 'domain_id'];
     $ls[] = new FunctionStmt("SUM", "COALESCE(ac_amount, 0)", "inv_paid");
     $fr = new FromStmt("payment");
-    $gr = new GroupBy(array('ac_inv_id', 'domain_id'));
+    $gr = new GroupBy(['ac_inv_id', 'domain_id']);
     $se = new Select($ls, $fr, null, $gr, "ap");
     $jn = new Join("LEFT", $se);
     $jn->addSimpleItem("ap.ac_inv_id", new DbField("iv.id"), "AND");
@@ -66,20 +65,23 @@ try {
 
     $pdoDb->setGroupBy('iv.id');
 
-    $pdoDb->setOrderBy(array(array('inv_owing', 'DESC'), array('iv.index_id', 'DESC')));
+    $pdoDb->setOrderBy([
+        ['inv_owing', 'DESC'],
+        ['iv.index_id', 'DESC']
+    ]);
 
     $rows = $pdoDb->request('SELECT', 'invoices', 'iv');
+
+    $totalOwed = 0;
+    foreach ($rows as $row) {
+        $totalOwed += $row['inv_owing'];
+    }
+
+    $smarty->assign('data', $rows);
+    $smarty->assign('total_owed', $totalOwed);
 } catch (PdoDbException $pde) {
-    error_log('report_debtors_by_amount - error: ' . $pde->getMessage());
+    error_log("modules/reports/report_debtors_by_amount.php Unexpected error:  {$pde->getMessage()}");
 }
 
-$total_owed = 0;
-foreach ($rows as $row) {
-    $total_owed += $row['inv_owing'];
-}
-
-$smarty -> assign('data', $rows);
-$smarty -> assign('total_owed', $total_owed);   
-
-$smarty -> assign('pageActive', 'report');
-$smarty -> assign('active_tab', '#home');
+$smarty->assign('pageActive', 'report');
+$smarty->assign('active_tab', '#home');

@@ -32,7 +32,7 @@
                 <td><input type="text" id="quantity1" name="quantity1" size="5"/></td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.product}</td>
+                <td class="details_screen">{$LANG.product_uc}</td>
                 <td>
                     <input type="text" name="description"/>
                     {if !isset($products) }

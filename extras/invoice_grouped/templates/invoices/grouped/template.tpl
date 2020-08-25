@@ -63,7 +63,7 @@
 {* ************************ BEGIN COMMENTED OUT SECTION ****************************
     <table class="right">
       <tr>
-        <td class="col1 tbl1-bottom" colspan="4" ><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.summary}</b></td>
+        <td class="col1 tbl1-bottom" colspan="4" ><b>{$preference.pref_inv_wording|htmlsafe} {$LANG.summary_uc}</b></td>
       </tr>
       <tr>
         <td class="">{$preference.pref_inv_wording|htmlsafe} {$LANG.number_short}:</td>
@@ -111,7 +111,7 @@
         </td>
       </tr>
       <tr>
-        <td nowrap class="">{$LANG.owing}:</td>
+        <td nowrap class="">{$LANG.owing_uc}:</td>
         <td class="" align="right" colspan="3" >
           {$preference.pref_currency_sign} {$invoice.owing|siLocal_number:2}
         </td>
@@ -127,14 +127,14 @@
       </tr> 
       {if isset($biller.street_address)}
         <tr>
-          <td class=''>{$LANG.address}:</td>
+          <td class=''>{$LANG.address_uc}:</td>
           <td class='' align="left" colspan="3">{$biller.street_address|htmlsafe}</td>
         </tr>
       {/if}
       {if isset($biller.street_address2) }
         {if !isset($biller.street_address) }
           <tr>
-            <td class=''>{$LANG.address}:</td>
+            <td class=''>{$LANG.address_uc}:</td>
             <td class='' align="left" colspan="3">{$biller.street_address2|htmlsafe}</td>
           </tr>   
         {/if}
@@ -190,14 +190,14 @@
       {/if}
           {if isset($customer.street_address) }
       <tr>
-        <td class=''>{$LANG.address}:</td>
+        <td class=''>{$LANG.address_uc}:</td>
         <td class='' align="left" colspan="3">{$customer.street_address|htmlsafe}</td>
       </tr>   
       {/if}
       {if isset($customer.street_address2)}
         {if !isset($customer.street_address)}
           <tr>
-            <td class=''>{$LANG.address}:</td>
+            <td class=''>{$LANG.address_uc}:</td>
             <td class='' align="left" colspan="3">{$customer.street_address2|htmlsafe}</td>
           </tr>   
         {/if}
@@ -240,7 +240,7 @@
     </table>
     <!-- Customer section - end -->
   ************************** END COMMENTED OUT SECTION *************************** *}
-    <table class="left" style="width:100%;">
+    <table class="left" style="width:100%;;">
       <tr>
         <td colspan="6"><br /></td>
       </tr>

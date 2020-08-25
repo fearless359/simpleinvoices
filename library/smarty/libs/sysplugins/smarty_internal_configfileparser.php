@@ -273,7 +273,7 @@ class Smarty_Internal_Configfileparser
      *
      * @var Smarty_Internal_Configfilelexer
      */
-    private $lex;
+    public $lex;
 
     /**
      * internal error flag

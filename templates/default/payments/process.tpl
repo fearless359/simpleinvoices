@@ -18,11 +18,11 @@
                 <tr>
                     <th>{$LANG.customer}</th>
                     <td>{$customer.name|htmlsafe}</td>
-                    <th>{$LANG.owing}</th>
+                    <th>{$LANG.owing_uc}</th>
                     <td style="text-decoration: underline;">{$invoice.owing|siLocal_number}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.amount}</th>
+                    <th>{$LANG.amount_uc}</th>
                     <td colspan="5">
                         <input type="text" name="ac_amount" size="25" class="validate[required,custom[number]]"
                                value="{$invoice.owing|siLocal_number}"/>
@@ -54,7 +54,7 @@
                                     {$invoice.biller|htmlsafe},
                                     {$invoice.customer|htmlsafe},
                                     {$LANG.total} {$invoice.total|siLocal_number} :
-                                    {$LANG.owing} {$invoice.owing|siLocal_number}
+                                    {$LANG.owing_uc} {$invoice.owing|siLocal_number}
                                     )
                                 </option>
                             {/foreach}
@@ -62,7 +62,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.amount}</th>
+                    <th>{$LANG.amount_uc}</th>
                     <td colspan="3"><input type="text" name="ac_amount" size="25"/></td>
                 </tr>
                 <tr>

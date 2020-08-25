@@ -89,13 +89,13 @@ class Havings
      */
     private function addDefaultConnector(): void
     {
-        $ndx = count($this->havings) - 1;
-        if ($ndx >= 0) {
-            $having = $this->havings[$ndx];
+        $idx = count($this->havings) - 1;
+        if ($idx >= 0) {
+            $having = $this->havings[$idx];
             $result = $having->getConnector();
             if (empty($result)) {
                 $having->setConnector("AND");
-                $this->havings[$ndx] = $having;
+                $this->havings[$idx] = $having;
             }
         }
     }

@@ -45,7 +45,7 @@
     <div id="money">
         <ul class="subnav">
             <!-- SECTION:invoices -->
-            <li><a {if isset($pageActive) && $pageActive== "invoice"} class="active"{/if} href="index.php?module=invoices&amp;view=manage">{$LANG.invoices}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "invoice"} class="active"{/if} href="index.php?module=invoices&amp;view=manage">{$LANG.invoices_uc}</a></li>
             {if isset($subPageActive) && $subPageActive == "invoice_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "invoice_view"}
@@ -58,7 +58,7 @@
                 <li><a class="active active_subpage" href="#">{$LANG.total}</a></li>{/if}
             <!-- SECTION:expense -->
             {if $defaults.expense == $smarty.const.ENABLED}
-                <li><a {if isset($pageActive) && $pageActive == "expense"}class="active" {/if}href="index.php?module=expense&amp;view=manage">{$LANG.expenses}</a></li>
+                <li><a {if isset($pageActive) && $pageActive == "expense"}class="active" {/if}href="index.php?module=expense&amp;view=manage">{$LANG.expenses_uc}</a></li>
                 {if isset($pageActive) && $pageActive == "expense"}
                     {if isset($subPageActive) && $subPageActive == "edit"}
                         <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
@@ -175,12 +175,12 @@
             <!-- SECTION:si_defaults -->
             <li><a {if isset($pageActive) && $pageActive== "system_default"}class="active" {/if}href="index.php?module=system_defaults&amp;view=manage">{$LANG.si_defaults}</a></li>
             <!-- SECTION:custom_fields -->
-            <li><a {if isset($pageActive) && $pageActive== "custom_field"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.custom_fields_upper}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "custom_field"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.custom_fields_uc}</a></li>
             {if isset($subPageActive) && $subPageActive == "custom_fields_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "custom_fields_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-            <li><a {if isset($pageActive) && $pageActive == "custom_flags"}class="active" {/if}href="index.php?module=custom_flags&amp;view=manage">{$LANG.custom_flags_upper}</a></li>
+            <li><a {if isset($pageActive) && $pageActive == "custom_flags"}class="active" {/if}href="index.php?module=custom_flags&amp;view=manage">{$LANG.custom_flags_uc}</a></li>
             {if isset($subPageActive) && $subPageActive == "custom_flags_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "custom_flags_edit"}

@@ -1,7 +1,12 @@
 <?php
 
+use Inc\Claz\DbField;
 use Inc\Claz\DomainId;
+use Inc\Claz\Join;
+use Inc\Claz\OnClause;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
+use Inc\Claz\WhereItem;
 
 /*
  * Script: report_sales_by_period.php
@@ -19,40 +24,51 @@ use Inc\Claz\Util;
  * Website:
  *     https://simpleinvoices.group
  */
-global $db, $smarty;
+global $pdoDb, $smarty;
 
 Util::directAccessAllowed();
 
-$domainId = DomainId::get();
-
+/**
+ * @return false|string
+ */
 function firstOfMonth() {
     return date("Y-m-d", strtotime('01-'.date('m').'-'.date('Y').' 00:00:00'));
 }
 
+/**
+ * @return false|string
+ */
 function lastOfMonth() {
     return date("Y-m-d", strtotime('-1 second',strtotime('+1 month',strtotime('01-'.date('m').'-'.date('Y').' 00:00:00'))));
 }
 
-$start_date = isset($_POST['start_date']) ? $_POST['start_date'] : firstOfMonth() ;
-$end_date   = isset($_POST['end_date'])   ? $_POST['end_date']   : lastOfMonth()  ;
+$startDate = isset($_POST['start_date']) ? $_POST['start_date'] : firstOfMonth() ;
+$endDate   = isset($_POST['end_date'])   ? $_POST['end_date']   : lastOfMonth()  ;
 
+try {
+    $pdoDb->setSelectList([new DbField("e.amount", "expense"), new DbField("ea.name", "account")]);
 
-$sql="SELECT e.amount AS expense
-           , ea.name AS account 
-    FROM ".TB_PREFIX."expense e 
-         LEFT JOIN ".TB_PREFIX."expense_account ea 
-            ON (e.expense_account_id = ea.id AND e.domain_id = ea.domain_id)
-    WHERE
-        e.domain_id = :domain_id
-    AND e.date BETWEEN '$start_date' AND '$end_date' 
-    GROUP BY account 
-    ORDER BY account ASC;";
-$sth = $db->query($sql, ':domain_id', $domainId);
-$accounts = $sth->fetchAll();
+    $pdoDb->addToWhere(new WhereItem(false, "e.date", "BETWEEN", [$startDate, $endDate], false, "AND"));
+    $pdoDb->addSimpleWhere("e.domain_id", DomainId::get());
 
-$smarty -> assign('accounts', $accounts);
-$smarty -> assign('start_date', $start_date);
-$smarty -> assign('end_date', $end_date);
+    $on = new OnClause();
+    $on->addSimpleItem("e.expense_account_id", new DbField("ea.id"), "AND");
+    $on->addSimpleItem("e.domain_id", new DbField("ea.domain_id"));
+    $jn = new Join("LEFT", "expense_account", "ea");
+    $jn->setOnClause($on);
+    $pdoDb->addToJoins($jn);
 
-$smarty -> assign('pageActive', 'report');
-$smarty -> assign('active_tab', '#home');
+    $pdoDb->setOrderBy('account');
+    $pdoDb->setGroupBy('account');
+
+    $rows = $pdoDb->request("SELECT", "expense", "e");
+
+    $smarty->assign('accounts', $rows);
+    $smarty->assign('start_date', $startDate);
+    $smarty->assign('end_date', $endDate);
+} catch (PdoDbException $pde) {
+    exit("modules/reports/report_expense_account_by_period.php Unexpected error: {$pde->getMessage()}");
+}
+
+$smarty->assign('pageActive', 'report');
+$smarty->assign('active_tab', '#home');

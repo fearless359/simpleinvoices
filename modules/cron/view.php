@@ -6,7 +6,9 @@ global $smarty;
 
 $saved = "false";
 if (isset($_POST['op']) && $_POST['op'] == 'edit' && !empty($_POST['invoice_id'])) {
-    if (!empty(Cron::insert())) $saved = "true";
+    if (!empty(Cron::insert())) {
+        $saved = "true";
+    }
 }
 
 $cron = Cron::getOne($_GET['id']);

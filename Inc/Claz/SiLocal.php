@@ -20,13 +20,13 @@ class SiLocal
     /**
      * Format numbers.
      * Note: This is a wrapper for the <b>Zend_Locale_Format::toNumber</b> function.
-     * @param string $number Number to be formatted
-     * @param string $precision Decimal precision.
+     * @param string|int|float $number Number to be formatted
+     * @param string|int $precision Decimal precision.
      * @param string $locale Locale the number is to be formatted for.
      * @param string $symbol Currency symbol. Defaults to no symbol used.
      * @return string Formatted number.
      */
-    public static function number(string $number, string $precision = "", string $locale = "", string $symbol = ""): string
+    public static function number($number, $precision = 0, string $locale = "", string $symbol = ""): string
     {
         global $config;
 

@@ -81,7 +81,7 @@
         <td></td>
         <td class="align_right"><b>{$LANG.gross_total}</b></td>
         <td class="align_right"><b>{$LANG.tax}</b></td>
-        <td class="align_right"><b>{$LANG.total_uppercase}</b></td>
+        <td class="align_right"><b>{$LANG.total_uc}</b></td>
     </tr>
     <tr class="tr_head">
         <td></td>
@@ -145,7 +145,7 @@
     </table>
     {/if}
     <br/>
-    <table class="si_invoice_view_items" style="width:50%;text-align: left;">
+    <table class="si_invoice_view_items" style="width:50%;;text-align: left;">
         <tr>
             <th style="width:25%;">{$LANG.sales_representative}:</th>
             <td>{$invoice.sales_representative|htmlsafe}</td>
@@ -182,7 +182,7 @@
     </tr>
     <tr class="tr_total">
         <td colspan="4"></td>
-        <th class="si_right">{$preference.pref_inv_wording|htmlsafe} {$LANG.amount}</th>
+        <th class="si_right">{$preference.pref_inv_wording|htmlsafe} {$LANG.amount_uc}</th>
         <td class="si_right">{$preference.pref_currency_sign}{$invoice.total|siLocal_number}</td>
     </tr>
 </table>
@@ -201,7 +201,7 @@
                             {$LANG.paid}
                         </a>
                     </th>
-                    <th>{$LANG.owing}</th>
+                    <th>{$LANG.owing_uc}</th>
                     <th>{$LANG.age}
                         <a class="cluetip" href="#"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_age"
@@ -232,7 +232,7 @@
                             {$LANG.paid}
                         </a>
                     </th>
-                    <th>{$LANG.owing}</th>
+                    <th>{$LANG.owing_uc}</th>
                 </tr>
                 <tr>
                     <td>{$preference.pref_currency_sign}{$customerAccount.total|siLocal_number}</td>

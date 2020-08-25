@@ -34,12 +34,12 @@ class NetIncomeReport
 
         // Find all invoices that received payments in this reporting period.
         $ivIds = [];
-
         $pvRecs = [];
         try {
             $pdoDb->setOrderBy("ac_inv_id");
             $pdoDb->addSimpleWhere("domain_id", $domainId, "AND");
             $pdoDb->addToWhere(new WhereItem(false, "ac_date", "BETWEEN", [$startDate, $stopDate], false));
+
             $pvRecs = $pdoDb->request("SELECT", "payment");
         } catch (PdoDbException $pde) {
             error_log("Inc/Claz/NetIncomeReport.php - error(1): " . $pde->getMessage());
@@ -47,7 +47,7 @@ class NetIncomeReport
 
         $lastInvId = 0;
         foreach ($pvRecs as $row) {
-            $currInvId = $row['ac_inv_id'];
+            $currInvId = intval($row['ac_inv_id']);
             if ($lastInvId != $currInvId) {
                 $lastInvId = $currInvId;
                 $ivIds[] = $currInvId;
@@ -74,21 +74,25 @@ class NetIncomeReport
             }
 
             foreach ($ivRecs as $iv) {
-                if ($customerId > '0' && $iv['customer_id'] != $customerId) {
+                $cuId = intval($iv['customer_id']);
+
+                if ($customerId > 0 && $cuId != $customerId) {
                     continue;
                 }
+
+                $ivNumber = intval($iv['iv_number']);
+                $ivCustomer = $iv['customer'];
 
                 // Create an invoice object for the report. This object holds the payments and
                 // invoice items for the invoice. We know that a payment to this invoice was
                 // made in this reporting period. However, it is possible that not all payments
                 // were made in this reporting period. So we will keep the payment info so we can
                 // report only the payment that were made in this period.
-                $netIncInv = new NetIncomeInvoice($id, $iv['iv_number'], $iv['iv_date'], $iv['customer']);
+                $netIncInv = new NetIncomeInvoice($id, $ivNumber, $iv['iv_date'], $ivCustomer);
 
                 // Get all the payments made for this invoice. We do this so we can calculate what
                 // if any payments are left for the invoice, as well as have payment detail to
                 // include in the report.
-                // @formatter:off
                 $pyRecs = [];
                 try {
                     $pdoDb->setOrderBy("ac_date");
@@ -99,7 +103,6 @@ class NetIncomeReport
                 } catch (PdoDbException $pde) {
                     error_log("Inc/Claz/NetIncomeReport.php - error(4): " . $pde->getMessage());
                 }
-                // @formatter:on
 
                 foreach ($pyRecs as $py) {
                     $inPeriod = $startDate <= $py['ac_date'] && $stopDate >= $py['ac_date'];
@@ -108,7 +111,6 @@ class NetIncomeReport
 
                 // Now get all the invoice items with the exception of those flagged
                 // as non-income items provided the option to exclude them was specified.
-                // @formatter:off
                 $iiRecs = [];
                 try {
                     $pdoDb->setOrderBy("ii.invoice_id");
@@ -145,6 +147,7 @@ class NetIncomeReport
                 }
             }
         }
+
         return $netIncInvs;
     }
 }

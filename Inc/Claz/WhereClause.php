@@ -86,7 +86,7 @@ class WhereClause
     /**
      * Add a <b>WhereItem</b> that performs an equality check.
      * @param string $field Table column for the left side of the test.
-     * @param mixed $value Constant or <b>DbField</b> for the right side of the test.
+     * @param array|string|int|DbField $value Constant or <b>DbField</b> for the right side of the test.
      * @param string $connector (Optional) <b>AND</b> or <b>OR</b> connector if this
      *        is not that last statement in the <b>WHERE</b> clause.
      * @throws PdoDbException
@@ -98,9 +98,9 @@ class WhereClause
 
     /**
      * Class property getter
-     * return $parenCnt;
+     * return int $parenCnt;
      */
-    public function getParenCnt()
+    public function getParenCnt(): int
     {
         return $this->parenCnt;
     }
@@ -113,7 +113,7 @@ class WhereClause
      * @return string WHERE statement.
      * @throws PdoDbException if specified parenthesis have not been properly paired.
      */
-    public function build(?array &$keyPairs, $firstTime = true)
+    public function build(?array &$keyPairs, bool $firstTime = true): string
     {
         if (!isset($keyPairs)) {
             $keyPairs = [];
@@ -132,18 +132,17 @@ class WhereClause
         }
 
         foreach ($this->whereItems as $whereItem) {
-//            if ($whereItem instanceof WhereClause || $whereItem instanceof OnClause) {
-//                $this->clause = $this->buildWhereClause($whereItem, $this->tokenCnt, $keyPairs);
-//            } elseif (!$whereItem instanceof WhereItem && !$whereItem instanceof OnItem) {
-//                // This can't happen unless the add logic validation is broken. The test is performed
-//                // to cause logic to treat the object as an instance of the class.
-//                throw new PdoDbException("WhereClause - build(): Invalid object type found in class array. " .
-//                    "Must be an instance of the WhereItem or OnItem class.");
-//            } else {
+            if ($whereItem instanceof WhereClause || $whereItem instanceof OnClause) {
+                $this->clause = $this->buildWhereClause($whereItem, $this->tokenCnt, $keyPairs);
+            } elseif (!$whereItem instanceof WhereItem && !$whereItem instanceof OnItem) {
+                // This can't happen unless the add logic validation is broken. The test is performed
+                // to cause logic to treat the object as an instance of the class.
+                throw new PdoDbException("WhereClause - build(): Invalid object type found in class array. " .
+                    "Must be an instance of the WhereItem or OnItem class.");
+            } else {
                 $this->clause .= $whereItem->build($this->tokenCnt, $keyPairs);
-//?            }
+            }
         }
-
         return $this->clause;
     }
 

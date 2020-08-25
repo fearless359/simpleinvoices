@@ -9,24 +9,24 @@ global $LANG, $smarty;
 // Let index.php handle which files get displayed.
 Util::directAccessAllowed();
 
-$display_block = "<div class=\"si_message_error\">{$LANG['save_payment_type_failure']}</div>";
-$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=payment_types&amp;view=manage\"/>";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['save_payment_type_failure']}</div>";
+$refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=payment_types&amp;view=manage\"/>";
 
 // Deal with op and add some basic sanity checking
 $op = !empty($_POST['op']) ? addslashes($_POST['op']) : null;
 
 if ($op === 'add') {
     if (PaymentType::insert()) {
-        $display_block = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
     }
 } elseif ($op === 'edit') {
     if (PaymentType::update($_GET['id'])) {
-        $display_block = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_payment_type_success']}</div>";
     }
 }
 
-$smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_redirect', $refresh_redirect);
+$smarty->assign('display_block', $displayBlock);
+$smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'payment_type');
 $smarty->assign('active_tab', '#setting');

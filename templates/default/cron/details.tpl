@@ -8,6 +8,7 @@
  *  Website:
  *	    https://simpleinvoices.group
  *}
+<!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlencode}">
     {if $smarty.get.action== 'view' }
@@ -36,13 +37,13 @@
             <tr>
                 <td class="details_screen">{$LANG.email_biller_after_cron}</td>
                 <td>
-                    {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uppercase}{else}{$LANG.no_uppercase}{/if}
+                    {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uc}{else}{$LANG.no_uc}{/if}
                 </td>
             </tr>
             <tr>
                 <td class="details_screen">{$LANG.email_customer_after_cron}</td>
                 <td>
-                    {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uppercase}{else}{$LANG.no_uppercase}{/if}
+                    {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uc}{else}{$LANG.no_uc}{/if}
                 </td>
             </tr>
         </table>
@@ -101,8 +102,8 @@
                 <td class="details_screen">{$LANG.email_biller_after_cron}</td>
                 <td>
                     <select name="email_biller" class="validate[required]">
-                        <option value="1" {if $cron.email_biller == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uppercase}</option>
-                        <option value="0" {if $cron.email_biller == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uppercase}</option>
+                        <option value="1" {if $cron.email_biller == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uc}</option>
+                        <option value="0" {if $cron.email_biller == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uc}</option>
                     </select>
                 </td>
             </tr>
@@ -110,8 +111,8 @@
                 <td class="details_screen">{$LANG.email_customer_after_cron}</td>
                 <td>
                     <select name="email_customer" class="validate[required]">
-                        <option value="1" {if $cron.email_customer == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uppercase}</option>
-                        <option value="0" {if $cron.email_customer == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uppercase}</option>
+                        <option value="1" {if $cron.email_customer == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uc}</option>
+                        <option value="0" {if $cron.email_customer == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uc}</option>
                     </select>
                 </td>
             </tr>

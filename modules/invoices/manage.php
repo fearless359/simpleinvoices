@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 
 /*
@@ -24,14 +25,17 @@ $having = isset($_GET['having']) ? $_GET['having'] : "";
 // Make customer access read only. Billers change work only on those invoices generated for them.
 $readOnly = $authSession->role_name == 'customer';
 
-$invoices = Invoice::getAllWithHavings($having, '', '', true);
-$data = json_encode(['data' => $invoices]);
-if (file_put_contents("public/data.json", $data) === false) {
-    die("Unable to create public/data.json file");
+try {
+    $invoices = Invoice::getAllWithHavings($having, '', '', true);
+    $data = json_encode(['data' => $invoices]);
+    if (file_put_contents("public/data.json", $data) === false) {
+        die("Unable to create public/data.json file");
+    }
+
+    $smarty->assign('number_of_invoices', count($invoices));
+} catch (PdoDbException $pde) {
+    exit("modules/invoices/manager.php Unexpected error {$pde->getMessage()}");
 }
-
-$smarty->assign('number_of_invoices', count($invoices));
-
 if (!empty($having)) {
     $having = "&amp;having=" . $having;
 }

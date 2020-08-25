@@ -13,28 +13,17 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$product_id = $_GET['id'];
-
-$product = Product::getOne($product_id);
-$customFieldLabel = CustomFields::getLabels(true);
-$cflgs = CustomFlags::getCustomFlagsQualified('products', true);
-
-$taxes = Taxes::getActiveTaxes();
-$tax_selected = Taxes::getOne($product['default_tax_id']);
-
-$defaults = SystemDefaults::loadValues();
-$smarty->assign("defaults"        , $defaults);
+$product = Product::getOne($_GET['id']);
 $product['attribute_decode'] = json_decode($product['attribute'],true);
 
 $smarty->assign('product'         , $product);
-$smarty->assign('taxes'           , $taxes);
-$smarty->assign('tax_selected'    , $tax_selected);
-$smarty->assign('customFieldLabel', $customFieldLabel);
-$smarty->assign('cflgs', $cflgs);
+$smarty->assign('taxes'           , Taxes::getActiveTaxes());
+$smarty->assign('tax_selected'    , Taxes::getOne($product['default_tax_id']));
+$smarty->assign('customFieldLabel', CustomFields::getLabels(true));
+$smarty->assign('cflgs'           , CustomFlags::getCustomFlagsQualified('products', true));
+$smarty->assign("attributes"      , ProductAttributes::getAll());
+$smarty->assign("defaults"        , SystemDefaults::loadValues());
 
-$attributes = ProductAttributes::getAll();
-
-$smarty->assign("attributes"      , $attributes);
 $smarty->assign('pageActive'      , 'product_manage');
 $subPageActive = $_GET['action'] == "view" ? "product_view" : "product_edit";
 $smarty->assign('subPageActive'   , $subPageActive);

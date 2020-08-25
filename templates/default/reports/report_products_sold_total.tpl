@@ -1,19 +1,9 @@
-<h3>{$LANG.products_sold_total}</h3>
-<hr />
-
-
 <table class="si_report_table">
 	<thead>
 		<tr>
-			<th colspan="2">{$LANG.products_sold_total}</th>
+			<th class="bold" colspan="2">{$LANG.products_sold_total}</th>
 		</tr>
 	</thead>
-	<tfoot>
-		<tr>
-			<td align="RIGHT" class="PAGE_LAYER">{$LANG.total}</td>
-			<td align="LEFT" class="PAGE_LAYER"><span class="BOLD">{$total_quantity|siLocal_number:'0'|default:'-'}</span></td>
-		</tr>
-	</tfoot>
 	<tbody>
 	{foreach item=customer from=$data}
 		<tr class="tr_{cycle values="A,B"}">
@@ -22,4 +12,10 @@
 		</tr>
 	{/foreach}
 	</tbody>
+	<tfoot>
+	<tr>
+		<td class="page_layer si_right">{$LANG.total}</td>
+		<td class="page_layer"><span class="bold">{$total_quantity|siLocal_number:'0'|default:'-'}</span></td>
+	</tr>
+	</tfoot>
 </table>

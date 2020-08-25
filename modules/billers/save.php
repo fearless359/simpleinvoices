@@ -19,27 +19,27 @@ use Inc\Claz\Util;
  *  Website:
  *      https://simpleinvoices.group
  */
-global $smarty;
+global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$op = (empty($_POST['op']) ? "" : $_POST['op']);
-$display_block = "<div class=\"si_message_error\">{$LANG['save_biller_failure']}</div>";
-$refresh_redirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=billers&amp;view=manage\" />";
+$op = empty($_POST['op']) ? "" : $_POST['op'];
+$displayBlock = "<div class=\"si_message_error\">{$LANG['save_biller_failure']}</div>";
+$refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=billers&amp;view=manage\" />";
 
 if ( $op === 'add') {
     if (Biller::insertBiller() > 0) {
-        $display_block = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
     }
 } elseif ($op === 'edit') {
     if (Biller::updateBiller()) {
-        $display_block = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
     }
 }
 
-$smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_redirect', $refresh_redirect);
+$smarty->assign('display_block', $displayBlock);
+$smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'biller');
 $smarty->assign('active_tab', '#people');

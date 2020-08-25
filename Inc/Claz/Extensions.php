@@ -51,7 +51,7 @@ class Extensions
      * Retrieve requested records from the extensions tables.
      * @param int|null $id If not null, id of specified record to retrieve.
      * @param bool $include_all_dirs (Defaults to false). If true, the records in the
-     *          table plus pseudo records for extension directories not in the table
+     *          table plus pseudo columns for extension directories not in the table
      *          (aka not registered), will be returned.
      * @return array row(s) selected from the extensions table. Note that rows in the
      *          table will have the registered field set to ENABLED whereas pseudo
@@ -63,6 +63,7 @@ class Extensions
 
         $extensions = [];
         try {
+
             $pdoDb->setOrderBy('name');
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('id', $id, 'AND');
@@ -85,6 +86,7 @@ class Extensions
             ]);
 
             $rows = $pdoDb->request('SELECT', 'extensions');
+
             if ($include_all_dirs) {
                 // Add pseudo rows for extension directories not yet in the tabled (not registered).
                 $extensionDir = 'extensions';
@@ -183,11 +185,11 @@ class Extensions
 
     /**
      * Set the status for a specified extension ID.
-     * @param $extension_id
+     * @param $extensionId
      * @param int $status
      * @return bool
      */
-    public static function setStatusExtension(int $extension_id, int $status = 2): bool
+    public static function setStatusExtension(int $extensionId, int $status = 2): bool
     {
         global $pdoDbAdmin;
 
@@ -198,7 +200,7 @@ class Extensions
             $rows = [];
             try {
                 $pdoDbAdmin->setSelectList('enabled');
-                $pdoDbAdmin->addSimpleWhere('id', $extension_id, 'AND');
+                $pdoDbAdmin->addSimpleWhere('id', $extensionId, 'AND');
                 $pdoDbAdmin->addSimpleWhere('domain_id', $domainId);
 
                 $pdoDbAdmin->setLimit(1);
@@ -213,7 +215,7 @@ class Extensions
 
         $result = false;
         try {
-            $pdoDbAdmin->addSimpleWhere('id', $extension_id, 'AND');
+            $pdoDbAdmin->addSimpleWhere('id', $extensionId, 'AND');
             $pdoDbAdmin->addSimpleWhere('domain_id', $domainId);
 
             $pdoDbAdmin->setFauxPost(["enabled" => $status]);

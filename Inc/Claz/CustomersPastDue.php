@@ -122,6 +122,7 @@ class CustomersPastDue
         } catch (Exception $exp) {
             error_log("CustomersPastDue::getCustInfo() - Error: " . $exp->getMessage());
         }
+
         return $custInfo;
     }
 

@@ -13,23 +13,23 @@ global $smarty;
 Util::directAccessAllowed();
 
 // @formatter:off
-$billers     = Biller::getAll();
-$customers   = Customer::getAll();
-$taxes       = Taxes::getAll();
-$products    = Product::getAll(true);
-$preferences = Preferences::getAll();
+$billers   = Biller::getAll();
+$customers = Customer::getAll();
+$products  = Product::getAll(true);
 
-$first_run_wizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
-    $first_run_wizard =true;
+    $firstRunWizard =true;
+} else {
+    $firstRunWizard = false;
 }
-$smarty->assign("first_run_wizard",$first_run_wizard);
+$smarty->assign("first_run_wizard",$firstRunWizard);
 
 $smarty->assign("billers"    , $billers);
 $smarty->assign("customers"  , $customers);
-$smarty->assign("taxes"      , $taxes);
+$smarty->assign("taxes"      , Taxes::getAll());
 $smarty->assign("products"   , $products);
-$smarty->assign("preferences", $preferences);
+$smarty->assign("preferences", Preferences::getAll());
+
 $smarty->assign('pageActive' , 'dashboard');
 $smarty->assign('active_tab' , '#home');
 // @formatter:on

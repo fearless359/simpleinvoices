@@ -3,6 +3,7 @@
 use Inc\Claz\DomainId;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 
 /*
@@ -16,63 +17,72 @@ use Inc\Claz\Util;
 global $pdoDb, $smarty;
 
 Util::directAccessAllowed();
+
+/**
+ * @return false|string
+ */
 function firstOfMonth() {
     return date("Y-m-d", strtotime('01-' . date('m') . '-' . date('Y') . ' 00:00:00'));
 }
+
+/**
+ * @return false|string
+ */
 function lastOfMonth() {
     return date("Y-m-d", strtotime('-1 second', strtotime('+1 month', strtotime('01-' . date('m') . '-' . date('Y') . ' 00:00:00'))));
 }
 
-isset($_POST['start_date']) ? $start_date = $_POST['start_date'] : $start_date = firstOfMonth();
-isset($_POST['end_date']) ? $end_date = $_POST['end_date'] : $end_date = lastOfMonth();
+isset($_POST['start_date']) ? $startDate = $_POST['start_date'] : $startDate = firstOfMonth();
+isset($_POST['end_date']) ? $endDate = $_POST['end_date'] : $endDate = lastOfMonth();
 
-// Select invoice date between range for real invoices.
-$havings = array("date_between" => array($start_date, $end_date),
-                 "real" => '');
-$invoices = Invoice::getAllWithHavings($havings);
+try {
+    // Select invoice date between range for real invoices.
+    $havings = [
+        "date_between" => [$startDate, $endDate],
+        "real" => ''
+    ];
+    $invoices = Invoice::getAllWithHavings($havings);
 
-$invoice_totals = array();
-foreach($invoices as $k=>$v) {
-    //get list of all products
-    $pdoDb->addToFunctions('DISTINCT(product_id)');
-    $pdoDb->addSimpleWhere('invoice_id', $v['id'], 'AND');
-    $pdoDb->addSimpleWhere('domain_id', DomainId::get());
-    $products = $pdoDb->request('SELECT', 'invoice_items');
-
-    $invoice_total_cost = "0";
-    foreach($products as $pv) {
-        $quantity="";
-        $cost="";
-        $product_total_cost="";
-
-        $pdoDb->addToFunctions(new FunctionStmt('SUM', 'quantity'));
-        $pdoDb->addSimpleWhere('product_id', $pv['product_id'], 'AND');
-        $pdoDb->addSimpleWhere('invoice_id', $v['id'], 'AND');
+    $invoiceTotals = [];
+    foreach($invoices as $key=>$val) {
+        //get list of all products
+        $pdoDb->addToFunctions('DISTINCT(product_id)');
+        $pdoDb->addSimpleWhere('invoice_id', $val['id'], 'AND');
         $pdoDb->addSimpleWhere('domain_id', DomainId::get());
-        $rows = $pdoDb->request('SELECT', 'invoice_items');
-        $quantity = (empty($rows) ? 0 : $rows[0]['quantity']);
+        $products = $pdoDb->request('SELECT', 'invoice_items');
 
-        $pdoDb->addToFunctions('(SUM(cost * quantity) / SUM(quantity)) AS avg_cost');
-        $pdoDb->addSimpleWhere('product_id', $pv['product_id'], 'AND');
-        $pdoDb->addSimpleWhere('domain_id', DomainId::get());
-        $rows = $pdoDb->request('SELECT', 'inventory');
-        $cost = (empty($rows) ? 0 : $rows[0]['avg_cost']);
+        $invoiceTotalCost = "0";
+        foreach ($products as $pv) {
+            $pdoDb->addToFunctions(new FunctionStmt('SUM', 'quantity'));
+            $pdoDb->addSimpleWhere('product_id', $pv['product_id'], 'AND');
+            $pdoDb->addSimpleWhere('invoice_id', $val['id'], 'AND');
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+            $rows = $pdoDb->request('SELECT', 'invoice_items');
+            $quantity = empty($rows) ? 0 : $rows[0]['quantity'];
 
-        $product_total_cost = $quantity * $cost;
-        $invoice_total_cost += $product_total_cost;
+            $pdoDb->addToFunctions('(SUM(cost * quantity) / SUM(quantity)) AS avg_cost');
+            $pdoDb->addSimpleWhere('product_id', $pv['product_id'], 'AND');
+            $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+            $rows = $pdoDb->request('SELECT', 'inventory');
+            $cost = empty($rows) ? 0 : $rows[0]['avg_cost'];
+
+            $invoiceTotalCost += $quantity * $cost;
+        }
+        $invoices[$key]['cost'] = $invoiceTotalCost;
+        $invoices[$key]['profit'] = $invoices[$key]['total'] - $invoices[$key]['cost'];
+
+        $invoiceTotals['sum_total'] = $invoiceTotals['sum_total'] + $invoices[$key]['total'];
+        $invoiceTotals['sum_cost'] = $invoiceTotals['sum_cost'] + $invoices[$key]['cost'];
+        $invoiceTotals['sum_profit'] = $invoiceTotals['sum_profit'] + $invoices[$key]['profit'];
     }
-    $invoices[$k]['cost'  ] =  $invoice_total_cost;
-    $invoices[$k]['profit'] =  $invoices[$k]['total'] - $invoices[$k]['cost'];
 
-    $invoice_totals['sum_total' ] = $invoice_totals['sum_total' ] + $invoices[$k]['total'];
-    $invoice_totals['sum_cost'  ] = $invoice_totals['sum_cost'  ] + $invoices[$k]['cost'         ];
-    $invoice_totals['sum_profit'] = $invoice_totals['sum_profit'] + $invoices[$k]['profit'       ];
+    $smarty->assign('invoices'      , $invoices);
+    $smarty->assign('invoice_totals', $invoiceTotals);
+    $smarty->assign('start_date'    , $startDate);
+    $smarty->assign('end_date'      , $endDate);
+} catch (PdoDbException $pde) {
+    exit("modules/reports/report_invoice_profit.php Unexpected error: [{$pde->getMessage()}]");
 }
-
-$smarty->assign('invoices'      , $invoices);
-$smarty->assign('invoice_totals', $invoice_totals);
-$smarty->assign('start_date'    , $start_date);
-$smarty->assign('end_date'      , $end_date);
 
 $smarty->assign('pageActive', 'report');
 $smarty->assign('active_tab', '#home');

@@ -1,8 +1,5 @@
-<h3 class="si_report_title">Sales in total by Biller</h3>
-
-<h3>{$LANG.biller_sales_total}</h3>
+<h3 class="si_report_title">{$LANG['sales']} {$LANG['in']} {$LANG['total']} {$LANG['by']} {$LANG['biller']}</h3>
 <hr />
-
 <table class="si_report_table">
 	<thead>
 		<tr>
@@ -11,8 +8,8 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<td align="RIGHT" class="PAGE_LAYER">{$LANG.total_sales}</td>
-			<td align="LEFT" class="PAGE_LAYER"><span class="BOLD">{$total_sales|siLocal_number:'2'|default:'-'}</span></td>
+			<td class="page_layer si_right">{$LANG.total_sales}</td>
+			<td class="page_layer"><span class="BOLD">{$total_sales|siLocal_number:'2'|default:'-'}</span></td>
 		</tr>
 	</tfoot>
 	<tbody>

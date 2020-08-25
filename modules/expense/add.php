@@ -2,6 +2,7 @@
 
 use Inc\Claz\DomainId;
 use Inc\Claz\Expense;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
 use Inc\Claz\Util;
@@ -11,18 +12,18 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$expense_add = Expense::additionalInfo();
-$defaults    = SystemDefaults::loadValues();
-$taxes       = Taxes::getActiveTaxes();
-
 // if valid then do save
 if (!empty( $_POST ['expense_account_id'] )) {
     include "modules/expense/save.php";
 } else {
+    try {
+        $smarty->assign('expense_add', Expense::additionalInfo());
+    } catch (PdoDbException $pde) {
+        exit("modules/expense/add.php Unexpected error: {$pde->getMessage()}");
+    }
     $smarty->assign('domain_id', DomainId::get());
-    $smarty->assign('taxes', $taxes);
-    $smarty->assign('expense_add', $expense_add);
-    $smarty->assign('defaults', $defaults);
+    $smarty->assign('taxes', Taxes::getActiveTaxes());
+    $smarty->assign('defaults', SystemDefaults::loadValues());
 
     $smarty->assign('pageActive', 'expense');
     $smarty->assign('subPageActive', 'add');

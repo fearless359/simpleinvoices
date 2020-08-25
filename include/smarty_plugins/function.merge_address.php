@@ -8,7 +8,7 @@ use Inc\Claz\Util;
  *
  * Arguments:
  *  field1  - normally city
- *  field2  - noramlly state
+ *  field2  - normally state
  *  field3  - normally zip
  *  street1 - street 1 added print the word "Address:" on the first line of the invoice
  *  street2 - street 2 added print the word "Address:" on the first line of the invoice
@@ -24,7 +24,7 @@ function smarty_function_merge_address($params) {
     if (empty($params['street1']) && empty($params['street2']) &&
             (!empty($params['field1']) || !empty($params['field2']) || !empty($params['field3']))) {
         $ma .= '<tr>' .
-                   '<td class="' . Util::htmlsafe($params['class1']) . '" >' . $LANG['address'] . ':</td>' .
+                   '<td class="' . Util::htmlsafe($params['class1']) . '" >' . $LANG['address_uc'] . ':</td>' .
                    '<td class="' . Util::htmlsafe($params['class2']) . '" colspan="' . Util::htmlsafe($params['colspan']) . '" >';
         $skip_section = true;
     }

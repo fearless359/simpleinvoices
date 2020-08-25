@@ -10,7 +10,10 @@ class FunctionStmt
 {
     private const OPERATORS = '/^(\-|\+|\*|\/)$/';
 
-    private string $function;
+    /**
+     * @var string|null
+     */
+    private $function;
     /**
      * @var DbField|string
      */
@@ -20,12 +23,12 @@ class FunctionStmt
 
     /**
      * Class constructor.
-     * @param string $function Function to be performed. Can be set to <b>null</b> if necessary.
+     * @param string|null $function Function to be performed. Can be set to <b>null</b> if necessary.
      * @param DbField|string $parameter The field the operation is performed on. Can be a string such as
      *        "SUM(amount)" or "amount" or can be a DbField.
      * @param string $alias (Optional) Name to assign to the function result.
      */
-    public function __construct(string $function, $parameter, string $alias = "")
+    public function __construct(?string $function, $parameter, string $alias = "")
     {
         $this->function = $function;
         $this->parameter = $parameter;

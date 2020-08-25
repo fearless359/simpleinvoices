@@ -65,26 +65,30 @@ if ($_GET['stage'] == 2) {
             "display_block" =>$displayBlock
         ];
     } else {
-        $export->setBiller($biller);
-        $export->setCustomerId($customerId);
-        $export->setStartDate($startDate);
-        $export->setEndDate($endDate);
-        $export->setShowOnlyUnpaid($showOnlyUnpaid);
-        $export->setDoNotFilterByDate($doNotFilterByDate);
-        $pdfString = $export->execute();
+        try {
+            $export->setBiller($biller);
+            $export->setCustomerId($customerId);
+            $export->setStartDate($startDate);
+            $export->setEndDate($endDate);
+            $export->setShowOnlyUnpaid($showOnlyUnpaid);
+            $export->setDoNotFilterByDate($doNotFilterByDate);
+            $pdfString = $export->execute();
 
-        $email = new Email();
-        $email->setBcc($_POST['email_bcc']);
-        $email->setBody(trim($_POST['email_notes']));
-        $email->setFormat('statement');
-        $email->setFrom($_POST['email_from']);
-        $email->setFromFriendly($biller['name']);
-        $email->setPdfFileName($export->getFileName() . '.pdf');
-        $email->setPdfString($pdfString);
-        $email->setSubject($_POST['email_subject']);
-        $email->setEmailTo($_POST['email_to']);
+            $email = new Email();
+            $email->setBcc($_POST['email_bcc']);
+            $email->setBody(trim($_POST['email_notes']));
+            $email->setFormat('statement');
+            $email->setFrom($_POST['email_from']);
+            $email->setFromFriendly($biller['name']);
+            $email->setPdfFileName($export->getFileName() . '.pdf');
+            $email->setPdfString($pdfString);
+            $email->setSubject($_POST['email_subject']);
+            $email->setEmailTo($_POST['email_to']);
 
-        $results = $email->send();
+            $results = $email->send();
+        } catch (Exception $exp) {
+            exit("modules/statement/email.php Unexpected error: {$exp->getMessage()}");
+        }
     }
     $smarty->assign('display_block', $results['display_block']);
     $smarty->assign('refresh_redirect', $results['refresh_redirect']);

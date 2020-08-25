@@ -37,6 +37,7 @@ if ($_POST['pg_response_code'] == 'A01') {
         ]);
         Log::out('ACH - payment_type='.$pmtType, Zend_Log::INFO);
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         $invoice    = Invoice::getOne($_POST['pg_consumerorderid']);
         $biller     = Biller::getOne($invoice['biller_id']);
 

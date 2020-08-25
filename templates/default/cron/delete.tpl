@@ -41,15 +41,15 @@
             <tr>
                 <td class="details_screen">{$LANG.email_biller_after_cron}</td>
                 <td>
-                    {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uppercase}{/if}
-                    {if $cron.email_biller == $smarty.const.DISABLED}{$LANG.no_uppercase}{/if}
+                    {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uc}{/if}
+                    {if $cron.email_biller == $smarty.const.DISABLED}{$LANG.no_uc}{/if}
                 </td>
             </tr>
             <tr>
                 <td class="details_screen">{$LANG.email_customer_after_cron}</td>
                 <td>
-                    {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uppercase}{/if}
-                    {if $cron.email_customer == $smarty.const.DISABLED}{$LANG.no_uppercase}{/if}
+                    {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uc}{/if}
+                    {if $cron.email_customer == $smarty.const.DISABLED}{$LANG.no_uc}{/if}
                 </td>
             </tr>
         </table>

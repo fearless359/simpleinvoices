@@ -3,5 +3,8 @@ use Inc\Claz\Cron;
 
 global $smarty;
 
-$message = Cron::run();
-$smarty->assign('message', $message);
+try {
+    $smarty->assign('message', Cron::run());
+} catch (Exception $exp) {
+    exit("modules/cron/run.php Unexpected error: {$exp->getMessage()}");
+}

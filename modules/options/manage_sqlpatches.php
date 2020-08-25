@@ -9,7 +9,7 @@ global $smarty;
 Util::directAccessAllowed();
 
 // Allow thrown error to be passed up to the user.
-$smarty -> assign("patches", SqlPatchManager::sqlPatches());
+$smarty->assign("patches", SqlPatchManager::sqlPatches());
 
-$smarty -> assign('pageActive', 'sqlpatch');
-$smarty -> assign('active_tab', '#setting');
+$smarty->assign('pageActive', 'sqlpatch');
+$smarty->assign('active_tab', '#setting');

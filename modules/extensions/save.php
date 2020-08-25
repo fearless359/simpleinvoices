@@ -4,26 +4,28 @@ use Inc\Claz\Extensions;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
+global $LANG, $smarty;
+
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$refresh_redirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=extensions&amp;view=manage" />';
-$display_block = "<div class=\"si_message_error\">{$LANG['failure']}</div>";
+$refreshRedirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=extensions&amp;view=manage" />';
+$displayBlock = "<div class=\"si_message_error\">{$LANG['failure']}</div>";
 
 if ($_POST['action'] == "register") {
     if (Extensions::insert() > 0) {
-        $display_block = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
     }
 } elseif ($_POST['action'] == "unregister") {
-    $extension_id = $_POST['id'];
-    if (Extensions::delete($extension_id)) {
-        if (SystemDefaults::delete($extension_id)) {
-            $display_block = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
+    $extensionId = $_POST['id'];
+    if (Extensions::delete($extensionId)) {
+        if (SystemDefaults::delete($extensionId)) {
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
         }
     }
 }
 
-$smarty->assign('display_block', $display_block);
-$smarty->assign('refresh_redirect', $refresh_redirect);
+$smarty->assign('display_block', $displayBlock);
+$smarty->assign('refresh_redirect', $refreshRedirect);
 
 

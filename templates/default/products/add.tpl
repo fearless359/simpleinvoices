@@ -15,7 +15,7 @@
             <div id="tabs_customer">
                 <ul class="anchors">
                     <li><a href="#section-1" target="_top">{$LANG.details}</a></li>
-                    <li><a href="#section-2" target="_top">{$LANG.custom_upper}&nbsp;{$LANG.fields_upper}&nbsp;&amp;&nbsp;{$LANG.flags_upper}</a></li>
+                    <li><a href="#section-2" target="_top">{$LANG.custom_uc}&nbsp;{$LANG.fields_uc}&nbsp;&amp;&nbsp;{$LANG.flags_uc}</a></li>
                     <li><a href="#section-3" target="_top">{$LANG.notes}</a></li>
                 </ul>
                 <div id="section-1" class="fragment">
@@ -43,10 +43,10 @@
                         </tr>
                         {if $defaults.inventory == '1'}
                             <tr>
-                                <th>{$LANG.cost}
+                                <th>{$LANG.cost_uc}
                                     <a class="cluetip" href="#"
                                        rel="index.php?module=documentation&amp;view=view&amp;page=help_cost"
-                                       title="{$LANG.cost}">
+                                       title="{$LANG.cost_uc}">
                                         <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>

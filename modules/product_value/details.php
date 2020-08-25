@@ -11,20 +11,16 @@ Util::directAccessAllowed();
 
 //if valid then do save
 if (!empty($_POST['value'])) {
-    include("modules/product_value/save.php");
+    include "modules/product_value/save.php";
 }
 
-#get the invoice id
-$id = $_GET['id'];
-
 // @formatter:off
-$product_value      = ProductValues::getOne($id);
-$product_attribute  = ProductAttributes::getOne($product_value['attribute_id']);
-$product_attributes = ProductAttributes::getAll();
+$productValue      = ProductValues::getOne($_GET['id']);
+$productAttribute  = ProductAttributes::getOne($productValue['attribute_id']);
 
-$smarty->assign("product_value"     , $product_value);
-$smarty->assign("product_attribute" , $product_attribute['name']);
-$smarty->assign("product_attributes", $product_attributes);
+$smarty->assign("product_value"     , $productValue);
+$smarty->assign("product_attribute" , $productAttribute['name']);
+$smarty->assign("product_attributes", ProductAttributes::getAll());
 // @formatter:on
 
 $pageActive = "product_value_manage";

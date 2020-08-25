@@ -14,9 +14,9 @@
         <td><a href='index.php?module=invoices&amp;view=quick_view&amp;id={$payment.ac_inv_id|htmlsafe}&amp;action=view'>{$payment.iv_index_id|htmlsafe}</a></td>
       </tr>
       <tr>
-        <th>{$LANG.amount}</th>
+        <th>{$LANG.amount_uc}</th>
         <td>{$payment.ac_amount|siLocal_number}</td>
-        <th>{$LANG.date_upper}</th>
+        <th>{$LANG.date}</th>
         <td>{$payment.date|htmlsafe}</td>
       </tr>
       <tr>

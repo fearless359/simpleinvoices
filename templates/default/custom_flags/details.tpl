@@ -19,7 +19,7 @@
                     <td>{$cflg.flg_id|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.field_label_upper}</th>
+                    <th>{$LANG.field_label_uc}</th>
                     <td>{$cflg.field_label|htmlsafe}</td>
                 </tr>
                 <tr>
@@ -27,7 +27,7 @@
                     <td>{$cflg.enabled_text|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.field_help_upper}</th>
+                    <th>{$LANG.field_help_uc}</th>
                     <td>{$cflg.field_help|htmlsafe}</td>
                 </tr>
             </table>
@@ -68,18 +68,18 @@
                 </tr>
                 <tr>
                     <th>
-                        {$LANG.field_label_upper}
+                        {$LANG.field_label_uc}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_field_label"
-                           title="{$LANG.field_label_upper}">
+                           title="{$LANG.field_label_uc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="text" name="{$LANG.field_label_upper|lower}" value="{if isset($cflg.field_label)}{$cflg.field_label|escape}{/if}" size="20"/></td>
+                    <td><input type="text" name="{$LANG.field_label_uc|lower}" value="{if isset($cflg.field_label)}{$cflg.field_label|escape}{/if}" size="20"/></td>
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_enable"
-                           title="{$LANG.custom_flags_upper}">
+                           title="{$LANG.custom_flags_uc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -99,18 +99,18 @@
                 </tr>
                 <tr>
                     <th>
-                        {$LANG.field_help_upper}
+                        {$LANG.field_help_uc}
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_field_help"
-                           title="{$LANG.field_help_upper}">
+                           title="{$LANG.field_help_uc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
                         <!--
-                        <textarea name="{*$LANG.field_help_upper|lower*}" class="editor" maxlength="255" wrap="soft">{*$cflg.field_help|escape*}</textarea>
+                        <textarea name="{*$LANG.field_help_uc|lower*}" class="editor" maxlength="255" wrap="soft">{*$cflg.field_help|escape*}</textarea>
                         -->
-                        <input name="{$LANG.field_help_upper|lower}" id="{$LANG.field_help_upper|lower}" {if isset($cflg.field_help)}value="{$cflg.field_help|outhtml}"{/if} type="hidden">
-                        <trix-editor input="{$LANG.field_help_upper|lower}"></trix-editor>
+                        <input name="{$LANG.field_help_uc|lower}" id="{$LANG.field_help_uc|lower}" {if isset($cflg.field_help)}value="{$cflg.field_help|outhtml}"{/if} type="hidden">
+                        <trix-editor input="{$LANG.field_help_uc|lower}"></trix-editor>
                     </td>
                 </tr>
             </table>

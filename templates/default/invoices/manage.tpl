@@ -55,9 +55,9 @@
                 <th>{$LANG.invoice}#</th>
                 <th>{$LANG.biller}</th>
                 <th>{$LANG.customer}</th>
-                <th>{$LANG.date_upper}</th>
+                <th>{$LANG.to_uc}</th>
                 <th>{$LANG.total}</th>
-                <th>{$LANG.owing}</th>
+                <th>{$LANG.owing_uc}</th>
                 <th>{$LANG.aging}</th>
             </tr>
         </thead>

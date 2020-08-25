@@ -4,6 +4,7 @@ use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
 use Inc\Claz\PaymentType;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
@@ -13,38 +14,33 @@ global $smarty, $LANG, $pdoDb;
 Util::directAccessAllowed();
 
 $paymentTypes = PaymentType::getAll(true);
-$chk_pt = 0;
+$chkPt = 0;
 foreach ($paymentTypes as $paymentType) {
     if (preg_match('/^check$/iD', $paymentType['pt_description'])) {
-        $chk_pt = trim($paymentType['pt_id']);
+        $chkPt = trim($paymentType['pt_id']);
         break;
     }
 }
 
-$today = date("Y-m-d");
-
-if(isset($_GET['id'])) {
-    $invoice = Invoice::getOne($_GET['id']);
-} else {
-    $rows = Invoice::getAll();
-    $invoice = (empty($rows) ? $rows : $rows[0]);
-}
-
 // @formatter:off
-$customer = Customer::getOne($invoice['customer_id']);
-$biller   = Biller::getOne($invoice['biller_id']);
-$defaults = SystemDefaults::loadValues();
+try {
+    if (isset($_GET['id'])) {
+        $invoice = Invoice::getOne($_GET['id']);
+    } else {
+        $rows = Invoice::getAll();
+        $invoice = empty($rows) ? $rows : $rows[0];
+    }
 
-$invoice_all = Invoice::getAllWithHavings("money_owed", "id");
-
-$smarty->assign('invoice_all',$invoice_all);
-
-$smarty->assign("paymentTypes", $paymentTypes);
-$smarty->assign("defaults"    , $defaults);
-$smarty->assign("biller"      , $biller);
-$smarty->assign("customer"    , $customer);
-$smarty->assign("invoice"     , $invoice);
-$smarty->assign("today"       , $today);
+    $smarty->assign('invoice_all' , Invoice::getAllWithHavings("money_owed", "id"));
+    $smarty->assign("paymentTypes", $paymentTypes);
+    $smarty->assign("defaults"    , SystemDefaults::loadValues());
+    $smarty->assign("biller"      , Biller::getOne($invoice['biller_id']));
+    $smarty->assign("customer"    , Customer::getOne($invoice['customer_id']));
+    $smarty->assign("invoice"     , $invoice);
+    $smarty->assign("today"       , date("Y-m-d"));
+} catch (PdoDbException $pde) {
+    exit("modules/payments/process.php Unexpected error: {$pde->getMessage()}");
+}
 
 $smarty->assign('pageActive'   , 'payment');
 $smarty->assign('subPageActive', "payment_process");

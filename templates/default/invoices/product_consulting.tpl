@@ -14,6 +14,7 @@
  * Website:
  *	https://simpleinvoices.group
  *}
+<!--suppress HtmlFormInputWithoutLabel, HtmlUnknownTag -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=invoices&amp;view=save">
     <h3>{$LANG.inv} {$LANG.inv_consulting}</h3>
@@ -45,9 +46,6 @@
     </tr>
     <tr>
         <td colspan="2">
-            <!--
-            <textarea class="editor" name="note"></textarea>
-            -->
             <input name="note" id="note" type="hidden">
             <trix-editor input="note"></trix-editor>
         </td>
@@ -82,8 +80,11 @@
         </td>
     </tr>
     <tr>
-        <td align=left>
-            <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}"><img src="{$helpImagePath}help-small.png" alt=""/> {$LANG.want_more_fields}</a>
+        <td>
+            <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields" title="{$LANG.custom_fields}">
+                <img src="{$helpImagePath}help-small.png" alt=""/>
+                {$LANG.want_more_fields}
+            </a>
         </td>
     </tr>
     <hr/>

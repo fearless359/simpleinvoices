@@ -1,6 +1,3 @@
-<div id="top"><h3>{$LANG.biller_sales_by_customer_totals}</h3></div>
-<hr />
-
 <table class="si_report_table">
 	<thead>
 		<tr>

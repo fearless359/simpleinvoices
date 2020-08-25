@@ -3,18 +3,18 @@
 use Inc\Claz\ExpenseAccount;
 use Inc\Claz\Util;
 
-global $smarty;
+global $LANG, $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$display_block = "<div class='si_message_error'>{$LANG['no_expense_accounts']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['no_expense_accounts']}</div>";
 
-$expense_accounts = ExpenseAccount::getAll();
+$expenseAccounts = ExpenseAccount::getAll();
 
-$smarty->assign('expense_accounts', $expense_accounts);
-$smarty->assign("number_of_rows", count($expense_accounts));
-$smarty->assign("display_block", $display_block);
+$smarty->assign('expense_accounts', $expenseAccounts);
+$smarty->assign("number_of_rows", count($expenseAccounts));
+$smarty->assign("display_block", $displayBlock);
 
 $smarty->assign('pageActive', 'expense_account');
 $smarty->assign('active_tab', '#money');

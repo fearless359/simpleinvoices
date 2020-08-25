@@ -3,6 +3,7 @@
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 
 /*
@@ -38,11 +39,15 @@ $smarty->assign('invoices', $invoices);
 $customFieldLabel = CustomFields::getLabels(true);
 $smarty->assign('customFieldLabel', $customFieldLabel);
 
-$invoices_owing = Invoice::getInvoicesOwing($cid);
-$smarty->assign('invoices_owing', $invoices_owing);
-$smarty->assign('invoices_owing_count', count($invoices_owing));
+try {
+    $invoicesOwing = Invoice::getInvoicesOwing($cid);
+    $smarty->assign('invoices_owing', $invoicesOwing);
+    $smarty->assign('invoices_owing_count', count($invoicesOwing));
+} catch (PdoDbException $pde) {
+    exit("modules/customers/details.php Unexpected error: {$pde->getMessage()}");
+}
 
 $smarty->assign('pageActive', 'customer');
-$subPageActive  = ($_GET['action'] == "view"  ? "customer_view" : "customer_edit");
+$subPageActive  = $_GET['action'] == "view"  ? "customer_view" : "customer_edit";
 $smarty->assign('subPageActive', $subPageActive);
 $smarty->assign('active_tab', '#people');

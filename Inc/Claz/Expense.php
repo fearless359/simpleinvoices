@@ -87,7 +87,7 @@ class Expense
 
             // This is a fudge until sub-select can be added to the features.
             $expItemTax = TB_PREFIX . "expense_item_tax";
-            $pdoDb->addToFunctions("(SELECT SUM(tax_amount) FROM $expItemTax WHERE expense_id = id) AS tax");
+            $pdoDb->addToFunctions("(SELECT SUM(tax_amount) FROM $expItemTax WHERE expense_id = e.id) AS tax");
             $pdoDb->addToFunctions("(SELECT tax + e.amount) AS total");
 
             $selectList = [
@@ -119,6 +119,7 @@ class Expense
         } catch (PdoDbException $pde) {
             error_log("Expense::getExpense() - error: " . $pde->getMessage());
         }
+
         return $expenses;
     }
 
@@ -127,15 +128,33 @@ class Expense
      * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
      * @throws PdoDbException
      */
-    public static function additionalInfo(): array
+    public static function additionalInfo(?array $expense=null): array
     {
         // @formatter:off
         $addInfo = [];
-        $addInfo['expense_accounts'] = ExpenseAccount::getAll();
-        $addInfo['customers']        = Customer::getAll(['enabled_only' => true]);
-        $addInfo['billers']          = Biller::getAll();
-        $addInfo['invoices']         = Invoice::getAll();
-        $addInfo['products']         = Product::getAll(true);
+        if (isset($expense)) {
+            if (isset($expense['c_id'])) {
+                $detail['customer'] = Customer::getOne($expense['c_id']);
+            }
+            if (isset($expense['b_id'])) {
+                $detail['biller'] = Biller::getOne($expense['b_id']);
+            }
+            if (isset($expense['iv_id'])) {
+                $detail['invoice'] = Invoice::getOne($expense['iv_id']);
+            }
+            if (isset($expense['p_id'])) {
+                $detail['product'] = Product::getOne($expense['p_id']);
+            }
+            if (isset($expense['ea_id'])) {
+                $detail['expense_account'] = ExpenseAccount::getOne($expense['ea_id']);
+            }
+        } else {
+            $addInfo['customers']        = Customer::getAll();
+            $addInfo['billers']          = Biller::getAll();
+            $addInfo['invoices']         = Invoice::getAll();
+            $addInfo['products']         = Product::getAll(true);
+            $addInfo['expense_accounts'] = ExpenseAccount::getAll();
+        }
         // @formatter:on
         return $addInfo;
     }
@@ -149,7 +168,7 @@ class Expense
         global $pdoDb;
 
         try {
-            $pdoDb->setExcludedFields("id");
+            $pdoDb->setExcludedFields(["id", 'tax_id']);
             $id = $pdoDb->request("INSERT", "expense");
 
             $lineItemTaxId = isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "";
@@ -158,6 +177,7 @@ class Expense
             error_log("Expense::insert() - error: " . $pde->getMessage() . " _POST info - " . print_r($_POST, true));
             return false;
         }
+
         return true;
     }
 
@@ -189,15 +209,15 @@ class Expense
     /**
      * Insert/update the multiple taxes per line item into the si_expense_item_tax table
      * @param int $expenseId
-     * @param int $lineItemTaxId
+     * @param array $lineItemTaxId
      * @param float $unitPrice
      * @param int $quantity
      * @param string $action
      * @return bool true if processed without error; false otherwise.
      */
-    public static function expenseItemTax(int $expenseId, int $lineItemTaxId, float $unitPrice, int $quantity, string $action = ""): bool
+    public static function expenseItemTax(int $expenseId, array $lineItemTaxId, float $unitPrice, int $quantity, string $action = ""): bool
     {
-        if (!is_array($lineItemTaxId)) {
+        if (empty($lineItemTaxId)) {
             return false;
         }
 

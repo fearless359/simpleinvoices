@@ -53,18 +53,6 @@ class OnClause extends WhereClause
         }
     }
 
-
-    /**
-     * getter for $token_cnt.
-     * Note that the current token count value has <b>NOT</b> been used to
-     * make a unique token.
-     * @return int Current token count value.
-     */
-    public function getTokenCnt(): int
-    {
-        return parent::getTokenCnt();
-    }
-
     /**
      * Build the <b>ON</b> clause to append to the request.
      * @param array|null &$keyPairs Array of PDO token and value pairs to bind to the PDO statement.
@@ -73,13 +61,15 @@ class OnClause extends WhereClause
      * @return string ON clause string
      * @throws PdoDbException if specified parenthesis have not been properly paired.
      */
-    public function build(?array &$keyPairs, $firstTime = true)
+    public function build(?array &$keyPairs, bool $firstTime = true): string
     {
+
         try {
-            $clause = preg_replace('/^WHERE /', '', parent::build($keyPairs, $firstTime));
+            $pattern = '/^WHERE /';
+            $clause = preg_replace($pattern, 'ON ', parent::build($keyPairs, $firstTime));
         } catch (PdoDbException $pde) {
             throw new PdoDbException(preg_replace('/WhereClause/', 'OnClause', $pde->getMessage()));
         }
-        return "ON ($clause)";
+        return $clause;
     }
 }

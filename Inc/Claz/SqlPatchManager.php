@@ -4060,6 +4060,14 @@ class SqlPatchManager
         ];
         self::makePatch('319', $patch);
 
+        $patch = [
+            'name' => "Remove delete extensions mini and measurement",
+            'patch' => "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'mini' OR `name` = 'measurement';",
+            'date' => "20200822",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('320', $patch);
+
         // @formatter:on
     }
 

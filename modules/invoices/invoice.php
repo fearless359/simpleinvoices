@@ -4,6 +4,7 @@ use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
 use Inc\Claz\Product;
 use Inc\Claz\ProductAttributes;
@@ -42,45 +43,54 @@ $defaultCustomer   = Customer::getDefaultCustomer();
 $defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
-$first_run_wizard = false;
+$firstRunWizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
-    $first_run_wizard =true;
+    $firstRunWizard =true;
 }
-$smarty->assign("first_run_wizard",$first_run_wizard);
+$smarty->assign("first_run_wizard",$firstRunWizard);
 
-$defaults['biller']     = (isset($_GET['biller'])    ) ? $_GET['biller']     : $defaults['biller'];
-$defaults['customer']   = (isset($_GET['customer'])  ) ? $_GET['customer']   : $defaults['customer'];
-$defaults['preference'] = (isset($_GET['preference'])) ? $_GET['preference'] : $defaults['preference'];
+$defaults['biller']     = isset($_GET['biller']) ? $_GET['biller']     : $defaults['biller'];
+$defaults['customer']   = isset($_GET['customer']) ? $_GET['customer']   : $defaults['customer'];
+$defaults['preference'] = isset($_GET['preference']) ? $_GET['preference'] : $defaults['preference'];
 if (!empty($_GET['line_items'])) {
-    $dynamic_line_items = $_GET['line_items'];
+    $dynamicLineItems = $_GET['line_items'];
 } else {
-    $dynamic_line_items = $defaults['line_items'];
+    $dynamicLineItems = $defaults['line_items'];
 }
 
-$customFields = array();
-for ($i = 1; $i <= 4; $i++) {
-    // Note that this is a 1 based array not a 0 based array.
-    $customFields[$i] = CustomFields::showCustomField("invoice_cf$i"  , '',
-                                                             "write"         , '',
-                                                             "details_screen", '',
-                                                             ''              , '');
+try {
+    $customFields = [];
+    for ($idx = 1; $idx <= 4; $idx++) {
+        // Note that this is a 1 based array not a 0 based array.
+        $customFields[$idx] = CustomFields::showCustomField(
+            "invoice_cf{$idx}", '',
+            "write", '',
+            "details_screen", '',
+            '', '');
+    }
+    $smarty->assign("customFields", $customFields);
+} catch (PdoDbException $pde) {
+    exit("modules/invoices/invoice.php Unexpected error: {$pde->getMessage()}");
 }
-
 // Check to see if this is a default_invoice (aka from a template).
 if (isset($_GET['template'])) {
-    $invoice = Invoice::getInvoiceByIndexId($_GET['template']);
-    $invoiceItems = Invoice::getInvoiceItems ( $invoice['id'] );
-    $num_inv_items = count($invoiceItems);
+    try {
+        $invoice = Invoice::getInvoiceByIndexId($_GET['template']);
+        $invoiceItems = Invoice::getInvoiceItems ( $invoice['id'] );
+        $numInvItems = count($invoiceItems);
 
-    $smarty->assign("template", $_GET['template']);
-    $smarty->assign("defaultCustomerID", $_GET['customer_id']);
-    $smarty->assign('defaultInvoice', $invoice);
-    $smarty->assign('defaultInvoiceItems', $invoiceItems);
-    $dynamic_line_items = ($num_inv_items > $dynamic_line_items ? $num_inv_items : $dynamic_line_items);
-
+        $smarty->assign("template", $_GET['template']);
+        $smarty->assign("defaultCustomerID", $_GET['customer_id']);
+        $smarty->assign('defaultInvoice', $invoice);
+        $smarty->assign('defaultInvoiceItems', $invoiceItems);
+        $dynamicLineItems = $numInvItems > $dynamicLineItems ? $numInvItems : $dynamicLineItems;
+    } catch (PdoDbException $pde) {
+        exit("modules/invoices/invoice.php Unexpected error: {$pde->getMessage()}");
+    }
 } else {
-    $smarty->assign("defaultCustomerID" , (empty($defaultCustomer) ? 0 : $defaultCustomer['id']));
+    $smarty->assign("defaultCustomerID" , empty($defaultCustomer) ? 0 : $defaultCustomer['id']);
 }
+
 $smarty->assign("matrix"            , $matrix);
 $smarty->assign("billers"           , $billers);
 $smarty->assign("customers"         , $customers);
@@ -89,6 +99,6 @@ $smarty->assign("defaultTax"        , $defaultTax);
 $smarty->assign("products"          , $products);
 $smarty->assign("preferences"       , $preferences);
 $smarty->assign("defaultPreference" , $defaultPreference);
-$smarty->assign("dynamic_line_items", $dynamic_line_items);
-$smarty->assign("customFields"      , $customFields);
+$smarty->assign("dynamic_line_items", $dynamicLineItems);
 $smarty->assign("defaults"          , $defaults);
+// @formatter:on

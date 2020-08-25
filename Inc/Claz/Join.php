@@ -13,17 +13,20 @@ class Join
 
     private GroupBy $groupBy;
     private OnClause $onClause;
-    private string $table;
+    /**
+     * @var SELECT|string
+     */
+    private $table;
     private string $tableAlias;
     private string $type;
 
     /**
      * Make a JOIN statement
      * @param string $type Join type, <b>INNER</b>, <b>LEFT</b>, <b>RIGHT</b> or <b>FULL</b>.
-     * @param string $table Database table to join. If not present, the database prefix will be added.
+     * @param string|SELECT $table Database table to join. If not present, the database prefix will be added.
      * @param string $tableAlias Alias for table to use for column name references.
      */
-    public function __construct(string $type, string $table, string $tableAlias = "")
+    public function __construct(string $type, $table, string $tableAlias = "")
     {
         $this->type = strtoupper($type);
         if (preg_match(self::JOIN_TYPE, $this->type) != 1) {

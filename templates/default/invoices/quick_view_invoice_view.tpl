@@ -4,7 +4,7 @@
         <th>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.number_short}:</th>
         <td>{$invoice.index_id|htmlsafe}</td>
         <td></td>
-        <th>{$preference.pref_inv_wording} {$LANG.date_upper}:</th>
+        <th>{$preference.pref_inv_wording} {$LANG.date}:</th>
         <td colspan="5">{$invoice.display_date|htmlsafe}</td>
     </tr>
     {$customFields.1}

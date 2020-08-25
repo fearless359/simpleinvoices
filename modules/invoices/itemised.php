@@ -22,8 +22,8 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-include('./modules/invoices/invoice.php');
+include './modules/invoices/invoice.php';
 
-$smarty -> assign('pageActive', 'invoice_new');
-$smarty -> assign('subPageActive', 'invoice_new_itemised');
-$smarty -> assign('active_tab', '#money');
+$smarty->assign('pageActive', 'invoice_new');
+$smarty->assign('subPageActive', 'invoice_new_itemised');
+$smarty->assign('active_tab', '#money');

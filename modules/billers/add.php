@@ -25,7 +25,7 @@ global $smarty;
 Util::directAccessAllowed();
 
 if (!empty($_POST['op']) && $_POST['op'] == 'add') {
-    include ("modules/billers/save.php");
+    include "modules/billers/save.php";
 } else {
     $files = Util::getLogoList();
     $smarty->assign("files", $files);

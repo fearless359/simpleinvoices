@@ -5,28 +5,28 @@ use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
 global $smarty, $LANG;
+
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
 //if valid then do save
 if (isset($_POST['p_description']) && $_POST['p_description'] != "" ) {
-    include("modules/preferences/save.php");
+    include "modules/preferences/save.php";
 }
 
-$preference = Preferences::getOne($_GET['id']);
-$index_group = Preferences::getOne($preference['index_group']);
+$status = [
+    ['id'=>'0','status'=>$LANG['draft']],
+    ['id'=>'1','status'=>$LANG['real']]
+];
+$smarty->assign('status',$status);
 
-$preferences = Preferences::getActivePreferences();
-$defaults = SystemDefaults::loadValues();
-$status = array(array('id'=>'0','status'=>$LANG['draft']), array('id'=>'1','status'=>$LANG['real']));
-$localelist = \Zend_Locale::getLocaleList();
+$preference = Preferences::getOne($_GET['id']);
 
 $smarty->assign('preference',$preference);
-$smarty->assign('defaults',$defaults);
-$smarty->assign('index_group',$index_group);
-$smarty->assign('preferences',$preferences);
-$smarty->assign('status',$status);
-$smarty->assign('localelist',$localelist);
+$smarty->assign('defaults', SystemDefaults::loadValues());
+$smarty->assign('index_group', Preferences::getOne($preference['index_group']));
+$smarty->assign('preferences', Preferences::getActivePreferences());
+$smarty->assign('localelist', Zend_Locale::getLocaleList());
 
 $smarty->assign('pageActive', 'preference');
 

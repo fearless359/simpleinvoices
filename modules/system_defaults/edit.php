@@ -18,21 +18,24 @@ Util::directAccessAllowed();
 
 /**
  * Help function for sorting the language array by name
- * @param $a
- * @param $b
- * @return int
+ * @param object $aVal
+ * @param object $bVal
+ * @return int 1 if $aVal is greater than $bVal; otherwise -1.
  */
-function compareNameIndex($a, $b)
+function compareNameIndex($aVal, $bVal)
 {
-    $a = $a->name . "";
-    $b = $b->name . "";
-    return ($a > $b ? 1 : -1);
+    $aResult = $aVal->name . "";
+    $bResult = $bVal->name . "";
+    return $aResult > $bResult ? 1 : -1;
 }
 
 $defaults = SystemDefaults::loadValues();
+$value = '';
+$description = "{$LANG['no_defaults']}";
+$default = null;
 
-$get_val = (empty($_GET['submit']) ? '' : trim($_GET['submit']));
-switch ($get_val) {
+$getVal = empty($_GET['submit']) ? '' : trim($_GET['submit']);
+switch ($getVal) {
     case "biller":
         $default = "biller";
         $billers = Biller::getAll(true);
@@ -54,7 +57,7 @@ switch ($get_val) {
         break;
 
     case "company_logo":
-        $default     = $get_val;
+        $default     = $getVal;
         $description = "{$LANG[$default]}";
         $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='60' name='value' value='$attribute' required />\n";
@@ -62,7 +65,7 @@ switch ($get_val) {
         break;
 
     case "company_name_item":
-        $default     = $get_val;
+        $default     = $getVal;
         $description = "{$LANG['company_name_item_label']}";
         $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='60' name='value' value='$attribute' required />\n";
@@ -98,7 +101,7 @@ switch ($get_val) {
          * Note: Only show the folder names in src/invoices/templates
          ****************************************************************/
         $handle = opendir("templates/invoices/");
-        $files = array();
+        $files = [];
         while ($template = readdir($handle)) {
             if ($template != ".." &&
                 $template != "." &&
@@ -157,21 +160,30 @@ switch ($get_val) {
         break;
 
     case "delete":
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
+        $array = [
+            0 => $LANG['disabled'],
+            1 => $LANG['enabled']
+        ];
         $default     = "delete";
         $description = $LANG['delete'];
         $value       = Util::dropDown($array, $defaults['delete']);
         break;
 
     case "expense":
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
+        $array = [
+            0 => $LANG['disabled'],
+            1 => $LANG['enabled']
+        ];
         $default     = "expense";
-        $description = $LANG['expense'];
+        $description = $LANG['expense_uc'];
         $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
     case "inventory":
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
+        $array = [
+            0 => $LANG['disabled'],
+            1 => $LANG['enabled']
+        ];
         $default     = "inventory";
         $description = $LANG['inventory'];
         $value       = Util::dropDown($array, $defaults[$default]);
@@ -186,7 +198,7 @@ switch ($get_val) {
         $description  = $LANG['language'];
         $value        = "<select name='value'>";
         foreach ($languages as $language) {
-            $selected = ($language->shortname == $lang ? " selected" : '');
+            $selected = $language->shortname == $lang ? " selected" : '';
             $value   .= '  <option' . $selected . ' value="' . Util::htmlsafe($language->shortname) . '">' . "\n";
             $value   .= '    ' . Util::htmlsafe("$language->name ($language->englishname) ($language->shortname)") . "\n";
             $value   .= '  </option>' . "\n";
@@ -203,14 +215,17 @@ switch ($get_val) {
         break;
 
     case "logging":
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
+        $array = [
+            0 => $LANG['disabled'],
+            1 => $LANG['enabled']
+        ];
         $default     = "logging";
         $description = $LANG['logging'];
         $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
     case 'password_min_length':
-        $default     = $get_val;
+        $default     = $getVal;
         $description = "{$LANG[$default]}";
         $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='2' name='value' value='$attribute' required min='6' max='16' />\n";
@@ -218,35 +233,17 @@ switch ($get_val) {
         break;
 
     case 'password_lower':
-        $default     = $get_val;
-        $description = "{$LANG[$default]}";
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = Util::dropDown($array, $defaults[$default]);
-        $found       = true;
-        break;
-
     case 'password_number':
-        $default     = $get_val;
-        $description = "{$LANG[$default]}";
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = Util::dropDown($array, $defaults[$default]);
-        $found       = true;
-        break;
-
     case 'password_special':
-        $default     = $get_val;
-        $description = "{$LANG[$default]}";
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = Util::dropDown($array, $defaults[$default]);
-        $found       = true;
-        break;
-
     case 'password_upper':
-        $default     = $get_val;
+        $default     = $getVal;
         $description = "{$LANG[$default]}";
-        $array       = array(0 => $LANG['disabled'], 1 => $LANG['enabled']);
-        $value       = Util::dropDown($array, $defaults[$default]);
-        $found       = true;
+        $array = [
+            0 => $LANG['disabled'],
+            1 => $LANG['enabled']
+        ];
+        $value = Util::dropDown($array, $defaults[$default]);
+        $found = true;
         break;
 
     case "preference_id":
@@ -260,7 +257,7 @@ switch ($get_val) {
             $value  .= '  <option value="0"></option>' . "\n";
 
             foreach ($preferences as $preference) {
-                $selected = ($preference['pref_id'] == $defaults['preference'] ? ' selected style="font-weight:bold"' : '');
+                $selected = $preference['pref_id'] == $defaults['preference'] ? ' selected style="font-weight:bold"' : '';
                 $escaped = Util::htmlsafe($preference['pref_description']);
                 $value .= '  <option' . $selected . ' value="' . $preference['pref_id'] . '">' . "\n";
                 $value .= '    ' . $escaped . "\n";
@@ -272,7 +269,10 @@ switch ($get_val) {
         break;
 
     case "product_attributes":
-        $array       = array(DISABLED => $LANG['disabled'], ENABLED => $LANG['enabled']);
+        $array = [
+            DISABLED => $LANG['disabled'],
+            ENABLED => $LANG['enabled']
+        ];
         $default     = "product_attributes";
         $description = $LANG['product_attributes'];
         $value       = Util::dropDown($array, $defaults[$default]);
@@ -281,7 +281,7 @@ switch ($get_val) {
     case "session_timeout":
         // The $description, $default, $value fields are required to set up the generic
         // edit template for this extension value.
-        $default     = $get_val;
+        $default     = $getVal;
         $description = "{$LANG[$default]}";
         $attribute   = Util::htmlsafe($defaults[$default]);
         $value       = "<input type='text' size='4' name='value' value='$attribute' min='15' max='999' />\n";
@@ -317,14 +317,16 @@ switch ($get_val) {
         // The following logic allows the edit of system default extension
         // values.  The content of the extension edit.tpl file will be inserted
         // loaded below and all the generic edit template to display them.
-        // The $get_val variable contains the field name that is to be edited.
+        // The $getVal variable contains the field name that is to be edited.
         $found = false;
         if ($performExtensionPhpInsertions) {
             foreach ($extensionPhpInsertFiles as $phpfile) {
                 if ($phpfile['module'] == 'system_defaults' &&
                     $phpfile['view'] == 'edit') {
                     include_once $phpfile['file'];
-                    if ($found) break;
+                    if ($found) {
+                        break;
+                    }
                 }
             }
         }

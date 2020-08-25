@@ -2,7 +2,6 @@
 
 use Inc\Claz\CustomFields;
 use Inc\Claz\CustomFlags;
-use Inc\Claz\Extensions;
 use Inc\Claz\ProductAttributes;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
@@ -18,7 +17,7 @@ $cflgs = CustomFlags::getCustomFlagsQualified('products', true);
 $taxes = Taxes::getActiveTaxes();
 // if valid then do save
 if (!empty($_POST['description'])) {
-    include("modules/products/save.php");
+    include "modules/products/save.php";
 } else {
     $defaults = SystemDefaults::loadValues();
     $smarty->assign("defaults", $defaults);

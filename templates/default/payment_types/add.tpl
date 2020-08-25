@@ -54,6 +54,6 @@
             </div>
         </div>
         <input type="hidden" name="op" value="add"/>
-        <input type="hidden" name="domain_id" value="{$domainId}" />
+        <input type="hidden" name="domain_id" value="{$domain_id}" />
     </form>
 {/if}

@@ -245,7 +245,9 @@ class Request
                 $pdoDb->setExcludedFields($this->excludedFields);
             }
             // @formatter:on
-            return $pdoDb->request($this->request, $this->table);
+
+            $result = $pdoDb->request($this->request, $this->table);
+            return $result;
         } catch (PdoDbException $pde) {
             throw new PdoDbException("Request::performRequest() - Error: " . $pde->getMessage());
         }

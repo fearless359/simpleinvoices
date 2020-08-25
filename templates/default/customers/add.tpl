@@ -209,6 +209,6 @@
             </div>
         </div>
         <input type="hidden" name="op" value="add"/>
-        <input type="hidden" name="domain_id" value="{if isset($domainId)}{$domainId}{/if}"/>
+        <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
     </form>
 {/if}

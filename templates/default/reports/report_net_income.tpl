@@ -1,4 +1,5 @@
-<div class="si_center"><h2>Net Income Report</h2></div>
+<!--suppress HtmlFormInputWithoutLabel -->
+<div class="si_center"><h2>{$LANG['net_income_report']}</h2></div>
 {if $menu}
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=reports&amp;view=report_net_income">
@@ -6,7 +7,7 @@
             <tr>
                 <td colspan="2"
                     style="font-weight: bold; font-size: 1.5em; text-align: center; text-decoration: underline;">
-                    Report Period
+                    {$LANG['report_period']}
                 </td>
             </tr>
             <tr>
@@ -14,7 +15,7 @@
             </tr>
             <tr style="margin: 0 auto; width: 100%;">
                 <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
-                    Start date:
+                    {$LANG['activity_uc']} {$LANG['start_date']}:
                 </td>
                 <td>
                     <input type="text"
@@ -24,7 +25,7 @@
             </tr>
             <tr style="margin: 0 auto; width: 100%;">
                 <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
-                    End date:
+                    {$LANG['activity_uc']} {$LANG['end_date']}:
                 </td>
                 <td>
                     <input type="text"
@@ -34,24 +35,24 @@
             </tr>
             <tr>
                 <td class="details_screen" style="text-align:right; padding-right: 10px; white-space: nowrap; width: 47%;">
-                    Customers:
+                    {$LANG['customers']}:
                 </td>
                 <td>
                     <select name="customer_id">
-                        <option {if empty($customer_id)}selected{/if} value="0">All Customers</option>
+                        <option {if empty($customer_id)}selected{/if} value=0>{$LANG['all']}&nbsp;{$LANG['customers']}</option>
                         {foreach from=$customers item=customer}
-                            <option {if $customer.id == $customer_id}selected{/if} value="{$customer.id}">{$customer.name} (Last Activity: {$customer.last_activity_date})</option>
+                            <option {if $customer.id == $customer_id}selected{/if} value={$customer.id}>{$customer.name} ({$LANG['last_activity']}: {$customer.last_activity_date})</option>
                         {/foreach}
                     </select>
                 </td>
             </tr>
             <tr>
                 <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
-                    Exclude Custom Flag #:
+                    {$LANG['exclude']} {$LANG['custom_flag_uc']} #:
                 </td>
                 <td>
                     <select name="custom_flag">
-                        <option value="0">None</option>
+                        <option value="0">{$LANG['none']}</option>
                         {foreach from=$custom_flag_labels key=ndx item=label}
                             {if $label != ''}
                                 <option value="{$ndx+1}" {if $custom_flag - 1 == $ndx} selected {/if}>
@@ -64,7 +65,7 @@
             </tr>
             <tr>
                 <td class="details_screen" style="text-align:right; padding-right: 10px; white-space: nowrap; width: 47%;">
-                    Display Detail:
+                    {$LANG['display']} {$LANG['detail']}:
                 </td>
                 <td><input type="checkbox" name="display_detail"
                             {if isset($smarty.post.display_detail) && $smarty.post.display_detail == "yes"} checked {/if} value="yes"/>
@@ -78,7 +79,7 @@
                             <td>
                                 <button type="submit" class="positive" name="submit" value="statement_report">
                                     <img class="button_img" src="../../../images/tick.png" alt=""/>
-                                    Run Report
+                                    {$LANG['run_report']}
                                 </button>
                             </td>
                         </tr>
@@ -95,60 +96,60 @@
     {/if}
     <div style="text-align: center;">
         <strong>
-            {$LANG.total_income}&nbsp;{$LANG.for_the_period_upper}:&nbsp;&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}
+            {$LANG.total_income}&nbsp;{$LANG.for_the_period_uc}:&nbsp;&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}
         </strong>
     </div>
     <br/>
-    <table class="center" style="width:90%">
+    <table class="center" style="width:90%;">
         <thead>
         <tr style="font-weight: bold;">
-            <th class="details_screen" width="8%" style="text-align:right;">{$LANG.invoice}</th>
-            <th class="details_screen" width="2%"></th>
-            <th class="details_screen" width="12%" style="text-align:center;">{$LANG.date_upper}</th>
-            <th class="details_screen" width="2%"></th>
-            <th class="details_screen" style="text-align:center;">{$LANG.customer}</th>
-            <th class="details_screen" width="2%"></th>
-            <th class="details_screen" width="13%" style="text-align:right;">{$LANG.invoice_total}</th>
-            <th class="details_screen" width="2%"></th>
-            <th class="details_screen" width="13%" style="text-align:right;">{$LANG.total_paid}</th>
-            <th class="details_screen" width="2%"></th>
-            <th class="details_screen" width="13%" style="text-align:right;">{$LANG.total_paid_this_period}</th>
+            <th class="details_screen si_right" style="width:8%;">{$LANG.invoice} #</th>
+            <th class="details_screen" style="width:2%;"></th>
+            <th class="details_screen si_center" style="width:10%;">{$LANG.invoice} {$LANG.open} {$LANG.date}</th>
+            <th class="details_screen" style="width:2%;"></th>
+            <th class="details_screen si_center" style="width:23%;">{$LANG.customer}</th>
+            <th class="details_screen" style="width:2%;"></th>
+            <th class="details_screen si_right" style="width:10%;">{$LANG.invoice_total}</th>
+            <th class="details_screen" style="width:2%;"></th>
+            <th class="details_screen si_right" style="width:10%;">{$LANG.total_paid}</th>
+            <th class="details_screen" style="width:2%;"></th>
+            <th class="details_screen si_right" style="width:15%;">{$LANG.total_paid_this_period}</th>
         </tr>
         </thead>
         <tbody>
         {section name=idx loop=$invoices}
             <tr>
-                <td class="details_screen" style="text-align:right;">
+                <td class="details_screen si_right">
                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoices[idx]->id}&amp;action=view">
-                        {$invoices[idx]->number}
+                        {$invoices[idx]->indexId}
                     </a>
                 </td>
                 <td>&nbsp;</td>
-                <td class="details_screen" style="text-align:center;">{$invoices[idx]->date|date_format:"%m/%d/%Y"}</td>
+                <td class="details_screen si_center">{$invoices[idx]->date|date_format:"%m/%d/%Y"}</td>
                 <td>&nbsp;</td>
-                <td class="details_screen">{$invoices[idx]->customer}</td>
+                <td class="details_screen">{$invoices[idx]->customerName}</td>
                 <td>&nbsp;</td>
-                <td class="details_screen" style="text-align:right;">
-                    {$invoices[idx]->total_amount|siLocal_number}
+                <td class="details_screen si_right">
+                    {$invoices[idx]->totalAmount|siLocal_number}
                 </td>
                 <td>&nbsp;</td>
-                <td class="details_screen" style="text-align:right;">
-                    {$invoices[idx]->total_payments|siLocal_number}
+                <td class="details_screen si_right">
+                    {$invoices[idx]->totalPayments|siLocal_number}
                 </td>
                 <td>&nbsp;</td>
-                <td class="details_screen"
-                    style="text-align:right;{if $smarty.section.idx.last}text-decoration:underline;{/if}">
-                    {$invoices[idx]->total_period_payments|siLocal_number}
+                <td class="details_screen si_right"
+                    {if $smarty.section.idx.last}style="text-decoration:underline;"{/if}>
+                    {$invoices[idx]->totalPeriodPayments|siLocal_number}
                 </td>
             <tr>
             {if $display_detail}
                 {foreach $invoices[idx]->items as $item}
                     <tr>
                         <td>&nbsp;</td>
-                        <td style="text-align:right;">Description:</td>
+                        <td class="si_right">{$LANG['description']}:</td>
                         <td colspan="4">{$item->description}</td>
-                        <td style="text-align:right;">Amount:</td>
-                        <td style="text-align:right;">{$item->amount|siLocal_number}</td>
+                        <td class="si_right">{$LANG['amount_uc']}:</td>
+                        <td class="si_right">{$item->amount|siLocal_number}</td>
                     </tr>
                 {/foreach}
             {/if}
@@ -156,7 +157,7 @@
 
         <tr>
             <td colspan="10">&nbsp;</td>
-            <td class="details_screen" style="text-align:right;">&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}</td>
+            <td class="details_screen si_right">&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}</td>
         </tr>
 
         </tbody>
