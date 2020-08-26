@@ -2,7 +2,7 @@
   <td class="tbl1"><b>{$LANG.quantity_short}</b></td>
   <td class="tbl1" colspan="3"><b>{$LANG.item}</b></td>
   <td class="tbl1"><b>{$LANG.unit_cost}</b></td>
-  <td class="tbl1" align="right"><b>{$LANG.price}</b></td>
+  <td class="tbl1 si_right"><b>{$LANG.price}</b></td>
 </tr>
 
 {foreach from=$invoiceItems item=invoiceItem}
@@ -61,7 +61,7 @@
     <td class="tbl1-bottom">
       {$preference.pref_currency_sign}{$invoiceItem.unit_price|siLocal_number}
     </td>
-    <td class="tbl1-right tbl1-bottom" align="right">
+    <td class="tbl1-right tbl1-bottom si_right">
       {$preference.pref_currency_sign} {$invoiceItem.total|siLocal_number}
     </td>
   </tr>
@@ -71,7 +71,7 @@
     <td class="tbl1-left tbl1-right" colspan="6"><br /></td>
   </tr>
   <tr>
-    <td class="tbl1-left tbl1-right" colspan="6" align="left"><b>{$LANG.notes}:</b></td>
+    <td class="tbl1-left tbl1-right" colspan="6"><b>{$LANG.notes}:</b></td>
   </tr>
   <tr>
     <td class="tbl1-left tbl1-right" colspan="6">{$invoice.note|unescape}</td>
@@ -86,8 +86,8 @@
 {/php}
 <tr>
   <td colspan="3"></td>
-  <td align="right" colspan="2">{$LANG.gross_total}</td>
-  <td align="right">
+  <td class="si_right" colspan="2">{$LANG.gross_total}</td>
+  <td class="si_right">
     {$preference.pref_currency_sign}{$invoice_gross_total|siLocal_number}
   </td>
 </tr>

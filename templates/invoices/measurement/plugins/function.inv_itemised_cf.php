@@ -2,10 +2,15 @@
 
 use Inc\Claz\Util;
 
-function smarty_function_inv_itemised_cf($params, &$smarty)
+/**
+ * Generate custom field table detail line for itemised invoice.
+ * @param array $params
+ * @param object $smarty
+ * @noinspection PhpUnusedParameterInspection
+ */
+function smarty_function_inv_itemised_cf(array $params, object &$smarty): void
 {
     if ($params['field'] != null) {
-        $print_cf .= "<td width=50%>" . Util::htmlsafe($params[label]) . ": " . Util::htmlsafe($params[field]) . "</td>";
-        echo $print_cf;
+        echo "<td style='width:50%;'>" . Util::htmlsafe($params['label']) . ": " . Util::htmlsafe($params['field']) . "</td>";
     }
 }

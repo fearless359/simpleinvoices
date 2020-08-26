@@ -1,15 +1,19 @@
 <?php
 
-function smartyFunctionsDoTr($params, &$smarty)
+/**
+ * @param array $params
+ * @param object $smarty
+ * @return string|void
+ * @noinspection PhpUnusedParameterInspection
+ */
+function smartyFunctionsDoTr(array $params, object &$smarty)
 {
     if ($params['number'] == 2) {
-        $newTr = "</tr><tr class='$params[class]'>";
-        return $newTr;
+        return "</tr><tr class='$params[class]'>";
     }
 
     if ($params['number'] == 4) {
-        $newTr = "</tr><tr class='$params[class]'>";
-        return $newTr;
+        return "</tr><tr class='$params[class]'>";
     }
 
 }

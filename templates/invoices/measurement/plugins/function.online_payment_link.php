@@ -3,7 +3,13 @@
 use Inc\Claz\DomainId;
 use Inc\Claz\Util;
 
-function smarty_function_online_payment_link($params, &$smarty)
+/**
+ * Generate link for online payments
+ * @param array $params
+ * @param object $smarty
+ * @noinspection PhpUnusedParameterInspection
+ */
+function smarty_function_online_payment_link(array $params, object &$smarty): void
 {
     $domainId = DomainId::get($params['domain_id']);
 
@@ -20,7 +26,7 @@ function smarty_function_online_payment_link($params, &$smarty)
                     '&no_shipping=1&no_note=1&custom=domain_id:' . $domainId . ';" >';
 
         if ($params['include_image'] == "true") {
-            $link .= "<img src='{$url}/images/pay_with_paypal.gif'/>";
+            $link .= "<img src='{$url}/images/pay_with_paypal.gif' alt=''/>";
         } else {
             $link .= $params['link_wording'];
         }
@@ -39,7 +45,7 @@ function smarty_function_online_payment_link($params, &$smarty)
 				   '&return=http://vcsweb.com.au&no_shipping=1&no_note=1" >';
 
         if ($params['include_image'] == "true") {
-            $link .= "<img src='{$url}/images/pay_with_eway.gif'/>";
+            $link .= "<img src='{$url}/images/pay_with_eway.gif' alt=''/>";
         } else {
             $link .= $params['link_wording'];
         }

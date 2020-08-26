@@ -1,5 +1,6 @@
 {include file="templates/default/headline.xml"}
 <!DOCTYPE html>
+<!--suppress HtmlRequiredLangAttribute -->
 <html>
 <head>
     {strip}
@@ -19,6 +20,7 @@
         <link href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
         <link href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
         <link href="include/jquery/jQuery-Validation-Engine-master/css/validationEngine.jquery.css" rel="stylesheet" type="text/css"/>
+        <!--suppress CssUnusedSymbol -->
         <style>
             /* Settings for the validationEngine */
             .formError {

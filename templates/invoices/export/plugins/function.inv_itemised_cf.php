@@ -1,12 +1,16 @@
 <?php
 use Inc\Claz\Util;
 
-function smarty_function_inv_itemised_cf($params, &$smarty)
+/**
+ * Generate table detail tag line for custom field
+ * @param array $params
+ * @param object $smarty
+ * @noinspection PhpUnusedParameterInspection
+ */
+function smarty_function_inv_itemised_cf(array $params, object &$smarty): void
 {
-    //$print_cf ="testsd";
-    if ($params['field'] != null) {
-        $print_cf .= "<td width=50%>" . Util::htmlsafe($params[label]) . ": " . Util::htmlsafe($params[field]) . "</td>";
-        echo $print_cf;
+    if (isset($params['field'])) {
+        echo "<td style='width;50%;'>" . Util::htmlsafe($params['label']) . ": " . Util::htmlsafe($params['field']) . "</td>";
     }
 }
 

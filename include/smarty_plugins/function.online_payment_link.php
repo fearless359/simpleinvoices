@@ -1,15 +1,20 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 use Inc\Claz\DomainId;
 use Inc\Claz\Util;
 
-function smarty_function_online_payment_link($params, &$smarty) {
+/**
+ * Get online payment link
+ * @param array $params
+ * @param $smarty
+ */
+function smarty_function_online_payment_link(array $params, &$smarty) {
     global $siUrl;
 
     $domainId = DomainId::get($params['domain_id']);
     $url = Util::getURL();
     if (in_array("paypal", explode(",", $params['type']))) {
-        $link = "<a href=\"https://www.paypal.com/xclick/?business="        . urlencode($params['business']) .
+        $link = "<a href=\"https://www.paypal.com/xclick/?business="         . urlencode($params['business']) .
                                                         "&item_name="        . urlencode($params['item_name']) .
                                                         "&invoice="          . urlencode($params['invoice']) .
                                                         "&amount="           . urlencode(number_format($params['amount'], 2, '.', '')) .
@@ -21,7 +26,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
                                                         "&custom=domain_id:" . urlencode($domainId) . "; \">";
 
         if ($params['include_image'] == "true") {
-            $link .= "<img border='0' src='" . urlsafe($url) . "/images/pay_with_paypal.gif'/>";
+            $link .= "<img border='0' src='" . Util::urlsafe($url) . "/images/pay_with_paypal.gif'/>";
         } else {
             $link .= Util::htmlsafe($params['link_wording']);
         }
@@ -41,7 +46,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
                                                         "&no_note=1\">";
         // $formatter:on
         if ($params['include_image'] == "true") {
-            $link .= "<img border='0' src='" . urlsafe($url) . "/images/pay_with_eway.gif'/>";
+            $link .= "<img border='0' src='" . Util::urlsafe($url) . "/images/pay_with_eway.gif'/>";
         } else {
             $link .= Util::htmlsafe($params['link_wording']);
         }
@@ -70,7 +75,7 @@ function smarty_function_online_payment_link($params, &$smarty) {
                                                                         "&pg_save_client=2'>";
         // @formatter:on
         if ($params['include_image'] == "true") {
-            $link .= "<img border='0' src='" . urlsafe($url) . "/images/pay_with_ach.gif'/>";
+            $link .= "<img border='0' src='" . Util::urlsafe($url) . "/images/pay_with_ach.gif'/>";
         } else {
             $link .= Util::htmlsafe($params['link_wording']);
         }

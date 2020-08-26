@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUndefinedFieldInspection */
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;

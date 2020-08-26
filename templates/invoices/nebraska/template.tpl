@@ -1,3 +1,4 @@
+<!--suppress HtmlRequiredLangAttribute -->
 <html>
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -131,10 +132,10 @@
             </tbody>
          </table>
          <!-- Logo -->
-         <table style="margin-left: auto; margin-right: auto;" style="width:30%;">
+         <table style="margin-left: auto; margin-right: auto; width:30%;">
             <tbody>
                <tr>
-                  <td class="clean center" width="30%">
+                  <td class="clean center" style="width:30%;">
                      <img src="{$logo|urlsafe}" alt="" />
                      <!-- Invoice details -->
                      <h2>{$preference.pref_inv_heading|htmlsafe}</h2>

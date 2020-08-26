@@ -20,7 +20,7 @@ For the Fearless359 releases, Zend Framework is incorporated in the download.
 * Master 2019.2 - [master_2019.2](https://github.com/fearless359/simpleinvoices/archive/master_2019.2.zip) (.zip) PHP 7.2 and up.
   * Library update to move Zend Framework 1 library from locally maintained to Composer maintain version.
 * Master 2020 - [master_2020](https://github.com/fearless359/simpleinvoices/archive/master_2020.zip) (.zip) PHP 7.4 and up.
-  * Updated Used Composer for library maintenance and class autoload. All vendor and node_modules files update to latest version.
+  * Update uses Composer for library maintenance and class autoload. All vendor and node_modules files update to latest version.
 
 ## Documentation
 * [All discussions & help have moved to SimpleInvoices Group Forum](https://simpleinvoices.group)

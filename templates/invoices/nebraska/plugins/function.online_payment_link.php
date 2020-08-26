@@ -1,20 +1,36 @@
 <?php
-function smarty_function_online_payment_link($params, &$smarty) {
-	global $LANG;
-	$domainId = domain_id::get($params['domain_id']);
 
-	$url = getURL();
+use Inc\Claz\DomainId;
+use Inc\Claz\Util;
+
+/**
+ * Generate online payment link.
+ * @param array $params
+ * @param object $smarty
+ * @noinspection PhpUnusedParameterInspection
+ */
+function smarty_function_online_payment_link(array $params, object &$smarty) {
+
+	$domainId = DomainId::get($params['domain_id']);
+
+	$url = Util::getURL();
         if (in_array("paypal",explode(",", $params['type'])))
 	{
 
-		$link = "<a 
-				href=\"https://www.paypal.com/xclick/?business=".urlencode($params['business'])."&item_name=".urlencode($params['item_name'])."&invoice=".urlencode($params['invoice'])."&amount=".urlencode(number_format($params['amount'], 2, '.', ''))."&currency_code=".urlencode($params['currency_code'])."&notify_url=".urlencode($params['notify_url'])."&return=".urlencode($params['return_url'])."&no_shipping=1&no_note=1&custom=domain_id:".urlencode($domainId)."; \">";
+		$link = "<a href=\"https://www.paypal.com/xclick/?business=" . urlencode($params['business']) .
+			"&item_name=" . urlencode($params['item_name']) .
+			"&invoice=" . urlencode($params['invoice']) .
+			"&amount=" . urlencode(number_format($params['amount'], 2, '.', '')) .
+			"&currency_code=" . urlencode($params['currency_code']) .
+			"&notify_url=" . urlencode($params['notify_url']) .
+			"&return=" . urlencode($params['return_url']) .
+			"&no_shipping=1&no_note=1&custom=domain_id:" . urlencode($domainId) . "; \">";
 		
 		if($params['include_image'] == "true")
 		{
-			$link .= "<img border='0' src='".urlsafe($url)."/images/pay_with_paypal.gif'/>";
+			$link .= "<img border='0' src='". Util::urlsafe($url)."/images/pay_with_paypal.gif'/>";
 		} else {
-			$link .= htmlsafe($params['link_wording']);
+			$link .= Util::htmlsafe($params['link_wording']);
 		} 
 		
 		$link .= "</a>";
@@ -26,16 +42,18 @@ function smarty_function_online_payment_link($params, &$smarty) {
 	{
 
 		$link = "<a 
-				href=\"https://www.paypal.com/xclick/?business=".urlencode($params['business']."
-				&item_name=".urlencode($params['item_name'])."&invoice=".urlencode($params['invoice'])."
-				&amount=".urlencode(number_format($params['amount'], 2, '.', ''))."&currency_code=".$params['currency_code'])."
-				&return=http://vcsweb.com.au&no_shipping=1&no_note=1\">";
+				href=\"https://www.paypal.com/xclick/?business=" . urlencode($params['business'] .
+				"&item_name=" . urlencode($params['item_name']) .
+				"&invoice=" . urlencode($params['invoice']).
+				"&amount=" . urlencode(number_format($params['amount'], 2, '.', '')) .
+				"&currency_code=" . $params['currency_code']).
+			    "&return=http://vcsweb.com.au&no_shipping=1&no_note=1\">";
 		
 		if($params['include_image'] == "true")
 		{
-			$link .= "<img border='0' src='".urlsafe($url)."/images/pay_with_eway.gif'/>";
+			$link .= "<img border='0' src='" . Util::urlsafe($url) . "/images/pay_with_eway.gif'/>";
 		} else {
-			$link .= htmlsafe($params['link_wording']);
+			$link .= Util::htmlsafe($params['link_wording']);
 		} 
 		
 		$link .= "</a>";
@@ -45,4 +63,3 @@ function smarty_function_online_payment_link($params, &$smarty) {
 
 }
 
-?>

@@ -214,7 +214,7 @@ class UtilTest extends TestCase
     }
 
     /** @noinspection PhpMethodMayBeStaticInspection */
-    public function testUrlsafe()
+    public function testurlsafe()
     {
         $str = Util::urlsafe('$../(css)/validationEngine.$jquery.css');
         Assert::assertEquals( "../css/validationEngine.jquery.css", $str);
