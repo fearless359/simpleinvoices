@@ -56,7 +56,7 @@
 
         <script src="include/jquery/trix-master/dist/trix.js"></script>
     {/literal}
-    {$extensionJqueryFiles }
+    {$extension_jquery_files }
     {literal}
         <script src="include/jquery/jquery.functions1.js"></script>
     {/literal}

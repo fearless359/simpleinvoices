@@ -188,17 +188,17 @@ class Taxes
 
     /**
      * Calculate the total tax for the line item
-     * @param array $lintItemTaxId Tax values to apply.
+     * @param array $taxIds Tax values to apply.
      * @param int $quantity Number of units.
      * @param float $unitPrice Price of each unit.
      * @return float Total tax
      */
-    public static function getTaxesPerLineItem(array $lintItemTaxId, int $quantity, float $unitPrice): float
+    public static function getTaxesPerLineItem(array $taxIds, int $quantity, float $unitPrice): float
     {
         $taxTotal = 0;
-        if (!empty($lintItemTaxId)) {
-            foreach ($lintItemTaxId as $value) {
-                $tax = self::getOne($value);
+        if (!empty($taxIds)) {
+            foreach ($taxIds as $id) {
+                $tax = self::getOne(intval($id));
                 $taxTotal += self::lineItemTaxCalc($tax, $unitPrice, $quantity);
             }
         }

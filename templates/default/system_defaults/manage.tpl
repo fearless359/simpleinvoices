@@ -166,8 +166,8 @@
         </tr>
 
         <tr>
-            <th>{$LANG.expense}
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.expense} {$LANG.setting}"
+            <th>{$LANG.expense_uc}
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.expense_uc} {$LANG.setting}"
                    rel="index.php?module=documentation&amp;view=view&amp;page=help_expense">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
@@ -346,10 +346,10 @@
         </tr>
 
         {* This section will insert any extensions that add system-default fields *}
-        {if $performExtensionInsertions}
-            {section name=idx loop=$extensionInsertionFiles}
-                {if $extensionInsertionFiles[idx].module  == 'system_defaults'}
-                    {include file=$extensionInsertionFiles[idx].file}
+        {if $perform_extension_insertions}
+            {section name=idx loop=$extension_insertion_files}
+                {if $extension_insertion_files[idx].module  == 'system_defaults'}
+                    {include file=$extension_insertion_files[idx].file}
                 {/if}
             {/section}
         {/if}

@@ -43,30 +43,13 @@ try {
     if ($defaultTemplateSet) {
         $invoice['id'] = null;
     }
-    // @formatter:off
-    $invoiceItems = Invoice::getInvoiceItems ( $masterInvoiceId );
-    $customers    = Customer::getAll( [
-        'enabled_only' => true,
-        'incl_cust_id' => "{$invoice['customer_id']}"
-    ]);
-    $preference   = Preferences::getOne( $invoice ['preference_id'] );
-    $billers      = Biller::getAll(true);
-    $defaults     = SystemDefaults::loadValues();
-    $taxes        = Taxes::getAll();
-    $preferences  = Preferences::getActivePreferences();
-    $products     = Product::getAll(true);
 
-    $customFields = [];
-    for ($idx = 1; $idx <= 4; $idx++) {
-        $customFields[$idx] = CustomFields::showCustomField("invoice_cf{$idx}", $invoice["custom_field{$idx}"],
-                                                            "write", '', "details_screen",
-                                                            '', '', '');
-    }
+    $invoiceItems = Invoice::getInvoiceItems($masterInvoiceId);
 
-    foreach ($invoiceItems as $key =>$val) {
+    foreach ($invoiceItems as $key => $val) {
         // get list of attributes
         $prod = Product::getOne($val['product_id']);
-        $jsonAtt = json_decode ($prod['attribute']);
+        $jsonAtt = json_decode($prod['attribute']);
         if ($jsonAtt !== null) {
             $html = "<tr id='json_html{$key}'><td></td><td colspan='5'><table><tr>";
             foreach ($jsonAtt as $key2 => $val2) {
@@ -145,24 +128,33 @@ try {
             $invoiceItems[$key]['html'] = $html;
         }
     }
+
+    $customFields = [];
+    for ($idx = 1; $idx <= 4; $idx++) {
+        $customFields[$idx] = CustomFields::showCustomField("invoice_cf{$idx}", $invoice["custom_field{$idx}"],
+            "write", '', "details_screen",
+            '', '', '');
+    }
+    // @formatter:off
+    $smarty->assign ("invoice"     , $invoice);
+    $smarty->assign ("invoiceItems", $invoiceItems);
+    $smarty->assign ("lines"       , count ($invoiceItems));
+    $smarty->assign ("customFields", $customFields);
+
+    $smarty->assign ("billers"     , Biller::getAll(true));
+    $smarty->assign ("customers"   , Customer::getAll(['enabled_only' => true, 'incl_cust_id' => "{$invoice['customer_id']}"]));
+    $smarty->assign ("defaults"    , SystemDefaults::loadValues());
+    $smarty->assign ("preference"  , Preferences::getOne($invoice['preference_id']));
+    $smarty->assign ("preferences" , Preferences::getActivePreferences());
+    $smarty->assign ("products"    , Product::getAll(true));
+    $smarty->assign ("taxes"       , Taxes::getAll());
+    // @formatter:on
 } catch (PdoDbException $pde) {
     error_log("modules/invoices/details.php: error " . $pde->getMessage());
     exit('Unable to complete request');
 }
 
-$smarty->assign ("invoice"     , $invoice);
-$smarty->assign ("defaults"    , $defaults);
-$smarty->assign ("invoiceItems", $invoiceItems);
-$smarty->assign ("customers"   , $customers);
-$smarty->assign ("preference"  , $preference);
-$smarty->assign ("billers"     , $billers);
-$smarty->assign ("taxes"       , $taxes);
-$smarty->assign ("preferences" , $preferences);
-$smarty->assign ("products"    , $products);
-$smarty->assign ("customFields", $customFields);
-$smarty->assign ("lines"       , count ($invoiceItems));
+$smarty->assign('pageActive', 'invoice');
+$smarty->assign('subPageActive', 'invoice_edit');
+$smarty->assign('active_tab', '#money');
 
-$smarty->assign ('pageActive'   , 'invoice');
-$smarty->assign ('subPageActive', 'invoice_edit');
-$smarty->assign ('active_tab'   , '#money');
-// @formatter:on

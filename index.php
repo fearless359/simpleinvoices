@@ -300,14 +300,9 @@ Log::out("index.php - After api/xml or ajax", Zend_Log::DEBUG);
 
 $extensionJqueryFiles = "";
 foreach ($extNames as $extName) {
-    if (file_exists("extensions/$extName/include/jquery/$extName.jquery.ext.js")) {
-        // @formatter:off
-        $extensionJqueryFiles .=
-            '<script type="text/javascript" src="extensions/' .
-                     $extName . '/include/jquery/' .
-                     $extName . '.jquery.ext.js">' .
-            '</script>';
-        // @formatter:on
+    $path = "extensions/$extName/include/jquery/$extName.jquery.ext.js";
+    if (file_exists($path)) {
+        $extensionJqueryFiles .=  "<script src='{$path}'></script>";
     }
 }
 $smarty->assign("extension_jquery_files", $extensionJqueryFiles);
