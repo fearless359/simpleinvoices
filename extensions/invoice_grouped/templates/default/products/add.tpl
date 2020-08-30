@@ -17,7 +17,7 @@
           action="index.php?module=products&amp;view=add">
         <table class="center">
             <tr>
-                <th>{$LANG.description}
+                <th>{$LANG.description_uc}
                     <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field" title="{$LANG.required_field}">
                         <img src="{$helpImagePath}required-small.png"/></a>
                 </th>

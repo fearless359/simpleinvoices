@@ -63,7 +63,7 @@
 {if $invoice.type_id == TOTAL_INVOICE}
 <table class='si_invoice_view'>
     <tr class="tr_head">
-        <th colspan="6">{$LANG.description}</th>
+        <th colspan="6">{$LANG.description_uc}</th>
     </tr>
     <tr class="tr_head">
         <td colspan="6">{$invoiceItems[0].description|outhtml}</td>

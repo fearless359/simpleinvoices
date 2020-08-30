@@ -27,7 +27,6 @@ if (empty($_POST['product_id'])) {
 }
 
 if ($op === 'add') {
-error_log(print_r($_POST, true));
     if (Expense::insert()) {
         $displayBlock = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
     }

@@ -97,7 +97,7 @@
         <tr>
             <td class="details_screen"><b>{$LANG.id}</b></td>
             <td>&nbsp;&nbsp;</td>
-            <td class="details_screen"><b>{$LANG.date}</b></td>
+            <td class="details_screen"><b>{$LANG.date_uc}</b></td>
             <td>&nbsp;&nbsp;</td>
             <td class="details_screen"><b>{$LANG.biller}</b></td>
             <td>&nbsp;&nbsp;</td>

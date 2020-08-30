@@ -25,6 +25,7 @@
     <tr>
       <th>{$LANG.actions}</th>
       <th>{$LANG.name}</th>
+      <th>{$LANG.type}</th>
       <th>{$LANG.enabled}</th>
       <th>{$LANG.visible}</th>
     </tr>
@@ -35,14 +36,15 @@
         <td class="si_center">
           <a class="index_table" title="{$product_attribute['vname']}"
              href="index.php?module=product_attribute&amp;view=details&amp;id={$product_attribute['id']}&amp;action=view">
-            <img src="../../../images/view.png" alt="{$product_attribute['vname']}" height="16" border="-5px" />
+            <img src="../../../images/view.png" alt="{$product_attribute['vname']}" height="16" style="border:-5px;"/>
           </a>
           <a class="index_table" title="{$product_attribute['ename']}"
              href="index.php?module=product_attribute&amp;view=details&amp;id={$product_attribute['id']}&amp;action=edit">
-            <img src="../../../images/edit.png" alt="{$product_attribute['ename']}" height="16" border="-5px"/>
+            <img src="../../../images/edit.png" alt="{$product_attribute['ename']}" height="16"  style="border:-5px;"/>
           </a>
         </td>
         <td>{$product_attribute['name']}</td>
+        <td>{$product_attribute['type_name']|capitalize}</td>
         <td class="si_center">
           <span style="display:none">{$product_attribute['enabled_text']}</span>
           <img src="{$product_attribute['enabled_image']}" alt="{$LANG.enabled}">
@@ -61,8 +63,8 @@
       $('#si-data-table').DataTable({
         "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
         "order": [
-          [2, "desc"],
           [3, "desc"],
+          [4, "desc"],
           [1, "asc"]
         ],
         "columnDefs": [

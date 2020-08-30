@@ -11,25 +11,26 @@
 * License:
 *	 GPL v3 or above
 *}
+<!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}" >
     {if $smarty.get.action == "view" }
         <div class="si_form si_form_view">
             <table>
                 <tr>
-                    <th>{$LANG.id}</th>
+                    <th class="details_screen">{$LANG.id}: </th>
                     <td>{$cf.cf_id|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.custom_field_db_field_name}</th>
+                    <th class="details_screen">{$LANG.custom_field_db_field_name}: </th>
                     <td>{$cf.cf_custom_field|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.custom_field}</th>
+                    <th class="details_screen">{$LANG.custom_field}: </th>
                     <td>{$cf.name|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.custom_label}</th>
+                    <th class="details_screen">{$LANG.custom_label}: </th>
                     <td>{$cf.cf_custom_label|htmlsafe}</td>
                 </tr>
             </table>
@@ -48,40 +49,41 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.id}</th>
-                    <td>{$cf.cf_id|htmlsafe}</td>
+                    <th class="details_screen">{$LANG.id}: </th>
+                    <td class="si_input">{$cf.cf_id|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.custom_field_db_field_name}</th>
-                    <td>{$cf.cf_custom_field|htmlsafe}</td>
+                    <th class="details_screen">{$LANG.custom_field_db_field_name}: </th>
+                    <td class="si_input">{$cf.cf_custom_field|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.custom_field}</th>
-                    <td>{$cf.name|htmlsafe}</td>
+                    <th class="details_screen">{$LANG.custom_field}: </th>
+                    <td class="si_input">{$cf.name|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.custom_label}</th>
-                    <td><input type="text" name="cf_custom_label" id="cf_custom_label_maint" size="25" autofocus
-                               value="{if isset($cf.cf_custom_label)}{$cf.cf_custom_label|htmlsafe}{/if}"/></td>
+                    <th class="details_screen">{$LANG.custom_label}: </th>
+                    <td>
+                        <input type="text" name="si_input cf_custom_label" id="cf_custom_label_maint" size="25" autofocus tabindex="10"
+                               value="{if isset($cf.cf_custom_label)}{$cf.cf_custom_label|htmlsafe}{/if}"/>
+                    </td>
                 </tr>
                 <tr>
-                    <th>
-                        {$LANG.clear_data}
+                    <th class="details_screen">{$LANG.clear_data}:
                         <a class="cluetip" title="{$LANG.reset_custom_flags}" tabindex="-1"
                            href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_reset_custom_flags_products">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="checkbox" name="clear_data" id="clear_data_option" value="yes" disabled/></td>
+                    <td><input type="checkbox" name="clear_data" id="clear_data_option" class="si_input" value="yes" disabled tabindex="20"/></td>
                 </tr>
             </table>
 
             <div class="si_toolbar si_toolbar_form">
-                <button type="submit" class="positive" name="save_custom_field" value="{$LANG.save}">
+                <button type="submit" class="positive" name="save_custom_field" value="{$LANG.save}" tabindex="30">
                     <img class="button_img" src="../../../images/tick.png" alt=""/>
                     {$LANG.save}
                 </button>
-                <a href="index.php?module=custom_fields&amp;view=manage" class="negative">
+                <a href="index.php?module=custom_fields&amp;view=manage" class="negative" tabindex="40">
                     <img src="../../../images/cross.png" alt="" />
                     {$LANG.cancel}
                 </a>

@@ -51,22 +51,14 @@
             {if isset($subPageActive) && $subPageActive == "invoice_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.quick_view} </a></li>{/if}
             <!-- SECTION:new_invoice -->
-            <li><a {if isset($pageActive) && $pageActive== "invoice_new"}class="active" {/if}id="invoice_dialog" href="index.php?module=invoices&amp;view=itemised">{$LANG.new_invoice}</a></li>
-            {if isset($subPageActive) && $subPageActive == "invoice_new_itemised"}
-                <li><a class="active active_subpage" href="#">{$LANG.itemised}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "invoice_new_total"}
-                <li><a class="active active_subpage" href="#">{$LANG.total}</a></li>{/if}
+{*            <li><a {if isset($pageActive) && $pageActive== "invoice_new"}class="active" {/if}id="invoice_dialog" href="index.php?module=invoices&amp;view=itemised">{$LANG.new_invoice}</a></li>*}
+{*            {if isset($subPageActive) && $subPageActive == "invoice_new_itemised"}*}
+{*                <li><a class="active active_subpage" href="#">{$LANG.itemised}</a></li>{/if}*}
+{*            {if isset($subPageActive) && $subPageActive == "invoice_new_total"}*}
+{*                <li><a class="active active_subpage" href="#">{$LANG.total}</a></li>{/if}*}
             <!-- SECTION:expense -->
             {if $defaults.expense == $smarty.const.ENABLED}
-                <li><a {if isset($pageActive) && $pageActive == "expense"}class="active" {/if}href="index.php?module=expense&amp;view=manage">{$LANG.expenses_uc}</a></li>
-                {if isset($pageActive) && $pageActive == "expense"}
-                    {if isset($subPageActive) && $subPageActive == "edit"}
-                        <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-                    {if isset($subPageActive) && $subPageActive == "view"}
-                        <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-                    {if isset($subPageActive) && $subPageActive == "add" }
-                        <li><a class="active active_subpage" href="#">{$LANG.add }</a></li>{/if}
-                {/if}
+                <!-- SECTION:expense_accounts -->
                 <li><a {if isset($pageActive) && $pageActive== "expense_account"}class="active" {/if}href="index.php?module=expense_account&amp;view=manage">{$LANG.expense_accounts}</a></li>
                 {if isset($pageActive) && $pageActive == "expense_account"}
                     {if isset($subPageActive) && $subPageActive == "edit"}
@@ -76,15 +68,17 @@
                     {if isset($subPageActive) && $subPageActive == "add" }
                         <li><a class="active active_subpage" href="#">{$LANG.add }</a></li>{/if}
                 {/if}
+                <!-- SECTION:expenses -->
+                <li><a {if isset($pageActive) && $pageActive == "expense"}class="active" {/if}href="index.php?module=expense&amp;view=manage">{$LANG.expenses_uc}</a></li>
+                {if isset($pageActive) && $pageActive == "expense"}
+                    {if isset($subPageActive) && $subPageActive == "edit"}
+                        <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+                    {if isset($subPageActive) && $subPageActive == "view"}
+                        <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+                    {if isset($subPageActive) && $subPageActive == "add" }
+                        <li><a class="active active_subpage" href="#">{$LANG.add }</a></li>{/if}
+                {/if}
             {/if}
-            <!-- SECTION:recurrence -->
-            <li><a {if isset($pageActive) && $pageActive== "cron"} class="active"{/if} href="index.php?module=cron&amp;view=manage">{$LANG.recurrence}</a></li>
-            {if isset($subPageActive) && $subPageActive == "cron_add"}
-                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "cron_edit"}
-                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "cron_view"}
-                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             <!-- SECTION:payments -->
             <li><a {if isset($pageActive) && $pageActive== "payment"}class="active" {/if}href="index.php?module=payments&amp;view=manage">{$LANG.payments}</a></li>
             {if isset($subPageActive) && $subPageActive == "payment_process"}
@@ -95,19 +89,19 @@
                 <li><a class="active active_subpage" href="#">{$LANG.payments_filtered} {$preference.pref_inv_wording|htmlsafe} {$smarty.get.id|htmlsafe}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "payment_filter_customer"}
                 <li><a class="active active_subpage" href="#">{$LANG.payments_filtered_customer} '{$customer.name}'</a></li>{/if}
+            <!-- SECTION:recurrence -->
+            <li><a {if isset($pageActive) && $pageActive== "cron"} class="active"{/if} href="index.php?module=cron&amp;view=manage">{$LANG.recurrence}</a></li>
+            {if isset($subPageActive) && $subPageActive == "cron_add"}
+                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "cron_edit"}
+                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "cron_view"}
+                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
         </ul>
     </div>
     <!-- SECTION:people -->
     <div id="people">
         <ul class="subnav">
-            <!-- SECTION:customers -->
-            <li><a {if isset($pageActive) && $pageActive== "customer"}class="active" {/if}href="index.php?module=customers&amp;view=manage">{$LANG.customers}</a></li>
-            {if isset($subPageActive) && $subPageActive == "customer_add"}
-                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "customer_view"}
-                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "customer_edit"}
-                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:billers -->
             <li><a {if isset($pageActive) && $pageActive== "biller"}class="active" {/if}href="index.php?module=billers&amp;view=manage">{$LANG.billers}</a></li>
             {if isset($subPageActive) && $subPageActive == "biller_add"}
@@ -115,6 +109,14 @@
             {if isset($subPageActive) && $subPageActive == "biller_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "biller_edit"}
+                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+            <!-- SECTION:customers -->
+            <li><a {if isset($pageActive) && $pageActive== "customer"}class="active" {/if}href="index.php?module=customers&amp;view=manage">{$LANG.customers}</a></li>
+            {if isset($subPageActive) && $subPageActive == "customer_add"}
+                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "customer_view"}
+                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "customer_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:users -->
             <li><a {if isset($pageActive) && $pageActive== "user"}class="active" {/if}href="index.php?module=user&amp;view=manage">{$LANG.users}</a></li>
@@ -130,22 +132,22 @@
     <div id="product">
         <ul class="subnav">
             <!-- SECTION:manage_products -->
-            <li><a {if isset($pageActive) && $pageActive== "product_manage"}class="active" {/if}href="index.php?module=products&amp;view=manage">{$LANG.manage_products}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "product_manage"}class="active" {/if}href="index.php?module=products&amp;view=manage">{$LANG.products}</a></li>
             {if isset($subPageActive) && $subPageActive == "product_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "product_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:add_product -->
-            <li><a {if isset($pageActive) && $pageActive== "product_add"}class="active" {/if}href="index.php?module=products&amp;view=add">{$LANG.add_product}</a></li>
-            {if $defaults.inventory == $smarty.const.ENABLED}
-                <li><a {if isset($pageActive) && $pageActive== "inventory"}class="active" {/if}href="index.php?module=inventory&amp;view=manage">{$LANG.inventory}</a></li>
-                {if isset($subPageActive) && $subPageActive == "inventory_view"}
-                    <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-                {if isset($subPageActive) && $subPageActive == "inventory_edit"}
-                    <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-                {if isset($subPageActive) && $subPageActive == "inventory_add"}
-                    <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
-            {/if}
+{*            <li><a {if isset($pageActive) && $pageActive== "product_add"}class="active" {/if}href="index.php?module=products&amp;view=add">{$LANG.add_product}</a></li>*}
+{*            {if $defaults.inventory == $smarty.const.ENABLED}*}
+{*                <li><a {if isset($pageActive) && $pageActive== "inventory"}class="active" {/if}href="index.php?module=inventory&amp;view=manage">{$LANG.inventory}</a></li>*}
+{*                {if isset($subPageActive) && $subPageActive == "inventory_view"}*}
+{*                    <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}*}
+{*                {if isset($subPageActive) && $subPageActive == "inventory_edit"}*}
+{*                    <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}*}
+{*                {if isset($subPageActive) && $subPageActive == "inventory_add"}*}
+{*                    <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}*}
+{*            {/if}*}
             <!-- SECTION:product_attributes -->
             {if $defaults.product_attributes}
                 <li><a {if isset($pageActive) && $pageActive== "product_attribute_manage"}class="active" {/if}href="index.php?module=product_attribute&amp;view=manage">{$LANG.product_attributes}</a></li>
@@ -168,38 +170,19 @@
     <!-- SECTION:setting -->
     <div id="setting" style="float:right;">
         <ul class="subnav">
-            <!-- SECTION:settings -->
-            <li><a {if isset($pageActive) && $pageActive== "setting"}class="active" {/if}href="index.php?module=options&amp;view=index">{$LANG.settings}</a></li>
-            {if isset($subPageActive) && $subPageActive == "setting_extensions"}
-                <li><a class="active active_subpage" href="#">{$LANG.extensions}</a></li>{/if}
-            <!-- SECTION:si_defaults -->
-            <li><a {if isset($pageActive) && $pageActive== "system_default"}class="active" {/if}href="index.php?module=system_defaults&amp;view=manage">{$LANG.si_defaults}</a></li>
-            <!-- SECTION:custom_fields -->
-            <li><a {if isset($pageActive) && $pageActive== "custom_field"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.custom_fields_uc}</a></li>
-            {if isset($subPageActive) && $subPageActive == "custom_fields_view"}
-                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "custom_fields_edit"}
-                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+            <!-- SECTION:db_backup -->
+            <li><a {if isset($pageActive) && $pageActive== "backup"}class="active" {/if}href="index.php?module=options&amp;view=backup_database">{$LANG.db_backup}</a></li>
+            <!-- SECTION:custom_flags -->
             <li><a {if isset($pageActive) && $pageActive == "custom_flags"}class="active" {/if}href="index.php?module=custom_flags&amp;view=manage">{$LANG.custom_flags_uc}</a></li>
             {if isset($subPageActive) && $subPageActive == "custom_flags_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "custom_flags_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-            <!-- SECTION:tax_rates -->
-            <li><a {if isset($pageActive) && $pageActive== "tax_rate"}class="active" {/if}href="index.php?module=tax_rates&amp;view=manage">{$LANG.tax_rates}</a></li>
-            {if isset($subPageActive) && $subPageActive == "tax_rates_add"}
-                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "tax_rates_view"}
+            <!-- SECTION:custom_fields -->
+            <li><a {if isset($pageActive) && $pageActive== "custom_field"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.custom_fields_uc}</a></li>
+            {if isset($subPageActive) && $subPageActive == "custom_fields_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "tax_rates_edit"}
-                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-            <!-- SECTION:invoice_prefs -->
-            <li><a {if isset($pageActive) && $pageActive== "preference"}class="active" {/if}href="index.php?module=preferences&amp;view=manage">{$LANG.inv_prefs}</a></li>
-            {if isset($subPageActive) && $subPageActive == "preferences_add"}
-                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "preferences_view"}
-                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "preferences_edit"}
+            {if isset($subPageActive) && $subPageActive == "custom_fields_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:payment_types -->
             <li><a {if isset($pageActive) && $pageActive== "payment_type"}class="active" {/if}href="index.php?module=payment_types&amp;view=manage">{$LANG.pymt_types}</a></li>
@@ -209,7 +192,28 @@
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "payment_types_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-            <li><a {if isset($pageActive) && $pageActive== "backup"}class="active" {/if}href="index.php?module=options&amp;view=backup_database">{$LANG.db_backup}</a></li>
+            <!-- SECTION:invoice_prefs -->
+            <li><a {if isset($pageActive) && $pageActive== "preference"}class="active" {/if}href="index.php?module=preferences&amp;view=manage">{$LANG.inv_prefs}</a></li>
+            {if isset($subPageActive) && $subPageActive == "preferences_add"}
+                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "preferences_view"}
+                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "preferences_edit"}
+                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+            <!-- SECTION:settings -->
+            <li><a {if isset($pageActive) && $pageActive== "setting"}class="active" {/if}href="index.php?module=options&amp;view=index">{$LANG.settings}</a></li>
+            {if isset($subPageActive) && $subPageActive == "setting_extensions"}
+                <li><a class="active active_subpage" href="#">{$LANG.extensions}</a></li>{/if}
+            <!-- SECTION:si_defaults -->
+            <li><a {if isset($pageActive) && $pageActive== "system_default"}class="active" {/if}href="index.php?module=system_defaults&amp;view=manage">{$LANG.si_defaults}</a></li>
+            <!-- SECTION:tax_rates -->
+            <li><a {if isset($pageActive) && $pageActive== "tax_rate"}class="active" {/if}href="index.php?module=tax_rates&amp;view=manage">{$LANG.tax_rates}</a></li>
+            {if isset($subPageActive) && $subPageActive == "tax_rates_add"}
+                <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "tax_rates_view"}
+                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "tax_rates_edit"}
+                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
         </ul>
     </div>
     <!-- SECTION:tabmenu_end -->

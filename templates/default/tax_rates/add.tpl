@@ -7,7 +7,7 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.description}</th>
+                    <th>{$LANG.description_uc}</th>
                     <td>
                         <input type="text" class="validate[required]" name="tax_description" size="35" tabindex="10"
                                value="{if isset($smarty.post.tax_description)}{$smarty.post.tax_description|htmlsafe}{/if}"/>

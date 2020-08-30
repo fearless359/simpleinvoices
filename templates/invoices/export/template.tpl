@@ -27,7 +27,7 @@
         <td colspan="3">{$invoice.index_id|htmlsafe}</td>
       </tr>
       <tr>
-        <td nowrap>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.date}:</td>
+        <td nowrap>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.date_uc}:</td>
         <td colspan="3">{$invoice.date|htmlsafe}</td>
       </tr>
       <!-- Show the Invoice Custom Fields if valid -->

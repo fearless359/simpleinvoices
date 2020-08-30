@@ -58,13 +58,14 @@ class Inventory
         $tableRows = [];
         foreach ($rows as $row) {
             // @formatter:off
-            $action = "<a class='index_table' title=\"{$row['vname']}\" " .
-                         "href=\"index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                          " />" .
+            $action = "<a class='index_table' title='{$row['vname']}' " .
+                         "href='index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=view'>" .
+                            "<img src='images/view.png' class='action' alt='{$row['vname']}' />" .
+                       "</a>" .
                       "</a>" .
-                      "<a class=\"index_table\" title=\"{$row['ename']}\" " .
-                         "href=\"index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
-                          "<img src=\"images/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
+                      "<a class='index_table' title='{$row['ename']}' " .
+                         "href='index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=edit'>" .
+                          "<img src='images/edit.png' class='action' alt='{$row['ename']}' />" .
                       "</a>";
             // @formatter:on
 

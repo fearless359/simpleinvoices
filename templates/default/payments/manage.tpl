@@ -31,12 +31,12 @@
         <tr>
             <th>{$LANG.actions}</th>
             <th>{$LANG.payment_uc}#</th>
-            <th>{$LANG.invoice}#</th>
+            <th>{$LANG.invoice_uc}#</th>
             <th>{$LANG.customer}</th>
             <th>{$LANG.biller}</th>
             <th>{$LANG.amount_uc}</th>
             <th>{$LANG.type}</th>
-            <th>{$LANG.date}</th>
+            <th>{$LANG.date_uc}</th>
         </tr>
         </thead>
     </table>

@@ -29,7 +29,7 @@
             <td class="si_right" colspan="3">{$invoice.index_id}</td>
         </tr>
         <tr>
-            <td nowrap class="">{$preference.pref_inv_wording} {$LANG.date}:</td>
+            <td nowrap class="">{$preference.pref_inv_wording} {$LANG.date_uc}:</td>
             <td class="si_right" colspan="3">{$invoice.date}</td>
         </tr>
         <!-- Show the Invoice Custom Fields if valid -->
@@ -216,7 +216,7 @@
                 {if isset($invoiceItem.description)}
                     <tr class="">
                         <td class=""></td>
-                        <td class="" colspan="5">{$LANG.description}: {$invoiceItem.description}</td>
+                        <td class="" colspan="5">{$LANG.description_uc}: {$invoiceItem.description}</td>
                     </tr>
                 {/if}
                 <tr class="tbl1-bottom">
@@ -289,7 +289,7 @@
                 </tr>
                 <tr class="">
                     <td class=""></td>
-                    <td class="" colspan="5"><i>{$LANG.description}: </i>{$invoiceItem.description}</td>
+                    <td class="" colspan="5"><i>{$LANG.description_uc}: </i>{$invoiceItem.description}</td>
                 </tr>
                 <tr class="">
                     <td class=""></td>
@@ -306,7 +306,7 @@
         <table class="left" style="width:100%;">
 
             <tr class="col1">
-                <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description}</b></td>
+                <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description_uc}</b></td>
             </tr>
 
             {foreach from=$invoiceItems item= invoiceItem}

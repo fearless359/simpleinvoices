@@ -658,7 +658,7 @@ class Invoice
         $total = $grossTotal + $taxAmount;
 
         // Remove jquery auto-fill description - refer jquery.conf.js.tpl autofill section
-        if ($description == $LANG['description']) {
+        if ($description == $LANG['description_uc']) {
             $description = "";
         }
         $list = ['invoice_id' => $invoiceId,
@@ -762,7 +762,7 @@ class Invoice
         $taxAmount = Taxes::getTaxesPerLineItem($taxIds, $quantity, $unitPrice);
         $grossTotal = $unitPrice * $quantity;
         $total = $grossTotal + $taxAmount;
-        if ($description == $LANG['description']) {
+        if ($description == $LANG['description_uc']) {
             $description = "";
         }
 

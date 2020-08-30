@@ -103,9 +103,9 @@
     <table class="center" style="width:90%;">
         <thead>
         <tr style="font-weight: bold;">
-            <th class="details_screen si_right" style="width:8%;">{$LANG.invoice} #</th>
+            <th class="details_screen si_right" style="width:8%;">{$LANG.invoice_uc} #</th>
             <th class="details_screen" style="width:2%;"></th>
-            <th class="details_screen si_center" style="width:10%;">{$LANG.invoice} {$LANG.open} {$LANG.date}</th>
+            <th class="details_screen si_center" style="width:10%;">{$LANG.invoice_uc} {$LANG.open} {$LANG.date_uc}</th>
             <th class="details_screen" style="width:2%;"></th>
             <th class="details_screen si_center" style="width:23%;">{$LANG.customer}</th>
             <th class="details_screen" style="width:2%;"></th>
@@ -146,7 +146,7 @@
                 {foreach $invoices[idx]->items as $item}
                     <tr>
                         <td>&nbsp;</td>
-                        <td class="si_right">{$LANG['description']}:</td>
+                        <td class="si_right">{$LANG['description_uc']}:</td>
                         <td colspan="4">{$item->description}</td>
                         <td class="si_right">{$LANG['amount_uc']}:</td>
                         <td class="si_right">{$item->amount|siLocal_number}</td>

@@ -12,12 +12,13 @@
 {if !empty($smarty.post.name)}
     {include file="templates/default/customers/save.tpl"}
 {else}
+    <!--suppress HtmlFormInputWithoutLabel -->
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=customers&amp;view=add">
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.customer_name}
+                    <th>{$LANG.customer_name}:
                         <a class="cluetip" href="#"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
                            title="{$LANG.required_field}">
@@ -30,7 +31,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.customer_department}</th>
+                    <th>{$LANG.customer_department}: </th>
                     <td>
                         <input type="text" name="department" id="department" value="{if isset($smarty.post.department)}{$smarty.post.department|htmlsafe}{/if}"
                                size="25" tabindex="15"/>
@@ -42,14 +43,14 @@
                            href="#" class="cluetip" title="{$LANG.customer_contact}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
-                    </th>
+                    : </th>
                     <td>
                         <input type="text" name="attention" value="{if isset($smarty.post.attention)}{$smarty.post.attention|htmlsafe}{/if}"
                                size="25" tabindex="20"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.street}</th>
+                    <th>{$LANG.street}: </th>
                     <td>
                         <input type="text" name="street_address" value="{if isset($smarty.post.street_address)}{$smarty.post.street_address|htmlsafe}{/if}"
                                size="25" tabindex="30"/>
@@ -62,77 +63,77 @@
                            title="{$LANG.street2}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
-                    </th>
+                    : </th>
                     <td><input type="text" name="street_address2" value="{if isset($smarty.post.street_address2)}{$smarty.post.street_address2|htmlsafe}{/if}"
                                size="25" tabindex="40"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.city}</th>
+                    <th>{$LANG.city}: </th>
                     <td><input type="text" name="city" value="{if isset($smarty.post.city)}{$smarty.post.city|htmlsafe}{/if}"
                                size="25" tabindex="50"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.state}</th>
+                    <th>{$LANG.state}: </th>
                     <td><input type="text" name="state" value="{if isset($smarty.post.state)}{$smarty.post.state|htmlsafe}{/if}"
                                size="25" tabindex="60"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.zip}</th>
+                    <th>{$LANG.zip}: </th>
                     <td><input type="text" name="zip_code" value="{if isset($smarty.post.zip_code)}{$smarty.post.zip_code|htmlsafe}{/if}"
                                size="25" tabindex="70"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.country}</th>
+                    <th>{$LANG.country}: </th>
                     <td><input type="text" name="country" value="{if isset($smarty.post.country)}{$smarty.post.country|htmlsafe}{/if}"
                                size="25" tabindex="80"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.phone}</th>
+                    <th>{$LANG.phone}: </th>
                     <td><input type="text" name="phone" value="{if isset($smarty.post.phone)}{$smarty.post.phone|htmlsafe}{/if}"
                                size="25" tabindex="90"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.mobile_phone}</th>
+                    <th>{$LANG.mobile_phone}: </th>
                     <td><input type="text" name="mobile_phone" value="{if isset($smarty.post.mobile_phone)}{$smarty.post.mobile_phone|htmlsafe}{/if}"
                                size="25" tabindex="100"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.fax}</th>
+                    <th>{$LANG.fax}: </th>
                     <td><input type="text" name="fax" value="{if isset($smarty.post.fax)}{$smarty.post.fax|htmlsafe}{/if}"
                                size="25" tabindex="110"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email}</th>
+                    <th>{$LANG.email}: </th>
                     <td><input type="text" name="email" value="{if isset($smarty.post.email)}{$smarty.post.email|htmlsafe}{/if}"
                                size="25" class="validate[required,custom[email]]" tabindex="120"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_holder_name}</th>
+                    <th>{$LANG.credit_card_holder_name}: </th>
                     <td><input type="text" name="credit_card_holder_name"
                                value="{if isset($smarty.post.credit_card_holder_name)}{$smarty.post.credit_card_holder_name|htmlsafe}{/if}"
                                size="25" tabindex="130"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_number}</th>
+                    <th>{$LANG.credit_card_number}: </th>
                     <td><input type="text" name="credit_card_number"
                                value="{if isset($smarty.post.credit_card_number)}{$smarty.post.credit_card_number|htmlsafe}{/if}"
                                size="25" tabindex="140"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_expiry_month}</th>
+                    <th>{$LANG.credit_card_expiry_month}: </th>
                     <td><input type="text" name="credit_card_expiry_month"
                                value="{if isset($smarty.post.credit_card_expiry_month)}{$smarty.post.credit_card_expiry_month|htmlsafe}{/if}"
                                size="5" tabindex="150"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_expiry_year}</th>
+                    <th>{$LANG.credit_card_expiry_year}: </th>
                     <td><input type="text" name="credit_card_expiry_year"
                                value="{if isset($smarty.post.credit_card_expiry_year)}{$smarty.post.credit_card_expiry_year|htmlsafe}{/if}"
                                size="5" tabindex="160"/></td>
                 </tr>
                 {if !empty($customFieldLabel.customer_cf1)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf1|htmlsafe}
+                        <th>{$customFieldLabel.customer_cf1|htmlsafe}:
                             <a class="cluetip" href="#"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                title="{$LANG.custom_fields}">
@@ -145,7 +146,7 @@
                 {/if}
                 {if !empty($customFieldLabel.customer_cf2)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf2|htmlsafe}
+                        <th>{$customFieldLabel.customer_cf2|htmlsafe}:
                             <a class="cluetip" href="#"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                title="{$LANG.custom_fields}">
@@ -158,7 +159,7 @@
                 {/if}
                 {if !empty($customFieldLabel.customer_cf3)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf3|htmlsafe}
+                        <th>{$customFieldLabel.customer_cf3|htmlsafe}:
                             <a class="cluetip" href="#"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                title="{$LANG.custom_fields}">
@@ -171,7 +172,7 @@
                 {/if}
                 {if !empty($customFieldLabel.customer_cf4)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf4|htmlsafe}
+                        <th>{$customFieldLabel.customer_cf4|htmlsafe}:
                             <a class="cluetip" href="#"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
                                title="{$LANG.custom_fields}">
@@ -183,7 +184,7 @@
                     </tr>
                 {/if}
                 <tr>
-                    <th>{$LANG.notes}</th>
+                    <th>{$LANG.notes}: </th>
                     <td>
                         <!--
                         <textarea name="notes" class="editor" tabindex="200">{*if isset($smarty.post.notes)*}{*$smarty.post.notes|outhtml*}{*/if*}</textarea>
@@ -193,7 +194,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.enabled}</th>
+                    <th>{$LANG.enabled}: </th>
                     <td>{html_options name=enabled options=$enabled selected=1 tabindex=210}</td>
                 </tr>
             </table>

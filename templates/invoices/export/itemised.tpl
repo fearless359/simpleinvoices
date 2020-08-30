@@ -14,7 +14,7 @@
   {if isset($invoiceItem.description)}
   <tr>
     <td></td>
-    <td colspan="5">{$LANG.description}:&nbsp;{$invoiceItem.description|htmlsafe}</td>
+    <td colspan="5">{$LANG.description_uc}:&nbsp;{$invoiceItem.description|htmlsafe}</td>
   </tr>
   {/if}
   <tr>

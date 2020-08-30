@@ -31,7 +31,7 @@
         <br />
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.invoice}</td>
+                <td class="details_screen">{$LANG.invoice_uc}</td>
                 <td>
                     <select name="invoice_id" class="validate[required]">
                         <option value=''></option>

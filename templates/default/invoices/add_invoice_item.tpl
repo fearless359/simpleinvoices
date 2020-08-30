@@ -58,7 +58,7 @@
             </tr>
             {if $type == 3}
                 <tr>
-                    <td class="details_screen" colspan="2">{$LANG.description}</td>
+                    <td class="details_screen" colspan="2">{$LANG.description_uc}</td>
                 </tr>
                 <tr>
                     <td colspan="2">

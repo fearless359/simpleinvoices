@@ -198,6 +198,9 @@ class Taxes
         $taxTotal = 0;
         if (!empty($taxIds)) {
             foreach ($taxIds as $id) {
+                if (empty($id)) {
+                    continue;
+                }
                 $tax = self::getOne(intval($id));
                 $taxTotal += self::lineItemTaxCalc($tax, $unitPrice, $quantity);
             }
@@ -215,7 +218,7 @@ class Taxes
     public static function lineItemTaxCalc(array $tax, float $unitPrice, int $quantity): float
     {
         // Calculate tax as a percentage of unit price or dollars per unit.
-        if ($tax['type'] == "%") {
+        if (isset($tax['type']) && $tax['type'] == "%") {
             return $tax['tax_percentage'] / 100 * $unitPrice * $quantity;
         }
         return $tax['tax_percentage'] * $quantity;

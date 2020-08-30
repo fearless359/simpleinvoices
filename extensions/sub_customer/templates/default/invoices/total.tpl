@@ -21,7 +21,7 @@
         {include file="$path/header.tpl" }
         <table id="itemtable" class="si_invoice_items">
             <tr>
-                <th class="left">{$LANG.description}</th>
+                <th class="left">{$LANG.description_uc}</th>
             </tr>
             <tr>
                 <td class="si_invoice_notes">

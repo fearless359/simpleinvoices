@@ -35,7 +35,7 @@
                 {else}
                     <select id="products{$line|htmlsafe}" name="products{$line|htmlsafe}"
                             class="product_change{if $line == 0} validate[required]{/if}"
-                            data-row-num="{$line|htmlsafe}" data-description="{$LANG.description}">
+                            data-row-num="{$line|htmlsafe}" data-description="{$LANG.description_uc}">
                         <option value=""></option>
                         {foreach from=$products item=product}
                             <option value="{if isset($product.id)}{$product.id|htmlsafe}{/if}"
@@ -71,7 +71,7 @@
         <tr class="details si_hide">
             <td></td>
             <td colspan="4">
-                 <textarea name="description{$line|htmlsafe}" id="description{$line|htmlsafe}" data-description="{$LANG['description']}" data-row-num="{$line|htmlsafe}"
+                 <textarea name="description{$line|htmlsafe}" id="description{$line|htmlsafe}" data-description="{$LANG['description_uc']}" data-row-num="{$line|htmlsafe}"
                            rows="4" cols="60">{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlsafe}{/if}</textarea>
                 {* Note that the space immediatly prior to the closing </textarea> tag is required to allow the description to display. Why??? I don't know!!! *}
             </td>

@@ -4,7 +4,7 @@
         <th>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.number_short}:</th>
         <td>{$invoice.index_id|htmlsafe}</td>
         <td></td>
-        <th>{$preference.pref_inv_wording} {$LANG.date}:</th>
+        <th>{$preference.pref_inv_wording} {$LANG.date_uc}:</th>
         <td colspan="5">{$invoice.display_date|htmlsafe}</td>
     </tr>
     {$customFields.1}
@@ -165,8 +165,8 @@
         <td class='details_screen align_right'>
             {if $customer.default_invoice != $invoice.index_id}
                 <a href="?module=invoices&amp;view=usedefault&amp;action=update_template&amp;index_id={$invoice.index_id}&amp;customer_id={$customer.id}"
-                   title="{$LANG.invoice} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}">
-                    <img src="../../../images/load.png" alt="{$LANG.invoice} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}"/>
+                   title="{$LANG.invoice_uc} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}">
+                    <img src="../../../images/load.png" alt="{$LANG.invoice_uc} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}"/>
                 </a>
             {/if}
         </td>

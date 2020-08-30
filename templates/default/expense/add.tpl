@@ -60,7 +60,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="left">{$LANG.invoice}</th>
+                    <th class="left">{$LANG.invoice_uc}</th>
                     <td>
                         <select name="invoice_id">
                             <option value=''></option>

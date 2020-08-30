@@ -22,7 +22,7 @@
         <thead>
             <tr>
                 <th>{$LANG.actions}</th>
-                <th>{$LANG.description}</th>
+                <th>{$LANG.description_uc}</th>
                 <th>{$LANG.unit_price}</th>
                 {if $defaults.inventory == $smarty.const.ENABLED}
                     <th>{$LANG.quantity}</th>

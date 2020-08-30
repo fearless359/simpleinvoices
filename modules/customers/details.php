@@ -33,11 +33,9 @@ $customer = Customer::getOne($cid);
 $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($customer['credit_card_number']);
 $smarty->assign('customer', $customer);
 
-$invoices = Customer::getCustomerInvoices($cid);
-$smarty->assign('invoices', $invoices);
+$smarty->assign('invoices', Customer::getCustomerInvoices($cid));
 
-$customFieldLabel = CustomFields::getLabels(true);
-$smarty->assign('customFieldLabel', $customFieldLabel);
+$smarty->assign('customFieldLabel', CustomFields::getLabels(true));
 
 try {
     $invoicesOwing = Invoice::getInvoicesOwing($cid);

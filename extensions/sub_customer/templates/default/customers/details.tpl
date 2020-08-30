@@ -163,7 +163,7 @@
                     <table>
                         <thead>
                         <tr class="tr_head">
-                            <th class="first">{$LANG.invoice}</th>
+                            <th class="first">{$LANG.invoice_uc}</th>
                             <th>{$LANG.date_created}</th>
                             <th>{$LANG.total}</th>
                             <th>{$LANG.paid}</th>

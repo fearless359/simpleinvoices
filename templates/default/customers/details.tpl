@@ -12,80 +12,81 @@
  *      https://simpleinvoices.group
  *}
 {if $smarty.get.action == 'view' }
+    <!--suppress HtmlFormInputWithoutLabel -->
     <br/>
     <div class="si_form si_form_view" id="si_form_cust">
         <div class="si_cust_info">
-            <table>
+            <table class="center">
                 <tr>
-                    <th>{$LANG.customer_name}: </th>
+                    <th class="details_screen">{$LANG.customer_name}: </th>
                     <td>{$customer.name}</td>
                     <td class="td_sep"></td>
-                    <th>{$LANG.customer_department}: </th>
+                    <th class="details_screen">{$LANG.customer_department}: </th>
                     <td>{$customer.department|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.attention_short}: </th>
+                    <th class="details_screen">{$LANG.attention_short}: </th>
                     <td>{$customer.attention|htmlsafe}</td>
                     <td class="td_sep"></td>
-                    <th>{$LANG.phone}: </th>
+                    <th class="details_screen">{$LANG.phone}: </th>
                     <td>{$customer.phone|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.street}: </th>
+                    <th class="details_screen">{$LANG.street}: </th>
                     <td>{$customer.street_address|htmlsafe}</td>
                     <td class="td_sep"></td>
-                    <th>{$LANG.mobile_phone}: </th>
+                    <th class="details_screen">{$LANG.mobile_phone}: </th>
                     <td>{$customer.mobile_phone|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.street2}: </th>
+                    <th class="details_screen">{$LANG.street2}: </th>
                     <td>{$customer.street_address2|htmlsafe}</td>
                     <td class="td_sep"></td>
-                    <th>{$LANG.fax}: </th>
+                    <th class="details_screen">{$LANG.fax}: </th>
                     <td>{$customer.fax|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.city}: </th>
+                    <th class="details_screen">{$LANG.city}: </th>
                     <td>{$customer.city|htmlsafe}</td>
                     <td class="td_sep"></td>
-                    <th>{$LANG.email}: </th>
+                    <th class="details_screen">{$LANG.email}: </th>
                     <td><a href="mailto:{$customer.email|htmlsafe}">{$customer.email|htmlsafe}</a></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.zip}: </th>
+                    <th class="details_screen">{$LANG.zip}: </th>
                     <td>{$customer.zip_code|htmlsafe}</td>
                     <td class="td_sep"></td>
-                    <th>{$LANG.default_invoice}: </th>
+                    <th class="details_screen">{$LANG.default_invoice}: </th>
                     <td>{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.state}: </th>
+                    <th class="details_screen">{$LANG.state}: </th>
                     <td>{$customer.state|htmlsafe}</td>
                     {if !empty($customFieldLabel.customer_cf1)}
                         <td class="td_sep"></td>
-                        <th>{$customFieldLabel.customer_cf1}: </th>
+                        <th class="details_screen">{$customFieldLabel.customer_cf1}: </th>
                         <td>{$customer.custom_field1|htmlsafe}</td>
                     {else}
                         <td colspan="3"></td>
                     {/if}
                 </tr>
                 <tr>
-                    <th>{$LANG.country}: </th>
+                    <th class="details_screen">{$LANG.country}: </th>
                     <td>{$customer.country|htmlsafe}</td>
                     {if !empty($customFieldLabel.customer_cf2)}
                         <td class="td_sep"></td>
-                        <th>{$customFieldLabel.customer_cf2}: </th>
+                        <th class="details_screen">{$customFieldLabel.customer_cf2}: </th>
                         <td>{$customer.custom_field2|htmlsafe}</td>
                     {else}
                         <td colspan="3"></td>
                     {/if}
                 </tr>
                 <tr>
-                    <th>{$LANG.enabled}: </th>
+                    <th class="details_screen">{$LANG.enabled}: </th>
                     <td>{$customer.enabled_text|htmlsafe}</td>
                     {if !empty($customFieldLabel.customer_cf3)}
                         <td class="td_sep"></td>
-                        <th>{$customFieldLabel.customer_cf3}: </th>
+                        <th class="details_screen">{$customFieldLabel.customer_cf3}: </th>
                         <td>{$customer.custom_field3|htmlsafe}</td>
                     {else}
                         <td colspan="3"></td>
@@ -93,7 +94,7 @@
                 </tr>
                 <tr>
                     {if !empty($customFieldLabel.customer_cf4)}
-                        <th>{$customFieldLabel.customer_cf4}: </th>
+                        <th class="details_screen">{$customFieldLabel.customer_cf4}: </th>
                         <td>{$customer.custom_field4|htmlsafe}</td>
                     {else}
                         <td colspan="2"></td>
@@ -115,13 +116,13 @@
             </ul>
             <div id="section-1" class="fragment">
                 <div class="si_cust_account">
-                    <table>
+                    <table class="si_center" style="width:100%;">
                         <tr>
-                            <th>{$LANG.total_invoices}: </th>
+                            <th class="details_screen" tabindex="-1">{$LANG.total_invoices}: </th>
                             <td class="si_right">{$customer.total|siLocal_number}</td>
                         </tr>
                         <tr>
-                            <th>
+                            <th class="details_screen" tabindex="-1">
                                 <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">
                                     {$LANG.total_paid}
                                 </a>
@@ -129,8 +130,8 @@
                             <td class="si_right">{$customer.paid|siLocal_number}</td>
                         </tr>
                         <tr>
-                            <th>{$LANG.total_owing}: </th>
-                            <td class="si_right" style="text_decoration:underline;">{$customer.owing|siLocal_number}</td>
+                            <th class="details_screen" tabindex="-1">{$LANG.total_owing}: </th>
+                            <td class="si_right" style="text-decoration:underline;">{$customer.owing|siLocal_number}</td>
                         </tr>
                     </table>
                 </div>
@@ -139,19 +140,19 @@
                 <div class="si_cust_card">
                     <table>
                         <tr>
-                            <th>{$LANG.credit_card_holder_name}: </th>
+                            <th class="details_screen" tabindex="-1">{$LANG.credit_card_holder_name}: </th>
                             <td>{$customer.credit_card_holder_name|htmlsafe}</td>
                         </tr>
                         <tr>
-                            <th>{$LANG.credit_card_number}: </th>
+                            <th class="details_screen" tabindex="-1">{$LANG.credit_card_number}: </th>
                             <td>{$customer.credit_card_number_masked|htmlsafe}</td>
                         </tr>
                         <tr>
-                            <th>{$LANG.credit_card_expiry_month}: </th>
+                            <th class="details_screen" tabindex="-1">{$LANG.credit_card_expiry_month}: </th>
                             <td>{$customer.credit_card_expiry_month|htmlsafe}</td>
                         </tr>
                         <tr>
-                            <th>{$LANG.credit_card_expiry_year}: </th>
+                            <th class="details_screen" tabindex="-1">{$LANG.credit_card_expiry_year}: </th>
                             <td>{$customer.credit_card_expiry_year|htmlsafe}</td>
                         </tr>
                     </table>
@@ -162,11 +163,11 @@
                     <table>
                         <thead>
                         <tr class="tr_head">
-                            <th class="first">{$LANG.invoice}</th>
-                            <th>{$LANG.date_created}</th>
-                            <th>{$LANG.total}</th>
-                            <th>{$LANG.paid}</th>
-                            <th>{$LANG.owing_uc}</th>
+                            <th class="first">{$LANG.invoice_uc}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.date_created}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.total}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.paid}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.owing_uc}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -194,11 +195,11 @@
                         <thead>
                         <tr class="tr_head">
                             <th class="first">{$LANG.actions}</th>
-                            <th>{$LANG.id}</th>
-                            <th>{$LANG.date_created}</th>
-                            <th>{$LANG.total}</th>
-                            <th>{$LANG.paid}</th>
-                            <th>{$LANG.owing_uc}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.id}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.date_created}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.total}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.paid}</th>
+                            <th class="details_screen" tabindex="-1">{$LANG.owing_uc}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -206,11 +207,11 @@
                             <tr class="index_table">
                                 <td class="first">
                                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
-                                        <img src='../../../images/view.png' class='action'/>
+                                        <img src='../../../images/view.png' class='action' alt=""/>
                                     </a>
                                     <a title="{$LANG.process_payment_for} {$invoice.preference} {$invoice.index_id}"
                                        href='index.php?module=payments&amp;view=process&amp;id={$invoice.id}&amp;op=pay_selected_invoice'>
-                                        <img src='../../../images/money_dollar.png' class='action'/>
+                                        <img src='../../../images/money_dollar.png' class='action' alt=""/>
                                     </a>
                                 </td>
                                 <td>
@@ -248,30 +249,30 @@
         <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}">
         <div class="si_form" id="si_form_cust_edit">
-            <table class="center">
+            <table class="center" style="width:90%;">
                 <tr>
-                    <th>{$LANG.customer_name}
-                        <a class="cluetip" href="#" title="{$LANG.required_field}"
+                    <th class="details_screen" tabindex="-1">{$LANG.customer_name}:
+                        <a class="cluetip" tabindex="-1" href="#" title="{$LANG.required_field}"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="name" value="{if isset($customer.name)}{$customer.name|htmlsafe}{/if}" size="50" id="name"
+                        <input type="text" id="name" name="name" value="{if isset($customer.name)}{$customer.name|htmlsafe}{/if}" size="50"
                                class="validate[required]" tabindex="10"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.customer_department}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.customer_department}: </th>
                     <td>
-                        <input type="text" name="department" value="{if isset($customer.department)}{$customer.department|htmlsafe}{/if}" size="50" id="department"
+                        <input type="text" id="department" name="department" value="{if isset($customer.department)}{$customer.department|htmlsafe}{/if}" size="50"
                                tabindex="15"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.attention_short}
+                    <th class="details_screen" tabindex="-1">{$LANG.attention}:
                         <a rel="index.php?module=documentation&amp;view=view&amp;page=help_customer_contact"
-                           href="#" class="cluetip" title="{$LANG.customer_contact}">
+                           href="#" class="cluetip" title="{$LANG.customer_contact}" tabindex="-1">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -280,14 +281,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.street}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.street}: </th>
                     <td>
                         <input type="text" name="street_address" value="{if isset($customer.street_address)}{$customer.street_address|htmlsafe}{/if}" size="50" tabindex="30"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.street2}
-                        <a class="cluetip" href="#" title="{$LANG.street2}"
+                    <th class="details_screen" tabindex="-1">{$LANG.street2}:
+                        <a class="cluetip" href="#" title="{$LANG.street2}" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_street2">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
@@ -298,50 +299,50 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.city}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.city}: </th>
                     <td>
                         <input type="text" name="city" value="{if isset($customer.city)}{$customer.city|htmlsafe}{/if}" size="50" tabindex="50"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.zip}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.zip}: </th>
                     <td>
                         <input type="text" name="zip_code" value="{if isset($customer.zip_code)}{$customer.zip_code|htmlsafe}{/if}" size="50" tabindex="60"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.state}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.state}: </th>
                     <td>
                         <input type="text" name="state" value="{if isset($customer.state)}{$customer.state|htmlsafe}{/if}" size="50" tabindex="70"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.country}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.country}: </th>
                     <td>
                         <input type="text" name="country" value="{if isset($customer.country)}{$customer.country|htmlsafe}{/if}" size="50" tabindex="80"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.phone}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.phone}: </th>
                     <td>
                         <input type="text" name="phone" value="{if isset($customer.phone)}{$customer.phone|htmlsafe}{/if}" size="50" tabindex="90"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.mobile_phone}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.mobile_phone}: </th>
                     <td>
                         <input type="text" name="mobile_phone" value="{if isset($customer.mobile_phone)}{$customer.mobile_phone|htmlsafe}{/if}"
                                size="50" tabindex="100"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.fax}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.fax}: </th>
                     <td>
                         <input type="text" name="fax" value="{if isset($customer.fax)}{$customer.fax|htmlsafe}{/if}" size="50" tabindex="110"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email}
+                    <th class="details_screen" tabindex="-1">{$LANG.email}:
                         <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.email}" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_customer_email">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
@@ -353,52 +354,50 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_holder_name}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.credit_card_holder_name}: </th>
                     <td>
                         <input type="text" name="credit_card_holder_name"
                                value="{if isset($customer.credit_card_holder_name)}{$customer.credit_card_holder_name|htmlsafe}{/if}" size="25" tabindex="130"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_number}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.credit_card_number}: </th>
                     <td>{$customer.credit_card_number_masked}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_number_new}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.credit_card_number_new}: </th>
                     <td>
                         {* Note that no value is put in this field and the name is the actual database name *}
                         <input type="text" name="credit_card_number" size="25" tabindex="140"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_expiry_month}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.credit_card_expiry_month}: </th>
                     <td>
                         <input type="text" name="credit_card_expiry_month"
                                value="{if isset($customer.credit_card_expiry_month)}{$customer.credit_card_expiry_month|htmlsafe}{/if}" size="5" tabindex="150"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.credit_card_expiry_year}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.credit_card_expiry_year}: </th>
                     <td>
                         <input type="text" name="credit_card_expiry_year"
                                value="{if isset($customer.credit_card_expiry_year)}{$customer.credit_card_expiry_year|htmlsafe}{/if}" size="5" tabindex="160"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.default_invoice}
+                    <th class="details_screen" tabindex="-1">{$LANG.default_invoice}:
                         <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_invoice}" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_default_invoice">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        {*<input type="text" name="default_invoice"*}
-                               {*value="{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}" size="8" tabindex="165"/>*}
-                        <select name="default_invoice" tabindex="165">
+                        <select class="si_input" name="default_invoice" tabindex="165">
                             <option value="0"></option>
                             {foreach $invoices as $invoice}
                                 <option {if $invoice.index_id == $customer.default_invoice}selected{/if}
-                                        value="{$invoice.index_id}">Inv#{$invoice.index_id} ({$invoice.name|htmlsafe} {$invoice.total|siLocal_number})</option>
+                                        value="{$invoice.index_id}">{$invoice.index_name} ({$invoice.total|siLocal_currency})</option>
                             {/foreach}
                         </select>
 
@@ -406,73 +405,70 @@
                 </tr>
                 {if !empty($customFieldLabel.customer_cf1)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf1|htmlsafe}
+                        <th class="details_screen" tabindex="-1">{$customFieldLabel.customer_cf1|htmlsafe}:
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>
-                            <input type="text" name="custom_field1"
+                            <input class="si_input" type="text" name="custom_field1"
                                    value="{if isset($customer.custom_field1)}{$customer.custom_field1|htmlsafe}{/if}" size="50" tabindex="170"/>
                         </td>
                     </tr>
                 {/if}
                 {if !empty($customFieldLabel.customer_cf2)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf2|htmlsafe}
+                        <th class="details_screen" tabindex="-1">{$customFieldLabel.customer_cf2|htmlsafe}:
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>
-                            <input type="text" name="custom_field2"
+                            <input class="si_input" type="text" name="custom_field2"
                                    value="{if isset($customer.custom_field2)}{$customer.custom_field2|htmlsafe}{/if}" size="50" tabindex="180"/>
                         </td>
                     </tr>
                 {/if}
                 {if !empty($customFieldLabel.customer_cf3)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf3|htmlsafe}
+                        <th class="details_screen" tabindex="-1">{$customFieldLabel.customer_cf3|htmlsafe}:
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>
-                            <input type="text" name="custom_field3"
+                            <input class="si_input" type="text" name="custom_field3"
                                    value="{if isset($customer.custom_field3)}{$customer.custom_field3|htmlsafe}{/if}" size="50" tabindex="190"/>
                         </td>
                     </tr>
                 {/if}
                 {if !empty($customFieldLabel.customer_cf4)}
                     <tr>
-                        <th>{$customFieldLabel.customer_cf4|htmlsafe}
+                        <th class="details_screen" tabindex="-1">{$customFieldLabel.customer_cf4|htmlsafe}:
                             <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
                                rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
                         <td>
-                            <input type="text" name="custom_field4"
+                            <input class="si_input" type="text" name="custom_field4"
                                    value="{if isset($customer.custom_field4)}{$customer.custom_field4|htmlsafe}{/if}" size="50" tabindex="200"/>
                         </td>
                     </tr>
                 {/if}
                 <tr>
-                    <th>{$LANG.notes}</th>
+                    <th class="details_screen" tabindex="-1">{$LANG.notes}: </th>
                     <td>
-                        <!--
-                        <textarea name="notes" class="editor" rows="6" cols="80" tabindex="210">{*$customer.notes|outhtml*}</textarea>
-                        -->
-                        <input name="notes" id="notes" {if isset($customer.notes)}value="{$customer.notes|outhtml}"{/if} type="hidden">
-                        <trix-editor input="notes" tabindex="210"></trix-editor>
+                        <input class="si_input" name="notes" id="notes" {if isset($customer.notes)}value="{$customer.notes|outhtml}"{/if} type="hidden">
+                        <trix-editor class="si_input" input="notes" tabindex="210"></trix-editor>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.enabled}</th>
-                    <td>{html_options name=enabled options=$enabled selected=$customer.enabled tabindex=220}</td>
+                    <th class="details_screen" tabindex="-1">{$LANG.enabled}: </th>
+                    <td>{html_options class=si_input name=enabled options=$enabled selected=$customer.enabled tabindex=220}</td>
                 </tr>
             </table>
             <div class="si_toolbar si_toolbar_form">

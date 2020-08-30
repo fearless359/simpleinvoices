@@ -23,7 +23,7 @@
     <div class="si_form si_form_view">
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.invoice}</td>
+                <td class="details_screen">{$LANG.invoice_uc}</td>
                 <td>{$cron.invoice_id|htmlsafe}</td>
             </tr>
             <tr>

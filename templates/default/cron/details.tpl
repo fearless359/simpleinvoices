@@ -13,36 +13,36 @@
       action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlencode}">
     {if $smarty.get.action== 'view' }
         <br/>
-        <table class="center">
+        <table class="center" >
             <tr>
-                <td class="details_screen">{$LANG.invoice}</td>
-                <td>
+                <th class="details_screen left">{$LANG.invoice_uc}: </th>
+                <td class="si_input">
                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlsafe}">
                         {$cron.index_name|htmlsafe}
                     </a>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.start_date}</td>
-                <td>{$cron.start_date|htmlsafe}</td>
+                <th class="details_screen left">{$LANG.start_date}: </th>
+                <td class="si_input">{$cron.start_date|htmlsafe}</td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.end_date}</td>
-                <td>{$cron.end_date|htmlsafe}</td>
+                <th class="details_screen left">{$LANG.end_date}: </th>
+                <td class="si_input">{$cron.end_date|htmlsafe}</td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.recur_each}</td>
-                <td>{$cron.recurrence|htmlsafe} {$cron.recurrence_type|htmlsafe}</td>
+                <th class="details_screen left">{$LANG.recur_each}: </th>
+                <td class="si_input">{$cron.recurrence|htmlsafe} {$cron.recurrence_type|htmlsafe}</td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_biller_after_cron}</td>
-                <td>
+                <th class="details_screen left">{$LANG.email_biller_after_cron}: </th>
+                <td class="si_input">
                     {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uc}{else}{$LANG.no_uc}{/if}
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_customer_after_cron}</td>
-                <td>
+                <th class="details_screen left">{$LANG.email_customer_after_cron}: </th>
+                <td class="si_input">
                     {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uc}{else}{$LANG.no_uc}{/if}
                 </td>
             </tr>
@@ -61,9 +61,9 @@
     {elseif $smarty.get.action== 'edit' }
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.invoice}</td>
+                <th class="details_screen left">{$LANG.invoice_uc}: </th>
                 <td>
-                    <select name="invoice_id" class="validate[required]">
+                    <select name="invoice_id" class="si_input validate[required]">
                         <option value=''></option>
                         {foreach $invoice_all as $invoice}
                             <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if} >
@@ -74,23 +74,23 @@
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.start_date}</td>
+                <th class="details_screen left">{$LANG.start_date}: </th>
                 <td>
-                    <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
+                    <input type="text" class="si_input validate[required,custom[date],length[0,10]] date-picker"
                            size="10" name="start_date" id="date" value='{$cron.start_date|htmlsafe}'/>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.end_date}</td>
+                <th class="details_screen left">{$LANG.end_date}: </th>
                 <td>
-                    <input type="text" class="date-picker" size="10" name="end_date" id="date" value='{$cron.end_date|htmlsafe}'/>
+                    <input type="text" class="si_input date-picker" size="10" name="end_date" id="date" value='{$cron.end_date|htmlsafe}'/>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.recur_each}</td>
+                <th class="details_screen left">{$LANG.recur_each}: </th>
                 <td>
-                    <input name="recurrence" size="10" class="validate[required]" value='{$cron.recurrence|htmlsafe}'/>
-                    <select name="recurrence_type" class="validate[required]">
+                    <input name="recurrence" size="10" class="si_input validate[required]" value='{$cron.recurrence|htmlsafe}'/>
+                    <select name="recurrence_type" class="si_input validate[required]">
                         <option value="day" {if $cron.recurrence_type == 'day'}selected{/if} >{$LANG.days}</option>
                         <option value="week" {if $cron.recurrence_type == 'week'}selected{/if} >{$LANG.weeks}</option>
                         <option value="month" {if $cron.recurrence_type == 'month'}selected{/if} >{$LANG.months}</option>
@@ -99,18 +99,18 @@
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_biller_after_cron}</td>
+                <th class="details_screen left">{$LANG.email_biller_after_cron}: </th>
                 <td>
-                    <select name="email_biller" class="validate[required]">
+                    <select name="email_biller" class="si_input validate[required]">
                         <option value="1" {if $cron.email_biller == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uc}</option>
                         <option value="0" {if $cron.email_biller == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uc}</option>
                     </select>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_customer_after_cron}</td>
+                <th class="details_screen left">{$LANG.email_customer_after_cron}: </th>
                 <td>
-                    <select name="email_customer" class="validate[required]">
+                    <select name="email_customer" class="si_input validate[required]">
                         <option value="1" {if $cron.email_customer == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uc}</option>
                         <option value="0" {if $cron.email_customer == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uc}</option>
                     </select>

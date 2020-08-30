@@ -43,7 +43,7 @@
                 </tr>
             {elseif $smarty.get.op === "pay_invoice"}
                 <tr>
-                    <th>{$LANG.invoice}</th>
+                    <th>{$LANG.invoice_uc}</th>
                     <td colspan="3">
                         <select name="invoice_id" class="validate[required]">
                             <option value=''></option>

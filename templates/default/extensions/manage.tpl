@@ -19,7 +19,7 @@
         <tr>
             <th>{$LANG.actions}</th>
             <th>{$LANG.name}</th>
-            <th>{$LANG.description}</th>
+            <th>{$LANG.description_uc}</th>
             <th>{$LANG.status}</th>
         </tr>
         </thead>

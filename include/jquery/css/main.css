@@ -33,6 +33,7 @@ html, body {
     margin: 0;
     font-family: arial,sans-serif;
 }
+
 html {
 }
 
@@ -96,6 +97,7 @@ table.center {
 .bold {
     font-weight: bold;
 }
+
 table.left {
   float:left;
   margin-left:auto;
@@ -207,8 +209,13 @@ input, select, textarea {
 .si_center {
     text-align: center;
 }
+
 .si_right {
     text-align: right;
+}
+
+.si_input {
+    margin-left: 6px;
 }
 
 /* TYPOGRAPHY  ------------------------------*/

@@ -8,7 +8,7 @@
 		</tr>
 		<tr>
 			<th>{$LANG.invoice_id}</th>
-			<th>{$LANG.invoice}</th>
+			<th>{$LANG.invoice_uc}</th>
 			<th>{$LANG.biller}</th>
 			<th>{$LANG.customer}</th>
 			<th>{$LANG.total}</th>

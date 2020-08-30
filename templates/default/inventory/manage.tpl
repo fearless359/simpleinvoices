@@ -24,7 +24,7 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.date}</th>
+            <th>{$LANG.date_uc}</th>
             <th>{$LANG.product_uc}</th>
             <th>{$LANG.quantity}</th>
             <th>{$LANG.cost_uc}</th>

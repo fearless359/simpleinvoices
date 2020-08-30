@@ -223,10 +223,10 @@ class Util
 
     /**
      * Make sure $str is properly encoded for html display.
-     * @param string $str String to make safe.
+     * @param string|int $str String to make safe.
      * @return string Safe string for html display.
      */
-    public static function htmlsafe(string $str): string
+    public static function htmlsafe($str): string
     {
         return htmlentities($str, ENT_QUOTES, 'UTF-8');
     }

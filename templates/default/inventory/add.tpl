@@ -2,14 +2,15 @@
 {if !empty($smarty.post.product_id)}
     {include file="templates/default/cron/save.tpl"}
 {else}
+    <!--suppress HtmlFormInputWithoutLabel -->
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=inventory&amp;view=add">
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.product_uc}</th>
+                    <th class="details_screen">{$LANG.product_uc}: </th>
                     <td>
-                        <select name="product_id" class="validate[required] product_inventory_change">
+                        <select name="product_id" class="si_input validate[required] product_inventory_change" tabindex="10">
                             <option value=''></option>
                             {foreach $product_all as $product}
                                 <option value="{$product.id|htmlsafe}"
@@ -19,44 +20,40 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.quantity}</th>
+                    <th class="details_screen">{$LANG.quantity}: </th>
                     <td>
-                        <input class="validate[required]" name="quantity" size="10"
+                        <input class="si_input validate[required]" name="quantity" size="10" tabindex="20"
                                {if !empty($smarty.post.quantity)}value="{$smarty.post.quantity|siLocal_number_trim:0}"{/if}>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.date}</th>
+                    <th class="details_screen">{$LANG.date_uc}: </th>
                     <td>
-                        <input type="text" size="10" name="date" id="date"
-                               class="validate[required,custom[date],length[0,10]] date-picker"
+                        <input type="text" name="date" id="date" class="si_input validate[required,custom[date],length[0,10]] date-picker" size="10" tabindex="30"
                                value="{if !empty($smarty.post.date)}{$smarty.post.date}{else}{'now'|date_format:'%Y-%m-%d'}{/if}"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.cost_uc}</th>
+                    <th class="details_screen">{$LANG.cost_uc}: </th>
                     <td>
-                        <input class="validate[required]" name="cost" id="cost" size="10"
+                        <input class="si_input validate[required]" name="cost" id="cost" size="10" tabindex="40"
                                {if !empty($smarty.post.cost)}value="{$smarty.post.cost}"{/if}>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.notes}</th>
+                    <th class="details_screen">{$LANG.notes}: </th>
                     <td>
-                        <!--
-                        <textarea name="note" class="editor">{*if isset($smarty.post.note)*}{*$smarty.post.note|outhtml*}{*/if*}</textarea>
-                        -->
                         <input name="note" id="note" {if isset($smarty.post.note)}value="{$smarty.post.note|outhtml}"{/if} type="hidden">
-                        <trix-editor input="note"></trix-editor>
+                        <trix-editor input="note" class="si_input" tabindex="50"></trix-editor>
                     </td>
                 </tr>
             </table>
             <div class="si_toolbar si_toolbar_form">
-                <button type="submit" class="positive" name="submit" value="{$LANG.save}">
+                <button type="submit" class="positive" name="submit" value="{$LANG.save}" tabindex="60">
                     <img class="button_img" src="../../../images/tick.png" alt="{$LANG.save}"/>
                     {$LANG.save}
                 </button>
-                <a href="index.php?module=inventory&amp;view=manage" class="negative">
+                <a href="index.php?module=inventory&amp;view=manage" class="negative" tabindex="70">
                     <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
                     {$LANG.cancel}
                 </a>

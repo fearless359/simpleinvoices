@@ -10,38 +10,38 @@
  *}
 {literal}
     <script>
-        function setuseridlist() {
+        function setUserIdList() {
             let role = document.getElementById("role_id1");
-            let role_idx = role.selectedIndex;
-            let role_text = role.options[role_idx].text;
-            let orole_val = document.getElementById("origrole1").value ;
-            if (role_text === orole_val) return;
+            let roleIdx = role.selectedIndex;
+            let roleText = role.options[roleIdx].text;
+            let origRoleVal = document.getElementById("origrole1").value ;
+            if (roleText === origRoleVal) return;
 
-            let crole_elem = document.getElementById("currrole1");
-            crole_elem.value = role_text;
+            let crigRoleElem = document.getElementById("currrole1");
+            crigRoleElem.value = roleText;
 
             let list = document.getElementById("user_id1");
-            let newlist = "";
-            if (role_text === "customer") {
+            let newList = "";
+            if (roleText === "customer") {
                 let cust = document.getElementById("cust1");
-                let cust_value = cust.value;
-                let cust_vals = cust_value.split("~");
-                for (let i=0; i<cust_vals.length; i++) {
-                    let tmp = cust_vals[i].split(" ");
-                    newlist += '<option value="' + tmp[0] + '">' + cust_vals[i] + '</option>';
+                let custValue = cust.value;
+                let custVals = custValue.split("~");
+                for (let i=0; i<custVals.length; i++) {
+                    let tmp = custVals[i].split(" ");
+                    newList += '<option value="' + tmp[0] + '">' + custVals[i] + '</option>';
                 }
-            } elseif (role_text === "biller") {
+            } else if (roleText === "biller") {
                 let billers = document.getElementById("bilr1");
-                let billers_value = billers.value;
-                let billers_vals = billers_value.split("~");
-                for (let i=0; i<billers_vals.length; i++) {
-                    let tmp = billers_vals[i].split(" ");
-                    newlist += '<option value="' + tmp[0] + '">' + billers_vals[i] + '</option>';
+                let billersValue = billers.value;
+                let billersVals = billersValue.split("~");
+                for (let i=0; i<billersVals.length; i++) {
+                    let tmp = billersVals[i].split(" ");
+                    newList += '<option value="' + tmp[0] + '">' + billersVals[i] + '</option>';
                 }
             } else {
-                newlist = '<option selected value="0">0 - User</option>';
+                newList = '<option selected value="0">0 - User</option>';
             }
-            list.innerHTML = newlist;
+            list.innerHTML = newList;
         }
     </script>
 {/literal}
@@ -51,27 +51,27 @@
         <div class="si_form si_form_view">
             <table>
                 <tr>
-                    <th>{$LANG.username}</th>
+                    <th class="details_screen">{$LANG.username}: </th>
                     <td>{$user.username|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.password}</th>
+                    <th class="details_screen">{$LANG.password}: </th>
                     <td>**********</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.role}</th>
+                    <th class="details_screen">{$LANG.role}: </th>
                     <td>{$user.role_name|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email}</th>
+                    <th class="details_screen">{$LANG.email}: </th>
                     <td>{$user.email|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.enabled}</th>
+                    <th class="details_screen">{$LANG.enabled}: </th>
                     <td>{$user.enabled_text|htmlsafe}</td>
                 </tr>
                 <tr>
-                    <th>{$LANG.user_id}</th>
+                    <th class="details_screen">{$LANG.user_id}: </th>
                     <td>{$user_id_desc|htmlsafe}</td>
                 </tr>
             </table>
@@ -95,7 +95,7 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.username}
+                    <th class="details_screen">{$LANG.username}
                         <a class="cluetip" href="#" tabindex="910"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_username"
                            title="{$LANG.required_field}">
@@ -103,14 +103,13 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="username" autocomplete="off" tabindex="10"
+                        <input type="text" name="username" autocomplete="off" class="si_input validate[required]" tabindex="10"
                                value="{if isset($user.username)}{$user.username|htmlsafe}{/if}" size="35" id="username"
-                               pattern="{$usernamePattern}" title="See help for details."
-                               class="validate[required]" autofocus />
+                               pattern="{$usernamePattern}" title="See help for details." autofocus />
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.new_password}
+                    <th class="details_screen">{$LANG.new_password}
                         <a class="cluetip" href="#" tabindex="920"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_new_password"
                            title="{$LANG.new_password}">
@@ -118,13 +117,12 @@
                         </a>
                     </th>
                     <td>
-                        <input type="password" name="password" id="password_id" size="20" tabindex="20"
-                               pattern="{$pwd_pattern}" title="See help for details."
-                               onchange="genConfirmPattern(this,'confirm_pwd_id');" />
+                        <input type="password" name="password" id="password_id" class="si_input" size="20" tabindex="20"
+                               pattern="{$pwd_pattern}" title="See help for details."/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.confirm_password}
+                    <th class="details_screen">{$LANG.confirm_password}
                         <a class="cluetip" href="#" tabindex="930"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_confirm_password"
                            title="{$LANG.confirm_password}">
@@ -132,13 +130,12 @@
                         </a>
                     </th>
                     <td>
-                        <input type="password" name="confirm_password" id="confirm_pwd_id"
-                               size="20" tabindex="30" pattern="{$pwd_pattern}"
-                               title="See help for details"/>
+                        <input type="password" name="confirm_password" id="confirm_pwd_id" class="si_input" size="20" tabindex="30"
+                               pattern="{$pwd_pattern}" title="See help for details"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email}
+                    <th class="details_screen">{$LANG.email}
                         <a class="cluetip" href="#" tabindex="940"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_email_address"
                            title="{$LANG.required_field}">
@@ -146,13 +143,13 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email" autocomplete="off" tabindex="40"
-                               value="{if isset($user.email)}{$user.email|htmlsafe}{/if}" size="35" id="email"
-                               class="validate[required]" title="See help for details" />
+                        <input type="text" name="email" id="email" class="si_input validate[required]" size="35" tabindex="40"
+                               value="{if isset($user.email)}{$user.email|htmlsafe}{/if}"
+                               title="See help for details" autocomplete="off"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.role}
+                    <th class="details_screen">{$LANG.role}
                         <a class="cluetip" href="#" tabindex="950"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_user_role"
                            title="{$LANG.role}">
@@ -160,8 +157,7 @@
                         </a>
                     </th>
                     <td>
-                        <select name="role_id" id="role_id1" tabindex="50" onchange="setuseridlist();"
-                                title="See help for details">
+                        <select name="role_id" id="role_id1" class="si_input" tabindex="50" onchange="setUserIdList();" title="See help for details">
                             {foreach from=$roles item=role}
                                 <option {if $role.id == $user.role_id}selected{/if} value="{if isset($role.id)}{$role.id|htmlsafe}{/if}">
                                     {$role.name|htmlsafe}
@@ -171,7 +167,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.user_id}
+                    <th class="details_screen">{$LANG.user_id}
                         <a class="cluetip" href="#" tabindex="960"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_user_id"
                            title="{$LANG.user_id}">
@@ -179,7 +175,7 @@
                         </a>
                     </th>
                     <td>
-                        <select name="user_id" id="user_id1" tabindex="60" title="See help for details">
+                        <select name="user_id" id="user_id1" class="si_input" tabindex="60" title="See help for details">
                             {if $user.role_name == "customer"}
                                 {assign var="ids" value="~"|explode:$cust}
                                 {foreach from=$ids item=id}
@@ -205,14 +201,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.enabled}
+                    <th class="details_screen">{$LANG.enabled}
                         <a class="cluetip" href="#" tabindex="970"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_user_enabled"
                            title="{$LANG.enabled} / {$LANG.disabled}">
                             <img src="{$helpImagePath}help-small.png" alt="" />
                         </a>
                     </th>
-                    <td>{html_options name=enabled options=$enabled_options selected=$user.enabled tabindex=70}</td>
+                    <td>{html_options name=enabled class=si_input options=$enabled_options selected=$user.enabled tabindex=70}</td>
                 </tr>
             </table>
             <div class="si_toolbar si_toolbar_form">

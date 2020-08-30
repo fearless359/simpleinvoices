@@ -25,18 +25,9 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-//get the invoice id
-$billerId = $_GET['id'];
-$biller = Biller::getOne($billerId);
-
-// Drop down list code for invoice logo
-$files = Util::getLogoList();
-// end logo stuff
-
-$customFieldLabel = CustomFields::getLabels(true);
-$smarty->assign('biller', $biller);
-$smarty->assign('files', $files);
-$smarty->assign('customFieldLabel', $customFieldLabel);
+$smarty->assign('biller', Biller::getOne($_GET['id']));
+$smarty->assign('files', Util::getLogoList());
+$smarty->assign('customFieldLabel', CustomFields::getLabels(true));
 
 $smarty->assign('pageActive', 'biller');
 $subPageActive = $_GET['action'] =="view"  ? "biller_view" : "biller_edit" ;

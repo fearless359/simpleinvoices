@@ -26,7 +26,7 @@
   <tr class="tbl1-left tbl1-right">
     <td class="tbl1-left"></td>
     <td class="tbl1-right" colspan="5">
-      <i>{$LANG.description}: </i>{$invoiceItem.description|htmlsafe}
+      <i>{$LANG.description_uc}: </i>{$invoiceItem.description|htmlsafe}
     </td>
   </tr>
   <tr>

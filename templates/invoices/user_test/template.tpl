@@ -158,7 +158,7 @@
                         <td class="" style="text-align:right;" colspan="3">{$invoice.index_id}</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.date}:</td>
+                        <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlsafe}&nbsp;{$LANG.date_uc}:</td>
                         <td class="" style="text-align:right;" colspan="3">{$invoice.date|siLocal_date}</td>
                     </tr>
                     <!-- Show the Invoice Custom Fields if valid -->
@@ -318,7 +318,7 @@
                 </tr>
                 <tr class="">
                     <td class=""></td>
-                    <td class="" colspan="5"><i>{$LANG.description}: </i>{$invoiceItem.description|htmlsafe}</td>
+                    <td class="" colspan="5"><i>{$LANG.description_uc}: </i>{$invoiceItem.description|htmlsafe}</td>
                 </tr>
                 <tr class="">
                     <td class=""></td>
@@ -335,7 +335,7 @@
                 <td>
                     <table class="left" style="width:100%;;">
                         <tr class="col1">
-                            <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description}</b></td>
+                            <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description_uc}</b></td>
                         </tr>
                         {foreach from=$invoiceItems item= invoiceItem}
                             <tr class="">

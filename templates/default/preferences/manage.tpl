@@ -26,7 +26,7 @@
         <tr>
             <th>{$LANG.actions}</th>
             <th>{$LANG.id}</th>
-            <th>{$LANG.description}</th>
+            <th>{$LANG.description_uc}</th>
             <th>{$LANG.invoice_numbering_group}</th>
             <th>{$LANG.set_aging}</th>
             <th class="si_center">{$LANG.language}</th>

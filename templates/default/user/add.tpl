@@ -25,64 +25,65 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.username}
-                        <a class="cluetip" href="#" tabindex="910"
+                    <th class="details_screen">{$LANG.username}
+                        <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_username"
                            title="{$LANG.username}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="username" size="35" id="username" tabindex="10"
+                        <input type="text" name="username" class="si_input validate[required]" size="35" id="username" tabindex="10"
                                pattern="{$usernamePattern}" title="See help for details."
-                               autocomplete="off" class="validate[required]" autofocus />
+                               autocomplete="off" autofocus />
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.new_password}
-                        <a class="cluetip" href="#" tabindex="920"
+                    <th class="details_screen">{$LANG.new_password}
+                        <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_new_password"
                            title="{$LANG.new_password}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
-                    <td><input type="password" name="password" size="20" pattern="{$pwd_pattern}"
-                               title="See help for details." tabindex="20"
-                               class="validate[required]"
-                               onchange="genConfirmPattern(this,'confirm_pwd_id');"/></td>
+                    <td>
+                        <input type="password" name="password" class="si_input validate[required]" size="20" pattern="{$pwd_pattern}"
+                               title="See help for details." tabindex="20"/>
+                    </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.confirm_password}
-                        <a class="cluetip" href="#" tabindex="930"
+                    <th class="details_screen">{$LANG.confirm_password}
+                        <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_confirm_password"
                            title="{$LANG.confirm_password}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
-                    <td><input type="password" name="confirm_password" size="20" tabindex="30"
-                               class="validate[required]" pattern="{$pwd_pattern}"
-                               title="See help for details" /></td>
+                    <td>
+                        <input type="password" name="confirm_password" class="si_input validate[required]" size="20" tabindex="30"
+                               pattern="{$pwd_pattern}" title="See help for details" />
+                    </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email}
-                        <a class="cluetip" href="#" tabindex="940"
+                    <th class="details_screen">{$LANG.email}
+                        <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=help_email_address"
                            title="{$LANG.required_field}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email" size="35" id="email" tabindex="40"
-                               class="validate[required]" title="See help for details" />
+                        <input type="text" id="email" name="email"class="si_input validate[required]" size="35" tabindex="40"
+                               title="See help for details" />
                     </td>
                 </tr>
             </table>
             <div class="si_toolbar si_toolbar_form">
-                <button type="submit" class="positive" name="submit" value="Insert User">
-                    <img class="button_img" src="../../../images/tick.png" alt="" tabindex="100" />
+                <button type="submit" class="positive" name="submit" value="Insert User" tabindex="50">
+                    <img class="button_img" src="../../../images/tick.png" alt=""/>
                     {$LANG.save}
                 </button>
-                <a href="index.php?module=user&view=manage" class="negative" tabindex="110">
+                <a href="index.php?module=user&view=manage" class="negative" tabindex=60>
                     <img src="../../../images/cross.png" alt="" />
                     {$LANG.cancel}
                 </a>

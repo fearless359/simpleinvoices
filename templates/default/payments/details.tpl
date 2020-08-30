@@ -8,38 +8,38 @@
   <div class="si_form si_form_view" id="si_form_pay_details">
     <table>
       <tr>
-        <th>{$LANG.payment_id}</th>
+        <th class="details_screen">{$LANG.payment_id}: </th>
         <td>{$payment.id|htmlsafe}</td>
-        <th>{$LANG.invoice_id}</th>
+        <th class="details_screen">{$LANG.invoice_id}: </th>
         <td><a href='index.php?module=invoices&amp;view=quick_view&amp;id={$payment.ac_inv_id|htmlsafe}&amp;action=view'>{$payment.iv_index_id|htmlsafe}</a></td>
       </tr>
       <tr>
-        <th>{$LANG.amount_uc}</th>
+        <th class="details_screen">{$LANG.amount_uc}: </th>
         <td>{$payment.ac_amount|siLocal_number}</td>
-        <th>{$LANG.date}</th>
+        <th class="details_screen">{$LANG.date_uc}: </th>
         <td>{$payment.date|htmlsafe}</td>
       </tr>
       <tr>
-        <th>{$LANG.biller}</th>
+        <th class="details_screen">{$LANG.biller}: </th>
         <td colspan="3">{$payment.bname|htmlsafe}</td>
       </tr>
       <tr>
-        <th>{$LANG.customer}</th>
+        <th class="details_screen">{$LANG.customer}: </th>
         <td colspan="3">{$payment.cname|htmlsafe}</td>
       </tr>
       <tr>
-        <th>{$LANG.payment_type}</th>
+        <th class="details_screen">{$LANG.payment_type}: </th>
         <td>{$paymentType.pt_description|htmlsafe}</td>
-        <th>{$LANG.check_number}</th>
+        <th class="details_screen">{$LANG.check_number}: </th>
         <td>{if strtolower($paymentType.pt_description)=="check"}{$payment.ac_check_number|htmlsafe}{/if}</td>
       </tr>
       <tr>
-        <th>{$LANG.online_payment_id}</th>
+        <th class="details_screen">{$LANG.online_payment_id}: </th>
         <td>{$payment.online_payment_id|htmlsafe}</td>
         <td colspan="2"></td>
       </tr>
       <tr>
-        <th>{$LANG.notes}</th>
+        <th class="details_screen">{$LANG.notes}: </th>
         <td colspan="3">{$payment.ac_notes|outhtml}
       </tr>
     </table>

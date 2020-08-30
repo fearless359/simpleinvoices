@@ -20,7 +20,7 @@
     {include file="$path/header.tpl" }
     <tr>
         <td class="details_screen">{$LANG.quantity}</td>
-        <td class="details_screen">{$LANG.description}</td>
+        <td class="details_screen">{$LANG.description_uc}</td>
         <td class="details_screen">{$LANG.unit_price}</td>
     </tr>
     {section name=line start=0 loop=$dynamic_line_items step=1}
@@ -51,7 +51,7 @@
         <tr class="text{$smarty.section.line.index|htmlsafe} hide">
             <td colspan="3">
                 <textarea class="detail" name='description{$smarty.section.line.index|htmlsafe}'
-                          rows="3" cols="80" data-description="{$LANG['description']}"></textarea>
+                          rows="3" cols="80" data-description="{$LANG['description_uc']}"></textarea>
             </td>
         </tr>
     {/section}

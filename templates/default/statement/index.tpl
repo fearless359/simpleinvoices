@@ -151,7 +151,7 @@
       <thead>
         <tr>
           <th class="si_right">{$LANG.id}</th>
-          <th class="si_right">{$LANG.date}</th>
+          <th class="si_right">{$LANG.date_uc}</th>
           <th>{$LANG.biller}</th>
           <th>{$LANG.customer}</th>
           <th class="si_right">{$LANG.total}</th>

@@ -22,14 +22,14 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.date}</th>
+            <th>{$LANG.date_uc}</th>
             <th>{$LANG.amount_uc}</th>
             <th>{$LANG.tax}</th>
             <th>{$LANG.total}</th>
             <th>{$LANG.expense_accounts}</th>
             <th>{$LANG.biller}</th>
             <th>{$LANG.customer}</th>
-            <th>{$LANG.invoice}</th>
+            <th>{$LANG.invoice_uc}</th>
             <th>{$LANG.status}</th>
         </tr>
         </thead>

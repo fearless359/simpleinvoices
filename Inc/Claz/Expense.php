@@ -102,6 +102,7 @@ class Expense
                 new DbField('e.customer_id', 'c_id'),
                 new DbField('e.product_id', 'p_id'),
                 new DbField('i.id', 'iv_id'),
+                new DbField('i.index_id', 'iv_index_id'),
                 new DbField('b.name', 'b_name'),
                 new DbField('ea.name', 'ea_name'),
                 new DbField('c.name', 'c_name'),
@@ -125,6 +126,7 @@ class Expense
 
     /**
      * Get information needed when adding a new expense.
+     * @param array|null $expense record.
      * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
      * @throws PdoDbException
      */
@@ -134,19 +136,19 @@ class Expense
         $addInfo = [];
         if (isset($expense)) {
             if (isset($expense['c_id'])) {
-                $detail['customer'] = Customer::getOne($expense['c_id']);
+                $addInfo['customer'] = Customer::getOne($expense['c_id']);
             }
             if (isset($expense['b_id'])) {
-                $detail['biller'] = Biller::getOne($expense['b_id']);
+                $addInfo['biller'] = Biller::getOne($expense['b_id']);
             }
             if (isset($expense['iv_id'])) {
-                $detail['invoice'] = Invoice::getOne($expense['iv_id']);
+                $addInfo['invoice'] = Invoice::getOne($expense['iv_id']);
             }
             if (isset($expense['p_id'])) {
-                $detail['product'] = Product::getOne($expense['p_id']);
+                $addInfo['product'] = Product::getOne($expense['p_id']);
             }
             if (isset($expense['ea_id'])) {
-                $detail['expense_account'] = ExpenseAccount::getOne($expense['ea_id']);
+                $addInfo['expense_account'] = ExpenseAccount::getOne($expense['ea_id']);
             }
         } else {
             $addInfo['customers']        = Customer::getAll();
@@ -230,7 +232,7 @@ class Expense
             }
 
             foreach ($lineItemTaxId as $value) {
-                if ($value !== "") {
+                if (!empty($value)) {
                     $tax = Taxes::getOne($value);
 
                     $taxAmount = Taxes::lineItemTaxCalc($tax, $unitPrice, $quantity);

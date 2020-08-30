@@ -141,7 +141,7 @@
                      <h2>{$preference.pref_inv_heading|htmlsafe}</h2>
                      <!-- Summary -->
                      {$LANG.number_short} {$invoice.index_id} {if $invoice.custom_field1 != null} {$customFieldLabels.invoice_cf1|htmlsafe} {$invoice.custom_field1|htmlsafe} {/if}
-                     <span>{$LANG.date}: {$invoice.date|date_format:"%d.%m.%Y"}</span>
+                     <span>{$LANG.date_uc}: {$invoice.date|date_format:"%d.%m.%Y"}</span>
                   </td>
                </tr>
             </tbody>
@@ -160,7 +160,7 @@
                   <th class="clean center bleft bdown">{$LANG.product_unit_price}</th>
                     <th class="clean center bleft bdown">{$LANG.product_value}</th>
                   {/if} {if $invoice.type_id == 1 }
-                  <th class="clean center bleft bdown">{$LANG.description}</th>
+                  <th class="clean center bleft bdown">{$LANG.description_uc}</th>
                   {/if}
                </tr>
                <tr>
@@ -199,7 +199,7 @@
                   </td>
                </tr>
                <tr class="clean left bleft">
-                  <td class="clean left bleft" colspan="2">{$LANG.date}: {$invoice.date|date_format:"%d.%m.%Y"}<br>Semnaturile:</td>
+                  <td class="clean left bleft" colspan="2">{$LANG.date_uc}: {$invoice.date|date_format:"%d.%m.%Y"}<br>Semnaturile:</td>
                </tr>
             </tbody>
          </table>

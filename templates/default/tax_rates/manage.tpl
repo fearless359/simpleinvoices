@@ -26,7 +26,7 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.description}</th>
+            <th>{$LANG.description_uc}</th>
             <th>{$LANG.rate}</th>
             <th>{$LANG.enabled}</th>
         </tr>

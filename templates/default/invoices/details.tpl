@@ -79,7 +79,7 @@
         {if $invoice.type_id == TOTAL_INVOICE }
             <table id="itemtable" class="si_invoice_items">
                 <tr>
-                    <th class="left">{$LANG.description}</th>
+                    <th class="left">{$LANG.description_uc}</th>
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="5">
@@ -87,7 +87,7 @@
                         <textarea name="description0" style="overflow:scroll;"
                                   id="description0" rows="3" cols="100%"
                                   data-row-num="0"
-                                  data-description="{$LANG['description']}">{$invoiceItems[0].description|outhtml}</textarea>
+                                  data-description="{$LANG['description_uc']}">{$invoiceItems[0].description|outhtml}</textarea>
                     </td>
                 </tr>
             </table>
@@ -159,7 +159,7 @@
                 <tr>
                     <th></th>
                     <th>{$LANG.quantity_short}</th>
-                    <th>{$LANG.description}</th>
+                    <th>{$LANG.description_uc}</th>
                     {section name=tax_header loop=$defaults.tax_per_line_item }
                         <th>{$LANG.tax}{if $defaults.tax_per_line_item > 1} {$smarty.section.tax_header.index+1|htmlsafe}{/if}</th>
                     {/section}
@@ -194,7 +194,7 @@
                                 <select name="products{$line|htmlsafe}" id="products{$line|htmlsafe}"
                                         data-row-num="{$line|htmlsafe}"
                                         class="product_change{if $line == 0} validate[required]{/if}"
-                                        data-description="{$LANG.description}">
+                                        data-description="{$LANG.description_uc}">
                                     {foreach from=$products item=product}
                                         <option {if $product.id == $invoiceItem.product_id} selected {/if}
                                                 value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">{$product.description|htmlsafe}</option>
@@ -231,14 +231,14 @@
                             <textarea name="description{$line|htmlsafe}" style="overflow:scroll;"
                                   id="description{$line|htmlsafe}" rows="3" cols="100%"
                                   data-row-num="{$line|htmlsafe}"
-                                  data-description="{$LANG['description']}">{$invoiceItem.description|outhtml}</textarea>
+                                  data-description="{$LANG['description_uc']}">{$invoiceItem.description|outhtml}</textarea>
                         </td>
                     </tr>
                     </tbody>
                 {/foreach}
             </table>
             <div class="si_toolbar si_toolbar_inform">
-                <a href="#" class="add_line_item" data-description="{$LANG.description}">
+                <a href="#" class="add_line_item" data-description="{$LANG.description_uc}">
                     <img src="../../../images/add.png" alt=""/>{$LANG.add_new_row}</a>
                 <a href='#' class="show_details" title="{$LANG.show_details}">
                     <img src="../../../images/page_white_add.png" alt=""/>

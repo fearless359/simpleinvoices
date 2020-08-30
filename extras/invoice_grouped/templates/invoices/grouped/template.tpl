@@ -70,7 +70,7 @@
         <td class="" align="right" colspan="3">{$invoice.id|htmlsafe}</td>
       </tr>
       <tr>
-        <td nowrap class="">{$preference.pref_inv_wording|htmlsafe} {$LANG.date}:</td>
+        <td nowrap class="">{$preference.pref_inv_wording|htmlsafe} {$LANG.date_uc}:</td>
         <td class="" align="right" colspan="3">{$invoice.date|htmlsafe}</td>
       </tr>
       <!-- Show the Invoice Custom Fields if valid -->
@@ -266,7 +266,7 @@
               {if isset($invoiceItem.description)}
                 <tr class="">
                   <td class=""></td>
-                  <td class="" colspan="5">{$LANG.description}: {$invoiceItem.description|htmlsafe}</td>
+                  <td class="" colspan="5">{$LANG.description_uc}: {$invoiceItem.description|htmlsafe}</td>
                 </tr>
               {/if}
             {/if}
