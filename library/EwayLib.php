@@ -153,7 +153,7 @@ class EwayLib
      */
     public function setTransactionData(string $field, float $value): void
     {
-        $this->myTransactionData["eway" . $field] = Util::htmlsafe(trim($value));
+        $this->myTransactionData["eway" . $field] = Util::htmlSafe(trim($value));
     }
 
     /**

@@ -16,9 +16,9 @@
             {foreach key=key item=item_sales from=$total_sales.$year}
                 <td class="details_screen">
                     <b>{if isset($key)}{$key}{/if}</b>
-                    <br/>{if isset($item_sales|siLocal_number_trim)}{$item_sales|siLocal_number_trim}{/if}&nbsp;
-                    <br/>{$total_payments.$year.$key|siLocal_number_trim}&nbsp;
-                    <br/>{$tax_summary.$year.$key|siLocal_number_trim}&nbsp;
+                    <br/>{if isset($item_sales|utilNumberTrim)}{$item_sales|utilNumberTrim}{/if}&nbsp;
+                    <br/>{$total_payments.$year.$key|utilNumberTrim}&nbsp;
+                    <br/>{$tax_summary.$year.$key|utilNumberTrim}&nbsp;
                 </td>
             {/foreach}
         </tr>

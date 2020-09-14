@@ -27,8 +27,8 @@ Util::directAccessAllowed();
 // Deal with op and add some basic sanity checking
 $op = !empty( $_POST['op'] ) ? $_POST['op'] : null;
 
-$displayBlock = "<div class=\"si_message_error\">{$LANG['save_customer_failure']}</div>";
-$refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php?module=customers&amp;view=manage\" />";
+$displayBlock = "<div class='si_message_error'>{$LANG['save_customer_failure']}</div>";
+$refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=manage' />";
 
 $error = false;
 // The field is only non-empty if the user entered a value.
@@ -36,7 +36,7 @@ $error = false;
 $excludeCreditCardNumber = true;
 if (!empty($_POST['credit_card_number'])) {
     try {
-        $key = $config->encryption->default->key;
+        $key = $config['encryptionDefaultKey'];
         $enc = new Encryption();
         $_POST['credit_card_number'] = $enc->encrypt($key, $_POST['credit_card_number']);
         $excludeCreditCardNumber = false;
@@ -47,13 +47,13 @@ if (!empty($_POST['credit_card_number'])) {
 }
 
 if (!$error) {
-    if ($op === "add") {
+    if ($op === "create") {
         if (Customer::insertCustomer($excludeCreditCardNumber)) {
-            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['save_customer_success']}</div>";
         }
     } elseif ($op === 'edit') {
         if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
-            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_customer_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['save_customer_success']}</div>";
         }
     }
 }

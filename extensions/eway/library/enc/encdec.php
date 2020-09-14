@@ -31,9 +31,9 @@ use Inc\Claz\Util;
 </head>
 <body>
 {if isset($encrypt_error)}
-<h1>Unable to perform <?php Util::htmlsafe($encrypt_error); ?> requet.</h1>
+<h1>Unable to perform <?php Util::htmlSafe($encrypt_error); ?> requet.</h1>
 {else}
-<form action='<?php echo urlsafe($_SERVER['PHP_SELF']) ?>' method='post'>
+<form action='<?php echo urlSafe($_SERVER['PHP_SELF']) ?>' method='post'>
     <br/>Original Text<br/>
     <textarea name='text' cols="40" rows="8" wrap="soft">Welcome to the Real World.</textarea>
     <br/>Enter Key String<br/>
@@ -44,13 +44,13 @@ use Inc\Claz\Util;
     <br/>Encrypted Text<br/>
     <textarea name='enctext' cols="40" rows="8" wrap="soft">
         <?php
-        if (isset($_POST['encrypt']) || isset($_POST['decrypt'])) echo Util::htmlsafe($encstr);
+        if (isset($_POST['encrypt']) || isset($_POST['decrypt'])) echo Util::htmlSafe($encstr);
         ?>
     </textarea>
     <br/>Decrypted Text<br/>
     <textarea name='dectext' cols="40" rows="8" wrap="soft">
         <?php
-        if (isset($_POST['encrypt']) || isset($_POST['decrypt'])) echo Util::htmlsafe($decstr);
+        if (isset($_POST['encrypt']) || isset($_POST['decrypt'])) echo Util::htmlSafe($decstr);
         ?>
     </textarea>
 </form>

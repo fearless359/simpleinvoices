@@ -1,4 +1,4 @@
-<h2 class="si_center">About to <i>{$action|htmlsafe}</i>: {$name|htmlsafe}</h2>
+<h2 class="si_center">About to <i>{$action|htmlSafe}</i>: {$name|htmlSafe}</h2>
 
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=extensions&amp;view=save">
@@ -7,14 +7,14 @@
             <tr>
                 <th>{$LANG.name}</th>
                 <td>
-                    <input type="text" name="name" readonly value="{if isset($name)}{$name|htmlsafe}{/if}"/>
-                    <input type="text" name="id" readonly size="3" value="{if isset($id)}{$id|htmlsafe}{/if}"/>
+                    <input type="text" name="name" readonly value="{if isset($name)}{$name|htmlSafe}{/if}"/>
+                    <input type="text" name="id" readonly size="3" value="{if isset($id)}{$id|htmlSafe}{/if}"/>
                 </td>
             </tr>
             <tr>
                 <th>{$LANG.description_uc}</th>
                 <td>
-                    <input type="text" name="description" readonly value="{if isset($description)}{$description|htmlsafe}{/if}"/>
+                    <input type="text" name="description" readonly value="{if isset($description)}{$description|htmlSafe}{/if}"/>
                 </td>
             </tr>
         </table>
@@ -30,7 +30,7 @@
         </div>
     </div>
     {if ($action=="unregister" & $count) > 0}
-        <h3 class="si_message_warning">WARNING: All {$count|htmlsafe} extension-specific settings will be deleted!</h3>
+        <h3 class="si_message_warning">WARNING: All {$count|htmlSafe} extension-specific settings will be deleted!</h3>
     {/if}
-    <input type="hidden" name="action" value="{if isset($action)}{$action|htmlsafe}{/if}"/>
+    <input type="hidden" name="action" value="{if isset($action)}{$action|htmlSafe}{/if}"/>
 </form>

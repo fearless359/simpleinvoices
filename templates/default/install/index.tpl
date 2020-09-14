@@ -12,11 +12,11 @@
                 <li>Create a blank MySQL database (aka MariaDb) preferably with UTF-8 collation.</li>
                 <li>Enter the correct database connection details in the
                     <strong><em>{$config_file_path}</em></strong> file.
-                    {if $config_file_path == "config/config.php"}
+                    {if $config_file_path == "config/config.ini"}
                         <p style="margin: 0 0 0 10px;">
-                            <strong>NOTE:</strong> You can copy the <strong>config.php</strong> file to a file named
-                            <strong>custom.config.php</strong> and make your changes to it. The advantage is that
-                            future updates to SimpleInvoices will not write over the <strong>custom.config.php</strong>
+                            <strong>NOTE:</strong> You can copy the <strong>config.ini</strong> file to a file named
+                            <strong>custom.config.ini</strong> and make your changes to it. The advantage is that
+                            future updates to SimpleInvoices will not write over the <strong>custom.config.ini</strong>
                             file; thus preserving your settings.</p>
                     {/if}
                 </li>
@@ -38,14 +38,14 @@
     </tr>
     <tr>
         <td style="text-align: right; margin-right: 0;">Host</td>
-        <td style="text-align: left; padding-left: 40px;">{$config->database->params->host}</td>
+        <td style="text-align: left; padding-left: 40px;">{$config.databaseHost}</td>
     </tr>
     <tr>
         <td style="text-align: right; margin-right: 0;">Database</td>
-        <td style="text-align: left; padding-left: 40px;">{$config->database->params->dbname}</td>
+        <td style="text-align: left; padding-left: 40px;">{$config.databaseDbname}</td>
     </tr>
     <td style="text-align: right; margin-right: 0;">Username</td>
-    <td style="text-align: left; padding-left: 40px;">{$config->database->params->username}</td>
+    <td style="text-align: left; padding-left: 40px;">{$config.databaseUsername}</td>
     <tr>
     <tr>
         <td style="text-align: right; margin-right: 0;">Password</td>

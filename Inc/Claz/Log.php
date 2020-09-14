@@ -2,10 +2,8 @@
 
 namespace Inc\Claz;
 
-use Zend_Log;
-use Zend_Log_Exception;
-use Zend_Log_Filter_Priority;
-use Zend_Log_Writer_Stream;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  * @name Log.php
@@ -18,9 +16,9 @@ use Zend_Log_Writer_Stream;
  * Class Log
  * @package Inc\Claz
  */
-class Log
+class Log extends Logger
 {
-    private static Zend_Log $logger;
+    private static Logger $logger;
     private static string $folder = "";
     private static string $file = "";
     private static string $path = "";
@@ -31,7 +29,7 @@ class Log
      * @param string $folder
      * @param string $file
      */
-    public static function open(string $level = "EMERG", string $folder = "tmp/log/", string $file = "si.log")
+    public static function open(string $level = "EMERGENCY", string $folder = "tmp/log/", string $file = "si.log")
     {
         // Create log file if it doesn't exist
         if (preg_match('/^.*\/$/', $folder) == 1) {
@@ -60,68 +58,68 @@ class Log
             SiError::out('notWritable', 'file', self::$path);
         }
 
-        try {
-            $writer = new Zend_Log_Writer_Stream(self::$path);
-            self::$logger = new Zend_Log($writer);
-        } catch (Zend_Log_Exception $zle) {
-            SiError::out("generic", "Zend_Log_Exception", $zle->getMessage());
-        }
         switch ($level) {
             case 'DEBUG':
-                $level = Zend_Log::DEBUG;
+                $loggerLevel = Logger::DEBUG;
                 break;
 
             case 'INFO':
-                $level = Zend_Log::INFO;
+                $loggerLevel = Logger::INFO;
                 break;
 
             case 'NOTICE':
-                $level = Zend_Log::NOTICE;
+                $loggerLevel = Logger::NOTICE;
                 break;
 
-            case 'WARN':
-                $level = Zend_Log::WARN;
+            case 'WARNING':
+                $loggerLevel = Logger::WARNING;
                 break;
 
-            case 'ERR':
-                $level = Zend_Log::ERR;
+            case 'ERROR':
+                $loggerLevel = Logger::ERROR;
                 break;
 
-            case 'CRIT':
-                $level = Zend_Log::CRIT;
+            case 'CRITICAL':
+                $loggerLevel = Logger::CRITICAL;
                 break;
 
             case 'ALERT':
-                $level = Zend_Log::ALERT;
+                $loggerLevel = Logger::ALERT;
                 break;
 
-            case 'EMERG':
+            case 'EMERGENCY':
             default:
-                $level = Zend_Log::EMERG;
+                $loggerLevel = Logger::EMERGENCY;
                 break;
         }
 
-        try {
-            $filter = new Zend_Log_Filter_Priority($level);
-            self::$logger->addFilter($filter);
-        } catch (Zend_Log_Exception $zle) {
-            SiError::out("generic", "Zend_Log_Exception", $zle->getMessage());
-        }
+        self::$logger = new Logger('siLog');
+        self::$logger->pushHandler(new StreamHandler(self::$path, $loggerLevel));
     }
 
     /**
      * @param string $msg
-     * @param int $level one of: DEBUG, INFO, NOTICE, WARN, ERR, CRIT, ALERT, EMERG
+     * @param int|null $level one of the following. The level used to open the logger sets the level for which messages
+     *      send to Log::out() will be generated. This setting must be greater than or equal to the open level
+     *      for a message to print. Ex: Log::open called with level Log::ERROR. Log::out called with level
+     *      Log::WARNING. Log::WARNING less than Log::ERROR so it does not print.
+     *    DEBUG     (100): Detailed debug information. (Default if not specified)
+     *    INFO      (200): Interesting events. Examples: User logs in, SQL logs.
+     *    NOTICE    (250): Normal but significant events.
+     *    WARNING   (300): Exceptional occurrences that are not errors. Examples: Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.
+     *    ERROR     (400): Runtime errors that do not require immediate action but should typically be logged and monitored.
+     *    CRITICAL  (500): Critical conditions. Example: Application component unavailable, unexpected exception.
+     *    ALERT     (550): Action must be taken immediately. Example: Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.
+     *    EMERGENCY (600): Emergency: system is unusable.
      */
-    public static function out(string $msg, $level = Zend_Log::DEBUG)
+    public static function out(string $msg, ?int $level = Logger::DEBUG)
     {
         if (!isset(self::$logger)) {
-            self::open('DEBUG');
-            /** @noinspection PhpUndefinedMethodInspection */
-            self::$logger->log("Log::out() - log file was not open. Opened for DEBUG");
+            global $config;
+            self::open($config['loggerLevel']);
+            error_log("Log::out called before tmp/log/si.log opened. Opened automatically. Backtrace: " . print_r(debug_print_backtrace(), true));
         }
-        /** @noinspection PhpUndefinedMethodInspection */
-        self::$logger->log($msg, $level);
+        self::$logger->log($level, $msg);
     }
 
 }

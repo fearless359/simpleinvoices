@@ -1,3 +1,4 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <table class="si_invoice_bot">
     {$customFields.1}
     {$customFields.2}
@@ -8,10 +9,7 @@
     </tr>
     <tr>
         <td class='si_invoice_notes' colspan="2">
-            <!--
-            <textarea class="editor" name="note">{*if isset($defaultInvoice.note)*}{*$defaultInvoice.note*}{*/if*}</textarea>
-            -->
-            <input name="note" id="note" {if isset($defaultInvoice.note)}value="{$defaultInvoice.note|outhtml}"{/if} type="hidden">
+            <input name="note" id="note" {if isset($defaultInvoice.note)}value="{$defaultInvoice.note|outHtml}"{/if} type="hidden">
             <trix-editor input="note"></trix-editor>
         </td>
     </tr>
@@ -26,8 +24,8 @@
             {else}
                 <select name="preference_id">
                     {foreach from=$preferences item=preference}
-                        <option {if $preference.pref_id == $defaults.preference}selected {/if}value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">
-                            {$preference.pref_description|htmlsafe}
+                        <option {if $preference.pref_id == $defaults.preference}selected {/if}value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">
+                            {$preference.pref_description|htmlSafe}
                         </option>
                     {/foreach}
                 </select>
@@ -35,7 +33,7 @@
         </td>
         <td>
             <input id="sales_representative}" name="sales_representative" size="30"
-                   value="{if isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlsafe}{/if}" />
+                   value="{if isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlSafe}{/if}" />
         </td>
     </tr>
 </table>

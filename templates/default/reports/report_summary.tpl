@@ -83,7 +83,7 @@
             &nbsp;
         </td>
         <td  class="details_screen">
-            {$account.expense|siLocal_number}
+            {$account.expense|utilNumber}
         </td>
         <td>
             &nbsp;
@@ -91,7 +91,7 @@
         </td>
         <td  class="details_screen">
             {if $account.tax != ""}
-                {$account.tax|siLocal_number}
+                {$account.tax|utilNumber}
             {/if}
         </td>
         <td>
@@ -100,9 +100,9 @@
         </td>
         <td  class="details_screen">
         {if $account.total != ""}
-            {$account.total|siLocal_number}
+            {$account.total|utilNumber}
         {else}
-            {$account.expense|siLocal_number}
+            {$account.expense|utilNumber}
         {/if}
         </td>
         <td>
@@ -180,7 +180,7 @@
             &nbsp;
         </td>
         <td  class="details_screen">
-            {$invoices[invoice].total|siLocal_number}
+            {$invoices[invoice].total|utilNumber}
         </td>
 	</tr>
  {/section}
@@ -250,7 +250,7 @@
             &nbsp;
         </td>
         <td  class="details_screen">
-            {$payment.ac_amount|siLocal_number}
+            {$payment.ac_amount|utilNumber}
         </td>
 	</tr>
  {/foreach}

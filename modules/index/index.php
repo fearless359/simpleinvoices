@@ -17,12 +17,7 @@ $billers   = Biller::getAll();
 $customers = Customer::getAll();
 $products  = Product::getAll(true);
 
-if (empty($billers) || empty($customers) || empty($products)) {
-    $firstRunWizard =true;
-} else {
-    $firstRunWizard = false;
-}
-$smarty->assign("first_run_wizard",$firstRunWizard);
+$smarty->assign("first_run_wizard",empty($billers) || empty($customers) || empty($products));
 
 $smarty->assign("billers"    , $billers);
 $smarty->assign("customers"  , $customers);

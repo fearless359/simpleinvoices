@@ -10,14 +10,14 @@
 	<tfoot>
 		<tr>
 			<td class="page_layer si_right">{$LANG.total_sales}</td>
-			<td class="page_layer"><span class="BOLD">{$total_sales|siLocal_number:'2'|default:'-'}</span></td>
+			<td class="page_layer"><span class="BOLD">{$total_sales|utilNumber:2|default:'-'}</span></td>
 		</tr>
 	</tfoot>
 	<tbody>
 	{foreach item=customer from=$data}
 		<tr class="tr_{cycle values="A,B"}">
-			<td>{$customer.name|htmlsafe}</td>
-			<td>{$customer.sum_total|siLocal_number:'2'|default:'-'}</td>
+			<td>{$customer.name|htmlSafe}</td>
+			<td>{$customer.sum_total|utilNumber:2|default:'-'}</td>
 		</tr>
 	{/foreach}
 	</tbody>

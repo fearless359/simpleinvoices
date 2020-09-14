@@ -6,12 +6,12 @@
     <tr>
         <td>{$LANG['start_date']}
           <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
-                 name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlsafe}{/if}' />
+                 name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlSafe}{/if}' />
         </td>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td>{$LANG['end_date']}
           <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
-                 name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlsafe}{/if}' />
+                 name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlSafe}{/if}' />
         </td>
     </tr>
 </table>
@@ -33,7 +33,7 @@
         {$LANG['profit']} {$LANG['per']} {$LANG['invoice']} {$LANG['based']}
         {$LANG['on']} {$LANG['average']} {$LANG['product']} {$LANG['cost']}
         {$LANG['summary']} {$LANG['for']} {$LANG['the']} {$LANG['period']}
-        {if isset($start_date)}{$start_date|htmlsafe}{/if} {$LANG['to']} {if isset($end_date)}{$end_date|htmlsafe}{/if}
+        {if isset($start_date)}{$start_date|htmlSafe}{/if} {$LANG['to']} {if isset($end_date)}{$end_date|htmlSafe}{/if}
     </h3>
 </div>
 
@@ -53,16 +53,16 @@
     <tr>
         <td class="details_screen">
             <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoices[invoice].id|urlencode}">
-                {if isset($index)}{$index|htmlsafe}{/if}
-                {$invoices[invoice].preference|htmlsafe}
-                {$invoices[invoice].index_id|htmlsafe}
+                {if isset($index)}{$index|htmlSafe}{/if}
+                {$invoices[invoice].preference|htmlSafe}
+                {$invoices[invoice].index_id|htmlSafe}
             </a>
         </td>
-        <td class="details_screen" colspan="3">{$invoices[invoice].biller|htmlsafe}</td>
-        <td class="details_screen" colspan="3">{$invoices[invoice].customer|htmlsafe}</td>
-        <td  class="details_screen si_right">{$invoices[invoice].total|siLocal_number}</td>
-        <td  class="details_screen si_right">{$invoices[invoice].cost|siLocal_number}</td>
-        <td  class="details_screen si_right">{$invoices[invoice].profit|siLocal_number}</td>
+        <td class="details_screen" colspan="3">{$invoices[invoice].biller|htmlSafe}</td>
+        <td class="details_screen" colspan="3">{$invoices[invoice].customer|htmlSafe}</td>
+        <td  class="details_screen si_right">{$invoices[invoice].total|utilNumber}</td>
+        <td  class="details_screen si_right">{$invoices[invoice].cost|utilNumber}</td>
+        <td  class="details_screen si_right">{$invoices[invoice].profit|utilNumber}</td>
 	</tr>
  {/section}
     <tr>
@@ -73,8 +73,8 @@
 	</tr>
     <tr>
         <td class="details_screen si_right" colspan="7" style="font-weight:bold;">{$LANG['total']}:&nbsp;&nbsp;</td>
-        <td class="details_screen si_right">{$invoice_totals.sum_total|siLocal_number}</td>
-        <td class="details_screen si_right">{$invoice_totals.sum_cost|siLocal_number}</td>
-        <td class="details_screen si_right">{$invoice_totals.sum_profit|siLocal_number}</td>
+        <td class="details_screen si_right">{$invoice_totals.sum_total|utilNumber}</td>
+        <td class="details_screen si_right">{$invoice_totals.sum_cost|utilNumber}</td>
+        <td class="details_screen si_right">{$invoice_totals.sum_profit|utilNumber}</td>
 	</tr>
  </table>

@@ -70,7 +70,7 @@
 				<li>Note: SimpleInvoicesDatabase.sql works fine with MySQL 4.1 and above.
 			</ul>
 			<li>Now the database has data and files have been 'installed' in the webservers document root, SimpleInvoice just need to have its configuration file edited and then its fine to use
-			<ul><li>Open the SimpleInvoices coniguration file (which is config.php in the config/ folder) up in your favourite text editor
+			<ul><li>Open the SimpleInvoices coniguration file (which is config.ini in the config/ folder) up in your favourite text editor
 			<li>Edit the file so that 
 			<ul><li>$db_host equals the name of your database server (normally "localhost"), 
 			<li>$db_name to the name of the database (normally "simple_invoices"), 
@@ -162,9 +162,9 @@ memory_limit = 24M      ; Maximum amount of memory a script may consume (8MB)
 <a name="upgrading"><b>Ugrading SimpleInvoices from one version to another</b></a>
 <ul>
 	<li>To upgrade SimpleInvoices from one version to another, the first step is to download the updated version of SimpleInvoices from our <a href="https://simpleinvoices.group">website</a>
-	<li>The next step is to backup (make a copy) of your config.php file which is located in the config folder
+	<li>The next step is to backup (make a copy) of your config.ini file which is located in the config folder
 	<li>Once this file has been backed up, extract (unzip) the contents of the SimpleInvoices file which you downloaded into the simpleinvoices directory in your webservers document root
-	<li>open up the config.php file thats in the config directory and enter you database details (db_host, $db_name, $db_user and $db_password) into the file and save it
+	<li>open up the config.ini file thats in the config directory and enter you database details (db_host, $db_name, $db_user and $db_password) into the file and save it
 	<li>Now that most of the work has been done open up SimpleInvoices in your browser (usually http://localhost/simpleinvoices) and from the Options menu in SimpleInvoices select Database Upgrade Manager
 	<ul><li>If this is the first time that the Database Upgrade Manager has run
 	<ul><li> you'll be preseneted with a screen promting you to Initialise the Database Upgrade
@@ -330,8 +330,8 @@ memory_limit = 24M      ; Maximum amount of memory a script may consume (8MB)
 <ul>
 		<li>SimpleInvoices allows to the export of an invoice from the Quick View to Excel, Word and the Open Document formats
 		<li>The default export formats are set to .xls(Excel) for spreadsheets and .doc(Word) for word processors
-		<li>These defaults can be changed in the config/config.php to be the Open Document formats, .ods for spreadsheets and .odt dor word processors
-		<li>Note: in the config/config.php any file format can be used as long as their associated programs can read a html document
+		<li>These defaults can be changed in the config/config.ini to be the Open Document formats, .ods for spreadsheets and .odt dor word processors
+		<li>Note: in the config/config.ini any file format can be used as long as their associated programs can read a html document
 
 </ul>
 </ul>

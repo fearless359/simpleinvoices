@@ -1,0 +1,5 @@
+language: php
+php:
+  - '7.0'
+install: composer dump-autoload
+script: phpunit --bootstrap vendor/autoload.php tests

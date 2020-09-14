@@ -13,15 +13,15 @@
     <tr>
       <td class="page_layer si_right" colspan="2">{$LANG.total_sales}:
       </td>
-      <td class="page_layer si_right"><span class="bold">{$grandTotalSales|siLocal_number:'2'|default:'-'}</span></td>
+      <td class="page_layer si_right"><span class="bold">{$grandTotalSales|utilNumber:2|default:'-'}</span></td>
     </tr>
   </tfoot>
   <tbody>
     {foreach item=totalSales from=$data}
     <tr>
-      <td class="align_left">{$totalSales.template|htmlsafe}</td>
-      <td class="align_right">{$totalSales.count|siLocal_number:'0'|default:'-'}</td>
-      <td class="align_right">{$totalSales.total|siLocal_number:'2'|default:'-'}</td>
+      <td class="align_left">{$totalSales.template|htmlSafe}</td>
+      <td class="align_right">{$totalSales.count|utilNumber:0|default:'-'}</td>
+      <td class="align_right">{$totalSales.total|utilNumber:2|default:'-'}</td>
     </tr>
     {/foreach}
   </tbody>

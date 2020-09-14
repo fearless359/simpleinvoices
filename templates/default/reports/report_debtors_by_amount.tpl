@@ -19,19 +19,19 @@
 	<tfoot>
 		<tr>
 			<td align="RIGHT" colspan="6" class="PAGE_LAYER">{$LANG.total_owed}</td>
-			<td align="LEFT" class="PAGE_LAYER"><span class="BOLD">{$total_owed|siLocal_number:'2'|default:'-'}</span></td>
+			<td align="LEFT" class="PAGE_LAYER"><span class="BOLD">{$total_owed|utilNumber:2|default:'-'}</span></td>
 		</tr>
 	</tfoot>
 	<tbody>
 	{foreach item=invoice from=$data}
 		<tr>
-			<td>{$invoice.id|htmlsafe}</td>
-			<td>{$invoice.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}</td>
-			<td>{$invoice.biller|htmlsafe}</td>
-			<td>{$invoice.customer|htmlsafe}</td>
-			<td>{$invoice.inv_total|siLocal_number:'2'|default:'0'}</td>
-			<td>{$invoice.inv_paid|siLocal_number:'2'|default:'0'}</td>
-			<td>{$invoice.inv_owing|siLocal_number:'2'|default:'0'}</td>
+			<td>{$invoice.id|htmlSafe}</td>
+			<td>{$invoice.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}</td>
+			<td>{$invoice.biller|htmlSafe}</td>
+			<td>{$invoice.customer|htmlSafe}</td>
+			<td>{$invoice.inv_total|utilNumber:2|default:'0'}</td>
+			<td>{$invoice.inv_paid|utilNumber:2|default:'0'}</td>
+			<td>{$invoice.inv_owing|utilNumber:2|default:'0'}</td>
 		</tr>
 	{/foreach}
 	</tbody>

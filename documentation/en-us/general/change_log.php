@@ -157,7 +157,7 @@
         </li>
         <li>2019-10-08 - <b>2019.2.9</b>
             <ul>
-                <li>Allow equal sign (=) in the config.php value.</li>
+                <li>Allow equal sign (=) in the config.ini value.</li>
             </ul>
         </li>
         <li>2019-10-07 - <b>2019.2.8</b>
@@ -215,7 +215,7 @@
         </li>
         <li>2019-06-13 - <b>2019.2.1</b>
             <ul>
-                <li>Changed to format amounts in lists per local.locale setting in the custom.config.php file.</li>
+                <li>Changed to format amounts in lists per localLocale setting in the custom.config.ini file.</li>
             </ul>
         </li>
         <li>2019-05-31 - <b>2019.2.1</b>
@@ -335,7 +335,7 @@
                     accessed and compiled. Subsequent access does not report an error. Issue
                     reported to Smarty team for hopeful cleanup in a future version.</li>
                 <li>Changed to use namespace for class autoloading and add phpunit test support.</li>
-                <li>Eliminated "htmlout" template function. Use "outhtml" instead.</li>
+                <li>Eliminated "htmlout" template function. Use "outHtml" instead.</li>
                 <li>Moved all global functions to classes. Many are in the Util class.</li>
             </ul>
         </li>
@@ -383,7 +383,7 @@
             <ul>
                 <li>Modified templates using obsolete number_formatted function to use the
                     updated siLocal_number function. This fixes display of numbers formatted
-                    for the locale set in the custom.config.php file.</li>
+                    for the locale set in the custom.config.ini file.</li>
             </ul>
         </li>
         <li>2018-10-15 - <b>2018.2.0</b>
@@ -401,15 +401,15 @@
         </li>
         <li>2018-10-12 - <b>2018.1.3</b>
             <ul>
-                <li>Added logic to create and/or update the custom.config.php file. If the file
-                    doesn't exist, it will be created by making a copy from the config.php. If
+                <li>Added logic to create and/or update the custom.config.ini file. If the file
+                    doesn't exist, it will be created by making a copy from the config.ini. If
                     it does exist, it will be updated as follows:
                     <ol>
-                        <li>If line is in config.php but not custom.config.php, it will be added
-                            added to custom.config.php.</li>
-                        <li>If line is in custom.config.php but not in config.php, it will be
+                        <li>If line is in config.ini but not custom.config.ini, it will be added
+                            added to custom.config.ini.</li>
+                        <li>If line is in custom.config.ini but not in config.ini, it will be
                             enclosed in a "Possibly deprecated" comment lines.</li>
-                        <li>The version name and date will be set to the value in the config.php
+                        <li>The version name and date will be set to the value in the config.ini
                             file.</li>
                     </ol>
                 </li>
@@ -472,8 +472,8 @@
       </li>
       <li>2018-09-12 - <b>2017.3.0</b>
         <ul>
-          <li><b>Production Release</b> Updated to support local.locale setting in the custom.config.php
-              (aka config.php) files that use non-english number formats in templates. Also changed <b>Help</b>
+          <li><b>Production Release</b> Updated to support localLocale setting in the custom.config.ini
+              (aka config.ini) files that use non-english number formats in templates. Also changed <b>Help</b>
               link in the header to reference the new <i>SimpleInvoices.group</i> site which will be updated
               to replace the <i>SimpleInvoices.group</i> site that is no longer available.</li>
         </ul>
@@ -602,7 +602,7 @@
           <li>Fix missing <b>$patchCount</b> and query syntax error in <b>getSystemDefaults()</b>
               method.</li>
           <li>Enhanced <b>install from scratch</b> process to better handle case of no database matching
-              the name in the <b>config.php</b> or if present, the <b>custom.config.php</b> file. Also
+              the name in the <b>config.ini</b> or if present, the <b>custom.config.ini</b> file. Also
               cleaned up formatting of screens and added additional information to the screen instructions
               to better assist users with setting <b>SimpleInvoices</b> up.
           </li>
@@ -786,11 +786,11 @@
           <li>PHPReports PHP5 deprecated use of array_push issue fixed</li>
           <li>Invoice PDF and EMail now support spaces in Biller Logo file name</li>
           <li>Invoice PDF EMail now supports spaces in Invoice Preference Name</li>
-          <li>Invoice PDF EMail (Boolean variable in config.php) now supports Confirm Reading Receipt to Sender</li>
+          <li>Invoice PDF EMail (Boolean variable in config.ini) now supports Confirm Reading Receipt to Sender</li>
           <li>screen.css now has th.sortable_rt class - useful for right align for numeric fields - available in the modules/module-name/manage.php files</li>
           <li>General Code cleanup</li>
           <li>Increased limit from 100 to 1000000 billers / clients / inv_prefs - look in modules/invoices/total.php, itemized.php, consulting.php</li>
-          <li>Changes in config/config.php made backwards compatible for use with older config.php</li>
+          <li>Changes in config/config.ini made backwards compatible for use with older config.ini</li>
           <li>Invoice PDF EMail now supports SecureSMTP and user configurable SMTP Port</li>
           <li>Updated PHPMailer to v2.10 Beta 1 for PHP5</li>
           <li>lang/en-gb/lang.php capitalised correctly</li>
@@ -822,7 +822,7 @@
           <li>Authentication sql table added to the default install - so you now longer have to manually run the login sql to get authentication working</li>
           <li>How total invoices are stored in the DB has changed - now a total invoices gets stored as a product in the products table but set to not visible via the Manage Products page</li>
           <li>System Defaults renamed to System Preferences</li>
-          <li>Authentication can now be set via the config.php file - no need to adjust include_auth.php anymore</li>
+          <li>Authentication can now be set via the config.ini file - no need to adjust include_auth.php anymore</li>
           <li>Customer add template fixed for if no name entered</li>
           <li><a href="http://code.google.com/p/simpleinvoices/issues/detail?id=106">Issue 106</a>Edit tax rates bug fixed</li>
           <li>Report: Debtors owing by customer sql fixed</li>
@@ -1160,7 +1160,7 @@
       <li>2006-06-16
         <ul>
           <li>The manage invoices page had the actions pdf,xls,doc changed to icons</li>
-          <li>pdf configs now moved into config/config.php</li>
+          <li>pdf configs now moved into config/config.ini</li>
         </ul>
       </li>
     </ul>

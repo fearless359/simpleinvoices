@@ -7,7 +7,7 @@
 	<tbody>
 	{foreach item=biller from=$data}
 		<tr>
-			<th colspan="2">{$LANG.biller_name}: {$biller.name|htmlsafe}</th>
+			<th colspan="2">{$LANG.biller_name}: {$biller.name|htmlSafe}</th>
 		</tr>
 		<tr>
 			<th>{$LANG.customer_name}</th>
@@ -15,13 +15,13 @@
 		</tr>
 		{foreach item=customer from=$biller.customers}
 			<tr>
-				<td>{$customer.name|htmlsafe}</td>
-				<td>{$customer.sum_total|siLocal_number:'2'|default:'-'}</td>
+				<td>{$customer.name|htmlSafe}</td>
+				<td>{$customer.sum_total|utilNumber:2|default:'-'}</td>
 			</tr>
 		{/foreach}
 		<tr>
 			<td>{$LANG.total}</td>
-			<td>{$biller.total_sales|siLocal_number:'2'|default:'-'}</td>
+			<td>{$biller.total_sales|utilNumber:2|default:'-'}</td>
 		</tr>
 	{/foreach}
 	</tbody>

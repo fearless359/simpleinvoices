@@ -21,9 +21,9 @@ class DbFieldTest extends TestCase
     {
         $dbf = new DbField('ivl.customer_id', 'cid');
         $parm = $dbf->genParm();
-        static::assertEquals('`ivl`.`customer_id` AS cid', $parm, 'Generate full parameter failed');
+        self::assertEquals('`ivl`.`customer_id` AS cid', $parm, 'Generate full parameter failed');
 
         $alias = $dbf->genParm(true);
-        static::assertEquals('cid', $alias, 'Generate alias failed');
+        self::assertEquals('cid', $alias, 'Generate alias failed');
     }
 }

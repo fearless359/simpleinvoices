@@ -135,6 +135,7 @@ class ProductAttributes
 
         $result = 0;
         try {
+            $pdoDb->setExcludedFields("id");
             $result = $pdoDb->request('INSERT', 'products_attributes');
         } catch (PdoDbException $pde) {
             error_log('ProductAttributes::insert() - Error: ' . $pde->getMessage());

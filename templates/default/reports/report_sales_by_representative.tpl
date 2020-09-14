@@ -30,13 +30,13 @@
                 <tr>
                     <th>{$LANG.start_date}
                         <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
-                               name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlsafe}{/if}'/>
+                               name="start_date" id="date1" value='{if isset($start_date)}{$start_date|htmlSafe}{/if}'/>
                     </th>
                     <td>&nbsp;&nbsp;</td>
                     <td>&nbsp;&nbsp;</td>
                     <th>{$LANG.end_date}
                         <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10"
-                               name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlsafe}{/if}'/>
+                               name="end_date" id="date1" value='{if isset($end_date)}{$end_date|htmlSafe}{/if}'/>
                     </th>
                 </tr>
                 <tr>
@@ -88,7 +88,7 @@
             <td style="width:25%;">
                 <strong>{$LANG.sales_summary}:</strong>
                 <br/>
-                <strong>{$LANG.total}:</strong> {$statement.total|siLocal_number}
+                <strong>{$LANG.total}:</strong> {$statement.total|utilNumber}
                 <br/>
             </td>
         </tr>
@@ -120,14 +120,14 @@
                 </td>
                 <td>&nbsp;&nbsp;</td>
                 <td class="details_screen">
-                    {$invoices[invoice].date|siLocal_date}
+                    {$invoices[invoice].date|utilDate}
                 </td>
                 <td>&nbsp;&nbsp;</td>
                 <td class="details_screen">{$invoices[invoice].biller}</td>
                 <td>&nbsp;&nbsp;</td>
                 <td class="details_screen">{$invoices[invoice].customer}</td>
                 <td>&nbsp;&nbsp;</td>
-                <td class="details_screen">{$invoices[invoice].total|siLocal_number}</td>
+                <td class="details_screen">{$invoices[invoice].total|utilNumber}</td>
             </tr>
         {/section}
         <tr>
@@ -140,7 +140,7 @@
             <td class="details_screen"></td>
             <td>&nbsp;&nbsp;</td>
             <td class="details_screen">-----<br/>
-                {$statement.total|siLocal_number}
+                {$statement.total|utilNumber}
             </td>
             <td>&nbsp;&nbsp;</td>
         </tr>

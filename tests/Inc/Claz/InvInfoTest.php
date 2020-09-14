@@ -21,10 +21,10 @@ class InvInfoTest extends TestCase
     public static function testConstruct()
     {
         $invInfo = new InvInfo(1, 2, "$50.49", "$50.00", "$0.49");
-        static::assertEquals(1, $invInfo->id);
-        static::assertEquals(2, $invInfo->indexId);
-        static::assertEquals("$50.49", $invInfo->fmtdBilled);
-        static::assertEquals("$50.00", $invInfo->fmtdPaid);
-        static::assertEquals("$0.49", $invInfo->fmtdOwed);
+        self::assertEquals(1, $invInfo->id);
+        self::assertEquals(2, $invInfo->indexId);
+        self::assertEquals("$50.49", $invInfo->fmtdBilled);
+        self::assertEquals("$50.00", $invInfo->fmtdPaid);
+        self::assertEquals("$0.49", $invInfo->fmtdOwed);
     }
 }

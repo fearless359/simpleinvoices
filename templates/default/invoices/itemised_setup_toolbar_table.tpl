@@ -3,7 +3,7 @@
         <tr>
             <th>{$LANG.setup_as_biller}</th>
             <td class="si_toolbar">
-                <a href="index.php?module=billers&amp;view=add" class="positive">
+                <a href="index.php?module=billers&amp;view=create" class="positive">
                     <img src="../../../images/user_add.png" alt=""/>
                     {$LANG.add_new_biller}
                 </a>
@@ -14,7 +14,7 @@
         <tr>
             <th>{$LANG.setup_add_customer}</th>
             <td class="si_toolbar">
-                <a href="index.php?module=customers&amp;view=add" class="positive">
+                <a href="index.php?module=customers&amp;view=create" class="positive">
                     <img src="../../../images/vcard_add.png" alt=""/>
                     {$LANG.customer_add}
                 </a>
@@ -25,7 +25,7 @@
         <tr>
             <th>{$LANG.setup_add_products}</th>
             <td class="si_toolbar">
-                <a href="index.php?module=products&amp;view=add" class="positive">
+                <a href="index.php?module=products&amp;view=create" class="positive">
                     <img src="../../../images/cart_add.png" alt=""/>
                     {$LANG.add_new_product}
                 </a>

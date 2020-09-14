@@ -20,7 +20,7 @@
         <form name="frmpost" method="POST" id="frmpost"
               action="index.php?module=statement&amp;view=email&amp;stage=2&amp;biller_id={$smarty.get.biller_id|urlencode}&amp;customer_id={$smarty.get.customer_id|urlencode}&amp;start_date={$smarty.get.start_date|urlencode}&amp;end_date={$smarty.get.end_date|urlencode}&amp;show_only_unpaid={$smarty.get.show_only_unpaid|urlencode}&amp;format=file">
             <div class="si_center">
-                <h3>Email {$customer.name|htmlsafe} to Customer as PDF</h3>
+                <h3>Email {$customer.name|htmlSafe} to Customer as PDF</h3>
             </div>
             <div class="si_form"></div>
             <table class="center">
@@ -32,7 +32,7 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_from" size="50" value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}"
+                        <input type="text" name="email_from" size="50" value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"
                                class="validate[required]" tabindex="10" autofocus/>
                     </td>
                 </tr>
@@ -44,7 +44,7 @@
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_to" size="50" value="{if isset($customer.email)}{$customer.email|htmlsafe}{/if}"
+                        <input type="text" name="email_to" size="50" value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}"
                                class="validate[required]" tabindex="20"/>
                     </td>
                 </tr>
@@ -55,7 +55,7 @@
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="text" name="email_bcc" size="50" value="{if isset($biller.email)}{$biller.email|htmlsafe}{/if}" tabindex="30"/></td>
+                    <td><input type="text" name="email_bcc" size="50" value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="30"/></td>
                 </tr>
                 <tr>
                     <th>{$LANG.subject}
@@ -66,16 +66,16 @@
                     </th>
                     <td>
                         <input type="text" name="email_subject" size="70" class="validate[required]" tabindex="40"
-                               value="Statement of invoices from {$biller.name|htmlsafe} is attached"/>
+                               value="Statement of invoices from {$biller.name|htmlSafe} is attached"/>
                     </td>
                 </tr>
                 <tr>
                     <th>{$LANG.message}</th>
                     <td>
                         <!--
-                        <textarea name="email_notes" class="editor" tabindex="50">{*if !empty($biller.signature)*}{*$biller.signature|htmlsafe*}{*/if*}</textarea>
+                        <textarea name="email_notes" class="editor" tabindex="50">{*if !empty($biller.signature)*}{*$biller.signature|htmlSafe*}{*/if*}</textarea>
                         -->
-                        <input name="email_notes" id="email_notes" {if isset($biller.signature)}value="{$biller.signature|outhtml}"{/if} type="hidden">
+                        <input name="email_notes" id="email_notes" {if isset($biller.signature)}value="{$biller.signature|outHtml}"{/if} type="hidden">
                         <trix-editor input="email_notes" tabindex="50"></trix-editor>
                     </td>
                 </tr>

@@ -119,7 +119,7 @@ class eway
     {
         //if($field=="TotalAmount")
         //	$value = round($value*100);
-        $this->myTransactionData["eway" . $field] = Util::htmlsafe(trim($value));
+        $this->myTransactionData["eway" . $field] = Util::htmlSafe(trim($value));
     }
 
 

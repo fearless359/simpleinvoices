@@ -32,12 +32,12 @@
             <tr>
                 <td class="si_center">
                     <a class="index_table" title="{$cflg['vname']}"
-                       href="index.php?module=custom_flags&amp;view=details&amp;id={$cflg['id']}&amp;action=view">
-                        <img src="../../../images/view.png" alt="{$cflg['vname']}" height="16" border="-5px" />
+                       href="index.php?module=custom_flags&amp;view=view&amp;id={$cflg['id']}">
+                        <img src="../../../images/view.png" alt="{$cflg['vname']}"/>
                     </a>
                     <a class="index_table" title="{$cflg['ename']}"
-                       href="index.php?module=custom_flags&amp;view=details&amp;id={$cflg['id']}&amp;action=edit" >
-                        <img src="../../../images/edit.png" alt="{$cflg['ename']} height=" 16" border="-5px" />
+                       href="index.php?module=custom_flags&amp;view=edit&amp;id={$cflg['id']}">
+                        <img src="../../../images/edit.png" alt="{$cflg['ename']}"/>
                     </a>
                 </td>
                 <td>{$cflg['associated_table']}</td>
@@ -75,9 +75,11 @@
            rel="index.php?module=documentation&amp;view=view&amp;page=help_what_are_custom_flags"
            title="{$LANG.what_are_custom_flags}">{$LANG.what_are_custom_flags}
             <img src="{$helpImagePath}help-small.png" alt=""/>
-        </a> :: <a class="cluetip" href="#"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_manage_custom_flags"
-                   title="{$LANG.whats_this_page_about}">{$LANG.whats_this_page_about}
+        </a>
+        ::
+        <a class="cluetip" href="#"
+           rel="index.php?module=documentation&amp;view=view&amp;page=help_manage_custom_flags"
+           title="{$LANG.whats_this_page_about}">{$LANG.whats_this_page_about}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
     </div>

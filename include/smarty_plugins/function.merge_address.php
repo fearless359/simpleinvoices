@@ -24,20 +24,20 @@ function smarty_function_merge_address(array $params) {
     if (empty($params['street1']) && empty($params['street2']) &&
             (!empty($params['field1']) || !empty($params['field2']) || !empty($params['field3']))) {
         $ma .= '<tr>' .
-                   '<td class="' . Util::htmlsafe($params['class1']) . '" >' . $LANG['address_uc'] . ':</td>' .
-                   '<td class="' . Util::htmlsafe($params['class2']) . '" colspan="' . Util::htmlsafe($params['colspan']) . '" >';
+                   '<td class="' . Util::htmlSafe($params['class1']) . '" >' . $LANG['address_uc'] . ':</td>' .
+                   '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '" >';
         $skipSection = true;
     }
 
     // If any among city, state or zip is present with atleast one street value
     if (!$skipSection && (!empty($params['field1']) || !empty($params['field2']) || !empty($params['field3']))) {
         $ma .= '<tr>' .
-                   '<td class="' . Util::htmlsafe($params['class1']) . '"></td>' .
-                   '<td class="' . Util::htmlsafe($params['class2']) . '" colspan="' . Util::htmlsafe($params['colspan']) . '">';
+                   '<td class="' . Util::htmlSafe($params['class1']) . '"></td>' .
+                   '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '">';
     }
 
     if (!empty($params['field1'])) {
-        $ma .= Util::htmlsafe($params['field1']);
+        $ma .= Util::htmlSafe($params['field1']);
     }
 
     if (!empty($params['field1']) && !empty($params['field2'])) {
@@ -45,7 +45,7 @@ function smarty_function_merge_address(array $params) {
     }
 
     if (!empty($params['field2'])) {
-        $ma .= Util::htmlsafe($params['field2']);
+        $ma .= Util::htmlSafe($params['field2']);
     }
 
     if (!empty($params['field3']) && (!empty($params['field1']) || !empty($params['field2']))) {
@@ -53,7 +53,7 @@ function smarty_function_merge_address(array $params) {
     }
 
     if (!empty($params['field3'])) {
-        $ma .= Util::htmlsafe($params['field3']);
+        $ma .= Util::htmlSafe($params['field3']);
     }
 
     $ma .= "</td></tr>";

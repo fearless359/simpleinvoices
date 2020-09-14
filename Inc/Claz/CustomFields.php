@@ -23,8 +23,8 @@ class CustomFields
             $rows = $pdoDb->request('SELECT', 'custom_fields');
             foreach ($rows as $row) {
                 $row['field_name_nice'] = self::getCustomFieldName($row['cf_custom_field']);
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlsafe($row['field_name_nice']);
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlsafe($row['field_name_nice']);
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlSafe($row['field_name_nice']);
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlSafe($row['field_name_nice']);
                 $cfs[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -179,7 +179,7 @@ class CustomFields
 
         $displayBlock = "";
         if (!empty($customFieldValue) || $writeMode && !empty($cfLabel)) {
-            $customLabelValue = Util::htmlsafe(self::getCustomFieldLabel($customField));
+            $customLabelValue = Util::htmlSafe(self::getCustomFieldLabel($customField));
             if ($writeMode) {
                 $displayBlock =
                     "<tr>\n" .

@@ -15,43 +15,43 @@
  *   https://simpleinvoices.group
  *}
 <div class="si_toolbar si_toolbar_top">
-    <a title="{$LANG.print_preview_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
+    <a title="{$LANG.print_preview_tooltip} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlencode}&amp;format=print">
         <img src='../../../images/printer.png' class='action' alt="{$LANG.print_preview}"/>&nbsp;{$LANG.print_preview}
     </a>
-    <a title="{$LANG.edit} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
-       href="index.php?module=invoices&amp;view=details&amp;id={$invoice.id|urlencode}&amp;action=view">
+    <a title="{$LANG.edit} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
+       href="index.php?module=invoices&amp;view=edit&amp;id={$invoice.id|urlencode}">
         <img src='../../../images/edit.png' class='action' alt="{$LANG.edit}"/>&nbsp;{$LANG.edit}
     </a>
-    <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
+    <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
        href="index.php?module=payments&amp;view=process&amp;id={$invoice.id|urlencode}&amp;op=pay_selected_invoice">
         <img src='../../../images/money_dollar.png' class='action' alt="{$LANG.process_payment}"/>&nbsp;{$LANG.process_payment}
     </a>
     {if $ewayPreCheck == 'true'}
-        <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
+        <a title="{$LANG.process_payment_for} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
            href="index.php?module=payments&amp;view=eway&amp;id={$invoice.id|urlencode}">
             <img src='../../../images/money_dollar.png' class='action' alt="{$LANG.process_payment_via_eway}"/>&nbsp;{$LANG.process_payment_via_eway}
         </a>
     {/if}
     <!-- EXPORT TO PDF -->
-    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe} {$LANG.export_pdf_tooltip}"
+    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe} {$LANG.export_pdf_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=pdf">
         <img src='../../../images/page_white_acrobat.png' class='action' alt="{$LANG.export_pdf}"/>&nbsp;{$LANG.export_pdf}
     </a>
-    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet|htmlsafe} {$LANG.format_tooltip}"
+    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe} {$LANG.export_xls_tooltip} .{$config.exportSpreadsheet|htmlSafe} {$LANG.format_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$spreadsheet|urlencode}">
-        <img src='../../../images/page_white_excel.png' class='action' alt="{$LANG.export_as} {$spreadsheet|htmlsafe}"/>&nbsp;{$LANG.export_as}.{$spreadsheet|htmlsafe}
+        <img src='../../../images/page_white_excel.png' class='action' alt="{$LANG.export_as} {$spreadsheet|htmlSafe}"/>&nbsp;{$LANG.export_as}.{$spreadsheet|htmlSafe}
     </a>
-    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording} {$invoice.index_id|htmlsafe} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor|htmlsafe} {$LANG.format_tooltip}"
+    <a title="{$LANG.export_tooltip} {$preference.pref_inv_wording} {$invoice.index_id|htmlSafe} {$LANG.export_doc_tooltip} .{$config.exportWordProcessor|htmlSafe} {$LANG.format_tooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$wordprocessor|urlencode}">
-        <img src='../../../images/page_white_word.png' class='action' alt="{$LANG.export_as} {$wordprocessor|htmlsafe}"/>&nbsp;{$LANG.export_as}.{$wordprocessor|htmlsafe}
+        <img src='../../../images/page_white_word.png' class='action' alt="{$LANG.export_as} {$wordprocessor|htmlSafe}"/>&nbsp;{$LANG.export_as}.{$wordprocessor|htmlSafe}
     </a>
-    <a title="{$LANG.email} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
+    <a title="{$LANG.email} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
        href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice.id|urlencode}">
         <img src='../../../images/mail-message-new.png' class='action' alt="{$LANG.email}"/>&nbsp;{$LANG.email}
     </a>
     {if $defaults.delete == '1'}
-        <a title="{$LANG.delete} {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}"
+        <a title="{$LANG.delete} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
            href="index.php?module=invoices&amp;view=delete&amp;stage=1&amp;id={$invoice.id|urlencode}">
             <img src='../../../images/delete.png' class='action' alt="{$LANG.delete}"/>&nbsp;{$LANG.delete}
         </a>
@@ -66,7 +66,7 @@
         <th colspan="6">{$LANG.description_uc}</th>
     </tr>
     <tr class="tr_head">
-        <td colspan="6">{$invoiceItems[0].description|outhtml}</td>
+        <td colspan="6">{$invoiceItems[0].description|outHtml}</td>
     </tr>
     <tr class="tr_head">
         <th>{$LANG.sales_representative}</th>
@@ -87,9 +87,9 @@
         <td></td>
         <td></td>
         <td></td>
-        <td class="align_right">{$preference.pref_currency_sign}{$invoiceItems[0].gross_total|siLocal_number}</td>
-        <td class="align_right">{$preference.pref_currency_sign}{$invoiceItems[0].tax_amount|siLocal_number}</td>
-        <td class="align_right"><u>{$preference.pref_currency_sign}{$invoiceItems[0].total|siLocal_number}</u></td>
+        <td class="align_right">{$invoiceItems[0].gross_total|utilCurrency:$locale:$currencyCode}</td>
+        <td class="align_right">{$invoiceItems[0].tax_amount|utilCurrency:$locale:$currencyCode}</td>
+        <td class="align_right"><u>{$invoiceItems[0].total|utilCurrency:$locale:$currencyCode}</u></td>
     </tr>
     <tr class="tr_head">
         <td colspan="6"><br/><br/></td>
@@ -136,11 +136,11 @@
         </tr>
         <!-- if hide detail click - the stripped note will be displayed -->
         <tr class="abbrev_notes tr_notes">
-            <td colspan="6">{$invoice.note|truncate:80:"...":true|outhtml}</td>
+            <td colspan="6">{$invoice.note|truncate:80:"...":true|outHtml}</td>
         </tr>
         <!-- if show detail click - the full note will be displayed -->
         <tr class="full_notes tr_notes si_hide">
-            <td colspan="6" style="white-space:normal;">{$invoice.note|outhtml}</td>
+            <td colspan="6" style="white-space:normal;">{$invoice.note|outHtml}</td>
         </tr>
     </table>
     {/if}
@@ -148,7 +148,7 @@
     <table class="si_invoice_view_items" style="width:50%;;text-align: left;">
         <tr>
             <th style="width:25%;">{$LANG.sales_representative}:</th>
-            <td>{$invoice.sales_representative|htmlsafe}</td>
+            <td>{$invoice.sales_representative|htmlSafe}</td>
             <td colspan="4">&nbsp;</td>
         </tr>
     </table>
@@ -161,15 +161,15 @@
         <td colspan="4"></td>
         <th class="si_right">{$LANG.sub_total}</th>
         <td class="si_right" {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
-            {$preference.pref_currency_sign}{$invoice.gross|siLocal_number}
+            {$invoice.gross|utilCurrency:$locale:$currencyCode}
         </td>
     </tr>
     {foreach from=$invoice.tax_grouped item=taxg}
         {if $taxg.tax_amount != 0}
             <tr class="tr_tax">
                 <td colspan="4"></td>
-                <th class="si_right">{$taxg.tax_name|htmlsafe}</th>
-                <td class="si_right">{$preference.pref_currency_sign}{$taxg.tax_amount|siLocal_number}</td>
+                <th class="si_right">{$taxg.tax_name|htmlSafe}</th>
+                <td class="si_right">{$taxg.tax_amount|utilCurrency:$locale:$currencyCode}</td>
             </tr>
         {/if}
     {/foreach}
@@ -177,13 +177,13 @@
         <td colspan="4"></td>
         <th class="si_right">{$LANG.tax_total}</th>
         <td class="si_right" style="text-decoration:underline;">
-            {$preference.pref_currency_sign}{$invoice.total_tax|siLocal_number}
+            {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
         </td>
     </tr>
     <tr class="tr_total">
         <td colspan="4"></td>
-        <th class="si_right">{$preference.pref_inv_wording|htmlsafe} {$LANG.amount_uc}</th>
-        <td class="si_right">{$preference.pref_currency_sign}{$invoice.total|siLocal_number}</td>
+        <th class="si_right">{$preference.pref_inv_wording|htmlSafe} {$LANG.amount_uc}</th>
+        <td class="si_right">{$invoice.total|utilCurrency:$locale:$currencyCode}</td>
     </tr>
 </table>
 {/if}
@@ -192,7 +192,7 @@
     <div class="si_invoice_account">
         <h4>{$LANG.financial_status}</h4>
         <div class="si_invoice_account1">
-            <h5>{$preference.pref_inv_wording|htmlsafe}&nbsp;{$invoice.index_id|htmlsafe}</h5>
+            <h5>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$invoice.index_id|htmlSafe}</h5>
             <table>
                 <tr>
                     <th>{$LANG.total}</th>
@@ -211,10 +211,10 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>{$preference.pref_currency_sign}{$invoice.total|siLocal_number}</td>
-                    <td>{$preference.pref_currency_sign}{$invoice.paid|siLocal_number}</td>
-                    <td>{$preference.pref_currency_sign}{$invoice.owing|siLocal_number}</td>
-                    <td>{$invoiceAge|htmlsafe}</td>
+                    <td>{$invoice.total|utilCurrency:$locale:$currencyCode}</td>
+                    <td>{$invoice.paid|utilCurrency:$locale:$currencyCode}</td>
+                    <td>{$invoice.owing|utilCurrency:$locale:$currencyCode}</td>
+                    <td>{$invoiceAge|htmlSafe}</td>
                 </tr>
             </table>
         </div>
@@ -235,9 +235,9 @@
                     <th>{$LANG.owing_uc}</th>
                 </tr>
                 <tr>
-                    <td>{$preference.pref_currency_sign}{$customerAccount.total|siLocal_number}</td>
-                    <td>{$preference.pref_currency_sign}{$customerAccount.paid|siLocal_number}</td>
-                    <td>{$preference.pref_currency_sign}{$customerAccount.owing|siLocal_number}</td>
+                    <td>{$customerAccount.total|utilCurrency:$locale:$currencyCode}</td>
+                    <td>{$customerAccount.paid|utilCurrency:$locale:$currencyCode}</td>
+                    <td>{$customerAccount.owing|utilCurrency:$locale:$currencyCode}</td>
                 </tr>
             </table>
         </div>

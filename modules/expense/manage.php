@@ -9,7 +9,7 @@ global $LANG, $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$addButtonLink = "index.php?module=expense&amp;view=add";
+$addButtonLink = "index.php?module=expense&amp;view=create";
 $addButtonMsg = $LANG['add_new_expense'];
 $displayBlock = "<div class='si_message_error'>{$LANG['no_expenses']}</div>";
 
@@ -18,7 +18,7 @@ $numberOfRows = count($expenses);
 if ($numberOfRows == 0) {
     if (ExpenseAccount::count() == 0) {
         $displayBlock = "<div class='si_message_error'>{$LANG['no_expense_accounts']}</div>";
-        $addButtonLink = "index.php?module=expense_account&amp;view=add";
+        $addButtonLink = "index.php?module=expense_account&amp;view=create";
         $addButtonMsg = $LANG['add_new_expense_account'];
     }
 }

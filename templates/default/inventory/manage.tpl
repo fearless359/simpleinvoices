@@ -11,8 +11,9 @@
  *  Website:
  *      https://simpleinvoices.group
 *}
+<!--suppress JSUnusedLocalSymbols -->
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=inventory&amp;view=add" class="">
+    <a href="index.php?module=inventory&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
         {$LANG.new_inventory_movement}
     </a>
@@ -53,16 +54,16 @@
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
-                                'currency': row['currency_code']
+                                'currency': row['currencyCode']
                             });
                             return formatter.format(data);
                         }
                     },
-                    { "data": "total_cost",
+                    { "data": "totalCost",
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
-                                'currency': row['currency_code']
+                                'currency': row['currencyCode']
                             });
                             return formatter.format(data);
                         }

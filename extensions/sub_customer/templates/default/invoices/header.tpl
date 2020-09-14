@@ -33,7 +33,7 @@
     {if isset($template)}
     <tr>
         <th>{$LANG.copied_from}</th>
-        <td>{$template|htmlsafe}</td>
+        <td>{$template|htmlSafe}</td>
     </tr>
     {/if}
     <tr>
@@ -44,8 +44,8 @@
             {else}
                 <select name="biller_id">
                     {foreach $billers as $biller}
-                    <option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id|htmlsafe}{/if}">
-                            {$biller.name|htmlsafe}
+                    <option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id|htmlSafe}{/if}">
+                            {$biller.name|htmlSafe}
                         </option>
                     {/foreach}
                 </select>
@@ -62,8 +62,8 @@
             {else}
                 <select name="customer_id">
                     {foreach $customers as $customer}
-                        <option {if $customer.id == $defaultCustomerID} selected{/if} value="{if isset($customer.id)}{$customer.id|htmlsafe}{/if}">
-                            {$customer.name|htmlsafe}
+                        <option {if $customer.id == $defaultCustomerID} selected{/if} value="{if isset($customer.id)}{$customer.id|htmlSafe}{/if}">
+                            {$customer.name|htmlSafe}
                         </option>
                     {/foreach}
                 </select>
@@ -79,8 +79,8 @@
             {else}
                 <select name="custom_field1" id="custom_field1">
                     {foreach $subCustomers as $subCustomer}
-                        <option {if isset($subCustomer.id) && $subCustomer.id == $defaultCustomerID}selected{/if} value="{if isset($subCustomer.id)}{$subCustomer.id|htmlsafe}{/if}">
-                            {$subCustomer.attention|htmlsafe}
+                        <option {if isset($subCustomer.id) && $subCustomer.id == $defaultCustomerID}selected{/if} value="{if isset($subCustomer.id)}{$subCustomer.id|htmlSafe}{/if}">
+                            {$subCustomer.attention|htmlSafe}
                         </option>
                     {/foreach}
                 </select>

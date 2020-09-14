@@ -17,11 +17,11 @@ function smarty_function_print_if_not_empty(array $params) {
     if (isset($params['field'])) {
         $printIfNotEmpty =
             "<tr>" .
-                "<td class='" . Util::htmlsafe($params['class1']) . "'>" .
-                    Util::htmlsafe($params['label']) . ": " .
+                "<td class='" . Util::htmlSafe($params['class1']) . "'>" .
+                    Util::htmlSafe($params['label']) . ": " .
                 "</td>" .
-                "<td class='" . Util::htmlsafe($params['class2']) . "' colspan='" . Util::htmlsafe($params['colspan']) . "'>" .
-                    Util::htmlsafe($params['field']) .
+                "<td class='" . Util::htmlSafe($params['class2']) . "' colspan='" . Util::htmlSafe($params['colspan']) . "'>" .
+                    Util::htmlSafe($params['field']) .
                "</td>" .
             "</tr>";
         echo $printIfNotEmpty;

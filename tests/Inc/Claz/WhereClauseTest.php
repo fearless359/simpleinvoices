@@ -20,14 +20,14 @@ class WhereClauseTest extends TestCase
     public function testConstruct()
     {
         $wc = new WhereClause(); // Note no error can be thrown when no parameters
-        static::assertEquals(0, $wc->getTokenCnt(), 'getTokenCnt result invalid');
-        static::assertEquals(0, $wc->getParenCnt(), 'getParenCnt result invalid');
+        self::assertEquals(0, $wc->getTokenCnt(), 'getTokenCnt result invalid');
+        self::assertEquals(0, $wc->getParenCnt(), 'getParenCnt result invalid');
 
         try {
             $wc = new WhereClause(new WhereItem(true, 'db_field', '=', 10, false, 'AND'));
-            static::assertEquals(1, $wc->getParenCnt(), 'getParenCnt result invalid');
+            self::assertEquals(1, $wc->getParenCnt(), 'getParenCnt result invalid');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhereClauseTest::testConstruct() - Unexpected exception thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhereClauseTest::testConstruct() - Unexpected exception thrown. Error: {$pde->getMessage()}");
         }
     }
 
@@ -37,9 +37,9 @@ class WhereClauseTest extends TestCase
             $wc = new WhereClause();
             $wc->addSimpleItem('db_field', 5);
             $stmt = trim($wc->build($keyPairs));
-            static::assertEquals('WHERE `db_field` = :db_field_000', $stmt, "Unexpected WhereClause found");
+            self::assertEquals('WHERE `db_field` = :db_field_000', $stmt, "Unexpected WhereClause found");
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhereClauseTest::testAddSimpleItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhereClauseTest::testAddSimpleItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
         }
     }
 
@@ -50,9 +50,9 @@ class WhereClauseTest extends TestCase
             $wc->addSimpleItem('db_field2', 5, "AND");
             $wc->addItem(new WhereItem(false, 'db_field3', '<>', 0, true));
             $stmt = trim($wc->build($keyPairs));
-            static::assertEquals('WHERE (`db_field` = :db_field_000  AND `db_field2` = :db_field2_001  AND `db_field3` <> :db_field3_002 )', $stmt, "Unexpected WhereClause found");
+            self::assertEquals('WHERE (`db_field` = :db_field_000  AND `db_field2` = :db_field2_001  AND `db_field3` <> :db_field3_002 )', $stmt, "Unexpected WhereClause found");
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhereClauseTest::testAddItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhereClauseTest::testAddItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
         }
     }
 }

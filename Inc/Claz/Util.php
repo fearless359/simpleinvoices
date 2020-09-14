@@ -1,9 +1,11 @@
 <?php
 namespace Inc\Claz;
 
+use DateTime;
 use Exception;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use NumberFormatter;
 use Smarty;
 
 /**
@@ -12,7 +14,9 @@ use Smarty;
  */
 class Util
 {
-    public static array $timebreaks = [];
+    private const DATE_FORMAT_PARAMETER = "/(full|long|short|medium|month|monthShort)/";
+
+    public static array $timeBreaks = [];
 
     /**
      * Verify page access via valid path. The PHP files that can be directly
@@ -34,7 +38,7 @@ class Util
      * in the index.php file. Then all other php file access while processing the
      * request process normally. If an attempt is made to access a php file other
      * than one that first calls this method, the process will terminate either
-     * due to no autoloader defined or the Util::directAccessAllowed() method rejects
+     * due to no autoloader defined or the self::directAccessAllowed() method rejects
      * the request.;
      */
     public static function allowDirectAccess(): void
@@ -52,8 +56,8 @@ class Util
     {
         $line = "<select name='value'>\n";
         foreach ($choiceArray as $key => $value) {
-            $keyParm = Util::htmlsafe($key) . "' " . ($key == $defVal ? "selected style='font-weight: bold'" : "");
-            $valParm = Util::htmlsafe($value);
+            $keyParm = self::htmlSafe($key) . "' " . ($key == $defVal ? "selected style='font-weight: bold'" : "");
+            $valParm = self::htmlSafe($value);
             $line .= "<option value='{$keyParm}'>{$valParm}</option>\n";
         }
         $line .= "</select>\n";
@@ -144,6 +148,7 @@ class Util
     public static function loginLogo(Smarty $smarty): void
     {
         $defaults = SystemDefaults::loadValues();
+
         // Not a post action so set up company logo and name to display on login screen.
         //<img src="extensions/user_security/images/{$defaults.company_logo}" alt="User Logo">
         $image = "templates/invoices/logos/" . $defaults['company_logo'];
@@ -153,7 +158,7 @@ class Util
             $maxWidth = 100;
             $maxHeight = 100;
             /** @noinspection PhpUnusedLocalVariableInspection */
-            list($width, $height, $type, $attr) = getimagesize($image);
+            [$width, $height, $type, $attr] = getimagesize($image);
 
             if ($width > $maxWidth || $height > $maxHeight) {
                 $wp = $maxWidth / $width;
@@ -212,7 +217,7 @@ class Util
         }
 
         $httpHost = empty($_SERVER['HTTP_HOST']) ? "" : $_SERVER['HTTP_HOST'];
-        $_SERVER['FULL_URL'] .= $config->authentication->http . $httpHost . $dir;
+        $_SERVER['FULL_URL'] .= $config['authenticationHttp'] . $httpHost . $dir;
 
         if (strlen($_SERVER['FULL_URL']) > 1 && substr($_SERVER['FULL_URL'], -1, 1) != '/') {
             $_SERVER['FULL_URL'] .= '/';
@@ -222,11 +227,214 @@ class Util
     }
 
     /**
+     * Format numbers.
+     * Note: This is a wrapper for the <b>NumberFormatter</b> function.
+     * @param string|int|float $number Number to be formatted
+     * @param int|null $precision Decimal precision.
+     * @param string $locale Locale the number is to be formatted for.
+     * @return string Formatted number.
+     * @noinspection DuplicatedCode
+     */
+    public static function number($number, ?int $precision = null, string $locale = ""): string
+    {
+        global $config;
+
+        if (empty($locale)) {
+            $locale = $config['localLocale'];
+        }
+
+        if (!isset($precision)) {
+            $precision = $config['localPrecision'];
+        }
+
+        $numberFormatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);
+        $numberFormatter->setAttribute(NumberFormatter::FRACTION_DIGITS, $precision);
+        $formattedNumber = $numberFormatter->format($number);
+
+        return empty($formattedNumber) ? '0' : $formattedNumber;
+    }
+
+    /**
+     * Format number in default form.
+     * Note: Default form is without leading & trailing zeros, and locale decimal point (period or comma).
+     * @param string|int|float $number Numeric value to be formatted.
+     * @param int|null $precision Decimal places for the number. Optional, precision from $config file used if not specified.
+     * @param string $locale Locale to use for formatting the number. Optional, locale from $config file used if not specified.
+     * @return string Formatted string.
+     * @noinspection DuplicatedCode
+     */
+    public static function numberTrim($number, ?int $precision = null, string $locale = ""): string
+    {
+        global $config;
+
+        if (empty($locale)) {
+            $locale = $config['localLocale'];
+        }
+
+        if (!isset($precision)) {
+            $precision = $config['localPrecision'];
+        }
+
+        $numberFormatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);
+        $numberFormatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
+        $formattedNumber = $numberFormatter->format($number);
+
+        // Calculate the decimal point right offset.
+        $position = ($precision + 1) * -1;
+
+        // Get character in the decimal point position. Check if it is a
+        // decimal point. If so, remove it if it is followed only by zeros.
+        // Note this differs in that it won't trim trailing zeroes if there
+        // are non-zero characters following the decimal point. (ex: 1.10 won't trim).
+        $chr = substr($formattedNumber, $position, 1);
+        if ($chr == '.' || $chr == ',') {
+            $formattedNumber = rtrim(trim($formattedNumber, '0'), '.,');
+        }
+
+        return empty($formattedNumber) ? '0' : $formattedNumber;
+    }
+
+    /**
+     * Format number in default currency form.
+     * @param string|int|float $number Numeric value to be formatted.
+     * @param string $locale Locale to use for formatting the number.
+     *          Optional, locale from $config file used if not specified.
+     * @param string $currencyCode
+     * @return string Formatted string.
+     */
+    public static function currency($number, string $locale = "", string $currencyCode = ""): string
+    {
+        global $config;
+
+        if (empty($currencyCode)) {
+            $currencyCode = $config['localCurrencyCode'];
+        }
+
+        if (empty($locale)) {
+            $locale = $config['localLocale'];
+        }
+
+       $precision = $config['localPrecision'];
+
+        $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+        $numberFormatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
+        return $numberFormatter->formatCurrency($number, $currencyCode);
+    }
+
+    /**
+     * Format a date value.
+     * @param string $dateVal Date value to be formatted.
+     * @param string $dateFormat (Optional) Date format. Values are:
+     *        <ul>
+     *          <li><b>full</b>      : IntlDateFormatter::FULL        - Ex: Friday, May 8, 2020</li>
+     *          <li><b>long</b>      : IntlDateFormatter::LONG        - Ex: May 8, 2020</li>
+     *          <li><b>medium</b>    : IntlDateFormatter::MEDIUM      - Ex: 05/08/2020</li>
+     *          <li><b>month</b>     : IntlDateFormatter::MONTH       - Ex: 05</li>
+     *          <li><b>monthShort</b>: IntlDateFormatter::MONTH_SHORT - Ex: 5</li>
+     *          <li><b>short</b>     : IntlDateFormatter::SHORT       - Ex: 5/6/2017</li>
+     *        </ul>
+     *        Defaults to <b>medium</b>.
+     * @return string <b>$date</b> formatted per option settings.
+     */
+    public static function date(string $dateVal, string $dateFormat = "medium"): string
+    {
+        if (!preg_match(self::DATE_FORMAT_PARAMETER, $dateFormat)) {
+            $str = "Util::date() - Invalid date format, {$dateFormat}, specified.";
+            error_log($str);
+            exit($str);
+        }
+
+        $parts = explode(' ', $dateVal);
+        $dateTime = DateTime::createFromFormat('Y-m-d', $parts[0]);
+
+        switch ($dateFormat) {
+            case "full":
+                $pattern = "l, F d, Y"; // Friday, February 13, 2020
+                break;
+
+            case "long":
+                $pattern = "F d, Y"; // February 13, 2020
+                break;
+
+            case "short":
+                $pattern = "m/d/y"; // 02/13/20
+                break;
+
+            case "month":
+                $pattern = "F"; // February
+                break;
+
+            case "month_short":
+                $pattern = "M"; // Feb
+                break;
+
+            case "medium":
+            default:
+                $pattern = "m/d/Y"; // 02/13/2020
+                break;
+        }
+
+        return $dateTime->format($pattern);
+    }
+
+    /**
+     * Convert a localized number back to the format stored in the database.
+     * @param string $number
+     * @return string Number formatted for database storage (ex: 12.345,67 converts to 12345.67)
+     */
+    public static function dbStd(string $number): string
+    {
+        global $config;
+
+        $locale = $config['localLocale'];
+        $currencyCode = $config['localCurrencyCode'];
+        $precision = $config['localPrecision'];
+
+        $typeCurrency = false;
+        $parts = str_split($number);
+        foreach($parts as $item) {
+            if (preg_match('/[^\-,.0-9]/', $item)) {
+                $typeCurrency = true;
+                break;
+            }
+        }
+
+        $formatterType = $typeCurrency ? NumberFormatter::CURRENCY :NumberFormatter::DECIMAL;
+
+        $numberFormatter = new NumberFormatter($locale, $formatterType);
+        $numberFormatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
+
+        if ($typeCurrency) {
+            $formattedNumber = $numberFormatter->parseCurrency($number, $currencyCode);
+        } else {
+            $formattedNumber = $numberFormatter->parse($number);
+        }
+
+        return empty($formattedNumber) ? '0' : $formattedNumber;
+    }
+
+    /**
+     * Return a list of locale values that SI has language files for.
+     * @return array of locales
+     */
+    public static function getLocaleList(): array
+    {
+        $dirs = [];
+        $list = array_diff(scandir("lang"), ['.', '..']);
+        foreach ($list as $item) {
+            if (preg_match('/^[a-z][a-z]_[A-Z][A-Z]$/', $item)) {
+                $dirs[] = $item;
+            }
+        }
+        return $dirs;
+    }
+
+    /**
      * Make sure $str is properly encoded for html display.
      * @param string|int $str String to make safe.
      * @return string Safe string for html display.
      */
-    public static function htmlsafe($str): string
+    public static function htmlSafe($str): string
     {
         return htmlentities($str, ENT_QUOTES, 'UTF-8');
     }
@@ -236,7 +444,7 @@ class Util
      * @param string|array $str
      * @return bool|null|string|string[]
      */
-    public static function urlsafe($str)
+    public static function urlSafe($str)
     {
         $pattern = '/[^a-zA-Z0-9@;:%_\+\.~#\?\/\=\&\/\-]/';
         $str = preg_replace($pattern, '', $str);
@@ -244,16 +452,20 @@ class Util
         if (preg_match($pattern, $str)) {
             return false;  // no javascript urls
         }
-        $str = self::htmlsafe($str);
+        $str = self::htmlSafe($str);
         return $str;
     }
 
     /**
-     * @param string $html
+     * @param string|null $html
      * @return string Purified HTML
      */
-    public static function outhtml(string $html): string
+    public static function outHtml(?string $html): string
     {
+        if (empty($html)) {
+            return '';
+        }
+
         try {
             $config = HTMLPurifier_Config::createDefault();
 
@@ -264,9 +476,21 @@ class Util
             $purifier = new HTMLPurifier($config);
             return $purifier->purify($html);
         } catch (Exception $exp) {
-            error_log("Util::outhtml() - Error: " . $exp->getMessage());
+            error_log("self::outHtml() - Error: " . $exp->getMessage());
         }
         return '';
+    }
+
+    /**
+     * Number of minutes before session times out.
+     * @param int $timeoutMinutes
+     */
+    public static function sessionTimeout(int $timeoutMinutes): void
+    {
+        $timeoutSeconds = $timeoutMinutes * 60;
+        ini_set('session.gc_maxlifetime', $timeoutSeconds);
+
+        session_set_cookie_params($timeoutSeconds);
     }
 
     /**
@@ -280,17 +504,17 @@ class Util
         $result = '';
         $action = strtolower($action);
         if ($action == 'set') {
-            $label = empty($label) ? 'Break ' . (count(Util::$timebreaks) + 1) : $label;
-            Util::$timebreaks[] = [$label, microtime(true)];
+            $label = empty($label) ? 'Break ' . (count(self::$timeBreaks) + 1) : $label;
+            self::$timeBreaks[] = [$label, microtime(true)];
         } elseif ($action == 'report') {
             $label = empty($label) ? 'End' : $label;
-            Util::$timebreaks[] = [$label, microtime(true)];
+            self::$timeBreaks[] = [$label, microtime(true)];
             $result = '';
-            for ($ndx = 1; $ndx < count(Util::$timebreaks); $ndx++) {
-                $cur = Util::$timebreaks[$ndx];
+            for ($ndx = 1; $ndx < count(self::$timeBreaks); $ndx++) {
+                $cur = self::$timeBreaks[$ndx];
                 $curLabel = $cur[0];
                 $curTime = $cur[1];
-                $prev = Util::$timebreaks[$ndx - 1];
+                $prev = self::$timeBreaks[$ndx - 1];
                 $prevLabel = $prev[0];
                 $prevTime = $prev[1];
 
@@ -306,12 +530,52 @@ class Util
             if (empty($result)) {
                 $result = 'No time interval set.';
             }
-            Util::$timebreaks = []; // Clear the reported info
+            self::$timeBreaks = []; // Clear the reported info
         } else {
-            $result = "Util::timer() - Invalid action[$action].";
+            $result = "self::timer() - Invalid action[$action].";
         }
 
         return $result;
+    }
+
+    /**
+     * Ensure that there is a time value in the datetime object.
+     *
+     * @param string $in_date Datetime string in the format, "YYYY-MM-DD HH:MM:SS".
+     *        Note: If time part is "00:00:00" it will be set to the current time.
+     * @return string Datetime string with time set.
+     */
+    public static function sqlDateWithTime(string $in_date): string
+    {
+        $parts = explode(' ', $in_date);
+        $date = isset($parts[0]) ? $parts[0] : "";
+        $time = isset($parts[1]) ? $parts[1] : "00:00:00";
+        if (!$time || $time == '00:00:00') {
+            $time = date('H:i:s');
+        }
+
+        return "{$date} {$time}";
+    }
+
+    /**
+     * Truncate a given string
+     *
+     * @param string|null $string - the string to truncate
+     * @param int $max - the max length in characters to truncate the string to
+     * @param string $rep - characters to be added at end of truncated string
+     * @return string truncated to specified length.
+     */
+    public static function truncateStr(?string $string, int $max = 20, string $rep = ''): string
+    {
+        if (empty($string)) {
+            return "";
+        }
+        
+        if (strlen($string) <= $max + strlen($rep)) {
+            return $string;
+        }
+        $leave = $max - strlen($rep);
+        return substr_replace($string, $rep, $leave);
     }
 
 }

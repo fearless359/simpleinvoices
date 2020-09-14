@@ -19,8 +19,8 @@
     {if $invoicePaid == 0}
         <div class="si_message_warning">
             {$LANG.confirm_delete}
-            {$preference.pref_inv_wording|htmlsafe}
-            {$invoice.index_id|htmlsafe}
+            {$preference.pref_inv_wording|htmlSafe}
+            {$invoice.index_id|htmlSafe}
         </div>
         <form name="frmpost" method="POST" id="frmpost"
               action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}" >
@@ -44,9 +44,9 @@
         </form>
     {else}
         <span class="welcome">
-            {$preference.pref_inv_wording|htmlsafe} {$invoice.index_id|htmlsafe}
+            {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}
             {$LANG.delete_has_payments1} {$preference.pref_currency_sign}
-            {$invoicePaid|siLocal_number} {$LANG.delete_has_payments2}
+            {$invoicePaid|utilNumber} {$LANG.delete_has_payments2}
         </span>
         <br/>
         {* LANG_TODO: Add help section here!! *}

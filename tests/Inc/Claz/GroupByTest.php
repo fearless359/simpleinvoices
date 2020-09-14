@@ -21,6 +21,6 @@ class GroupByTest extends TestCase
     {
         $gr = new GroupBy(['ivl.customer_id', 'apl.domain_id']);
         $stmt = $gr->build();
-        static::assertEquals('GROUP BY `ivl`.`customer_id`, `apl`.`domain_id`', $stmt);
+        self::assertEquals('GROUP BY `ivl`.`customer_id`, `apl`.`domain_id`', $stmt);
     }
 }

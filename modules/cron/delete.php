@@ -23,8 +23,7 @@ global $pdoDb, $smarty;
 
 Util::directAccessAllowed();
 
-$cron = Cron::getOne($_GET['id']);
-$smarty->assign('cron', $cron);
+$smarty->assign('cron', Cron::getOne($_GET['id']));
 
 $smarty->assign('pageActive', 'cron');
 $smarty->assign('subPageActive', 'cron_manage');

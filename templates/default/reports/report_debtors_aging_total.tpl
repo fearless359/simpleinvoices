@@ -14,18 +14,18 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<td>{$sum_total|siLocal_currency|default:'-'}</td>
-			<td>{$sum_paid|siLocal_currency|default:'-'}</td>
-			<td>{$sum_owing|siLocal_currency|default:'-'}</td>
+			<td>{$sum_total|utilCurrency|default:'-'}</td>
+			<td>{$sum_paid|utilCurrency|default:'-'}</td>
+			<td>{$sum_owing|utilCurrency|default:'-'}</td>
 			<td></td>
 		</tr>
 	</tfoot>
 	<tbody>
 	{foreach item=period from=$data}
 		<tr>
-			<td>{$period.total|siLocal_currency|default:'-'}</td>
-			<td>{$period.paid|siLocal_currency|default:'-'}</td>
-			<td>{$period.owing|siLocal_currency|default:'-'}</td>
+			<td>{$period.total|utilCurrency|default:'-'}</td>
+			<td>{$period.paid|utilCurrency|default:'-'}</td>
+			<td>{$period.owing|utilCurrency|default:'-'}</td>
 			<td>{if isset($period.aging)}{$period.aging}{/if}</td>
 		</tr>
 	{/foreach}

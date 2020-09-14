@@ -2,7 +2,6 @@
 
 use Inc\Claz\DomainId;
 use Inc\Claz\Payment;
-use Inc\Claz\SiLocal;
 use Inc\Claz\Util;
 
 global $smarty, $LANG;
@@ -16,9 +15,9 @@ $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=i
 if (isset($_POST['process_payment'])) {
     $result = Payment::insert([
         "ac_inv_id"       => $_POST['invoice_id'],
-        "ac_amount"       => SiLocal::dbStd($_POST['ac_amount']),
+        "ac_amount"       => Util::dbStd($_POST['ac_amount']),
         "ac_notes"        => $_POST['ac_notes'],
-        "ac_date"         => SiLocal::sqlDateWithTime($_POST['ac_date']),
+        "ac_date"         => Util::sqlDateWithTime($_POST['ac_date']),
         "ac_payment_type" => $_POST['ac_payment_type'],
         "domain_id"       => DomainId::get(),
         "ac_check_number" => $_POST['ac_check_number']

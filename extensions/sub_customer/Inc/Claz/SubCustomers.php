@@ -1,18 +1,22 @@
 <?php
 
 use Inc\Claz\Customer;
-use Inc\Claz\DomainId;
 use Inc\Claz\PdoDbException;
 
+/**
+ * Class SubCustomers
+ */
 class SubCustomers {
     /**
      * Add extension database field if not present.
-     * @return boolean true if no DB error; otherwise false.
+     * @return bool true if no DB error; otherwise false.
      */
     public static function addParentCustomerId() {
         global $pdoDb;
 
-        if ($pdoDb->checkFieldExists("customers", "parent_customer_id")) return true;
+        if ($pdoDb->checkFieldExists("customers", "parent_customer_id")) {
+            return true;
+        }
 
         try {
             $pdoDb->addTableConstraints('parent_customer_id', 'ADD ~ INT(11) NULL AFTER `custom_field4`');
@@ -34,7 +38,7 @@ class SubCustomers {
     public static function getSubCustomers($parent_id) {
         global $pdoDb;
 
-        $rows = array();
+        $rows = [];
         try {
             // This is a bit of a trick. We are adding a selection for the parent_customer_id
             // field for all customers that have this parent. Then we call the Customer::getAll()
@@ -58,10 +62,9 @@ class SubCustomers {
         $rows = self::getSubCustomers($parent_id);
         $output = "<option value=''></option>";
         foreach($rows as $row) {
-            $output .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+            $output .= "<option value='{$row['id']}'>{$row['name']}</option>";
         }
         echo json_encode($output);
-
         exit();
     }
 

@@ -12,7 +12,7 @@
  *      https://simpleinvoices.group
  *}
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=user&amp;view=add" class="">
+    <a href="index.php?module=user&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
         {$LANG.user_add}
     </a>
@@ -37,12 +37,12 @@
             <tr>
                 <td class="si_center">
                     <a class="index_table" title="{$user['vname']}"
-                       href="index.php?module=user&amp;view=details&amp;id={$user['id']}&amp;action=view">
-                        <img src="../../../images/view.png" height="16" border="-5px" />
+                       href="index.php?module=user&amp;view=view&amp;id={$user['id']}">
+                        <img src="../../../images/view.png" class="action" alt="" />
                     </a>
                     <a class="index_table" title="{$user['ename']}"
-                       href="index.php?module=user&amp;view=details&amp;id={$user['id']}&amp;action=edit">
-                        <img src="../../../images/edit.png" height="16" border="-5px" />
+                       href="index.php?module=user&amp;view=edit&amp;id={$user['id']}">
+                        <img src="../../../images/edit.png" class="action" alt="" />
                     </a>
                 </td>
                 <td>{$user['username']}</td>

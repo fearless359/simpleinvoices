@@ -34,9 +34,9 @@
   </thead>
   {foreach from=$cronLogs item=cronlog}
   <tr>
-    <td class='index_table'>{$cronlog.id|htmlsafe}</td>
-    <td class='index_table'>{$cronlog.run_date|htmlsafe}</td>
-    <td class='index_table'><a href="index.php?module=cron&amp;view=view&amp;id={$cronlog.cron_id|htmlsafe}">{$cronlog.cron_id|htmlsafe}</a></td>
+    <td class='index_table'>{$cronlog.id|htmlSafe}</td>
+    <td class='index_table'>{$cronlog.run_date|htmlSafe}</td>
+    <td class='index_table'><a href="index.php?module=cron&amp;view=view&amp;id={$cronlog.cron_id|htmlSafe}">{$cronlog.cron_id|htmlSafe}</a></td>
   </tr>
   {/foreach}
 

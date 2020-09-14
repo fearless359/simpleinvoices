@@ -120,7 +120,7 @@ $LANG['customer_id'] = "Kunde ID";//1
 $LANG['customer_name'] = "Kundenavn";//1
 $LANG['customer_short'] = "Kunde";//1
 $LANG['customers'] = "Kunder";//1
-$LANG['customise_settings'] = "Tilpass instillingene";//1
+$LANG['customizeSettings'] = "Tilpass instillingene";//1
 $LANG['dashboard'] = "Dashbord";//1
 $LANG['database_backup'] = "Sikkerhetskopi av database";//1
 $LANG['database_log'] = "Databaselogg";//1
@@ -225,7 +225,7 @@ $LANG['help_email_cc'] = "Dette feltet er ikke påkrevd. Her kan du spesifisere 
 $LANG['help_email_from'] = "Dette feltet er påkrevd og det henter standardverdien ifra operatørens e-post adresse. Du kan forandre denne e-post adressen som du selv ønsker men du kan kun ha én adresse i dette feltet.<br /><br /><i>Obs: Dette feltet kan kun inneholde én e-post adresse.</i>";//1
 $LANG['help_email_to'] = "Dette feltet er påkrevd og det henter standardverdien ifra kundens e-post adresse. Du kan forandre denne e-post adressen som du selv ønsker.<br /><br /><i>Obs: Du kan legge til flere e-post adresser her, separert med komma eller semikolon.</i>";//1
 $LANG['help_insert_biller_text'] = "Hvis du ikke ønsker logo så kan du velge '_default_blank_logo.png' ifra listen.<br /><br />Hvis du ønsker å bruke en egen logo i SimpleInvoices, kopier logofilen inn til logomappen i SimpleInvoices mappen.";//1
-$LANG['help_inv_pref_currency_sign'] = "Dette er valutategnet som vil bli brukt i fakturaen. <br /><br /><b>Obs:</b> Euro, Pund etc.. vennligst benytt deg av html-koden for ditt valutategn i dette feltet. Her er en referanseliste over valutategn <a href='http://www.ascii.cl/htmlcodes.htm'>http://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dette er viktig slik at PDF skal fungere korrekt.<br /><br /> &#38;#163; er html-koden for pund,<br /> &#38;#8364; for euro, etc..";//1
+$LANG['help_inv_pref_currency_sign'] = "Dette er valutategnet som vil bli brukt i fakturaen. <br /><br /><b>Obs:</b> Euro, Pund etc.. vennligst benytt deg av html-koden for ditt valutategn i dette feltet. Her er en referanseliste over valutategn <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dette er viktig slik at PDF skal fungere korrekt.<br /><br /> &#38;#163; er html-koden for pund,<br /> &#38;#8364; for euro, etc..";//1
 $LANG['help_inv_pref_description'] = "Dette er navnet på preferansen - det benyttes ikke i selve fakturaen, kun i listen over hvilken fakturapreferanser du ønsker å bruke under opprettelse av ny faktura.";//1
 $LANG['help_inv_pref_invoice_detail_heading'] = "Dette er hva som vil bli stående som tittel i bunnteksten samt seksjonen detaljer i fakturaen.";//1
 $LANG['help_inv_pref_invoice_detail_line'] = "Dette er teksten som vil bli stående i bunnteksten under detaljer. Normalt brukt for betalingsbetingelser.";//1
@@ -522,7 +522,7 @@ $LANG['setup_customisation'] = "Hvis du har bruk for å tilpasse noen av instill
 $LANG['shortcut'] = " Snarvei meny";//1
 $LANG['show_details'] = "Vis detaljer";//1
 $LANG['show_only_unpaid_invoices'] = "Show only unpaid invoices";//0
-$LANG['simple_invoices'] = "SimpleInvoices";//1
+$LANG['simpleInvoices'] = "SimpleInvoices";//1
 $LANG['start_date'] = "Start Date (yyyy-mm-dd)";//0
 $LANG['start_date_short'] = "Start Date";//0
 $LANG['start_working'] = "Start å jobb";//1

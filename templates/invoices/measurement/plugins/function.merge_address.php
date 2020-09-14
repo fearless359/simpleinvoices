@@ -28,20 +28,20 @@ function smarty_function_merge_address(array $params, object &$smarty): void
         !isset($params['street1']) && !isset($params['street2'])) {
         $ma .=
             "<tr>" .
-            "<td class='" . Util::htmlsafe($params['class1']) . "'>{$LANG['address']}:</td>" .
-            "<td class='" . Util::htmlsafe($params['class2']) . "' colspan='" . Util::htmlsafe($params['colspan']) . "'>";
+            "<td class='" . Util::htmlSafe($params['class1']) . "'>{$LANG['address']}:</td>" .
+            "<td class='" . Util::htmlSafe($params['class2']) . "' colspan='" . Util::htmlSafe($params['colspan']) . "'>";
         $skipSection = true;
     }
     // If any among city, state or zip is present with at least one street value
     if ((isset($params['field1']) || isset($params['field2']) || isset($params['field3'])) && !$skipSection) {
         $ma .=
             "<tr>" .
-                "<td class='" . Util::htmlsafe($params['class1']) . "'></td>" .
-                "<td class='" . Util::htmlsafe($params['class2']) . "' colspan='" . Util::htmlsafe($params['colspan']) . "'>";
+                "<td class='" . Util::htmlSafe($params['class1']) . "'></td>" .
+                "<td class='" . Util::htmlSafe($params['class2']) . "' colspan='" . Util::htmlSafe($params['colspan']) . "'>";
     }
 
     if ($params['field1'] != null) {
-        $ma .= Util::htmlsafe($params['field1']);
+        $ma .= Util::htmlSafe($params['field1']);
     }
 
     if ($params['field1'] != null && $params['field2'] != null) {
@@ -49,7 +49,7 @@ function smarty_function_merge_address(array $params, object &$smarty): void
     }
 
     if ($params['field2'] != null) {
-        $ma .= Util::htmlsafe($params['field2']);
+        $ma .= Util::htmlSafe($params['field2']);
     }
 
     if (($params['field1'] != null || $params['field2'] != null) && isset($params['field3'])) {
@@ -57,7 +57,7 @@ function smarty_function_merge_address(array $params, object &$smarty): void
     }
 
     if ($params['field3'] != null) {
-        $ma .= Util::htmlsafe($params['field3']);
+        $ma .= Util::htmlSafe($params['field3']);
     }
 
     $ma .= "</td></tr>";

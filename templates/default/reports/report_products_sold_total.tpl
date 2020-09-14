@@ -7,15 +7,15 @@
 	<tbody>
 	{foreach item=customer from=$data}
 		<tr class="tr_{cycle values="A,B"}">
-			<td>{$customer.description|htmlsafe}</td>
-			<td>{$customer.sum_quantity|siLocal_number:'0'|default:'-'}</td>
+			<td>{$customer.description|htmlSafe}</td>
+			<td>{$customer.sum_quantity|utilNumber:0|default:'-'}</td>
 		</tr>
 	{/foreach}
 	</tbody>
 	<tfoot>
 	<tr>
 		<td class="page_layer si_right">{$LANG.total}</td>
-		<td class="page_layer"><span class="bold">{$total_quantity|siLocal_number:'0'|default:'-'}</span></td>
+		<td class="page_layer"><span class="bold">{$total_quantity|utilNumber:0|default:'-'}</span></td>
 	</tr>
 	</tfoot>
 </table>

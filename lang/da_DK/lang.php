@@ -128,7 +128,7 @@ $LANG['customer_id'] = "Kunde ID";//1
 $LANG['customer_name'] = "Kunde navn";//1
 $LANG['customer_short'] = "Kunde";//1
 $LANG['customers'] = "Kunder";//1
-$LANG['customise_settings'] = "Tilpas indstillingerne";//1
+$LANG['customizeSettings'] = "Tilpas indstillingerne";//1
 $LANG['dashboard'] = "Kontrolpanel";//1
 $LANG['database_backup'] = "Sikkerhedskopier database";//1
 $LANG['database_log'] = "Database log";//1
@@ -233,7 +233,7 @@ $LANG['help_email_cc'] = "Dette felt er ikke obligatorisk. Her kan du indtaste e
 $LANG['help_email_from'] = "Dette felt er ikke obligatorisk og f&#229;r sin standard v&#230;rdi fra Kreditorens email adresse. Du kan &#230;ndre denne email adresse efter behov, men du kan ikke tilf&#248;je mere end 1 email adresse i dette fejt.<br /><br /><i>Bem&#230;rk:: Der kan kun v&#230;re 1 email adresse i dette felt</i>";//1
 $LANG['help_email_to'] = "Dette felt er obligatorisk og f&#229;r sin standard v&#230;rdi fra Kundens email adresse. Du kan &#230;ndre denne email adresse efter behov.<br /><br /><i>Bem&#230;rk: Du kan tilf&#248;je flere email adresser her - bare adskil adresserne med enten et , eller et ;</i>";//1
 $LANG['help_insert_biller_text'] = "For at inds&#230;tte et blankt logo v&#230;lges '_default_blank_logo.png' fra listen.<br /><br />For at tilf&#248;je nye logoer til SimpleInvoices, kopieres logo filen til logo biblioteket i SimpleInvoices folderen.";//1
-$LANG['help_inv_pref_currency_sign'] = "Dette er valutasymbolet som vil blive anvendt i hele fakturaen. <br /><br /><b>Bem&#230;rk:</b> Euro, Pund etc.. Anvend venligst html-koden for valutasymbolet i dette felt. Referer til denne liste af html-koder p&#229; f&#248;lgende hjemmeside for ikke $ valutasymbol <a href='http://www.ascii.cl/htmlcodes.htm'>http://www.ascii.cl/htmlcodes.htm</a>. <br /><br /> Dette er p&#229;kr&#230;vet, s&#229; PDF'en kan fungere korrekt ved ikke $ symboler<br /><br />&#38;#163; er html-koden for Pund.,<br /> &#38;#8364; for Euro, etc..";//1
+$LANG['help_inv_pref_currency_sign'] = "Dette er valutasymbolet som vil blive anvendt i hele fakturaen. <br /><br /><b>Bem&#230;rk:</b> Euro, Pund etc.. Anvend venligst html-koden for valutasymbolet i dette felt. Referer til denne liste af html-koder p&#229; f&#248;lgende hjemmeside for ikke $ valutasymbol <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>. <br /><br /> Dette er p&#229;kr&#230;vet, s&#229; PDF'en kan fungere korrekt ved ikke $ symboler<br /><br />&#38;#163; er html-koden for Pund.,<br /> &#38;#8364; for Euro, etc..";//1
 $LANG['help_inv_pref_description'] = "Dette er navnet for den fastsatte pr&#230;ference - denne bliver ikke anvendt p&#229; selve fakturaen, kun ved oprettelsen af fakturaen n&#229;r du v&#230;lger, hvilken faktura pr&#230;ference du vil anvende, fra dropdown listen.";//1
 $LANG['help_inv_pref_invoice_detail_heading'] = "Dette vil st&#229; som overskrift i fodnote/detalje sektionen p&#229; fakturaen.";//1
 $LANG['help_inv_pref_invoice_detail_line'] = "Dette vil st&#229; under fodnote/detalje sektionen. Normalt brugt til at definere betalingsbetingelser etc.";//1
@@ -530,7 +530,7 @@ $LANG['setup_customisation'] = "Hvis du har brug for at &#230;ndre nogle indstil
 $LANG['shortcut'] ="Genvejs menu";//1
 $LANG['show_details'] = "Vis detaljer";//1
 $LANG['show_only_unpaid_invoices'] = "Vis kun ubetalte fakturaer";//1
-$LANG['simple_invoices'] = "SimpleInvoices";//1
+$LANG['simpleInvoices'] = "SimpleInvoices";//1
 $LANG['start_date'] = "Start dato (&#197;&#197;&#197;&#197;-MM-DD)";//1
 $LANG['start_date_short'] = "Start dato";//1
 $LANG['start_working'] = "Begynd at arbejde";//1

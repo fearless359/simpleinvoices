@@ -1,10 +1,11 @@
-<html>
+<html lang="en">
 <head>
+  <title>{$preference.pref_inv_wording|htmlSafe} {$LANG.number_short|htmlSafe}: {$invoice.index_id|htmlSafe}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {if isset($css)}
-  <link rel="stylesheet" type="text/css" href="{$css|urlsafe}" media="all">
-    {/if}
-  <title>{$preference.pref_inv_wording|htmlsafe} {$LANG.number_short|htmlsafe}: {$invoice.id|htmlsafe}</title>
+  <link rel="shortcut icon" href="../../../images/favicon.ico"/>
+  {if isset($css)}
+    <link rel="stylesheet" type="text/css" href="{$css|urlSafe}" media="all">
+  {/if}
 </head>
 <body>
 <br />
@@ -12,9 +13,9 @@
   <div id="header"></div>
   <table class="center">
     <tr>
-      <td colspan="5"><img src="{holiday_logo logo=$logo|urlsafe}" border="0" hspace="0" align="left"></td>
-      <th align="right">
-        <span class="font1">Receipt for {$LANG.payment_id}&nbsp;{$payment.id|htmlsafe}</span>
+      <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" style="border:0; text-align:left;margin: 0 10px;" alt=""></td>
+      <th class="si_right">
+        <span class="font1">{$LANG.receiptUc} {$LANG.for} {$LANG.payment_id}&nbsp;{$payment.id|htmlSafe}</span>
       </th>
     </tr>
     <tr>
@@ -25,7 +26,7 @@
     <tr>
       {if $cust_info_count >= 1}
         <td class="tbl1-bottom col1"><b>{$cust_info[0][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[0][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[0][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -33,7 +34,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 1}
         <td class="tbl1-bottom col1"><b>{$biller_info[0][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[0][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[0][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -42,7 +43,7 @@
     <tr>
       {if $cust_info_count >= 2}
         <td class="tbl1-bottom col1"><b>{$cust_info[1][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[1][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[1][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -50,7 +51,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 2}
         <td class="tbl1-bottom col1"><b>{$biller_info[1][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[1][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[1][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -59,7 +60,7 @@
     <tr>
       {if $cust_info_count >= 3}
         <td class="tbl1-bottom col1"><b>{$cust_info[2][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[2][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[2][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -67,7 +68,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 3}
         <td class="tbl1-bottom col1"><b>{$biller_info[2][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[2][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[2][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -76,7 +77,7 @@
     <tr>
       {if $cust_info_count >= 4}
         <td class="tbl1-bottom col1"><b>{$cust_info[3][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[3][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[3][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -84,7 +85,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 4}
         <td class="tbl1-bottom col1"><b>{$biller_info[3][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[3][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[3][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -93,7 +94,7 @@
     <tr>
       {if $cust_info_count >= 5}
         <td class="tbl1-bottom col1"><b>{$cust_info[4][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[4][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[4][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -101,7 +102,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 5}
         <td class="tbl1-bottom col1"><b>{$biller_info[4][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[4][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[4][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -110,7 +111,7 @@
     <tr>
       {if $cust_info_count >= 6}
         <td class="tbl1-bottom col1"><b>{$cust_info[5][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[5][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[5][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -118,7 +119,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 6}
         <td class="tbl1-bottom col1"><b>{$biller_info[5][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[5][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[5][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -127,7 +128,7 @@
     <tr>
       {if $cust_info_count >= 7}
         <td class="tbl1-bottom col1"><b>{$cust_info[6][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[6][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[6][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -135,7 +136,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 7}
         <td class="tbl1-bottom col1"><b>{$biller_info[6][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[6][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[6][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -144,7 +145,7 @@
     <tr>
       {if $cust_info_count >= 8}
         <td class="tbl1-bottom col1"><b>{$cust_info[7][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[7][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[7][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -152,7 +153,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 8}
         <td class="tbl1-bottom col1"><b>{$biller_info[7][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[7][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[7][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -161,7 +162,7 @@
     <tr>
       {if $cust_info_count >= 9}
         <td class="tbl1-bottom col1"><b>{$cust_info[8][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[8][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[8][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -169,7 +170,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 9}
         <td class="tbl1-bottom col1"><b>{$biller_info[8][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[8][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[8][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -178,7 +179,7 @@
     <tr>
       {if $cust_info_count >= 10}
         <td class="tbl1-bottom col1"><b>{$cust_info[9][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[9][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[9][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -186,7 +187,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 10}
         <td class="tbl1-bottom col1"><b>{$biller_info[9][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[9][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[9][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -195,7 +196,7 @@
     <tr>
       {if $cust_info_count >= 11}
         <td class="tbl1-bottom col1"><b>{$cust_info[10][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[10][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[10][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -203,7 +204,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 11}
         <td class="tbl1-bottom col1"><b>{$biller_info[10][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[10][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[10][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -212,7 +213,7 @@
     <tr>
       {if $cust_info_count >= 12}
         <td class="tbl1-bottom col1"><b>{$cust_info[11][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[11][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[11][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -220,7 +221,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 12}
         <td class="tbl1-bottom col1"><b>{$biller_info[11][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[11][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[11][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -229,7 +230,7 @@
     <tr>
       {if $cust_info_count >= 13}
         <td class="tbl1-bottom col1"><b>{$cust_info[12][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[12][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[12][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -237,7 +238,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 13}
         <td class="tbl1-bottom col1"><b>{$biller_info[12][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[12][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[12][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -246,7 +247,7 @@
     <tr>
       {if $cust_info_count >= 14}
         <td class="tbl1-bottom col1"><b>{$cust_info[13][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$cust_info[13][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$cust_info[13][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -254,7 +255,7 @@
       <td class="tbl1-bottom col1"></td>
       {if $biller_info_count >= 14}
         <td class="tbl1-bottom col1"><b>{$biller_info[13][0]}</b></td>
-        <td class="col1 tbl1-bottom">{$biller_info[13][1]|htmlsafe}</td>
+        <td class="col1 tbl1-bottom">{$biller_info[13][1]|htmlSafe}</td>
       {else}
         <td class="tbl1-bottom col1"></td>
         <td class="col1 tbl1-bottom"></td>
@@ -270,19 +271,19 @@
     </tr>
     <tr>
       <td class="tbl1-bottom col1"><b>{$LANG.payment_id}</b></td>
-      <td class="tbl1-bottom col1" colspan="3"><b>{$preference.pref_description|htmlsafe}{$LANG.id}</b></td>
-      <td class="tbl1-bottom col1" align="right"><b>{$LANG.amount_uc}</b></td>
-      <td class="tbl1-bottom col1" align="right"><b>{$LANG.date_uc}</b></td>
-      <td class="tbl1-bottom col1" align="right"><b>{$LANG.payment_type}</b></td>
+      <td class="tbl1-bottom col1" colspan="3"><b>{$preference.pref_description|htmlSafe}{$LANG.id}</b></td>
+      <td class="tbl1-bottom col1 si_right"><b>{$LANG.amount_uc}</b></td>
+      <td class="tbl1-bottom col1 si_right"><b>{$LANG.date_uc}</b></td>
+      <td class="tbl1-bottom col1 si_right"><b>{$LANG.payment_type}</b></td>
     </tr>
     <tr class="">
-      <td class="">{$payment.id|htmlsafe}</td>
-      <td class="" colspan="3">{$invoice.index_id|htmlsafe}</td>
-      <td class="" align="right">{$preference.pref_currency_sign}{$payment.ac_amount|siLocal_number}</td>
-      <td class="" align="right">{$payment.date|htmlsafe}</td>
-      <td class="" align="right">
-        {$paymentType.pt_description|htmlsafe}
-        {if $payment.ac_check_number != ""}&nbsp;{$payment.ac_check_number|htmlsafe}{/if}
+      <td class="">{$payment.id|htmlSafe}</td>
+      <td class="" colspan="3">{$invoice.index_id|htmlSafe}</td>
+      <td class="si_right">{$preference.pref_currency_sign}{$payment.ac_amount|utilNumber}</td>
+      <td class="si_right">{$payment.date|htmlSafe}</td>
+      <td class="si_right">
+        {$paymentType.pt_description|htmlSafe}
+        {if $payment.ac_check_number != ""}&nbsp;{$payment.ac_check_number|htmlSafe}{/if}
       </td>
     </tr>
     <tr>
@@ -292,17 +293,10 @@
       <td colspan="6"><br /></td>
     </tr>
     {* hide notes if from an online payment *}
-        {if $payment.ac_notes != "" && $preference.include_online_payment ==""}
+    {if $payment.ac_notes != "" && $preference.include_online_payment ==""}
       <tr>
         <td class='tbl1-bottom col1'>{$LANG.notes}:</td>
-        <td></td>
-      </tr>
-    {/if}
-  </table>
-    {if $payment.ac_notes != "" && $preference.include_online_payment ==""}
-    <table>
-      <tr>
-        <td colspan="2">{$payment.ac_notes|outhtml}</td>
+        <td colspan="2">{$payment.ac_notes|outHtml}</td>
       </tr>
     </table>
   {/if}

@@ -21,8 +21,8 @@ class PdoDbExceptionTest extends TestCase
         $msg = "This is the test message";
         $code = 3;
         $pde = new PdoDbException($msg, $code);
-        static::assertEquals($pde->getMessage(), $msg);
-        static::assertEquals($pde->getCode(), $code);
+        self::assertEquals($pde->getMessage(), $msg);
+        self::assertEquals($pde->getCode(), $code);
     }
 
     public function testToString()
@@ -31,7 +31,7 @@ class PdoDbExceptionTest extends TestCase
         $msg = "This is the test message";
         $code = 3;
         $pde = new PdoDbException($msg, $code);
-        static::assertEquals($pde->__toString(), $str);
+        self::assertEquals($pde->__toString(), $str);
     }
 
 }

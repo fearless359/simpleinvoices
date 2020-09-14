@@ -25,22 +25,22 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 $op = empty($_POST['op']) ? "" : $_POST['op'];
-$displayBlock = "<div class=\"si_message_error\">{$LANG['save_cron_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['save_cron_failure']}</div>";
 $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=cron&amp;view=manage\" />";
 
-if ( $op === 'add') {
+if ( $op === 'create') {
     if (!empty(Cron::insert())) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_cron_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['save_cron_success']}</div>";
     }
 } elseif ($op === 'edit') {
     if (Cron::update($_GET['id'])) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_cron_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['save_cron_success']}</div>";
     }
 } elseif ($op === 'delete') {
     if (Cron::delete($_GET['id'])) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['cron_delete_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['cron_delete_success']}</div>";
     } else {
-        $displayBlock = "<div class=\"si_message_error\">{$LANG['cron_delete_failure']}</div>";
+        $displayBlock = "<div class='si_message_error'>{$LANG['cron_delete_failure']}</div>";
     }
 }
 

@@ -57,7 +57,7 @@
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
-                                'currency': row['currencyCode']
+                                'currency': row['currency_code']
                             });
                             return formatter.format(data);
                         }

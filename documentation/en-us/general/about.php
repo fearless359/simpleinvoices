@@ -8,36 +8,39 @@
     <?php
     function printVersionInfo()
     {
-        if (($lines = file("../../../config/config.php")) === false) {
+        if (($lines = file("../../../config/config.ini")) === false) {
             echo "<i style='color:red>Version info not available.</i>";
             return;
         }
-        $fnd_section = false;
-        $info_fnd_cnt = 0;
-        $v_name = '';
-        $v_date = '';
+        $fndSection = false;
+        $infoFndCnt = 0;
+        $vName = '';
+        $vDate = '';
         foreach ($lines as $line) {
             $line = trim($line);
             // Search for pattern (sans quotes): "   [xA0_ -.]". Ex: "   [Section_A 1]"
-            if (preg_match('/^ *\[[a-zA-Z0-9_ \-\.]+\]/', $line) === 1) {
-                if ($fnd_section) break; // end of selected section
+            $pattern = '/^ *\[[a-zA-Z0-9_ \-\.]+\]/';
+            if (preg_match($pattern, $line) === 1) {
+                if ($fndSection) {
+                    break; // end of selected section
+                }
                 $beg = strpos($line, '[') + 1;
                 $len = strpos($line, ']') - $beg;
                 $section = substr($line, $beg, $len);
-                $fnd_section = ($section == "production");
-            } elseif ($fnd_section) {
+                $fndSection = $section == "production";
+            } elseif ($fndSection) {
                 $parts = explode('=', $line);
                 if (count($parts) == 2) {
-                    if (trim($parts[0]) == "version.name") {
-                        $v_name = trim($parts[1]);
-                        $info_fnd_cnt++;
-                    } elseif (trim($parts[0]) == "version.update_date") {
-                        $v_date = trim($parts[1]);
-                        $info_fnd_cnt++;
+                    if (trim($parts[0]) == "versionName") {
+                        $vName = trim($parts[1]);
+                        $infoFndCnt++;
+                    } elseif (trim($parts[0]) == "versionUpdateDate") {
+                        $vDate = trim($parts[1]);
+                        $infoFndCnt++;
                     }
 
-                    if ($info_fnd_cnt == 2) {
-                        echo 'Version: ' . $v_name . '  --  ' . $v_date;
+                    if ($infoFndCnt == 2) {
+                        echo 'Version: ' . $vName . '  --  ' . $vDate;
                         return;
                     }
                 }
@@ -57,7 +60,7 @@
 <br/>
 <div class="si_center">
     <p><?php printVersionInfo();?></p>
-    <p>Homepage: <a href='https://simpleinvoices.group' target="_blank">https://simpleinvoices.group</a></p>
+    <p>Forum homepage: <a href='https://simpleinvoices.group' target="_blank">https://simpleinvoices.group</a></p>
 </div>
 </body>
 </html>

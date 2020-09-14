@@ -127,10 +127,12 @@ class Expense
     /**
      * Get information needed when adding a new expense.
      * @param array|null $expense record.
+     * @param bool $enabledOnly true if only enabled billers and customers should be retrieved,
+     *                          false if all billers and customers should be retrieved (default).
      * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
      * @throws PdoDbException
      */
-    public static function additionalInfo(?array $expense=null): array
+    public static function additionalInfo(?array $expense=null, $enabledOnly = false): array
     {
         // @formatter:off
         $addInfo = [];
@@ -151,8 +153,9 @@ class Expense
                 $addInfo['expense_account'] = ExpenseAccount::getOne($expense['ea_id']);
             }
         } else {
-            $addInfo['customers']        = Customer::getAll();
-            $addInfo['billers']          = Biller::getAll();
+            $params = $enabledOnly ? ['enabled_only' => 1] : [];
+            $addInfo['customers']        = Customer::getAll($params);
+            $addInfo['billers']          = Biller::getAll($enabledOnly);
             $addInfo['invoices']         = Invoice::getAll();
             $addInfo['products']         = Product::getAll(true);
             $addInfo['expense_accounts'] = ExpenseAccount::getAll();

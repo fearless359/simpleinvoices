@@ -7,7 +7,6 @@ use Mpdf\Output\Destination;
 use DateTime;
 use DateTimeZone;
 use Exception;
-use Zend_Log;
 
 /**
  * Class Cron
@@ -80,7 +79,8 @@ class Cron
                 "cron.invoice_id",
                 "cron.recurrence",
                 "cron.recurrence_type",
-                "cust.name"
+                "cust.name",
+                new DbField("iv.index_id", 'index_id')
             ];
 
             $pdoDb->setSelectList($exprList);
@@ -211,7 +211,7 @@ class Cron
         $rows = self::selectCronsToRun();
         $result['cron_message'] = "Cron started";
         $numberOfCronsRun = 0;
-        Log::out("Cron::run() - today[$today] row count[" . count($rows) . "]", Zend_Log::DEBUG);
+        Log::out("Cron::run() - today[$today] row count[" . count($rows) . "]");
 
         $idx = 0; // set here so accessible outside of the loop
         foreach ($rows as $value) {
@@ -219,7 +219,7 @@ class Cron
             $domainId = $value['domain_id'];
 
             $checkCronLog = CronLog::check($pdoDb, $domainId, $cronId, $today);
-            Log::out("Cron::run() - cron_id[$cronId] domain_id[$domainId] checkCronLog[$checkCronLog]", Zend_Log::DEBUG);
+            Log::out("Cron::run() - cron_id[$cronId] domain_id[$domainId] checkCronLog[$checkCronLog]");
 
             $idx = 0;
             if (!$checkCronLog) {
@@ -229,19 +229,19 @@ class Cron
 
                 // Seconds in a day = 60 * 60 * 24 = 86400
                 $diff = number_format((strtotime($today) - strtotime($startDate)) / 86400, 0);
-                Log::out("Cron::run() - start_date[$startDate] end_date($endDate] diff[$diff]", Zend_Log::DEBUG);
+                Log::out("Cron::run() - start_date[$startDate] end_date($endDate] diff[$diff]");
 
                 // only check if diff is positive
                 if ($diff >= 0 && ($endDate == "" || $endDate >= $today)) {
                     $month = false;
-                    Log::out("Cron::run() - recurrence_type[{$value['recurrence_type']}]", Zend_Log::DEBUG);
+                    Log::out("Cron::run() - recurrence_type[{$value['recurrence_type']}]");
 
                     switch ($value['recurrence_type']) {
                         case 'day':
                             // Calculate number of days passed.
                             $modulus = $diff % $value['recurrence'];
                             $runCron = $modulus == 0;
-                            Log::out("Cron::run() - recurrence[{$value['recurrence']}] modulus[$modulus] run_cron[$runCron]", Zend_Log::DEBUG);
+                            Log::out("Cron::run() - recurrence[{$value['recurrence']}] modulus[$modulus] run_cron[$runCron]");
                             break;
 
                         case 'week':
@@ -249,7 +249,7 @@ class Cron
                             $period = $value['recurrence'] * 7;
                             $modulus = $diff % $period;
                             $runCron = $modulus == 0;
-                            Log::out("Cron::run() - recurrence[{$value['recurrence']}] period[$period] modulus[$modulus] run_cron[$runCron]", Zend_Log::DEBUG);
+                            Log::out("Cron::run() - recurrence[{$value['recurrence']}] period[$period] modulus[$modulus] run_cron[$runCron]");
                             break;
 
                         case 'month':
@@ -275,9 +275,9 @@ class Cron
                             if (!$month) {
                                 $runCron = $runCron && $startMonth == $todayMonth;
                             }
-                            Log::out("Cron::run() - start_day[$startDay] start_month[$startMonth] start_year[$startYear]", Zend_Log::DEBUG);
-                            Log::out("Cron::run() - today_day[$todayDay] today_month[$todayMonth] today_year[$todayYear]", Zend_Log::DEBUG);
-                            Log::out("Cron::run() - modulus[$modulus] val[$val]", Zend_Log::DEBUG);
+                            Log::out("Cron::run() - start_day[$startDay] start_month[$startMonth] start_year[$startYear]");
+                            Log::out("Cron::run() - today_day[$todayDay] today_month[$todayMonth] today_year[$todayYear]");
+                            Log::out("Cron::run() - modulus[$modulus] val[$val]");
                             break;
 
                         default:
@@ -286,7 +286,7 @@ class Cron
                     }
 
                     // run the recurrence for this invoice
-                    Log::out("Cron::run() - run_cron[$runCron]", Zend_Log::DEBUG);
+                    Log::out("Cron::run() - run_cron[$runCron]");
                     if ($runCron) {
                         $numberOfCronsRun++;
                         $cronMsg = "Cron ID: $value[id] - Cron for $value[index_name] with ";
@@ -440,7 +440,7 @@ class Cron
     {
         global $config, $pdoDb;
 
-        $timezone = $config->phpSettings->date->timezone;
+        $timezone = $config['phpSettingsDateTimezone'];
 
         // Use this function to select crons that need to run each day across all domain_id values
 

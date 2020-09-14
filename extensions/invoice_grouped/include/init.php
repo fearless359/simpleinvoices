@@ -1,7 +1,7 @@
 <?php
 global $smarty;
 
-$product_group = array();
+$product_group = [];
 $product_group[0]['name'] = "Labor";
 //$product_group[0]['markup'] = "29%";
 $product_group[1]['name']= "Equipment";

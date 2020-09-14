@@ -28,8 +28,8 @@ Util::directAccessAllowed();
 $billers = [];
 $rows = Biller::getAll();
 foreach ($rows as $row) {
-    $row['vname'] = $LANG['view'] . ' ' . Util::htmlsafe($row['name']);
-    $row['ename'] = $LANG['edit'] . ' ' . Util::htmlsafe($row['name']);
+    $row['vname'] = $LANG['view'] . ' ' . Util::htmlSafe($row['name']);
+    $row['ename'] = $LANG['edit'] . ' ' . Util::htmlSafe($row['name']);
     $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
     $billers[] = $row;
 }

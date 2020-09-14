@@ -12,7 +12,7 @@
  *	  GPL v3 or above
  *}
 <div class="si_toolbar si_toolbar_top">
-  <a href="index.php?module=product_attribute&amp;view=add" class="">
+  <a href="index.php?module=product_attribute&amp;view=create" class="">
     <img src="../../../images/add.png" alt="" />
     {$LANG.add_product_attribute}
   </a>
@@ -35,12 +35,12 @@
       <tr>
         <td class="si_center">
           <a class="index_table" title="{$product_attribute['vname']}"
-             href="index.php?module=product_attribute&amp;view=details&amp;id={$product_attribute['id']}&amp;action=view">
-            <img src="../../../images/view.png" alt="{$product_attribute['vname']}" height="16" style="border:-5px;"/>
+             href="index.php?module=product_attribute&amp;view=view&amp;id={$product_attribute['id']}">
+            <img src="../../../images/view.png" alt="{$product_attribute['vname']}" class="action"/>
           </a>
           <a class="index_table" title="{$product_attribute['ename']}"
-             href="index.php?module=product_attribute&amp;view=details&amp;id={$product_attribute['id']}&amp;action=edit">
-            <img src="../../../images/edit.png" alt="{$product_attribute['ename']}" height="16"  style="border:-5px;"/>
+             href="index.php?module=product_attribute&amp;view=edit&amp;id={$product_attribute['id']}">
+            <img src="../../../images/edit.png" alt="{$product_attribute['ename']}" class="action"/>
           </a>
         </td>
         <td>{$product_attribute['name']}</td>

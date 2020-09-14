@@ -154,6 +154,9 @@ class WhereClause
      */
     private function buildWhereClause($whereClause, int &$tokenCnt, array &$keyPairs): string
     {
+        /**
+         * @var WhereItem $whereItem
+         */
         foreach ($whereClause as $whereItem) {
             if (is_array($whereItem)) {
                 $this->clause .= $this->buildWhereClause($whereItem, $tokenCnt, $keyPairs);

@@ -26,13 +26,13 @@
     </tr>
     {section name=line start=0 loop=$dynamic_line_items step=1}
         <tr>
-            <td><input type="text" name="quantity{$smarty.section.line.index|htmlsafe}" size="5"/></td>
-            <td><input type="text" name="description{$smarty.section.line.index|htmlsafe}" size="50"/></td>
-            <td><input type="text" name="price{$smarty.section.line.index|htmlsafe}" size="50"/></td>
+            <td><input type="text" name="quantity{$smarty.section.line.index|htmlSafe}" size="5"/></td>
+            <td><input type="text" name="description{$smarty.section.line.index|htmlSafe}" size="50"/></td>
+            <td><input type="text" name="price{$smarty.section.line.index|htmlSafe}" size="50"/></td>
         </tr>
-        <tr class="text{$smarty.section.line.index|htmlsafe} hide">
+        <tr class="text{$smarty.section.line.index|htmlSafe} hide">
             <td colspan="3">
-        <textarea class="detail" name='notes{$smarty.section.line.index|htmlsafe}' rows="3" cols="80"
+        <textarea class="detail" name='notes{$smarty.section.line.index|htmlSafe}' rows="3" cols="80"
                   data-description="{$LANG['description_uc']}"></textarea>
             </td>
         </tr>
@@ -59,7 +59,7 @@
             {else}
                 <select name="tax_id">
                     {foreach from=$taxes item=tax}
-                        <option {if $tax.tax_id == $defaults.tax} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}">{$tax.tax_description|htmlsafe}</option>
+                        <option {if $tax.tax_id == $defaults.tax} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}">{$tax.tax_description|htmlSafe}</option>
                     {/foreach}
                 </select>
             {/if}
@@ -73,7 +73,7 @@
             {else}
                 <select name="preference_id">
                     {foreach from=$preferences item=preference}
-                        <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">{$preference.pref_description|htmlsafe}</option>
+                        <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">{$preference.pref_description|htmlSafe}</option>
                     {/foreach}
                 </select>
             {/if}
@@ -89,7 +89,7 @@
     </tr>
     <hr/>
     <div style="text-align:center;">
-        <input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlsafe}{/if}"/>
+        <input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlSafe}{/if}"/>
         <input type="submit" name="submit" value="{$LANG.save_invoice}"/>
         <input type="hidden" name="type" value="4"/>
     </div>

@@ -69,11 +69,11 @@
                 <img src="../../../images/page_white_acrobat.png" alt=""/>
                 {$LANG.export_pdf}
             </a>
-            <a title="{$LANG.export_tooltip} {$LANG.export_xls_tooltip} .{$config->export->spreadsheet}" class="export_xls export_window">
+            <a title="{$LANG.export_tooltip} {$LANG.export_xls_tooltip} .{$config.exportSpreadsheet}" class="export_xls export_window">
                 <img src="../../../images/page_white_excel.png" alt=""/>
                 {$LANG.export_xls}
             </a>
-            <a title="{$LANG.export_tooltip} {$LANG.export_doc_tooltip} .{$config->export->wordprocessor}" class="export_doc export_window">
+            <a title="{$LANG.export_tooltip} {$LANG.export_doc_tooltip} .{$config.exportWordProcessor}" class="export_doc export_window">
                 <img src="images/page_white_word.png" alt=""/>
                 {$LANG.export_doc}
             </a>

@@ -220,8 +220,8 @@ class SqlPatchManager
     {
         global $pdoDbAdmin;
 
-        $escapedId = Util::htmlsafe($id);
-        $patchName = Util::htmlsafe($patch['name']);
+        $escapedId = Util::htmlSafe($id);
+        $patchName = Util::htmlSafe($patch['name']);
 
         $smartyRow = [];
         try {
@@ -385,8 +385,8 @@ class SqlPatchManager
         $ndx = 0;
         foreach (self::$patchLines as $patch) {
             $ndx++;
-            $patchName = Util::htmlsafe($patch['name']);
-            $patchDate = Util::htmlsafe($patch['date']);
+            $patchName = Util::htmlSafe($patch['name']);
+            $patchDate = Util::htmlSafe($patch['date']);
             if (self::checkIfSqlPatchApplied($ndx)) {
                 if ($ndx < self::$numberToBeginPatchListAt) {
                     if ($ndx == 1) {
@@ -2735,7 +2735,7 @@ class SqlPatchManager
 
         $patch = [
             'name' => "Populate the status, locale, and language fields in preferences table",
-            'patch' => "UPDATE `" . TB_PREFIX . "preferences` SET status = '1', locale = '" . $config->local->locale . "', language = '$language' ;",
+            'patch' => "UPDATE `" . TB_PREFIX . "preferences` SET status = '1', locale = '" . $config['localLocale'] . "', language = '$language' ;",
             'date' => "20090826",
             'source' => 'original'
         ];

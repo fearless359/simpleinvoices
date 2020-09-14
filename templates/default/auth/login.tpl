@@ -23,7 +23,7 @@
             <th></th>
               <td class='td_error'>
                 {if $errorMessage }
-                <div class="si_error_line">{$errorMessage|outhtml}</div>
+                <div class="si_error_line">{$errorMessage|outHtml}</div>
                 {/if}
             </td>
           </tr>

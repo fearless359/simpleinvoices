@@ -3,8 +3,6 @@
 namespace Inc\Claz;
 
 use Exception;
-use Zend_Config_Exception;
-use Zend_Config_Ini;
 
 /**
  * Class Config
@@ -15,40 +13,37 @@ use Zend_Config_Ini;
  */
 class Config
 {
-    public const CONFIG_FILE = "config/config.php";
-    public const CUSTOM_CONFIG_FILE = "config/custom.config.php";
+    public const CONFIG_FILE = "config/config.ini";
+    public const CUSTOM_CONFIG_FILE = "config/custom.config.ini";
 
-    private static Zend_Config_Ini $customConfig;
+    private static array $customConfig;
     private static string $versionName = "";
     private static string $versionUpdateDate = "";
 
     /**
-     * Make sure we have a custom.config.php file that is consistent with the config.php file.
-     * @param string $environment
+     * Make sure we have a custom.config.ini file that is consistent with the config.ini file.
      * @param bool $updateCustomConfig
-     * @return Zend_Config_Ini
+     * @param string $section Typically the constant CONFIG_SECTION is passed.
+     * @return array
      * @throws Exception
      */
-    public static function init(string $environment, bool $updateCustomConfig): Zend_Config_Ini
+    public static function init(bool $updateCustomConfig, string $section): array
     {
-        try {
-            if ($updateCustomConfig) {
-                self::makeCustomConfig();
-                self::updateConfig();
-            }
-            self::$customConfig = new Zend_Config_Ini("./" . self::CUSTOM_CONFIG_FILE, $environment, true);
-        } catch (Zend_Config_Exception $zce) {
-            SiError::out('generic', 'Zend_Config_Ini', $zce->getMessage());
+        if ($updateCustomConfig) {
+            self::makeCustomConfig();
+            self::updateConfig();
         }
+        $config = parse_ini_file("./" . self::CUSTOM_CONFIG_FILE, true);
+        self::$customConfig = $config[$section];
         return self::$customConfig;
     }
 
     /**
-     * Make sure we have a custom.config.php file. Copy config.php is needed.
+     * Make sure we have a custom.config.ini file. Copy config.ini is needed.
      */
     private static function makeCustomConfig(): void
     {
-        // Create custom.config.php file if it doesn't already exist
+        // Create custom.config.ini file if it doesn't already exist
         if (!file_exists("./" . self::CUSTOM_CONFIG_FILE)) {
             copy("./" . self::CONFIG_FILE, "./" . self::CUSTOM_CONFIG_FILE);
         }
@@ -76,9 +71,7 @@ class Config
         $customConfigInfo = self::loadFileInfo(self::CUSTOM_CONFIG_FILE, $fp);
         fclose($fp);
 
-        $changes = self::genChanges($configInfo, $customConfigInfo);
-
-        self::updateCustomConfig($changes);
+        self::updateCustomConfig(self::genChanges($configInfo, $customConfigInfo));
     }
 
     /**
@@ -136,21 +129,21 @@ class Config
      */
     private static function genChanges(array $configInfo, array $customConfigInfo): array
     {
-        $newitems = [];
-        $olditems = [];
+        $newItems = [];
+        $oldItems = [];
 
         // The key is:  section|key_part_of_value_pair
         // The value is: ConfigLines object
         foreach ($configInfo as $key => $value) {
             $parts = explode('|', $key);
             if (!isset($customConfigInfo[$key])) {
-                $newitems[$parts[0]][$parts[1]] = $value;
+                $newItems[$parts[0]][$parts[1]] = $value;
             }
 
             if ($parts[0] == 'production') {
-                if ($parts[1] == 'version.name') {
+                if ($parts[1] == 'versionName') {
                     self::$versionName = $value->getValue();
-                } elseif ($parts[1] == 'version.update_date') {
+                } elseif ($parts[1] == 'versionUpdateDate') {
                     self::$versionUpdateDate = $value->getValue();
                 }
             }
@@ -159,14 +152,14 @@ class Config
         foreach ($customConfigInfo as $key => $value) {
             if (!isset($configInfo[$key])) {
                 $parts = explode('|', $key);
-                $olditems[$parts[0]][$parts[1]] = $value;
+                $oldItems[$parts[0]][$parts[1]] = $value;
             }
         }
 
 
         return [
-            'new' => $newitems,
-            'old' => $olditems
+            'new' => $newItems,
+            'old' => $oldItems
         ];
     }
 
@@ -179,38 +172,38 @@ class Config
     private static function updateCustomConfig(array $changes): void
     {
         $unmatched = $changes['old'];
-        $newpairs = $changes['new'];
+        $newPairs = $changes['new'];
         $changed = false;
 
         $filenameNew = './' . self::CUSTOM_CONFIG_FILE . ".new";
-        $fnew = fopen($filenameNew, 'w');
-        if ($fnew === false) {
+        $fpNew = fopen($filenameNew, 'w');
+        if ($fpNew === false) {
             die("Config::updateCustomConfig() - Unable to open new './" . self::CUSTOM_CONFIG_FILE . ".new' file");
         }
 
-        $fcur = fopen('./' . self::CUSTOM_CONFIG_FILE, 'r');
-        if ($fcur === false) {
+        $fpCur = fopen('./' . self::CUSTOM_CONFIG_FILE, 'r');
+        if ($fpCur === false) {
             die("Config::updateCustomConfig() - Unable to open './" . self::CUSTOM_CONFIG_FILE . "'");
         }
         $section = null;
         $unmatchedFlagged = false;
-        while (($line = fgets($fcur)) !== false) {
+        while (($line = fgets($fpCur)) !== false) {
             if (!$unmatchedFlagged) {
                 $unmatchedFlagged = preg_match('/.*Possibly Deprecated/', $line);
             }
 
             switch (ConfigLines::lineType($line)) {
                 case 'section':
-                    fwrite($fnew, $line);
+                    fwrite($fpNew, $line);
                     $pattern = '/^[\t ]*\[(.*)\].*$/';
                     $section = trim(preg_replace($pattern, '$1', $line));
                     // Write out all new lines for this section
-                    if (isset($newpairs[$section])) {
+                    if (isset($newPairs[$section])) {
                         $changed = true;
-                        foreach ($newpairs[$section] as $newpair) {
+                        foreach ($newPairs[$section] as $newpair) {
                             settype($newpair, 'object');
                             $newline = $newpair->getKey() . ' = ' . $newpair->getValue() . "\n";
-                            fwrite($fnew, $newline);
+                            fwrite($fpNew, $newline);
                         }
                     }
                     break;
@@ -219,61 +212,61 @@ class Config
                     $pattern = '/^[\t ]*([a-zA-Z0-9._]+)[\t ]*=.*$/';
                     $key = trim(preg_replace($pattern, '$1', $line));
                     if (!isset($section)) {
-                        fclose($fnew);
-                        fclose($fcur);
+                        fclose($fpNew);
+                        fclose($fpCur);
                         throw new Exception("Config::updateCustomConfig() - Key/pair ($line) found prior to section being set.");
                     }
 
-                    if ($key == 'version.name') {
+                    if ($key == 'versionName') {
                         $replPattern = '${1}' . self::$versionName;
                         $newline = preg_replace('/^(.*= ).*$/', $replPattern, $line);
                         if (!$changed) {
                             $changed = $newline != $line;
                         }
-                        fwrite($fnew, $newline);
-                    } elseif ($key == 'version.update_date') {
+                        fwrite($fpNew, $newline);
+                    } elseif ($key == 'versionUpdateDate') {
                         $replPattern = '${1}' . self::$versionUpdateDate;
                         $newline = preg_replace('/^(.*= *).*$/', $replPattern, $line);
                         if (!$changed) {
                             $changed = $newline != $line;
                         }
-                        fwrite($fnew, $newline);
+                        fwrite($fpNew, $newline);
                     } elseif (isset($unmatched[$section][$key])) {
                         if (!$unmatchedFlagged) {
                             $changed = true;
-                            fwrite($fnew, ";******** Possibly Deprecated - not in config.php ********\n");
+                            fwrite($fpNew, ";******** Possibly Deprecated - not in config.ini ********\n");
                         }
-                        fwrite($fnew, $line);
+                        fwrite($fpNew, $line);
                         if (!$unmatchedFlagged) {
-                            fwrite($fnew, ";**************** End Possibly Deprecated ****************\n");
+                            fwrite($fpNew, ";**************** End Possibly Deprecated ****************\n");
                         }
                         $unmatchedFlagged = false;
                     } else {
-                        fwrite($fnew, $line);
+                        fwrite($fpNew, $line);
                     }
                     break;
 
                 case 'other':
                 default:
-                    fwrite($fnew, $line);
+                    fwrite($fpNew, $line);
                     break;
             }
         }
 
-        fclose($fnew);
-        fclose($fcur);
+        fclose($fpNew);
+        fclose($fpCur);
 
         // If nothing changed, don't rename or remove anything.
         if ($changed) {
-            // Remove any previous old copies: custom.config.php.old
-            // Rename current custom.config.php to custom.config.php.old
-            // Rename new custom.config.php.new to custom.config.php
-            $oldcopy = self::CUSTOM_CONFIG_FILE . ".old";
-            if (file_exists($oldcopy)) {
-                unlink($oldcopy);
+            // Remove any previous old copies: custom.config.ini.old
+            // Rename current custom.config.ini to custom.config.ini.old
+            // Rename new custom.config.ini.new to custom.config.ini
+            $oldCopy = self::CUSTOM_CONFIG_FILE . ".old";
+            if (file_exists($oldCopy)) {
+                unlink($oldCopy);
             }
 
-            rename(self::CUSTOM_CONFIG_FILE, $oldcopy);
+            rename(self::CUSTOM_CONFIG_FILE, $oldCopy);
             rename($filenameNew, self::CUSTOM_CONFIG_FILE);
         } elseif (file_exists($filenameNew)) {
             unlink($filenameNew);

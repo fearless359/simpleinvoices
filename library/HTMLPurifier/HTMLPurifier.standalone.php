@@ -20726,7 +20726,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
      */
     protected function processToken($token, $injector = -1)
     {
-        // Zend OpCache miscompiles $token = array($token), so
+        // Zend OpCache miss-compiles $token = array($token), so
         // avoid this pattern.  See: https://github.com/ezyang/htmlpurifier/issues/108
 
         // normalize forms of token

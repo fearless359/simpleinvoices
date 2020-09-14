@@ -33,49 +33,43 @@ Util::directAccessAllowed();
 // @formatter:off
 $billers     = Biller::getAll(true);
 $customers   = Customer::getAll(['enabled_only' => true]);
-$taxes       = Taxes::getActiveTaxes();
 $products    = Product::getAll(true);
-$preferences = Preferences::getActivePreferences();
 $defaults    = SystemDefaults::loadValues();
-$matrix      = ProductAttributes::getMatrix();
 
-$first_run_wizard = false;
+$firstRunWizard = false;
 if (empty($billers) || empty($customers) || empty($products)) {
-    $first_run_wizard =true;
+    $firstRunWizard =true;
 }
-$smarty->assign("first_run_wizard",$first_run_wizard);
+$smarty->assign("first_run_wizard",$firstRunWizard);
 
-$defaults['biller']     = (isset($_GET['biller']))     ? $_GET['biller']     : $defaults['biller'];
-$defaults['customer']   = (isset($_GET['customer']))   ? $_GET['customer']   : $defaults['customer'];
-$defaults['preference'] = (isset($_GET['preference'])) ? $_GET['preference'] : $defaults['preference'];
+$defaults['biller']     = isset($_GET['biller'])     ? $_GET['biller']     : $defaults['biller'];
+$defaults['customer']   = isset($_GET['customer'])   ? $_GET['customer']   : $defaults['customer'];
+$defaults['preference'] = isset($_GET['preference']) ? $_GET['preference'] : $defaults['preference'];
 
-$defaultTax        = Taxes::getDefaultTax();
-$defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
-$subCustomers      = SubCustomers::getSubCustomers($defaults['customer']);
 if (!empty( $_GET['line_items'] )) {
-    $dynamic_line_items = $_GET['line_items'];
+    $dynamicLineItems = $_GET['line_items'];
 } else {
-    $dynamic_line_items = $defaults['line_items'] ;
+    $dynamicLineItems = $defaults['line_items'] ;
 }
 
-$customFields = array();
-for($i=1;$i<=4;$i++) {
+$customFields = [];
+for($idx=1;$idx<=4;$idx++) {
     // Note that this is a 1's based array and not a 0's based array.
-    $customFields[$i] = CustomFields::showCustomField("invoice_cf$i"  , '', "write", '',
+    $customFields[$idx] = CustomFields::showCustomField("invoice_cf$idx"  , '', "write", '',
                                                              "details_screen", '', ''     , '');
 }
 
-$smarty->assign('matrix'            , $matrix);
+$smarty->assign('matrix'            , ProductAttributes::getMatrix());
 $smarty->assign('billers'           , $billers);
 $smarty->assign('customers'         , $customers);
-$smarty->assign('subCustomers'      , $subCustomers);
-$smarty->assign('taxes'             , $taxes);
-$smarty->assign('defaultTax'        , $defaultTax);
+$smarty->assign('subCustomers'      , SubCustomers::getSubCustomers($defaults['customer']));
+$smarty->assign('taxes'             , Taxes::getActiveTaxes());
+$smarty->assign('defaultTax'        , Taxes::getDefaultTax());
 $smarty->assign('products'          , $products);
-$smarty->assign('preferences'       , $preferences);
-$smarty->assign('defaultPreference' , $defaultPreference);
-$smarty->assign('dynamic_line_items', $dynamic_line_items);
+$smarty->assign('preferences'       , Preferences::getActivePreferences());
+$smarty->assign('defaultPreference' , Preferences::getDefaultPreference());
+$smarty->assign('dynamic_line_items', $dynamicLineItems);
 $smarty->assign('customFields'      , $customFields);
 $smarty->assign('defaultCustomerID' , $defaultCustomer['id']);
 $smarty->assign('defaults'          , $defaults);

@@ -1,12 +1,12 @@
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=system_defaults&amp;view=save" >
 <div class="si_center">
-    <h3>{$LANG.edit} {$description|htmlsafe}</h3>
+    <h3>{$LANG.edit} {$description|htmlSafe}</h3>
 </div>
 <div class="si_form">
     <table>
         <tr>
-            <th>{$description|htmlsafe}</th>
+            <th>{$description|htmlSafe}</th>
             <td>{$value}</td>
         </tr>
     </table>
@@ -24,6 +24,6 @@
         {$LANG.cancel}
     </a>
 </div>
-<input type="hidden" name="name" value="{if isset($default)}{$default|htmlsafe}{/if}">
+<input type="hidden" name="name" value="{if isset($default)}{$default|htmlSafe}{/if}">
 <input type="hidden" name="op" value="update_system_defaults"/>
 </form>

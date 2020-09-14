@@ -10,17 +10,17 @@
 	<tbody>
 	{foreach item=customer from=$data}
 		<tr>
-			<td class="bold" colspan="2">{$customer.name|htmlsafe}</td>
+			<td class="bold" colspan="2">{$customer.name|htmlSafe}</td>
 		</tr>
 		{foreach item=product from=$customer.products}
 			<tr>
-				<td>{$product.description|htmlsafe}</td>
-				<td>{$product.sum_quantity|siLocal_number:'0'|default:'-'}</td>
+				<td>{$product.description|htmlSafe}</td>
+				<td>{$product.sum_quantity|utilNumber:0|default:'-'}</td>
 			</tr>
 		{/foreach}
 		<tr>
 			<td>{$LANG.total}</td>
-			<td>{$customer.total_quantity|siLocal_number:'0'|default:'-'}</td>
+			<td>{$customer.total_quantity|utilNumber:0|default:'-'}</td>
 		</tr>
 	{/foreach}
 	</tbody>

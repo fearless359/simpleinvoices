@@ -2,8 +2,6 @@
 
 namespace Inc\Claz;
 
-use Zend_Json;
-
 /**
  * Class Encode
  * @package Inc\Claz
@@ -29,12 +27,12 @@ class Encode
                 foreach ($value as $value2) {
                     if (is_array($value2)) {
                         $xml .= str_repeat("\t", $level) . "<$key>\n";
-                        $xml .= array_to_xml($value2, $level + 1);
+                        $xml .= self::xml($value2, $level + 1);
                         $xml .= str_repeat("\t", $level) . "</$key>\n";
                         $multiTags = true;
                     } else {
                         if (trim($value2) != '') {
-                            if (Util::htmlsafe($value2) != $value2) {
+                            if (Util::htmlSafe($value2) != $value2) {
                                 $xml .= str_repeat("\t", $level) .
                                     "<$key><![CDATA[$value2]]>" .
                                     "</$key>\n";
@@ -48,11 +46,11 @@ class Encode
                 }
                 if (!$multiTags && count($value) > 0) {
                     $xml .= str_repeat("\t", $level) . "<$key>\n";
-                    $xml .= array_to_xml($value, $level + 1);
+                    $xml .= self::xml($value, $level + 1);
                     $xml .= str_repeat("\t", $level) . "</$key>\n";
                 }
             } elseif (trim($value) != '') {
-                if (Util::htmlsafe($value) != $value) {
+                if (Util::htmlSafe($value) != $value) {
                     $xml .= str_repeat("\t", $level) . "<$key>" .
                         "<![CDATA[$value]]></$key>\n";
                 } else {
@@ -75,11 +73,74 @@ class Encode
     public static function json($data, $format = 'plain')
     {
         if ($format == 'pretty') {
-            $message = Zend_Json::encode($data);
-            return Zend_Json::prettyPrint($message, ["format" => "html"]);
+            $message = json_encode($data);
+            return self::prettyPrint($message, ["format" => "html"]);
         } else {
-            return Zend_Json::encode($data);
+            return json_encode($data);
         }
+    }
+
+    public static function prettyPrint($json, $options = array())
+    {
+        $pattern = '|([\{\}\]\[,])|';
+        $tokens = preg_split($pattern, $json, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $result = '';
+        $indent = 0;
+
+        $format= 'txt';
+
+        if (isset($options['format'])) {
+            $format = $options['format'];
+        }
+
+        switch ($format) {
+            case 'html':
+                $lineBreak = '<br />';
+                $ind = '&nbsp;&nbsp;&nbsp;&nbsp;';
+                break;
+            default:
+            case 'txt':
+                $lineBreak = "\n";
+                $ind = "\t";
+                break;
+        }
+
+        // override the defined indent setting with the supplied option
+        if (isset($options['indent'])) {
+            $ind = $options['indent'];
+        }
+
+        $inLiteral = false;
+        foreach($tokens as $token) {
+            if($token == '') {
+                continue;
+            }
+
+            $prefix = str_repeat($ind, $indent);
+            if (!$inLiteral && ($token == '{' || $token == '[')) {
+                $indent++;
+                if (($result != '') && ($result[(strlen($result)-1)] == $lineBreak)) {
+                    $result .= $prefix;
+                }
+                $result .= $token . $lineBreak;
+            } elseif (!$inLiteral && ($token == '}' || $token == ']')) {
+                $indent--;
+                $prefix = str_repeat($ind, $indent);
+                $result .= $lineBreak . $prefix . $token;
+            } elseif (!$inLiteral && $token == ',') {
+                $result .= $token . $lineBreak;
+            } else {
+                $result .= ( $inLiteral ? '' : $prefix ) . $token;
+
+                // Count # of unescaped double-quotes in token, subtract # of
+                // escaped double-quotes and if the result is odd then we are
+                // inside a string literal
+                if ((substr_count($token, "\"")-substr_count($token, "\\\"")) % 2 != 0) {
+                    $inLiteral = !$inLiteral;
+                }
+            }
+        }
+        return $result;
     }
 
 }

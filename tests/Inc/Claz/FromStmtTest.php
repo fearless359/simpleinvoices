@@ -10,7 +10,9 @@ namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
-const TB_PREFIX = "si_";
+if (!defined('TB_PREFIX')) {
+    define('TB_PREFIX', "si_");
+}
 
 /**
  * Class FromStmtTest
@@ -18,19 +20,22 @@ const TB_PREFIX = "si_";
  */
 class FromStmtTest extends TestCase
 {
+    protected $preserveGlobalState = FALSE;
+    protected $runTestInSeparateProcess = TRUE;
+
     public function testBuild()
     {
         $fr = new FromStmt();
-        static::assertTrue($fr->isEmpty(), "Failed FromStmtTest build of empty table.");
+        self::assertTrue($fr->isEmpty(), "Failed FromStmtTest build of empty table.");
 
         $fr->addTable("myTable", "myAlias");
         $result = $fr->build();
-        static::assertEquals("FROM `si_myTable` `myAlias`", $result,
+        self::assertEquals("FROM `si_myTable` `myAlias`", $result,
             "Failed FromStmtTest addTable() & build()");
 
         $fr = new FromStmt("myTable2", "myAlias2");
         $result = $fr->build();
-        static::assertEquals("FROM `si_myTable2` `myAlias2`", $result,
+        self::assertEquals("FROM `si_myTable2` `myAlias2`", $result,
             "Failed FromStmtTest FromStmt() & build()");
     }
 }

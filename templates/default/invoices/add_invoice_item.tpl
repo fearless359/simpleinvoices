@@ -11,6 +11,7 @@
 */
 *}
 {if isset($smarty.post.submit)}
+    <!--suppress HtmlFormInputWithoutLabel -->
     <meta http-equiv="refresh"
           content="2;URL=index.php?module=invoices&amp;view=details&amp;id={if isset($smarty.post.id)}{$smarty.post.id|urlencode}{/if}&amp;type={if isset($smarty.post.type)}{$smarty.post.type|urlencode}{/if}"/>
     <br/>
@@ -42,8 +43,8 @@
                                 onchange="invoice_product_change_price($(this).val(), 1, jQuery('#quantity1').val() );">
                             <option value=""></option>
                             {foreach from=$products item=product}
-                                <option {if $product.id == $defaults.product} selected {/if} value="{if isset($product.id)}{$product.id|htmlsafe}{/if}">
-                                    {$product.description|htmlsafe}
+                                <option {if $product.id == $defaults.product} selected {/if} value="{if isset($product.id)}{$product.id|htmlSafe}{/if}">
+                                    {$product.description|htmlSafe}
                                 </option>
                             {/foreach}
                         </select>
@@ -53,7 +54,7 @@
             <tr>
                 <td class="details_screen">{$LANG.unit_price}</td>
                 <td>
-                    <input id="unit_price1" name="unit_price1" size="7" value="{$invoiceItem.unit_price|siLocal_number:2}"/>
+                    <input id="unit_price1" name="unit_price1" size="7" value="{$invoiceItem.unit_price|utilNumber:2}"/>
                 </td>
             </tr>
             {if $type == 3}
@@ -73,10 +74,10 @@
         </table>
         <hr/>
         <div style="text-align:center;">
-            <input type="submit" name="submit" value="{$LANG.add_item|htmlsafe}"/>
-            <input type="hidden" name="id" value="{if isset($smarty.get.id)}{$smarty.get.id|htmlsafe}{/if}"/>
-            <input type="hidden" name="type" value="{if isset($smarty.get.type)}{$smarty.get.type|htmlsafe}{/if}"/>
-            <input type="hidden" name="tax_id" value="{if isset($smarty.get.tax_id)}{$smarty.get.tax_id|htmlsafe}{/if}"/>
+            <input type="submit" name="submit" value="{$LANG.add_item|htmlSafe}"/>
+            <input type="hidden" name="id" value="{if isset($smarty.get.id)}{$smarty.get.id|htmlSafe}{/if}"/>
+            <input type="hidden" name="type" value="{if isset($smarty.get.type)}{$smarty.get.type|htmlSafe}{/if}"/>
+            <input type="hidden" name="tax_id" value="{if isset($smarty.get.tax_id)}{$smarty.get.tax_id|htmlSafe}{/if}"/>
         </div>
     </form>
 {/if}

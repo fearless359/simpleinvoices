@@ -44,7 +44,7 @@ try {
 
     $error = false;
     $message = "Unable to process email request.";
-    Log::out("email.php - _GET stage[{$_GET['stage']}]", Zend_Log::DEBUG);
+    Log::out("email.php - _GET stage[{$_GET['stage']}]");
     if ($_GET['stage'] == 2) {
         $export = new Export(Destination::STRING_RETURN);
         $export->setBiller($biller);
@@ -55,7 +55,7 @@ try {
         $export->setModule('invoice');
         $export->setPreference($preference);
         $pdfString = $export->execute();
-        Log::out("email.php - After execute", Zend_Log::DEBUG);
+        Log::out("email.php - After execute");
 
         $email = new Email();
         $email->setBody($_POST['email_notes']);
@@ -88,7 +88,7 @@ try {
             ];
         }
 
-        Log::out("email.php after set BCC. results is " . (empty($results) ? "EMPTY" : "NOT EMPTY"), Zend_Log::DEBUG);
+        Log::out("email.php after set BCC. results is " . (empty($results) ? "EMPTY" : "NOT EMPTY"));
         if (empty($results) && !$email->setEmailTo($_POST['email_to'])) {
             $message = "Invalid TO field";
             $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
@@ -101,10 +101,10 @@ try {
         }
 
         if (empty($results)) {
-            Log::out("email.php - Before send", Zend_Log::DEBUG);
+            Log::out("email.php - Before send");
             $results = $email->send();
         }
-        Log::out("email.php - results" . print_r($results, true), Zend_Log::DEBUG);
+        Log::out("email.php - results" . print_r($results, true));
         $smarty->assign('display_block', $results['display_block']);
         $smarty->assign('refresh_redirect', $results['refresh_redirect']);
 

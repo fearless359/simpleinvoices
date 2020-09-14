@@ -35,7 +35,6 @@ $description = "{$LANG['no_defaults']}";
 $default = null;
 
 $getVal = empty($_GET['submit']) ? '' : trim($_GET['submit']);
-var_dump($getVal);
 switch ($getVal) {
     case "biller":
         $default = "biller";
@@ -48,7 +47,7 @@ switch ($getVal) {
 
             foreach ($billers as $biller) {
                 $selected = $biller['id'] == $defaults['biller'] ? "selected style='font-weight: bold'" : "";
-                $escaped  = Util::htmlsafe($biller['name']);
+                $escaped  = Util::htmlSafe($biller['name']);
                 $value   .= "<option {$selected} value='{$biller['id']}'>{$escaped}</option>\n";
             }
             $value .= "</select>\n";
@@ -60,8 +59,8 @@ switch ($getVal) {
     case "company_logo":
         $default     = $getVal;
         $description = "{$LANG[$default]}";
-        $attribute   = Util::htmlsafe($defaults[$default]);
-        $escaped = Util::htmlsafe($defaults['template']);
+        $attribute   = Util::htmlSafe($defaults[$default]);
+        $escaped = Util::htmlSafe($defaults['template']);
         $fileList = glob('templates/invoices/logos/*');
         $value = "<select name=\"value\">\n";
         $value .= "  <option value=' '></option>\n";
@@ -79,7 +78,7 @@ switch ($getVal) {
     case "company_name_item":
         $default     = $getVal;
         $description = "{$LANG['company_name_item_label']}";
-        $attribute   = Util::htmlsafe($defaults[$default]);
+        $attribute   = Util::htmlSafe($defaults[$default]);
         $value       = "<input type='text' size='60' name='value' value='{$attribute}' required />\n";
         $found       = true;
         break;
@@ -96,7 +95,7 @@ switch ($getVal) {
 
             foreach ($customers as $customer) {
                 $selected = $customer['id'] == $defaults['customer'] ? "selected style='font-weight: bold'" : "";
-                $escaped  = Util::htmlsafe($customer['name']);
+                $escaped  = Util::htmlSafe($customer['name']);
                 $value   .= "<option {$selected} value='{$customer['id']}'>{$escaped}</option>\n";
             }
             $value .= "</select>\n";
@@ -126,11 +125,11 @@ switch ($getVal) {
         }
         closedir($handle);
         sort($files);
-        $escaped = Util::htmlsafe($defaults['template']);
+        $escaped = Util::htmlSafe($defaults['template']);
         $value = "<select name=\"value\">\n";
         $value .= "  <option selected value='{$escaped}' style='font-weight:bold;'>{$escaped}</option>\n";
         foreach ($files as $var) {
-            $var = Util::htmlsafe($var);
+            $var = Util::htmlSafe($var);
             $value .= "  <option value='{$var}'>{$var}</option>\n";
         }
         $value .= "</select>\n";
@@ -152,7 +151,7 @@ switch ($getVal) {
 
             foreach ($payments as $payment) {
                 $selected = $payment['pt_id'] == $defaults['payment_type'] ? " selected style='font-weight: bold'" : "";
-                $escaped = Util::htmlsafe($payment['pt_description']);
+                $escaped = Util::htmlSafe($payment['pt_description']);
                 $value .= "  <option {$selected} value='{$payment['pt_id']}'>\n";
                 $value .= "    {$escaped}\n";
                 $value .= "  </option>\n";
@@ -165,7 +164,7 @@ switch ($getVal) {
     case "default_invoice":
         $default = "default_invoice";
         $value = "<input type='text' size='10' name='value' class='validate[required,custom[number]' value='" .
-                         Util::htmlsafe($defaults['default_invoice']) . "'>";
+                         Util::htmlSafe($defaults['default_invoice']) . "'>";
         $description = "{$LANG['default_invoice']}";
         break;
 
@@ -209,8 +208,8 @@ switch ($getVal) {
         $value        = "<select name='value'>";
         foreach ($languages as $language) {
             $selected = $language->shortname == $lang ? " selected" : '';
-            $value   .= "  <option {$selected} value='" . Util::htmlsafe($language->shortname) . "'>\n";
-            $value   .= "    " . Util::htmlsafe("$language->name ($language->englishname) ($language->shortname)") . "\n";
+            $value   .= "  <option {$selected} value='" . Util::htmlSafe($language->shortname) . "'>\n";
+            $value   .= "    " . Util::htmlSafe("$language->name ($language->englishname) ($language->shortname)") . "\n";
             $value   .= "  </option>\n";
         }
         $value       .= "</select>\n";
@@ -219,7 +218,7 @@ switch ($getVal) {
     case "line_items":
         $default = "line_items";
         $value = "<input type='text' size='25' name='value' class='validate[required,custom[number]' value='" .
-                         Util::htmlsafe($defaults['line_items']) . "'>";
+                         Util::htmlSafe($defaults['line_items']) . "'>";
         $description = "{$LANG['default_number_items']}";
         break;
 
@@ -236,7 +235,7 @@ switch ($getVal) {
     case 'password_min_length':
         $default     = $getVal;
         $description = "{$LANG[$default]}";
-        $attribute   = Util::htmlsafe($defaults[$default]);
+        $attribute   = Util::htmlSafe($defaults[$default]);
         $value       = "<input type='text' size='2' name='value' value='$attribute' required min='6' max='16' />\n";
         $found       = true;
         break;
@@ -267,7 +266,7 @@ switch ($getVal) {
 
             foreach ($preferences as $preference) {
                 $selected = $preference['pref_id'] == $defaults['preference'] ? ' selected style="font-weight:bold"' : '';
-                $escaped = Util::htmlsafe($preference['pref_description']);
+                $escaped = Util::htmlSafe($preference['pref_description']);
                 $value .= "  <option {$selected} value='{$preference['pref_id']}'>\n";
                 $value .= "    {$escaped}\n";
                 $value .= "  </option>\n";
@@ -292,7 +291,7 @@ switch ($getVal) {
         // edit template for this extension value.
         $default     = $getVal;
         $description = "{$LANG[$default]}";
-        $attribute   = Util::htmlsafe($defaults[$default]);
+        $attribute   = Util::htmlSafe($defaults[$default]);
         $value       = "<input type='text' size='4' name='value' value='{$attribute}' min='15' max='999' />\n";
         $found       = true;
         break;
@@ -308,7 +307,7 @@ switch ($getVal) {
 
             foreach ($taxes as $tax) {
                 $selected = $tax['tax_id'] == $defaults['tax'] ? "selected style='font-weight: bold'" : "";
-                $escaped = Util::htmlsafe($tax['tax_description']);
+                $escaped = Util::htmlSafe($tax['tax_description']);
                 $value .= "<option {$selected} value='{$tax['tax_id']}'>{$escaped}</option>\n";
             }
         }
@@ -318,7 +317,7 @@ switch ($getVal) {
 
     case "tax_per_line_item":
         $default = "tax_per_line_item";
-        $value = "<input type='text' size='25' name='value' value='" . Util::htmlsafe($defaults['tax_per_line_item']) . "'>\n";
+        $value = "<input type='text' size='25' name='value' value='" . Util::htmlSafe($defaults['tax_per_line_item']) . "'>\n";
         $description = "{$LANG['number_of_taxes_per_line_item']}";
         break;
 
@@ -329,10 +328,10 @@ switch ($getVal) {
         // The $getVal variable contains the field name that is to be edited.
         $found = false;
         if ($performExtensionPhpInsertions) {
-            foreach ($extensionPhpInsertFiles as $phpfile) {
-                if ($phpfile['module'] == 'system_defaults' &&
-                    $phpfile['view'] == 'edit') {
-                    include_once $phpfile['file'];
+            foreach ($extensionPhpInsertFiles as $phpFile) {
+                if ($phpFile['module'] == 'system_defaults' &&
+                    $phpFile['view'] == 'edit') {
+                    include_once $phpFile['file'];
                     if ($found) {
                         break;
                     }

@@ -57,18 +57,18 @@ class Product
         $tableRows = [];
         foreach ($rows as $row) {
             // @formatter:off
-            $action = "<a class='index_table' title=\"{$row['vname']}\" " .
-                         "href=\"index.php?module=products&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                          "<img src=\"images/view.png\" class=\"action\" alt=\"{$row['vname']}\" />" .
+            $action = "<a class='index_table' title='{$row['vname']}' " .
+                         "href='index.php?module=products&amp;view=view&amp;id={$row['id']}'>" .
+                          "<img src='images/view.png' class='action' alt='{$row['vname']}' />" .
                       "</a>" .
-                      "<a class=\"index_table\" title=\"{$row['ename']}\" " .
-                         "href=\"index.php?module=products&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
-                          "<img src=\"images/edit.png\" class=\"action\" alt=\"{$row['ename']}\" />" .
+                      "<a class='index_table' title='{$row['ename']}' " .
+                         "href='index.php?module=products&amp;view=edit&amp;id={$row['id']}'>" .
+                          "<img src='images/edit.png' class='action' alt='{$row['ename']}' />" .
                       "</a>";
 
             $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
-            $enabled = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
-                       "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
+            $enabled = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                       "<img src='{$image}' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
 
             if ($inventory) {
                 $tableRows[] = [
@@ -77,8 +77,8 @@ class Product
                     'unit_price' => $row['unit_price'],
                     'quantity' => isset($row['quantity']) ? $row['quantity'] : '0',
                     'enabled' => $enabled,
-                    'currency_code' => $config ->local->currency_code,
-                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
+                    'currency_code' => $config['localCurrencyCode'],
+                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config['localLocale'])
                 ];
             } else {
                 $tableRows[] = [
@@ -86,8 +86,8 @@ class Product
                     'description' => $row['description'],
                     'unit_price' => $row['unit_price'],
                     'enabled' => $enabled,
-                    'currency_code' => $config ->local->currency_code,
-                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config->local->locale)
+                    'currency_code' => $config['localCurrencyCode'],
+                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config['localLocale'])
                 ];
             }
             // @formatter:on
@@ -223,8 +223,8 @@ class Product
         $result = 0;
         try {
             $description = isset($_POST['description']) ? $_POST['description'] : "";
-            $unitPrice = isset($_POST['unit_price']) ? SiLocal::dbStd($_POST['unit_price']) : "0";
-            $cost = isset($_POST['cost']) ? SiLocal::dbStd($_POST['cost']) : "0";
+            $unitPrice = isset($_POST['unit_price']) ? Util::dbStd($_POST['unit_price']) : "0";
+            $cost = isset($_POST['cost']) ? Util::dbStd($_POST['cost']) : "0";
             $fauxPost = [
                 'domain_id' => DomainId::get(),
                 'description' => $description,
@@ -289,8 +289,8 @@ class Product
                 }
             }
 
-            $unitPrice = isset($_POST['unit_price']) ? SiLocal::dbStd($_POST['unit_price']) : "0";
-            $cost       = isset($_POST['cost'])       ? SiLocal::dbStd($_POST['cost'])       : "0";
+            $unitPrice = isset($_POST['unit_price']) ? Util::dbStd($_POST['unit_price']) : "0";
+            $cost       = isset($_POST['cost'])       ? Util::dbStd($_POST['cost'])       : "0";
             $fauxPost = [
                 'description'          => isset($_POST['description'])    ? $_POST['description']    : "",
                 'enabled'              => isset($_POST['enabled'])        ? $_POST['enabled']        : "",

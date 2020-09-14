@@ -4,7 +4,6 @@ use Inc\Claz\DomainId;
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Product;
-use Inc\Claz\SiLocal;
 use Inc\Claz\Util;
 
 /*
@@ -26,16 +25,11 @@ Util::directAccessAllowed();
 $displayBlock = "<div class=\"si_message_error\">{$LANG['save_invoice_failure']}</div>";
 $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
 
-
-// Deal with op and add some basic sanity checking
-if(!isset( $_POST['type']) && !isset($_POST['action'])) {
-    exit("no save action");
-}
-
+$op = $_POST['op'];
 $type = $_POST['type'];
 
 $id = null;
-if ($_POST['action'] == "insert" ) {
+if ($op == "create" ) {
     $list = [
         'biller_id'     => $_POST['biller_id'],
         'customer_id'   => $_POST['customer_id'],
@@ -63,7 +57,7 @@ if ($_POST['action'] == "insert" ) {
         if ($type == TOTAL_INVOICE) {
             $productId = Product::insertProduct(DISABLED, DISABLED);
             if ($productId > 0) {
-                $unitPrice = SiLocal::dbStd($_POST["unit_price"]);
+                $unitPrice = Util::dbStd($_POST["unit_price"]);
                 $taxIds = empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0];
                 Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice);
             } else {
@@ -74,11 +68,11 @@ if ($_POST['action'] == "insert" ) {
             while ($idx <= $_POST['max_items']) {
                 if (!empty($_POST["quantity{$idx}"])) {
                     // @formatter:off
-                    $unitPrice = SiLocal::dbStd($_POST["unit_price{$idx}"]);
-                    $taxId = empty($_POST["tax_id"][$idx]) ? "" : $_POST["tax_id"][$idx];
-                    $attr = empty($_POST["attribute"][$idx]) ? "" : $_POST["attribute"][$idx];
+                    $unitPrice = Util::dbStd($_POST["unit_price{$idx}"]);
+                    $taxIds = empty($_POST["tax_id"][$idx]) ? [] : $_POST["tax_id"][$idx];
+                    $attr = empty($_POST["attribute"][$idx]) ? [] : $_POST["attribute"][$idx];
                     Invoice::insertInvoiceItem($id, $_POST["quantity{$idx}"], $_POST["products{$idx}"],
-                                               $taxId, $_POST["description{$idx}"], $unitPrice, $attr);
+                                               $taxIds, $_POST["description{$idx}"], $unitPrice, $attr);
                     // @formatter:on
                 }
                 $idx++;
@@ -94,13 +88,13 @@ if ($_POST['action'] == "insert" ) {
 
     $pageActive = 'invoice_new';
 
-} elseif ( $_POST['action'] == "edit") {
+} elseif ( $op == "edit") {
     $id = $_POST['id'];
     $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($_POST['id']) . "\" />";
     try {
         if (Invoice::updateInvoice($id)) {
             if ($type == TOTAL_INVOICE) {
-                $unitPrice = empty($_POST['unit_price']) ? 0 : SiLocal::dbStd($_POST['unit_price']);
+                $unitPrice = empty($_POST['unit_price']) ? 0 : Util::dbStd($_POST['unit_price']);
                 $pdoDb->setFauxPost([
                     "unit_price" => $unitPrice,
                     "description" => $_POST['description0']
@@ -119,10 +113,10 @@ if ($_POST['action'] == "insert" ) {
                 } elseif (isset($_POST["quantity{$idx}"])) {
                     //new line item added in edit page
                     $item = isset($_POST["line_item{$idx}"]) ? $_POST["line_item{$idx}"] : "";
-                    $qty = isset($_POST["quantity{$idx}"]) ? SiLocal::dbStd($_POST["quantity{$idx}"]) : "";
+                    $qty = isset($_POST["quantity{$idx}"]) ? Util::dbStd($_POST["quantity{$idx}"]) : "";
                     $product = isset($_POST["products{$idx}"]) ? $_POST["products{$idx}"] : "";
                     $desc = isset($_POST["description{$idx}"]) ? $_POST["description{$idx}"] : "";
-                    $price = isset($_POST["unit_price{$idx}"]) ? SiLocal::dbStd($_POST["unit_price{$idx}"]) : "";
+                    $price = isset($_POST["unit_price{$idx}"]) ? Util::dbStd($_POST["unit_price{$idx}"]) : "";
                     $attr = isset($_POST["attribute{$idx}"]) ? $_POST["attribute{$idx}"] : "";
                     $taxIds = isset($_POST["tax_id"][$idx]) ? $_POST["tax_id"][$idx] : [];
 
@@ -151,7 +145,7 @@ if ($_POST['action'] == "insert" ) {
         exit($str);
     }
 } else {
-    $str = "modules/invoices/save.php - Invalid \$_POST action[{$_POST['action']}]. Expected 'insert' or 'edit'";
+    $str = "modules/invoices/save.php - Invalid \$_POST['op'] setting of [{$_POST['op']}]. Expected 'create' or 'edit'";
     error_log($str);
     exit($str);
 }

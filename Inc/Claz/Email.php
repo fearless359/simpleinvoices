@@ -9,8 +9,6 @@ use Swift_SmtpTransport;
 
 use Exception;
 
-use \Zend_Log;
-
 /**
  * Class Email
  * @package Inc\Claz
@@ -66,8 +64,8 @@ class Email
         }
         // @formatter:on
 
-        if (!empty($this->pdfString) && empty($this->pdfFileName) ||
-            empty($this->pdfString) && !empty($this->pdfFileName)) {
+        if (!empty($this->pdfString) &&  empty($this->pdfFileName) ||
+             empty($this->pdfString) && !empty($this->pdfFileName)) {
             $message = "Both pdfString and pdfFileName must be set or left empty";
             error_log("Email::send() - " . $message);
             $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=invoices&amp;view=manage\" />";
@@ -80,16 +78,16 @@ class Email
         }
 
         $encryption = null;
-        if (!empty($config->email->secure)) {
-            $encryption = strtolower($config->email->secure);
+        if (!empty($config['emailSecure'])) {
+            $encryption = strtolower($config['emailSecure']);
             if ($encryption != 'tls' && $encryption != 'ssl') {
                 $encryption = null;
             }
         }
 
-        $transport = new Swift_SmtpTransport($config->email->host, $config->email->smtpport, $encryption);
-        $transport->setUsername($config->email->username);
-        $transport->setPassword($config->email->password);
+        $transport = new Swift_SmtpTransport($config['emailHost'], $config['emailSmtpPort'], $encryption);
+        $transport->setUsername($config['emailUsername']);
+        $transport->setPassword($config['emailPassword']);
 
         $mailer = new Swift_Mailer($transport);
         $message = new Swift_Message();
@@ -122,10 +120,10 @@ class Email
 
         $message->setTo($this->emailTo);
 
-        Log::out("Email::send() - Before Swift_Mailer send()", Zend_Log::DEBUG);
+        Log::out("Email::send() - Before Swift_Mailer send()");
         $result = $mailer->send($message);
 
-        Log::out("Email::send() - After Swift_Mailer send() result[{$result}]", Zend_Log::DEBUG);
+        Log::out("Email::send() - After Swift_Mailer send() result[{$result}]");
         return self::makeResults($result);
     }
 

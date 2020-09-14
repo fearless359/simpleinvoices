@@ -9,12 +9,12 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$op = !empty($_POST ['op']) ? $_POST['op'] : null;
+$op = $_POST['op'];
 
 $displayBlock = "<div class='si_message_error'>{$LANG['save_inventory_failure']}</div>";
 $refreshRedirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=inventory&amp;view=manage" />';
 
-if ($op === 'add') {
+if ($op === 'create') {
     if (Inventory::insert() > 0) {
         $displayBlock = "<div class='si_message_ok'>{$LANG['save_inventory_success']}</div>";
     }
@@ -27,5 +27,5 @@ if ($op === 'add') {
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
-$smarty->assign( 'pageActive', 'inventory' );
-$smarty->assign( 'active_tab', '#product' );
+$smarty->assign('pageActive', 'inventory');
+$smarty->assign('active_tab', '#product');

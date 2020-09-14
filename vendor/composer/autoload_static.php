@@ -10,8 +10,8 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -40,6 +40,7 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Polyfill\\Iconv\\' => 23,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Samshal\\Acl\\' => 12,
         ),
         'P' => 
         array (
@@ -49,6 +50,7 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         'M' => 
         array (
             'Mpdf\\' => 5,
+            'Monolog\\' => 8,
         ),
         'I' => 
         array (
@@ -109,6 +111,10 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'Samshal\\Acl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/samshal/acl/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -120,6 +126,10 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Inc\\Claz\\' => 
         array (
@@ -140,16 +150,6 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'Z' => 
-        array (
-            'Zend_' => 
-            array (
-                0 => __DIR__ . '/..' . '/zendframework/zendframework1/library',
-            ),
         ),
     );
 
@@ -721,7 +721,6 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$prefixesPsr0;
             $loader->fallbackDirsPsr0 = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86::$classMap;
 

@@ -43,7 +43,7 @@ class ExpenseTax
         try {
             $pdoDb->addToFunctions("SUM(tax_amount) AS sum");
             $pdoDb->addSimpleWhere("expense_id", $expenseId);
-
+            
             $rows = $pdoDb->request("SELECT", "expense_item_tax");
             $sum = isset($rows[0]['sum']) ? $rows[0]['sum'] : 0;
         } catch (PdoDbException $pde) {
@@ -63,17 +63,14 @@ class ExpenseTax
 
         $rows = [];
         try {
-            $pdoDb->addToJoins(["INNER", "expense", "e", "e.id", "et.expense_id"]);
+            $on = new OnClause();
+            $on->addSimpleItem("t.tax_id", new DbField("et.tax_id"), "AND");
+            $on->addSimpleItem("t.domain_id", DomainId::get());
+            $pdoDb->addToJoins(["INNER", "tax", "t", $on]);
 
-            $onClause = new OnClause();
-            $onClause->addSimpleItem("t.tax_id", "et.tax_id", "AND");
-            $onClause->addSimpleItem("t.domain_id", "e.domain_id");
-            $pdoDb->addToJoins(["INNER", "tax", "t", $onClause]);
+            $pdoDb->addSimpleWhere("et.expense_id", $expenseId);
 
-            $pdoDb->addSimpleWhere("e.id", $expenseId, "AND");
-            $pdoDb->addSimpleWhere("e.domain_id", DomainId::get());
-
-            $pdoDb->setGroupBy("t.tax_id");
+            $pdoDb->setGroupBy("et.tax_id");
 
             $pdoDb->addToFunctions("SUM(et.tax_amount) AS tax_amount");
             $pdoDb->addToFunctions("COUNT(*) AS count");

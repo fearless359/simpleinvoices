@@ -51,7 +51,7 @@ class Payment
             $payment = [];
         } else {
             $payment = $rows[0];
-            $payment['date'] = SiLocal::date($payment['ac_date']);
+            $payment['date'] = Util::date($payment['ac_date']);
             $payment['num_payment_recs'] = $count;
         }
 
@@ -102,7 +102,7 @@ class Payment
         foreach ($rows as $row) {
             $action =
                 "<a class='index_table' title='{$LANG['view']} {$LANG['payment_uc']}' " .
-                "href='index.php?module=payments&amp;view=details&amp;id={$row['id']}&amp;action=view'>" .
+                "href='index.php?module=payments&amp;view=view&amp;id={$row['id']}'>" .
                 "<img src='images/view.png' alt='view' height='16' />" .
                 "</a>" .
                 "&nbsp;&nbsp;" .
@@ -125,7 +125,7 @@ class Payment
                 'amount' => $row['ac_amount'],
                 'type' => $row['type'],
                 'date' => $row['ac_date'],
-                'currencyCode' => $row['currency_code'],
+                'currency_code' => $row['currency_code'],
                 'locale' => preg_replace($pattern, '$1-$2', $row['locale'])
             ];
         }
@@ -210,7 +210,7 @@ class Payment
 
             $rows = $pdoDb->request("SELECT", "payment", "ap");
             foreach ($rows as $row) {
-                $row['notes_short'] = SiLocal::truncateStr($row['ac_notes'], '13', '...');
+                $row['notes_short'] = Util::TruncateStr($row['ac_notes'], '13', '...');
                 $payments[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -338,8 +338,8 @@ class Payment
 
             $rows = $pdoDb->request("SELECT", "customers", "c");
             foreach ($rows as $row) {
-                $row['notes_short'] = SiLocal::truncateStr($row['ac_notes'], '13', '...');
-                $row['date'] = SiLocal::date($row['ac_date']);
+                $row['notes_short'] = Util::TruncateStr($row['ac_notes'], '13', '...');
+                $row['date'] = Util::date($row['ac_date']);
                 $payments[] = $row;
             }
         } catch (PdoDbException $pde) {

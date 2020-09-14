@@ -12,7 +12,7 @@
  *      https://simpleinvoices.group
  *}
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=billers&amp;view=add" class="">
+    <a href="index.php?module=billers&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
         {$LANG.add_new_biller}
     </a>
@@ -37,10 +37,10 @@
         {foreach $billers as $biller}
             <tr>
                 <td>
-                    <a class="index_table" title="{$biller['vname']}" href="index.php?module=billers&amp;view=details&amp;id={$biller['id']}&amp;action=view">
+                    <a class="index_table" title="{$biller['vname']}" href="index.php?module=billers&amp;view=view&amp;id={$biller['id']}">
                         <img src="../../../images/view.png" class="action" alt="view"/>
                     </a>
-                    <a class="index_table" title="{$biller['ename']}" href="index.php?module=billers&amp;view=details&amp;id={$biller['id']}&amp;action=edit">
+                    <a class="index_table" title="{$biller['ename']}" href="index.php?module=billers&amp;view=edit&amp;id={$biller['id']}">
                         <img src="../../../images/edit.png" class="action" alt="edit"/>
                     </a>
                 </td>

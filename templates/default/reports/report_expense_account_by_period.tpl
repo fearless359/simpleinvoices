@@ -40,7 +40,7 @@
   <tr>
     <td class="details_screen">{$account.account}</td>
     <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
-    <td class="details_screen">{$account.expense|siLocal_number}</td>
+    <td class="details_screen">{$account.expense|utilNumber}</td>
   </tr>
   {/foreach}
 </table>

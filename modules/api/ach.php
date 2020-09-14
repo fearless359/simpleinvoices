@@ -7,24 +7,24 @@ use Inc\Claz\Log;
 use Inc\Claz\Payment;
 use Inc\Claz\PaymentType;
 
-Log::out('ACH API page called', Zend_Log::INFO);
+Log::out('ACH API page called', Log::INFO);
 if ($_POST['pg_response_code'] == 'A01') {
-    Log::out('ACH validate success', Zend_Log::INFO);
+    Log::out('ACH validate success', Log::INFO);
 
     //insert into payments
     $paypalData ="";
     foreach ($_POST as $key => $value) {
         $paypalData .= "\n$key: $value";
     }
-    Log::out('ACH Data:', Zend_Log::INFO);
-    Log::out($paypalData, Zend_Log::INFO);
+    Log::out('ACH Data:', Log::INFO);
+    Log::out($paypalData, Log::INFO);
 
     $numberOfPayments = Payment::count($_POST['pg_consumerorderid']);
-    Log::out('ACH - number of times this payment is in the db: '.$numberOfPayments, Zend_Log::INFO);
+    Log::out('ACH - number of times this payment is in the db: '.$numberOfPayments, Log::INFO);
 
     if($numberOfPayments > 0) {
         $xmlMessage = 'Online payment for invoices: '.$_POST['pg_consumerorderid'].' has already been entered';
-        Log::out($xmlMessage, Zend_Log::INFO);
+        Log::out($xmlMessage, Log::INFO);
     } else {
         $pmtType = PaymentType::selectOrInsertWhere("ACH");
         Payment::insert([
@@ -35,7 +35,7 @@ if ($_POST['pg_response_code'] == 'A01') {
             "online_payment_id" => $_POST['pg_consumerorderid'],
             "ac_payment_type"   => $pmtType
         ]);
-        Log::out('ACH - payment_type='.$pmtType, Zend_Log::INFO);
+        Log::out('ACH - payment_type='.$pmtType, Log::INFO);
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $invoice    = Invoice::getOne($_POST['pg_consumerorderid']);
@@ -61,6 +61,6 @@ if ($_POST['pg_response_code'] == 'A01') {
     }
 } else {
     $xmlMessage = "PaymentsGateway.com payment validate failed";
-    Log::out('ACH validate failed', Zend_Log::INFO);
+    Log::out('ACH validate failed', Log::INFO);
 }
 echo $xmlMessage;

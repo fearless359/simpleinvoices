@@ -19,8 +19,8 @@ function smarty_function_print_if_not_null($params, &$smarty) {
         if ($params['field'] != null) {
                 $print_if_not_null =  "
         <tr>
-                <td class='".Util::htmlsafe($params[class1])."'>".Util::htmlsafe($params[label]).":</td>
-				<td class='".Util::htmlsafe($params[class2])."' colspan='".Util::htmlsafe($params[colspan])."'>".Util::htmlsafe($params[field])."</td>
+                <td class='".Util::htmlSafe($params[class1])."'>".Util::htmlSafe($params[label]).":</td>
+				<td class='".Util::htmlSafe($params[class2])."' colspan='".Util::htmlSafe($params[colspan])."'>".Util::htmlSafe($params[field])."</td>
         </tr>";  
 			echo $print_if_not_null;
         }

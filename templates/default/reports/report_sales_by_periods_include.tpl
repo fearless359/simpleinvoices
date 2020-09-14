@@ -7,7 +7,7 @@
             {/if}
         </th>
         {foreach item=year from=$years}
-            <th><b>{if isset($year)}{$year|htmlsafe}{/if}</b></th>
+            <th><b>{if isset($year)}{$year|htmlSafe}{/if}</b></th>
             {if $show_rates}
                 <th class="rate"></th>
             {/if}
@@ -17,13 +17,13 @@
     <tbody>
     {foreach key=month item=amount from=$this_data.months}
         <tr class="tr_{cycle values="A,B"}">
-            <th>{"2000-$month-01"|siLocal_date:'month'|htmlsafe|ucfirst}</th>
+            <th>{"2000-$month-01"|utilDate:'month'|htmlSafe|ucfirst}</th>
             {foreach item=year from=$years}
-                <td>{$amount.$year|siLocal_number:'0'|default:'-'}</td>
+                <td>{$amount.$year|utilNumber:0|default:'-'}</td>
                 {if $show_rates}
                     <td class="rate{if $this_data.months_rate.$month.$year < 0} neg_rate{/if}">
                         {if $this_data.months_rate.$month.$year}
-                            {$this_data.months_rate.$month.$year|siLocal_number:$rate_precision}%
+                            {$this_data.months_rate.$month.$year|utilNumber:$rate_precision}%
                         {/if}
                     </td>
                 {/if}
@@ -35,11 +35,11 @@
     <tr>
         <th>{$LANG.total}</th>
         {foreach item=year from=$years}
-            <td>{$this_data.total.$year|siLocal_number:'0'|default:'-'}</td>
+            <td>{$this_data.total.$year|utilNumber:0|default:'-'}</td>
             {if $show_rates}
                 <td class="rate{if $this_data.total_rate.$year < 0} neg_rate{/if}">
                     {if $this_data.total_rate.$year}
-                        {$this_data.total_rate.$year|siLocal_number:$rate_precision}%
+                        {$this_data.total_rate.$year|utilNumber:$rate_precision}%
                     {/if}
                 </td>
             {/if}

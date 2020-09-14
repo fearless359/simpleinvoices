@@ -9,12 +9,12 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$op = ! empty ( $_POST ['op'] ) ? addslashes ( $_POST ['op'] ) : NULL;
+$op = !empty($_POST ['op']) ? $_POST['op'] : "";
 
 $displayBlock = "<div class='si_message_error'>{$LANG['save_expense_account_failure']}</div>";
 $refreshRedirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=expense_account&amp;view=manage" />';
 
-if ($op === 'insert') {
+if ($op === 'create') {
     if (ExpenseAccount::insert()) {
         $displayBlock = "<div class='si_message_ok'>{$LANG['save_expense_account_success']}</div>";
     }

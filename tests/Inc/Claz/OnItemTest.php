@@ -24,11 +24,11 @@ class OnItemTest extends TestCase
             $cnt = 0;
             $keyPairs = [];
             $stmt = $oi->build($cnt, $keyPairs);
-            static::assertEquals("(`db_field` = :db_field_000  OR ", $stmt, 'OnItem build test failed');
-            static::assertEquals(1, $cnt, 'OnItem cnt test failed');
-            static::assertEquals(10, $keyPairs[':db_field_000'], 'OnItem keyPairs test failed');
+            self::assertEquals("(`db_field` = :db_field_000  OR ", $stmt, 'OnItem build test failed');
+            self::assertEquals(1, $cnt, 'OnItem cnt test failed');
+            self::assertEquals(10, $keyPairs[':db_field_000'], 'OnItem keyPairs test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "testOnItemCLass() Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "testOnItemCLass() Unexpected error thrown. Error: {$pde->getMessage()}");
         }
     }
 }

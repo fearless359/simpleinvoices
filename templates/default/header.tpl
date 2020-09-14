@@ -65,7 +65,7 @@
         <script src="include/jquery/jquery.conf1.js"></script>
     {/literal}
     {include 'include/jquery/jquery.conf.js.tpl'}
-    {if $config->debug->level == "All"}
+    {if $config.debugLevel == "All"}
     {literal}
         <!-- TODO: Look for replacement supported by node.js  -->
         <link rel="stylesheet" type="text/css" href="library/blackbirdjs/blackbird.css"/>

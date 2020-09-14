@@ -6,15 +6,15 @@
 </tr>
 {foreach from=$invoiceItems item=invoiceItem}
   <tr>
-    <td>{$invoiceItem.quantity|siLocal_number_trim}</td>
-    <td colspan="3">{$invoiceItem.product.description|htmlsafe}</td>
-    <td>{$preference.pref_currency_sign}{$invoiceItem.unit_price|siLocal_number}</td>
-    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.gross_total|siLocal_number}</td>
+    <td>{$invoiceItem.quantity|utilNumberTrim}</td>
+    <td colspan="3">{$invoiceItem.product.description|htmlSafe}</td>
+    <td>{$preference.pref_currency_sign}{$invoiceItem.unit_price|utilNumber}</td>
+    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.gross_total|utilNumber}</td>
   </tr>
   {if isset($invoiceItem.description)}
   <tr>
     <td></td>
-    <td colspan="5">{$LANG.description_uc}:&nbsp;{$invoiceItem.description|htmlsafe}</td>
+    <td colspan="5">{$LANG.description_uc}:&nbsp;{$invoiceItem.description|htmlSafe}</td>
   </tr>
   {/if}
   <tr>
@@ -51,7 +51,7 @@
   <td class="tbl1-left tbl1-right" colspan="6"><b>{$LANG.notes}:</b></td>
 </tr>
 <tr>
-  <td class="tbl1-left tbl1-right" colspan="6">{$invoice.note|outhtml}</td>
+  <td class="tbl1-left tbl1-right" colspan="6">{$invoice.note|outHtml}</td>
 </tr>
 {/if}
 <tr class="tbl1-left tbl1-right">

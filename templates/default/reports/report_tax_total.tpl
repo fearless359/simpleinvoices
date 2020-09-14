@@ -6,7 +6,7 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td class="align_center">{$total_taxes|siLocal_number:'2'|default:'-'}</td>
+			<td class="align_center">{$total_taxes|utilNumber:2|default:'-'}</td>
 		</tr>
 	</tbody>
 </table>

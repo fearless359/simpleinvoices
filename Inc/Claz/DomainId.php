@@ -16,8 +16,8 @@ class DomainId
      */
     public static function get(?int $domainId = null): int
     {
-        global $authSession;
-
+        session_name('SiAuth');
+        session_start();
         // default when session value absent - fake auth, whether auth needed or not
         $domId = 1;
 
@@ -25,11 +25,11 @@ class DomainId
         if (!empty($domainId)) {
             // if domain_id is set in the code then use this one
             $domId = $domainId;
-        } elseif (!empty($authSession->domain_id)) {
+        } elseif (!empty($_SESSION['domain_id'])) {
             // no preset value available
             // take session value since available
             // whether fake_auth or not
-            $domId = $authSession->domain_id;
+            $domId = $_SESSION['domain_id'];
         }
 
         return $domId;

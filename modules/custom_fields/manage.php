@@ -13,7 +13,7 @@ use Inc\Claz\Util;
  * Website:
  *     https://simpleinvoices.group
  */
-global $pdoDb, $smarty;
+global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();

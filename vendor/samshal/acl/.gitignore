@@ -1,0 +1,8 @@
+vendor/
+
+*.phar
+
+composer.lock
+doc/
+metrics/
+test.php

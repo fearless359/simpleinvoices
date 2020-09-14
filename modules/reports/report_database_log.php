@@ -55,7 +55,7 @@ try {
     $updates = [];
     $payments = [];
     foreach($rows as $row) {
-        $user = Util::htmlsafe($row['email']) . ' (id ' . Util::htmlsafe($row['user_id']) . ')';
+        $user = Util::htmlSafe($row['email']) . ' (id ' . Util::htmlSafe($row['user_id']) . ')';
         $match = [];
         if (preg_match($patterns['insert'], $row['sqlquerie'])) {
              $inserts[] = [

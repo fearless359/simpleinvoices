@@ -60,7 +60,7 @@
 
         <tr>
             <td class="">{$LANG.total}:</td>
-            <td class="si_right" colspan="3">{$invoice.total|siLocal_number} mm</td>
+            <td class="si_right" colspan="3">{$invoice.total|utilNumber} mm</td>
         </tr>
 
     </table>
@@ -208,10 +208,10 @@
             </tr>
             {foreach from=$invoiceItems item=invoiceItem}
                 <tr class="">
-                    <td class="">{$invoiceItem.quantity|siLocal_number_trim}</td>
+                    <td class="">{$invoiceItem.quantity|utilNumberTrim}</td>
                     <td class="">*</td>
-                    <td class="" colspan="3">{$invoiceItem.unit_price|siLocal_number}</td>
-                    <td class="si_right">{$invoiceItem.gross_total|siLocal_number} mm</td>
+                    <td class="" colspan="3">{$invoiceItem.unit_price|utilNumber}</td>
+                    <td class="si_right">{$invoiceItem.gross_total|utilNumber} mm</td>
                 </tr>
                 {if isset($invoiceItem.description)}
                     <tr class="">
@@ -257,7 +257,7 @@
             </tr>
             {foreach from=$invoiceItems item=invoiceItem}
                 <tr class=" ">
-                    <td class="">{$invoiceItem.quantity|siLocal_number}</td>
+                    <td class="">{$invoiceItem.quantity|utilNumber}</td>
                     <td>{$invoiceItem.product.description}</td>
                     <td class="" colspan="4"></td>
                 </tr>
@@ -296,8 +296,8 @@
                     <td class=""></td>
                     <td class=""></td>
                     <td class=""></td>
-                    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.unit_price|siLocal_number}</td>
-                    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.total|siLocal_number}</td>
+                    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.unit_price|utilNumber}</td>
+                    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.total|utilNumber}</td>
                 </tr>
             {/foreach}
         {/if}
@@ -338,7 +338,7 @@
             <tr class="">
                 <td class="" colspan="2"></td>
                 <td class="si_right" colspan="3"><b>{$preference.pref_inv_wording} {$LANG.amount_uc}</b></td>
-                <td class="si_right"><span class="double_underline">{$invoice.total|siLocal_number} mm</span></td>
+                <td class="si_right"><span class="double_underline">{$invoice.total|utilNumber} mm</span></td>
             </tr>
             <tr>
                 <td colspan="6"><br/><br/></td>

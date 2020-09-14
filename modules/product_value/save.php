@@ -16,9 +16,9 @@ $displayBlock = "<div class=\"si_message_error\">{$LANG['save_product_value_fail
 $pageActive = 'product_value_manager';
 
 #insert invoice_preference
-if ( $op === 'add') {
+if ( $op === 'create') {
     if (ProductValues::isDuplicate($_POST['attribute_id'], $_POST['value'])) {
-        $refreshRedirect = "<meta http-equiv='refresh' content='5;url=index.php?module=product_value&amp;view=add' />";
+        $refreshRedirect = "<meta http-equiv='refresh' content='5;url=index.php?module=product_value&amp;view=create' />";
         $displayBlock = "<div class=\"si_message_error\">{$LANG['duplicate_product_value']}</div>";
         $pageActive = 'product_value_add';
     } elseif (ProductValues::insert() > 0) {

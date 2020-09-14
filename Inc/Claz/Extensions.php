@@ -2,9 +2,6 @@
 
 namespace Inc\Claz;
 
-use Zend_Config;
-use Zend_Config_Ini;
-
 /**
  * @name Extensions.php
  * @author Richard Rowley
@@ -228,14 +225,13 @@ class Extensions
     }
 
     /**
-     * Load SI Extension information into $config->extension.
-     * @param Zend_Config_Ini $config
+     * Load SI Extension information into $config['extension'].
+     * @param array $config
      * @param bool $databaseBuilt
      * @param int $patchCount
      * @return array extension names array.
-     * @noinspection PhpUndefinedFieldInspection
      */
-    public static function loadSiExtensions(Zend_Config_Ini $config, bool $databaseBuilt, int $patchCount): array
+    public static function loadSiExtensions(array $config, bool $databaseBuilt, int $patchCount): array
     {
         global $pdoDbAdmin;
 
@@ -256,13 +252,13 @@ class Extensions
                 $extensions[$extension['name']] = $extension;
             }
 
-            $config->extension = $extensions;
+            $config['extension'] = $extensions;
         }
 
         // If no extension loaded, load Core
-        if (!$config->extension) {
+        if (empty($config['extension'])) {
             // @formatter:off
-            $extensionCore = new Zend_Config([
+            $extensionCore = [
                 'core' => [
                     'id'         => 1,
                     'domain_id'  => 1,
@@ -270,16 +266,16 @@ class Extensions
                     'description'=> 'Core part of SimpleInvoices - always enabled',
                     'enabled'    => 1
                 ]
-            ]);
-            $config->extension = $extensionCore;
+            ];
+            $config['extension'] = $extensionCore;
             // @formatter:on
         }
 
         // Populate the array of enabled extensions.
         $extNames = [];
-        foreach ($config->extension as $extension) {
-            if ($extension->enabled == "1") {
-                $extNames[] = $extension->name;
+        foreach ($config['extension'] as $extension) {
+            if ($extension['enabled'] == ENABLED) {
+                $extNames[] = $extension['name'];
             }
         }
 

@@ -87,12 +87,14 @@ try {
     $smarty->assign("invoiceItems"        , $invoiceItems);
     $smarty->assign("defaults"            , $defaults);
     $smarty->assign("preference"          , $preference);
+    $smarty->assign("locale"              , $preference['locale']);
+    $smarty->assign("currencyCode"        , $preference['currency_code']);
     $smarty->assign("biller"              , $biller);
     $smarty->assign("customer"            , $customer);
     $smarty->assign("invoiceType"         , $invoiceType);
     $smarty->assign("invoice"             , $invoice);
-    $smarty->assign("wordprocessor"       , $config->export->wordprocessor);
-    $smarty->assign("spreadsheet"         , $config->export->spreadsheet);
+    $smarty->assign("wordprocessor"       , $config['exportWordProcessor']);
+    $smarty->assign("spreadsheet"         , $config['export.spreadsheet']);
     $smarty->assign("customerAccount"     , $customerAccount);
     $smarty->assign("ewayPreCheck"        , $ewayPreCheck);
 

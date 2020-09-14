@@ -11,14 +11,14 @@ Util::directAccessAllowed();
 $displayMessage = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=products&amp;view=manage' />";
 
-$op = !empty ( $_POST ['op'] ) ? $_POST['op'] : NULL;
-if ($op === 'insert_product') {
+$op = $_POST['op'];
+if ($op === 'create') {
     if (isset($_POST['save_product'])) {
         if (Product::insertProduct() > 0) {
             $displayMessage = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
         }
     }
-} elseif ($op === 'edit_product') {
+} elseif ($op === 'edit') {
     if (isset($_POST ['save_product'])) {
         if (Product::updateProduct()) {
             $displayMessage = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";

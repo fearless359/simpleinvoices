@@ -12,10 +12,10 @@ $paypal = new paypal_class ();
 $paypal->paypal_url = 'https://www.paypal.com/cgi-bin/webscr'; // paypal url
 
 $xmlMessage = "";
-Log::out ( 'Paypal API page called', Zend_Log::INFO );
+Log::out ( 'Paypal API page called', Log::INFO );
 
 if ($paypal->validate_ipn ()) {
-    Log::out ( 'Paypal validate success', Zend_Log::INFO );
+    Log::out ( 'Paypal validate success', Log::INFO );
 
     // insert into payments
     $paypalData = "";
@@ -23,28 +23,28 @@ if ($paypal->validate_ipn ()) {
         $paypalData .= "\n$key: $value";
     }
 
-    Log::out ( "Paypal Data[$paypalData", Zend_Log::INFO );
+    Log::out ( "Paypal Data[$paypalData", Log::INFO );
 
     // get the domain_id from the paypal invoice
     $customArray = explode ( ";", $paypal->ipn_data ['custom'] );
 
-    Log::out ( 'Paypal - custom=' . $_POST ['custom'], Zend_Log::INFO );
+    Log::out ( 'Paypal - custom=' . $_POST ['custom'], Log::INFO );
     foreach ( $customArray as $key => $value ) {
         if (strstr ( $value, "domain_id:" )) {
-            Log::out ("Paypal - value[$value]", Zend_Log::INFO );
+            Log::out ("Paypal - value[$value]", Log::INFO );
             $domainId = substr ( $value, 10 );
         }
     }
 
-    Log::out ( 'Paypal - domain_id=' . $domainId . 'EOM', Zend_Log::INFO );
+    Log::out ( 'Paypal - domain_id=' . $domainId . 'EOM', Log::INFO );
 
     // check if payment has already been entered
     $olPmtId = $paypal->ipn_data ['txn_id'];
     $numberOfPayments = Payment::count($olPmtId);
-    Log::out ( 'Paypal - number of times this payment is in the db: ' . $numberOfPayments, Zend_Log::INFO );
+    Log::out ( 'Paypal - number of times this payment is in the db: ' . $numberOfPayments, Log::INFO );
     if ($numberOfPayments > 0) {
         $xmlMessage .= 'Online payment ' . $paypal->ipn_data ['tnx_id'] . ' has already been entered - exiting for domain_id=' . $domainId;
-        Log::out ( $xmlMessage, Zend_Log::INFO );
+        Log::out ( $xmlMessage, Log::INFO );
     } else {
         $pmtType = PaymentType::selectOrInsertWhere("Paypal");
         Payment::insert([
@@ -55,7 +55,7 @@ if ($paypal->validate_ipn ()) {
             "online_payment_id" => $paypal->ipn_data['txn_id'],
             "ac_payment_type"   => $pmtType
         ]);
-        Log::out('Paypal - payment_type=' . $pmtType, Zend_Log::INFO);
+        Log::out('Paypal - payment_type=' . $pmtType, Log::INFO);
 
         $invoice = Invoice::getOne( $paypal->ipn_data ['invoice'] );
 
@@ -78,7 +78,7 @@ if ($paypal->validate_ipn ()) {
     }
 } else {
     $xmlMessage .= "Paypal validate failed";
-    Log::out ( 'Paypal validate failed', Zend_Log::INFO );
+    Log::out ( 'Paypal validate failed', Log::INFO );
 }
 
 header ( 'Content-type: application/xml' );

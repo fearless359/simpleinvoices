@@ -123,7 +123,7 @@ $LANG['customer_id'] = "Kund ID";//1
 $LANG['customer_name'] = "Kund Namn";//1
 $LANG['customer_short'] = "Kund";//1
 $LANG['customers'] = "Kunder";//1
-$LANG['customise_settings'] = "Skräddarsy inställningarna";//1
+$LANG['customizeSettings'] = "Skräddarsy inställningarna";//1
 $LANG['dashboard'] = "Panel";//1
 $LANG['database_backup'] = "Säkerhetskopia av Databas";//1
 $LANG['database_log'] = "Databas Logg";//1
@@ -228,7 +228,7 @@ $LANG['help_email_cc'] = "Detta fält är inte obligatoriskt. Här kan du specif
 $LANG['help_email_from'] = "Detta fält är obligatoriskt och får sitt standard värde från Fordringsägarens e-post adress. Du kan ändra denna e-post adress efter behov men kan inte lägga till mer än en (1) adress i detta fält.<br /><br /><i>Obs: Det kan endast finnas en (1) e-post adress i detta fält.</i>";//1
 $LANG['help_email_to'] = "Detta fält är obligatoriskt och får sitt standard värde från Kundens e-post adress. Du kan ändra denna e-post adress efter behov.<br /><br /><i>Obs: Du kan lägga till flera e-post adresser här - bara använd antingen , eller ; för att sära på adresserna</i>";//1
 $LANG['help_insert_biller_text'] = "För att inte välja någon logo välj '_default_blank_logo.png' från listan.<br /><br />För att lägga till ytterligare logon till SimpleInvoices, kopiera logo filen till logo mappen i SimpleInvoices mappen.";//1
-$LANG['help_inv_pref_currency_sign'] = "Detta är valuta tecknet som kommer användas på fakturan.<br /><br /><b>Obs:</b> Euro, Pund osv.. Vänligen använd html koden för ditt valuta tecken i detta fält. Hänvisa till listan med html koder på följande webbsida för valuta tecken <a href='http://www.ascii.cl/htmlcodes.htm'>http://www.ascii.cl/htmlcodes.htm</a>.<br /><br />Detta krävs för att PDF kan fungera korrekt med andra valutor än $.<br /><br /> &#38;#163; är html koden för Pund,<br /> &#38;#8364; för Euro, osv..";//1
+$LANG['help_inv_pref_currency_sign'] = "Detta är valuta tecknet som kommer användas på fakturan.<br /><br /><b>Obs:</b> Euro, Pund osv.. Vänligen använd html koden för ditt valuta tecken i detta fält. Hänvisa till listan med html koder på följande webbsida för valuta tecken <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.<br /><br />Detta krävs för att PDF kan fungera korrekt med andra valutor än $.<br /><br /> &#38;#163; är html koden för Pund,<br /> &#38;#8364; för Euro, osv..";//1
 $LANG['help_inv_pref_description'] = "Detta är namnet för faktura mallen - det används inte på själva fakturan, bara vid skapandet av fakturor när du väljer i drop down menyn vilken Faktura Mall du vill använda.";//1
 $LANG['help_inv_pref_invoice_detail_heading'] = "Detta är vad som kommer synas som rubrik i sidfoten/detaljerna för fakturan.";//1
 $LANG['help_inv_pref_invoice_detail_line'] = "Detta är den text som kommer synas under detaljer/sidfots rubriken. Vanligen använt för att ange betalnings villkor osv.";//1
@@ -525,7 +525,7 @@ $LANG['setup_customisation'] = "Om du behöver skräddarsy inställningarna (ex.
 $LANG['shortcut'] = "Genvägs meny";//1
 $LANG['show_details'] = "Visa detaljer";//1
 $LANG['show_only_unpaid_invoices'] = "Visa endast obetalda fakturor";//1
-$LANG['simple_invoices'] = "SimpleInvoices";//0
+$LANG['simpleInvoices'] = "SimpleInvoices";//0
 $LANG['start_date'] = "Startdatum (ÅÅÅÅ-MM-DD)";//1
 $LANG['start_date_short'] = "Startdatum";//1
 $LANG['start_working'] = "Börja jobba";//1

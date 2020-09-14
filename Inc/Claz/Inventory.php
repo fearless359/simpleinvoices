@@ -59,12 +59,12 @@ class Inventory
         foreach ($rows as $row) {
             // @formatter:off
             $action = "<a class='index_table' title='{$row['vname']}' " .
-                         "href='index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=view'>" .
+                         "href='index.php?module=inventory&amp;view=view&amp;id={$row['id']}'>" .
                             "<img src='images/view.png' class='action' alt='{$row['vname']}' />" .
                        "</a>" .
                       "</a>" .
                       "<a class='index_table' title='{$row['ename']}' " .
-                         "href='index.php?module=inventory&amp;view=details&amp;id={$row['id']}&amp;action=edit'>" .
+                         "href='index.php?module=inventory&amp;view=edit&amp;id={$row['id']}'>" .
                           "<img src='images/edit.png' class='action' alt='{$row['ename']}' />" .
                       "</a>";
             // @formatter:on
@@ -75,9 +75,9 @@ class Inventory
                 'description' => $row['description'],
                 'quantity' => $row['quantity'],
                 'cost' => $row['cost'],
-                'total_cost' => $row['total_cost'],
-                'currency_code' => $config->local->currency_code,
-                'locale' => preg_replace('/^(.*)_(.*)$/', '$1-$2', $config->local->locale)
+                'totalCost' => $row['total_cost'],
+                'currencyCode' => $config['localCurrencyCode'],
+                'locale' => preg_replace('/^(.*)_(.*)$/', '$1-$2', $config['localLocale'])
             ];
         }
         return $tableRows;
@@ -188,13 +188,13 @@ class Inventory
         $result = [];
         $emailMessage = '';
         foreach ($rows as $row) {
-            if (($qty = SiLocal::number($row['quantity'])) < 0) {
+            if (($qty = Util::number($row['quantity'])) < 0) {
                 $qty = 0;
             }
 
             if ($qty <= $row['reorder_level']) {
                 $message = "Time to reorder product, {$row['description']}. " .
-                    "Quantity on hand is " . SiLocal::number($row['quantity']) .
+                    "Quantity on hand is " . Util::number($row['quantity']) .
                     ". , which is equal to or below its reorder level of {$row['reorder_level']}";
                 $result[$row['id']]['message'] = $message;
                 $emailMessage .= $message . "<br />\n";

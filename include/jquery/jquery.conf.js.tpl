@@ -29,7 +29,7 @@
         e.preventDefault();
         let id = $(this).attr("rel");
         {/literal}
-        {if $config->confirm->deleteLineItem}
+        {if $config.confirmDeleteLineItem}
             {literal}
             let delete_function = function () {
                 delete_line_item(id);

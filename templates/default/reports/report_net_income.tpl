@@ -96,7 +96,7 @@
     {/if}
     <div style="text-align: center;">
         <strong>
-            {$LANG.total_income}&nbsp;{$LANG.for_the_period_uc}:&nbsp;&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}
+            {$LANG.total_income}&nbsp;{$LANG.for_the_period_uc}:&nbsp;&#36;{if isset($tot_income)}{$tot_income|utilNumber}{/if}
         </strong>
     </div>
     <br/>
@@ -130,16 +130,16 @@
                 <td class="details_screen">{$invoices[idx]->customerName}</td>
                 <td>&nbsp;</td>
                 <td class="details_screen si_right">
-                    {$invoices[idx]->totalAmount|siLocal_number}
+                    {$invoices[idx]->totalAmount|utilNumber}
                 </td>
                 <td>&nbsp;</td>
                 <td class="details_screen si_right">
-                    {$invoices[idx]->totalPayments|siLocal_number}
+                    {$invoices[idx]->totalPayments|utilNumber}
                 </td>
                 <td>&nbsp;</td>
                 <td class="details_screen si_right"
                     {if $smarty.section.idx.last}style="text-decoration:underline;"{/if}>
-                    {$invoices[idx]->totalPeriodPayments|siLocal_number}
+                    {$invoices[idx]->totalPeriodPayments|utilNumber}
                 </td>
             <tr>
             {if $display_detail}
@@ -149,7 +149,7 @@
                         <td class="si_right">{$LANG['description_uc']}:</td>
                         <td colspan="4">{$item->description}</td>
                         <td class="si_right">{$LANG['amount_uc']}:</td>
-                        <td class="si_right">{$item->amount|siLocal_number}</td>
+                        <td class="si_right">{$item->amount|utilNumber}</td>
                     </tr>
                 {/foreach}
             {/if}
@@ -157,7 +157,7 @@
 
         <tr>
             <td colspan="10">&nbsp;</td>
-            <td class="details_screen si_right">&#36;{if isset($tot_income)}{$tot_income|siLocal_number}{/if}</td>
+            <td class="details_screen si_right">&#36;{if isset($tot_income)}{$tot_income|utilNumber}{/if}</td>
         </tr>
 
         </tbody>

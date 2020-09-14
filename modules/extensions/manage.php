@@ -13,7 +13,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : null;
 
 if ($action == 'toggle') {
     if (empty($extensionId) || !Extensions::setStatusExtension($extensionId)) {
-        die(Util::htmlsafe("Something went wrong with the status change!"));
+        die(Util::htmlSafe("Something went wrong with the status change!"));
     }
 }
 

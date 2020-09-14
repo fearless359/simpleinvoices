@@ -9,7 +9,7 @@
  *      GPL v3 or above
  *}
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=products&amp;view=add" class="">
+    <a href="index.php?module=products&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
         {$LANG.add_new_product}
     </a>

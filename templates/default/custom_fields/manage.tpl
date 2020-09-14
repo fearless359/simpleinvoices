@@ -21,11 +21,11 @@
             <tr>
                 <td class="si_center">
                     <a class="index_table" title="{$cf.vname}"
-                       href="index.php?module=custom_fields&amp;view=details&amp;id={$cf['cf_id']}&amp;action=view" >
+                       href="index.php?module=custom_fields&amp;view=view&amp;id={$cf['cf_id']}">
                         <img src="../../../images/view.png" class="action" />
                     </a>
                     <a class="index_table" title="{$cf.ename}"
-                       href="index.php?module=custom_fields&amp;view=details&amp;id={$cf['cf_id']}&amp;action=edit" >
+                       href="index.php?module=custom_fields&amp;view=edit&amp;id={$cf['cf_id']}">
                         <img src="../../../images/edit.png" class="action" />
                     </a>
                 </td>

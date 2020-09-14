@@ -10,13 +10,13 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 # Deal with op and add some basic sanity checking
-$op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : NULL;
+$op = $_POST['op'];
 
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=product_attribute&amp;view=manage' />";
 $displayBlock = "<div class=\"si_message_error\">{$LANG['save_product_attributes_failure']}</div>";
 
 #insert invoice_preference
-if ($op === 'add' ) {
+if ($op === 'create' ) {
     if (ProductAttributes::insert() > 0) {
         $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
     }
@@ -29,5 +29,5 @@ if ($op === 'add' ) {
 $smarty->assign('display_block',$displayBlock);
 $smarty->assign('refresh_redirect',$refreshRedirect);
 
-$smarty->assign('pageActive', 'product_attribute_add');
+$smarty->assign('pageActive', 'product_attribute_manage');
 $smarty->assign('active_tab', '#product');

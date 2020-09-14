@@ -30,7 +30,7 @@ class Db
         }
 
         // Strip the pdo_ section from the adapter
-        $this->pdoAdapter = substr($config->database->adapter, 4);
+        $this->pdoAdapter = substr($config['databaseAdapter'], 4);
         if ($this->pdoAdapter != "mysql") {
             SiError::out("PDO_not_mysql");
         }
@@ -38,11 +38,11 @@ class Db
         // @formatter:off
         try {
             $this->db = new PDO(
-                    'mysql:host=' . $config->database->params->host . '; ' .
-                    'port='       . $config->database->params->port . '; ' .
-                    'dbname='     . $config->database->params->dbname,
-                                    $config->database->params->username,
-                                    $config->database->params->password,
+                    'mysql:host=' . $config['databaseHost'] . '; ' .
+                    'port='       . $config['databasePort'] . '; ' .
+                    'dbname='     . $config['databaseDbname'],
+                                    $config['databaseUsername'],
+                                    $config['databasePassword'],
                                     [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8;"]);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $exception) {
@@ -90,8 +90,8 @@ class Db
             echo $exp->getMessage();
             $val = $this->db->errorInfo();
             echo "Not sure what happened with your query?:<br /><br /> " .
-                  Util::htmlsafe($sqlQuery) . "<br />" .
-                  Util::htmlsafe($val[2]);
+                  Util::htmlSafe($sqlQuery) . "<br />" .
+                  Util::htmlSafe($val[2]);
             $sth = null;
         }
         return $sth;

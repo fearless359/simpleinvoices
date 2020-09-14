@@ -2,19 +2,21 @@
 
 use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
-use Inc\Claz\SiLocal;
 use Inc\Claz\Util;
 
-global $pdoDb, $authSession;
+global $pdoDb;
 
-$rowId = Util::htmlsafe($_GET['row']);
+session_name('SiAuth');
+session_start();
+
+$rowId = Util::htmlSafe($_GET['row']);
 $id = $_GET['id'];
 if (!empty($id)) {
     $output = [];
     $rows = [];
     try {
         $pdoDb->addSimpleWhere("id", $id, "AND");
-        $pdoDb->addSimpleWhere("domain_id", $authSession->domain_id);
+        $pdoDb->addSimpleWhere("domain_id", $_SESSION['domain_id']);
         $pdoDb->setLimit(1);
         $rows = $pdoDb->request("SELECT", "products");
     } catch (PdoDbException $pde) {
@@ -94,9 +96,9 @@ if (!empty($id)) {
             $html .= "</tr>";
         }
 
-        // Format with decimal places with precision as defined in config.php
+        // Format with decimal places with precision as defined in config.ini
         // @formatter:off
-        $output['unit_price']           = SiLocal::number($row['unit_price']);
+        $output['unit_price']           = Util::number($row['unit_price']);
         $output['default_tax_id']       = isset($row['default_tax_id']) ? $row['default_tax_id'] : "";
         $output['default_tax_id_2']     = isset($row['default_tax_id_2']) ? $row['default_tax_id_2'] : "";
         $output['attribute']            = isset($row['attribute']) ? $row['default_tax_id_2'] : "";

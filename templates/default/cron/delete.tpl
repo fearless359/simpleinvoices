@@ -16,37 +16,44 @@
  *}
 <br/>
 <br/>
-<h2 style="color:red;text-align:center">Select <b>Delete</b> to remove this record and its associated history:</h2>
+<h2 style="color:red;text-align:center">
+    {$LANG.selectUc} <b>{$LANG.delete}</b> {$LANG.to} {$LANG.removeThisRecord} {$LANG.andLc}
+    {$LANG.its} {$LANG.associated} {$LANG.history}:
+</h2>
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlencode}">
     <input type="hidden" name="index_id" value="{if isset($cron.index_id)}{$cron.index_id}{/if}">
-    <div class="si_form si_form_view">
+    <div class="si_form">
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.invoice_uc}</td>
-                <td>{$cron.invoice_id|htmlsafe}</td>
+                <th class="details_screen">{$LANG.invoice_uc}: </th>
+                <td>
+                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlSafe}">
+                        {$cron.index_id|htmlSafe}
+                    </a>
+                </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.start_date}</td>
-                <td>{$cron.start_date|htmlsafe}</td>
+                <th class="details_screen">{$LANG.start_date}: </th>
+                <td>{$cron.start_date|htmlSafe}</td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.end_date}</td>
-                <td>{$cron.end_date|htmlsafe}</td>
+                <th class="details_screen">{$LANG.end_date}: </th>
+                <td>{$cron.end_date|htmlSafe}</td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.recur_each}</td>
-                <td>{$cron.recurrence|htmlsafe} {$cron.recurrence_type|htmlsafe}</td>
+                <th class="details_screen">{$LANG.recur_each}: </th>
+                <td>{$cron.recurrence|htmlSafe} {$cron.recurrence_type|htmlSafe}</td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_biller_after_cron}</td>
+                <th class="details_screen">{$LANG.email_biller_after_cron}: </th>
                 <td>
                     {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uc}{/if}
                     {if $cron.email_biller == $smarty.const.DISABLED}{$LANG.no_uc}{/if}
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_customer_after_cron}</td>
+                <th class="details_screen">{$LANG.email_customer_after_cron}: </th>
                 <td>
                     {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uc}{/if}
                     {if $cron.email_customer == $smarty.const.DISABLED}{$LANG.no_uc}{/if}

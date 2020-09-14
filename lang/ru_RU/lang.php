@@ -22,7 +22,6 @@
 
 #all
 global $LANG;
-if ($LANG) {} // eliminates unused warning
 
 $LANG['about'] = "О нас";//1
 $LANG['account_info'] = "Информация о счете";//1
@@ -121,7 +120,7 @@ $LANG['customer_id'] = "ID клиента";//1
 $LANG['customer_name'] = "Имя";//1
 $LANG['customer_short'] = "Клиент";//1
 $LANG['customers'] = "Клиенты";//1
-$LANG['customise_settings'] = "Настройка параметров";//1
+$LANG['customizeSettings'] = "Настройка параметров";//1
 $LANG['dashboard'] = "Рабочий стол";//1
 $LANG['database_backup'] = "Бэкап БД";//1
 $LANG['database_log'] = "Журнал БД";//1
@@ -226,13 +225,13 @@ $LANG['help_email_cc'] = "Это поле не является обязател
 $LANG['help_email_from'] = "Это поле не является обязательным и по умолчанию получает значение с поля email компании. Вы можете изменить адрес, но не можете указать более одного email</i>";//1
 $LANG['help_email_to'] = "Это поле не является обязательным и по умолчанию получает значение с поля email клиента. Вы можете изменить адрес.<br /><br /><i>Вы можете добавить несколько адресов электронной почты просто использовав разделитель ',' или ';'</i>";//1
 $LANG['help_insert_biller_text'] = "Чтобы не отображать логотип. выберите '_default_blank_logo.png' из списка. <br /> <br /> Для добавления дополнительных логотипов, скопировать файл в папку с логотипами.";//1
-$LANG['help_inv_pref_currency_sign'] = "Это символ валюты будет использоваться в счет-фактуре. <br /> <br /> Примечание: </ B> При использовании любой валюты кроме доллара, вставьте HTML код знака валюты в это поле. См. список HTML кодов на сайте <a href='http://www.ascii.cl/htmlcodes.htm'> http://www.ascii.cl/htmlcodes.htm </ A>. <br /> <br /> Это необходимо для того, что бы счета корректно отображались в PDF-формате";//1
+$LANG['help_inv_pref_currency_sign'] = "Это символ валюты будет использоваться в счет-фактуре. <br /> <br /> Примечание: <br/> При использовании любой валюты кроме доллара, вставьте HTML код знака валюты в это поле. См. список HTML кодов на сайте <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'> http://www.ascii.cl/htmlcodes.htm </a>. <br /> <br /> Это необходимо для того, что бы счета корректно отображались в PDF-формате";//1
 $LANG['help_inv_pref_description'] = "Название шаблона не будет использоваться в счете-фактуре,оно будет фигурировать только в выпадающем списке шаблонов в форме создание счета.";//1
 $LANG['help_inv_pref_invoice_detail_heading'] = "Этот текст будет отображаться в качестве заголовка колонтитула и деталей счета.";//1
 $LANG['help_inv_pref_invoice_detail_line'] = "This is the text that appear under the details/footer heading. Normally used to define payment terms etc.";//1
 $LANG['help_inv_pref_invoice_enabled'] = "Эта настройка включает/отключает функцию 'Шаблон счет'. Если эта функция выключена, то Вы больше не сможете выбрать тип счета при создании новой счет-фактуры.";//1
 $LANG['help_inv_pref_invoice_heading'] = "Это заголовок счета и он будет отображаться в верхней части счета-фактуры.";//1
-$LANG['help_inv_pref_invoice_numbering_group'] = "An invoice can have different numbering ranges depending on the invoice preference selected. ie. you can have quote 1 and invoice 1. <br /> <br />This field indicates which 'group' you want this preference to number like.  If you group mulitple invoice preferences together then all invoices etc.. created using these preferences will increment in the same range.  If you leave this blank this invoice prefernece will increment in its own range.";//1
+$LANG['help_inv_pref_invoice_numbering_group'] = "An invoice can have different numbering ranges depending on the invoice preference selected. ie. you can have quote 1 and invoice 1. <br /> <br />This field indicates which 'group' you want this preference to number like.  If you group mulitple invoice preferences together then all invoices, etc. created using these preferences will increment in the same range.  If you leave this blank this invoice prefernece will increment in its own range.";//1
 $LANG['help_inv_pref_invoice_payment_method'] = "This is the where you specify how you would like the customer to pay you, ie Cheque/money order/electronic funds transfer/etc.";//1
 $LANG['help_inv_pref_invoice_wording'] = "This is what the wording of the invoice will be - ie if you enter Quote - in the Manage Invoices screen it'll say Quote in the invoice type field and through that invoice it'll say Quote instead of invoice ie. Quote ID, Quote Date, etc..";//1
 $LANG['help_inv_pref_locale'] = "Локализация";//1
@@ -523,7 +522,7 @@ $LANG['setup_customisation'] = "Если вам нужно настроить н
 $LANG['shortcut'] = "Контекстное меню";//1
 $LANG['show_details'] = "Показать подробности";//1
 $LANG['show_only_unpaid_invoices'] = "Показать только неоплаченные счета";//1
-$LANG['simple_invoices'] = "SimpleInvoices";//0
+$LANG['simpleInvoices'] = "SimpleInvoices";//0
 $LANG['start_date'] = "Дата начала (гггг-мм-дд)";//1
 $LANG['start_date_short'] = "Дата начала";//1
 $LANG['start_working'] = "Начало работы";//1

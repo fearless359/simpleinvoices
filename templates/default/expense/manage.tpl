@@ -38,24 +38,24 @@
             <tr>
                 <td class="si_center">
                     <a class='index_table' title='{$expense['vname']}'
-                       href='index.php?module=expense&amp;view=details&amp;id={$expense['EID']}&amp;action=view'>
+                       href='index.php?module=expense&amp;view=view&amp;id={$expense['EID']}'>
                         <img src='../../../images/view.png' class='action' alt="{$expense['vname']}"/>
                     </a>
                     <a class='index_table' title='{$expense['ename']}'
-                        href='index.php?module=expense&amp;view=details&amp;id={$expense['EID']}&amp;action=edit'>
+                        href='index.php?module=expense&amp;view=edit&amp;id={$expense['EID']}'>
                         <img src='../../../images/edit.png' class='action' alt="{$expense['ename']}"/>
                     </a>
                 </td>
                 <td>{$expense['date']}</td>
-                <td class="right">{$expense['amount']|siLocal_number}</td>
+                <td class="right">{$expense['amount']|utilCurrency}</td>
                 <td class="right">
                 {if (!empty($expense['tax']))}
-                    {$expense['tax']|siLocal_number}
+                    {$expense['tax']|utilCurrency}
                 {/if}
                 </td>
                 <td class="right">
                 {if (!empty($expense['total']))}
-                    {$expense['total']|siLocal_number}
+                    {$expense['total']|utilCurrency}
                 {/if}
                 </td>
                 <td>{$expense['ea_name']}</td>

@@ -36,14 +36,14 @@ class SiErrorTest extends TestCase
             "<br />===========================================" .
             "<br />" .
             "<br />Test message";
-        static::assertEquals($expected, $mess, 'SiError generic message test failed');
+        self::assertEquals($expected, $mess, 'SiError generic message test failed');
 
         $mess = SiError::out('notWritable', 'file', 'tmp/php.log');
         $expected = "<br />===========================================" .
             "<br />SimpleInvoices error" .
             "<br />===========================================" .
             "<br />The file <b>tmp/php.log</b> has to be writable";
-        static::assertEquals($expected, $mess, 'SiError default message test failed');
+        self::assertEquals($expected, $mess, 'SiError default message test failed');
 
         $mess = SiError::out('dbError', 'si_table', 'Invalid table');
         $expected = "<br />===========================================" .
@@ -51,12 +51,12 @@ class SiErrorTest extends TestCase
             "<br />===========================================" .
             "<br />" .
             "<br />>si_table - Error: Invalid table";
-        static::assertEquals($expected, $mess, 'SiError dbError message test failed');
+        self::assertEquals($expected, $mess, 'SiError dbError message test failed');
 
         $mess = SiError::out('default');
         $expected = "<br />===========================================" .
             "<br />SimpleInvoices - Undefined Error Type (default)" .
             "<br />===========================================";
-        static::assertEquals($expected, $mess, 'SiError default message test failed');
+        self::assertEquals($expected, $mess, 'SiError default message test failed');
     }
 }

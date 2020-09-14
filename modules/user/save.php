@@ -45,7 +45,7 @@ if ($ok) {
         $_POST['user_id']++;
     }
 
-    if ($op === 'insert_user') {
+    if ($op === 'create') {
         try {
             if (User::insertUser() > 0) {
                 $displayBlock = "<div class='si_message_ok'>{$LANG['save_user_success']}</div>";
@@ -53,7 +53,7 @@ if ($ok) {
         } catch (PdoDbException $pde) {
             exit("modules/user/save.php Unexpected error: {$pde->getMessage()}");
         }
-    } elseif ($op === 'edit_user' && isset($_POST['save_user'])) {
+    } elseif ($op === 'edit' && isset($_POST['save_user'])) {
         if (User::updateUser($excludePwd)) {
             $displayBlock = "<div class='si_message_ok'>{$LANG['save_user_success']}</div>";
         }

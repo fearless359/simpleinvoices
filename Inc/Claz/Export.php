@@ -1,7 +1,6 @@
 <?php
 namespace Inc\Claz;
 
-use Zend_Log;
 use Exception;
 
 /**
@@ -62,7 +61,7 @@ class Export
     private function showData($data)
     {
         if (!isset($data)) {
-            Log::out("Export::showData() - No data to report.", Zend_Log::DEBUG);
+            Log::out("Export::showData() - No data to report.");
             error_log("Export::showData() - No data to report.");
             echo "<div class='si_message_error'>Export process terminated. No data to report.</div>";
             echo "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
@@ -74,7 +73,7 @@ class Export
         }
 
         // @formatter:off
-        Log::out("Export::showData() - format[{$this->format}]", Zend_Log::DEBUG);
+        Log::out("Export::showData() - format[{$this->format}]");
         switch ($this->format) {
             case "print":
                 echo $data;
@@ -126,7 +125,7 @@ class Export
     {
         global $config, $smarty, $pdoDb, $siUrl;
 
-        Log::out("Export::getData() module:[{$this->module}]", Zend_Log::DEBUG);
+        Log::out("Export::getData() module:[{$this->module}]");
 
         // @formatter:off
         $data = "";
@@ -263,7 +262,7 @@ class Export
 
                     $logo = Util::getLogo($this->biller);
                     $logo = str_replace(" ", "%20", trim($logo));
-                    Log::out("Export::getData() - logo[$logo]", Zend_Log::DEBUG);
+                    Log::out("Export::getData() - logo[$logo]");
 
                     $customFieldLabels = CustomFields::getLabels(true);
 
@@ -305,13 +304,13 @@ class Export
                         $pluginsDirs[] = $templatePluginsDir;
                         $smarty->setPluginsDir($pluginsDirs);
                     }
-                    Log::out("Export::getData() - templatePath[$templatePath]", Zend_Log::DEBUG);
+                    Log::out("Export::getData() - templatePath[$templatePath]");
 
                     $data = $smarty->fetch($templatePath);
 
                     // Restore configured locale
                     if (!empty($origLocale)) {
-                        $config->local->locale = $origLocale;
+                        $config['localLocale'] = $origLocale;
                     }
                 } catch (Exception $exp) {
                     error_log("Export::getData() - invoice - error: " . $exp->getMessage());
@@ -357,10 +356,10 @@ class Export
         }
 
         // Override config's locale with the one assigned from the preference table
-        $origLocale = $config->local->locale;
+        $origLocale = $config['localLocale'];
         $prefLocale = $preference['locale'];
         if (isset($prefLanguage) && strlen($prefLocale) > 4) {
-            $config->local->locale = $prefLocale;
+            $config['localLocale'] = $prefLocale;
         }
         return $origLocale;
     }

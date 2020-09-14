@@ -1,0 +1,20 @@
+{
+    "name": "samshal/acl",
+    "description": "This package provides a lightweight and flexible access control list for privileges and permission management.",
+    "type": "Library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Samshal",
+            "email": "samueladeshina73@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
+    "autoload":{
+        "psr-4":{
+            "Samshal\\Acl\\":"./src"
+        }
+    }
+}

@@ -23,10 +23,10 @@ $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=c
 
 $op = empty($_POST['op']) ? '' : $_POST['op'];
 
-$displayBlock = "<div class=\"si_message_error\">{$LANG['save_custom_field_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['save_custom_flags_failure']}</div>";
 if (isset($_POST['cancel'])) {
-    $displayBlock = "<div class=\"si_message_warning\">{$LANG['cancelled']}</div>";
-} elseif ($op === 'edit_custom_flag') {
+    $displayBlock = "<div class='si_message_warning'>{$LANG['cancelled']}</div>";
+} elseif ($op === 'edit') {
     if (isset($_POST['save_custom_flag'])) {
         $flgId = intval($_POST['flg_id']);
         $clearField = isset($_POST["clear_custom_flags_{$flgId}"]) ? $_POST["clear_custom_flags_{$flgId}"] : DISABLED;
@@ -37,7 +37,7 @@ if (isset($_POST['cancel'])) {
                 $_POST["enabled"],
                 $clearField,
                 $_POST["field_help"])) {
-            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_custom_field_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['save_custom_flags_success']}</div>";
         }
     }
 }

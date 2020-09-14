@@ -21,9 +21,9 @@ class OrderByTest extends TestCase
     {
         try {
             $ob = new OrderBy();
-            static::assertTrue($ob->isEmpty(), "OrderBy class failed empty test");
+            self::assertTrue($ob->isEmpty(), "OrderBy class failed empty test");
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "testOrderByClass() Unexpected error thrown for empty object instantiation. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "testOrderByClass() Unexpected error thrown for empty object instantiation. Error: {$pde->getMessage()}");
         }
 
         try {
@@ -32,16 +32,16 @@ class OrderByTest extends TestCase
                 $ob->addField('id', 'D');
                 $ob->addField('name', 'A');
             } catch (PdoDbException $pde) {
-                static::assertTrue(false, "testOrderByClass() Unexpected error thrown for addFields. Error: {$pde->getMessage()}");
+                self::assertTrue(false, "testOrderByClass() Unexpected error thrown for addFields. Error: {$pde->getMessage()}");
             }
             try {
                 $stmt = $ob->build();
-                static::assertEquals("ORDER BY `enable_txt` DESC, `id` DESC, `name` ASC", $stmt, 'OrderBy class test failed');
+                self::assertEquals("ORDER BY `enable_txt` DESC, `id` DESC, `name` ASC", $stmt, 'OrderBy class test failed');
             } catch (PdoDbException $pde) {
-                static::assertTrue(false, "testOrderByClass() Unexpected error thrown for object build. Error: {$pde->getMessage()}");
+                self::assertTrue(false, "testOrderByClass() Unexpected error thrown for object build. Error: {$pde->getMessage()}");
             }
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "testOrderByClass() Unexpected error thrown for object instantiation. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "testOrderByClass() Unexpected error thrown for object instantiation. Error: {$pde->getMessage()}");
         }
     }
 }

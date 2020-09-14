@@ -78,7 +78,7 @@ class PdoDb
         } catch (PDOException $exp) {
             $str = "PdoDb - construct error: " . $exp->getMessage();
             error_log($str);
-            error_log("dbinfo - " . print_r($dbInfo, true));
+            error_log("dbInfo - " . print_r($dbInfo, true));
             error_log(print_r($exp, true));
             throw new PdoDbException($str);
         }
@@ -106,6 +106,7 @@ class PdoDb
     {
         // @formatter:off
         $this->caseStmts        = [];
+        $this->debugLabel       = "";
         $this->debugMicroTime   = 0;
         $this->distinct         = false;
         $this->excludedFields   = [];
@@ -324,7 +325,7 @@ class PdoDb
      *              <li><b>string</b>: Table to join.</li>
      *              <li><b>string</b>: Alias for table.</li>
      *              <li><b>string</b>: Left field to join on.</li>
-     *              <li><b>string</b>: Right field to join on.</li>
+     *              <li><b>string</b>: Right field value to join on.</li>
      *            </ol>
      *          </li>
      *        </ol>
@@ -365,7 +366,8 @@ class PdoDb
             $alias = $join[2];
             $field = $join[3];
             $value = $join[4];
-            if (!is_string($type) || !is_string($table) || !is_string($alias) || !is_string($field) || !is_string($value)) {
+            if (!is_string($type) || !is_string($table) || !is_string($alias) || !is_string($field) ||
+                !is_string($value) && !is_int($value)) {
                 throw new PdoDbException("PdoDb - addToJoins(): Array submitted contains non-string fields.");
             }
             $jn = new Join($type, $table, $alias);
@@ -1065,7 +1067,7 @@ class PdoDb
                     // Check to see if a field prefix was specified and that there is no
                     // table alias present. If so, prepend the prefix followed by an underscore.
                     if ($this->usePost && isset($_POST[$column]) ||
-                        !$this->usePost && !empty($this->fauxPost[$column])) {
+                        !$this->usePost && isset($this->fauxPost[$column])) {
                         $valuePairs[$column] = $this->usePost ? $_POST[$column] : $this->fauxPost[$column];
                     }
                 }
@@ -1235,7 +1237,7 @@ class PdoDb
 
         if (!$sth->execute()) {
             $tmp = $this->debug;
-            $this->debug = true;
+            $this->debug = true; // force debugger on
             $this->debugger($sql);
             $this->debug = $tmp;
             if ($this->debug || !$this->noErrorLog) {

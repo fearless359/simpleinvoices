@@ -8,7 +8,7 @@
 *      Kevin de Jong (kdjong3112@gmail.com), Frank Heinen, David (darym3 _at_ hotmail.com), Ruben Bloemgarten (ruben@abubble.nl), Kai (level411@gmail.com), Wouter Gelderblom (wjgelderblom@gmail.com)
 *
 * Last edited:
-*    2020-05-15  Version: 2019.2.22  version.update_date 20200401
+*    2020-05-15  Version: 2019.2.22  versionUpdateDate 20200401
 *
 * License:
 *    GPL v3 or above
@@ -143,7 +143,7 @@ $LANG['customer_id'] = "Klant ID";//1
 $LANG['customer_name'] = "Klantnaam";//1
 $LANG['customer_short'] = "Klnt";//1
 $LANG['customers'] = "Klanten";//1
-$LANG['customise_settings'] = "Instellingen aanpassen";//1
+$LANG['customizeSettings'] = "Instellingen aanpassen";//1
 $LANG['dashboard'] = "Dashboard";//1
 $LANG['database_backup'] = "Database Backup";//1
 $LANG['database_log'] = "Database log";//1
@@ -285,7 +285,7 @@ $LANG['help_email_to'] = "Dit veld is een verplicht veld bevat het e-mailadres v
 $LANG['help_expense'] = "Selecteer deze optie om het gebruik van de Simple Invoices module onkostendeclaraties in / uit te schakelen.";//1
 $LANG['help_expense_accounts'] = "Voer de naam van de onkostenvergoeding in. bijv. Kilometer declaratie, Woon - Werk verkeer";//1
 $LANG['help_insert_biller_text'] = "Wilt u geen logo selecteer dan '_default_blank_logo.png' uit de lijst.<br /><br />Om nieuwe logo's toe te voegen aan Simple Invoices, kopieert u het logobestand naar de logomap in de map Simple Invoices.";//1
-$LANG['help_inv_pref_currency_sign'] = "Dit is het valutasymbool dat tijdens de factuur zal worden gebruikt. <br /><br /><b>Opmerking:</b> Euro, Pond enz.. Geruik alleen de html code voor dit symbool.  Raadpleeg de lijst met html-codes op de volgende website als u een ander valutasymbool wilt gebruiken dan $ <a href='http://www.ascii.cl/htmlcodes.htm'>http://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dit is vereist voor een correcte werking van rapporten wanneer er een ander symbool gebruikt word dan $ <br /><br /> &#38;#163; Is de html code voor de Pond,<br /> &#38;#8364; voor de Euro.";//1
+$LANG['help_inv_pref_currency_sign'] = "Dit is het valutasymbool dat tijdens de factuur zal worden gebruikt. <br /><br /><b>Opmerking:</b> Euro, Pond enz.. Geruik alleen de html code voor dit symbool.  Raadpleeg de lijst met html-codes op de volgende website als u een ander valutasymbool wilt gebruiken dan $ <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dit is vereist voor een correcte werking van rapporten wanneer er een ander symbool gebruikt word dan $ <br /><br /> &#38;#163; Is de html code voor de Pond,<br /> &#38;#8364; voor de Euro.";//1
 $LANG['help_inv_pref_description'] = "Dit is de naam van de factuur voorkeur en wordt niet gebruikt op de factuur zelf, alleen bij het maken van de factuur wordt deze beschrijving weergegeven in de factuur instelling keuze lijst om een factuurvoorkeur te selecteren.";//1
 $LANG['help_inv_pref_invoice_detail_heading'] = "Dit is wat zal worden weergegeven als de kop van de voettekst / details van de factuur.";//1
 $LANG['help_inv_pref_invoice_detail_line'] = "Dit is de tekst die onder de kop van de details / voettekst verschijnt. Normaal gesproken wordt dit gebruikt om de betalingsvoorwaarden op te geven";//1
@@ -643,7 +643,7 @@ $LANG['setup_customisation'] = "Als u enkele instellingen wilt personaliseren (b
 $LANG['shortcut'] = " Hoofdmenu";//1
 $LANG['show_details'] = "Bekijk details";//1
 $LANG['show_only_unpaid_invoices'] = "Toon alleen openstaande facturen";//1
-$LANG['simple_invoices'] = "Simple Invoices";//1
+$LANG['simpleInvoices'] = "Simple Invoices";//1
 $LANG['signature'] = "handtekening";//1
 $LANG['start_date'] = "Start Datum (yyyy-mm-dd)";//1
 $LANG['start_date_short'] = "Start Datum";//1

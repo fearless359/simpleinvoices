@@ -24,8 +24,8 @@ if ($databaseBuilt && !$databasePopulated) {
                 '<p>The SimpleInvoices essential data has been imported. Using the buttons ' .
                     'below, you can choose to <strong>Start using SimpleInvoices</strong> or ' .
                     'to <strong>Install Sample Data</strong> to test SimpleInvoices further.</p>' .
-                '<p><strong>NOTE:</strong> If the <strong><em>authentication.enabled</em></strong> ' .
-                    'setting in the configuration file, <strong>config/custom.config.php</strong>, ' .
+                '<p><strong>NOTE:</strong> If the <strong><em>authenticationEnabled</em></strong> ' .
+                    'setting in the configuration file, <strong>config/custom.config.ini</strong>, ' .
                     'is set to <strong>true</strong>. You will need to use the demonstration ID, ' .
                     '<strong>demo</strong>, and the password, <strong>demo</strong>. After which ' .
                     'you should add a new user for yourself and disable the <strong>demo</strong> user.</p>' .

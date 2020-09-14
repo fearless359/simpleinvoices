@@ -28,7 +28,7 @@
                     <!--
                     <textarea class="editor" name="description">{*if isset($defaultInvoice.note)*}{*$defaultInvoice.note*}{*/if*}</textarea>
                     -->
-                    <input name="description" id="description" {if isset($defaultInvoice.note)}value="{$defaultInvoice.note|outhtml}"{/if} type="hidden">
+                    <input name="description" id="description" {if isset($defaultInvoice.note)}value="{$defaultInvoice.note|outHtml}"{/if} type="hidden">
                     <trix-editor input="description"></trix-editor>
                 </td>
             </tr>
@@ -38,25 +38,25 @@
             <tr class="si_invoice_total">
                 <th class="">{$LANG.gross_total}</th>
                 {section name=tax_header loop=$defaults.tax_per_line_item }
-                    <th class="">{$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax_header.index+1|htmlsafe}{/if} </th>
+                    <th class="">{$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax_header.index+1|htmlSafe}{/if} </th>
                 {/section}
             </tr>
 
             <tr class="si_invoice_total">
                 <td><input type="text" class="si_right validate[required]" name="unit_price" id="unit_price0" size="15"
-                    value="{if isset($defaultInvoiceItems[0].unit_price)}{$defaultInvoiceItems[0].unit_price|siLocal_number}{/if}"/></td>
+                    value="{if isset($defaultInvoiceItems[0].unit_price)}{$defaultInvoiceItems[0].unit_price|utilNumber}{/if}"/></td>
                 {if !isset($taxes) }
                     <td><p><em>{$LANG.no_taxes}</em></p></td>
                 {else}
                     {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
                         {assign var="taxNumber" value=$smarty.section.tax.index }
                         <td>
-                            <select id="tax_id[{$smarty.section.line.index|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]"
-                                    name="tax_id[{$smarty.section.line.index|htmlsafe}][{$smarty.section.tax.index|htmlsafe}]">
+                            <select id="tax_id[{$smarty.section.line.index|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
+                                    name="tax_id[{$smarty.section.line.index|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]">
                                 <option value=""></option>
                                 {foreach from=$taxes item=tax}
-                                    <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlsafe}{/if}"
-                                            {if $tax.tax_id == $defaultInvoiceItems[0].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlsafe}</option>
+                                    <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}"
+                                            {if $tax.tax_id == $defaultInvoiceItems[0].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlSafe}</option>
                                 {/foreach}
                             </select>
                         </td>
@@ -73,8 +73,8 @@
                     {else}
                         <select name="preference_id">
                             {foreach from=$preferences item=preference}
-                                <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlsafe}{/if}">
-                                    {$preference.pref_description|htmlsafe}
+                                <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">
+                                    {$preference.pref_description|htmlSafe}
                                 </option>
                             {/foreach}
                         </select>
@@ -83,7 +83,7 @@
                 <th>{$LANG.sales_representative}</th>
                 <td>
                     <input id="sales_representative}" name="sales_representative" size="30"
-                           value="{if isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlsafe}{/if}" />
+                           value="{if isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlSafe}{/if}" />
                 </td>
             </tr>
 
@@ -112,6 +112,6 @@
             </a>
         </div>
     </div>
-    <input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlsafe}{/if}"/>
+    <input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlSafe}{/if}"/>
     <input type="hidden" name="type" value="1"/>
 </form>

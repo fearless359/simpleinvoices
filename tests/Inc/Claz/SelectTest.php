@@ -11,7 +11,9 @@ namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
-const TB_PREFIX = "si_";
+if (!defined('TB_PREFIX')) {
+    define('TB_PREFIX', "si_");
+}
 
 /**
  * Class SelectTest
@@ -19,6 +21,8 @@ const TB_PREFIX = "si_";
  */
 class SelectTest extends TestCase
 {
+    protected $preserveGlobalState = FALSE;
+    protected $runTestInSeparateProcess = TRUE;
 
     public function testSelectClass()
     {
@@ -35,17 +39,17 @@ class SelectTest extends TestCase
                     try {
                         $stmt = $se->build($keyPairs);
                     } catch (PdoDbException $pde) {
-                        static::assertTrue(false, "testOrderByClass() Unexpected error thrown for select object build. Error: {$pde->getMessage()}");
+                        self::assertTrue(false, "testOrderByClass() Unexpected error thrown for select object build. Error: {$pde->getMessage()}");
                     }
                 } catch (PdoDbException $pde) {
-                    static::assertTrue(false, "testOrderByClass() Unexpected error thrown for select object instantiation. Error: {$pde->getMessage()}");
+                    self::assertTrue(false, "testOrderByClass() Unexpected error thrown for select object instantiation. Error: {$pde->getMessage()}");
                 }
-                static::assertEquals('(SELECT `ivl`.`customer_id`, `apl`.`domain_id`, (SUM(COALESCE(apl.ac_amount, 0))) AS inv_paid FROM `si_payment` `apl` WHERE `prl`.`status` = :prl_status_000  GROUP BY `ivl`.`customer_id`, `apl`.`domain_id`) AS ap', $stmt);
+                self::assertEquals('(SELECT `ivl`.`customer_id`, `apl`.`domain_id`, (SUM(COALESCE(apl.ac_amount, 0))) AS inv_paid FROM `si_payment` `apl` WHERE `prl`.`status` = :prl_status_000  GROUP BY `ivl`.`customer_id`, `apl`.`domain_id`) AS ap', $stmt);
             } catch (PdoDbException $pde) {
-                static::assertTrue(false, "testOrderByClass() Unexpected error thrown for addSimpleItem. Error: {$pde->getMessage()}");
+                self::assertTrue(false, "testOrderByClass() Unexpected error thrown for addSimpleItem. Error: {$pde->getMessage()}");
             }
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "testSelectClass() Unexpected error thrown for empty object instantiation. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "testSelectClass() Unexpected error thrown for empty object instantiation. Error: {$pde->getMessage()}");
         }
 
     }

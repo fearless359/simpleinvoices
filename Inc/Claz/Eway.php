@@ -5,7 +5,6 @@ namespace Inc\Claz;
 use Encryption;
 use EwayLib;
 use Exception;
-use Zend_Log;
 
 /**
  * Class Eway
@@ -73,11 +72,11 @@ class Eway
 
         //Eway only accepts amount in cents - so times 100
         $value = $this->invoice['total'] * 100;
-        $ewayInvoiceTotal = Util::htmlsafe(trim($value));
-        Log::out("eway total: " . $ewayInvoiceTotal, Zend_Log::INFO);
+        $ewayInvoiceTotal = Util::htmlSafe(trim($value));
+        Log::out("eway total: " . $ewayInvoiceTotal, Log::INFO);
 
         try {
-            $key = $config->encryption->default->key;
+            $key = $config['encryptionDefaultKey'];
             $enc = new Encryption();
             $creditCardNumber = $enc->decrypt($key, $this->customer['credit_card_number']);
         } catch (Exception $exp) {
@@ -110,20 +109,20 @@ class Eway
         $this->message = $ewayResponseFields;
         $message = "";
         if ($ewayResponseFields['EWAYTRXNSTATUS'] == "False") {
-            Log::out("Transaction Error: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Zend_Log::INFO);
+            Log::out("Transaction Error: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Log::INFO);
             foreach ($ewayResponseFields as $key => $value) {
                 $message .= "\n<br>\$ewayResponseFields[\"$key\"] = $value";
             }
-            Log::out("Eway message: " . $message . "<br>\n", Zend_Log::INFO);
+            Log::out("Eway message: " . $message . "<br>\n", Log::INFO);
             return 'false';
         }
 
         if ($ewayResponseFields["EWAYTRXNSTATUS"] == "True") {
-            Log::out("Transaction Success: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Zend_Log::INFO);
+            Log::out("Transaction Success: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Log::INFO);
             foreach ($ewayResponseFields as $key => $value) {
                 $message .= "\n<br>\$ewayResponseFields[\"$key\"] = $value";
             }
-            Log::out("Eway message: " . $message . "<br>\n", Zend_Log::INFO);
+            Log::out("Eway message: " . $message . "<br>\n", Log::INFO);
 
             // @formatter:off
             Payment::insert([

@@ -18,6 +18,6 @@ function smarty_function_markup_percentage($params, &$smarty)
         }
     }
     $subtotal = round(($subtotal_tax / $subtotal_total) * 100, 0);
-    //$subtotal = SiLocal::number($subtotal);
-    return Util::htmlsafe($subtotal);
+    //$subtotal = Util::number($subtotal);
+    return Util::htmlSafe($subtotal);
 }

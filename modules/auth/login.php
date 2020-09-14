@@ -30,16 +30,9 @@ if (!defined("STD_LOGIN_FAILED_MSG")) {
     define("STD_LOGIN_FAILED_MSG", "Invalid User ID and/or Password!");
 }
 
-try {
-    Zend_Session::start();
-} catch (Zend_Session_Exception $zse) {
-    error_log("modules.auth.login.php: Error: " . $zse->getMessage());
-    die("modules.auth.login.php - Unable to start a session.");
-}
-
 $errorMessage = '';
 Util::loginLogo($smarty);
-Log::out("login.php _POST - " . print_r($_POST, true), Zend_Log::DEBUG);
+Log::out("login.php - _POST - " . print_r($_POST, true));
 if (empty($_POST['user']) || empty($_POST['pass'])) {
     if (isset($_POST['action']) && $_POST['action'] == 'login') {
         $errorMessage = STD_LOGIN_FAILED_MSG;
@@ -48,20 +41,16 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
     $username = $_POST['user'];
     $password = $_POST['pass'];
     if (User::verifyPassword($username, $password)) {
-        try {
-            Zend_Session::start();
+        session_name('SiAuth');
+        session_start();
 
-            $timeout = SystemDefaults::getSessionTimeout();
-            if ($timeout <= 0) {
-                $timeout = 60;
-            }
-
-            $authNamespace = new Zend_Session_Namespace('Zend_Auth');
-            $authNamespace->setExpirationSeconds($timeout * 60);
-        } catch (Zend_Session_Exception $zse) {
-            error_log("modules.auth.login.php: Error(2): " . $zse->getMessage());
-            die("modules.auth.login.php(2) - Unable to start a session.");
+        Log::out("login.php - Valid username and password");
+        $timeout = SystemDefaults::getSessionTimeout();
+        if ($timeout <= 0) {
+            $timeout = 60;
         }
+
+        Util::sessionTimeout($timeout);
 
         try {
             $jn = new Join('LEFT', 'user_role', 'r');
@@ -91,20 +80,30 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
             die("modules.auth.login.php(3) - Database access error");
         }
 
-        foreach ($rows[0] as $key => $value) {
-            $authNamespace->$key = $value;
+        if (empty($rows)) {
+            $_SESSION['id'] = null;
+            $_SESSION['role_name'] = null;
+            $_SESSION['user_id'] = null;
+        } else {
+            $row = $rows[0];
+            $_SESSION['id'] = $row['id'];
+            $_SESSION['role_name'] = $row['role_name'];
+            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['domain_id'] = $row['domain_id'];
+            $_SESSION['email'] = $row['email'];
         }
 
-        if (isset($authNamespace->role_name) &&
-            $authNamespace->role_name == 'customer' &&
-            $authNamespace->user_id > 0) {
-            header('Location: index.php?module=customers&view=details&action=view&id=' . $authNamespace->user_id);
-        } else {
-            header('Location: .');
+        if (isset($_SESSION['role_name'])) {
+            if ($_SESSION['role_name'] == 'customer' && $_SESSION['user_id'] > 0) {
+                header('Location: index.php?module=customers&view=details&action=view&id=' . $_SESSION['user_id']);
+                exit();
+            }
+            header('Location: index.php?module=invoices&view=manage');
+            exit();
         }
-    } else {
-        $errorMessage = STD_LOGIN_FAILED_MSG;
     }
+    $errorMessage = STD_LOGIN_FAILED_MSG;
 }
 // No translations for login since user's lang not known as yet
 $smarty->assign("errorMessage", $errorMessage);

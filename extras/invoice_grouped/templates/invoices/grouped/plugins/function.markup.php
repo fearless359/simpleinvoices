@@ -1,6 +1,6 @@
 <?php
 
-use Inc\Claz\SiLocal;
+use Inc\Claz\Util;
 
 /**
  * @param $params
@@ -15,7 +15,7 @@ function smarty_function_markup($params, &$smarty)
 			$subtotal = $value['tax_amount'] + $subtotal;
 		}
 	}
-	$subtotal = SiLocal::number($subtotal);
+	$subtotal = Util::number($subtotal);
 	return $subtotal;	
 }
 

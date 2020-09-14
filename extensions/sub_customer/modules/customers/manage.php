@@ -33,28 +33,28 @@ SubCustomers::addParentCustomerId();
  * TODO: Need better way to determine if still in initialization phase.
  */
 $customers = Customer::manageTableInfo();
-$customer_count = count($customers);
-$biller_count = Biller::count();
-$product_count  = Product::count();
+$customerCount = count($customers);
+$billerCount = Biller::count();
+$productCount  = Product::count();
 
-$smarty->assign('number_of_billers'  , $biller_count);
-$smarty->assign('number_of_customers', $customer_count);
-$smarty->assign('number_of_products' , $product_count);
+$smarty->assign('number_of_billers'  , $billerCount);
+$smarty->assign('number_of_customers', $customerCount);
+$smarty->assign('number_of_products' , $productCount);
 
-$first_run_wizard = false;
-if ($biller_count == 0 || $customer_count == 0 || $product_count == 0) {
-    $first_run_wizard =true;
+$firstRunWizard = false;
+if ($billerCount == 0 || $customerCount == 0 || $productCount == 0) {
+    $firstRunWizard =true;
 }
-$smarty->assign("first_run_wizard",$first_run_wizard);
+$smarty->assign("first_run_wizard",$firstRunWizard);
 /**********************************************************************/
 
 // No need to do all this if first_run_wizard specified
-if (!$first_run_wizard) {
-    $data = json_encode(array('data' => $customers));
+if (!$firstRunWizard) {
+    $data = json_encode(['data' => $customers]);
     if (file_put_contents("public/data.json", $data) === false) {
         die("Unable to create public/data.json file");
     }
-    $smarty->assign('number_of_rows', $customer_count);
+    $smarty->assign('number_of_rows', $customerCount);
 }
 
 $smarty->assign('pageActive', 'customer');

@@ -147,9 +147,11 @@ class Invoice
      */
     public static function manageTableInfo(): array
     {
-        global $authSession, $config, $LANG;
+        global $config, $LANG;
 
-        $readOnly = $authSession->role_name == 'customer';
+        session_name('SiAuth');
+        session_start();
+        $readOnly = $_SESSION['role_name'] == 'customer';
         $rows = self::getInvoices();
         $tableRows = [];
         foreach ($rows as $row) {
@@ -158,48 +160,48 @@ class Invoice
                 $invEdit = '';
                 $invPymt = '';
             } else {
-                $invEdit = "<a class=\"index_table\" title=\"{$LANG['edit_view_tooltip']} {$row['index_id']}\" " .
-                              "href=\"index.php?module=invoices&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                               "<img src=\"images/edit.png\" class=\"action\" alt=\"edit\">" .
+                $invEdit = "<a class='index_table' title='{$LANG['edit_view_tooltip']} {$row['index_id']}' " .
+                              "href='index.php?module=invoices&amp;view=edit&amp;id={$row['id']}'>" .
+                               "<img src='images/edit.png' class='action' alt='edit'>" .
                            "</a>";
 
                 $invPymt = "<!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->";
                 if ($row['status'] == ENABLED && $row['owing'] > 0) {
                     $invPymt .= "<!-- Real Invoice Has Owing - Process payment -->" .
-                                 "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
-                                    "href=\"index.php?module=payments&amp;view=process&amp;id={$row['id']}&amp;op=pay_selected_invoice\">" .
-                                     "<img src=\"images/money_dollar.png\" class=\"action\" alt=\"payment\"/>" .
+                                 "<a title='{$LANG['process_payment']} {$row['index_id']}' class='index_table' " .
+                                    "href='index.php?module=payments&amp;view=process&amp;id={$row['id']}&amp;op=pay_selected_invoice'>" .
+                                     "<img src='images/money_dollar.png' class='action' alt='payment'/>" .
                                  "</a>";
                 } elseif ($row['status'] == ENABLED) {
                     $invPymt .= "<!-- Real Invoice Payment Details if not Owing (get different color payment icon) -->" .
-                                 "<a title=\"{$LANG['process_payment']} {$row['index_id']}\" class=\"index_table\" " .
-                                    "href=\"index.php?module=payments&amp;view=details&amp;ac_inv_id={$row['id']}&amp;action=view\">" .
-                                     "<img src=\"images/money_dollar.png\" class=\"action\" alt=\"payment\" />" .
+                                 "<a title='{$LANG['process_payment']} {$row['index_id']}' class='index_table' " .
+                                    "href='index.php?module=payments&amp;view=view&amp;ac_inv_id={$row['id']}'>" .
+                                     "<img src='images/money_dollar.png' class='action' alt='payment' />" .
                                  "</a>";
                 } else {
-                    $invPymt = "<!-- Draft Invoice Just Image to occupy space till blank or greyed out icon becomes available -->" .
-                                "<img src=\"images/money_dollar.png\" class=\"action\" alt=\"payment\" />";
+                    $invPymt .= "<!-- Draft Invoice Just Image to occupy space till blank or greyed out icon becomes available -->" .
+                                "<img src='images/money_dollar.png' class='action' alt='payment' />";
                 }
             }
 
-            $action = "<a class='index_table' title=\"{$LANG['quick_view_tooltip']} {$row['index_id']}\" " .
-                         "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}\">" .
-                          "<img src=\"images/view.png\" class=\"action\" alt=\"view\" />" .
+            $action = "<a class='index_table' title='{$LANG['quick_view_tooltip']} {$row['index_id']}' " .
+                         "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}'>" .
+                          "<img src='images/view.png' class='action' alt='view' />" .
                       "</a>" .
                       $invEdit .
-                      "<a class=\"index_table\" title=\"{$LANG['print_preview_tooltip']} {$row['index_id']}\" " .
-                         "href=\"index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print\">" .
-                          "<img src=\"images/printer.png\" class=\"action\" alt=\"print\" />" .
+                      "<a class='index_table' title='{$LANG['print_preview_tooltip']} {$row['index_id']}' " .
+                         "href='index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print'>" .
+                          "<img src='images/printer.png' class='action' alt='print' />" .
                       "</a>" .
-                      "<a class=\"invoice_export_dialog\" id=\"btnShowSimple\" title=\"{$LANG['export_tooltip']} {$row['index_id']}\" " .
-                         "href=\"#\" data-row-num=\"{$row['id']}\" data-spreadsheet=\"{$config->export->spreadsheet}\" " .
-                         "data-wordprocessor=\"{$config->export->wordprocessor}\">" .
-                          "<img src=\"images/page_white_acrobat.png\" class=\"action\" alt=\"spreadsheet\"/>" .
+                      "<a class='invoice_export_dialog' id='btnShowSimple' title='{$LANG['export_tooltip']} {$row['index_id']}' " .
+                         "href='#' data-row-num='{$row['id']}' data-spreadsheet='{$config['exportSpreadsheet']}' " .
+                         "data-wordprocessor='{$config['exportWordProcessor']}'>" .
+                          "<img src='images/page_white_acrobat.png' class='action' alt='spreadsheet'/>" .
                       "</a>" .
                       $invPymt .
-                      "<a title=\"{$LANG['email']} {$row['index_id']}\" class=\"index_table\" " .
-                         "href=\"index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$row['id']}\">" .
-                          "<img src=\"images/mail-message-new.png\" class=\"action\" alt=\"email\" />" .
+                      "<a title='{$LANG['email']} {$row['index_id']}' class='index_table' " .
+                         "href='index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$row['id']}'>" .
+                          "<img src='images/mail-message-new.png' class='action' alt='email' />" .
                       "</a>";
 
             $pattern = '/^(.*)_(.*)$/';
@@ -231,18 +233,21 @@ class Invoice
      */
     private static function getInvoices(?int $id = null, string $sort = "", string $dir = ""): array
     {
-        global $authSession, $pdoDb;
+        global $pdoDb;
 
         try {
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('iv.id', $id, 'AND');
             }
 
+            session_name('SiAuth');
+            session_start();
+
             // If user role is customer or biller, then restrict invoices to those they have access to.
-            if ($authSession->role_name == 'customer') {
-                $pdoDb->addSimpleWhere("c.id", $authSession->user_id, "AND");
-            } elseif ($authSession->role_name == 'biller') {
-                $pdoDb->addSimpleWhere("b.id", $authSession->user_id, "AND");
+            if ($_SESSION['role_name'] == 'customer') {
+                $pdoDb->addSimpleWhere("c.id", $_SESSION['user_id'], "AND");
+            } elseif ($_SESSION['role_name'] == 'biller') {
+                $pdoDb->addSimpleWhere("b.id", $_SESSION['user_id'], "AND");
             }
 
             // If caller pass a null value, that mean there is no limit.
@@ -345,7 +350,7 @@ class Invoice
                 self::updateAgingValues($row, $ageInfo);
                 $row['tax_grouped']  = self::taxesGroupedForInvoice($row['id']);
                 $row['calc_date']    = date('Y-m-d', strtotime($row['date']));
-                $row['display_date'] = SiLocal::date($row['date']);
+                $row['display_date'] = Util::date($row['date']);
                 $invoices[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -577,7 +582,7 @@ class Invoice
 
         $lastActivityDate = $currDate->format('Y-m-d h:i:s');
 
-        $lclList['date'] = SiLocal::sqlDateWithTime($lclList['date']);
+        $lclList['date'] = Util::sqlDateWithTime($lclList['date']);
         $lclList['last_activity_date'] = $lastActivityDate;
         $lclList['owing'] = 1; // force update of aging info
         $lclList['aging_date'] = $lclList['last_activity_date'];
@@ -631,7 +636,7 @@ class Invoice
      * @param int $invoiceId <b>id</b>
      * @param int $quantity
      * @param int $productId
-     * @param mixed $taxIds
+     * @param array $taxIds
      * @param string $description
      * @param float $unitPrice
      * @param array|null $attribute
@@ -714,7 +719,7 @@ class Invoice
                 'biller_id' => $_POST['biller_id'],
                 'customer_id' => $_POST['customer_id'],
                 'preference_id' => $_POST['preference_id'],
-                'date' => SiLocal::sqlDateWithTime($_POST['date']),
+                'date' => Util::sqlDateWithTime($_POST['date']),
                 'last_activity_date' => $lastActivityDate,
                 'owing' => '1', // force update of aging information
                 'note' => empty($_POST['note']) ? "" : trim($_POST['note']),
@@ -959,11 +964,11 @@ class Invoice
 
     /**
      * Get the invoice record by the index_id and current domain_id.
-     * @param int $indexId
+     * @param int|string $indexId
      * @return array empty if no such record otherwise invoices record.
      * @throws PdoDbException
      */
-    public static function getInvoiceByIndexId(int $indexId): array
+    public static function getInvoiceByIndexId($indexId): array
     {
         global $pdoDb;
 
@@ -994,7 +999,7 @@ class Invoice
             $rows = self::getAll();
             foreach ($rows as $row) {
                 $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
-                $row['date'] = SiLocal::date($row['date']);
+                $row['date'] = Util::date($row['date']);
                 $row['total'] = self::getInvoiceTotal($row['id']);
                 $row['paid'] = Payment::calcInvoicePaid($row['id']);
 
@@ -1013,9 +1018,9 @@ class Invoice
 
                 if (strpos(strtolower($row['index_id']), strtolower($que)) !== false) {
                     // @formatter:off
-                    $total = Util::htmlsafe(number_format($row['total'],2));
-                    $paid  = Util::htmlsafe(number_format($row['paid'],2));
-                    $owing = Util::htmlsafe(number_format($row['owing'],2));
+                    $total = Util::htmlSafe(number_format($row['total'],2));
+                    $paid  = Util::htmlSafe(number_format($row['paid'],2));
+                    $owing = Util::htmlSafe(number_format($row['owing'],2));
                     echo "{$row['id']}|" .
                             "<table>" .
                                 "<tr>" .
@@ -1176,14 +1181,12 @@ class Invoice
     {
         global $pdoDb;
 
-        $total = 0;
         try {
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "total", "total"));
             $pdoDb->addSimpleWhere("invoice_id", $invoiceId); // domain_id not needed
+
             $rows = $pdoDb->request("SELECT", "invoice_items");
-            if (!empty($rows)) {
-                $total = $rows[0]['total'];
-            }
+            $total = empty($rows[0]['total']) ? 0 : $rows[0]['total'];
         } catch (PdoDbException $pde) {
             error_log("Invoice::getInvoiceTotal() - invoice_id[$invoiceId] - error: " . $pde->getMessage());
             throw $pde;
@@ -1340,7 +1343,7 @@ class Invoice
         global $config;
 
         try {
-            $timezone = $config->phpSettings->date->timezone;
+            $timezone = $config['phpSettingsDateTimezone'];
             $tz = new DateTimeZone($timezone);
             $dtm = new DateTime('now', $tz);
             $dtTime = $dtm->format("Y-m-d H:i:s");

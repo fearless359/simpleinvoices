@@ -3,7 +3,6 @@
 namespace Inc\Claz;
 
 use Exception;
-use Zend_Currency;
 
 /**
  * Class for customer's past due calculation
@@ -22,8 +21,6 @@ class CustomersPastDue
 
         $custInfo = [];
         try {
-            $currency = new Zend_Currency($language);
-
             $domainId = DomainId::get();
 
             // Get date for 30 days ago. Only invoices with a date prior to this date are included.
@@ -99,9 +96,9 @@ class CustomersPastDue
                     $paid = empty($payments[$id]) ? 0.00 : $payments[$id];
                     $owed = $billed - $paid;
                     if ($owed != 0) {
-                        $fmtdBilled = $currency->toCurrency(doubleval($billed));
-                        $fmtdPaid = $currency->toCurrency(doubleval($paid));
-                        $fmtdOwed = $currency->toCurrency(doubleval($owed));
+                        $fmtdBilled = Util::currency(doubleval($billed));
+                        $fmtdPaid = Util::currency(doubleval($paid));
+                        $fmtdOwed = Util::currency(doubleval($owed));
 
                         $invInfo[] = new InvInfo($id, $indexId, $fmtdBilled, $fmtdPaid, $fmtdOwed);
 
@@ -112,9 +109,9 @@ class CustomersPastDue
 
                 if (!empty($invInfo)) {
                     $totOwed = $totBilled - $totPaid;
-                    $fmtdBilled = $currency->toCurrency(doubleval($totBilled));
-                    $fmtdPaid = $currency->toCurrency(doubleval($totPaid));
-                    $fmtdOwed = $currency->toCurrency(doubleval($totOwed));
+                    $fmtdBilled = Util::currency(doubleval($totBilled));
+                    $fmtdPaid = Util::currency(doubleval($totPaid));
+                    $fmtdOwed = Util::currency(doubleval($totOwed));
 
                     $custInfo[$cid] = new CustInfo($name, $fmtdBilled, $fmtdPaid, $fmtdOwed, $invInfo);
                 }

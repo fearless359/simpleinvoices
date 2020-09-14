@@ -6,8 +6,6 @@ use Mpdf\Mpdf;
 use Mpdf\MpdfException;
 use Mpdf\Output\Destination;
 
-use Zend_Log;
-
 /**
  * @name Pdf.php
  * @author Richard Rowley
@@ -37,32 +35,32 @@ class Pdf
                 $pdfname .= '.pdf';
             }
 
-            Log::out("Pdf::generate() - pdfname[{$pdfname}] destination[{$destination}]", Zend_Log::DEBUG);
+            Log::out("Pdf::generate() - pdfname[{$pdfname}] destination[{$destination}]");
             $mpdf = new Mpdf([
                 'tempDir'           => 'tmp/pdf_tmp',
-                'format'            => $config->export->pdf->papersize,
-                'default_font_size' => $config->export->pdf->defaultfontsize,
-                'margin_left'       => $config->export->pdf->leftmargin,
-                'margin_right'      => $config->export->pdf->rightmargin,
-                'margin_top'        => $config->export->pdf->topmargin,
-                'margin_bottom'     => $config->export->pdf->bottommargin
+                'format'            => $config['exportPdfPaperSize'],
+                'default_font_size' => $config['exportPdfDefaultFontSize'],
+                'margin_left'       => $config['exportPdfLeftMargin'],
+                'margin_right'      => $config['exportPdfRightMargin'],
+                'margin_top'        => $config['exportPdfTopMargin'],
+                'margin_bottom'     => $config['exportPdfBottomMargin']
             ]);
 
-            Log::out("Pdf::generate() - Before WriteHTML", Zend_Log::DEBUG);
+            Log::out("Pdf::generate() - Before WriteHTML");
             $mpdf->WriteHTML($htmlToPdf);
 
-            Log::out("Pdf::generate() - Before Output", Zend_Log::DEBUG);
+            Log::out("Pdf::generate() - Before Output");
             $result = $mpdf->Output($pdfname, $destination);
 
             if ($destination == Destination::STRING_RETURN) {
-                Log::out("Pdf::generate() - returning Output result", Zend_Log::DEBUG);
+                Log::out("Pdf::generate() - returning Output result");
                 return $result;
             }
         } catch (MpdfException $mpdfException) {
             error_log('Pdf::generate(): exception - ' . $mpdfException->getMessage());
         }
 
-        Log::out("Pdf::generate() - returning null", Zend_Log::DEBUG);
+        Log::out("Pdf::generate() - returning null");
         return null;
     }
 

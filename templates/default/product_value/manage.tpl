@@ -9,7 +9,7 @@
  *	    GPL v3 or above
  *}
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=product_value&amp;view=add" class="">
+    <a href="index.php?module=product_value&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
         {$LANG.add_product_value}
     </a>
@@ -31,12 +31,12 @@
             <tr>
                 <td class="si_center">
                     <a class="index_table" title="{$product_value['vname']}"
-                       href="index.php?module=product_value&amp;view=details&amp;id={$product_value['id']}&amp;action=view">
-                        <img src="../../../images/view.png" alt="{$product_value['vname']}" height="16" border="-5px" />
+                       href="index.php?module=product_value&amp;view=view&amp;id={$product_value['id']}">
+                        <img src="../../../images/view.png" alt="{$product_value['vname']}" class="action" />
                     </a>
                     <a class="index_table" title="{$product_value['ename']}"
-                       href="index.php?module=product_value&amp;view=details&amp;id={$product_value['id']}&amp;action=edit">
-                        <img src="../../../images/edit.png" alt="{$product_value['ename']}" height="16" border="-5px"/>
+                       href="index.php?module=product_value&amp;view=edit&amp;id={$product_value['id']}">
+                        <img src="../../../images/edit.png" alt="{$product_value['ename']}" class="action"/>
                     </a>
                 </td>
                 <td>{$product_value['name']}</td>

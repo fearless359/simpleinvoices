@@ -22,57 +22,57 @@ class WhenTest extends TestCase
         try {
             $wh = new When('db_field', '=', 5, 'FIVE');
             $stmt = trim($wh->build());
-            static::assertEquals("WHEN db_field = 5 THEN 'FIVE'", $stmt, 'When "=" class test failed');
+            self::assertEquals("WHEN db_field = 5 THEN 'FIVE'", $stmt, 'When "=" class test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
         }
 
         try {
             $wh = new When('db_field', '!=', 5, 'IS NOT FIVE');
             $stmt = trim($wh->build());
-            static::assertEquals("WHEN db_field != 5 THEN 'IS NOT FIVE'", $stmt, 'When "!=" class test failed');
+            self::assertEquals("WHEN db_field != 5 THEN 'IS NOT FIVE'", $stmt, 'When "!=" class test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
         }
 
         try {
             $wh = new When('db_field', '<>', 5, 'NOT EQUAL FIVE');
             $stmt = trim($wh->build());
-            static::assertEquals("WHEN db_field <> 5 THEN 'NOT EQUAL FIVE'", $stmt, 'When "<>" class test failed');
+            self::assertEquals("WHEN db_field <> 5 THEN 'NOT EQUAL FIVE'", $stmt, 'When "<>" class test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
         }
 
         try {
             $wh = new When('db_field', '<', 5, 'LESS THAN FIVE');
             $stmt = trim($wh->build());
-            static::assertEquals("WHEN db_field < 5 THEN 'LESS THAN FIVE'", $stmt, 'When "<" class test failed');
+            self::assertEquals("WHEN db_field < 5 THEN 'LESS THAN FIVE'", $stmt, 'When "<" class test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
         }
 
         try {
             $wh = new When('db_field', '<=', 5, 'LESS THAN OR EQUAL TO FIVE');
             $stmt = trim($wh->build());
-            static::assertEquals("WHEN db_field <= 5 THEN 'LESS THAN OR EQUAL TO FIVE'", $stmt, 'When "<=" class test failed');
+            self::assertEquals("WHEN db_field <= 5 THEN 'LESS THAN OR EQUAL TO FIVE'", $stmt, 'When "<=" class test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
         }
 
         try {
             $wh = new When('db_field', '>', 5, 'GREATER THAN FIVE');
             $stmt = trim($wh->build());
-            static::assertEquals("WHEN db_field > 5 THEN 'GREATER THAN FIVE'", $stmt, 'When ">" class test failed');
+            self::assertEquals("WHEN db_field > 5 THEN 'GREATER THAN FIVE'", $stmt, 'When ">" class test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
         }
 
         try {
             $wh = new When('db_field', '>=', 5, 'GREATER THAN OR EQUAL TO FIVE');
             $stmt = trim($wh->build());
-            static::assertEquals("WHEN db_field >= 5 THEN 'GREATER THAN OR EQUAL TO FIVE'", $stmt, 'When ">=" class test failed');
+            self::assertEquals("WHEN db_field >= 5 THEN 'GREATER THAN OR EQUAL TO FIVE'", $stmt, 'When ">=" class test failed');
         } catch (PdoDbException $pde) {
-            static::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::assertTrue(false, "WhenTest::testWhenClass() - Unexpected error thrown. Error: {$pde->getMessage()}");
         }
 
         static::expectExceptionMessage("When - Invalid operator, ><, specified.");

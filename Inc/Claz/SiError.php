@@ -73,13 +73,13 @@ class SiError
                         "<br />--> <b>$info1</b>" .
                         "<br />" .
                         "<br />If this is an &quot;Access denied&quot; error please enter the correct database " .
-                              "connection details config/custom.config.php." .
+                              "connection details config/custom.config.ini." .
                         "<br />" .
                         "<br /><b>Note:</b> If you are installing SimpleInvoices please follow the below steps:" .
                         "<ol>" .
                             "<li>Create a blank MySQL database (cPanel or myPHPAdmin). Defined a DB Admin user " .
                                 "name with full access to this database. Assign a password to this DB Admin user.</li>" .
-                            "<li>Enter the correct database connection details in the config/custom.config.php file.</li>" .
+                            "<li>Enter the correct database connection details in the config/custom.config.ini file.</li>" .
                             "<li>Refresh this page</li>" .
                         "</ol>" .
                         "<br />===========================================";
@@ -121,11 +121,11 @@ class SiError
                                             "<li>Enter the database connection details in the <strong>" . Config::CUSTOM_CONFIG_FILE . "</strong> file." .
                                                 "The fields that need to be set are:" .
                                                 "<ul style='font-family:\"Lucida Console\", \"Courier New\"'>" .
-                                                    "<li>database.params.host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;localhost</li>" .
-                                                    "<li>database.params.username&nbsp;=&nbsp;root</li>" .
-                                                    "<li>database.params.password&nbsp;=&nbsp;&#39;mypassword&#39;</li>" .
-                                                    "<li>database.params.dbname&nbsp;&nbsp;&nbsp;=&nbsp;simple_invoices</li>" .
-                                                    "<li>database.params.port&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;3306</li>" .
+                                                    "<li>databaseHost&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;localhost</li>" .
+                                                    "<li>databaseUsername&nbsp;=&nbsp;root</li>" .
+                                                    "<li>databasePassword&nbsp;=&nbsp;&#39;mypassword&#39;</li>" .
+                                                    "<li>databaseDbname&nbsp;&nbsp;&nbsp;=&nbsp;simple_invoices</li>" .
+                                                    "<li>databasePort&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;3306</li>" .
                                                 "</ul>" .
                                             "</li>" .
                                             "<li>When you have completed these steps, simply refresh this page and follow " .
@@ -174,10 +174,10 @@ class SiError
                         "<br />===========================================" .
                         "<br />" .
                         "<br />Your SimpleInvoices installation can't use the" .
-                        "<br />database settings 'database.utf8'." .
+                        "<br />database settings 'databaseUtf8'." .
                         "<br />" .
-                        "<br />To fix this please edit config/config.php and" .
-                        "<br />set 'database.utf8' to 'false'" .
+                        "<br />To fix this please edit config/config.ini and" .
+                        "<br />set 'databaseUtf8' to 'false'" .
                         "<br />" .
                         "<br />===========================================" .
                         "<br />";
@@ -190,8 +190,8 @@ class SiError
                         "<br />" .
                         "<br />Your SimpleInvoices installation can't use database types other than 'mysql'." .
                         "<br />" .
-                        "<br />To fix this please edit the config/custom.config.php file and set the " .
-                              "database.adapter to 'pdo_mysql' and database.utf8 to 'true'." .
+                        "<br />To fix this please edit the config/custom.config.ini file and set the " .
+                              "databaseAdapter to 'pdo_mysql' and databaseUtf8 to 'true'." .
                         "<br />" .
                         "<br />===========================================" .
                         "<br />";

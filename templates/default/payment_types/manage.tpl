@@ -15,7 +15,7 @@
  *      https://simpleinvoices.group
  *}
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=payment_types&amp;view=add" class="">
+    <a href="index.php?module=payment_types&amp;view=create">
         <img src="../../../images/add.png" alt=""/>
         {$LANG.add_new_payment_type}
     </a>
@@ -36,12 +36,12 @@
             <tr>
                 <td class="si_center">
                     <a class="index_table" title="{$payment_type['vname']}"
-                       href="index.php?module=payment_types&amp;view=details&amp;id={$payment_type['pt_id']}&amp;action=view">
-                        <img src="../../../images/view.png" alt="view" height="16" border="-5px"/>
+                       href="index.php?module=payment_types&amp;view=view&amp;id={$payment_type['pt_id']}">
+                        <img src="../../../images/view.png" alt="view" class="action"/>
                     </a>
                     <a class="index_table" title="{$payment_type['ename']}"
-                       href="index.php?module=payment_types&amp;view=details&amp;id={$payment_type['pt_id']}&amp;action=edit">
-                        <img src="../../../images/edit.png" alt="edit" height="16" border="-5px"/>
+                       href="index.php?module=payment_types&amp;view=edit&amp;id={$payment_type['pt_id']}">
+                        <img src="../../../images/edit.png" alt="edit" class="action"/>
                     </a>
                 </td>
                 <td>{$payment_type['pt_description']}</td>

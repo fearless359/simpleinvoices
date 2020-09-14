@@ -124,7 +124,7 @@ $LANG['customer_id'] = "Kunden-Nr";//1
 $LANG['customer_name'] = "Kundenname";//1
 $LANG['customer_short'] = "Kd.";//1
 $LANG['customers'] = "Kunden";//1
-$LANG['customise_settings'] = "Einstellungen anpassen";//1
+$LANG['customizeSettings'] = "Einstellungen anpassen";//1
 $LANG['dashboard'] = "Dashboard";//1
 $LANG['database_backup'] = "Datenbank Sicherung";//1
 $LANG['database_log'] = "Datenbank Log";//1
@@ -229,7 +229,7 @@ $LANG['help_email_cc'] = "Dieses Feld ist nicht zwingend. Sie können nicht mehr
 $LANG['help_email_from'] = "Dieses Feld ist zwingend. Das Feld erhält standardmäßig seinen Wert über Einstellungen in der Gläubiger Emailadresse. Sie können die Adresse ändern aber nicht mehr als eine -1- Emailadresse im Feld eintragen.<br /><br />Hinweis: Es ist nicht möglich mehrere Emailadressen durch , oder ; zu trennen!";//1
 $LANG['help_email_to'] = "Dieses Feld ist zwingend. Das Feld erhält standardmäßig seinen Wert über Einstellungen in der Kunden Emailadresse. Sie können die Adresse bei Bedarf ändern.<br /><br />Hinweis: Sie können mehrere Emailadressen verwenden wenn Sie diese per , oder ; trennen.";//1
 $LANG['help_insert_biller_text'] = "To select no logo please select '_default_blank_logo.png' from the list.<br /><br />To add additional logos into SimpleInvoices, copy the logo file into the logo directory in the SimpleInvoices folder.";//1
-$LANG['help_inv_pref_currency_sign'] = "Dies ist das Währungssymbol das auf dem Rechnungsbeleg erscheint.<br /><br /><b>Hinweis:</b>Euro, Pfund etc. ... bitte verwenden Sie den HTML Code für diese Währungszeichen. Bitte sehen Sie auf der folgenden Liste nach dem entsprechenden Code: <a href='http://www.ascii.cl/htmlcodes.htm'>http://www.ascii.cl/htmlcodes.htm</a>.<br /><br />Der HTML Code wird benötigt damit die PDF Erstellung mit nicht $ Dollarzeichen funktioniert.<br /><br /> Beispiel:  &#38;#163; ist der HTML Code für  Pound,<br /> &#38;#8364; für Euro etc..";//1
+$LANG['help_inv_pref_currency_sign'] = "Dies ist das Währungssymbol das auf dem Rechnungsbeleg erscheint.<br /><br /><b>Hinweis:</b>Euro, Pfund etc. ... bitte verwenden Sie den HTML Code für diese Währungszeichen. Bitte sehen Sie auf der folgenden Liste nach dem entsprechenden Code: <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.<br /><br />Der HTML Code wird benötigt damit die PDF Erstellung mit nicht $ Dollarzeichen funktioniert.<br /><br /> Beispiel:  &#38;#163; ist der HTML Code für  Pound,<br /> &#38;#8364; für Euro etc..";//1
 $LANG['help_inv_pref_description'] = "Präferenzbezeichnung - diese wird nicht auf der Rechnung verwendet sondern dient lediglich zur Auswahl bei der Rechnungserstellung. Dieser Name erscheint später in der Auswahlliste.";//1
 $LANG['help_inv_pref_invoice_detail_heading'] = "Dies wird als Überschrift des Fußbereichs des Belegs erscheinen.";//1
 $LANG['help_inv_pref_invoice_detail_line'] = "Dies ist der Text der in den Fußnoten erscheint. Gebräuchlich um die Zahlungsbedingungen etc. mitzuteilen";//1
@@ -526,7 +526,7 @@ $LANG['setup_customisation'] = "Wenn sie die Präferenzen (z. B. Sprache, Standa
 $LANG['shortcut'] = "Schnellzugriffsmenü";//1
 $LANG['show_details'] = "Details anzeigen";//1
 $LANG['show_only_unpaid_invoices'] = "Nur unbezahlte Rechnungen anzeigen";//1
-$LANG['simple_invoices'] = "SimpleInvoices";//1
+$LANG['simpleInvoices'] = "SimpleInvoices";//1
 $LANG['start_date'] = "Startdatum  (YYYY-MM-DD)";//1
 $LANG['start_date_short'] = "Startdatum";//1
 $LANG['start_working'] = "Beginne Arbeit";//1

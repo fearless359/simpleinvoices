@@ -17,6 +17,7 @@ class DbInfo
     private string $prefix;
     private string $sectionName;
     private string $username;
+    private string $utf8;
 
     /**
      * Class constructor
@@ -25,7 +26,7 @@ class DbInfo
      * @param string $sectionName Name of secured information file section
      *        with database information to be used.
      * @param string (Optional) $prefix Value that is at the first part of the field separated from the
-     *        rest of the parameter name by a period. Ex: <i>database.adapter</i> is the <i>adapter</i>
+     *        rest of the parameter name by a period. Ex: <i>databaseAdapter</i> is the <i>adapter</i>
      *        field with a prefix of <i>database</i>.
      * @throws PdoDbException
      */
@@ -37,6 +38,7 @@ class DbInfo
         $this->password = "";
         $this->port = "3306";
         $this->username = "";
+        $this->utf8 = "";
         $this->loadSectionInfo($filepath, $sectionName, $prefix);
     }
 
@@ -46,7 +48,7 @@ class DbInfo
      * @param string $sectionName Name of section to load database parameters from. The section
      *        is in the form, <b>[sectionName]</b>.
      * @param string $prefix Value that is at the first part of the field separated from the
-     *        rest of the parameter name by a period. Ex: <i>database.adapter</i> is the <i>adapter</i>
+     *        rest of the parameter name by a period. Ex: <i>databaseAdapter</i> is the <i>adapter</i>
      *        field with a prefix of <i>database</i>.
      * @throws PdoDbException If unable to open the file and file the section name and data to decrypt.
      */
@@ -54,7 +56,7 @@ class DbInfo
     {
         $this->sectionName = $sectionName;
         $this->prefix = $prefix;
-        if (($secureInfo = file($filepath, FILE_USE_INCLUDE_PATH)) === false) {
+        if (($secureInfo = file($filepath)) === false) {
             throw new PdoDbException("DbInfo loadSectionInfo(): Unable to open the secure information file, $filepath");
         }
 
@@ -93,18 +95,22 @@ class DbInfo
             if (strstr($line, "=") !== false) {
                 $parts = explode("=", $line);
                 if (count($parts) == 2) {
-                    $pieces = self::unJoin($line, $prefix);
-                    if (preg_match('/^(adapter|dbname|host|password|port|username)$/', $pieces[0])) {
-                        if (strlen($pieces[1]) >= 60) {
-                            throw new PdoDbException("DbInfo::loadSectionInfo - Attempt to use deleted MyCrypt class");
-                        }
-                        $value = preg_replace('/\'/', '', $pieces[1]);
-                        if (!is_string($value)) {
-                            throw new PdoDbException("DbInfo::loadSectionInfo() - Non-string type found in value");
-                        }
+                    $pos = strpos($parts[0], $prefix);
+                    if ($pos !== false && $pos == 0) {
+//                    $pieces = self::unJoin($line, $prefix);
+//                    if (preg_match('/^(adapter|dbname|host|password|port|username)$/', $pieces[0])) {
+//                        if (strlen($pieces[1]) >= 60) {
+//                            throw new PdoDbException("DbInfo::loadSectionInfo - Attempt to use deleted MyCrypt class");
+//                        }
+//                        $value = preg_replace('/\'/', '', $pieces[1]);
+//                        if (!is_string($value)) {
+//                            throw new PdoDbException("DbInfo::loadSectionInfo() - Non-string type found in value");
+//                        }
 
-                        switch ($pieces[0]) {
-                            case 'adapter':
+                        $param = trim($parts[0]);
+                        $value = trim($parts[1]);
+                        switch ($param) {
+                            case 'databaseAdapter':
                                 if (preg_match('/^pdo_/', $value) == 1) {
                                     $this->adapter = substr($value, 4);
                                 } else {
@@ -112,28 +118,32 @@ class DbInfo
                                 }
                                 break;
 
-                            case 'dbname':
+                            case 'databaseDbname':
                                 $this->dbname = $value;
                                 break;
 
-                            case 'host':
+                            case 'databaseHost':
                                 $this->host = $value;
                                 break;
 
-                            case 'password':
+                            case 'databasePassword':
                                 $this->password = $value;
                                 break;
 
-                            case 'port':
+                            case 'databasePort':
                                 $this->port = $value;
                                 break;
 
-                            case 'username':
+                            case 'databaseUsername':
                                 $this->username = $value;
                                 break;
 
+                            case 'databaseUtf8':
+                                $this->utf8 = $value;
+                                break;
+
                             default:
-                                throw new PdoDbException("DbInfo loadSectionInfo(): Invalid key value[{$pieces[0]}");
+                                throw new PdoDbException("DbInfo loadSectionInfo(): Invalid key value[{$param}]");
                         }
                     }
                 }
@@ -150,28 +160,28 @@ class DbInfo
      * Un-join line parts separated by an equal sign.
      * @param string $line Line to be broken apart.
      * @param string $prefix Value that is at the first part of the field separated from the
-     *        rest of the parameter name by a period. Ex: <i>database.adapter</i> is the <i>adapter</i>
+     *        rest of the parameter name by a period. Ex: <i>databaseAdapter</i> is the <i>adapter</i>
      *        field with a prefix of <i>database</i>.
      * @return array $pieces The two parts of the line previously joined by the equal sign.
      */
-    private static function unJoin(string $line, string $prefix): array
-    {
-        $line = preg_replace('/^(.*);.*$/', '$1', $line);
-        $pieces = explode("=", $line, 2);
-        if (count($pieces) != 2) {
-            return ["", ""];
-        }
-
-        $parts = explode(".", $pieces[0]);
-        $ndx = count($parts) - 1;
-        if (!empty($prefix) && ($ndx < 1 || trim($parts[0] != $prefix))) {
-            return ["", ""];
-        }
-
-        $pieces[0] = trim($parts[$ndx]);
-        $pieces[1] = trim($pieces[1]);
-        return $pieces;
-    }
+//    private static function unJoin(string $line, string $prefix): array
+//    {
+//        $line = preg_replace('/^(.*);.*$/', '$1', $line);
+//        $pieces = explode("=", $line, 2);
+//        if (count($pieces) != 2) {
+//            return ["", ""];
+//        }
+//
+//        $parts = explode(".", $pieces[0]);
+//        $ndx = count($parts) - 1;
+//        if (!empty($prefix) && ($ndx < 1 || trim($parts[0] != $prefix))) {
+//            return ["", ""];
+//        }
+//
+//        $pieces[0] = trim($parts[$ndx]);
+//        $pieces[1] = trim($pieces[1]);
+//        return $pieces;
+//    }
 
     /**
      * getter for class property.

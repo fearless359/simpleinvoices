@@ -37,9 +37,9 @@
 
 {foreach from=$patches item=patch} 
 	<tr>
-		<td class='index_table'>{$patch.sql_patch_ref|htmlsafe}</td>
-		<td class='index_table'>{$patch.sql_patch|htmlsafe|nl2br}</td>
-		<td class='index_table'>{$patch.sql_release|htmlsafe}</td>
+		<td class='index_table'>{$patch.sql_patch_ref|htmlSafe}</td>
+		<td class='index_table'>{$patch.sql_patch|htmlSafe|nl2br}</td>
+		<td class='index_table'>{$patch.sql_release|htmlSafe}</td>
 	</tr>
 
 {/foreach}

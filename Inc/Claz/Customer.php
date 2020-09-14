@@ -65,9 +65,9 @@ class Customer
     {
         global $config, $LANG, $pdoDb;
 
-        $viewcust = $LANG['view'] . " " . $LANG['customer'];
-        $editcust = $LANG['edit'] . " " . $LANG['customer'];
-        $defaultinv = $LANG['new_uc'] . " " . $LANG['default_invoice'];
+        $viewCust = $LANG['view'] . " " . $LANG['customer'];
+        $editCust = $LANG['edit'] . " " . $LANG['customer'];
+        $defaultInv = $LANG['new_uc'] . " " . $LANG['default_invoice'];
 
         try {
             $pdoDb->setOrderBy([['enabled', 'D'], ['name', 'A']]);
@@ -81,29 +81,29 @@ class Customer
         foreach ($rows as $row) {
             $enabled = $row['enabled'] == ENABLED;
             // @formatter:off
-            $action = "<a class='index_table' title=\"{$viewcust} {$row['name']}\" " .
-                         "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=view\">" .
-                          "<img src=\"images/view.png\" class=\"action\" alt=\"view\" />" .
+            $action = "<a class='index_table' title='{$viewCust} {$row['name']}' " .
+                         "href='index.php?module=customers&amp;view=view&amp;id={$row['id']}'>" .
+                          "<img src='images/view.png' class='action' alt='{$viewCust}' />" .
                       "</a>" .
-                      "<a class=\"index_table\" title=\"{$editcust} {$row['name']}\" " .
-                         "href=\"index.php?module=customers&amp;view=details&amp;id={$row['id']}&amp;action=edit\">" .
-                          "<img src=\"images/edit.png\" class=\"action\" alt=\"edit\" />" .
+                      "<a class='index_table' title='{$editCust} {$row['name']}' " .
+                         "href='index.php?module=customers&amp;view=edit&amp;id={$row['id']}'>" .
+                          "<img src='images/edit.png' class='action' alt='{$editCust}' />" .
                       "</a>";
             if ($enabled) {
-                $action .= "<a class=\"index_table\" title=\"{$defaultinv}\" " .
-                              "href=\"index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view\">" .
-                               "<img src=\"images/add.png\" class=\"action\" alt=\"add\" />" .
+                $action .= "<a class='index_table' title='{$defaultInv}' " .
+                              "href='index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view'>" .
+                               "<img src='images/add.png' class='action' alt='add' />" .
                            "</a>";
             }
 
-            $quickView = "<a class=\"index_table\" title=\"quick view\" " .
-                             "href=\"index.php?module=invoices&amp;view=quick_view&amp;id={$row['last_inv_id']}\">" .
+            $quickView = "<a class='index_table' title='quick view' " .
+                             "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['last_inv_id']}'>" .
                               "{$row['last_index_id']}" .
                          "</a>";
 
             $image = $enabled ? "images/tick.png" : "images/cross.png";
-            $enabledCol = "<span style=\"display: none\">{$row['enabled_text']}</span>" .
-                          "<img src=\"{$image}\" alt=\"{$row['enabled_text']}\" title=\"{$row['enabled_text']}\" />";
+            $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                          "<img src='{$image}' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
             // @formatter::on
 
             $pattern = '/^(.*)_(.*)$/';
@@ -117,8 +117,8 @@ class Customer
                 'paid' => $row['paid'],
                 'owing' => $row['owing'],
                 'enabled' => $enabledCol,
-                'currency_code' => $config ->local->currency_code,
-                'locale' => preg_replace($pattern, $replPattern, $config->local->locale)
+                'currencyCode' => $config['localCurrencyCode'],
+                'locale' => preg_replace($pattern, $replPattern, $config['localLocale'])
             ];
         }
 
@@ -406,7 +406,7 @@ class Customer
         }
 
         // decrypt the value
-        $key = $config->encryption->default->key;
+        $key = $config['encryptionDefaultKey'];
         $enc = new Encryption();
         $decryptedValue = $enc->decrypt($key, $value);
 

@@ -7,7 +7,7 @@ namespace Inc\Claz;
  */
 class User
 {
-    private static string $hashAlgorithm = "sha256";
+    private static string $hashAlgorithm = PASSWORD_DEFAULT;
     public static string $usernamePattern = "(?=^.{4,}$)([A-Za-z0-9][A-Za-z0-9@_\-\.#\$]+)$";
 
     /**
@@ -179,7 +179,7 @@ class User
 
     private static function hashPassword(string $password): string
     {
-        return hash("sha256", $password);
+        return password_hash($password, PASSWORD_DEFAULT);
     }
 
     /**
@@ -205,21 +205,26 @@ class User
         }
 
         $userPassword = $user['password'];
-        $hash = hash(self::$hashAlgorithm, $password);
-        if ($userPassword == $hash) {
+        if (password_verify($password, $userPassword)) {
             return true;
         }
 
-        // Use for old password hashes.
-        $md5Password = MD5($password);
-        if ($userPassword == $md5Password) {
+        $hash = hash('sha256', $password);
+        $bOk = $hash === $userPassword;
+
+        if (!$bOk) {
+            $md5Password = MD5($password);
+            $bOk = $userPassword === $md5Password;
+        }
+
+        if ($bOk) {
             try {
+                $hash = password_hash($password, self::$hashAlgorithm);
                 // Old password match. Update user with new password.
                 $pdoDbAdmin->addSimpleWhere('username', $username);
                 $pdoDbAdmin->setFauxPost(['password' => $hash]);
 
-                $result = $pdoDbAdmin->request('UPDATE', 'user');
-                if ($result) {
+                if ($pdoDbAdmin->request('UPDATE', 'user')) {
                     return true;
                 }
             } catch (PdoDbException $pde) {

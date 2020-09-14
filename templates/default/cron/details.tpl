@@ -17,22 +17,22 @@
             <tr>
                 <th class="details_screen left">{$LANG.invoice_uc}: </th>
                 <td class="si_input">
-                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlsafe}">
-                        {$cron.index_name|htmlsafe}
+                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlSafe}">
+                        {$cron.index_id|htmlSafe}
                     </a>
                 </td>
             </tr>
             <tr>
                 <th class="details_screen left">{$LANG.start_date}: </th>
-                <td class="si_input">{$cron.start_date|htmlsafe}</td>
+                <td class="si_input">{$cron.start_date|htmlSafe}</td>
             </tr>
             <tr>
                 <th class="details_screen left">{$LANG.end_date}: </th>
-                <td class="si_input">{$cron.end_date|htmlsafe}</td>
+                <td class="si_input">{$cron.end_date|htmlSafe}</td>
             </tr>
             <tr>
                 <th class="details_screen left">{$LANG.recur_each}: </th>
-                <td class="si_input">{$cron.recurrence|htmlsafe} {$cron.recurrence_type|htmlsafe}</td>
+                <td class="si_input">{$cron.recurrence|htmlSafe} {$cron.recurrence_type|htmlSafe}</td>
             </tr>
             <tr>
                 <th class="details_screen left">{$LANG.email_biller_after_cron}: </th>
@@ -66,8 +66,8 @@
                     <select name="invoice_id" class="si_input validate[required]">
                         <option value=''></option>
                         {foreach $invoice_all as $invoice}
-                            <option value="{if isset($invoice.id)}{$invoice.id|htmlsafe}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if} >
-                                Inv#{$invoice.index_id}: ({$invoice.biller|htmlsafe}, {$invoice.customer|htmlsafe}, {$invoice.total|siLocal_number})
+                            <option value="{if isset($invoice.id)}{$invoice.id|htmlSafe}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if} >
+                                Inv#{$invoice.index_id}: ({$invoice.biller|htmlSafe}, {$invoice.customer|htmlSafe}, {$invoice.total|utilNumber})
                             </option>
                         {/foreach}
                     </select>
@@ -77,19 +77,20 @@
                 <th class="details_screen left">{$LANG.start_date}: </th>
                 <td>
                     <input type="text" class="si_input validate[required,custom[date],length[0,10]] date-picker"
-                           size="10" name="start_date" id="date" value='{$cron.start_date|htmlsafe}'/>
+                           size="10" name="start_date" id="start_date" value='{$cron.start_date|htmlSafe}'/>
                 </td>
             </tr>
             <tr>
                 <th class="details_screen left">{$LANG.end_date}: </th>
                 <td>
-                    <input type="text" class="si_input date-picker" size="10" name="end_date" id="date" value='{$cron.end_date|htmlsafe}'/>
+                    <input type="text" class="si_input date-picker" size="10" name="end_date" id="end_date"
+                           value='{$cron.end_date|htmlSafe}'/>
                 </td>
             </tr>
             <tr>
                 <th class="details_screen left">{$LANG.recur_each}: </th>
                 <td>
-                    <input name="recurrence" size="10" class="si_input validate[required]" value='{$cron.recurrence|htmlsafe}'/>
+                    <input name="recurrence" size="10" class="si_input validate[required]" value='{$cron.recurrence|htmlSafe}'/>
                     <select name="recurrence_type" class="si_input validate[required]">
                         <option value="day" {if $cron.recurrence_type == 'day'}selected{/if} >{$LANG.days}</option>
                         <option value="week" {if $cron.recurrence_type == 'week'}selected{/if} >{$LANG.weeks}</option>
