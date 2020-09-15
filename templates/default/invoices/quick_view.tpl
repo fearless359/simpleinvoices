@@ -220,7 +220,7 @@
         </div>
         <div class="si_invoice_account2">
             <h5>
-                <a href="index.php?module=customers&amp;view=details&amp;id={$customer.id|urlencode}&amp;action=view">
+                <a href="index.php?module=customers&amp;view=view&amp;id={$customer.id|urlencode}">
                     {$LANG.customer_account}
                 </a>
             </h5>

@@ -36,9 +36,9 @@ require_once 'vendor/autoload.php';
 
 Util::allowDirectAccess();
 
-$module = isset($_GET['module']) ? Util::filenameEscape($_GET['module']) : null;
-$view = isset($_GET['view']) ? Util::filenameEscape($_GET['view']) : null;
-$action = isset($_GET['case']) ? Util::filenameEscape($_GET['case']) : null;
+$module = isset($_GET['module']) ? Util::filenameEscape($_GET['module']) : "";
+$view = isset($_GET['view']) ? Util::filenameEscape($_GET['view']) : "";
+$action = isset($_GET['case']) ? Util::filenameEscape($_GET['case']) : "";
 
 $apiRequest = $module == 'api';
 
@@ -121,7 +121,7 @@ if ($apiRequest) {
         $pdoDbAdmin->setSelectList('value');
         $rows = $pdoDbAdmin->request('SELECT', 'system_defaults');
         $timeout = empty($rows) ? 0 : intval($rows[0]['value']);
-        Log::out("session_timeout loaded[$timeout]");
+        Log::out("index.php - session_timeout loaded[$timeout]");
     } catch (PdoDbException $pde) {
         $timeout = 0;
     }

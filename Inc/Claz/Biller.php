@@ -64,8 +64,16 @@ class Biller
 
         $billers = [];
         try {
-            if (isset($id)) {
-                $pdoDb->addSimpleWhere('id', $id, 'AND');
+            session_name('SiAuth');
+            session_start();
+
+            // If user role is customer or biller, then restrict billers to the one for this session.
+            if ($_SESSION['role_name'] == 'biller') {
+                $pdoDb->addSimpleWhere("id", $_SESSION['user_id'], "AND");
+            }
+
+            if (!empty($id)) {
+                $pdoDb->addSimpleWhere("id", $id, "AND");
             }
 
             if ($active_only) {

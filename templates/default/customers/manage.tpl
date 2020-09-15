@@ -60,85 +60,82 @@
         </tr>
     </table>
 {else}
-    <div class="si_toolbar si_toolbar_top">
+    <div class="si_toolbar si_toolbar_top"
+         {if $smarty.session.role_name == 'customer'}style="display:none"{/if}>
         <a href="index.php?module=customers&amp;view=create" class="">
             <img src="../../../images/add.png" alt=""/>
             {$LANG.customer_add}
         </a>
     </div>
-    {if $number_of_customers == 0}
-        <div class="si_message">{$LANG.no_customers}</div>
-    {else}
-        <table id="si-data-table" class="display compact" >
-            <thead>
-                <tr>
-                    <th>{$LANG.actions}</th>
-                    <th>{$LANG.name}</th>
-                    <th>{$LANG.customer_department}</th>
-                    <th>{$LANG.last_invoice}</th>
-                    <th>{$LANG.total}</th>
-                    <th>{$LANG.paid}</th>
-                    <th>{$LANG.owing_uc}</th>
-                    <th>{$LANG.enabled}</th>
-                </tr>
-            </thead>
-        </table>
-        <script>
-            {literal}
-            $(document).ready(function () {
-                $('#si-data-table').DataTable({
-                    "ajax": "./public/data.json",
-                    "orderClasses": false,
-                    "deferRender": true,
-                    "columns": [
-                        { "data": "action" },
-                        { "data": "name" },
-                        { "data": "department" },
-                        { "data": "quick_view" },
-                        { "data": "total",
-                            "render": function(data, type, row) {
-                                let formatter = new Intl.NumberFormat(row['locale'], {
-                                    'style': 'currency',
-                                    'currency': row['currencyCode']
-                                });
-                                return formatter.format(data);
-                            }
-                        },
-                        { "data": "paid",
-                            "render": function(data, type, row) {
-                                let formatter = new Intl.NumberFormat(row['locale'], {
-                                    'style': 'currency',
-                                    'currency': row['currencyCode']
-                                });
-                                return formatter.format(data);
-                            }
-                        },
-                        { "data": "owing",
-                            "render": function(data, type, row) {
-                                let formatter = new Intl.NumberFormat(row['locale'], {
-                                    'style': 'currency',
-                                    'currency': row['currencyCode']
-                                });
-                                return formatter.format(data);
-                            }
-                        },
-                        { "data": "enabled" },
-                    ],
-                    "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
-                    "columnDefs": [
-                        {"targets": 0, "className": 'dt-body-center', "orderable": false },
-                        {"targets": 1 },
-                        {"targets": 2 },
-                        {"targets": 3, "className": 'dt-body-right' },
-                        {"targets": 4, "className": 'dt-body-right' },
-                        {"targets": 5, "className": 'dt-body-right' },
-                        {"targets": 6, "className": 'dt-body-right' },
-                        {"targets": 7, "className": 'dt-body-center'}
-                    ],
-                    "colReorder": true
-                });
+    <table id="si-data-table" class="display compact" >
+        <thead>
+            <tr>
+                <th>{$LANG.actions}</th>
+                <th>{$LANG.name}</th>
+                <th>{$LANG.customer_department}</th>
+                <th>{$LANG.last_invoice}</th>
+                <th>{$LANG.total}</th>
+                <th>{$LANG.paid}</th>
+                <th>{$LANG.owing_uc}</th>
+                <th>{$LANG.enabled}</th>
+            </tr>
+        </thead>
+    </table>
+    <script>
+        {literal}
+        $(document).ready(function () {
+            $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "deferRender": true,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "name" },
+                    { "data": "department" },
+                    { "data": "quick_view" },
+                    { "data": "total",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currencyCode']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    { "data": "paid",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currencyCode']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    { "data": "owing",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currencyCode']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    { "data": "enabled" },
+                ],
+                "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
+                "columnDefs": [
+                    {"targets": 0, "className": 'dt-body-center', "orderable": false },
+                    {"targets": 1 },
+                    {"targets": 2 },
+                    {"targets": 3, "className": 'dt-body-right' },
+                    {"targets": 4, "className": 'dt-body-right' },
+                    {"targets": 5, "className": 'dt-body-right' },
+                    {"targets": 6, "className": 'dt-body-right' },
+                    {"targets": 7, "className": 'dt-body-center'}
+                ],
+                "colReorder": true
             });
-            {/literal}
-        </script>
-    {/if}
+        });
+        {/literal}
+    </script>
 {/if}

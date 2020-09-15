@@ -31,23 +31,35 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
+session_name("SiAuth");
+session_start();
+
+$role = $_SESSION['role_name'];
+
 // @formatter:off
 $billers           = Biller::getAll(true);
+$billerCount       = count($billers);
+if ($role == "biller" && $billerCount == 0) {
+    $billerCount = Biller::count();
+}
+
 $customers         = Customer::getAll(['enabled_only' => true]);
+$customerCount     = count($customers);
+if ($role == "customer" && $customerCount == 0) {
+    $customerCount = Customer::count();
+}
+$products          = Product::getAll(true);
+
+$smarty->assign("first_run_wizard", $billerCount == 0 || $customerCount == 0 || empty($products));
+
 $taxes             = Taxes::getActiveTaxes();
 $defaultTax        = Taxes::getDefaultTax();
-$products          = Product::getAll(true);
 $preferences       = Preferences::getActivePreferences();
 $defaultPreference = Preferences::getDefaultPreference();
 $defaultCustomer   = Customer::getDefaultCustomer();
 $defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
-$firstRunWizard = false;
-if (empty($billers) || empty($customers) || empty($products)) {
-    $firstRunWizard =true;
-}
-$smarty->assign("first_run_wizard",$firstRunWizard);
 
 $defaults['biller']     = isset($_GET['biller']) ? $_GET['biller']     : $defaults['biller'];
 $defaults['customer']   = isset($_GET['customer']) ? $_GET['customer']   : $defaults['customer'];
@@ -75,6 +87,7 @@ try {
 // Check to see if this is a default_invoice (aka from a template).
 if (isset($_GET['template'])) {
     try {
+        // TODO: Need to figure out how $_GET['template'] gets set.
         $invoice = Invoice::getInvoiceByIndexId($_GET['template']);
         $invoiceItems = Invoice::getInvoiceItems ( $invoice['id'] );
         $numInvItems = count($invoiceItems);

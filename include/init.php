@@ -133,10 +133,10 @@ if (!$apiRequest) {
     }
 
     if ($config['authenticationEnabled'] == ENABLED) {
-        if ($_SESSION['domain_id'] == null) {
+        if (!isset($_SESSION['domain_id'])) {
             $_SESSION['domain_id'] = "1";
         }
-        ApiAuth::authenticate($module);
+        ApiAuth::authenticate($module, $view);
     } else {
         // If auth not on - use default domain and user id of 1
         // Chuck the user details sans password into $_SESSION.

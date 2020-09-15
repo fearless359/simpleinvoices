@@ -25,11 +25,17 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
+if ($_SESSION['role_name'] == 'biller' && $_SESSION['user_id'] != $_GET['id']) {
+    header('Location: index.php?module=errorPages&view=401');
+    exit();
+}
+
 $smarty->assign('biller', Biller::getOne($_GET['id']));
 $smarty->assign('files', Util::getLogoList());
 $smarty->assign('customFieldLabel', CustomFields::getLabels(true));
 
 $smarty->assign('pageActive', 'biller');
-$subPageActive = $_GET['action'] =="view"  ? "biller_view" : "biller_edit" ;
+$subPageActive = $_GET['action'] == "view" ? "biller_view" : "biller_edit";
 $smarty->assign('subPageActive', $subPageActive);
 $smarty->assign('active_tab', '#people');
+

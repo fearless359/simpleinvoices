@@ -14,10 +14,10 @@
             let role = document.getElementById("role_id1");
             let roleIdx = role.selectedIndex;
             let roleText = role.options[roleIdx].text;
-            let origRoleVal = document.getElementById("origrole1").value;
+            let origRoleVal = document.getElementById("origRole1").value;
             if (roleText === origRoleVal) return;
 
-            let crigRoleElem = document.getElementById("currrole1");
+            let crigRoleElem = document.getElementById("currRole1");
             crigRoleElem.value = roleText;
 
             let list = document.getElementById("user_id1");
@@ -49,9 +49,9 @@
       action="index.php?module=user&amp;view=save&amp;username={$user.username|urlencode}">
     <input type="hidden" name="cust" id="cust1" value="{if isset($cust)}{$cust}{/if}"/>
     <input type="hidden" name="bilr" id="bilr1" value="{if isset($bilr)}{$bilr}{/if}"/>
-    <input type="hidden" name="origrole" id="origrole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
-    <input type="hidden" name="currrole" id="currrole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
-    <input type="hidden" name="origuserid" id="origuserid1" value="{if isset($orig_user_id)}{$orig_user_id}{/if}"/>
+    <input type="hidden" name="origRole" id="origRole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
+    <input type="hidden" name="currRole" id="currRole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
+    <input type="hidden" name="origUserId" id="origUserId1" value="{if isset($orig_user_id)}{$orig_user_id}{/if}"/>
     <div class="si_form">
         <table>
             <tr>
@@ -65,7 +65,8 @@
                 <td>
                     <input type="text" name="username" autocomplete="off" class="si_input validate[required]" tabindex="10"
                            value="{if isset($user.username)}{$user.username|htmlSafe}{/if}" size="35" id="username"
-                           pattern="{$usernamePattern}" title="See help for details." autofocus/>
+                           pattern="{$usernamePattern}" title="See help for details." autofocus
+                           {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}readonly{/if}/>
                 </td>
             </tr>
             <tr>
@@ -108,7 +109,7 @@
                            title="See help for details" autocomplete="off"/>
                 </td>
             </tr>
-            <tr>
+            <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
                 <th class="details_screen">{$LANG.role}
                     <a class="cluetip" href="#" tabindex="950"
                        rel="index.php?module=documentation&amp;view=view&amp;page=help_user_role"
@@ -117,7 +118,8 @@
                     </a>
                 </th>
                 <td>
-                    <select name="role_id" id="role_id1" class="si_input" tabindex="50" onchange="setUserIdList();" title="See help for details">
+                    <select name="role_id" id="role_id1" class="si_input" tabindex="50" onchange="setUserIdList();"
+                            title="See help for details">
                         {foreach from=$roles item=role}
                             <option {if $role.id == $user.role_id}selected{/if} value="{if isset($role.id)}{$role.id|htmlSafe}{/if}">
                                 {$role.name|htmlSafe}
@@ -126,7 +128,7 @@
                     </select>
                 </td>
             </tr>
-            <tr>
+            <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
                 <th class="details_screen">{$LANG.user_id}
                     <a class="cluetip" href="#" tabindex="960"
                        rel="index.php?module=documentation&amp;view=view&amp;page=help_user_id"
@@ -135,10 +137,11 @@
                     </a>
                 </th>
                 <td>
-                    <select name="user_id" id="user_id1" class="si_input" tabindex="60" title="See help for details">
+                    <select name="user_id" id="user_id1" class="si_input" tabindex="60" title="See help for details"
+                            {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}disabled{/if}>
                         {if $user.role_name == "customer"}
                             {assign var="ids" value="~"|explode:$cust}
-                            {foreach from=$ids item=id}
+                            {foreach $ids as $id}
                                 {assign var="pts" value=" - "|explode:$id}
                                 {assign var="uid" value=$pts[0]-1}
                                 <option {if $user.user_id == trim($pts[0])}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
@@ -147,7 +150,7 @@
                             {/foreach}
                         {elseif $user.role_name == "biller"}
                             {assign var="ids" value="~"|explode:$bilr}
-                            {foreach from=$ids item=id}
+                            {foreach $ids as $id}
                                 {assign var="pts" value=" - "|explode:$id}
                                 {assign var="uid" value=$pts[0]-1}
                                 <option {if $user.user_id == trim($pts[0])}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
@@ -160,7 +163,7 @@
                     </select>
                 </td>
             </tr>
-            <tr>
+            <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
                 <th class="details_screen">{$LANG.enabled}
                     <a class="cluetip" href="#" tabindex="970"
                        rel="index.php?module=documentation&amp;view=view&amp;page=help_user_enabled"

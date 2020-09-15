@@ -65,6 +65,11 @@ class Customer
     {
         global $config, $LANG, $pdoDb;
 
+        session_name("SiAuth");
+        session_start();
+
+        $customerSession = $_SESSION['role_name'] == 'customer';
+
         $viewCust = $LANG['view'] . " " . $LANG['customer'];
         $editCust = $LANG['edit'] . " " . $LANG['customer'];
         $defaultInv = $LANG['new_uc'] . " " . $LANG['default_invoice'];
@@ -89,7 +94,7 @@ class Customer
                          "href='index.php?module=customers&amp;view=edit&amp;id={$row['id']}'>" .
                           "<img src='images/edit.png' class='action' alt='{$editCust}' />" .
                       "</a>";
-            if ($enabled) {
+            if ($enabled && !$customerSession) {
                 $action .= "<a class='index_table' title='{$defaultInv}' " .
                               "href='index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view'>" .
                                "<img src='images/add.png' class='action' alt='add' />" .
@@ -160,6 +165,15 @@ class Customer
                     $pdoDb->addSimpleWhere("enabled", ENABLED, "AND");
                 }
             }
+
+            session_name("SiAuth");
+            session_start();
+
+            // If user role is customer or biller, then restrict invoices to those they have access to.
+            if ($_SESSION['role_name'] == 'customer') {
+                $pdoDb->addSimpleWhere("id", $_SESSION['user_id'], "AND");
+            }
+
             if (!empty($id)) {
                 $pdoDb->addSimpleWhere('id', $id, 'AND');
             }
@@ -392,12 +406,12 @@ class Customer
 
     /**
      * Mask a string with specified string of characters exposed.
-     * @param string $value Value to be masked.
+     * @param string|null $value Value to be masked.
      * @param string $chr Character to replace masked characters.
      * @param int $num_to_show Number of characters to leave exposed.
      * @return string Masked value.
      */
-    public static function maskCreditCardNumber(string $value, string $chr = 'x', int $num_to_show = 4): string
+    public static function maskCreditCardNumber(?string $value, string $chr = 'x', int $num_to_show = 4): string
     {
         global $config;
 

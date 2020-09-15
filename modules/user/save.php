@@ -41,7 +41,7 @@ if (!empty($_POST['password'])) {
 
 if ($ok) {
     if (isset($_POST['user_id']) &&
-        preg_match('/^(customer|biller)$/', $_POST['currrole'])) {
+        preg_match('/^(customer|biller)$/', $_POST['currRole'])) {
         $_POST['user_id']++;
     }
 

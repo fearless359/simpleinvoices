@@ -2,6 +2,7 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\CustomFields;
+use Inc\Claz\Log;
 use Inc\Claz\Util;
 
 /*
@@ -23,6 +24,13 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
+Log::out("session: " . print_r($_SESSION, true));
+if ($_SESSION['role_name'] == 'biller' && $_SESSION['user_id'] != $_GET['id']) {
+//    header('Location: index.php?module=errorPages&view=401');
+    header("HTTP/1.0 401 Not authorized");
+    exit();
+}
+
 Util::directAccessAllowed();
 
 $smarty->assign('biller', Biller::getOne($_GET['id']));
