@@ -6,7 +6,7 @@ use Inc\Claz\PdoDbException;
 
 global $smarty;
 
-if (!empty($_POST['op']) && $_POST['op'] =='create') {
+if (!empty($_POST['invoice_id'])) {
     include 'modules/cron/save.php';
 } else {
     try {

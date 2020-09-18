@@ -21,9 +21,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "About";//1
+$LANG['aboutUc'] = "About";//1
 $LANG['account_info'] = "Informasi Akun";//1
 $LANG['actions'] = "Modul";//1
 $LANG['add'] = "Tambah";//1
@@ -151,7 +149,7 @@ $LANG['deleted'] = "telah terhapus";//1
 $LANG['denied_page'] = "Anda tidak dapat melihat halaman ini";//1
 $LANG['description_uc'] = "Deskripsi";//1
 $LANG['description_short'] = "Desc";//1
-$LANG['details'] = "Detil";//1
+$LANG['detailsUc'] = "Detil";//1
 $LANG['disable'] = "Disable";//1
 $LANG['disabled'] = "Nonaktif";//1
 $LANG['displaying_inv'] = "Memperlihatkan nota-nota";//1
@@ -187,7 +185,7 @@ $LANG['export_pdf_tooltip'] = "sebagai format PDF";//1
 $LANG['export_tooltip'] = "Konversi";//1
 $LANG['export_xls'] = "Konversi ke format XLS";//1
 $LANG['export_xls_tooltip'] = "ke spreadsheet dengan";//1
-$LANG['extensions'] = "Penambahan Fitur-fitur";//1
+$LANG['extensionsUc'] = "Penambahan Fitur-fitur";//1
 $LANG['faqs'] = "Tanya Jawab";//1
 $LANG['faqs_how'] ="Bagaimana membuat nota?";//1
 $LANG['faqs_need'] ="Hal-hal yang dibutuhkan untuk memulai pembuatan nota?";//1
@@ -275,7 +273,7 @@ $LANG['insert_product'] = "Input Produk";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//1
 $LANG['insert_product_value'] = "Insert Product Value";//1
 $LANG['insert_tax_rate'] = "Insert Tax Rate";//1
-$LANG['installation'] = "Instalasi";//1
+$LANG['installationUc'] = "Instalasi";//1
 $LANG['inv'] = "Nota";//1
 $LANG['inv_consulting'] = " - Consulting";//1
 $LANG['inv_itemized'] = " - Itemized";//1
@@ -381,7 +379,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//1
 $LANG['open'] = "Open";//1
 $LANG['optional'] = "optional";//1
 $LANG['options'] = "Options";//1
-$LANG['other'] = "Other";//1
+$LANG['otherUc'] = "Other";//1
 $LANG['owing_uc'] = "Owing";//1
 $LANG['page'] = "Page";//1
 $LANG['paid'] = "Paid";//1
@@ -469,7 +467,7 @@ $LANG['run_report'] = "Run report";//1
 $LANG['sales'] = "Sales";//1
 $LANG['sales_by_customers'] = "Sales by customers";//1
 $LANG['sales_report'] = "Sales Report";//1
-$LANG['sanity_check'] = "Sanity check of invoices";//1
+$LANG['sanityCheck'] = "Sanity check of the invoices";//1
 $LANG['save'] = "Save";//1
 $LANG['save_biller'] = "Simpan Biller";//1
 $LANG['save_biller_failure'] = "Ada kesalahan teknis, mohon ulangi penyimpanan biller sekali lagi<br />";//1
@@ -511,7 +509,7 @@ $LANG['save_tax_rate_success'] = "Tax rate successfully saved, <br /> you will b
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//1
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//1
 $LANG['select_invoice'] = "Please select an invoice";//1
-$LANG['settings'] = "Settings";//1
+$LANG['settingsUc'] = "Settings";//1
 $LANG['setup_add_customer'] = "Add a customer, click ";//1
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//1
 $LANG['setup_add_products'] = "Add some products, click ";//1

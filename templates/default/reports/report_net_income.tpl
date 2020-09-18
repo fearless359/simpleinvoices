@@ -40,7 +40,7 @@
                 <td>
                     <select name="customer_id">
                         <option {if empty($customer_id)}selected{/if} value=0>{$LANG['all']}&nbsp;{$LANG['customers']}</option>
-                        {foreach from=$customers item=customer}
+                        {foreach $customers as $customer}
                             <option {if $customer.id == $customer_id}selected{/if} value={$customer.id}>{$customer.name} ({$LANG['last_activity']}: {$customer.last_activity_date})</option>
                         {/foreach}
                     </select>
@@ -53,7 +53,7 @@
                 <td>
                     <select name="custom_flag">
                         <option value="0">{$LANG['none']}</option>
-                        {foreach from=$custom_flag_labels key=ndx item=label}
+                        {foreach $custom_flag_labels as $ndx => $label}
                             {if $label != ''}
                                 <option value="{$ndx+1}" {if $custom_flag - 1 == $ndx} selected {/if}>
                                     {$ndx+1}&nbsp;-&nbsp;{$label}

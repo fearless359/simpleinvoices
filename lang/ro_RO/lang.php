@@ -25,9 +25,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Despre";//1
+$LANG['aboutUc'] = "Despre";//1
 $LANG['account_info'] = "Detalii cont";//1
 $LANG['actions'] = "Actiuni";//1
 $LANG['add'] = "Adauga";//1
@@ -155,7 +153,7 @@ $LANG['deleted'] = "has been deleted";//0
 $LANG['denied_page'] = "Vizualizarea acestei pagini nu este permisa";//1
 $LANG['description_uc'] = "Descriere";//1
 $LANG['description_short'] = "Desc.";//1
-$LANG['details'] = "Detalii";//1
+$LANG['detailsUc'] = "Detalii";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Dezactivat";//1
 $LANG['displaying_inv'] = "Displaying invoices";//0
@@ -191,7 +189,7 @@ $LANG['export_pdf_tooltip'] = "ca format PDF";//1
 $LANG['export_tooltip'] = "Exporta";//1
 $LANG['export_xls'] = "Exporta ca XLS";//1
 $LANG['export_xls_tooltip'] = "spre o foaie de calcul tabelar ca";//1
-$LANG['extensions'] = "Extensii";//1
+$LANG['extensionsUc'] = "Extensii";//1
 $LANG['faqs'] = "Intrebari frecvente";//1
 $LANG['faqs_how'] = "Cum creez facturi?";//1
 $LANG['faqs_need'] = "Cum incep sa facturez?";//1
@@ -279,7 +277,7 @@ $LANG['insert_product'] = "Adauga Produs";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Adauga Taxa";//1
-$LANG['installation'] = "Instalare";//1
+$LANG['installationUc'] = "Instalare";//1
 $LANG['inv'] = "Factura";//1
 $LANG['inv_consulting'] = " - Consultanta";//1
 $LANG['inv_itemized'] = " - Detaliata";//1
@@ -385,7 +383,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//0
 $LANG['open'] = "Open";//0
 $LANG['optional'] = "optional";//1
 $LANG['options'] = "Optiuni";//1
-$LANG['other'] = "Other";//0
+$LANG['otherUc'] = "Other";//0
 $LANG['owing_uc'] = "Debit";//1
 $LANG['page'] = "Page";//0
 $LANG['paid'] = "Platit";//1
@@ -473,7 +471,7 @@ $LANG['run_report'] = "Run report";//0
 $LANG['sales'] = "Vanzari";//1
 $LANG['sales_by_customers'] = "Vanzari dupa Client";//1
 $LANG['sales_report'] = "Raport Vanzari";//1
-$LANG['sanity_check'] = "Verificarea corectitudinii facturilor";//1
+$LANG['sanityCheck'] = "Verificarea corectitudinii facturilor";//1
 $LANG['save'] = "Salveaza";//1
 $LANG['save_biller'] = "Salveaza Furnizor";//1
 $LANG['save_biller_failure'] = "Ceva este in neregula, incercati din nou salvarea furnizorului<br />";//1
@@ -515,7 +513,7 @@ $LANG['save_tax_rate_success'] = "Taxa salvata cu succes, <br /> veti fi redirec
 $LANG['save_user_failure'] = "Ceva este in neregula, incercati din nou adaugarea utilizatorului<br />";//1
 $LANG['save_user_success'] = "Utilizator salvat cu succes, <br /> veti fi redirectionat catre pagina Administrare Utilizatori";//1
 $LANG['select_invoice'] = "Selectati o factura";//1
-$LANG['settings'] = "Setari";//1
+$LANG['settingsUc'] = "Setari";//1
 $LANG['setup_add_customer'] = "Add a customer, click ";//0
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Add some products, click ";//0

@@ -8,11 +8,11 @@
 		</tr>
 	</thead>
 	<tbody>
-	{foreach item=customer from=$data}
+	{foreach $data as $customer}
 		<tr>
 			<td class="bold" colspan="2">{$customer.name|htmlSafe}</td>
 		</tr>
-		{foreach item=product from=$customer.products}
+		{foreach $customer.products as $product}
 			<tr>
 				<td>{$product.description|htmlSafe}</td>
 				<td>{$product.sum_quantity|utilNumber:0|default:'-'}</td>

@@ -32,10 +32,10 @@
               {if $biller_count != 1}
               <option value=""></option>
               {/if}
-              {foreach from=$billers item=list_biller}
-              <option {if $list_biller.id==$biller_id} selected {/if} value="{if isset($list_biller.id)}{$list_biller.id|htmlSafe}{/if}">
-                {$list_biller.name|htmlSafe}
-              </option>
+              {foreach $billers as $list_biller}
+                <option {if $list_biller.id==$biller_id} selected {/if} value="{if isset($list_biller.id)}{$list_biller.id|htmlSafe}{/if}">
+                  {$list_biller.name|htmlSafe}
+                </option>
               {/foreach}
             </select>
           </td>
@@ -47,17 +47,17 @@
               {if $customer_count != 1}
               <option value=""></option>
               {/if}
-              {foreach from=$customers item=list_customer}
-              <option {if $list_customer.id== $customer_id} selected {/if} value="{if isset($list_customer.id)}{$list_customer.id|htmlSafe}{/if}">
-                {$list_customer.name|htmlSafe}
-              </option>
+              {foreach $customers as $list_customer}
+                <option {if $list_customer.id== $customer_id} selected {/if} value="{if isset($list_customer.id)}{$list_customer.id|htmlSafe}{/if}">
+                  {$list_customer.name|htmlSafe}
+                </option>
               {/foreach}
             </select>
           </td>
         </tr>
         <tr>
-          {* Note the $LANG['not'] notation used intentionally as other syntax is looked as a NOT statment. *}
-          <th>{$LANG.do_uc} {$LANG['not']} {$LANG.filter_by_dates}</th>
+          {* Note the $LANG['notLc'] notation used intentionally as other syntax is looked as a NOT statment. *}
+          <th>{$LANG.do_uc} {$LANG['notLc']} {$LANG.filter_by_dates}</th>
           <td>
             <input type="checkbox" name="do_not_filter_by_date" tabindex="50"
                    {if $do_not_filter_by_date== "yes"} checked {/if} value="yes">

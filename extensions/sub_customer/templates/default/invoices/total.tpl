@@ -15,6 +15,7 @@
                        cause the $path variable in the include to be set for the
                        extension and load the header.tpl file in the extension.
 -->
+<!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=invoices&amp;view=save">
     <div class="si_invoice_form">
@@ -54,7 +55,7 @@
                             <select id="tax_id[{$smarty.section.line.index|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
                                     name="tax_id[{$smarty.section.line.index|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]">
                                 <option value=""></option>
-                                {foreach from=$taxes item=tax}
+                                {foreach $taxes as $tax}
                                     <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}"
                                             {if $tax.tax_id == $defaultInvoiceItems[0].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlSafe}</option>
                                 {/foreach}
@@ -65,14 +66,14 @@
             </tr>
         </table>
         <table class="si_invoice_bot">
-            <tr class=""si_invoice_total">
+            <tr class="si_invoice_total">
                 <th class="">{$LANG.inv_pref}</th>
                 <td>
                     {if !isset($preferences) }
                         <p><em>{$LANG.no_preferences}</em></p>
                     {else}
                         <select name="preference_id">
-                            {foreach from=$preferences item=preference}
+                            {foreach $preferences as $preference}
                                 <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">
                                     {$preference.pref_description|htmlSafe}
                                 </option>

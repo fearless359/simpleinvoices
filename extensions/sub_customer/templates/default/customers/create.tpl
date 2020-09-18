@@ -125,7 +125,7 @@
                     {else}
                         <select name="parent_customer_id" class="si_input" tabindex="170">
                             <option value=''></option>
-                            {foreach from=$parent_customers item=customer}
+                            {foreach $parent_customers as $customer}
                                 <option {if isset($defaultCustomerID) && $customer.id == $defaultCustomerID}selected{/if}
                                         value="{if isset($customer.id)}{$customer.id|htmlSafe}{/if}">
                                     {$customer.name|htmlSafe}

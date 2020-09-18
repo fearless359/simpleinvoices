@@ -23,7 +23,7 @@
                 <em>{$LANG.no_preferences}</em>
             {else}
                 <select name="preference_id">
-                    {foreach from=$preferences item=preference}
+                    {foreach $preferences as $preference}
                         <option {if $preference.pref_id == $defaults.preference}selected {/if}value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">
                             {$preference.pref_description|htmlSafe}
                         </option>

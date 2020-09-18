@@ -207,7 +207,7 @@
           <td class="tbl1-bottom col1 si_right"><b>{$LANG.unit_cost}</b></td>
           <td class="tbl1-bottom col1 si_right"><b>{$LANG.price}</b></td>
         </tr>
-        {foreach from=$invoiceItems item=invoiceItem}
+        {foreach $invoiceItems as $invoiceItem}
           <tr class="">
             <td class="">{$invoiceItem.quantity|utilNumberTrim}</td>
             <td class="" colspan="3">{$invoiceItem.product.description|htmlSafe}</td>
@@ -222,7 +222,7 @@
             <td>
               <table>
                 <tr class="si_product_attribute">
-                  {foreach from=$invoiceItem.attribute_json key=k item=v}
+                  {foreach $invoiceItem.attribute_json as $k => $v}
                     {if $v.visible ==true }
                     <td class="si_product_attribute">
                       {if $v.type == 'decimal'}
@@ -278,7 +278,7 @@
           <td class="tbl1-bottom si_right"><b>{$LANG.unit_cost}</b></td>
           <td class="tbl1-bottom si_right"><b>{$LANG.price}</b></td>
         </tr>
-        {foreach from=$invoiceItems item=invoiceItem}
+        {foreach $invoiceItems as $invoiceItem}
           <tr class=" ">
             <td class="">{$invoiceItem.quantity|utilNumberTrim}</td>
             <td>{$invoiceItem.product.description|htmlSafe}</td>
@@ -330,7 +330,7 @@
               <tr class="col1">
                 <td class="tbl1-bottom col1" colspan="6"><b>{$LANG.description_uc}</b></td>
               </tr>
-              {foreach from=$invoiceItems item= invoiceItem}
+              {foreach $invoiceItems as $invoiceItem}
               <tr class="">
                   <td class="t" colspan="6">{$invoiceItem.description|outHtml}</td>
               </tr>

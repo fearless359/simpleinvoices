@@ -20,7 +20,7 @@
 		</tr>
 	</tfoot>
 	<tbody>
-	{foreach item=customer from=$data}
+	{foreach $data as $customer}
 		<tr>
 			<td>{$customer.cid|htmlSafe}</td>
 			<td>{$customer.customer|htmlSafe}</td>

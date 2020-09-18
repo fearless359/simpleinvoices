@@ -3,59 +3,64 @@
 <table class="center" style="width:60%;;">
     <tr>
         <th style="font-weight: bold; text-align:center;">
-            To install SimpleInvoices please:
+            {$LANG.to_uc} {$LANG.install} {$LANG.simpleInvoices} {$LANG.please}:
         </th>
     </tr>
     <tr>
         <th style="font-weight:normal;">
             <ol style="text-align: left;">
-                <li>Create a blank MySQL database (aka MariaDb) preferably with UTF-8 collation.</li>
-                <li>Enter the correct database connection details in the
-                    <strong><em>{$config_file_path}</em></strong> file.
+                <li>{$LANG.createBlankMySql}.</li>
+                <li>{$LANG.enterCorrectDatabase}
+                    <strong><em>{$config_file_path}</em></strong> {$LANG.file}.
                     {if $config_file_path == "config/config.ini"}
                         <p style="margin: 0 0 0 10px;">
-                            <strong>NOTE:</strong> You can copy the <strong>config.ini</strong> file to a file named
-                            <strong>custom.config.ini</strong> and make your changes to it. The advantage is that
-                            future updates to SimpleInvoices will not write over the <strong>custom.config.ini</strong>
-                            file; thus preserving your settings.</p>
+                            <strong>{$LANG.note}:</strong> {$LANG.youUc} {$LANG.can} {$LANG.copy} {$LANG.the}
+                            <strong>{$LANG.configIni}</strong> {$LANG.file} {$LANG.to} {$LANG.a} {$LANG.file} {$LANG.named}
+                            <strong>{$LANG.customConfigIni}</strong> {$LANG.andLc} {$LANG.make} {$LANG.your} {$LANG.changes}
+                            {$LANG.to} {$LANG.it}. {$LANG.theUc} {$LANG.advantage} {$LANG.is} {$LANG.that} {$LANG.future}
+                            {$LANG.updates} {$LANG.to} {$LANG.simpleInvoices} {$LANG.will} {$LANG.notLc} {$LANG.write}
+                            {$LANG.over} {$LANG.the} <strong>{$LANG.customConfigIni}</strong> {$LANG.file}; {$LANG.thus}
+                            {$LANG.preserving} {$LANG.your} {$LANG.settings}.</p>
                     {/if}
                 </li>
-                <li>Review the connection details below and if correct, click the <strong>Install Database</strong> button.</li>
+                <li>{$LANG.reviewUc} {$LANG.the} {$LANG.connection} {$LANG.details} {$LANG.below} {$LANG.andLc} {$LANG.if}
+                    {$LANG.correct}, {$LANG.click} {$LANG.the} <strong>{$LANG.installUc} {$LANG.databaseUc}</strong> {$LANG.button}.</li>
             </ol>
         </th>
     </tr>
     <tr>
         <th style="text-align: center; font-weight: bold; text-decoration: underline;">
-            <em>{$config_file_path}</em> database settings
+            <em>{$config_file_path}</em> {$LANG.database} {$LANG.settings}
         </th>
     </tr>
 </table>
 <br/>
 <table class="center">
     <tr>
-        <th style="text-align: right; margin-right: 0; font-weight: bold; text-decoration: underline;">Property</th>
-        <th style="text-align: left; padding-left: 40px; font-weight: bold; text-decoration: underline;">Value</th>
+        <th style="text-align: right; margin-right: 0; font-weight: bold; text-decoration: underline;">{$LANG.propertyUc}</th>
+        <th style="text-align: left; padding-left: 40px; font-weight: bold; text-decoration: underline;">{$LANG.value}</th>
     </tr>
     <tr>
-        <td style="text-align: right; margin-right: 0;">Host</td>
+        <td style="text-align: right; margin-right: 0;">{$LANG.hostUc}</td>
         <td style="text-align: left; padding-left: 40px;">{$config.databaseHost}</td>
     </tr>
     <tr>
-        <td style="text-align: right; margin-right: 0;">Database</td>
+        <td style="text-align: right; margin-right: 0;">{$LANG.databaseUc}</td>
         <td style="text-align: left; padding-left: 40px;">{$config.databaseDbname}</td>
     </tr>
-    <td style="text-align: right; margin-right: 0;">Username</td>
-    <td style="text-align: left; padding-left: 40px;">{$config.databaseUsername}</td>
     <tr>
+        <td style="text-align: right; margin-right: 0;">{$LANG.username}</td>
+        <td style="text-align: left; padding-left: 40px;">{$config.databaseUsername}</td>
+    </tr>
     <tr>
-        <td style="text-align: right; margin-right: 0;">Password</td>
+        <td style="text-align: right; margin-right: 0;">{$LANG.password}</td>
         <td style="text-align: left; padding-left: 40px;">**********</td>
     </tr>
 </table>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=install&amp;view=structure" class="positive">
         <img src="../../../images/tick.png" alt=""/>
-        Install Database
+        {$LANG.installUc} {$LANG.databaseUc}
     </a>
 </div>
 

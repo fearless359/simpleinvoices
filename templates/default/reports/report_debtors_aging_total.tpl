@@ -21,7 +21,7 @@
 		</tr>
 	</tfoot>
 	<tbody>
-	{foreach item=period from=$data}
+	{foreach $data as $period}
 		<tr>
 			<td>{$period.total|utilCurrency|default:'-'}</td>
 			<td>{$period.paid|utilCurrency|default:'-'}</td>

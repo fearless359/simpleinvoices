@@ -245,23 +245,23 @@
         <td colspan="6"><br /></td>
       </tr>
       {if $invoice.type_id == ITEMIZED_INVOICE }
-        {foreach from=$product_group key=group_id item=group}
+        {foreach $product_group as $group_id => $group}
           <tr>
-            <td class="col1" align="middle" colspan="6">{$group.name|htmlSafe}</td>
+            <td class="col1 si_center" colspan="6">{$group.name|htmlSafe}</td>
           </tr>
           <tr>
             <td class="tbl1-bottom col1"><b>{$LANG.quantity_short}</b></td>
             <td class="tbl1-bottom col1" colspan="3"><b>{$LANG.item}</b></td>
-            <td class="tbl1-bottom col1" align="right"><b>{$LANG.unit_cost}</b></td>
-            <td class="tbl1-bottom col1" align="right"><b>{$LANG.price}</b></td>
+            <td class="tbl1-bottom col1 si_right"><b>{$LANG.unit_cost}</b></td>
+            <td class="tbl1-bottom col1 si_right"><b>{$LANG.price}</b></td>
           </tr>
-          {foreach from=$invoiceItems key=k item=invoiceItem}
+          {foreach $invoiceItems as $k => $invoiceItem}
             {if $invoiceItem.product.custom_field1 == $group.name}
               <tr class="" >
                 <td class="">{$invoiceItem.quantity|utilNumberTrim}</td>
                 <td class="" colspan="3">{$invoiceItem.product.description|htmlSafe}</td>
-                <td class="" align="right">{$preference.pref_currency_sign} {$invoiceItem.unit_price|utilNumber}</td>
-                <td class="" align="right">{$preference.pref_currency_sign} {$invoiceItem.gross_total|utilNumber}</td>
+                <td class="si_right">{$preference.pref_currency_sign} {$invoiceItem.unit_price|utilNumber}</td>
+                <td class="si_right">{$preference.pref_currency_sign} {$invoiceItem.gross_total|utilNumber}</td>
               </tr>
               {if isset($invoiceItem.description)}
                 <tr class="">
@@ -272,22 +272,22 @@
             {/if}
           {/foreach}
           <tr>
-            <td colspan="5" align="right">Subtotal:</td>
-            <td align="right">
+            <td colspan="5" class="si_right">Subtotal:</td>
+            <td class="si_right">
               {$preference.pref_currency_sign} {subtotal cost=$invoiceItems group=$group.name}
             </td>
           </tr>
           <tr>
-            <td colspan="5" align="right">
+            <td colspan="5" class="si_right">
               Markup {markup_percentage cost=$invoiceItems group=$group.name}%{* {$group.markup|htmlSafe} *}:
             </td>
-            <td align="right">
+            <td class="si_right">
               {$preference.pref_currency_sign} {markup cost=$invoiceItems group=$group.name}
             </td>
           </tr>
           <tr>
-            <td colspan="5" align="right">Total:</td>
-            <td align="right">
+            <td colspan="5" class="si_right">Total:</td>
+            <td class="si_right">
               {$preference.pref_currency_sign} {total cost=$invoiceItems group=$group.name}
             </td>
           </tr>
@@ -344,11 +344,11 @@
         <td class="" colspan="6" ><br></td>
       </tr>
       <tr class="">
-        <th colspan="6" align="middle">
+        <th colspan="6" class="si_center">
           <span class="font1 double_underline" >
             TOTAL {$preference.pref_currency_sign} {$invoice.total|utilNumber}
           </span>
-        </td>
+        </th>
       </tr>
 {* ************************ BEGIN COMMENTED OUT SECTION ****************************
       <tr>

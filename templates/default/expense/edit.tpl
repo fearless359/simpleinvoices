@@ -14,7 +14,7 @@
                 <td>
                     <select name="expense_account_id" class="si_input validate[required]">
                         <option value=''></option>
-                        {foreach from=$detail.expense_accounts item=expense_account}
+                        {foreach $detail.expense_accounts as $expense_account}
                             <option {if $expense_account.id == $expense.ea_id}selected{/if}
                                     value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
                         {/foreach}
@@ -33,7 +33,7 @@
                 <td>
                     <select name="biller_id" class="si_input validate[required]">
                         <option value=''></option>
-                        {foreach from=$detail.billers item=biller}
+                        {foreach $detail.billers as $biller}
                             <option {if $biller.id == $expense.b_id} selected {/if}
                                     value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
                         {/foreach}
@@ -45,7 +45,7 @@
                 <td>
                     <select name="customer_id" class="si_input ">
                         <option value=''></option>
-                        {foreach from=$detail.customers item=customer}
+                        {foreach $detail.customers as $customer}
                             <option {if $customer.id == $expense.c_id} selected {/if}
                                     value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
                         {/foreach}
@@ -57,7 +57,7 @@
                 <td>
                     <select name="invoice_id" class="si_input ">
                         <option value=''></option>
-                        {foreach from=$detail.invoices item=invoice}
+                        {foreach $detail.invoices as $invoice}
                             <option value="{if isset($invoice.id)}{$invoice.id|htmlSafe}{/if}" {if $invoice.id ==  $expense.iv_id}selected{/if} >
                                 Inv#{$invoice.index_id}: ({$invoice.biller|htmlSafe}, {$invoice.customer|htmlSafe})
                             </option>
@@ -70,7 +70,7 @@
                 <td>
                     <select name="product_id" class="si_input ">
                         <option value=''></option>
-                        {foreach from=$detail.products item=product}
+                        {foreach $detail.products as $product}
                             <option {if $product.id == $expense.p_id} selected {/if}
                                     value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
                         {/foreach}

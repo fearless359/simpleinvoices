@@ -254,7 +254,7 @@
       </tr>
       <!-- Customer section - end -->
     </table>
-    <table style="width:100%;;">
+    <table style="width:100%;">
       <tr>
         <td colspan="6"><br /></td>
       </tr>

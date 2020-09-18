@@ -48,7 +48,7 @@
                     <td colspan="3">
                         <select name="invoice_id" class="si_input validate[required]">
                             <option value=''></option>
-                            {foreach from=$invoice_all item=invoice}
+                            {foreach $invoice_all as $invoice}
                                 <option value="{if isset($invoice.id)}{$invoice.id|htmlSafe}{/if}">
                                     {$invoice.index_name|htmlSafe}
                                     (
@@ -81,7 +81,7 @@
                         <p><em>{$LANG.no_payment_types}</em></p>
                     {else}
                         <select name="ac_payment_type" class="si_input" id="pymt_type">
-                            {foreach from=$paymentTypes item=paymentType}
+                            {foreach $paymentTypes as $paymentType}
                                 <option value="{if isset($paymentType.pt_id)}{$paymentType.pt_id|htmlSafe}{/if}"
                                         {if $paymentType.pt_id==$defaults.payment_type}selected{/if}>
                                     {$paymentType.pt_description|htmlSafe}

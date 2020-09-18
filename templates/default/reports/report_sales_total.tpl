@@ -17,7 +17,7 @@
     </tr>
   </tfoot>
   <tbody>
-    {foreach item=totalSales from=$data}
+    {foreach $data as $totalSales}
     <tr>
       <td class="align_left">{$totalSales.template|htmlSafe}</td>
       <td class="align_right">{$totalSales.count|utilNumber:0|default:'-'}</td>

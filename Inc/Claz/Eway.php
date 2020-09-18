@@ -30,9 +30,11 @@ class Eway
         if (empty($this->customer)) {
             $this->customer = Customer::getOne($this->invoice['customer_id']);
         }
+
         if (empty($this->biller)) {
             $this->biller = Biller::getOne($this->invoice['biller_id']);
         }
+
         if (empty($this->preference)) {
             $this->preference = Preferences::getOne($this->invoice['preference_id']);
         }
@@ -53,7 +55,7 @@ class Eway
      */
     public function payment(): string
     {
-        global $config;
+        global $config, $LANG;
 
         //set customer,biller and preference if not defined
         if (empty($this->customer)) {
@@ -109,20 +111,20 @@ class Eway
         $this->message = $ewayResponseFields;
         $message = "";
         if ($ewayResponseFields['EWAYTRXNSTATUS'] == "False") {
-            Log::out("Transaction Error: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Log::INFO);
+            Log::out("{$LANG['transactionUc']} {$LANG['errorUc']}: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Log::INFO);
             foreach ($ewayResponseFields as $key => $value) {
-                $message .= "\n<br>\$ewayResponseFields[\"$key\"] = $value";
+                $message .= "\n<br>\${$LANG['ewayResponseFields']}[\"$key\"] = $value";
             }
-            Log::out("Eway message: " . $message . "<br>\n", Log::INFO);
+            Log::out("{$LANG['eway']} {$LANG['message']}: " . $message . "<br>\n", Log::INFO);
             return 'false';
         }
 
         if ($ewayResponseFields["EWAYTRXNSTATUS"] == "True") {
-            Log::out("Transaction Success: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Log::INFO);
+            Log::out("{$LANG['transactionUc']} {$LANG['successUc']}: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n", Log::INFO);
             foreach ($ewayResponseFields as $key => $value) {
-                $message .= "\n<br>\$ewayResponseFields[\"$key\"] = $value";
+                $message .= "\n<br>\${$LANG['ewayResponseFields']}[\"$key\"] = $value";
             }
-            Log::out("Eway message: " . $message . "<br>\n", Log::INFO);
+            Log::out("{$LANG['eway']} {$LANG['message']}: " . $message . "<br>\n", Log::INFO);
 
             // @formatter:off
             Payment::insert([

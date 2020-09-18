@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "O programe";//1
+$LANG['aboutUc'] = "O programe";//1
 $LANG['account_info'] = "Informácie o účte";//1
 $LANG['actions'] = "Akcia";//1
 $LANG['add'] = "Add";//0
@@ -154,7 +152,7 @@ $LANG['deleted'] = "Zmazané";//1
 $LANG['denied_page'] = "Nemáte oprávnenie na zobrazenie tejto stránky";//1
 $LANG['description_uc'] = "Popis";//1
 $LANG['description_short'] = "Popis";//1
-$LANG['details'] = "Podrobnosti";//1
+$LANG['detailsUc'] = "Podrobnosti";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Deaktivovaný";//1
 $LANG['displaying_inv'] = "Fakt. zobrazené";//1
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "ako PDF formát";//1
 $LANG['export_tooltip'] = "Export";//1
 $LANG['export_xls'] = "Export do XLS";//1
 $LANG['export_xls_tooltip'] = "do tabuľky ako";//1
-$LANG['extensions'] = "Rozšírenia";//1
+$LANG['extensionsUc'] = "Rozšírenia";//1
 $LANG['faqs'] = "Často kladené otázky";//1
 $LANG['faqs_how'] = "Ako vytvorím faktúry?";//1
 $LANG['faqs_need'] = "Čo potrebujem pre faktúrovanie?";//1
@@ -278,7 +276,7 @@ $LANG['insert_product'] = "Vložiť položku";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Vložiť sadzbu dane";//1
-$LANG['installation'] = "Inštalácia";//1
+$LANG['installationUc'] = "Inštalácia";//1
 $LANG['inv'] = "Faktúra";//1
 $LANG['inv_consulting'] = ": Poradenstvo";//1
 $LANG['inv_itemized'] = ": Po položkách";//1
@@ -384,7 +382,7 @@ $LANG['online_payment_id'] = "ID elektronickej platby";//1
 $LANG['open'] = "Otvor";//1
 $LANG['optional'] = "voliteľné";//1
 $LANG['options'] = "Možnosti";//1
-$LANG['other'] = "Iné";//1
+$LANG['otherUc'] = "Iné";//1
 $LANG['owing_uc'] = "K úhrade:";//1
 $LANG['page'] = "Stránka";//1
 $LANG['paid'] = "Zaplatené";//1
@@ -472,7 +470,7 @@ $LANG['run_report'] = "Spustiť report";//1
 $LANG['sales'] = "Predaj";//1
 $LANG['sales_by_customers'] = "Predaj podľa odberateľa";//1
 $LANG['sales_report'] = "Report tržieb";//1
-$LANG['sanity_check'] = "Kontrola správnosti faktúr";//1
+$LANG['sanityCheck'] = "Kontrola správnosti faktúr";//1
 $LANG['save'] = "Uložiť";//1
 $LANG['save_biller'] = "Uložiť dodávateľa";//1
 $LANG['save_biller_failure'] = "Nastala chyba, prosím, skúste uložiť dodávateľa ešte raz<br />";//1
@@ -514,7 +512,7 @@ $LANG['save_tax_rate_success'] = "Sadzba dane úspešne uložená, <br /> budete
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//1
 $LANG['save_user_success'] = "Užívateľ úspešne uložený, <br /> budete presmerovaný/á na stránku Upraviť užívatĺov";//1
 $LANG['select_invoice'] = "Zvoľte, prosím, faktúru";//1
-$LANG['settings'] = "Nastavenia";//1
+$LANG['settingsUc'] = "Nastavenia";//1
 $LANG['setup_add_customer'] = "Pridať zákazníka - nastavenia";//1
 $LANG['setup_add_inv_pref'] = "Pridať faktúru - nastavenia";//1
 $LANG['setup_add_products'] = "Pridať položku - nastavenia";//1

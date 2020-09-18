@@ -40,6 +40,7 @@
         </tr>
         </thead>
     </table>
+    <!--suppress JSUnusedLocalSymbols -->
     <script>
         {literal}
         $(document).ready(function () {
@@ -65,7 +66,7 @@
                     { "data": "type" },
                     { "data": "date",
                         "render": function(data, type, row) {
-                            var dtParts = data.split(' ');
+                            let dtParts = data.split(' ');
                             return dtParts[0];
                         } },
                 ],

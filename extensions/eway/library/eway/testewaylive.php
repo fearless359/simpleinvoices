@@ -2,6 +2,8 @@
 
 use Inc\Claz\Eway;
 
+global $LANG;
+
 error_reporting('E_ALL');
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
@@ -52,13 +54,13 @@ ini_set('display_errors', 1);
 	if($ewayResponseFields["EWAYTRXNSTATUS"]=="False"){
 		print "Transaction Error: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n";
 		foreach($ewayResponseFields as $key => $value)
-			print "\n<br>\$ewayResponseFields[\"$key\"] = $value";
+			print "\n<br>\${$LANG['ewayResponseFields']}[\"$key\"] = $value";
 		//header("Location: trasnactionerrorpage.php");
 		//exit();
 	}else if($ewayResponseFields["EWAYTRXNSTATUS"]=="True"){
 		print "Transaction Success: " . $ewayResponseFields["EWAYTRXNERROR"]  . "<br>\n";
 		foreach($ewayResponseFields as $key => $value)
-			print "\n<br>\$ewayResponseFields[\"$key\"] = $value";
+			print "\n<br>\${$LANG['ewayResponseFields']}[\"$key\"] = $value";
 		//header("Location: trasnactionsuccess.php");
 		//exit();
 	}

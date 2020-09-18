@@ -20,9 +20,7 @@
 
 #all
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "關於";//1
+$LANG['aboutUc'] = "關於";//1
 $LANG['account_info'] = "賬戶資料";//1
 $LANG['actions'] = "操作";//1
 $LANG['add'] = "添加";//1
@@ -150,7 +148,7 @@ $LANG['deleted'] = "已刪除";//1
 $LANG['denied_page'] = "您無權瀏覽這個頁面";//1
 $LANG['description_uc'] = "描述";//1
 $LANG['description_short'] = "描述";//1
-$LANG['details'] = "詳情";//1
+$LANG['detailsUc'] = "詳情";//1
 $LANG['disable'] = "禁用";//1
 $LANG['disabled'] = "禁用";//1
 $LANG['displaying_inv'] = "顯示發票";//1
@@ -186,7 +184,7 @@ $LANG['export_pdf_tooltip'] = "以PDF格式";//1
 $LANG['export_tooltip'] = "導出";//1
 $LANG['export_xls'] = "導出為XLS";//1
 $LANG['export_xls_tooltip'] = "到一個電子表格的";//1
-$LANG['extensions'] = "擴展";//1
+$LANG['extensionsUc'] = "擴展";//1
 $LANG['faqs'] = "常見問題";//1
 $LANG['faqs_how'] ="如何創建發票?";//1
 $LANG['faqs_need'] ="我需要什麼來啟動開發票？";//1
@@ -274,7 +272,7 @@ $LANG['insert_product'] = "插入產品";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "插入稅率";//1
-$LANG['installation'] = "安裝";//1
+$LANG['installationUc'] = "安裝";//1
 $LANG['inv'] = "發票";//1
 $LANG['inv_consulting'] = "- 諮詢";//1
 $LANG['inv_itemized'] = "- 分項";//1
@@ -380,7 +378,7 @@ $LANG['online_payment_id'] = "在線支付編號";//1
 $LANG['open'] = "開";//1
 $LANG['optional'] = "可選";//1
 $LANG['options'] = "選項";//1
-$LANG['other'] = "Other";//1
+$LANG['otherUc'] = "Other";//1
 $LANG['owing_uc'] = "債務";//1
 $LANG['page'] = "頁面";//1
 $LANG['paid'] = "已付";//1
@@ -468,7 +466,7 @@ $LANG['run_report'] = "執行報告";//1
 $LANG['sales'] = "銷售";//1
 $LANG['sales_by_customers'] = "Sales by customers";//0
 $LANG['sales_report'] = "銷售報告";//1
-$LANG['sanity_check'] = "發票的合理性檢查";//1
+$LANG['sanityCheck'] = "發票的合理性檢查";//1
 $LANG['save'] = "保存";//1
 $LANG['save_biller'] = "保存記帳方";//1
 $LANG['save_biller_failure'] = "發生了錯誤，請嘗試重新儲存記帳方<br/>";//1
@@ -510,7 +508,7 @@ $LANG['save_tax_rate_success'] = "Tax rate successfully saved, <br /> you will b
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//0
 $LANG['select_invoice'] = "Please select an invoice";//0
-$LANG['settings'] = "Settings";//0
+$LANG['settingsUc'] = "Settings";//0
 $LANG['setup_add_customer'] = "Add a customer, click ";//0
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Add some products, click ";//0

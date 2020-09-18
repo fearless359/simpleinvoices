@@ -1,4 +1,5 @@
-<h2 class="si_center">About to <i>{$action|htmlSafe}</i>: {$name|htmlSafe}</h2>
+<!--suppress HtmlFormInputWithoutLabel -->
+<h2 class="si_center">{$LANG.aboutUc} {$LANG.to} <i>{$action|htmlSafe}</i>: {$name|htmlSafe}</h2>
 
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=extensions&amp;view=save">
@@ -30,7 +31,7 @@
         </div>
     </div>
     {if ($action=="unregister" & $count) > 0}
-        <h3 class="si_message_warning">WARNING: All {$count|htmlSafe} extension-specific settings will be deleted!</h3>
+        <h3 class="si_message_warning">{$LANG.warningUcAll}: {$LANG.all} {$count|htmlSafe} {$LANG.extensionSpecificSettings}!</h3>
     {/if}
     <input type="hidden" name="action" value="{if isset($action)}{$action|htmlSafe}{/if}"/>
 </form>

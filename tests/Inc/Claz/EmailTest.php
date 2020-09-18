@@ -138,10 +138,10 @@ class EmailTest extends TestCase
         self::assertFalse($this->email->setBcc("invalid_email_address"), "Expected failed setBcc() call.");
     }
 
-    public function testSetGetTo()
+    public function testSetEmailTo()
     {
-        $this->email->setEmailTo("me@gmail.com");
-        self::assertEquals("me@gmail.com", $this->email->getEmailTo());
+        $this->email->setEmailTo("me@gmail.com';you@gmail.com");
+        self::assertEquals("me@gmail.com;you@gmail.com", $this->email->getEmailTo());
 
         self::assertFalse($this->email->setEmailTo("invalid_email_address"), "Expected failed setEmailTo() call.");
 

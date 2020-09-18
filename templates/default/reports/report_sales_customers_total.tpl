@@ -14,7 +14,7 @@
 		</tr>
 	</tfoot>
 	<tbody>
-	{foreach item=customer from=$data}
+	{foreach $data as $customer}
 		<tr class="tr_{cycle values="A,B"}">
 			<td>{$customer.name|htmlSafe}</td>
 			<td>{$customer.sum_total|utilNumber:2|default:'-'}</td>

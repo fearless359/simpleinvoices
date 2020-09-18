@@ -4,7 +4,7 @@
   <td class="tbl1 col1"><b>{$LANG.unit_cost}</b></td>
   <td class="tbl1 col1 si_right"><b>{$LANG.price}</b></td>
 </tr>
-{foreach from=$invoiceItems item=invoiceItem}
+{foreach $invoiceItems as $invoiceItem}
   <tr>
     <td>{$invoiceItem.quantity|utilNumberTrim}</td>
     <td colspan="3">{$invoiceItem.product.description|htmlSafe}</td>

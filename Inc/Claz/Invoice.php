@@ -337,7 +337,11 @@ class Invoice
 
             $invoices = [];
             foreach ($rows as $row) {
-                $row['owing'] = $row['total'] - $row['paid'];
+                $owing = $row['total'] - $row['paid'];
+                if ($owing != $row['owing'] && $row['preference_id'] == 1) {
+                    error_log("Invoice::getInvoices() - Owing discrepancy on invoice id[{$row['id']}] - index_id[{$row['index_id']}]. " .
+                        "Calculated owing[$owing] not equal to invoices table owning[{$row['owing']}]");
+                }
                 $ageInfo = self::calculateAgeDays(
                     $row['id'],
                     $row['date'],

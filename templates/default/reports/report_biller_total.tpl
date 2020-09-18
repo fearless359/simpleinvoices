@@ -13,7 +13,7 @@
 		</tr>
 	</tfoot>
 	<tbody>
-	{foreach item=biller from=$data}
+	{foreach $data as $biller}
 		<tr class="tr_{cycle values="A,B"}">
 			<td>{$biller.name|htmlSafe}</td>
 			<td>{$biller.sum_total|utilNumber:2|default:'-'}</td>

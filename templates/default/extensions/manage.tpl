@@ -12,7 +12,7 @@
  *      GPL v3 or above
  *}
 {if $number_of_rows == 0}
-    <p><em>No extensions registered</em></p>
+    <p><em>{$LANG.no_uc} {$LANG.extensons} {$LANG.registered}</em></p>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>

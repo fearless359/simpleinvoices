@@ -6,7 +6,7 @@
         <div class="si_wrap">
             <!-- SECTION:help -->
             {$LANG.hello} {$smarty.session.username|htmlSafe} |
-            <a href="index.php?module=si_info&amp;view=index">{$LANG.about}</a> |
+            <a href="index.php?module=si_info&amp;view=index">{$LANG.aboutUc}</a> |
             <a href="https://simpleinvoices.group" target="_blank" style="color:white;" title="SimpleInvoices Group">{$LANG.help}</a>
             <!-- SECTION:auth -->
             {if $config.authenticationEnabled == $smarty.const.ENABLED} |
@@ -31,7 +31,7 @@
         <li><a href="#product"><span>{$LANG.products}</span></a></li>
         <!-- SECTION:tabs -->
         {$smarty.capture.hook_tabmenu_main_end}
-        <li id="si_tab_settings"><a href="#setting"><span>{$LANG.settings}</span></a></li>
+        <li id="si_tab_settings"><a href="#setting"><span>{$LANG.settingsUc}</span></a></li>
     </ul>
     <!-- SECTION:home -->
     <div id="home">
@@ -178,7 +178,7 @@
             <!-- SECTION:customizeSettings -->
             <li><a {if isset($pageActive) && $pageActive== "setting"}class="active" {/if}href="index.php?module=options&amp;view=index">{$LANG.customizeSettings}</a></li>
             {if isset($subPageActive) && $subPageActive == "setting_extensions"}
-                <li><a class="active active_subpage" href="#">{$LANG.extensions}</a></li>{/if}
+                <li><a class="active active_subpage" href="#">{$LANG.extensionsUc}</a></li>{/if}
             <!-- SECTION:db_backup -->
             <li><a {if isset($pageActive) && $pageActive== "backup"}class="active" {/if}href="index.php?module=options&amp;view=backup_database">{$LANG.db_backup}</a></li>
             <!-- SECTION:invoice_prefs -->

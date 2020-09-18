@@ -73,7 +73,7 @@
             <b>{$LANG.status}</b>
         </td>
 	</tr>
- {foreach item=account from=$accounts}
+ {foreach $accounts as $account}
     <tr>
         <td class="details_screen">
             {$account.account}
@@ -228,7 +228,7 @@
             <b>{$LANG.amount_uc}</b>
         </td>
 	</tr>
- {foreach item=payment from=$payments}
+ {foreach $payments as $payment}
     <tr>
         <td class="details_screen">
             {$payment.id}

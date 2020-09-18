@@ -23,9 +23,7 @@
 
 #all
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Σχετικά";//1
+$LANG['aboutUc'] = "Σχετικά";//1
 $LANG['account_info'] = "Πληροφορίες Λογαριασμών";//1
 $LANG['actions'] = "Ενέργειες";//1
 $LANG['add'] = "Add";//0
@@ -153,7 +151,7 @@ $LANG['deleted'] = "έχει διαγραφεί";//1
 $LANG['denied_page'] = "You are not allowed to view this page";//0
 $LANG['description_uc'] = "Περιγραφή";//1
 $LANG['description_short'] = "Desc";//0
-$LANG['details'] = "Στοιχεία";//1
+$LANG['detailsUc'] = "Στοιχεία";//1
 $LANG['disable'] = "Ανενεργό";//1
 $LANG['disabled'] = "Ανενεργό";//1
 $LANG['displaying_inv'] = "Προβολή Τιμολογίων";//1
@@ -189,7 +187,7 @@ $LANG['export_pdf_tooltip'] = "Εξαγωγή σε Adobe";//1
 $LANG['export_tooltip'] = "Εξαγωγή";//1
 $LANG['export_xls'] = "Export to XLS";//0
 $LANG['export_xls_tooltip'] = "Εξαγωγή σε Excel";//1
-$LANG['extensions'] = "Extensions";//0
+$LANG['extensionsUc'] = "Extensions";//0
 $LANG['faqs'] = "Συχνές Ερωτήσεις";//1
 $LANG['faqs_how'] = "Συχνές Ερωτήσεις - πως;";//1
 $LANG['faqs_need'] = "Συχνές Ερωτήσεις - τί χρειάζομαι";//1
@@ -277,7 +275,7 @@ $LANG['insert_product'] = "Εισαγωγή Προϊόντος";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Εισαγωγή Φορολογικού Συντελεστή";//1
-$LANG['installation'] = "Εγκατάσταση";//1
+$LANG['installationUc'] = "Εγκατάσταση";//1
 $LANG['inv'] = "Τιμολόγιο";//1
 $LANG['inv_consulting'] = "Παροχής Υπηρεσιών";//1
 $LANG['inv_itemized'] = "Πώλησης Ειδών";//1
@@ -383,7 +381,7 @@ $LANG['online_payment_id'] = "Αριθμός online πληρωμής";//1
 $LANG['open'] = "Άνοιγμα";//1
 $LANG['optional'] = "Προαιρετικά";//1
 $LANG['options'] = "Επιλογές";//1
-$LANG['other'] = "Other";//0
+$LANG['otherUc'] = "Other";//0
 $LANG['owing_uc'] = "Υπόλοιπο";//1
 $LANG['page'] = "Σελίδα";//1
 $LANG['paid'] = "Πληρωμή";//1
@@ -471,7 +469,7 @@ $LANG['run_report'] = "Εκτέλεση αναφοράς";//1
 $LANG['sales'] = "Πωλήσεις";//1
 $LANG['sales_by_customers'] = "Πωλήσεις ανά Πελάτη";//1
 $LANG['sales_report'] = "Αναφορές";//1
-$LANG['sanity_check'] = "Προσεκτικός Έλεγχος";//1
+$LANG['sanityCheck'] = "Προσεκτικός Έλεγχος";//1
 $LANG['save'] = "Αποθήκευση";//1
 $LANG['save_biller'] = "Αποθήκευση Πωλητή";//1
 $LANG['save_biller_failure'] = "Αποτυχής Αποθήκευση Πωλητή";//1
@@ -513,7 +511,7 @@ $LANG['save_tax_rate_success'] = "Επιτυχής Αποθήκευση Φορο
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//0
 $LANG['select_invoice'] = "Επιλογή Τιμολογίου";//1
-$LANG['settings'] = "Ρυθμίσεις";//1
+$LANG['settingsUc'] = "Ρυθμίσεις";//1
 $LANG['setup_add_customer'] = "Προσθήκη πελάτη, κλικ";//1
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Πρόσθεσε λίγα προιόντα , κλικ";//1

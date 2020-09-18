@@ -6,7 +6,7 @@
                 <a class="but_show_rates si_button_mini" href="#">%</a>
             {/if}
         </th>
-        {foreach item=year from=$years}
+        {foreach $years as $year}
             <th><b>{if isset($year)}{$year|htmlSafe}{/if}</b></th>
             {if $show_rates}
                 <th class="rate"></th>
@@ -15,10 +15,10 @@
     </tr>
     </thead>
     <tbody>
-    {foreach key=month item=amount from=$this_data.months}
+    {foreach $this_data.months as $month => $amount}
         <tr class="tr_{cycle values="A,B"}">
             <th>{"2000-$month-01"|utilDate:'month'|htmlSafe|ucfirst}</th>
-            {foreach item=year from=$years}
+            {foreach $years as $year}
                 <td>{$amount.$year|utilNumber:0|default:'-'}</td>
                 {if $show_rates}
                     <td class="rate{if $this_data.months_rate.$month.$year < 0} neg_rate{/if}">
@@ -34,7 +34,7 @@
     <tfoot>
     <tr>
         <th>{$LANG.total}</th>
-        {foreach item=year from=$years}
+        {foreach $years as $year}
             <td>{$this_data.total.$year|utilNumber:0|default:'-'}</td>
             {if $show_rates}
                 <td class="rate{if $this_data.total_rate.$year < 0} neg_rate{/if}">

@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "&Agrave;-propos";//1
+$LANG['aboutUc'] = "&Agrave;-propos";//1
 $LANG['account_info'] = "Informations sur le compte";//1
 $LANG['actions'] = "Actions";//1
 $LANG['add'] = "Ajouter";//1
@@ -154,7 +152,7 @@ $LANG['deleted'] = "a été supprimé";//1
 $LANG['denied_page'] = "Vous n'&ecirc;tes pas autoris&eacute; &agrave; voir cette page";//1
 $LANG['description_uc'] = "Description";//1
 $LANG['description_short'] = "Description";//1
-$LANG['details'] = "Notes";//1
+$LANG['detailsUc'] = "Notes";//1
 $LANG['disable'] = "Inactif";//1
 $LANG['disabled'] = "Inactif";//1
 $LANG['displaying_inv'] = "Voir les factures";//1
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "au format PDF";//1
 $LANG['export_tooltip'] = "Export";//1
 $LANG['export_xls'] = "Exporter sous XLS";//1
 $LANG['export_xls_tooltip'] = "vers feuille de calcul";//1
-$LANG['extensions'] = "Extensions";//1
+$LANG['extensionsUc'] = "Extensions";//1
 $LANG['faqs'] = "FAQ";//1
 $LANG['faqs_how'] = "Comment cr&eacute;er des factures&nbsp;?";//1
 $LANG['faqs_need'] = "Pr&eacute;-requis pour utiliser SimpleInvoices";//1
@@ -278,7 +276,7 @@ $LANG['insert_product'] = "Ins&eacute;rer un nouveau Produit";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Nouvelle taxe";//1
-$LANG['installation'] = "Installation";//1
+$LANG['installationUc'] = "Installation";//1
 $LANG['inv'] = "Facture";//1
 $LANG['inv_consulting'] = " - Texte";//1
 $LANG['inv_itemized'] = " - d&eacute;taill&eacute;e";//1
@@ -384,7 +382,7 @@ $LANG['online_payment_id'] = "ID du paiement en ligne";//1
 $LANG['open'] = "Ouvert";//1
 $LANG['optional'] = "optionnel";//1
 $LANG['options'] = "options";//1
-$LANG['other'] = "Autre";//1
+$LANG['otherUc'] = "Autre";//1
 $LANG['owing_uc'] = "D&ucirc;";//1
 $LANG['page'] = "Page";//0
 $LANG['paid'] = "Pay&eacute;";//1
@@ -472,7 +470,7 @@ $LANG['run_report'] = "Vos rapports";//1
 $LANG['sales'] = "Ventes";//1
 $LANG['sales_by_customers'] = "Ventes par client";//1
 $LANG['sales_report'] = "Ventes";//1
-$LANG['sanity_check'] = "V&eacute;rifier les factures";//1
+$LANG['sanityCheck'] = "V&eacute;rifier les factures";//1
 $LANG['save'] = "Enregistrer";//1
 $LANG['save_biller'] = "Enregistrer un vendeur";//1
 $LANG['save_biller_failure'] = "Une erreur s'est produite, essayer svp de sauvegarder une nouvelle fois le vendeur<br />";//1
@@ -514,7 +512,7 @@ $LANG['save_tax_rate_success'] = "Taux enregistr&eacute; avec succ&egrave;s, <br
 $LANG['save_user_failure'] = "Une erreur inconnue s'est produite, <br />veuillez r&eacute;essayer";//1
 $LANG['save_user_success'] = "Utilisateur sauvegard&eacute; avec succ&egrave;, <br /> vous aller &ecirc;tre redirig&eacute; vers la page du sommaire des utilisateurs";//1
 $LANG['select_invoice'] = "S&eacute;lectionner une facture";//1
-$LANG['settings'] = "Param&egrave;tres";//1
+$LANG['settingsUc'] = "Param&egrave;tres";//1
 $LANG['setup_add_customer'] = "Ajoutez un client, cliquez";//1
 $LANG['setup_add_inv_pref'] = "Ajoutez une préférence de facture, cliquez";//1
 $LANG['setup_add_products'] = "Ajoutez quelques produits, cliquez";//1

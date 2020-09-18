@@ -17,7 +17,7 @@
 <!--suppress HtmlFormInputWithoutLabel, HtmlUnknownTag -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=invoices&amp;view=save">
-    <h3>{$LANG.inv} {$LANG.inv_consulting}</h3>
+    <h3>{$LANG.invoice_uc} {$LANG.inv_consulting}</h3>
     {include file="$path/header.tpl" }
     <tr>
         <td class="details_screen">{$LANG.quantity}</td>
@@ -58,7 +58,7 @@
                 <p><em>{$LANG.no_taxes}</em></p>
             {else}
                 <select name="tax_id">
-                    {foreach from=$taxes item=tax}
+                    {foreach $taxes as $tax}
                         <option {if $tax.tax_id == $defaults.tax} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}">{$tax.tax_description|htmlSafe}</option>
                     {/foreach}
                 </select>
@@ -72,7 +72,7 @@
                 <p><em>{$LANG.no_preferences}</em></p>
             {else}
                 <select name="preference_id">
-                    {foreach from=$preferences item=preference}
+                    {foreach $preferences as $preference}
                         <option {if $preference.pref_id == $defaults.preference} selected {/if} value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">{$preference.pref_description|htmlSafe}</option>
                     {/foreach}
                 </select>

@@ -87,6 +87,10 @@ class SiAcl
                 'administrator',
                 'domain_administrator'
             ],
+            'report_sales_by_periods' => [
+                'administrator',
+                'domain_administrator'
+            ],
             'report_sales_by_representative' => [
                 'administrator',
                 'domain_administrator'
@@ -185,11 +189,19 @@ class SiAcl
                     'administrator',
                     'domain_administrator'
                 ],
+                'edit' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
                 'manage' => [
                     'administrator',
                     'domain_administrator'
                 ],
                 'run' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -300,13 +312,23 @@ class SiAcl
                 ]
             ],
             'export' => [
-                'invoices' => [
+                'invoice' => [
                     'administrator',
-                    'domain_administrator'
+                    'domain_administrator',
+                    'biller',
+                    'customer'
                 ]
             ],
             'extensions' => [
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'register' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ]
@@ -351,6 +373,10 @@ class SiAcl
                     'domain_administrator',
                     'biller'
                 ],
+                'delete' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
                 'edit' => [
                     'administrator',
                     'domain_administrator',
@@ -379,7 +405,17 @@ class SiAcl
                     'biller',
                     'customer'
                 ],
+                'product_ajax' => [
+                    'administrator',
+                    'domain_administrator',
+                    'biller',
+                ],
                 'save' => [
+                    'administrator',
+                    'domain_administrator',
+                    'biller',
+                ],
+                'total' => [
                     'administrator',
                     'domain_administrator',
                     'biller',
@@ -505,11 +541,15 @@ class SiAcl
                     'administrator',
                     'domain_administrator'
                 ],
-                'details' => [
+                'edit' => [
                     'administrator',
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -537,6 +577,10 @@ class SiAcl
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ]

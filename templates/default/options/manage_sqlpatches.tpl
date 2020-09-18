@@ -17,10 +17,8 @@
 */
 *}
 
-<h3>Database patches applied to SimpleInvoices</h3>
+<h3>{$LANG.databaseUc} {$LANG.patches} {$LANG.applied} {$LANG.to} {$LANG.simpleInvoices}</h3>
 <hr />
-
-
 	<table class="manage" id="live-grid" class="center">
 	<colgroup>
 		<col style='width:20%;' />
@@ -29,20 +27,16 @@
 	</colgroup>
 	<thead>
 	<tr>
-		<th class="sortable">Patch ID</th>
-		<th class="sortable">Description</th>
-		<th class="sortable">Release</th>
+		<th class="sortable">{$LANG.patchUc} {$LANG.id}</th>
+		<th class="sortable">{$LANG.description_uc}</th>
+		<th class="sortable">{$LANG.releaseUc}</th>
 	</tr>
 	</thead>
-
-{foreach from=$patches item=patch} 
-	<tr>
-		<td class='index_table'>{$patch.sql_patch_ref|htmlSafe}</td>
-		<td class='index_table'>{$patch.sql_patch|htmlSafe|nl2br}</td>
-		<td class='index_table'>{$patch.sql_release|htmlSafe}</td>
-	</tr>
-
-{/foreach}
-		
-
+	{foreach $patches as $patch}
+		<tr>
+			<td class='index_table'>{$patch.sql_patch_ref|htmlSafe}</td>
+			<td class='index_table'>{$patch.sql_patch|htmlSafe|nl2br}</td>
+			<td class='index_table'>{$patch.sql_release|htmlSafe}</td>
+		</tr>
+	{/foreach}
 </table>

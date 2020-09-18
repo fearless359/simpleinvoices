@@ -14,13 +14,13 @@ $displayBlock = "<div class=\"si_message_error\">{$LANG['failure']}</div>";
 
 if ($_POST['action'] == "register") {
     if (Extensions::insert() > 0) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['processedSuccessfully']}</div>";
     }
 } elseif ($_POST['action'] == "unregister") {
     $extensionId = $_POST['id'];
     if (Extensions::delete($extensionId)) {
         if (SystemDefaults::delete($extensionId)) {
-            $displayBlock = "<div class=\"si_message_ok\">{$LANG['success']}</div>";
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['processedSuccessfully']}</div>";
         }
     }
 }

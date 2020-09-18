@@ -21,9 +21,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Om";//1
+$LANG['aboutUc'] = "Om";//1
 $LANG['account_info'] = "Kontoinformasjon";//1
 $LANG['actions'] = "Valg";//1
 $LANG['add'] = "Legg til";//1
@@ -151,7 +149,7 @@ $LANG['deleted'] = "er blit slettet";//1
 $LANG['denied_page'] = "Du har ingen tillatelse til å lese denne siden.";//1
 $LANG['description_uc'] = "Beskrivelse";//1
 $LANG['description_short'] = "Beskrivelse";//1
-$LANG['details'] = "Detaljer";//1
+$LANG['detailsUc'] = "Detaljer";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Deaktivert";//1
 $LANG['displaying_inv'] = "Viser fakturaer";//1
@@ -187,7 +185,7 @@ $LANG['export_pdf_tooltip'] = "som PDF format";//1
 $LANG['export_tooltip'] = "Eksport";//1
 $LANG['export_xls'] = "Eksporter til XLS";//1
 $LANG['export_xls_tooltip'] = "til et regneark som";//1
-$LANG['extensions'] = "Extensions";//1
+$LANG['extensionsUc'] = "Extensions";//1
 $LANG['faqs'] = "Frequently Asked Questions";//1
 $LANG['faqs_how'] = "Hvordan oppretter jeg fakturaer?";//1
 $LANG['faqs_need'] = "Hva trenger jeg for å starte faktureringen?";//1
@@ -275,7 +273,7 @@ $LANG['insert_product'] = "Sett inn produkt";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Sett inn avgiftsklasse";//1
-$LANG['installation'] = "Installasjon";//1
+$LANG['installationUc'] = "Installasjon";//1
 $LANG['inv'] = "Faktura";//1
 $LANG['inv_consulting'] = " - Konsultasjon";//1
 $LANG['inv_itemized'] = " - Artikkel";//1
@@ -381,7 +379,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//0
 $LANG['open'] = "Åpne";//1
 $LANG['optional'] = "valgfritt";//1
 $LANG['options'] = "Valg";//1
-$LANG['other'] = "Andre";//1
+$LANG['otherUc'] = "Andre";//1
 $LANG['owing_uc'] = "Skylder";//1
 $LANG['page'] = "Side";//1
 $LANG['paid'] = "Betalt";//1
@@ -469,7 +467,7 @@ $LANG['run_report'] = "Run report";//0
 $LANG['sales'] = "Salg";//1
 $LANG['sales_by_customers'] = "Salg etter kunde";//1
 $LANG['sales_report'] = "Salgsrapport";//1
-$LANG['sanity_check'] = "Sanity sjekk av fakturaer";//1
+$LANG['sanityCheck'] = "Sanity sjekk av fakturaer";//1
 $LANG['save'] = "Lagre";//1
 $LANG['save_biller'] = "Lagre operatør";//1
 $LANG['save_biller_failure'] = "En feil oppstod, vennligst prøv å lagre operatøren på nytt<br />";//1
@@ -511,7 +509,7 @@ $LANG['save_tax_rate_success'] = "Avgiftsklasse lagret uten problem, <br /> du v
 $LANG['save_user_failure'] = "En feil oppstod, vennligst prøv å lagre bruker på nytt<br />";//1
 $LANG['save_user_success'] = "Bruker ble lagret uten problem, <br /> du vil bli videresent til siden for håndtering av brukere.";//1
 $LANG['select_invoice'] = "Vennligst velg en faktura";//1
-$LANG['settings'] = "Instillinger";//1
+$LANG['settingsUc'] = "Instillinger";//1
 $LANG['setup_add_customer'] = "Legg til en kunde, trykk ";//1
 $LANG['setup_add_inv_pref'] = "Legg til en fakturapreferanse, trykk ";//1
 $LANG['setup_add_products'] = "Legg til produkter, trykk ";//1

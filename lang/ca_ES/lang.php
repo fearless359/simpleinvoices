@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "En quan a";//1
+$LANG['aboutUc'] = "En quan a";//1
 $LANG['account_info'] = "Informaci&oacute; compte";//1
 $LANG['actions'] = "Accions";//1
 $LANG['add'] = "Add";//0
@@ -154,7 +152,7 @@ $LANG['deleted'] = "has been deleted";//0
 $LANG['denied_page'] = "You are not allowed to view this page";//0
 $LANG['description_uc'] = "Descripci&oacute;";//1
 $LANG['description_short'] = "Desc";//0
-$LANG['details'] = "detalls";//1
+$LANG['detailsUc'] = "detalls";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Deshabilitat";//1
 $LANG['displaying_inv'] = "Displaying invoices";//0
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "a format PDF";//1
 $LANG['export_tooltip'] = "Exportar";//1
 $LANG['export_xls'] = "Export to XLS";//0
 $LANG['export_xls_tooltip'] = "a format EXCEL";//1
-$LANG['extensions'] = "Extensions";//0
+$LANG['extensionsUc'] = "Extensions";//0
 $LANG['faqs'] = "Preguntes M&eacute;s Freq&uuml;ents";//1
 $LANG['faqs_how'] = "Com es creen factures?";//1
 $LANG['faqs_need'] = "Qu&egrave; necessito per facturar?";//1
@@ -278,7 +276,7 @@ $LANG['insert_product'] = "Inserir Producte";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Inserir Tarifa Impost";//1
-$LANG['installation'] = "Instal·laci&oacute;";//1
+$LANG['installationUc'] = "Instal·laci&oacute;";//1
 $LANG['inv'] = "Factura";//1
 $LANG['inv_consulting'] = " - An&agrave;lisi";//1
 $LANG['inv_itemized'] = " - Detallat";//1
@@ -384,7 +382,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//0
 $LANG['open'] = "Open";//0
 $LANG['optional'] = "opcional";//1
 $LANG['options'] = "Opcions";//1
-$LANG['other'] = "Other";//0
+$LANG['otherUc'] = "Other";//0
 $LANG['owing_uc'] = "Deu";//1
 $LANG['page'] = "Page";//0
 $LANG['paid'] = "Pagat";//1
@@ -472,7 +470,7 @@ $LANG['run_report'] = "Run report";//0
 $LANG['sales'] = "Vendes";//1
 $LANG['sales_by_customers'] = "Vendes per clients";//1
 $LANG['sales_report'] = "Sales Report";//0
-$LANG['sanity_check'] = "Neteja i testeig BD de factures";//1
+$LANG['sanityCheck'] = "Neteja i testeig BD de factures";//1
 $LANG['save'] = "Salvar";//1
 $LANG['save_biller'] = "Salvar Facturador";//1
 $LANG['save_biller_failure'] = "Quelcom ha anat malament, intenti salvar al facturador una altra vegada<br />";//1
@@ -514,7 +512,7 @@ $LANG['save_tax_rate_success'] = "Impost de tarifes salvat, <br /> es redirigir&
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//0
 $LANG['select_invoice'] = "Sis plau seleccioni una factura";//1
-$LANG['settings'] = "Configuración";//1
+$LANG['settingsUc'] = "Configuración";//1
 $LANG['setup_add_customer'] = "Add a customer, click ";//0
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Add some products, click ";//0

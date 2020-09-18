@@ -35,10 +35,10 @@
                     <em>{$LANG.no_products}</em>
                 {else}
                     <select id="products{$line|htmlSafe}" name="products{$line|htmlSafe}"
-                            class="product_change{if $line == 0} validate[required]{/if}"
+                            class="si_input product_change{if $line == 0} validate[required]{/if}"
                             data-row-num="{$line|htmlSafe}" data-description="{$LANG.description_uc}">
                         <option value=""></option>
-                        {foreach from=$products item=product}
+                        {foreach $products as $product}
                             <option value="{if isset($product.id)}{$product.id|htmlSafe}{/if}"
                                 {if isset($defaultInvoiceItems[$line].product_id) &&
                                     $product.id == $defaultInvoiceItems[$line].product_id}selected{/if}>
@@ -55,7 +55,7 @@
                             name="tax_id[{$line|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
                             data-row-num="{$line|htmlSafe}" >
                         <option value=""></option>
-                        {foreach from=$taxes item=tax}
+                        {foreach $taxes as $tax}
                             <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}"
                                     {if isset($defaultInvoiceItems[$line].tax[$taxNumber]) &&
                                         $tax.tax_id == $defaultInvoiceItems[$line].tax[$taxNumber]}selected{/if}>{$tax.tax_description|htmlSafe}</option>

@@ -39,10 +39,9 @@
                     {if !isset($products) }
                         <p><em>{$LANG.no_products}</em></p>
                     {else}
-                        <select name="product1"
-                                onchange="invoice_product_change_price($(this).val(), 1, jQuery('#quantity1').val() );">
+                        <select name="product1" class="si_input product_change">
                             <option value=""></option>
-                            {foreach from=$products item=product}
+                            {foreach $products as $product}
                                 <option {if $product.id == $defaults.product} selected {/if} value="{if isset($product.id)}{$product.id|htmlSafe}{/if}">
                                     {$product.description|htmlSafe}
                                 </option>

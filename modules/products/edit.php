@@ -18,7 +18,7 @@ $product['attribute_decode'] = json_decode($product['attribute'],true);
 
 $smarty->assign('product'         , $product);
 $smarty->assign('taxes'           , Taxes::getActiveTaxes());
-error_log("product: " . print_r($product, true));
+
 $smarty->assign('tax_selected'    , empty($product['default_tax_id']) ? "" :Taxes::getOne($product['default_tax_id']));
 $smarty->assign('customFieldLabel', CustomFields::getLabels(true));
 $smarty->assign('cflgs'           , CustomFlags::getCustomFlagsQualified('products', true));

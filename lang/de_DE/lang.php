@@ -25,9 +25,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Über";//1
+$LANG['aboutUc'] = "Über";//1
 $LANG['account_info'] = "Konto-Information";//1
 $LANG['actions'] = "Aktion";//1
 $LANG['add'] = "Hinzufügen";//1
@@ -155,7 +153,7 @@ $LANG['deleted'] = "wurde gelöscht";//1
 $LANG['denied_page'] = "Sie haben nicht die Berechtigung diese Seite zu betreten";//1
 $LANG['description_uc'] = "Beschreibung";//1
 $LANG['description_short'] = "Beschr.";//1
-$LANG['details'] = "Details";//1
+$LANG['detailsUc'] = "Details";//1
 $LANG['disable'] = "Deaktivieren";//1
 $LANG['disabled'] = "Deaktiviert";//1
 $LANG['displaying_inv'] = "Rechnungen anzeigen";//1
@@ -191,7 +189,7 @@ $LANG['export_pdf_tooltip'] = "als PDF-Format";//1
 $LANG['export_tooltip'] = "Exportiere";//1
 $LANG['export_xls'] = "Exportiere als XLS";//1
 $LANG['export_xls_tooltip'] = "zu einer Tabellenkalkulation als";//1
-$LANG['extensions'] = "Erweiterungen";//1
+$LANG['extensionsUc'] = "Erweiterungen";//1
 $LANG['faqs'] = "Häufig gestellte Fragen";//1
 $LANG['faqs_how'] ="Wie erstelle ich eine Rechnung?";//1
 $LANG['faqs_need'] ="Was wird benötigt, um mit der Rechnungserstellung starten zu können?";//1
@@ -279,7 +277,7 @@ $LANG['insert_product'] = "Produkt hinzufügen";//1
 $LANG['insert_product_attribute'] = "Produktattribute hinzufügen";//1
 $LANG['insert_product_value'] = "Produktwerte hinzufügen";//1
 $LANG['insert_tax_rate'] = "Steuersatz hinzufügen";//1
-$LANG['installation'] = "Installation";//1
+$LANG['installationUc'] = "Installation";//1
 $LANG['inv'] = "Rechnung";//1
 $LANG['inv_consulting'] = " - Beratung";//1
 $LANG['inv_itemized'] = " - Positionsbasiert";//1
@@ -385,7 +383,7 @@ $LANG['online_payment_id'] = "Online Zahlungs-ID";//1
 $LANG['open'] = "Offen";//1
 $LANG['optional'] = "optional";//1
 $LANG['options'] = "Optionen";//1
-$LANG['other'] = "Andere";//1
+$LANG['otherUc'] = "Andere";//1
 $LANG['owing_uc'] = "Schuldend";//1
 $LANG['page'] = "Seite";//1
 $LANG['paid'] = "Bezahlt";//1
@@ -473,7 +471,7 @@ $LANG['run_report'] = "Bericht erstellen";//1
 $LANG['sales'] = "Verkäufe";//1
 $LANG['sales_by_customers'] = "Verkäufe nach Kunden";//1
 $LANG['sales_report'] = "Verkaufsbericht";//1
-$LANG['sanity_check'] = "Konsistenzprüfung der Rechnungen";//1
+$LANG['sanityCheck'] = "Konsistenzprüfung der Rechnungen";//1
 $LANG['save'] = "Speichern";//1
 $LANG['save_biller'] = "Gläubiger speichern";//1
 $LANG['save_biller_failure'] = "Ein Fehler ist aufgetreten, bitte Gläubiger erneut versuchen zu sichern<br />";//1
@@ -515,7 +513,7 @@ $LANG['save_tax_rate_success'] = "Steuersatz erfolgreich gespeichert, <br /> zur
 $LANG['save_user_failure'] = "Es ist ein Fehler aufgetreten, bitte versuchen Sie erneut den Benutzer zu speichern<br />";//1
 $LANG['save_user_success'] = "Benutzer erfolgreich gespeichert<br />Sie werden zur Seite 'Benutzer verwalten' zurückgeleitet.";//1
 $LANG['select_invoice'] = "Bitte eine Rechnung auswählen ";//1
-$LANG['settings'] = "Einstellungen";//1
+$LANG['settingsUc'] = "Einstellungen";//1
 $LANG['setup_add_customer'] = "Kunden hinzufügen, klicken";//1
 $LANG['setup_add_inv_pref'] = "Eine Rechnungspräferenzen hinzufügen, klicken";//1
 $LANG['setup_add_products'] = "Einige Produkte hinzufügen, klicken";//1

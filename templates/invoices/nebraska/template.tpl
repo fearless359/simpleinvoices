@@ -173,16 +173,34 @@
                </tr>
             </thead>
             <tbody>
-               {* Invoice Type 2 or Type 3 - Itemized, formerly Type 2 and 3 were the same info merely displayed in slightly different order *} {if ($invoice.type_id == 2) || ($invoice.type_id == 3) } {foreach from=$invoiceItems item=invoiceItem key=index name=foo}
-               <tr class="clean left bleft">
-                  <td class="clean center bleft">{$smarty.foreach.foo.iteration}</td>
-                  <td class="clean left bleft">{$invoiceItem.product.description|htmlSafe} {if $invoiceItem.description != null} {$invoiceItem.description|htmlSafe} {/if} {if $invoiceItem.product.custom_field1 != null} {$customFieldLabels.product_cf1}: {$invoiceItem.product.custom_field1|htmlSafe} {/if} {if $invoiceItem.product.custom_field2 != null} {$customFieldLabels.product_cf2}: {$invoiceItem.product.custom_field2|htmlSafe} {/if} {if $invoiceItem.product.custom_field3 != null} {$customFieldLabels.product_cf3}: {$invoiceItem.product.custom_field3|htmlSafe} {/if} {if $invoiceItem.product.custom_field4 != null} {$customFieldLabels.product_cf4}: {$invoiceItem.product.custom_field4|htmlSafe} {/if}</td>
-                  <td class="clean center bleft">{$LANG.um_buc}</td>
-                  <td class="clean center bleft">{$invoiceItem.quantity|utilNumberTrim}</td>
-                  <td class="clean center bleft">{$invoiceItem.unit_price|utilNumber} {$preference.pref_currency_sign}</td>
-                  <td class="clean center bleft">{$invoiceItem.gross_total|utilNumber} {$preference.pref_currency_sign}</td>
-               </tr>
-               {/foreach} {/if}
+               {* Invoice Type 2 or Type 3 - Itemized, formerly Type 2 and 3 were the same info merely displayed in slightly different order *}
+               {if ($invoice.type_id == 2) || ($invoice.type_id == 3)}
+                  {foreach $invoiceItems as $index => $invoiceItem}
+                     <tr class="clean left bleft">
+                        <td class="clean center bleft">{$invoiceItem@iteration}</td>
+                        <td class="clean left bleft">
+                           {$invoiceItem.product.description|htmlSafe}
+                           {if $invoiceItem.description != null}{$invoiceItem.description|htmlSafe}{/if}
+                           {if $invoiceItem.product.custom_field1 != null}
+                              {$customFieldLabels.product_cf1}: {$invoiceItem.product.custom_field1|htmlSafe}
+                           {/if}
+                           {if $invoiceItem.product.custom_field2 != null}
+                              {$customFieldLabels.product_cf2}: {$invoiceItem.product.custom_field2|htmlSafe}
+                           {/if}
+                           {if $invoiceItem.product.custom_field3 != null}
+                              {$customFieldLabels.product_cf3}: {$invoiceItem.product.custom_field3|htmlSafe}
+                           {/if}
+                           {if $invoiceItem.product.custom_field4 != null}
+                              {$customFieldLabels.product_cf4}: {$invoiceItem.product.custom_field4|htmlSafe}
+                           {/if}
+                        </td>
+                        <td class="clean center bleft">{$LANG.um_buc}</td>
+                        <td class="clean center bleft">{$invoiceItem.quantity|utilNumberTrim}</td>
+                        <td class="clean center bleft">{$invoiceItem.unit_price|utilNumber} {$preference.pref_currency_sign}</td>
+                        <td class="clean center bleft">{$invoiceItem.gross_total|utilNumber} {$preference.pref_currency_sign}</td>
+                     </tr>
+                  {/foreach}
+               {/if}
                <tr>
                   <td class="clean left bleft" rowspan="3" colspan="2" style='font-weight:bold'>{if $preference.pref_inv_detail_line != null}{$preference.pref_inv_detail_line|outHtml}{/if}</td>
                   <td class="clean left bleft" colspan="2">Intocmit de Cristian Sava <br>

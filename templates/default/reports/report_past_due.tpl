@@ -1,6 +1,6 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <h1 style="position: relative; margin: 0 auto; text-align: center;">
-  30 {$LANG['days_uc']} {$LANG['or']} {$LANG['more']} {$LANG['past_due_report']}
+  30 {$LANG['days_uc']} {$LANG['orLc']} {$LANG['more']} {$LANG['past_due_report']}
 </h1>
 <hr />
 <form name="frmpost" method="POST" id="frmpost"
@@ -43,8 +43,8 @@
     </tr>
   </thead>
   <tbody>
-  {foreach name=loop1 item=info1 from=$cust_info}
-    {foreach name=loop2 item=info2 key=key2 from=$info1}
+  {foreach $cust_info as $info1}
+    {foreach $info1 as $key2 => $info2}
       {if     $key2=='name'      }{assign var=name    value=$info2}
       {elseif $key2=='fmtdBilled'}{assign var=billed  value=$info2}
       {elseif $key2=='fmtdPaid'  }{assign var=paid    value=$info2}
@@ -66,8 +66,8 @@
       {/if}
     </tr>
     {if isset($smarty.post.display_detail) && $smarty.post.display_detail == 'yes'}
-      {foreach name=loop2 item=info2 from=$invInfo}
-        {foreach name=loop3 item=info3 key=key3 from=$info2}
+      {foreach $invInfo as $info2}
+        {foreach $info2 as $key3 => $info3}
           {if     $key3=='id'        }{assign var=id       value=$info3}
           {elseif $key3=='indexId'   }{assign var=index_id value=$info3}
           {elseif $key3=='fmtdBilled'}{assign var=billed   value=$info3}

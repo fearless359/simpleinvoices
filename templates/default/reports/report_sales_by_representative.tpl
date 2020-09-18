@@ -3,14 +3,14 @@
 {if $menu}
     <div class="welcome">
         <form name="frmpost" method="POST" id="frmpost"
-              action="index.php?module=reports&amp;view=report_Sales by Representative">
+              action="index.php?module=reports&amp;view=report_sales_by_representative">
             <table class="center">
                 <tr>
                     <th>{$LANG.sales_representative}</th>
                     <td>
                         <select name="sales_rep">
                             <option value="">{$LANG.unassigned}</option>
-                            {foreach from=$sales_reps item=list_sales_rep}
+                            {foreach $sales_reps as $list_sales_rep}
                                 <option {if $list_sales_rep == $sales_rep}selected{/if}
                                         value="{if isset($list_sales_rep)}{$list_sales_rep}{/if}">
                                     {$list_sales_rep}

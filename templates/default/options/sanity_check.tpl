@@ -16,8 +16,10 @@
 *	https://simpleinvoices.group*/
 *}
 
-<b>Sanity check of the invoices</b>
+<b>{$LANG.sanity_check}</b>
 <hr />
-       <div id="left">
-<br />
-This feature is still a work-in-progress, please refer to our homepage: <a href='https://simpleinvoices.group'>SimpleInvoices Group</a> for update.
+<div id="left">
+   <br />
+   {$LANG.thisUc} {$LANG.feature} {$LANG.is} {$LANG.still} {$LANG.a} {$LANG.workInProgress},
+   {$LANG.please} {$LANG.refer} {$LANG.to} {$LANG.our} {$LANG.homepage}:
+   <a href='https://simpleinvoices.group'>{$LANG.simpleInvoicesGroup}</a> {$LANG.for} {$LANG.update}.

@@ -14,7 +14,7 @@
 
         <a href="index.php?module=extensions&amp;view=manage" class="" tabindex="30">
             <img src="../../../images/brick_edit.png" alt=""/>
-            {$LANG.extensions}
+            {$LANG.extensionsUc}
         </a>
 
         <a href="index.php?module=system_defaults&amp;view=manage" class="" tabindex="40">

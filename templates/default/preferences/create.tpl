@@ -195,7 +195,7 @@
                         {else}
                             <select name="index_group" class="si_input" tabindex="150">
                                 <option value="">{$LANG.use_this_pref}</option>
-                                {foreach from=$preferences item=preference}
+                                {foreach $preferences as $preference}
                                     <option {if $preference.pref_id == $defaults.preference} selected {/if}
                                             value="{$preference.pref_id|htmlSafe}">{$preference.pref_description|htmlSafe} ({$preference.pref_id|htmlSafe})
                                     </option>

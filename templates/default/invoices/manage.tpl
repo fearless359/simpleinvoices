@@ -77,7 +77,7 @@
                 <img src="images/page_white_word.png" alt=""/>
                 {$LANG.export_doc}
             </a>
-            <button id="webDialogClose">Close</button>
+            <button id="webDialogClose">{$LANG.closeUc}</button>
         </div>
     </div>
     <script>

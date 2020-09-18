@@ -120,7 +120,7 @@
                 <td>
                     <select name="role_id" id="role_id1" class="si_input" tabindex="50" onchange="setUserIdList();"
                             title="See help for details">
-                        {foreach from=$roles item=role}
+                        {foreach $roles as $role}
                             <option {if $role.id == $user.role_id}selected{/if} value="{if isset($role.id)}{$role.id|htmlSafe}{/if}">
                                 {$role.name|htmlSafe}
                             </option>

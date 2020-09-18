@@ -41,7 +41,7 @@ class Email
     /**
      * @return array $results with indices of 'display_block' & 'refresh_redirect'
      */
-    public function send()
+    public function send(): array
     {
         global $config;
 
@@ -54,8 +54,8 @@ class Email
             empty($this->emailTo)) {
             $message = "One or more required fields is missing";
             error_log("Email::send() - " . $message);
-            $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=invoices&amp;view=manage\" />";
-            $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+            $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=invoices&amp;view=manage' />";
+            $displayBlock = "<div class='si_message_error'>{$message}</div>";
             return [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -68,8 +68,8 @@ class Email
              empty($this->pdfString) && !empty($this->pdfFileName)) {
             $message = "Both pdfString and pdfFileName must be set or left empty";
             error_log("Email::send() - " . $message);
-            $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=invoices&amp;view=manage\" />";
-            $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+            $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=invoices&amp;view=manage' />";
+            $displayBlock = "<div class='si_message_error'>{$message}</div>";
             return [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -127,54 +127,50 @@ class Email
         return self::makeResults($result);
     }
 
-    /**
-     * @param $result
-     * @return array
-     */
-    private function makeResults($result)
+    private function makeResults(int $result): array
     {
         switch ($this->format) {
             case "invoice":
-                $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+                $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
                 if ($result == 0) {
                     $message = $this->pdfFileName . "could not be sent";
-                    $displayBlock = "<div class=\"si_message_error\">$message</div>";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = $this->pdfFileName . " has been sent";
-                    $displayBlock = "<div class=\"si_message_ok\">{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
                 }
                 break;
 
             case "statement":
-                $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=statement&amp;view=index\" />";
+                $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=statement&amp;view=index' />";
                 if ($result == 0) {
                     $message = $this->pdfFileName . ' could not be sent';
-                    $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
                 } else {
                     $message = $this->pdfFileName . ' has been sent';
-                    $displayBlock = "<div class=\"si_message_ok\">{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
                 }
                 break;
 
             case "cron":
-                $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+                $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
                 if ($result == 0) {
                     $message = "Cron email for today has not been sent";
-                    $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
                 } else {
                     $message = "Cron email for today has been sent";
-                    $displayBlock = "<div class=\"si_message_ok\">{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
                 }
                 break;
 
             case "cron_invoice":
-                $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
+                $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
                 if ($result == 0) {
                     $message = "Cron {$this->pdfFileName} has not been emailed";
-                    $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
                 } else {
                     $message = "Cron {$this->pdfFileName} has been emailed";
-                    $displayBlock = "<div class=\"si_message_ok\">{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
                 }
                 break;
 
@@ -184,8 +180,8 @@ class Email
                 }
                 $message = "Undefined format, \" . $this->format";
                 error_log("Email::send() - {$message}");
-                $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
-                $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+                $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
+                $displayBlock = "<div class='si_message_error'>{$message}</div>";
         }
 
         return [
@@ -200,7 +196,7 @@ class Email
      * @param string $type
      * @return string
      */
-    public function makeSubject($type)
+    public function makeSubject(string $type): string
     {
         switch ($type) {
             case "invoice_eway":
@@ -361,7 +357,7 @@ class Email
     }
 
     /**
-     * @param string $emailTo Email address to send message to.
+     * @param string $emailTo Email address to send message to. Multiple address should be separated by a ";".
      * @return bool true if OK, false if not.
      */
     public function setEmailTo(string $emailTo): bool
@@ -370,24 +366,18 @@ class Email
             error_log("Email::setEmailTo() - Empty emailTo address");
             return false;
         } else {
+            // Explode addresses and run them through a valid email filter.
             $emailTo = array_filter(explode(';', $emailTo));
-            if (is_array($emailTo) && count($emailTo) > 1) {
-                foreach ($emailTo as $addr) {
-                    if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
-                        error_log("Email::setEmailTo() - Invalid emailTo address in list[{$addr}]");
-                        return false;
-                    }
-                    $this->emailTo = $emailTo;
-                }
-            } else {
-                if (is_array($emailTo)) {
-                    $emailTo = $emailTo[0];
-                }
-                if (!filter_var($emailTo, FILTER_VALIDATE_EMAIL)) {
-                    error_log("Email::setEmailTo() - Invalid emailTo address[{$emailTo}]");
+            foreach ($emailTo as $addr) {
+                if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
+                    error_log("Email::setEmailTo() - Invalid emailTo address in list[{$addr}]");
                     return false;
                 }
-                $this->emailTo = $emailTo;
+
+                if (!empty($this->emailTo)) {
+                    $this->emailTo .= ";";
+                }
+                $this->emailTo .= $emailTo;
             }
         }
         return true;

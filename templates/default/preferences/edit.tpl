@@ -183,7 +183,7 @@
                 </th>
                 <td>
                     <select name="status" class="si_input" tabindex="140">
-                        {foreach from=$status item=s}
+                        {foreach $status as $s}
                             <option {if $s.id == $preference.status} selected {/if} value="{if isset($s.id)}{$s.id}{/if}">{$s.status}</option>
                         {/foreach}
                     </select>

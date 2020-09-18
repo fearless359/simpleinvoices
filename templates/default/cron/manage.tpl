@@ -36,17 +36,17 @@
         {foreach $crons as $cron}
             <tr>
                 <td class="si_center">
-                    <a class='index_table' title='{$LANG['view']} {$cron['index_name']}'
-                       href='index.php?module=cron&amp;view=details&amp;id={$cron['id']}&amp;action=view'>
-                        <img src='../../../images/view.png' style='"height16px;border:0;' alt="{$LANG['view']} {$cron['index_name']}"/>
+                    <a class='index_table' title='{$LANG.view} {$cron['index_name']}'
+                       href='index.php?module=cron&amp;view=view&amp;id={$cron['id']}'>
+                        <img src='../../../images/view.png' alt="{$LANG.view} {$cron['index_name']}"/>
                     </a>
-                    <a class='index_table' title='{$LANG['edit']} {$cron['index_name']}'
-                       href='index.php?module=cron&amp;view=details&amp;id={$cron['id']}&amp;action=edit'>
-                        <img src='../../../images/edit.png' style='"height16px;border:0;' alt="{$LANG['edit']} {$cron['index_name']}"/>
+                    <a class='index_table' title='{$LANG.edit} {$cron['index_name']}'
+                       href='index.php?module=cron&amp;view=edit&amp;id={$cron['id']}'>
+                        <img src='../../../images/edit.png' alt="{$LANG.edit} {$cron['index_name']}"/>
                     </a>
-                    <a class='index_table' title='{$LANG['delete']} {$cron['index_name']}'
+                    <a class='index_table' title='{$LANG.delete} {$cron['index_name']}'
                        href='index.php?module=cron&amp;view=delete&amp;id={$cron['id']}&amp;stage=1&amp;err_message='>
-                        <img src='../../../images/delete.png' style='"height16px;border:0;' alt="{$LANG['delete']} {$cron['index_name']}"/>
+                        <img src='../../../images/delete.png' alt="{$LANG.delete} {$cron['index_name']}"/>
                     </a>
                 </td>
                 <td class="si_right">

@@ -20,9 +20,7 @@
 
 #all
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Giới thiệu";//1
+$LANG['aboutUc'] = "Giới thiệu";//1
 $LANG['account_info'] = "Thông tin tài khoản";//1
 $LANG['actions'] = "Thao tác";//1
 $LANG['add'] = "Thêm";//1
@@ -150,7 +148,7 @@ $LANG['deleted'] = "đã được xóa";//1
 $LANG['denied_page'] = "Bạn không được phép vào trang này";//1
 $LANG['description_uc'] = "Tên Hàng";//1
 $LANG['description_short'] = "Tên";//1
-$LANG['details'] = "Chi tiết";//1
+$LANG['detailsUc'] = "Chi tiết";//1
 $LANG['disable'] = "vô hiệu hóa";//1
 $LANG['disabled'] = "Bị ẩn";//1
 $LANG['displaying_inv'] = "Hiển thị những hóa đơn";//1
@@ -186,7 +184,7 @@ $LANG['export_pdf_tooltip'] = "như định dạng PDF";//1
 $LANG['export_tooltip'] = "Xuất ra";//1
 $LANG['export_xls'] = "Xuất ra .XLS";//1
 $LANG['export_xls_tooltip'] = "đến MS Excel như";//1
-$LANG['extensions'] = "Mở rộng";//1
+$LANG['extensionsUc'] = "Mở rộng";//1
 $LANG['faqs'] = "Câu hỏi thường gặp";//1
 $LANG['faqs_how'] = "Làm thế nào để tạo hóa đơn?";//1
 $LANG['faqs_need'] = "Cần làm gì khi tạo hóa đơn?";//1
@@ -274,7 +272,7 @@ $LANG['insert_product'] = "Chèn Sản Phẩm";//1
 $LANG['insert_product_attribute'] = "Chèn thuộc tính sản phẩm";//1
 $LANG['insert_product_value'] = "Giá trị sản phẩm chèn";//1
 $LANG['insert_tax_rate'] = "Chèn tỷ lệ Thuấ";//1
-$LANG['installation'] = "Cài đặt";//1
+$LANG['installationUc'] = "Cài đặt";//1
 $LANG['inv'] = "Hóa Đơn";//1
 $LANG['inv_consulting'] = " - Tư Vấn";//1
 $LANG['inv_itemized'] = " - Đơn vị";//1
@@ -380,7 +378,7 @@ $LANG['online_payment_id'] = "Mã thanh toán qua mạng";//1
 $LANG['open'] = "Mở";//1
 $LANG['optional'] = "Tùy chọn";//1
 $LANG['options'] = "Tùy chọn";//1
-$LANG['other'] = "Khác";//1
+$LANG['otherUc'] = "Khác";//1
 $LANG['owing_uc'] = "Nợ";//1
 $LANG['page'] = "Trang";//1
 $LANG['paid'] = "Đã Trả";//1
@@ -468,7 +466,7 @@ $LANG['run_report'] = "Thực hiện Báo Cáo";//1
 $LANG['sales'] = "Bán Hàng";//1
 $LANG['sales_by_customers'] = "Doanh số bán hàng theo Khách Hàng";//1
 $LANG['sales_report'] = "Báo cáo Bán Hàng";//1
-$LANG['sanity_check'] = "Kiểm tra sơ qua Hóa Đơn";//1
+$LANG['sanityCheck'] = "Kiểm tra sơ qua Hóa Đơn";//1
 $LANG['save'] = "Lưu";//1
 $LANG['save_biller'] = "Lưu Người Tính Tiên";//1
 $LANG['save_biller_failure'] = "Thông tin sai, sủa và lưu lại<br />";//1
@@ -510,7 +508,7 @@ $LANG['save_tax_rate_success'] = "Tax rate successfully saved, <br /> you will b
 $LANG['save_user_failure'] = "Thông tin sai, sủa và lưu lại<br />";//1
 $LANG['save_user_success'] = "Lưu thành công, <br /> hệ thống sẽ chuyển qua trang danh sách";//1
 $LANG['select_invoice'] = "Chọn 1 Hóa Đơn";//1
-$LANG['settings'] = "Cài Đặt";//1
+$LANG['settingsUc'] = "Cài Đặt";//1
 $LANG['setup_add_customer'] = "Thêm Khách Hàng, Nhấn ";//1
 $LANG['setup_add_inv_pref'] = "Thêm Loại Hóa Đơn, Nhấn ";//1
 $LANG['setup_add_products'] = "Têm Sản Phẩm, Nhấn ";//1

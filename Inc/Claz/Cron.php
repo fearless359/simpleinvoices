@@ -90,7 +90,6 @@ class Cron
             $pdoDb->setOrderBy("cron.id");
 
             $rows = $pdoDb->request("SELECT", "cron", "cron");
-
             foreach ($rows as $row) {
                 $row['email_biller_nice'] = $row['email_biller'] == ENABLED ? $LANG['yes_uc'] : $LANG['no_uc'];
                 $row['email_customer_nice'] = $row['email_customer'] == ENABLED ? $LANG['yes_uc'] : $LANG['no_uc'];
@@ -177,24 +176,29 @@ class Cron
         return false;
     }
 
-    private static function getEmailSendAddresses(array $srcArray, string $customerEmail, string $billerEmail): array
+    /**
+     * @param array $srcArray Email send address flags. Index values are "email_customer' and 'email_biller'
+     *          tested to see if ENABLED.
+     * @param string $customerEmail Customer send address. Multiple addresses are ";" separated.
+     * @param string $billerEmail Biller send address. Multiple addresses are ";" separated.
+     * @return string To email address string. Multiple email addresses are ";" separated.
+     */
+    private static function getEmailSendAddresses(array $srcArray, string $customerEmail, string $billerEmail): string
     {
-        $emailToAddresses = [];
+        $emailTo = "";
         if ($srcArray['email_customer'] == ENABLED) {
-            self::breakMultiEmail($emailToAddresses, $customerEmail);
+            $emailTo = $customerEmail;
         }
-        if ($srcArray['email_biller'] == ENABLED) {
-            self::breakMultiEmail($emailToAddresses, $billerEmail);
-        }
-        return $emailToAddresses;
-    }
 
-    private static function breakMultiEmail(array &$emailAddresses, string $emailAddrLine): void
-    {
-        $parts = explode(';', $emailAddrLine);
-        foreach ($parts as $part) {
-            $emailAddresses[] = $part;
+        if ($srcArray['email_biller'] == ENABLED) {
+            if (!empty($emailTo)) {
+                $emailTo .= ";";
+            }
+
+            $emailTo .= $billerEmail;
         }
+
+        return $emailTo;
     }
 
     /**
@@ -204,7 +208,8 @@ class Cron
      */
     public static function run(): array
     {
-        global $pdoDb;
+        global $LANG, $pdoDb;
+
         $result = [];
 
         $today = date('Y-m-d');
@@ -330,7 +335,6 @@ class Cron
 
                         // Check that all details are OK before doing the eway payment
                         $ewayCheck = new Eway ();
-                        $ewayCheck->domain_id = $domainId;
                         $ewayCheck->invoice = $invoice;
                         $ewayCheck->customer = $customer;
                         $ewayCheck->biller = $biller;
@@ -340,7 +344,6 @@ class Cron
                         // do eway payment
                         if ($ewayPreCheck == 'true') {
                             $eway = new Eway ();
-                            $eway->domain_id = $domainId;
                             $eway->invoice = $invoice;
                             $eway->biller = $biller;
                             $eway->customer = $customer;
@@ -384,8 +387,8 @@ class Cron
                                 $email->setEmailTo($biller['email']);
 
                                 $errorMessage = "Invoice: {$invoice['index_name']}<br />Amount: {$invoice['total']}<br />";
-                                foreach ($eway->get_message() as $key2 => $value2) {
-                                    $errorMessage .= "\n<br>\$ewayResponseFields[\"{$key2}\"] = $value2";
+                                foreach ($eway->getMessage() as $key2 => $value2) {
+                                    $errorMessage .= "\n<br>\${$LANG['ewayResponseFields']}[\"{$key2}\"] = $value2";
                                 }
                                 $email->setBody($errorMessage);
 

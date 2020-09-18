@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Dwar";//1
+$LANG['aboutUc'] = "Dwar";//1
 $LANG['account_info'] = "Informazzjoni tal-Kont";//1
 $LANG['actions'] = "Azzjonijiet";//1
 $LANG['add'] = "Add";//0
@@ -154,7 +152,7 @@ $LANG['deleted'] = "has been deleted";//0
 $LANG['denied_page'] = "You are not allowed to view this page";//0
 $LANG['description_uc'] = "Deskrizzjoni";//1
 $LANG['description_short'] = "Desc";//0
-$LANG['details'] = "Dettalji";//1
+$LANG['detailsUc'] = "Dettalji";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Diżattivat";//1
 $LANG['displaying_inv'] = "Displaying invoices";//0
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "format tal-PDF";//1
 $LANG['export_tooltip'] = "Esporta";//1
 $LANG['export_xls'] = "Export to XLS";//0
 $LANG['export_xls_tooltip'] = "ġo spreadsheet format";//1
-$LANG['extensions'] = "Extensions";//0
+$LANG['extensionsUc'] = "Extensions";//0
 $LANG['faqs'] = "Mistoqsijiet Komuni";//1
 $LANG['faqs_how'] = "Kif noħloq invoice?";//1
 $LANG['faqs_need'] = "X'għandi bżonn biex nibda noħloq l-invoices?";//1
@@ -278,8 +276,7 @@ $LANG['insert_product'] = "Daħħal Prodott";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Daħħal Rata tat-Taxxa";//1
-$LANG['installation'] = "Installazzjoni";//1
-$LANG['inv'] = "Invoice";//1
+$LANG['installationUc'] = "Installazzjoni";//1
 $LANG['inv_consulting'] = " - Konsulenza";//1
 $LANG['inv_itemized'] = " - Dettaljat";//1
 $LANG['inv_pref'] = "Preferenzi tal-Invoice";//1
@@ -384,7 +381,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//0
 $LANG['open'] = "Open";//0
 $LANG['optional'] = "mhux mandatorja";//1
 $LANG['options'] = "Għażliet";//1
-$LANG['other'] = "Other";//0
+$LANG['otherUc'] = "Other";//0
 $LANG['owing_uc'] = "Dovut";//1
 $LANG['page'] = "Page";//0
 $LANG['paid'] = "Ħlas";//1
@@ -472,7 +469,7 @@ $LANG['run_report'] = "Run report";//0
 $LANG['sales'] = "Bejgħ";//1
 $LANG['sales_by_customers'] = "Bejgħ kull Klijent";//1
 $LANG['sales_report'] = "Sales Report";//0
-$LANG['sanity_check'] = "Sanity check tal-invoices";//1
+$LANG['sanityCheck'] = "Sanity check tal-invoices";//1
 $LANG['save'] = "Żomm";//1
 $LANG['save_biller'] = "Żomm il-Bejjiegħ";//1
 $LANG['save_biller_failure'] = "Problema, il-Bejjiegħ ma ġiex miżmum. Jekk jogħoġbok erġa pprova.<br />";//1
@@ -514,7 +511,7 @@ $LANG['save_tax_rate_success'] = "Rata tat-taxxa ġiet miżmuma, <br /> stenna f
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//0
 $LANG['select_invoice'] = "Jekk jogħoġbok għażel invoice";//1
-$LANG['settings'] = "Settings";//0
+$LANG['settingsUc'] = "Settings";//0
 $LANG['setup_add_customer'] = "Add a customer, click ";//0
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Add some products, click ";//0

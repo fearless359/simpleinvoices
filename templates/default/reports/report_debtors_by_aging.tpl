@@ -13,7 +13,7 @@
 		</tr>
 	</tfoot>
 	<tbody>
-		{foreach item=period from=$data}
+		{foreach $data as $period}
 			<tr>
 				<th>{$LANG.aging}:</th>
 				<td colspan="9">{if isset($period.name)}{$period.name|htmlSafe}{/if}</td>
@@ -31,7 +31,7 @@
 				<th>{$LANG.aging|htmlSafe}</th>
 			</tr>
 
-			{foreach item=invoice from=$period.invoices}
+			{foreach $period.invoices as $invoice}
 			<tr>
 				<td>{if isset($invoice.id)}{$invoice.id|htmlSafe}{/if}</td>
 				<td>{if isset($invoice.pref_inv_wording)}{$invoice.pref_inv_wording|htmlSafe}{/if} {if isset($invoice.index_id)}{$invoice.index_id|htmlSafe}{/if}</td>

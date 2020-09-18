@@ -36,7 +36,7 @@
     <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
     <td class="details_screen"><b>{$LANG['amount_uc']}</b></td>
   </tr>
-  {foreach item=account from=$accounts}
+  {foreach $accounts as $account}
   <tr>
     <td class="details_screen">{$account.account}</td>
     <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>

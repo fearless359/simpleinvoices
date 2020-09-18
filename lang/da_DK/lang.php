@@ -29,9 +29,7 @@
 
 #all
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Om";//1
+$LANG['aboutUc'] = "Om";//1
 $LANG['account_info'] = "Konto information";//1
 $LANG['actions'] = "Handlinger";//1
 $LANG['add'] = "Tilf&#248;j";//1
@@ -159,7 +157,7 @@ $LANG['deleted'] = "blev slettet";//1
 $LANG['denied_page'] = "Du har ikke tilladelse til at se denne side";//1
 $LANG['description_uc'] = "Beskrivelse";//1
 $LANG['description_short'] = "Fald";//1
-$LANG['details'] = "Detaljer";//1
+$LANG['detailsUc'] = "Detaljer";//1
 $LANG['disable'] = "Deaktiver";//1
 $LANG['disabled'] = "Deaktiveret";//1
 $LANG['displaying_inv'] = "Viser fakturaer";//1
@@ -195,7 +193,7 @@ $LANG['export_pdf_tooltip'] = "som PDF format";//1
 $LANG['export_tooltip'] = "Eksporter";//1
 $LANG['export_xls'] = "Eksporter som XLS";//1
 $LANG['export_xls_tooltip'] = "til et regneark som";//1
-$LANG['extensions'] = "Udvidelser";//1
+$LANG['extensionsUc'] = "Udvidelser";//1
 $LANG['faqs'] = "Ofte Stillede Sp&#248;rgsm&#229;l";//1
 $LANG['faqs_how'] ="Hvordan opretter jeg fakturaer?";//1
 $LANG['faqs_need'] ="Hvad skal jeg bruge for at begynde fakturering?";//1
@@ -283,7 +281,7 @@ $LANG['insert_product'] = "Inds&#230;t produkt";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Inds&#230;t momssats";//1
-$LANG['installation'] = "Installation";//1
+$LANG['installationUc'] = "Installation";//1
 $LANG['inv'] = "Faktura";//1
 $LANG['inv_consulting'] = "- R&#229;dgivning";//1
 $LANG['inv_itemized'] = "- Post";//1
@@ -389,7 +387,7 @@ $LANG['online_payment_id'] = "Online betalings ID";//1
 $LANG['open'] = "&#197;ben";//1
 $LANG['optional'] = "valgfri";//1
 $LANG['options'] = "Valgmuligheder";//1
-$LANG['other'] = "Andre";//1
+$LANG['otherUc'] = "Andre";//1
 $LANG['owing_uc'] = "Skylder";//1
 $LANG['page'] = "Side";//1
 $LANG['paid'] = "Betalt";//1
@@ -477,7 +475,7 @@ $LANG['run_report'] = "K&#248;r rapport";//1
 $LANG['sales'] = "Salg";//1
 $LANG['sales_by_customers'] = "Salg efter kunde";//1
 $LANG['sales_report'] = "Salgs Rapport";//1
-$LANG['sanity_check'] = "Kontrol af fakturaer";//1
+$LANG['sanityCheck'] = "Kontrol af fakturaer";//1
 $LANG['save'] = "Gem";//1
 $LANG['save_biller'] = "Gem Kreditor";//1
 $LANG['save_biller_failure'] = "Noget gik galt, pr&#248;v venligst at gemme kreditor igen<br />";//1
@@ -519,7 +517,7 @@ $LANG['save_tax_rate_success'] = "Momssats gemt korrekt, <br /> du vil blive vid
 $LANG['save_user_failure'] = "Noget gik galt, pr&#248;v venligst at gemme brugeren igen<br />";//1
 $LANG['save_user_success'] = "Bruger gemt korrekt, <br /> du vil blive viderestillet til 'Administrer brugere'-siden";//1
 $LANG['select_invoice'] = "V&#230;lg venligst en faktura";//1
-$LANG['settings'] = "Indstillinger";//1
+$LANG['settingsUc'] = "Indstillinger";//1
 $LANG['setup_add_customer'] = "Tilf&#216;j en kunde, klik";//1
 $LANG['setup_add_inv_pref'] = "Tilf&#216;j en faktura pr&#230;ference, klik";//1
 $LANG['setup_add_products'] = "Tilf&#216;j nogle produkter, klik";//1

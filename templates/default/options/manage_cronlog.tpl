@@ -15,7 +15,7 @@
  *      https://simpleinvoices.group
  *}
 
-<h3>Cron Log - Recurrent Invoices Inserted</h3>
+<h3>{$LANG.cron_uc} {$LANG.logUc} - {$LANG.recurrent} {$LANG.invoices_uc} {$LANG.inserted}</h3>
 <hr />
 <table class="manage" id="live-grid" class="center">
   <colgroup>
@@ -26,19 +26,17 @@
   </colgroup>
   <thead>
     <tr>
-      <th class="sortable">ID</th>
-      <th class="sortable">Date</th>
-      <th class="sortable">Cron ID</th>
+      <th class="sortable">{$LANG.id}</th>
+      <th class="sortable">{$LANG.date_uc}</th>
+      <th class="sortable">{$LANG.cron_uc} {$LANG.id}</th>
       <!--    <th class="sortable">Invoice No</th> -->
     </tr>
   </thead>
-  {foreach from=$cronLogs item=cronlog}
+  {foreach $cronLogs as $cronlog}
   <tr>
     <td class='index_table'>{$cronlog.id|htmlSafe}</td>
     <td class='index_table'>{$cronlog.run_date|htmlSafe}</td>
     <td class='index_table'><a href="index.php?module=cron&amp;view=view&amp;id={$cronlog.cron_id|htmlSafe}">{$cronlog.cron_id|htmlSafe}</a></td>
   </tr>
   {/foreach}
-
-
 </table>

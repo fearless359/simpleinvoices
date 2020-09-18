@@ -45,7 +45,9 @@ class EwayLib
      * @param bool $liveGateway
      * @throws Exception
      */
-    public function __construct(string $customerID = EWAY_DEFAULT_CUSTOMER_ID, string $method = EWAY_DEFAULT_PAYMENT_METHOD, bool $liveGateway = EWAY_DEFAULT_LIVE_GATEWAY)
+    public function __construct(string $customerID = EWAY_DEFAULT_CUSTOMER_ID,
+                                string $method = EWAY_DEFAULT_PAYMENT_METHOD,
+                                bool $liveGateway = EWAY_DEFAULT_LIVE_GATEWAY)
     {
         $this->myCustomerID = $customerID;
         switch ($method) {
@@ -146,8 +148,11 @@ class EwayLib
 
     /**
      * Set Transaction Data
-     * Possible fields: "TotalAmount", "CustomerFirstName", "CustomerLastName", "CustomerEmail", "CustomerAddress", "CustomerPostcode", "CustomerInvoiceDescription", "CustomerInvoiceRef",
-     * "CardHoldersName", "CardNumber", "CardExpiryMonth", "CardExpiryYear", "TrxnNumber", "Option1", "Option2", "Option3", "CVN", "CustomerIPAddress", "CustomerBillingCountry"
+     * Possible fields:
+     *     CVN,                        CardExpiryMonth,        CardExpiryYear,   CardHoldersName,   CardNumber,
+     *     CustomerAddress,            CustomerBillingCountry, CustomerEmail,    CustomerFirstName, CustomerIPAddress,
+     *     CustomerInvoiceDescription, CustomerInvoiceRef,     CustomerLastName, CustomerPostcode,  Option1,
+     *     Option2,                    Option3,                TotalAmount,      TrxnNumber
      * @param string $field
      * @param float $value
      */

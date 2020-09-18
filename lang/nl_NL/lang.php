@@ -23,10 +23,11 @@
 
 #all
 
-global $LANG;
-if ($LANG) {} // eliminates unused warning
+global $databaseBuilt, $LANG;
 
-$LANG['about'] = "Over Simple Invoices";//1
+use Inc\Claz\SystemDefaults;
+
+$LANG['aboutUc'] = "Over Simple Invoices";//1
 $LANG['account_info'] = "Account informatie";//1
 $LANG['actions'] = "Acties";//1
 $LANG['add'] = "Toevoegen";//1
@@ -178,7 +179,7 @@ $LANG['denied_page'] = "U heeft geen toegang tot deze pagina!";//1
 $LANG['deleted'] = "is verwijderd";//1
 $LANG['description_uc'] = "Beschrijving";//1
 $LANG['description_short'] = "Beschr";//1
-$LANG['details'] = "Details";//1
+$LANG['detailsUc'] = "Details";//1
 $LANG['disable'] = "Uitschakelen";//1
 $LANG['disabled'] = "Uitgeschakeld";//1
 $LANG['displaying_inv'] = "Weergave van facturen";//1
@@ -219,7 +220,7 @@ $LANG['export_xls'] = "Exporteren naar XLS";//1
 $LANG['export_xls_tooltip'] = "naar een spreadsheet als";//1
 $LANG['expenses_uc'] = "Onkosten declareren";//1
 $LANG['expense_accounts'] = "Onkostenvergoeding";//1
-$LANG['extensions'] = "Extensies";//1
+$LANG['extensionsUc'] = "Extensies";//1
 $LANG['failure'] = "Uw verzoek is NIET verwerkt, <br />U keert terug naar de beheer pagina<br/> Controleer de logfile voor meer informatie.";//1
 $LANG['faqs'] = "Vaak gestelde vragen";//1
 $LANG['faqs_how'] = "Hoe maak ik facturen?";//1
@@ -345,7 +346,7 @@ $LANG['id'] = "ID";//1
 $LANG['ie_10_for_10'] = "* bijvoorbeeld 10 voor 10%";//1
 $LANG['include_online_payment'] = "Neem online betaling op";//1
 $LANG['included'] = "inclusief";//1
-$LANG['information'] = "Informatie";//1
+$LANG['informationUc'] = "Informatie";//1
 $LANG['insert_biller'] = "Bedrijf toevoegen";//1
 $LANG['insert_customer'] = "Klant toevoegen";//1
 $LANG['insert_payment_type'] = "Betaalmethode toevoegen";//1
@@ -354,7 +355,7 @@ $LANG['insert_product'] = "Product toevoegen";//1
 $LANG['insert_product_attribute'] = "Producteigenschap toevoegen";//1
 $LANG['insert_product_value'] = "productwaarden toevoegen";//1
 $LANG['insert_tax_rate'] = "BTW tarief toevoegen";//1
-$LANG['installation'] = "Installatie";//1
+$LANG['installationUc'] = "Installatie";//1
 $LANG['inv'] = "Factuur";//1
 $LANG['inv_consulting'] = " - Informatief";//1
 $LANG['inv_itemized'] = " - Gedetailleerd";//1
@@ -473,7 +474,7 @@ $LANG['online_payment_id'] = "Online betalings-ID";//1
 $LANG['open'] = "Open";//1
 $LANG['optional'] = "optioneel";//1
 $LANG['options'] = "Opties";//1
-$LANG['other'] = "Overig";//1
+$LANG['otherUc'] = "Overig";//1
 $LANG['outstanding'] = "Openstaande";//1
 $LANG['owing_uc'] = "Schuldig";//1
 $LANG['page'] = "Pagina";//1
@@ -532,6 +533,7 @@ $LANG['process_payment_inv_id'] = "Verwerk betaling factuur ID";//1
 $LANG['process_payment_via_eway'] = "Behandel betaling via Eway";//1
 $LANG['processing'] = "In behandeling, even geduld a.u.b.";//1
 $LANG['product_uc'] = "Product";//1
+$LANG['processedSuccessfully'] = "Uw verzoek is succesvol verwerkt, <br /> U keert terug naar de pagina";//1
 $LANG['product_attribute'] = "Producteigenschap";//1
 $LANG['product_attributes'] = "Producteigenschappen";//1
 $LANG['product_description'] = "Product beschrijving";//1
@@ -576,7 +578,7 @@ $LANG['sales_by_representative'] = "Verkoopcijfers per vertegenwoordiger";//1
 $LANG['sales_report'] = "Verkoopcijfers rapport";//1
 $LANG['sales_representative'] = "Vertegenwoordiger";//1
 $LANG['sales_summary'] = "verkoopoverzicht";//1
-$LANG['sanity_check'] = "Sanity check van facturen";//1
+$LANG['sanityCheck'] = "Sanity check van facturen";//1
 $LANG['save'] = "Opslaan";//1
 $LANG['save_biller'] = "Bedrijf opslaan";//1
 $LANG['save_biller_failure'] = "Er is iets mis gegaan, probeer het bedrijf nogmaals op te slaan.<br />";//1
@@ -632,7 +634,7 @@ $LANG['selection_period'] = "Selectie voor de periode";//1
 $LANG['session_timeout'] = "Sessie verlopen";//1
 $LANG['set_aging'] = "Leeftijd instellen";//1
 $LANG['setting'] = "Instelling";//1
-$LANG['settings'] = "Instellingen";//1
+$LANG['settingsUc'] = "Instellingen";//1
 $LANG['setup_add_customer'] = "Voeg een klant toe, klik ";//1
 $LANG['setup_add_inv_pref'] = "Voeg een factuur voorkeur toe, klik ";//1
 $LANG['setup_add_products'] = "Voeg producten toe, klik ";//1
@@ -667,7 +669,6 @@ $LANG['subject'] = "Onderwerp";//1
 $LANG['sum'] = "Som";//1
 $LANG['summary_uc'] = "Samenvatting";//1
 $LANG['summary_of_accounts'] = "Financieel overzicht";//1
-$LANG['success'] = "Uw verzoek is succesvol verwerkt, <br /> U keert terug naar de pagina";//1
 $LANG['system_defaults'] = "Systeem standaardinstellingen";//1
 $LANG['si_defaults'] = "Systeem";//1
 $LANG['tax'] = "BTW";//1
@@ -750,27 +751,28 @@ $LANG['yes_uc'] = "Ja";//1
 $LANG['your_reports'] = "Uw rapporten";//1
 $LANG['zero_invoice_amt'] = "Geen factuurbedrag. Geen betaling verschuldigd";//1
 $LANG['zip'] = "Postcode";//1
-$defaults = Inc\Claz\SystemDefaults::loadValues($databaseBuilt);
-$pwd_msg =  "Wachtwoord moet:" .
+
+$defaults = SystemDefaults::loadValues($databaseBuilt);
+$pwdMsg =  "Wachtwoord moet:" .
             "<ul>" .
             "  <li>Beginnen met een letter</li>" .
             "  <li>Moet tenminste " . $defaults['password_min_length'] . "-karakters lang zijn</li>" .
             "  <li>en geen spaties bevatten</li>";//1
 
 if (isset($defaults['password_upper']) && $defaults['password_upper'] == 1) {
-    $pwd_msg .= "<li>Minimaal 1 hoofdletter bevatten</li>";//1
+    $pwdMsg .= "<li>Minimaal 1 hoofdletter bevatten</li>";//1
 }
 
 if (isset($defaults['password_lower']) && $defaults['password_lower'] == 1) {
-    $pwd_msg .= "<li>Minimaal 1 kleine letter bevatten</li>";//1
+    $pwdMsg .= "<li>Minimaal 1 kleine letter bevatten</li>";//1
 }
 
 if (isset($defaults['password_number']) && $defaults['password_number'] == 1) {
-    $pwd_msg .= "<li>Minimaal 1 cijfer bevatten</li>";//1
+    $pwdMsg .= "<li>Minimaal 1 cijfer bevatten</li>";//1
 }
 
 if (isset($defaults['password_special']) && $defaults['password_special'] == 1) {
-    $pwd_msg .= "<li>Minimaal 1 speciaal karakter bevatten</li>";//1
+    $pwdMsg .= "<li>Minimaal 1 speciaal karakter bevatten</li>";//1
 }
-$LANG['help_new_password'] = $pwd_msg . "</ul>";//1
+$LANG['help_new_password'] = $pwdMsg . "</ul>";//1
 

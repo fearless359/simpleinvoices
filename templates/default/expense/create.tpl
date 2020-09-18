@@ -12,7 +12,7 @@
                     <td>
                         <select name="expense_account_id" class="validate[required]" tabindex="10">
                             <option value=''></option>
-                            {foreach from=$expense_add.expense_accounts item=expense_account}
+                            {foreach $expense_add.expense_accounts as $expense_account}
                                 <option value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
                             {/foreach}
                         </select>
@@ -34,7 +34,7 @@
                     <td>
                         <select name="biller_id" class="validate[required]">
                             <option value=''></option>
-                            {foreach from=$expense_add.billers item=biller}
+                            {foreach $expense_add.billers as $biller}
                                 <option {if isset($biller.id) && $biller.id == $defaults.biller} selected {/if}
                                         value="{if isset($biller.id)}{$biller.id}{/if}" tabindex="40">{$biller.name}</option>
                             {/foreach}
@@ -46,7 +46,7 @@
                     <td>
                         <select name="customer_id">
                             <option value=''></option>
-                            {foreach from=$expense_add.customers item=customer}
+                            {foreach $expense_add.customers as $customer}
                                 <option {if isset($customer.id) && $customer.id == $defaults.customer} selected {/if}
                                         value="{if isset($customer.id)}{$customer.id}{/if}" tabindex="50">{$customer.name}</option>
                             {/foreach}
@@ -58,7 +58,7 @@
                     <td>
                         <select name="invoice_id" tabindex="60">
                             <option value=''></option>
-                            {foreach from=$expense_add.invoices item=invoice}
+                            {foreach $expense_add.invoices as $invoice}
                                 <option value="{$invoice.id}">{$invoice.index_name}</option>
                             {/foreach}
                         </select>
@@ -69,7 +69,7 @@
                     <td>
                         <select name="product_id" tabindex="70">
                             <option value=''></option>
-                            {foreach from=$expense_add.products item=product}
+                            {foreach $expense_add.products as $product}
                                 <option value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
                             {/foreach}
                         </select>
@@ -84,7 +84,7 @@
                             <select id="tax_id[0][{$smarty.section.tax.index}]"
                                     name="tax_id[0][{$smarty.section.tax.index}]" tabindex="8{$smarty.section.tax.index}">
                                 <option value=""></option>
-                                {foreach from=$taxes item=tax}
+                                {foreach $taxes as $tax}
                                     <option {if $tax.tax_id == $defaults.tax AND $smarty.section.tax.index == 0} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id}{/if}">{$tax.tax_description}</option>
                                 {/foreach}
                             </select>

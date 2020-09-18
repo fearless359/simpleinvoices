@@ -21,9 +21,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "O programu";//1
+$LANG['aboutUc'] = "O programu";//1
 $LANG['account_info'] = "Informace o účtu";//1
 $LANG['actions'] = "Akce";//1
 $LANG['add'] = "Přidat";//1
@@ -151,7 +149,7 @@ $LANG['deleted'] = "byl smazán(-a)";//1
 $LANG['denied_page'] = "K přístupu na stránku nemáte oprávnění";//1
 $LANG['description_uc'] = "Popis";//1
 $LANG['description_short'] = "Popis";//1
-$LANG['details'] = "Podrobnosti";//1
+$LANG['detailsUc'] = "Podrobnosti";//1
 $LANG['disable'] = "Zakázat";//1
 $LANG['disabled'] = "Neaktivní";//1
 $LANG['displaying_inv'] = "Zobrazuji faktury";//1
@@ -187,7 +185,7 @@ $LANG['export_pdf_tooltip'] = "jako PDF formát";//1
 $LANG['export_tooltip'] = "Export";//1
 $LANG['export_xls'] = "Export do XLS";//1
 $LANG['export_xls_tooltip'] = "do tabulky jako";//1
-$LANG['extensions'] = "Rozšíření";//1
+$LANG['extensionsUc'] = "Rozšíření";//1
 $LANG['faqs'] = "Často kladené otázky";//1
 $LANG['faqs_how'] ="Jak vytvořím faktury?";//1
 $LANG['faqs_need'] ="Co potřebuji pro fakturování?";//1
@@ -275,7 +273,7 @@ $LANG['insert_product'] = "Vložit položku";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Vložit sazbu daně";//1
-$LANG['installation'] = "Instalace";//1
+$LANG['installationUc'] = "Instalace";//1
 $LANG['inv'] = "Faktura";//1
 $LANG['inv_consulting'] = " - Poradenství";//1
 $LANG['inv_itemized'] = " - Po položkách";//1
@@ -381,7 +379,7 @@ $LANG['online_payment_id'] = "Číslo online platby";//1
 $LANG['open'] = "Otevřít";//1
 $LANG['optional'] = "volitelné";//1
 $LANG['options'] = "Možnosti";//1
-$LANG['other'] = "Other";//1
+$LANG['otherUc'] = "Other";//1
 $LANG['owing_uc'] = "K úhradě";//1
 $LANG['page'] = "Strana";//1
 $LANG['paid'] = "Zaplacené";//1
@@ -469,7 +467,7 @@ $LANG['run_report'] = "Generovat přehledy";//1
 $LANG['sales'] = "Prodej";//1
 $LANG['sales_by_customers'] = "Prodej podle odběratelů";//1
 $LANG['sales_report'] = "Přehled prodejů";//1
-$LANG['sanity_check'] = "Kontrola správnosti faktur";//1
+$LANG['sanityCheck'] = "Kontrola správnosti faktur";//1
 $LANG['save'] = "Uložit";//1
 $LANG['save_biller'] = "Uložit dodavatele";//1
 $LANG['save_biller_failure'] = "Něco se pokazilo, prosím zkuste uložit dodavatele znovu<br />";//1
@@ -511,7 +509,7 @@ $LANG['save_tax_rate_success'] = "Tax rate successfully saved, <br /> you will b
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "Uživatel byl uložen, <br />nyní budete přesměrováni do správce uživatelů";//1
 $LANG['select_invoice'] = "Vyberte, prosím, fakturu";//1
-$LANG['settings'] = "Nastavení";//1
+$LANG['settingsUc'] = "Nastavení";//1
 $LANG['setup_add_customer'] = "Klikněte pro přidání odběratele";//1
 $LANG['setup_add_inv_pref'] = "Klikněte pro přidání předvoleb faktury";//1
 $LANG['setup_add_products'] = "Klikněte pro přidání produktu";//1

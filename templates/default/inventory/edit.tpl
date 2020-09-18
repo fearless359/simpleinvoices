@@ -16,7 +16,7 @@
                 <td>
                     <select name="product_id" class="si_input validate[required] product_inventory_change" tabindex="20">
                         <option value=''></option>
-                        {foreach $product_all $product}
+                        {foreach $product_all as $product}
                             <option value="{if isset($product.id)}{$product.id|htmlSafe}{/if}"
                                     {if $product.id == $inventory.product_id}selected{/if} >{$product.description|htmlSafe}</option>
                         {/foreach}

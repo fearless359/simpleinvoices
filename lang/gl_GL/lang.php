@@ -21,9 +21,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Sobre";//1
+$LANG['aboutUc'] = "Sobre";//1
 $LANG['account_info'] = "Información da conta";//1
 $LANG['actions'] = "Accións";//1
 $LANG['add'] = "Engadir";//1
@@ -151,7 +149,7 @@ $LANG['deleted'] = "has been deleted";//1
 $LANG['denied_page'] = "You are not allowed to view this page";//1
 $LANG['description_uc'] = "Descrición";//1
 $LANG['description_short'] = "Desc";//1
-$LANG['details'] = "Detalles";//1
+$LANG['detailsUc'] = "Detalles";//1
 $LANG['disable'] = "Disable";//1
 $LANG['disabled'] = "Desactivado";//1
 $LANG['displaying_inv'] = "Displaying invoices";//1
@@ -187,7 +185,7 @@ $LANG['export_pdf_tooltip'] = "en formato PDF";//1
 $LANG['export_tooltip'] = "Exportar";//1
 $LANG['export_xls'] = "Exportar a XLS";//1
 $LANG['export_xls_tooltip'] = "para unha folla de cálculo como";//1
-$LANG['extensions'] = "Extensións";//1
+$LANG['extensionsUc'] = "Extensións";//1
 $LANG['faqs'] = "Preguntas frecuentes";//1
 $LANG['faqs_how'] ="Como crear facturas?";//1
 $LANG['faqs_need'] ="Que necesito para comezar a facturar?";//1
@@ -275,7 +273,7 @@ $LANG['insert_product'] = "Inserir o produto";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//1
 $LANG['insert_product_value'] = "Insert Product Value";//1
 $LANG['insert_tax_rate'] = "Inserir a porcentaxe do imposto";//1
-$LANG['installation'] = "Instalación";//1
+$LANG['installationUc'] = "Instalación";//1
 $LANG['inv'] = "Factura";//1
 $LANG['inv_consulting'] = " - Analizado";//1
 $LANG['inv_itemized'] = " - Desagregado";//1
@@ -381,7 +379,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//1
 $LANG['open'] = "Open";//1
 $LANG['optional'] = "optional";//1
 $LANG['options'] = "Options";//1
-$LANG['other'] = "Other";//1
+$LANG['otherUc'] = "Other";//1
 $LANG['owing_uc'] = "Owing";//1
 $LANG['page'] = "Page";//1
 $LANG['paid'] = "Paid";//1
@@ -469,7 +467,7 @@ $LANG['run_report'] = "Run report";//1
 $LANG['sales'] = "Sales";//1
 $LANG['sales_by_customers'] = "Sales by customers";//1
 $LANG['sales_report'] = "Sales Report";//1
-$LANG['sanity_check'] = "Sanity check of invoices";//1
+$LANG['sanityCheck'] = "Sanity check of the invoices";//1
 $LANG['save'] = "Save";//1
 $LANG['save_biller'] = "Save Biller";//1
 $LANG['save_biller_failure'] = "Something went wrong, please try saving the biller again<br />";//1
@@ -511,7 +509,7 @@ $LANG['save_tax_rate_success'] = "Tax rate successfully saved, <br /> you will b
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//1
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//1
 $LANG['select_invoice'] = "Please select an invoice";//1
-$LANG['settings'] = "Settings";//1
+$LANG['settingsUc'] = "Settings";//1
 $LANG['setup_add_customer'] = "Add a customer, click ";//1
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//1
 $LANG['setup_add_products'] = "Add some products, click ";//1

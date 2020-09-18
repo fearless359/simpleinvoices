@@ -51,7 +51,7 @@
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="biller_id">
-                            {foreach from=$billers item=biller}
+                            {foreach $billers as $biller}
                                 <option {if $biller.id == $invoice.biller_id} selected {/if}
                                         value="{if isset($biller.id)}{$biller.id|htmlSafe}{/if}">{$biller.name|htmlSafe}</option>
                             {/foreach}
@@ -67,7 +67,7 @@
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="customer_id">
-                            {foreach from=$customers item=customer}
+                            {foreach $customers as $customer}
                                 <option {if $customer.id == $invoice.customer_id} selected {/if}
                                         value="{if isset($customer.id)}{$customer.id|htmlSafe}{/if}">{$customer.name|htmlSafe}</option>
                             {/foreach}
@@ -114,7 +114,7 @@
                                                     name="tax_id[0][{$smarty.section.tax.index|htmlSafe}]">
                                                 <option value=""></option>
                                                 {assign var="index" value=$smarty.section.tax.index}
-                                                {foreach from=$taxes item=tax}
+                                                {foreach $taxes as $tax}
                                                     <option {if $tax.tax_id === $invoiceItems[0].tax.$index} selected {/if}
                                                             value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}">{$tax.tax_description|htmlSafe}</option>
                                                 {/foreach}
@@ -138,7 +138,7 @@
                         {else}
                             <!--suppress HtmlFormInputWithoutLabel -->
                             <select name="preference_id">
-                                {foreach from=$preferences item=preference}
+                                {foreach $preferences as $preference}
                                     <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
                                             value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">{$preference.pref_description|htmlSafe}</option>
                                 {/foreach}
@@ -193,9 +193,9 @@
                                 <!--suppress HtmlFormInputWithoutLabel -->
                                 <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
                                         data-row-num="{$line|htmlSafe}"
-                                        class="product_change{if $line == 0} validate[required]{/if}"
+                                        class="si_input product_change{if $line == 0} validate[required]{/if}"
                                         data-description="{$LANG.description_uc}">
-                                    {foreach from=$products item=product}
+                                    {foreach $products as $product}
                                         <option {if $product.id == $invoiceItem.product_id} selected {/if}
                                                 value="{if isset($product.id)}{$product.id|htmlSafe}{/if}">{$product.description|htmlSafe}</option>
                                     {/foreach}
@@ -272,7 +272,7 @@
                         {else}
                             <!--suppress HtmlFormInputWithoutLabel -->
                             <select name="preference_id">
-                                {foreach from=$preferences item=preference}
+                                {foreach $preferences as $preference}
                                     <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
                                             value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">{$preference.pref_description|htmlSafe}</option>
                                 {/foreach}

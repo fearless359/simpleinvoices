@@ -217,12 +217,12 @@ class PdoDb
     /**
      * Add a simple WhereItem testing for equality.
      * @param string $column Table column name.
-     * @param string $value Value to test for.
+     * @param string|int|DbField $value Value to test for.
      * @param string $connector (Optional) If specified, used to connect to a subsequent
      *        <i>WhereItem</i>. Typically "AND" or "OR".
      * @throws PdoDbException
      */
-    public function addSimpleWhere(string $column, string $value, string $connector = ""): void
+    public function addSimpleWhere(string $column, $value, string $connector = ""): void
     {
         $this->addToWhere(new WhereItem(false, $column, "=", $value, false, $connector));
     }

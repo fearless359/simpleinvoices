@@ -11,7 +11,7 @@
 Adding Blackbird to your page:
 
    1. Include blackbird.js in your page.
-   2. Inlcude blackbird.css in your page.
+   2. Include blackbird.css in your page.
 
 Your HTML source should look similar to the following code:
 

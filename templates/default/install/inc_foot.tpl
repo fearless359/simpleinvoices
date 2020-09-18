@@ -1,7 +1,8 @@
 <div style="text-align:center;">
-	<strong>Note:</strong> Questions or problems about this installation? Refer to the
+	<strong>{$LANG.note}:</strong> {$LANG.questions} {$LANG.orLc} {$LANG.problems} {$LANG.about} {$LANG.this} {$LANG.installation}?
+	{$LANG.referUc} {$LANG.to} {$LANG.the}
 	<a href="https://simpleinvoices.group/installation" target="blank">
-        SimpleInvoices Knowledge Base - Installation
+		{$LANG.simpleInvoicesGroup} {$LANG.forum} - {$LANG.installtionUc}
     </a>
-	documentation.
+	{$LANG.documentation}.
 </div>

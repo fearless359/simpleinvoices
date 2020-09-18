@@ -21,9 +21,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Sobre";//1
+$LANG['aboutUc'] = "Sobre";//1
 $LANG['account_info'] = "Informa&ccedil;&otilde;es sobre a conta";//1
 $LANG['actions'] = "A&ccedil;&otilde;es";//1
 $LANG['add'] = "Inserir";//1
@@ -151,7 +149,7 @@ $LANG['deleted'] = "Foi excluido";//1
 $LANG['denied_page'] = "Você não está autorizado para ver esta página";//1
 $LANG['description_uc'] = "Descrição";//1
 $LANG['description_short'] = "Desc";//1
-$LANG['details'] = "Detalhes";//1
+$LANG['detailsUc'] = "Detalhes";//1
 $LANG['disable'] = "Disable";//1
 $LANG['disabled'] = "Desabilitado";//1
 $LANG['displaying_inv'] = "Exibir Faturas";//1
@@ -187,7 +185,7 @@ $LANG['export_pdf_tooltip'] = "no formato PDF";//1
 $LANG['export_tooltip'] = "Exportar";//1
 $LANG['export_xls'] = "Exportar como XLS";//1
 $LANG['export_xls_tooltip'] = "para uma planilha eletronica como";//1
-$LANG['extensions'] = "Extenções";//1
+$LANG['extensionsUc'] = "Extenções";//1
 $LANG['faqs'] = "Perguntas mais Frequentes";//1
 $LANG['faqs_how'] ="Como criar uma Fatura?";//1
 $LANG['faqs_need'] ="O que eu preciso para começar a utilizar o simpleinvoices?";//1
@@ -275,7 +273,7 @@ $LANG['insert_product'] = "Inserir Produto";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//1
 $LANG['insert_product_value'] = "Insert Product Value";//1
 $LANG['insert_tax_rate'] = "Inserir taxa de imposto";//1
-$LANG['installation'] = "Instalação";//1
+$LANG['installationUc'] = "Instalação";//1
 $LANG['inv'] = "Fatura";//1
 $LANG['inv_consulting'] = " - Consulta";//1
 $LANG['inv_itemized'] = " - Discriminado";//1
@@ -381,7 +379,7 @@ $LANG['online_payment_id'] = "Pagamento Online ID";//1
 $LANG['open'] = "Abrir";//1
 $LANG['optional'] = "opcional";//1
 $LANG['options'] = "Op&ccedil;&otilde;es";//1
-$LANG['other'] = "Other";//1
+$LANG['otherUc'] = "Other";//1
 $LANG['owing_uc'] = "Saldo devedor";//1
 $LANG['page'] = "P&aacute;gina";//1
 $LANG['paid'] = "Pagas";//1
@@ -469,7 +467,7 @@ $LANG['run_report'] = "Executar relat&oacute;rio";//1
 $LANG['sales'] = "Vendas";//1
 $LANG['sales_by_customers'] = "Vendas por cliente";//1
 $LANG['sales_report'] = "Relat&oacute;rio de vendas";//1
-$LANG['sanity_check'] = "Verifica&ccedil;&atilde;o das faturas";//1
+$LANG['sanityCheck'] = "Verifica&ccedil;&atilde;o das faturas";//1
 $LANG['save'] = "Salvar";//1
 $LANG['save_biller'] = "Salvar Empresa";//1
 $LANG['save_biller_failure'] = "Ocorreu algum erro. Por favor, tente salvar a Empresa novamente<br />";//1
@@ -511,7 +509,7 @@ $LANG['save_tax_rate_success'] = "Taxa de imposto inserida com sucesso. <br /> R
 $LANG['save_user_failure'] = "Ocorreu algum erro. Por favor, tente salvar o usuario novamente<br />";//1
 $LANG['save_user_success'] = "Usuario salvo com sucesso. <br /> Redirecionando para pagina Gerenciar Usuarios";//1
 $LANG['select_invoice'] = "Por favor, selecione uma Fatura";//1
-$LANG['settings'] = "Op&ccedil;&otilde;es";//1
+$LANG['settingsUc'] = "Op&ccedil;&otilde;es";//1
 $LANG['setup_add_customer'] = "Inserir cliente, clique ";//1
 $LANG['setup_add_inv_pref'] = "Inserir preferencia de fatura, clique ";//1
 $LANG['setup_add_products'] = "Inserir alguns produtos, clique ";//1

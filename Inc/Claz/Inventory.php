@@ -91,7 +91,7 @@ class Inventory
     private static function getInventories(?int $inv_id = null): array
     {
         global $LANG, $pdoDb;
-
+// TODO: Need to figure out where to get email address from.
         $inventories = [];
         try {
             if (isset($inv_id)) {
@@ -204,7 +204,6 @@ class Inventory
         $email = new Email();
         $email->setBody($emailMessage);
         $email->setFrom($email->getFrom());
-        $email->setEmailTo($email->getEmailTo());
         $email->setSubject("SimpleInvoices inventory reorder level email");
         $email->send();
 

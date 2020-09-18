@@ -17,12 +17,14 @@
 */
 *}
 
-<b>Help</b>
+<b>{$LANG.help}</b>
 <hr />
 <div id="left">
     <br />
-    For information regarding the setup,installation, and use of SimpleInvoices please refer to the Instructions sub-menu in the Option menu. <br />
+    {$LANG.forUc} {$LANG.information} {$LANG.regarding} {$LANG.the} {$LANG.setup}, {$LANG.installation}, {$LANG.andLc}
+    {$LANG.use} {$LANG.of} {$LANG.simpleInvoices} {$LANG.please} {$LANG.refer} {$LANG.to} {$LANG.the} {$LANG.instructionsUc}
+    {$LANG.subMenu} {$LANG.in} {$LANG.the} {$LANG.optionUc} {$LANG.menu}. <br />
     <br />
-    For other queries please refer to the <a href='https://simpleinvoices.group' target="_blank">SimpleInvoices Knowledge Base</a>
-    and the <a href="https://simpleinvoices.group/">SimpleInvoices Group Forum</a>
+    {$LANG.forUc} {$LANG.other} {$LANG.queries} {$LANG.please} {$LANG.refer} {$LANG.to} {$LANG.the}
+    <a href='https://simpleinvoices.group' target="_blank">{$LANG.simpleInvoicesGroup} {$LANG.forum}</a>
 </div>

@@ -10,7 +10,7 @@
         <td>
             <table>
                 <tr class="si_product_attribute">
-                    {foreach from=$invoiceItem.attribute_json key=k item=v}
+                    {foreach $invoiceItem.attribute_json as $k => $v}
                         <td class="si_product_attribute">
                             {if $v.type == 'decimal'}
                                 {$v.name}:&nbsp;{$v.value|utilCurrency:$locale:$currencyCode} ;

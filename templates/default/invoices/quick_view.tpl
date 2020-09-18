@@ -106,7 +106,7 @@
         {include file="$path/quick_view_consulting.tpl"}
     {/if}
 
-    {foreach from=$invoiceItems item=invoiceItem }
+    {foreach $invoiceItems as $invoiceItem }
         {if $invoice.type_id == ITEMIZED_INVOICE}
             {include file="$path/quick_view_foreach_itemized.tpl"}
         {elseif $invoice.type_id == CONSULTING_INVOICE}
@@ -164,7 +164,7 @@
             {$invoice.gross|utilCurrency:$locale:$currencyCode}
         </td>
     </tr>
-    {foreach from=$invoice.tax_grouped item=taxg}
+    {foreach $invoice.tax_grouped as $taxg}
         {if $taxg.tax_amount != 0}
             <tr class="tr_tax">
                 <td colspan="4"></td>

@@ -4,23 +4,22 @@
 ***Making invoicing rock since '05***
 
 ## Cloning
-*Note: Cloning is not necessary unless you wish to contribute to the ongoing development and maintenance of SI.*
-For versions prior to Fearless359 Release, SI uses **gitsubmodules** to load the Zend Framework.  
-When cloning the repository use the `--recursive` option to ensure that Zend is retrieved.  
-`git clone --recursive git@github.com:simpleinvoices/simpleinvoices.git`
-
-For the Fearless359 releases, Zend Framework is incorporated in the download.
+*For end users, simply download the zip file and install it on your system. If you find an issue and develop a solution, you can
+submit the solution through the [SimpleInvoices Group forum](https://simpleinvoices.group). Cloning is only necessary if you want
+to develop components and features that you want included in SimpleInvoices for all users. If you wish to participate in this
+capacity, please notify the primary developer by submitting a description of what you want to do in the
+[SimpleInvoices Group forum](https://simpleinvoices.group).
 
 ## Updating to Current Version
 * [Version Update Process](https://simpleinvoices.group/version_update/)
 
 ## Fearless359 Version Downloads
-* Master - [master](https://github.com/fearless359/simpleinvoices/archive/master.zip) (.zip) PHP 5.6 & 7.x
-  * Library code updated to eliminate errors for current PHP versions.
-* Master 2019.2 - [master_2019.2](https://github.com/fearless359/simpleinvoices/archive/master_2019.2.zip) (.zip) PHP 7.2 and up.
-  * Library update to move Zend Framework 1 library from locally maintained to Composer maintain version.
-* Master 2020 - [master_2020](https://github.com/fearless359/simpleinvoices/archive/master_2020.zip) (.zip) PHP 7.4 and up.
-  * Update uses Composer for library maintenance and class autoload. All vendor and node_modules files update to latest version.
+* Master 2020 - ([master_2020.zip](https://github.com/fearless359/simpleinvoices/archive/master_2020.zip)) PHP 7.4 and up.
+  * Update uses Composer and Node for library maintenance and class autoload. Both libraries are in the download.
+  You will find the Composer library in the **vendor** directory and the Node library in the **node_modules** directory.
+  * You can update from **Master 2019.2** version to **Master 2020**. You **CANNOT** upgrade from any other version
+  to this version. If you use an earlier version, **master_2019** for example, you must first upgrade to **master_2019.2**
+  and then upgrade to **master_2020**.  
 
 ## Documentation
 * [All discussions & help have moved to SimpleInvoices Group Forum](https://simpleinvoices.group)
@@ -41,11 +40,11 @@ For the Fearless359 releases, Zend Framework is incorporated in the download.
 ## Translations
 We are proud that SimpleInvoices is currently available in 41 different languages but we would love for that number to be even bigger!
 
-If you would like to help translate SimpleInvoices into your language check out our [translation project](https://www.transifex.com/projects/p/SimpleInvoices/). Download updated and additional languages only if logged in there.
+If you would like to help translate SimpleInvoices into your language check out our
+[translation project](https://www.transifex.com/projects/p/SimpleInvoices/). Download updated and additional languages only if logged in there.
 
 For more information refer: [simpleinvoices.group/translate](https://simpleinvoices.group/translate)
 
 ## Reporting Bugs
-Please use the issue tracker on GitHub when reporting bugs.
-* [Report Fearless359 version issues here](https://github.com/fearless359/simpleinvoices/issues)
+[Report issues here](https://github.com/fearless359/simpleinvoices/issues)
 

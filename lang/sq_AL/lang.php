@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Rreth";//1
+$LANG['aboutUc'] = "Rreth";//1
 $LANG['account_info'] = "Info per llogarine";//1
 $LANG['actions'] = "Veprime";//1
 $LANG['add'] = "Add";//0
@@ -154,7 +152,7 @@ $LANG['deleted'] = "has been deleted";//0
 $LANG['denied_page'] = "You are not allowed to view this page";//0
 $LANG['description_uc'] = "Pershkrimi";//1
 $LANG['description_short'] = "Desc";//0
-$LANG['details'] = "Detaje";//1
+$LANG['detailsUc'] = "Detaje";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Jo Aktiv";//1
 $LANG['displaying_inv'] = "Displaying invoices";//0
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "si PDF";//1
 $LANG['export_tooltip'] = "Eksporto";//1
 $LANG['export_xls'] = "Export to XLS";//0
 $LANG['export_xls_tooltip'] = "ne excel si";//1
-$LANG['extensions'] = "Extensions";//0
+$LANG['extensionsUc'] = "Extensions";//0
 $LANG['faqs'] = "FAQ";//1
 $LANG['faqs_how'] = "Si krijohet nje fature?";//1
 $LANG['faqs_need'] = "Cfare me duhet per te filluar?";//1
@@ -278,7 +276,7 @@ $LANG['insert_product'] = "Shto Artikull";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Shto takse";//1
-$LANG['installation'] = "Instalimi";//1
+$LANG['installationUc'] = "Instalimi";//1
 $LANG['inv'] = "Fature";//1
 $LANG['inv_consulting'] = " - Konsulte";//1
 $LANG['inv_itemized'] = " - Sipas elemente";//1
@@ -384,7 +382,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//0
 $LANG['open'] = "Open";//0
 $LANG['optional'] = "opsional";//1
 $LANG['options'] = "Opsione";//1
-$LANG['other'] = "Other";//0
+$LANG['otherUc'] = "Other";//0
 $LANG['owing_uc'] = "Detyrimi";//1
 $LANG['page'] = "Page";//0
 $LANG['paid'] = "Paguar";//1
@@ -472,7 +470,7 @@ $LANG['run_report'] = "Run report";//0
 $LANG['sales'] = "Shitjet";//1
 $LANG['sales_by_customers'] = "Shitjet sipas klientit";//1
 $LANG['sales_report'] = "Sales Report";//0
-$LANG['sanity_check'] = "Kontrollo faturat";//1
+$LANG['sanityCheck'] = "Kontrollo faturat";//1
 $LANG['save'] = "Ruaj";//1
 $LANG['save_biller'] = "Ruaj Faturues";//1
 $LANG['save_biller_failure'] = "Dicka nuk punoj. Ruaj perseri Faturen<br />";//1
@@ -514,7 +512,7 @@ $LANG['save_tax_rate_success'] = "Taksa u ruajt, <br /> po redirektoheni te mena
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//0
 $LANG['select_invoice'] = "Zgjidhni nje fature";//1
-$LANG['settings'] = "Settings";//0
+$LANG['settingsUc'] = "Settings";//0
 $LANG['setup_add_customer'] = "Add a customer, click ";//0
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Add some products, click ";//0

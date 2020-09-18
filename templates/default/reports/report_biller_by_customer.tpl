@@ -5,7 +5,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	{foreach item=biller from=$data}
+	{foreach $data as $biller}
 		<tr>
 			<th colspan="2">{$LANG.biller_name}: {$biller.name|htmlSafe}</th>
 		</tr>
@@ -13,7 +13,7 @@
 			<th>{$LANG.customer_name}</th>
 			<th>{$LANG.sales}</th>
 		</tr>
-		{foreach item=customer from=$biller.customers}
+		{foreach $biller.customers as $customer}
 			<tr>
 				<td>{$customer.name|htmlSafe}</td>
 				<td>{$customer.sum_total|utilNumber:2|default:'-'}</td>

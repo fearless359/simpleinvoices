@@ -31,6 +31,7 @@
             </tr>
         </thead>
     </table>
+    <!--suppress JSUnusedLocalSymbols -->
     <script>
         {literal}
         $(document).ready(function () {

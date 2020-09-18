@@ -5,7 +5,7 @@
   <td class="tbl1 si_right"><b>{$LANG.price}</b></td>
 </tr>
 
-{foreach from=$invoiceItems item=invoiceItem}
+{foreach $invoiceItems as $invoiceItem}
   <tr class="tbl1-left tbl1-right">
     <td class="tbl1-left">{$invoiceItem.quantity|utilNumberTrim}</td>
     <td>{$invoiceItem.product.description|htmlSafe}</td>

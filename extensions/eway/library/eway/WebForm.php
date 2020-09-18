@@ -1,6 +1,8 @@
 <?php
 use Inc\Claz\Util;
 
+global $LANG;
+
 require_once('EwayPaymentLive.php');
 if (isset($_POST['btnProcess'])){
 
@@ -50,7 +52,7 @@ if (isset($_POST['btnProcess'])){
   {
       print "Transaction Error: " . $ewayResponseFields["EWAYTRXNERROR"] . "<br>\n";
       foreach($ewayResponseFields as $key => $value)
-          print "\n<br>\$ewayResponseFields[\"$key\"] = $value";
+          print "\n<br>\${$LANG['ewayResponseFields']}[\"$key\"] = $value";
   }
   else if(strtolower($ewayResponseFields["EWAYTRXNSTATUS"])=="true")
   {

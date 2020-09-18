@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Par mums";//1
+$LANG['aboutUc'] = "Par mums";//1
 $LANG['account_info'] = "Rēķina informācija";//1
 $LANG['actions'] = "Darbība";//1
 $LANG['add'] = "Pievienot";//1
@@ -154,7 +152,7 @@ $LANG['deleted'] = "has been deleted";//0
 $LANG['denied_page'] = "You are not allowed to view this page";//0
 $LANG['description_uc'] = "Paskaidrojums";//1
 $LANG['description_short'] = "Desc";//0
-$LANG['details'] = "Papildus info";//1
+$LANG['detailsUc'] = "Papildus info";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Atslēgts";//1
 $LANG['displaying_inv'] = "Displaying invoices";//0
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "PDF formātā";//1
 $LANG['export_tooltip'] = "Eksportēt";//1
 $LANG['export_xls'] = "Export to XLS";//0
 $LANG['export_xls_tooltip'] = "to a spreadsheet as";//0
-$LANG['extensions'] = "Extensions";//0
+$LANG['extensionsUc'] = "Extensions";//0
 $LANG['faqs'] = "Biežāk uzdotie jautājumi";//1
 $LANG['faqs_how'] = "Kā izveidot pavadzīmi?";//1
 $LANG['faqs_need'] = "Kas man ir vajadzīgs lai es varu izsūtīt pavadzīmi?";//1
@@ -278,7 +276,7 @@ $LANG['insert_product'] = "Pievienot produktu";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Pievienot nodokli";//1
-$LANG['installation'] = "Instalācija";//1
+$LANG['installationUc'] = "Instalācija";//1
 $LANG['inv'] = "Pavadzīme";//1
 $LANG['inv_consulting'] = " - Konsultācija";//1
 $LANG['inv_itemized'] = " - Itemized";//0
@@ -384,7 +382,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//0
 $LANG['open'] = "Open";//0
 $LANG['optional'] = "neobligāts";//1
 $LANG['options'] = "Neobligāts";//1
-$LANG['other'] = "Other";//0
+$LANG['otherUc'] = "Other";//0
 $LANG['owing_uc'] = "Parādā";//1
 $LANG['page'] = "Page";//0
 $LANG['paid'] = "Nomaksāts";//1
@@ -472,7 +470,7 @@ $LANG['run_report'] = "Run report";//0
 $LANG['sales'] = "Sales";//0
 $LANG['sales_by_customers'] = "Sales by customers";//0
 $LANG['sales_report'] = "Sales Report";//0
-$LANG['sanity_check'] = "Sanity check of invoices";//0
+$LANG['sanityCheck'] = "Sanity check of the invoices";//0
 $LANG['save'] = "Saglabāt";//1
 $LANG['save_biller'] = "Saglabāt kreditoru";//1
 $LANG['save_biller_failure'] = "Something went wrong, please try saving the biller again<br />";//0
@@ -514,7 +512,7 @@ $LANG['save_tax_rate_success'] = "Tax rate successfully saved, <br /> you will b
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//0
 $LANG['select_invoice'] = "Lūdzu izvēlaties pavadzīmi";//1
-$LANG['settings'] = "Settings";//0
+$LANG['settingsUc'] = "Settings";//0
 $LANG['setup_add_customer'] = "Add a customer, click ";//0
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Add some products, click ";//0

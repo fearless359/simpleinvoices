@@ -123,7 +123,7 @@ class Extensions
                 $rows = array_merge($rows, $availableExtensions);
 
                 foreach ($rows as $row) {
-                    $extRowName = $LANG['extensions'] . " " . $row['name'];
+                    $extRowName = $LANG['extensionsUc'] . " " . $row['name'];
                     $row['plugin_registered'] = $LANG['plugin_register'] . ' ' . $extRowName;
                     $row['plugin_unregister'] = $LANG['plugin_unregister'] . ' ' . $extRowName;
                     $row['plugin_disable'] = $LANG['disable'] . ' ' . $extRowName;

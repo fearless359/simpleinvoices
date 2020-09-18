@@ -246,13 +246,13 @@
     {if $performExtensionInsertions == true}
         {section name=idx loop=$extensionInsertionFiles}
             {if $extensionInsertionFiles[idx].module  == 'reports' &&
-            $extensionInsertionFiles[idx].section == $before|cat:$LANG.other}
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.otherUc}
                 {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
 
-    <h2>{$LANG.other}</h2>
+    <h2>{$LANG.otherUc}</h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=report_database_log" class="">
             <img src="../../../images/database.png" alt=""/>
@@ -261,7 +261,7 @@
         {if $performExtensionInsertions == true}
             {section name=idx loop=$extensionInsertionFiles}
                 {if $extensionInsertionFiles[idx].module  == 'reports' &&
-                $extensionInsertionFiles[idx].section == $LANG.other}
+                $extensionInsertionFiles[idx].section == $LANG.otherUc}
                     {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}

@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Om";//1
+$LANG['aboutUc'] = "Om";//1
 $LANG['account_info'] = "Konto Information";//1
 $LANG['actions'] = "Handlingar";//1
 $LANG['add'] = "Lägg till";//1
@@ -154,7 +152,7 @@ $LANG['deleted'] = "har raderats";//1
 $LANG['denied_page'] = "Du har inte rättighet att visa denna sida";//1
 $LANG['description_uc'] = "Beskrivning";//1
 $LANG['description_short'] = "Beskr.";//1
-$LANG['details'] = "Detaljer";//1
+$LANG['detailsUc'] = "Detaljer";//1
 $LANG['disable'] = "Avaktivera";//1
 $LANG['disabled'] = "Deaktiverat";//1
 $LANG['displaying_inv'] = "Visar fakturorna";//1
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "som PDF format";//1
 $LANG['export_tooltip'] = "Exportera";//1
 $LANG['export_xls'] = "Exportera till XLS";//1
 $LANG['export_xls_tooltip'] = "till kalkylblad som";//1
-$LANG['extensions'] = "Utbyggnad";//1
+$LANG['extensionsUc'] = "Utbyggnad";//1
 $LANG['faqs'] = "Frequently Asked Questions";//1
 $LANG['faqs_how'] = "Hur skapar jag fakturor?";//1
 $LANG['faqs_need'] = "Vad behöver jag för att börja fakturera?";//1
@@ -278,7 +276,7 @@ $LANG['insert_product'] = "Spara Produkt";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Spara Skattesats";//1
-$LANG['installation'] = "Installation";//1
+$LANG['installationUc'] = "Installation";//1
 $LANG['inv'] = "Faktura";//1
 $LANG['inv_consulting'] = " - Konsultering";//1
 $LANG['inv_itemized'] = " - Artikelvis";//1
@@ -384,7 +382,7 @@ $LANG['online_payment_id'] = "Betalnings ID Online";//1
 $LANG['open'] = "Öppen";//1
 $LANG['optional'] = "valfri";//1
 $LANG['options'] = "Inställningar";//1
-$LANG['other'] = "Annat";//1
+$LANG['otherUc'] = "Annat";//1
 $LANG['owing_uc'] = "Fordringar";//1
 $LANG['page'] = "sida";//1
 $LANG['paid'] = "Betalt";//1
@@ -472,7 +470,7 @@ $LANG['run_report'] = "Kör rapport";//1
 $LANG['sales'] = "Försäljning";//1
 $LANG['sales_by_customers'] = "Försäljning efter kund";//1
 $LANG['sales_report'] = "Försäljningsrapport";//1
-$LANG['sanity_check'] = "Faktura kontroll";//1
+$LANG['sanityCheck'] = "Faktura kontroll";//1
 $LANG['save'] = "Spara";//1
 $LANG['save_biller'] = "Spara Fordringsägare";//1
 $LANG['save_biller_failure'] = "Någonting blev fel, försök att spara fordringsägaren igen<br />";//1
@@ -514,7 +512,7 @@ $LANG['save_tax_rate_success'] = "Skattesats sparad, <br /> du kommer att bli vi
 $LANG['save_user_failure'] = "Någonting blev fel, försök att spara användaren igen<br />";//1
 $LANG['save_user_success'] = "Användare sparad, <br /> du kommer att bli vidarebefodrad till sidan Hantera Användare";//1
 $LANG['select_invoice'] = "Välj en faktura";//1
-$LANG['settings'] = "Inställningar";//1
+$LANG['settingsUc'] = "Inställningar";//1
 $LANG['setup_add_customer'] = "Lägg till en kund, klicka ";//1
 $LANG['setup_add_inv_pref'] = "Lägg till en faktura inställning, klicka ";//1
 $LANG['setup_add_products'] = "Lägg till några produkter, klicka ";//1

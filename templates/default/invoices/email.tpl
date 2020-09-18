@@ -15,10 +15,11 @@
 *      https://simpleinvoices.group*}
 {if $smarty.get.stage == 1 }
     {if $error == 1 }
+        <!--suppress HtmlFormInputWithoutLabel -->
         <div class="si_message_error"><h2>{$message}</h2></div>
     {/if}
     <div class="si_center">
-        <h3>Email {$invoice.index_name|htmlSafe} to Customer as PDF</h3>
+        <h3>{$LANG.email} {$invoice.index_name|htmlSafe} {$LANG.to} {$LANG.customer} {$LANG.asLc} {$LANG.pdf}</h3>
     </div>
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=invoices&amp;view=email&amp;stage=2&amp;id={$smarty.get.id|urlencode}">
@@ -72,9 +73,6 @@
                 <tr>
                     <th>{$LANG.message}</th>
                     <td>
-                        <!--
-                        <textarea name="email_notes" class="editor" tabindex="50">{*if !empty($biller.signature)*}{*$biller.signature|htmlSafe*}{*/if*}</textarea>
-                        -->
                         <input name="email_notes" id="email_notes" {if isset($biller.signature)}value="{$biller.signature|outHtml}"{/if} type="hidden">
                         <trix-editor input="email_notes" tabindex="50"></trix-editor>
                     </td>

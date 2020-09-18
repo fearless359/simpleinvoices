@@ -18,12 +18,12 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<td align="RIGHT" colspan="6" class="PAGE_LAYER">{$LANG.total_owed}</td>
-			<td align="LEFT" class="PAGE_LAYER"><span class="BOLD">{$total_owed|utilNumber:2|default:'-'}</span></td>
+			<td colspan="6" class="page_layer si_right">{$LANG.total_owed}</td>
+			<td class="page_layer left"><span class="bold">{$total_owed|utilNumber:2|default:'-'}</span></td>
 		</tr>
 	</tfoot>
 	<tbody>
-	{foreach item=invoice from=$data}
+	{foreach $data as $invoice}
 		<tr>
 			<td>{$invoice.id|htmlSafe}</td>
 			<td>{$invoice.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}</td>

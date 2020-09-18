@@ -7,7 +7,7 @@
         <div class="si_form">
             <div id="tabs_customer">
                 <ul class="anchors">
-                    <li><a href="#section-1" target="_top">{$LANG.details}</a></li>
+                    <li><a href="#section-1" target="_top">{$LANG.detailsUc}</a></li>
                     <li><a href="#section-2" target="_top">{$LANG.custom_uc}&nbsp;{$LANG.fields_uc}&nbsp;&amp;&nbsp;{$LANG.flags_uc}</a></li>
                     <li><a href="#section-3" target="_top">{$LANG.notes}</a></li>
                 </ul>
@@ -83,7 +83,7 @@
                                 <td>
                                     <select name="custom_field1" class="si_input" tabindex="70">
                                         <option value=""></option>
-                                        {foreach from=$product_group item=pg}
+                                        {foreach $product_group as $pg}
                                             <option value="{if isset($pg.name)}{$pg.name|htmlSafe}{/if}">{$pg.name|htmlSafe}</option>
                                         {/foreach}
                                     </select>

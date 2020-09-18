@@ -24,9 +24,7 @@
 #all
 
 global $LANG;
-if ($LANG) {} // eliminates unused warning
-
-$LANG['about'] = "Tietoja ohjelmasta";//1
+$LANG['aboutUc'] = "Tietoja ohjelmasta";//1
 $LANG['account_info'] = "Tilin tiedot";//1
 $LANG['actions'] = "Toiminnot";//1
 $LANG['add'] = "Lisää";//1
@@ -154,7 +152,7 @@ $LANG['deleted'] = "has been deleted";//0
 $LANG['denied_page'] = "You are not allowed to view this page";//0
 $LANG['description_uc'] = "Kuvaus";//1
 $LANG['description_short'] = "Desc";//0
-$LANG['details'] = "Tiedot";//1
+$LANG['detailsUc'] = "Tiedot";//1
 $LANG['disable'] = "Disable";//0
 $LANG['disabled'] = "Ei käytössä";//1
 $LANG['displaying_inv'] = "Displaying invoices";//0
@@ -190,7 +188,7 @@ $LANG['export_pdf_tooltip'] = "PDF-muodossa";//1
 $LANG['export_tooltip'] = "Vie";//1
 $LANG['export_xls'] = "Vie XLS-muotoon";//1
 $LANG['export_xls_tooltip'] = "taulukkolaskentaan tiedostona";//1
-$LANG['extensions'] = "Extensions";//0
+$LANG['extensionsUc'] = "Extensions";//0
 $LANG['faqs'] = "Kysymyksiä ja vastauksia";//1
 $LANG['faqs_how'] = "Kuinka laskuja tehdään?";//1
 $LANG['faqs_need'] = "Mitä tarvitaan laskutuksen aloittamiseksi?";//1
@@ -278,7 +276,7 @@ $LANG['insert_product'] = "Lisää tuote";//1
 $LANG['insert_product_attribute'] = "Insert Product Attribute";//0
 $LANG['insert_product_value'] = "Insert Product Value";//0
 $LANG['insert_tax_rate'] = "Lisää ALV-%";//1
-$LANG['installation'] = "Asennus";//1
+$LANG['installationUc'] = "Asennus";//1
 $LANG['inv'] = "Lasku";//1
 $LANG['inv_consulting'] = " - konsultointia";//1
 $LANG['inv_itemized'] = " - yksilöitynä";//1
@@ -384,7 +382,7 @@ $LANG['online_payment_id'] = "Online Payment ID";//0
 $LANG['open'] = "Open";//0
 $LANG['optional'] = "vapaaehtoinen";//1
 $LANG['options'] = "Asetukset";//1
-$LANG['other'] = "Muu";//1
+$LANG['otherUc'] = "Muu";//1
 $LANG['owing_uc'] = "Velkaa";//1
 $LANG['page'] = "Page";//0
 $LANG['paid'] = "Maksettu";//1
@@ -472,7 +470,7 @@ $LANG['run_report'] = "Run report";//0
 $LANG['sales'] = "Myynti";//1
 $LANG['sales_by_customers'] = "Myynti asiakkaittain";//1
 $LANG['sales_report'] = "Myynti raportti";//1
-$LANG['sanity_check'] = "Laskujen oikeellisuustarkistus";//1
+$LANG['sanityCheck'] = "Laskujen oikeellisuustarkistus";//1
 $LANG['save'] = "Tallenna";//1
 $LANG['save_biller'] = "Tallenna laskuttaja";//1
 $LANG['save_biller_failure'] = "Virhe tietojen tallennuksessa. Yritä laskuttajan tietojen tallennusta uudestaan<br />";//1
@@ -514,7 +512,7 @@ $LANG['save_tax_rate_success'] = "ALV-luokka tallennettu,<br />ohjelma siirtyy A
 $LANG['save_user_failure'] = "Something went wrong, please try saving the user again<br />";//0
 $LANG['save_user_success'] = "User successfully saved, <br /> you will be redirected to the Manage Users page";//0
 $LANG['select_invoice'] = "Ole hyvä ja valitse lasku";//1
-$LANG['settings'] = "Asetukset";//1
+$LANG['settingsUc'] = "Asetukset";//1
 $LANG['setup_add_customer'] = "Add a customer, click ";//0
 $LANG['setup_add_inv_pref'] = "Add an invoice preference, click ";//0
 $LANG['setup_add_products'] = "Add some products, click ";//0
