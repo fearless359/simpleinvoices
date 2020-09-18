@@ -219,6 +219,10 @@ class SiAcl
                     'administrator',
                     'domain_administrator'
                 ],
+                'save' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
                 'view' => [
                     'administrator',
                     'domain_administrator'
@@ -230,6 +234,10 @@ class SiAcl
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -288,6 +296,10 @@ class SiAcl
                     'administrator',
                     'domain_administrator'
                 ],
+                'save' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
                 'view' => [
                     'administrator',
                     'domain_administrator'
@@ -303,6 +315,10 @@ class SiAcl
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -359,6 +375,10 @@ class SiAcl
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -456,6 +476,10 @@ class SiAcl
                     'administrator',
                     'domain_administrator'
                 ],
+                'save' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
                 'view' => [
                     'administrator',
                     'domain_administrator'
@@ -476,6 +500,11 @@ class SiAcl
                     'administrator',
                     'domain_administrator'
                 ],
+                'save' => [
+                    'administrator',
+                    'domain_administrator',
+                    'biller'
+                ],
                 'view' => [
                     'administrator',
                     'domain_administrator',
@@ -492,6 +521,10 @@ class SiAcl
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -513,6 +546,10 @@ class SiAcl
                     'administrator',
                     'domain_administrator'
                 ],
+                'save' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
                 'view' => [
                     'administrator',
                     'domain_administrator'
@@ -528,6 +565,10 @@ class SiAcl
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -595,6 +636,10 @@ class SiAcl
                     'domain_administrator'
                 ],
                 'manage' => [
+                    'administrator',
+                    'domain_administrator'
+                ],
+                'save' => [
                     'administrator',
                     'domain_administrator'
                 ],
@@ -678,6 +723,7 @@ class SiAcl
          * @var Acl $acl
          */
         $acl = unserialize($_SESSION['acl']);
+
         /** @noinspection PhpUndefinedFieldInspection */
         return $acl->can->{$role}->{$permission}($resource);
     }

@@ -113,7 +113,7 @@ class Acl implements AclInterface
     {
         if ($role === self::SYN_ALLOW || $role === self::SYN_DENY)
         {
-            $this->session["status"] = ($role === self::SYN_ALLOW);
+            $this->session["status"] = $role === self::SYN_ALLOW;
 
             if (!empty($this->session["role"]))
             {
@@ -143,7 +143,7 @@ class Acl implements AclInterface
 	 * @param string $permission
 	 * @param string[] $args
 	 * @throws \Exception
-	 * @return boolean|null
+	 * @return bool|null
 	 */
 	public function __call(string $permission, array $args)
 	{
@@ -167,7 +167,7 @@ class Acl implements AclInterface
             }
         }
 
-        $args = (count($args) > 0) ? $args : $this->resourceRegistry->getRegistryNames();
+        $args = count($args) > 0 ? $args : $this->resourceRegistry->getRegistryNames();
 
 		if ($this->session["query"])
 		{
@@ -262,11 +262,11 @@ class Acl implements AclInterface
 			{
 				$this->addRole((string)$object);
 			}
-			else if ($object instanceof ResourceInterface)
+			elseif ($object instanceof ResourceInterface)
 			{
 				$this->addResource((string)$object);
 			}
-			else if ($object instanceof PermissionInterface)
+			elseif ($object instanceof PermissionInterface)
 			{
 				$this->addPermission((string)$object);
 			}
@@ -312,7 +312,7 @@ class Acl implements AclInterface
 	 * @param string $role;
 	 * @param string $permission
 	 * @param string $resource
-	 * @param boolean $status Optional
+	 * @param bool $status Optional
 	 * @throws \Exception
 	 * @return void
 	 */
@@ -368,7 +368,7 @@ class Acl implements AclInterface
      * @param string $role;
      * @param string $permission
      * @param string $resource
-     * @return boolean
+     * @return bool
      */
     public function getPermissionStatus(string $role, string $permission, string $resource) : bool
     {
