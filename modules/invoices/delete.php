@@ -78,9 +78,9 @@ try {
         }
         if ($error) {
             $pdoDb->rollback();
-            $displayBlock = "<div class='si_message_error'>{$LANG['delete_failed']}</div>";
+            $displayBlock = "<div class='si_message_error'>{$LANG['deleteFailed']}</div>";
         } else {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['delete_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['deleteSuccess']}</div>";
             $pdoDb->commit();
         }
         // TODO - what about the stuff in the products table for the total style invoices?

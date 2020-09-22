@@ -14,13 +14,13 @@
         </td>
     </tr>
     <tr>
-        <th>{$LANG.inv_pref}</th>
-        <th>{$LANG.sales_representative}</th>
+        <th>{$LANG.invPref}</th>
+        <th>{$LANG.salesRepresentative}</th>
     </tr>
     <tr>
         <td>
             {if !isset($preferences) }
-                <em>{$LANG.no_preferences}</em>
+                <em>{$LANG.noPreferences}</em>
             {else}
                 <select name="preference_id">
                     {foreach $preferences as $preference}

@@ -10,16 +10,16 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 $addButtonLink = "index.php?module=expense&amp;view=create";
-$addButtonMsg = $LANG['add_new_expense'];
-$displayBlock = "<div class='si_message_error'>{$LANG['no_expenses']}</div>";
+$addButtonMsg = $LANG['addNewExpense'];
+$displayBlock = "<div class='si_message_error'>{$LANG['noExpenses']}</div>";
 
 $expenses = Expense::getAll();
 $numberOfRows = count($expenses);
 if ($numberOfRows == 0) {
     if (ExpenseAccount::count() == 0) {
-        $displayBlock = "<div class='si_message_error'>{$LANG['no_expense_accounts']}</div>";
+        $displayBlock = "<div class='si_message_error'>{$LANG['noExpenseAccounts']}</div>";
         $addButtonLink = "index.php?module=expense_account&amp;view=create";
-        $addButtonMsg = $LANG['add_new_expense_account'];
+        $addButtonMsg = $LANG['addNewExpenseAccount'];
     }
 }
 

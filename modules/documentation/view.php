@@ -4,8 +4,8 @@
  *  1) Fixed help messages from the lang.php file using the 'page' attribute in the
  *     'cluetip' link. Ex:
  *          <a class="cluetip" href="#"
- *             rel="index.php?module=documentation&amp;view=view&amp;page=help_company_logo"
- *             title="{$LANG.company_logo}">
+ *             rel="index.php?module=documentation&amp;view=view&amp;page=helpCompanyLogo"
+ *             title="{$LANG.companyLogo}">
  *            <img src="{$helpImagePath}help-small.png" alt="" />
  *          </a>
  *
@@ -13,7 +13,7 @@
  *     'cluetip' link. Ex:
  *          <a class="cluetip" href="#"
  *             rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
- *             title="{$LANG.custom_flags_uc}">
+ *             title="{$LANG.customFlagsUc}">
  *            <img src="{$helpImagePath}help-small.png" alt="" />
  *          </a>
  */
@@ -26,7 +26,7 @@ if (isset($_GET['help'])) {
 }
 else {
     $getPage = $_GET['page'];
-    $page = isset($LANG[$getPage]) ? $LANG[$getPage] : $LANG['no_help_page'];
+    $page = isset($LANG[$getPage]) ? $LANG[$getPage] : $LANG['noHelpPage'];
 }
 
 $smarty->assign("page", $page);

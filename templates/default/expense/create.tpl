@@ -8,7 +8,7 @@
         <div class="si_form">
             <table class="center" style="width:80%;">
                 <tr>
-                    <th class="details_screen">{$LANG.expense_accounts}</th>
+                    <th class="details_screen">{$LANG.expenseAccounts}</th>
                     <td>
                         <select name="expense_account_id" class="validate[required]" tabindex="10">
                             <option value=''></option>
@@ -19,11 +19,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.amount_uc}</th>
+                    <th class="details_screen">{$LANG.amountUc}</th>
                     <td><input name="amount" class="validate[required]" tabindex="20"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.date_formatted}</th>
+                    <th class="details_screen">{$LANG.dateFormatted}</th>
                     <td>
                         <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="date" id="date"
                                value='{$smarty.now|date_format:"%Y-%m-%d"}' tabindex="30"/>
@@ -54,7 +54,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.invoice_uc}</th>
+                    <th class="details_screen">{$LANG.invoiceUc}</th>
                     <td>
                         <select name="invoice_id" tabindex="60">
                             <option value=''></option>
@@ -65,7 +65,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.product_uc}</th>
+                    <th class="details_screen">{$LANG.productUc}</th>
                     <td>
                         <select name="product_id" tabindex="70">
                             <option value=''></option>
@@ -96,7 +96,7 @@
                     <td>
                         <select name="status" tabindex="90">
                             <option value="1" selected>{$LANG.paid}</option>
-                            <option value="0">{$LANG.not_paid}</option>
+                            <option value="0">{$LANG.notPaid}</option>
                         </select>
                     </td>
                 </tr>

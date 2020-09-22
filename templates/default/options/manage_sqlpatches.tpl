@@ -28,7 +28,7 @@
 	<thead>
 	<tr>
 		<th class="sortable">{$LANG.patchUc} {$LANG.id}</th>
-		<th class="sortable">{$LANG.description_uc}</th>
+		<th class="sortable">{$LANG.descriptionUc}</th>
 		<th class="sortable">{$LANG.releaseUc}</th>
 	</tr>
 	</thead>

@@ -13,17 +13,17 @@ if (!empty($_GET['id'])) {
     // Filter by just one invoice
     $payments      = Payment::getInvoicePayments($_GET['id'], true);
     $subPageActive = "payment_filter_invoice";
-    $noEntryMsg    = $LANG['no_payments_invoice'];
+    $noEntryMsg    = $LANG['noPaymentsInvoice'];
 } elseif (!empty($_GET['c_id'])) {
     // Filter by just one customer
     $payments      = Payment::getCustomerPayments($_GET['c_id'], true);
     $subPageActive = "payment_filter_customer";
-    $noEntryMsg    = $LANG['no_payments_customer'];
+    $noEntryMsg    = $LANG['noPaymentsCustomer'];
 } else {
     // No filters
     $payments      = Payment::getAll(true);
     $subPageActive = "payment_manage";
-    $noEntryMsg    = $LANG['no_payments'];
+    $noEntryMsg    = $LANG['noPayments'];
 }
 // @formatter:on
 

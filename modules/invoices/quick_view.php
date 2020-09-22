@@ -94,7 +94,7 @@ try {
     $smarty->assign("invoiceType"         , $invoiceType);
     $smarty->assign("invoice"             , $invoice);
     $smarty->assign("wordprocessor"       , $config['exportWordProcessor']);
-    $smarty->assign("spreadsheet"         , $config['export.spreadsheet']);
+    $smarty->assign("spreadsheet"         , $config['exportSpreadsheet']);
     $smarty->assign("customerAccount"     , $customerAccount);
     $smarty->assign("ewayPreCheck"        , $ewayPreCheck);
 

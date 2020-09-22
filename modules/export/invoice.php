@@ -22,7 +22,7 @@ $export = new Export(Destination::DOWNLOAD);
 $export->setFormat($format);
 $export->setFileType($fileType);
 $export->setRecId($id);
-$export->setModule('invoice');
+$export->setFileName('invoice');
 try {
     $export->execute();
 } catch (PdoDbException $pde) {

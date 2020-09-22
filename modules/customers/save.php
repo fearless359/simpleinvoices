@@ -27,7 +27,7 @@ Util::directAccessAllowed();
 // Deal with op and add some basic sanity checking
 $op = !empty( $_POST['op'] ) ? $_POST['op'] : null;
 
-$displayBlock = "<div class='si_message_error'>{$LANG['save_customer_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['saveCustomerFailure']}</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=manage' />";
 
 $error = false;
@@ -49,11 +49,11 @@ if (!empty($_POST['credit_card_number'])) {
 if (!$error) {
     if ($op === "create") {
         if (Customer::insertCustomer($excludeCreditCardNumber)) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['save_customer_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomerSuccess']}</div>";
         }
     } elseif ($op === 'edit') {
         if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['save_customer_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomerSuccess']}</div>";
         }
     }
 }

@@ -4,7 +4,7 @@
     <!--suppress HtmlFormInputWithoutLabel -->
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=product_attribute&amp;view=create">
-        <h3>{$LANG.add_product_attribute}</h3>
+        <h3>{$LANG.addProductAttribute}</h3>
         <hr/>
         <table class="center">
             <tr>
@@ -37,7 +37,7 @@
         </table>
         <hr/>
         <div class="si_toolbar si_toolbar_form">
-            <button type="submit" class="positive" name="submit" value="{$LANG.insert_product_attribute}">
+            <button type="submit" class="positive" name="submit" value="{$LANG.insertProductAttribute}">
                 <img class="button_img" src="../../../images/tick.png" alt="{$LANG.save}"/>
                 {$LANG.save}
             </button>

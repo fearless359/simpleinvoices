@@ -14,17 +14,17 @@
 <br/>
 <br/>
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_custom_flags}</div>
+    <div class="si_message">{$LANG.noCustomFlags}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.associated_table}</th>
-            <th>{$LANG.flag_number}</th>
-            <th>{$LANG.field_label_uc}</th>
+            <th>{$LANG.associatedTable}</th>
+            <th>{$LANG.flagNumber}</th>
+            <th>{$LANG.fieldLabelUc}</th>
             <th>{$LANG.enabled}</th>
-            <th>{$LANG.field_help_uc}</th>
+            <th>{$LANG.fieldHelpUc}</th>
         </tr>
         </thead>
         <tbody>
@@ -72,14 +72,14 @@
     </script>
     <div class="si_help_div">
         <a class="cluetip" href="#"
-           rel="index.php?module=documentation&amp;view=view&amp;page=help_what_are_custom_flags"
-           title="{$LANG.what_are_custom_flags}">{$LANG.what_are_custom_flags}
+           rel="index.php?module=documentation&amp;view=view&amp;page=helpWhatAreCustomFlags"
+           title="{$LANG.whatAreCustomFlags}">{$LANG.whatAreCustomFlags}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
         ::
         <a class="cluetip" href="#"
-           rel="index.php?module=documentation&amp;view=view&amp;page=help_manage_custom_flags"
-           title="{$LANG.whats_this_page_about}">{$LANG.whats_this_page_about}
+           rel="index.php?module=documentation&amp;view=view&amp;page=helpManageCustomFlags"
+           title="{$LANG.whatsThisPageAbout}">{$LANG.whatsThisPageAbout}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
     </div>

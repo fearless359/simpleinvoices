@@ -69,8 +69,8 @@ class Taxes
 
             $rows = $pdoDb->request("SELECT", "tax");
             foreach ($rows as $row) {
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['tax_rate'] . ' ' . $row['tax_description'];
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['taxRate'] . ' ' . $row['tax_description'];
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['taxRate'] . ' ' . $row['tax_description'];
                 $row['image'] = $row['tax_enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
                 $taxes[] = $row;
             }

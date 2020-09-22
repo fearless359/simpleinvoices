@@ -11,16 +11,16 @@ Util::directAccessAllowed();
 // Deal with op and add some basic sanity checking
 $op = $_POST['op'];
 
-$displayBlock = "<div class='si_message_error'>{$LANG['save_inventory_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['saveInventoryFailure']}</div>";
 $refreshRedirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=inventory&amp;view=manage" />';
 
 if ($op === 'create') {
     if (Inventory::insert() > 0) {
-        $displayBlock = "<div class='si_message_ok'>{$LANG['save_inventory_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['saveInventorySuccess']}</div>";
     }
 } elseif ($op === 'edit') {
     if (Inventory::update()) {
-        $displayBlock = "<div class='si_message_ok'>{$LANG['save_inventory_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['saveInventorySuccess']}</div>";
     }
 }
 

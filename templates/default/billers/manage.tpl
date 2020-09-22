@@ -14,11 +14,11 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=billers&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.add_new_biller}
+        {$LANG.addNewBiller}
     </a>
 </div>
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_billers}</div>
+    <div class="si_message">{$LANG.noBillers}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>

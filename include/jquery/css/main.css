@@ -98,6 +98,10 @@ table.center {
     font-weight: bold;
 }
 
+.underline {
+    text-decoration: underline;
+}
+
 table.left {
   float:left;
   margin-left:auto;
@@ -812,18 +816,6 @@ a.cluetip:hover img {
 
 .si_cust_invoices table {
     width:100%;
-}
-/* @end */
-
-
-/* @group Si Statement
-------------------------------------------------------------------- */
-.si_statement_info1 {
-    float: left;
-}
-
-.si_statement_info2 {
-    float: right;
 }
 /* @end */
 

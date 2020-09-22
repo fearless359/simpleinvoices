@@ -8,7 +8,7 @@ global $LANG, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$displayBlock = "<div class='si_message_error'>{$LANG['no_expense_accounts']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['noExpenseAccounts']}</div>";
 
 $expenseAccounts = ExpenseAccount::getAll();
 

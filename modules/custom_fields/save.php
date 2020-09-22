@@ -27,7 +27,7 @@ global $LANG, $pdoDb, $smarty;
 Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$displayBlock = "<div class='si_message_error'>{$LANG['save_custom_field_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['saveCustomFieldFailure']}</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=custom_fields&amp;view=manage' />";
 
 $clearData = isset($_POST['clear_data']) && strtolower($_POST['clear_data']) == 'yes';
@@ -39,11 +39,11 @@ $cfLabel = isset($_POST['cf_custom_label']) ? $_POST['cf_custom_label'] : '';
 $op = !empty($_POST['op']) ? $_POST['op'] : null;
 if ($op === 'edit') {
     if (CustomFields::update($cfId, $cfLabel)) {
-        $displayBlock = "<div class='si_message_ok'>{$LANG['save_custom_field_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomFieldSuccess']}</div>";
         if ($clearData) {
             $cfField = isset($_POST['cf_custom_field']) ? $_POST['cf_custom_field'] : '';
             if (!CustomFields::clearFields($cfField)) {
-                $displayBlock = "<div class='si_message_error'>{$LANG['save_custom_field_failure']}</div>";
+                $displayBlock = "<div class='si_message_error'>{$LANG['saveCustomFieldFailure']}</div>";
             }
         }
     }

@@ -23,8 +23,8 @@ class CustomFields
             $rows = $pdoDb->request('SELECT', 'custom_fields');
             foreach ($rows as $row) {
                 $row['field_name_nice'] = self::getCustomFieldName($row['cf_custom_field']);
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlSafe($row['field_name_nice']);
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['custom_field'] . ' ' . Util::htmlSafe($row['field_name_nice']);
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['customField'] . ' ' . Util::htmlSafe($row['field_name_nice']);
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['customField'] . ' ' . Util::htmlSafe($row['field_name_nice']);
                 $cfs[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -73,7 +73,7 @@ class CustomFields
         }
 
         // Append the rest of the string
-        $customFieldName .= " :: " . $LANG["custom_field"] . " " . $getCfNumber;
+        $customFieldName .= " :: " . $LANG["customField"] . " " . $getCfNumber;
         return $customFieldName;
     }
 
@@ -98,7 +98,7 @@ class CustomFields
             error_log("CustomFields::::getLabels() - Error: " . $pde->getMessage());
         }
 
-        $cfl = $LANG['custom_field'] . ' ';
+        $cfl = $LANG['customField'] . ' ';
         $customFields = [];
         $idx = 0;
         foreach ($rows as $row) {
@@ -122,7 +122,7 @@ class CustomFields
 
         // grab the last character of the field variable
         $cfn = $field[strlen($field) - 1];
-        $cfl = $LANG['custom_field'] . $cfn;
+        $cfl = $LANG['customField'] . $cfn;
         try {
             $pdoDb->setSelectList('cf_custom_label');
             $pdoDb->addSimpleWhere('cf_custom_field', $field, 'AND');
@@ -185,7 +185,7 @@ class CustomFields
                     "<tr>\n" .
                     "  <th class='$cssClassTh'>$customLabelValue\n" .
                     "    <a class='cluetip' href='#' title='Custom Fields' \n" .
-                    "       rel='index.php?module=documentation&amp;view=view&amp;page=help_custom_fields'>\n" .
+                    "       rel='index.php?module=documentation&amp;view=view&amp;page=helpCustomFields'>\n" .
                     "      <img src='{$helpImagePath}help-small.png' alt='' />\n" .
                     "    </a>\n" .
                     "  </th>\n" .

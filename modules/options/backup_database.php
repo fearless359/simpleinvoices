@@ -22,7 +22,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
     }
     
     if ($ok) {
-        $txt = sprintf($LANG['backup_done'], $filename);
+        $txt = sprintf($LANG['backupDone'], $filename);
 
         $displayBlock =
             "<div class='si_center'>" .
@@ -32,18 +32,18 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "</div>" .
             $txt .
             "<div class='si_help_div'>" .
-                "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}' " .
-                   "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database_fwrite'>" .
+                "<a class='cluetip' href='#' title='{$LANG['fwriteError']}' " .
+                   "rel='index.php?module=documentation&amp;view=view&amp;page=helpBackupDatabaseFwrite'>" .
                     "<img src='{$helpImagePath}help-small.png' alt=''/>" .
-                    "{$LANG['fwrite_error']}" .
+                    "{$LANG['fwriteError']}" .
                 "</a>" .
             "</div>";
     } else {
         $displayBlock =
             "<div class='si_message_error'>ERROR: Unable to complete the backup. See error log for details.</div>" .
             "<div class='si_help_div'>" .
-                "<a class='cluetip' href='#' title='{$LANG['fwrite_error']}' " .
-                   "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database_fwrite'>" .
+                "<a class='cluetip' href='#' title='{$LANG['fwriteError']}' " .
+                   "rel='index.php?module=documentation&amp;view=view&amp;page=helpBackupDatabaseFwrite'>" .
                     "<img src='{$helpImagePath}help-small.png' alt=''/>" .
                     "{$LANG['failure']}" .
                 "</a>" .
@@ -52,20 +52,20 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
 } else {
     $displayBlock =
         "<div class='si_center'>" .
-            "{$LANG['backup_howto']}" .
+            "{$LANG['backupHowTo']}" .
             "<div class='si_toolbar si_toolbar_top'><br/>" .
                 "<a href='index.php?module=options&amp;view=backup_database&amp;op=backup_db'>" .
         "<img src='../../images/database_save.png' alt=''/>" .
-                    "{$LANG['backup_database_now']}" .
+                    "{$LANG['backupDatabaseNow']}" .
                 "</a>" .
             "</div>" .
-            "{$LANG['note']}: {$LANG['backup_note_to_file']}" .
+            "{$LANG['note']}: {$LANG['backupNoteToFile']}" .
         "</div>" .
         "<div class='si_help_div'>" .
-            "<a class='cluetip' href='#' title='{$LANG['database_backup']}' " .
-               "rel='index.php?module=documentation&amp;view=view&amp;page=help_backup_database' >" .
+            "<a class='cluetip' href='#' title='{$LANG['databaseBackup']}' " .
+               "rel='index.php?module=documentation&amp;view=view&amp;page=helpBackupDatabase' >" .
         "<img src='../../images/important.png' alt='' />" .
-                "{$LANG['more_info']}" .
+                "{$LANG['moreInfo']}" .
             "</a>" .
         "</div>";
 }

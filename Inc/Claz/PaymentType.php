@@ -66,8 +66,8 @@ class PaymentType
 
             $rows = $pdoDb->request("SELECT", "payment_types");
             foreach ($rows as $row) {
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['payment_type'] . ' ' . $row['pt_description'];
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['paymentType'] . ' ' . $row['pt_description'];
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['paymentType'] . ' ' . $row['pt_description'];
                 $row['image'] = $row['pt_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
                 $paymentTypes[] = $row;
             }

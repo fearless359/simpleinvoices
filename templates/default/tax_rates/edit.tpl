@@ -4,7 +4,7 @@
     <div class="si_form">
         <table>
             <tr>
-                <th class="details_screen" tabindex="-1">{$LANG.description_uc}:</th>
+                <th class="details_screen" tabindex="-1">{$LANG.descriptionUc}:</th>
                 <td>
                     <input type="text" name="tax_description" class="si_input validate[required]" size="25" tabindex="10"
                            value="{if isset($tax.tax_description)}{$tax.tax_description|htmlSafe}{/if}"/>
@@ -12,8 +12,8 @@
             </tr>
             <tr>
                 <th class="details_screen">{$LANG.rate}:
-                    <a class="cluetip" href="#" title="{$LANG.tax_rate}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
+                    <a class="cluetip" href="#" title="{$LANG.taxRate}" tabindex="-1"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxRateSign">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
                 </th>
@@ -35,7 +35,7 @@
         </table>
 
         <div class="si_toolbar si_toolbar_form">
-            <button type="submit" class="positive" name="save_tax_rate" value="{$LANG.save_tax_rate}" tabindex="40">
+            <button type="submit" class="positive" name="save_tax_rate" value="{$LANG.saveTaxRate}" tabindex="40">
                 <img class="button_img" src="../../../images/tick.png" alt=""/>
                 {$LANG.save}
             </button>

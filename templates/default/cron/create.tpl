@@ -16,7 +16,7 @@
           action="index.php?module=cron&amp;view=create">
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.invoice_uc}</td>
+                <td class="details_screen">{$LANG.invoiceUc}</td>
                 <td>
                     <select name="invoice_id" class="validate[required]">
                         <option value=''></option>
@@ -33,21 +33,21 @@
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.start_date}</td>
+                <td class="details_screen">{$LANG.startDate}</td>
                 <td>
                     <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="startdate"
                            value="{if isset($smarty.post.start_date)}{$smarty.post.start_date}{else}{'+1 days'|date_format:'%Y-%m-%d'}{/if}"/>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.end_date}</td>
+                <td class="details_screen">{$LANG.endDate}</td>
                 <td>
                     <input type="text" class="date-picker" size="10" name="end_date" id="enddate"
                            {if isset($smarty.post.end_date)}value="{$smarty.post.end_date}"{/if}/>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.recur_each}</td>
+                <td class="details_screen">{$LANG.recurEach}</td>
                 <td>
                     <input name="recurrence" size="10" class="validate[required]"
                            {if isset($smarty.post.recurrence)}value="{$smarty.post.recurrence}"{/if}/>
@@ -68,35 +68,35 @@
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_biller_after_cron}</td>
+                <td class="details_screen">{$LANG.emailBillerAfterCron}</td>
                 <td>
                     <select name="email_biller" class="validate[required]">
                         <option value="{$smarty.const.ENABLED}"
                                 {if isset($smarty.post.email_biller) &&
                                     $smarty.post.email_biller == $smarty.const.ENABELD}selected{/if}>
-                                {$LANG.yes_uc}
+                                {$LANG.yesUc}
                         </option>
                         <option value="{$smarty.const.DISABLED}"
                                 {if isset($smarty.post.email_biller) &&
                                     $smarty.post.email_biller == $smarty.const.DISABLED}selected{/if}>
-                            {$LANG.no_uc}
+                            {$LANG.noUc}
                         </option>
                     </select>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.email_customer_after_cron}</td>
+                <td class="details_screen">{$LANG.emailCustomerAfterCron}</td>
                 <td>
                     <select name="email_customer" class="validate[required]">
                         <option value="{$smarty.const.ENABLED}"
                                 {if isset($smarty.post.email_customer) &&
                                 $smarty.post.email_customer == $smarty.const.ENABELD}selected{/if}>
-                            {$LANG.yes_uc}
+                            {$LANG.yesUc}
                         </option>
                         <option value="{$smarty.const.DISABLED}"
                                 {if isset($smarty.post.email_customer) &&
                                 $smarty.post.email_customer == $smarty.const.DISABLED}selected{/if}>
-                            {$LANG.no_uc}
+                            {$LANG.noUc}
                     </select>
                 </td>
             </tr>

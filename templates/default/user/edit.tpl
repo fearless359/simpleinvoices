@@ -57,8 +57,8 @@
             <tr>
                 <th class="details_screen">{$LANG.username}
                     <a class="cluetip" href="#" tabindex="910"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_username"
-                       title="{$LANG.required_field}">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpUsername"
+                       title="{$LANG.requiredField}">
                         <img src="{$helpImagePath}required-small.png" alt=""/>
                     </a>
                 </th>
@@ -70,10 +70,10 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.new_password}
+                <th class="details_screen">{$LANG.newPassword}
                     <a class="cluetip" href="#" tabindex="920"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_new_password"
-                       title="{$LANG.new_password}">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpNewPassword"
+                       title="{$LANG.newPassword}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
                 </th>
@@ -83,10 +83,10 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.confirm_password}
+                <th class="details_screen">{$LANG.confirmPassword}
                     <a class="cluetip" href="#" tabindex="930"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_confirm_password"
-                       title="{$LANG.confirm_password}">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpConfirmPassword"
+                       title="{$LANG.confirmPassword}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
                 </th>
@@ -98,8 +98,8 @@
             <tr>
                 <th class="details_screen">{$LANG.email}
                     <a class="cluetip" href="#" tabindex="940"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_email_address"
-                       title="{$LANG.required_field}">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailAddress"
+                       title="{$LANG.requiredField}">
                         <img src="{$helpImagePath}required-small.png" alt=""/>
                     </a>
                 </th>
@@ -112,7 +112,7 @@
             <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
                 <th class="details_screen">{$LANG.role}
                     <a class="cluetip" href="#" tabindex="950"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_user_role"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpUserRole"
                        title="{$LANG.role}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
@@ -129,10 +129,10 @@
                 </td>
             </tr>
             <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
-                <th class="details_screen">{$LANG.user_id}
+                <th class="details_screen">{$LANG.userId}
                     <a class="cluetip" href="#" tabindex="960"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_user_id"
-                       title="{$LANG.user_id}">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpUserId"
+                       title="{$LANG.userId}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
                 </th>
@@ -166,7 +166,7 @@
             <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
                 <th class="details_screen">{$LANG.enabled}
                     <a class="cluetip" href="#" tabindex="970"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_user_enabled"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpUserEnabled"
                        title="{$LANG.enabled} / {$LANG.disabled}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>

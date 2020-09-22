@@ -1,9 +1,9 @@
 <div class="si_form">
     <table>
         <tr>
-            <th class="details_screen">{$LANG.company_logo}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.company_logo} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_company_logo" tabindex="-1">
+            <th class="details_screen">{$LANG.companyLogo}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.companyLogo} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCompanyLogo" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -16,9 +16,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.company_name_item_label}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.company_name_item_label} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_company_name_item" tabindex="-1">
+            <th class="details_screen">{$LANG.companyNameItemLabel}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.companyNameItemLabel} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCompanyNameItem" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -31,9 +31,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_biller}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_biller} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_biller" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultBiller}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultBiller} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultBiller" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -46,9 +46,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_customer}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_customer} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_customer" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultCustomer}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultCustomer} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultCustomer" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -61,9 +61,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_invoice}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_invoice} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_invoice" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultInvoice}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultInvoice} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultInvoice" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -76,9 +76,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_invoice_preference}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_invoice_preference} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_invoice_preference" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultInvoicePreference}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultInvoicePreference} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultInvoicePreference" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -91,9 +91,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_inv_template}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_inv_template} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_invoice_template_text" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultInvTemplate}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultInvTemplate} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultInvoiceTemplateText" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -106,9 +106,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_number_items}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_number_items} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_number_items" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultNumberItems}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultNumberItems} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultNumberItems" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -121,9 +121,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_payment_type}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_payment_type} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_payment_type" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultPaymentType}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultPaymentType} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultPaymentType" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -136,9 +136,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.default_tax}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.default_tax} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_default_tax" tabindex="-1">
+            <th class="details_screen">{$LANG.defaultTax}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultTax} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultTax" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -153,7 +153,7 @@
         <tr>
             <th class="details_screen">{$LANG.delete}:
                 <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.delete} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_delete" tabindex="-1">
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpDelete" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -166,9 +166,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.expense_uc}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.expense_uc} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_expense" tabindex="-1">
+            <th class="details_screen">{$LANG.expenseUc}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.expenseUc} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpExpense" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -183,7 +183,7 @@
         <tr>
             <th class="details_screen">{$LANG.inventory}:
                 <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.inventory} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_inventory" tabindex="-1">
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpInventory" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -198,7 +198,7 @@
         <tr>
             <th class="details_screen">{$LANG.language}:
                 <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.language} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_language" tabindex="-1">
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpLanguage" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -213,7 +213,7 @@
         <tr>
             <th class="details_screen">{$LANG.logging}:
                 <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.logging} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_logging" tabindex="-1">
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpLogging" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -226,9 +226,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.password_min_length}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.password_min_length} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_password_min_length" tabindex="-1">
+            <th class="details_screen">{$LANG.passwordMinLength}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordMinLength} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordMinLength" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -241,9 +241,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.number_of_taxes_per_line_item}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.number_of_taxes_per_line_item} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_taxes_per_line_item" tabindex="-1">
+            <th class="details_screen">{$LANG.numberOfTaxesPerLineItem}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.numberOfTaxesPerLineItem} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxesPerLineItem" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -256,9 +256,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.product_attributes}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.product_attributes} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_product_attributes" tabindex="-1">
+            <th class="details_screen">{$LANG.productAttributes}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.productAttributes} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpProductAttributes" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -271,9 +271,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.password_lower}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.password_lower} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_password_lower" tabindex="-1">
+            <th class="details_screen">{$LANG.passwordLower}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordLower} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordLower" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -286,9 +286,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.password_number}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.password_number} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_password_number" tabindex="-1">
+            <th class="details_screen">{$LANG.passwordNumber}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordNumber} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordNumber" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -301,9 +301,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.password_special}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.password_special} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_password_special" tabindex="-1">
+            <th class="details_screen">{$LANG.passwordSpecial}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordSpecial} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordSpecial" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -316,9 +316,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.password_upper}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.password_upper} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_password_upper" tabindex="-1">
+            <th class="details_screen">{$LANG.passwordUpper}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordUpper} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordUpper" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>
@@ -331,9 +331,9 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.session_timeout}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.session_timeout} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_session_timeout" tabindex="-1">
+            <th class="details_screen">{$LANG.sessionTimeout}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.sessionTimeout} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpSessionTimeout" tabindex="-1">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>

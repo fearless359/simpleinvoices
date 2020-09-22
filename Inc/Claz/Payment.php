@@ -101,12 +101,12 @@ class Payment
         $tableRows = [];
         foreach ($rows as $row) {
             $action =
-                "<a class='index_table' title='{$LANG['view']} {$LANG['payment_uc']}' " .
+                "<a class='index_table' title='{$LANG['view']} {$LANG['paymentUc']}' " .
                 "href='index.php?module=payments&amp;view=view&amp;id={$row['id']}'>" .
                 "<img src='images/view.png' alt='view' height='16' />" .
                 "</a>" .
                 "&nbsp;&nbsp;" .
-                "<a class='index_table' title='{$LANG['print_preview_tooltip']} {$LANG['payment_uc']}# {$row['id']}' " .
+                "<a class='index_table' title='{$LANG['printPreviewTooltip']} {$LANG['paymentUc']}# {$row['id']}' " .
                 "href='index.php?module=payments&amp;view=print&amp;id={$row['id']}'>" .
                 "<img src='images/printer.png' alt='print' height='16' />" .
                 "</a>";

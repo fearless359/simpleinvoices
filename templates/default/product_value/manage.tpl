@@ -11,11 +11,11 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=product_value&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.add_product_value}
+        {$LANG.addProductValue}
     </a>
 </div>
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_product_values}</div>
+    <div class="si_message">{$LANG.noProductValues}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>

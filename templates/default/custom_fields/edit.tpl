@@ -21,24 +21,24 @@
                 <td class="si_input">{$cf.cf_id|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.custom_field_db_field_name}:</th>
+                <th class="details_screen">{$LANG.customFieldDbFieldName}:</th>
                 <td class="si_input">{$cf.cf_custom_field|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.custom_field}:</th>
+                <th class="details_screen">{$LANG.customField}:</th>
                 <td class="si_input">{$cf.name|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.custom_label}:</th>
+                <th class="details_screen">{$LANG.customLabel}:</th>
                 <td>
                     <input type="text" name="si_input" id="cf_custom_label_maint" size="25" autofocus tabindex="10"
                            value="{if isset($cf.cf_custom_label)}{$cf.cf_custom_label|htmlSafe}{/if}"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.clear_data}:
-                    <a class="cluetip" title="{$LANG.reset_custom_flags}" tabindex="-1"
-                       href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_reset_custom_flags_products">
+                <th class="details_screen">{$LANG.clearData}:
+                    <a class="cluetip" title="{$LANG.resetCustomFlags}" tabindex="-1"
+                       href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpResetCustomFlagsProducts">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
                 </th>

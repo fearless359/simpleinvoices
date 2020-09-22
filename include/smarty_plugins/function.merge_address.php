@@ -24,7 +24,7 @@ function smarty_function_merge_address(array $params) {
     if (empty($params['street1']) && empty($params['street2']) &&
             (!empty($params['field1']) || !empty($params['field2']) || !empty($params['field3']))) {
         $ma .= '<tr>' .
-                   '<td class="' . Util::htmlSafe($params['class1']) . '" >' . $LANG['address_uc'] . ':</td>' .
+                   '<td class="' . Util::htmlSafe($params['class1']) . '" >' . $LANG['addressUc'] . ':</td>' .
                    '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '" >';
         $skipSection = true;
     }

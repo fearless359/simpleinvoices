@@ -22,7 +22,7 @@ global $LANG, $smarty, $pdoDb;
 
 Util::directAccessAllowed();
 
-$displayBlock = "<div class=\"si_message_error\">{$LANG['save_invoice_failure']}</div>";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['saveInvoiceFailure']}</div>";
 $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
 
 $op = $_POST['op'];
@@ -52,7 +52,7 @@ if ($op == "create" ) {
             exit($str);
         }
 
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveInvoiceSuccess']}</div>";
         $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($id) . "\" />";
         if ($type == TOTAL_INVOICE) {
             $productId = Product::insertProduct(DISABLED, DISABLED);
@@ -132,7 +132,7 @@ if ($op == "create" ) {
             // Have to update values after the invoice items are updated.
             Invoice::updateAging($id);
 
-            $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_invoice_success']}</div>";
+            $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveInvoiceSuccess']}</div>";
             $pageActive = 'invoice';
         } else {
             $str = "modules/invoices/save.php - Unable to update existing Invoice.";

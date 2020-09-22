@@ -4,7 +4,7 @@
     <div class="si_form">
         <table>
             <tr>
-                <th class="details_screen">{$LANG.date_uc}:</th>
+                <th class="details_screen">{$LANG.dateUc}:</th>
                 <td>
                     <input type="text" class="si_input validate[required,custom[date],length[0,10]] date-picker"
                            name="date" id="date" size="10" tabindex="10"
@@ -12,7 +12,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.product_uc}:</th>
+                <th class="details_screen">{$LANG.productUc}:</th>
                 <td>
                     <select name="product_id" class="si_input validate[required] product_inventory_change" tabindex="20">
                         <option value=''></option>
@@ -31,7 +31,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.cost_uc}:</th>
+                <th class="details_screen">{$LANG.costUc}:</th>
                 <td>
                     <input id="cost" name="cost" class="si_input validate[required]" size="10" tabindex="40"
                            value='{$inventory.cost|utilNumber}'>

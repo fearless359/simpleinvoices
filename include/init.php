@@ -109,15 +109,15 @@ include_once 'include/language.php';
 
 // Load company name values from system_defaults table.
 if (isset($defaults['company_name_item'])) {
-    $LANG['company_name_item'] = $defaults['company_name_item'];
+    $LANG['companyNameItem'] = $defaults['company_name_item'];
 } else {
-    $LANG['company_name_item'] = 'SimpleInvoices';
+    $LANG['companyNameItem'] = 'SimpleInvoices';
 }
 
 if (isset($defaults['company_name'])) {
-    $LANG['company_name'] = $defaults['company_name'];
+    $LANG['companyName'] = $defaults['company_name'];
 } else {
-    $LANG['company_name'] = 'SimpleInvoices';
+    $LANG['companyName'] = 'SimpleInvoices';
 }
 
 if (!$apiRequest) {

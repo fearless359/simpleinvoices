@@ -96,7 +96,7 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
 
         if (isset($_SESSION['role_name'])) {
             if ($_SESSION['role_name'] == 'customer' && $_SESSION['user_id'] > 0) {
-                header('Location: index.php?module=customers&view=details&action=view&id=' . $_SESSION['user_id']);
+                header("Location: index.php?module=customers&view=view&id={$_SESSION['user_id']}");
                 exit();
             }
             header('Location: index.php?module=invoices&view=manage');

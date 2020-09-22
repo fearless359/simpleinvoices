@@ -124,8 +124,8 @@ class Extensions
 
                 foreach ($rows as $row) {
                     $extRowName = $LANG['extensionsUc'] . " " . $row['name'];
-                    $row['plugin_registered'] = $LANG['plugin_register'] . ' ' . $extRowName;
-                    $row['plugin_unregister'] = $LANG['plugin_unregister'] . ' ' . $extRowName;
+                    $row['plugin_registered'] = $LANG['pluginRegister'] . ' ' . $extRowName;
+                    $row['plugin_unregister'] = $LANG['pluginUnregister'] . ' ' . $extRowName;
                     $row['plugin_disable'] = $LANG['disable'] . ' ' . $extRowName;
                     $row['plugin_enable'] = $LANG['enable'] . ' ' . $extRowName;
                     $extensions[] = $row;

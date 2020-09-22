@@ -28,11 +28,11 @@ $billerInfo = [];
 $billerInfo[] = [$LANG['name'].':',$biller['name']];
 $needsLbl = true;
 if (!empty($biller['street_address'])) {
-    $billerInfo[] = [$LANG['address_uc'].':',$biller['street_address']];
+    $billerInfo[] = [$LANG['addressUc'].':',$biller['street_address']];
     $needsLbl = false;
 }
 if (!empty($biller['street_address2'])) {
-    $billerInfo[] = [$needsLbl ? $LANG['address_uc'].':' : '',$biller['street_address2']];
+    $billerInfo[] = [$needsLbl ? $LANG['addressUc'].':' : '',$biller['street_address2']];
     $needsLbl = false;
 }
 if (!empty($biller['city']) || !empty($biller['state']) || !empty($biller['zip_code'])) {
@@ -49,16 +49,16 @@ if (!empty($biller['city']) || !empty($biller['state']) || !empty($biller['zip_c
         $tmpLn .= $biller['zip_code'];
     }
 
-    $billerInfo[] = [$needsLbl ? $LANG['address_uc'].':' : "", $tmpLn];
+    $billerInfo[] = [$needsLbl ? $LANG['addressUc'].':' : "", $tmpLn];
     $needsLbl = false;
 }
 
 if (!empty($biller['country'])) {
-    $billerInfo[] = [$needsLbl ? $LANG['address_uc'].':' : '', $biller['country']];
+    $billerInfo[] = [$needsLbl ? $LANG['addressUc'].':' : '', $biller['country']];
 }
 
 if (!empty($biller['phone'])) {
-    $billerInfo[] = [$LANG['phone'], $biller['phone']];
+    $billerInfo[] = [$LANG['phoneUc'], $biller['phone']];
 }
 
 if (!empty($biller['fax'])) {
@@ -66,7 +66,7 @@ if (!empty($biller['fax'])) {
 }
 
 if (!empty($biller['mobile_phone'])) {
-    $billerInfo[] = [$LANG['mobile_short'], $biller['mobile_phone']];
+    $billerInfo[] = [$LANG['mobileShort'], $biller['mobile_phone']];
 }
 
 if (!empty($biller['email'])) {
@@ -96,17 +96,17 @@ if (!empty($customFieldLabels['biller_cf4']) &&
 $custInfo = [];
 $custInfo[] = [$LANG['customer'].':', $customer['name']];
 if (!empty($customer['attention'])) {
-    $custInfo[] = [$LANG['attention_short'].':',$customer['attention']];
+    $custInfo[] = [$LANG['attentionShort'].':',$customer['attention']];
 }
 
 $needsLbl = true;
 if (!empty($customer['street_address'])) {
-    $custInfo[] = [$LANG['address_uc'].':',$customer['street_address']];
+    $custInfo[] = [$LANG['addressUc'].':',$customer['street_address']];
     $needsLbl = false;
 }
 
 if (!empty($customer['street_address2'])) {
-    $custInfo[] = [$needsLbl ? $LANG['address_uc'].':' : '',$customer['street_address2']];
+    $custInfo[] = [$needsLbl ? $LANG['addressUc'].':' : '',$customer['street_address2']];
     $needsLbl = false;
 }
 
@@ -123,17 +123,17 @@ if (!empty($customer['city']) || !empty($customer['state']) || !empty($customer[
         $tmpLn .= $customer['zip_code'];
     }
 
-    $custInfo[] = [$needsLbl ? $LANG['address_uc'].':' : "", $tmpLn];
+    $custInfo[] = [$needsLbl ? $LANG['addressUc'].':' : "", $tmpLn];
     $needsLbl   = false;
     // @formatter:on
 }
 
 if (!empty($customer['country'])) {
-    $custInfo[] = [$needsLbl ? $LANG['address_uc'].':':'', $customer['country']];
+    $custInfo[] = [$needsLbl ? $LANG['addressUc'].':':'', $customer['country']];
 }
 
 if (!empty($customer['phone'])) {
-    $custInfo[] = [$LANG['phone'], $customer['phone']];
+    $custInfo[] = [$LANG['phoneUc'], $customer['phone']];
 }
 
 if (!empty($customer['fax'])) {
@@ -141,7 +141,7 @@ if (!empty($customer['fax'])) {
 }
 
 if (!empty($customer['mobile_phone'])) {
-    $custInfo[] = [$LANG['mobile_short'], $customer['mobile_phone']];
+    $custInfo[] = [$LANG['mobileShort'], $customer['mobile_phone']];
 }
 
 if (!empty($customer['email'])) {

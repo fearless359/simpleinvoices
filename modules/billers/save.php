@@ -25,16 +25,16 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 $op = empty($_POST['op']) ? "" : $_POST['op'];
-$displayBlock = "<div class=\"si_message_error\">{$LANG['save_biller_failure']}</div>";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['saveBillerFailure']}</div>";
 $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=billers&amp;view=manage\" />";
 
 if ( $op === 'create') {
     if (Biller::insertBiller() > 0) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveBillerSuccess']}</div>";
     }
 } elseif ($op === 'edit') {
     if (Biller::updateBiller()) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_biller_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveBillerSuccess']}</div>";
     }
 }
 

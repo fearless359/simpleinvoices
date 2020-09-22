@@ -13,7 +13,7 @@
       action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlencode}">
     <table class="center">
         <tr>
-            <th class="details_screen left">{$LANG.invoice_uc}:</th>
+            <th class="details_screen left">{$LANG.invoiceUc}:</th>
             <td>
                 <select name="invoice_id" class="si_input validate[required]">
                     <option value=''></option>
@@ -26,21 +26,21 @@
             </td>
         </tr>
         <tr>
-            <th class="details_screen left">{$LANG.start_date}:</th>
+            <th class="details_screen left">{$LANG.startDate}:</th>
             <td>
                 <input type="text" class="si_input validate[required,custom[date],length[0,10]] date-picker"
                        size="10" name="start_date" id="start_date" value='{$cron.start_date|htmlSafe}'/>
             </td>
         </tr>
         <tr>
-            <th class="details_screen left">{$LANG.end_date}:</th>
+            <th class="details_screen left">{$LANG.endDate}:</th>
             <td>
                 <input type="text" class="si_input date-picker" size="10" name="end_date" id="end_date"
                        value='{$cron.end_date|htmlSafe}'/>
             </td>
         </tr>
         <tr>
-            <th class="details_screen left">{$LANG.recur_each}:</th>
+            <th class="details_screen left">{$LANG.recurEach}:</th>
             <td>
                 <input name="recurrence" size="10" class="si_input validate[required]" value='{$cron.recurrence|htmlSafe}'/>
                 <select name="recurrence_type" class="si_input validate[required]">
@@ -52,20 +52,20 @@
             </td>
         </tr>
         <tr>
-            <th class="details_screen left">{$LANG.email_biller_after_cron}:</th>
+            <th class="details_screen left">{$LANG.emailBillerAfterCron}:</th>
             <td>
                 <select name="email_biller" class="si_input validate[required]">
-                    <option value="1" {if $cron.email_biller == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uc}</option>
-                    <option value="0" {if $cron.email_biller == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uc}</option>
+                    <option value="1" {if $cron.email_biller == $smarty.const.ENABLED}selected{/if}>{$LANG.yesUc}</option>
+                    <option value="0" {if $cron.email_biller == $smarty.const.DISABLED}selected{/if}>{$LANG.noUc}</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <th class="details_screen left">{$LANG.email_customer_after_cron}:</th>
+            <th class="details_screen left">{$LANG.emailCustomerAfterCron}:</th>
             <td>
                 <select name="email_customer" class="si_input validate[required]">
-                    <option value="1" {if $cron.email_customer == $smarty.const.ENABLED}selected{/if}>{$LANG.yes_uc}</option>
-                    <option value="0" {if $cron.email_customer == $smarty.const.DISABLED}selected{/if}>{$LANG.no_uc}</option>
+                    <option value="1" {if $cron.email_customer == $smarty.const.ENABLED}selected{/if}>{$LANG.yesUc}</option>
+                    <option value="0" {if $cron.email_customer == $smarty.const.DISABLED}selected{/if}>{$LANG.noUc}</option>
                 </select>
             </td>
         </tr>

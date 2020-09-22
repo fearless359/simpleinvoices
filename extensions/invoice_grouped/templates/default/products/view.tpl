@@ -4,33 +4,33 @@
     <div class="si_form">
         <table>
             <tr>
-                <th class="details_screen">{$LANG.product_description}:</th>
+                <th class="details_screen">{$LANG.productDescription}:</th>
                 <td>{$product.description|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.product_unit_price}:</th>
+                <th class="details_screen">{$LANG.productUnitPrice}:</th>
                 <td>{$product.unit_price|utilNumberTrim}</td>
             </tr>
             {if $defaults.inventory == $smarty.const.ENABLED}
                 <tr>
-                    <th class="details_screen">{$LANG.cost_uc}:</th>
+                    <th class="details_screen">{$LANG.costUc}:</th>
                     <td>{$product.cost|utilNumber}</td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.reorder_level}:</th>
+                    <th class="details_screen">{$LANG.reorderLevel}:</th>
                     <td>{$product.reorder_level}</td>
                 </tr>
             {/if}
             <tr>
-                <th class="details_screen">{$LANG.default_tax}:</th>
+                <th class="details_screen">{$LANG.defaultTax}:</th>
                 <td>{if isset($tax_selected.tax_description)}{$tax_selected.tax_description|htmlSafe}&nbsp;{/if}
                     {if isset($tax_selected.type)}{$tax_selected.type|htmlSafe}{/if}</td>
             </tr>
             {if !empty($customFieldLabel.product_cf1)}
                 <tr>
                     <th class="details_screen">{$customFieldLabel.product_cf1|htmlSafe}:
-                        <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                        <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -40,8 +40,8 @@
             {if !empty($customFieldLabel.product_cf2)}
                 <tr>
                     <th class="details_screen">{$customFieldLabel.product_cf2|htmlSafe}:
-                        <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                        <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -51,8 +51,8 @@
             {if !empty($customFieldLabel.product_cf3)}
                 <tr>
                     <th class="details_screen">{$customFieldLabel.product_cf3|htmlSafe}:
-                        <a class="cluetip" href="#" title="{$LANG.custom_fields} tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"">
+                        <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields"">
                             <img src="{$helpImagePath}help-small.png" alt="">
                         </a>
                     </th>
@@ -62,8 +62,8 @@
             {if !empty($customFieldLabel.product_cf4)}
                 <tr>
                     <th class="details_screen">{$customFieldLabel.product_cf4|htmlSafe}:
-                        <a class="cluetip" href="#" title="{$LANG.custom_fields} tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"">
+                        <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields"">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -82,7 +82,7 @@
             {/foreach}
             {if isset($defaults.product_attributes)}
                 <tr>
-                    <th class="details_screen">{$LANG.product_attributes}:</th>
+                    <th class="details_screen">{$LANG.productAttributes}:</th>
                     <td></td>
                 </tr>
                 {foreach $attributes as $attribute}
@@ -106,7 +106,7 @@
                 <td>{$product.notes|unescape}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.note_attributes}:</th>
+                <th class="details_screen">{$LANG.noteAttributes}:</th>
                 <td></td>
             </tr>
             <tr>
@@ -114,7 +114,7 @@
                 <th class="details_screen product_attribute">
                     <input type="checkbox" disabled="disabled" name="notes_as_description"
                             {if $product.notes_as_description == 'Y'} checked {/if} value='true'/>
-                    {$LANG.note_as_description}
+                    {$LANG.noteAsDescription}
                 </th>
             </tr>
             <tr>
@@ -122,11 +122,11 @@
                 <th class="details_screen product_attribute">
                     <input type="checkbox" disabled="disabled" name="show_description"
                             {if $product.show_description == 'Y'} checked {/if} value='true'/>
-                    {$LANG.note_expand}
+                    {$LANG.noteExpand}
                 </th>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.product_enabled}:</th>
+                <th class="details_screen">{$LANG.productEnabled}:</th>
                 <td>{$product.enabled_text|htmlSafe}</td>
             </tr>
         </table>

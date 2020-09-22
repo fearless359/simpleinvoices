@@ -15,21 +15,21 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=inventory&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.new_inventory_movement}
+        {$LANG.newInventoryMovement}
     </a>
 </div>
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_inventory_movements}</div>
+    <div class="si_message">{$LANG.noInventoryMovements}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.date_uc}</th>
-            <th>{$LANG.product_uc}</th>
+            <th>{$LANG.dateUc}</th>
+            <th>{$LANG.productUc}</th>
             <th>{$LANG.quantity}</th>
-            <th>{$LANG.cost_uc}</th>
-            <th>{$LANG.total_cost}</th>
+            <th>{$LANG.costUc}</th>
+            <th>{$LANG.totalCost}</th>
         </tr>
         </thead>
     </table>

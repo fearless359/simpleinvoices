@@ -26,7 +26,7 @@
     <div class="si_form">
         <table class="center">
             <tr>
-                <th class="details_screen">{$LANG.invoice_uc}: </th>
+                <th class="details_screen">{$LANG.invoiceUc}: </th>
                 <td>
                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlSafe}">
                         {$cron.index_id|htmlSafe}
@@ -34,29 +34,29 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.start_date}: </th>
+                <th class="details_screen">{$LANG.startDate}: </th>
                 <td>{$cron.start_date|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.end_date}: </th>
+                <th class="details_screen">{$LANG.endDate}: </th>
                 <td>{$cron.end_date|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.recur_each}: </th>
+                <th class="details_screen">{$LANG.recurEach}: </th>
                 <td>{$cron.recurrence|htmlSafe} {$cron.recurrence_type|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.email_biller_after_cron}: </th>
+                <th class="details_screen">{$LANG.emailBillerAfterCron}: </th>
                 <td>
-                    {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uc}{/if}
-                    {if $cron.email_biller == $smarty.const.DISABLED}{$LANG.no_uc}{/if}
+                    {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yesUc}{/if}
+                    {if $cron.email_biller == $smarty.const.DISABLED}{$LANG.noUc}{/if}
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.email_customer_after_cron}: </th>
+                <th class="details_screen">{$LANG.emailCustomerAfterCron}: </th>
                 <td>
-                    {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uc}{/if}
-                    {if $cron.email_customer == $smarty.const.DISABLED}{$LANG.no_uc}{/if}
+                    {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yesUc}{/if}
+                    {if $cron.email_customer == $smarty.const.DISABLED}{$LANG.noUc}{/if}
                 </td>
             </tr>
         </table>

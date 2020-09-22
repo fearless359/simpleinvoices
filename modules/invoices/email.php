@@ -52,24 +52,24 @@ try {
         $export->setFormat("pdf");
         $export->setRecId($invoiceId);
         $export->setInvoice($invoice);
-        $export->setModule('invoice');
+        $export->setFileName('invoice');
         $export->setPreference($preference);
         $pdfString = $export->execute();
         Log::out("email.php - After execute");
 
         $email = new Email();
-        $email->setBody($_POST['email_notes']);
+        $email->setBody($_POST['emailNotes']);
         $email->setFormat('invoice');
         $email->setFromFriendly($biller['name']);
         $email->setPdfFileName($export->getFileName() . '.pdf');
         $email->setPdfString($pdfString);
-        $email->setSubject($_POST['email_subject']);
+        $email->setSubject($_POST['emailSubject']);
 
         $results = [];
-        if (!$email->setFrom($_POST['email_from'])) {
+        if (!$email->setFrom($_POST['emailFrom'])) {
             $message = "Invalid FROM field";
-            $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
-            $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+            $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
+            $displayBlock = "<div class='si_message_error'>{$message}</div>";
             $results = [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -77,10 +77,10 @@ try {
             ];
         }
 
-        if (empty($results) && !$email->setBcc($_POST['email_bcc'])) {
+        if (empty($results) && !$email->setBcc($_POST['emailBcc'])) {
             $message = "Invalid BCC field";
-            $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
-            $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+            $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
+            $displayBlock = "<div class='si_message_error'>{$message}</div>";
             $results = [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -89,10 +89,10 @@ try {
         }
 
         Log::out("email.php after set BCC. results is " . (empty($results) ? "EMPTY" : "NOT EMPTY"));
-        if (empty($results) && !$email->setEmailTo($_POST['email_to'])) {
+        if (empty($results) && !$email->setEmailTo($_POST['emailTo'])) {
             $message = "Invalid TO field";
-            $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=manage\" />";
-            $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+            $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
+            $displayBlock = "<div class='si_message_error'>{$message}</div>";
             $results = [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,

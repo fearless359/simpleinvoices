@@ -2,7 +2,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" type="text/css" href="{$css|urlSafe}" media="all">
-  <title>{$preference.pref_inv_wording|htmlSafe} {$LANG.number_short}: {$invoice.id|htmlSafe}</title>
+  <title>{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}: {$invoice.id|htmlSafe}</title>
 </head>
 <body>
   <br>
@@ -63,14 +63,14 @@
 {* ************************ BEGIN COMMENTED OUT SECTION ****************************
     <table class="right">
       <tr>
-        <td class="col1 tbl1-bottom" colspan="4" ><b>{$preference.pref_inv_wording|htmlSafe} {$LANG.summary_uc}</b></td>
+        <td class="col1 tbl1-bottom" colspan="4" ><b>{$preference.pref_inv_wording|htmlSafe} {$LANG.summaryUc}</b></td>
       </tr>
       <tr>
-        <td class="">{$preference.pref_inv_wording|htmlSafe} {$LANG.number_short}:</td>
+        <td class="">{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}:</td>
         <td class="" align="right" colspan="3">{$invoice.id|htmlSafe}</td>
       </tr>
       <tr>
-        <td nowrap class="">{$preference.pref_inv_wording|htmlSafe} {$LANG.date_uc}:</td>
+        <td nowrap class="">{$preference.pref_inv_wording|htmlSafe} {$LANG.dateUc}:</td>
         <td class="" align="right" colspan="3">{$invoice.date|htmlSafe}</td>
       </tr>
       <!-- Show the Invoice Custom Fields if valid -->
@@ -111,7 +111,7 @@
         </td>
       </tr>
       <tr>
-        <td nowrap class="">{$LANG.owing_uc}:</td>
+        <td nowrap class="">{$LANG.owingUc}:</td>
         <td class="" align="right" colspan="3" >
           {$preference.pref_currency_sign} {$invoice.owing|utilNumber:2}
         </td>
@@ -127,14 +127,14 @@
       </tr> 
       {if isset($biller.street_address)}
         <tr>
-          <td class=''>{$LANG.address_uc}:</td>
+          <td class=''>{$LANG.addressUc}:</td>
           <td class='' align="left" colspan="3">{$biller.street_address|htmlSafe}</td>
         </tr>
       {/if}
       {if isset($biller.street_address2) }
         {if !isset($biller.street_address) }
           <tr>
-            <td class=''>{$LANG.address_uc}:</td>
+            <td class=''>{$LANG.addressUc}:</td>
             <td class='' align="left" colspan="3">{$biller.street_address2|htmlSafe}</td>
           </tr>   
         {/if}
@@ -153,9 +153,9 @@
         </tr>
       {/if}
   
-      {print_if_not_null label=$LANG.phone_short field=$biller.phone class1='' class2='' colspan="3"}
+      {print_if_not_null label=$LANG.phoneShort field=$biller.phone class1='' class2='' colspan="3"}
       {print_if_not_null label=$LANG.fax field=$biller.fax class1='' class2='' colspan="3"}
-      {print_if_not_null label=$LANG.mobile_short field=$biller.mobile_phone class1='' class2='' colspan="3"}
+      {print_if_not_null label=$LANG.mobileShort field=$biller.mobile_phone class1='' class2='' colspan="3"}
       {print_if_not_null label=$LANG.email field=$biller.email class1='' class2='' colspan="3"}
     
       {if !empty($customFieldLabels.biller_cf1)}
@@ -184,20 +184,20 @@
       </tr>
       {if isset($customer.attention) }
         <tr>
-          <td class=''>{$LANG.attention_short}:</td>
+          <td class=''>{$LANG.attentionShort}:</td>
           <td align="left" class='' colspan="3" >{$customer.attention|htmlSafe}</td>
         </tr>
       {/if}
           {if isset($customer.street_address) }
       <tr>
-        <td class=''>{$LANG.address_uc}:</td>
+        <td class=''>{$LANG.addressUc}:</td>
         <td class='' align="left" colspan="3">{$customer.street_address|htmlSafe}</td>
       </tr>   
       {/if}
       {if isset($customer.street_address2)}
         {if !isset($customer.street_address)}
           <tr>
-            <td class=''>{$LANG.address_uc}:</td>
+            <td class=''>{$LANG.addressUc}:</td>
             <td class='' align="left" colspan="3">{$customer.street_address2|htmlSafe}</td>
           </tr>   
         {/if}
@@ -217,9 +217,9 @@
         </tr>
       {/if}
   
-      {print_if_not_null label=$LANG.phone_short field=$customer.phone class1='' class2='t' colspan="3"}
+      {print_if_not_null label=$LANG.phoneShort field=$customer.phone class1='' class2='t' colspan="3"}
       {print_if_not_null label=$LANG.fax field=$customer.fax class1='' class2='' colspan="3"}
-      {print_if_not_null label=$LANG.mobile_short field=$customer.mobile_phone class1='' class2='' colspan="3"}
+      {print_if_not_null label=$LANG.mobileShort field=$customer.mobile_phone class1='' class2='' colspan="3"}
       {print_if_not_null label=$LANG.email field=$customer.email class1='' class2='' colspan="3"}
       
       {if !empty($customFieldLabels.customer_cf1)}
@@ -250,9 +250,9 @@
             <td class="col1 si_center" colspan="6">{$group.name|htmlSafe}</td>
           </tr>
           <tr>
-            <td class="tbl1-bottom col1"><b>{$LANG.quantity_short}</b></td>
+            <td class="tbl1-bottom col1"><b>{$LANG.quantityShort}</b></td>
             <td class="tbl1-bottom col1" colspan="3"><b>{$LANG.item}</b></td>
-            <td class="tbl1-bottom col1 si_right"><b>{$LANG.unit_cost}</b></td>
+            <td class="tbl1-bottom col1 si_right"><b>{$LANG.unitCost}</b></td>
             <td class="tbl1-bottom col1 si_right"><b>{$LANG.price}</b></td>
           </tr>
           {foreach $invoiceItems as $k => $invoiceItem}
@@ -266,7 +266,7 @@
               {if isset($invoiceItem.description)}
                 <tr class="">
                   <td class=""></td>
-                  <td class="" colspan="5">{$LANG.description_uc}: {$invoiceItem.description|htmlSafe}</td>
+                  <td class="" colspan="5">{$LANG.descriptionUc}: {$invoiceItem.description|htmlSafe}</td>
                 </tr>
               {/if}
             {/if}
@@ -317,7 +317,7 @@
       {if $invoice.type_id == TOTAL_INVOICE} <!-- Only Type TOTAL_INVOICE is a single entry - hence last row gross is valid as gross_total - see Invoice 2 in sample data-->
         <tr>
           <td class="" colspan="2"></td>
-          <td align="right" colspan="3">{$LANG.gross_total}</td>
+          <td align="right" colspan="3">{$LANG.grossTotal}</td>
           <td align="right" class="">{$preference.pref_currency_sign} {$invoiceItems.0.gross_total|utilNumber}</td>
         </tr>
       {/if}
@@ -334,7 +334,7 @@
       {/section}
       <tr class=''>
         <td colspan="2"></td>
-        <td colspan="3" align="right">{$LANG.tax_total}</td>
+        <td colspan="3" align="right">{$LANG.taxTotal}</td>
         <td colspan="1" align="right" style="text-decoration:underline;">
           {$preference.pref_currency_sign} {$invoice.total_tax|utilNumber}
         </td>

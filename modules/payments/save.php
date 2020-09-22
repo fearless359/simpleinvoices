@@ -9,7 +9,7 @@ global $smarty, $LANG;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$displayBlock = "<div class='si_message_error'>$LANG[save_payment_failure]</div>";
+$displayBlock = "<div class='si_message_error'>$LANG[savePaymentFailure]</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
 
 if (isset($_POST['process_payment'])) {
@@ -23,7 +23,7 @@ if (isset($_POST['process_payment'])) {
         "ac_check_number" => $_POST['ac_check_number']
     ]);
     if ($result > 0) {
-        $displayBlock = "<div class='si_message_ok'>$LANG[save_payment_success]</div>";
+        $displayBlock = "<div class='si_message_ok'>$LANG[savePaymentSuccess]</div>";
     }
 }
 

@@ -15,7 +15,7 @@
     {include file="templates/default/user/save.tpl"}
 {else}
     <div class="si_center si_help_div">
-        <h3><strong>{$LANG.add_new_user}</strong></h3>
+        <h3><strong>{$LANG.addNewUser}</strong></h3>
     </div>
     <hr/>
     <form name="frmpost" method="POST" id="frmpost"
@@ -27,7 +27,7 @@
                 <tr>
                     <th class="details_screen">{$LANG.username}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_username"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpUsername"
                            title="{$LANG.username}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
@@ -39,10 +39,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.new_password}
+                    <th class="details_screen">{$LANG.newPassword}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_new_password"
-                           title="{$LANG.new_password}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpNewPassword"
+                           title="{$LANG.newPassword}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
@@ -52,10 +52,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.confirm_password}
+                    <th class="details_screen">{$LANG.confirmPassword}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_confirm_password"
-                           title="{$LANG.confirm_password}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpConfirmPassword"
+                           title="{$LANG.confirmPassword}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>
@@ -67,8 +67,8 @@
                 <tr>
                     <th class="details_screen">{$LANG.email}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_email_address"
-                           title="{$LANG.required_field}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailAddress"
+                           title="{$LANG.requiredField}">
                             <img src="{$helpImagePath}required-small.png" alt="" />
                         </a>
                     </th>

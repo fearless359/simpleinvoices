@@ -14,11 +14,11 @@
 <div class="si_toolbar si_toolbar_top">
   <a href="index.php?module=product_attribute&amp;view=create" class="">
     <img src="../../../images/add.png" alt="" />
-    {$LANG.add_product_attribute}
+    {$LANG.addProductAttribute}
   </a>
 </div>
 {if $number_of_rows == 0}
-  <div class="si_message">{$LANG.no_product_attributes}</div>
+  <div class="si_message">{$LANG.noProductAttributes}</div>
 {else}
   <table id="si-data-table" class="display compact">
     <thead>

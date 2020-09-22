@@ -25,10 +25,10 @@ Util::directAccessAllowed();
 $error = false;
 $message = "Unable to process email request.";
 
-if (empty($_GET['biller_id'])) {
+if (empty($_GET['billerId'])) {
     $biller = Biller::getDefaultBiller();
 } else {
-    $biller = Biller::getOne($_GET['biller_id']);
+    $biller = Biller::getOne($_GET['billerId']);
 }
 
 if (empty($biller)) {
@@ -39,26 +39,26 @@ if (empty($biller)) {
     $billerId = $biller['id'];
 }
 
-if (empty($_GET['customer_id'])) {
+if (empty($_GET['customerId'])) {
     $customer = ["id" => 0, "name" => "All"];
 } else {
-    $customer = Customer::getOne($_GET['customer_id']);
+    $customer = Customer::getOne($_GET['customerId']);
 }
 $customerId = $customer['id'];
 
-$doNotFilterByDate = empty($_GET['do_not_filter_by_date']) ? 'no' : $_GET['do_not_filter_by_date'];
-$startDate = isset($_GET['start_date']) ? $_GET['start_date'] : "";
-$endDate   = isset($_GET['end_date']  ) ? $_GET['end_date']   : "";
+$filterByDate = empty($_GET['filterByDate']) ? 'yes' : $_GET['filterByDate'];
+$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : "";
+$endDate = isset($_GET['endDate']  ) ? $_GET['endDate']   : "";
 
-$showOnlyUnpaid = empty($_GET['show_only_unpaid']) ? "no" : $_GET['show_only_unpaid'];
+$showOnlyUnpaid = empty($_GET['showOnlyUnpaid']) ? "no" : $_GET['showOnlyUnpaid'];
 
 if ($_GET['stage'] == 2) {
     $export = new Export(Destination::STRING_RETURN);
     $export->setFormat('pdf');
-    $export->setModule('statement');
+    $export->setFileName('statement');
     if (empty($billerId)) {
-        $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"5;URL=index.php?module=statement&amp;view=index\" />";
-        $displayBlock = "<div class=\"si_message_error\">{$message}</div>";
+        $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=statement&amp;view=index' />";
+        $displayBlock = "<div class='si_message_error'>{$message}</div>";
         $results = [
             "message" => $message,
             "refresh_redirect" => $refreshRedirect,
@@ -71,19 +71,19 @@ if ($_GET['stage'] == 2) {
             $export->setStartDate($startDate);
             $export->setEndDate($endDate);
             $export->setShowOnlyUnpaid($showOnlyUnpaid);
-            $export->setDoNotFilterByDate($doNotFilterByDate);
+            $export->setFilterByDate($filterByDate);
             $pdfString = $export->execute();
 
             $email = new Email();
-            $email->setBcc($_POST['email_bcc']);
-            $email->setBody(trim($_POST['email_notes']));
+            $email->setBcc($_POST['emailBcc']);
+            $email->setBody(trim($_POST['emailNotes']));
             $email->setFormat('statement');
-            $email->setFrom($_POST['email_from']);
+            $email->setFrom($_POST['emailFrom']);
             $email->setFromFriendly($biller['name']);
             $email->setPdfFileName($export->getFileName() . '.pdf');
             $email->setPdfString($pdfString);
-            $email->setSubject($_POST['email_subject']);
-            $email->setEmailTo($_POST['email_to']);
+            $email->setSubject($_POST['emailSubject']);
+            $email->setEmailTo($_POST['emailTo']);
 
             $results = $email->send();
         } catch (Exception $exp) {

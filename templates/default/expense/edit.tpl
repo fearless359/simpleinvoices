@@ -4,13 +4,13 @@
     <div class="si_form" id="si_form_cust_edit">
         <table class="center" style="width:90%;">
             <tr>
-                <th class="details_screen">{$LANG.amount_uc}</th>
+                <th class="details_screen">{$LANG.amountUc}</th>
                 <td>
                     <input name="amount" class="si_input validate[required]" value="{$expense.amount|utilNumber}"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.expense_accounts}</th>
+                <th class="details_screen">{$LANG.expenseAccounts}</th>
                 <td>
                     <select name="expense_account_id" class="si_input validate[required]">
                         <option value=''></option>
@@ -22,7 +22,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.date_formatted}</th>
+                <th class="details_screen">{$LANG.dateFormatted}</th>
                 <td>
                     <input type="text" class="si_input validate[required,custom[date],length[0,10]] date-picker"
                            size="10" name="date" id="date" value='{$expense.date}'/>
@@ -53,7 +53,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.invoice_uc}</th>
+                <th class="details_screen">{$LANG.invoiceUc}</th>
                 <td>
                     <select name="invoice_id" class="si_input ">
                         <option value=''></option>
@@ -66,7 +66,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.product_uc}</th>
+                <th class="details_screen">{$LANG.productUc}</th>
                 <td>
                     <select name="product_id" class="si_input ">
                         <option value=''></option>
@@ -106,7 +106,7 @@
                     {* enabled block *}
                     <select name="status" class="si_input ">
                         <option value="{$smarty.const.ENABLED }" {if isset($expense.status) && $expense.status == $smarty.const.ENABLED }selected{/if}>{$LANG.paid}</option>
-                        <option value="{$smarty.const.DISABLED}" {if isset($expense.status) && $expense.status == $smarty.const.DISABLED}selected{/if}>{$LANG.not_paid}</option>
+                        <option value="{$smarty.const.DISABLED}" {if isset($expense.status) && $expense.status == $smarty.const.DISABLED}selected{/if}>{$LANG.notPaid}</option>
                     </select>
                     {* /enabled block*}
                 </td>

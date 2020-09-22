@@ -38,6 +38,19 @@ class Email
         $this->emailTo = '';
     }
 
+    public function errorLog() {
+        error_log("Email::errorLog() - bcc[{$this->bcc}]");
+        error_log("Email::errorLog() - body[{$this->body}]");
+        error_log("Email::errorLog() - emailTo[{$this->emailTo}]");
+        error_log("Email::errorLog() - format[{$this->format}]");
+        error_log("Email::errorLog() - fromFriendly[{$this->fromFriendly}]");
+        error_log("Email::errorLog() - from[{$this->from}]");
+        error_log("Email::errorLog() - pdfFileName[{$this->pdfFileName}]");
+        error_log("Email::errorLog() - subject[{$this->subject}]");
+
+        // NOTE: pdfString not dumped on purpose.
+    }
+
     /**
      * @return array $results with indices of 'display_block' & 'refresh_redirect'
      */
@@ -367,17 +380,17 @@ class Email
             return false;
         } else {
             // Explode addresses and run them through a valid email filter.
-            $emailTo = array_filter(explode(';', $emailTo));
-            foreach ($emailTo as $addr) {
-                if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
-                    error_log("Email::setEmailTo() - Invalid emailTo address in list[{$addr}]");
+            $toAddresses = array_filter(explode(';', $emailTo));
+            foreach ($toAddresses as $toAddress) {
+                if (!filter_var($toAddress, FILTER_VALIDATE_EMAIL)) {
+                    error_log("Email::setEmailTo() - Invalid emailTo address in list[{$toAddress}]");
                     return false;
                 }
 
                 if (!empty($this->emailTo)) {
                     $this->emailTo .= ";";
                 }
-                $this->emailTo .= $emailTo;
+                $this->emailTo .= $toAddress;
             }
         }
         return true;

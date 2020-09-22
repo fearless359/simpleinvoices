@@ -160,7 +160,7 @@ class Invoice
                 $invEdit = '';
                 $invPymt = '';
             } else {
-                $invEdit = "<a class='index_table' title='{$LANG['edit_view_tooltip']} {$row['index_id']}' " .
+                $invEdit = "<a class='index_table' title='{$LANG['edit']} {$row['index_id']}' " .
                               "href='index.php?module=invoices&amp;view=edit&amp;id={$row['id']}'>" .
                                "<img src='images/edit.png' class='action' alt='edit'>" .
                            "</a>";
@@ -168,13 +168,13 @@ class Invoice
                 $invPymt = "<!-- Alternatively: The Owing column can have the link on the amount instead of the payment icon code here -->";
                 if ($row['status'] == ENABLED && $row['owing'] > 0) {
                     $invPymt .= "<!-- Real Invoice Has Owing - Process payment -->" .
-                                 "<a title='{$LANG['process_payment']} {$row['index_id']}' class='index_table' " .
+                                 "<a title='{$LANG['processPayment']} {$row['index_id']}' class='index_table' " .
                                     "href='index.php?module=payments&amp;view=process&amp;id={$row['id']}&amp;op=pay_selected_invoice'>" .
                                      "<img src='images/money_dollar.png' class='action' alt='payment'/>" .
                                  "</a>";
                 } elseif ($row['status'] == ENABLED) {
                     $invPymt .= "<!-- Real Invoice Payment Details if not Owing (get different color payment icon) -->" .
-                                 "<a title='{$LANG['process_payment']} {$row['index_id']}' class='index_table' " .
+                                 "<a title='{$LANG['processPayment']} {$row['index_id']}' class='index_table' " .
                                     "href='index.php?module=payments&amp;view=view&amp;ac_inv_id={$row['id']}'>" .
                                      "<img src='images/money_dollar.png' class='action' alt='payment' />" .
                                  "</a>";
@@ -184,16 +184,16 @@ class Invoice
                 }
             }
 
-            $action = "<a class='index_table' title='{$LANG['quick_view_tooltip']} {$row['index_id']}' " .
+            $action = "<a class='index_table' title='{$LANG['quickViewTooltip']} {$row['index_id']}' " .
                          "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}'>" .
                           "<img src='images/view.png' class='action' alt='view' />" .
                       "</a>" .
                       $invEdit .
-                      "<a class='index_table' title='{$LANG['print_preview_tooltip']} {$row['index_id']}' " .
+                      "<a class='index_table' title='{$LANG['printPreviewTooltip']} {$row['index_id']}' target='_blank' " .
                          "href='index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print'>" .
                           "<img src='images/printer.png' class='action' alt='print' />" .
                       "</a>" .
-                      "<a class='invoice_export_dialog' id='btnShowSimple' title='{$LANG['export_tooltip']} {$row['index_id']}' " .
+                      "<a class='invoice_export_dialog' id='btnShowSimple' title='{$LANG['exportUc']} {$row['index_id']}' " .
                          "href='#' data-row-num='{$row['id']}' data-spreadsheet='{$config['exportSpreadsheet']}' " .
                          "data-wordprocessor='{$config['exportWordProcessor']}'>" .
                           "<img src='images/page_white_acrobat.png' class='action' alt='spreadsheet'/>" .
@@ -667,7 +667,7 @@ class Invoice
         $total = $grossTotal + $taxAmount;
 
         // Remove jquery auto-fill description - refer jquery.conf.js.tpl autofill section
-        if ($description == $LANG['description_uc']) {
+        if ($description == $LANG['descriptionUc']) {
             $description = "";
         }
         $list = ['invoice_id' => $invoiceId,
@@ -771,7 +771,7 @@ class Invoice
         $taxAmount = Taxes::getTaxesPerLineItem($taxIds, $quantity, $unitPrice);
         $grossTotal = $unitPrice * $quantity;
         $total = $grossTotal + $taxAmount;
-        if ($description == $LANG['description_uc']) {
+        if ($description == $LANG['descriptionUc']) {
             $description = "";
         }
 

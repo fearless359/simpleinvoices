@@ -15,18 +15,18 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=tax_rates&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.add_new_tax_rate}
+        {$LANG.addNewTaxRate}
     </a>
 </div>
 
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_tax_rates}</div>
+    <div class="si_message">{$LANG.noTaxRates}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.description_uc}</th>
+            <th>{$LANG.descriptionUc}</th>
             <th>{$LANG.rate}</th>
             <th>{$LANG.enabled}</th>
         </tr>

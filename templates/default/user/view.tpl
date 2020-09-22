@@ -31,7 +31,7 @@
             <td>{$user.enabled_text|htmlSafe}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.user_id}:</th>
+            <th class="details_screen">{$LANG.userId}:</th>
             <td>{$user_id_desc|htmlSafe}</td>
         </tr>
     </table>

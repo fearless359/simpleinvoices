@@ -3,7 +3,7 @@
 <table class="center" style="width:60%;;">
     <tr>
         <th style="font-weight: bold; text-align:center;">
-            {$LANG.to_uc} {$LANG.install} {$LANG.simpleInvoices} {$LANG.please}:
+            {$LANG.toUc} {$LANG.install} {$LANG.simpleInvoices} {$LANG.please}:
         </th>
     </tr>
     <tr>

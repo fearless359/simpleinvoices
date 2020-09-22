@@ -24,11 +24,11 @@
     <div class="si_invoice_form">
         <table class='si_invoice_top'>
             <tr>
-                <th>{$preference.pref_inv_wording|htmlSafe} {$LANG.number_short}</th>
-                <td>{if !$invoice.id}{$LANG.copied_from}&nbsp;{/if}{$invoice.index_id|htmlSafe}</td>
+                <th>{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}</th>
+                <td>{if !$invoice.id}{$LANG.copiedFrom}&nbsp;{/if}{$invoice.index_id|htmlSafe}</td>
             </tr>
             <tr>
-                <th>{$LANG.date_formatted}</th>
+                <th>{$LANG.dateFormatted}</th>
                 {if !isset($invoice.id)}
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
@@ -47,7 +47,7 @@
                 <th>{$LANG.biller}</th>
                 <td>
                     {if !isset($billers) }
-                        <em>{$LANG.no_billers}</em>
+                        <em>{$LANG.noBillers}</em>
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="biller_id">
@@ -63,7 +63,7 @@
                 <th>{$LANG.customer}</th>
                 <td>
                     {if !isset($customers)}
-                        <em>{$LANG.no_customers}</em>
+                        <em>{$LANG.noCustomers}</em>
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="customer_id">
@@ -79,7 +79,7 @@
         {if $invoice.type_id == TOTAL_INVOICE }
             <table id="itemtable" class="si_invoice_items">
                 <tr>
-                    <th class="left">{$LANG.description_uc}</th>
+                    <th class="left">{$LANG.descriptionUc}</th>
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="5">
@@ -87,13 +87,13 @@
                         <textarea name="description0" style="overflow:scroll;"
                                   id="description0" rows="3" cols="100%"
                                   data-row-num="0"
-                                  data-description="{$LANG['description_uc']}">{$invoiceItems[0].description|outHtml}</textarea>
+                                  data-description="{$LANG.descriptionUc}">{$invoiceItems[0].description|outHtml}</textarea>
                     </td>
                 </tr>
             </table>
             <table class="si_invoice_bot">
                 <tr>
-                    <th>{$LANG.gross_total}</th>
+                    <th>{$LANG.grossTotal}</th>
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" class="si_right" name="unit_price0"
@@ -131,10 +131,10 @@
                 {$customFields.3}
                 {$customFields.4}
                 <tr>
-                    <th>{$LANG.inv_pref}</th>
+                    <th>{$LANG.invPref}</th>
                     <td>
                         {if !isset($preferences) }
-                            <em>{$LANG.no_preferences}</em>
+                            <em>{$LANG.noPreferences}</em>
                         {else}
                             <!--suppress HtmlFormInputWithoutLabel -->
                             <select name="preference_id">
@@ -145,7 +145,7 @@
                             </select>
                         {/if}
                     </td>
-                    <th>{$LANG.sales_representative}</th>
+                    <th>{$LANG.salesRepresentative}</th>
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input id="sales_representative}" name="sales_representative" size="30"
@@ -158,12 +158,12 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>{$LANG.quantity_short}</th>
-                    <th>{$LANG.description_uc}</th>
+                    <th>{$LANG.quantityShort}</th>
+                    <th>{$LANG.descriptionUc}</th>
                     {section name=tax_header loop=$defaults.tax_per_line_item }
                         <th>{$LANG.tax}{if $defaults.tax_per_line_item > 1} {$smarty.section.tax_header.index+1|htmlSafe}{/if}</th>
                     {/section}
-                    <th>{$LANG.unit_price}</th>
+                    <th>{$LANG.unitPrice}</th>
                 </tr>
                 </thead>
                 {foreach $invoiceItems as $line => $invoiceItem}
@@ -174,7 +174,7 @@
                                value="{if isset($invoiceItem.id)}{$invoiceItem.id|htmlSafe}{/if}"/>
                         <td>
                             <a class="delete_link" id="delete_link{$line|htmlSafe}"
-                               title="{$LANG.delete_line_item}" href="#" style="display:{if $line == "0"}none{else}inline{/if};"
+                               title="{$LANG.deleteLineItem}" href="#" style="display:{if $line == "0"}none{else}inline{/if};"
                                data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}>
                                 <img id="delete_image{$line|htmlSafe}" src="../../../images/delete_item.png" alt=""/>
                             </a>
@@ -188,13 +188,13 @@
                         </td>
                         <td>
                             {if !isset($products) }
-                                <em>{$LANG.no_products}</em>
+                                <em>{$LANG.noProducts}</em>
                             {else}
                                 <!--suppress HtmlFormInputWithoutLabel -->
                                 <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
                                         data-row-num="{$line|htmlSafe}"
                                         class="si_input product_change{if $line == 0} validate[required]{/if}"
-                                        data-description="{$LANG.description_uc}">
+                                        data-description="{$LANG.descriptionUc}">
                                     {foreach $products as $product}
                                         <option {if $product.id == $invoiceItem.product_id} selected {/if}
                                                 value="{if isset($product.id)}{$product.id|htmlSafe}{/if}">{$product.description|htmlSafe}</option>
@@ -231,22 +231,22 @@
                             <textarea name="description{$line|htmlSafe}" style="overflow:scroll;"
                                   id="description{$line|htmlSafe}" rows="3" cols="100%"
                                   data-row-num="{$line|htmlSafe}"
-                                  data-description="{$LANG['description_uc']}">{$invoiceItem.description|outHtml}</textarea>
+                                  data-description="{$LANG.descriptionUc}">{$invoiceItem.description|outHtml}</textarea>
                         </td>
                     </tr>
                     </tbody>
                 {/foreach}
             </table>
             <div class="si_toolbar si_toolbar_inform">
-                <a href="#" class="add_line_item" data-description="{$LANG.description_uc}">
-                    <img src="../../../images/add.png" alt=""/>{$LANG.add_new_row}</a>
-                <a href='#' class="show_details" title="{$LANG.show_details}">
+                <a href="#" class="add_line_item" data-description="{$LANG.descriptionUc}">
+                    <img src="../../../images/add.png" alt=""/>{$LANG.addNewRow}</a>
+                <a href='#' class="show_details" title="{$LANG.showDetails}">
                     <img src="../../../images/page_white_add.png" alt=""/>
-                    {$LANG.show_details}
+                    {$LANG.showDetails}
                 </a>
-                <a href='#' class="hide_details si_hide" title="{$LANG.hide_details}">
+                <a href='#' class="hide_details si_hide" title="{$LANG.hideDetails}">
                     <img src="../../../images/page_white_delete.png" alt=""/>
-                    {$LANG.hide_details}
+                    {$LANG.hideDetails}
                 </a>
             </div>
             <table class="si_invoice_bot">
@@ -265,10 +265,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.inv_pref}</th>
+                    <th>{$LANG.invPref}</th>
                     <td>
                         {if !isset($preferences) }
-                            <em>{$LANG.no_preferences}</em>
+                            <em>{$LANG.noPreferences}</em>
                         {else}
                             <!--suppress HtmlFormInputWithoutLabel -->
                             <select name="preference_id">
@@ -279,7 +279,7 @@
                             </select>
                         {/if}
                     </td>
-                    <th>{$LANG.sales_representative}</th>
+                    <th>{$LANG.salesRepresentative}</th>
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" id="sales_representative}" name="sales_representative" size="30"

@@ -1,11 +1,11 @@
 <div class="si_form">
     <table>
         <tr>
-            <th class="details_screen">{$LANG.product_uc}:</th>
+            <th class="details_screen">{$LANG.productUc}:</th>
             <td>{$inventory.description|htmlSafe}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.date_uc}:</th>
+            <th class="details_screen">{$LANG.dateUc}:</th>
             <td>{$inventory.date|htmlSafe}</td>
         </tr>
         <tr>
@@ -13,7 +13,7 @@
             <td>{$inventory.quantity|utilNumberTrim}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.cost_uc}:</th>
+            <th class="details_screen">{$LANG.costUc}:</th>
             <td>{$inventory.cost|utilNumber}</td>
         </tr>
         <tr>

@@ -19,7 +19,7 @@
     </div>
     {if $first_run_wizard == true}
         <div class="si_message">
-            {$LANG.thank_you} {$LANG.before_starting}
+            {$LANG.thankYou} {$LANG.beforeStarting}
         </div>
         {include file="$realPath/itemised_setup_toolbar_table.tpl"}
     {else}
@@ -27,17 +27,17 @@
             {include file="$path/header.tpl" }
             {include file="$realPath/itemised_itemtable.tpl" }
             <div class="si_toolbar si_toolbar_inform">
-                <a href="#" class="add_line_item" data-description="{$LANG.description_uc}">
+                <a href="#" class="add_line_item" data-description="{$LANG.descriptionUc}">
                     <img src="../../../../../images/add.png" alt=""/>
-                    {$LANG.add_new_row}
+                    {$LANG.addNewRow}
                 </a>
-                <a href='#' class="show_details" title="{$LANG.show_details}">
+                <a href='#' class="show_details" title="{$LANG.showDetails}">
                     <img src="../../../../../images/page_white_add.png" alt=""/>
-                    {$LANG.show_details}
+                    {$LANG.showDetails}
                 </a>
-                <a href='#' class="hide_details si_hide" title="{$LANG.hide_details}">
+                <a href='#' class="hide_details si_hide" title="{$LANG.hideDetails}">
                     <img src="../../../../../images/page_white_delete.png" alt=""/>
-                    {$LANG.hide_details}
+                    {$LANG.hideDetails}
                 </a>
             </div>
             {include file="$realPath/itemised_invoice_bot.tpl" }
@@ -54,10 +54,10 @@
                 </a>
             </div>
             <div class="si_help_div">
-                <a class="cluetip" href="#" title="{$LANG.want_more_fields}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_invoice_custom_fields">
+                <a class="cluetip" href="#" title="{$LANG.wantMoreFields}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpInvoiceCustomFields">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
-                    {$LANG.want_more_fields}
+                    {$LANG.wantMoreFields}
                 </a>
             </div>
         </div>

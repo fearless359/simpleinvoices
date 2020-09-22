@@ -8,7 +8,7 @@
         {section name=tax_header loop=$defaults.tax_per_line_item }
             <th class="">{$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax_header.index+1|htmlSafe}{/if} </th>
         {/section}
-        <th class="">{$LANG.unit_price}</th>
+        <th class="">{$LANG.unitPrice}</th>
     </tr>
     </thead>
     {section name=line start=0 loop=$dynamic_line_items step=1}
@@ -20,7 +20,7 @@
             <td>
                 <a class="delete_link" id="delete_link{$line|htmlSafe}" href="#" style="display: {if $line == 0}none{else}inline{/if};"
                    data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}
-                   title="{$LANG.delete_row|htmlSafe}">
+                   title="{$LANG.deleteRow}">
                     <img id="delete_image{$line|htmlSafe}" src="../../../images/delete_item.png" style="height:16px;width:16px;" alt=""/>
                 </a>
             </td>
@@ -32,11 +32,11 @@
             </td>
             <td>
                 {if !isset($products) }
-                    <em>{$LANG.no_products}</em>
+                    <em>{$LANG.noProducts}</em>
                 {else}
                     <select id="products{$line|htmlSafe}" name="products{$line|htmlSafe}"
                             class="si_input product_change{if $line == 0} validate[required]{/if}"
-                            data-row-num="{$line|htmlSafe}" data-description="{$LANG.description_uc}">
+                            data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}">
                         <option value=""></option>
                         {foreach $products as $product}
                             <option value="{if isset($product.id)}{$product.id|htmlSafe}{/if}"
@@ -72,7 +72,7 @@
         <tr class="details si_hide">
             <td></td>
             <td colspan="4">
-                 <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" data-description="{$LANG['description_uc']}" data-row-num="{$line|htmlSafe}"
+                 <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" data-description="{$LANG.descriptionUc}" data-row-num="{$line|htmlSafe}"
                            rows="4" cols="60">{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlSafe}{/if}</textarea>
                 {* Note that the space immediatly prior to the closing </textarea> tag is required to allow the description to display. Why??? I don't know!!! *}
             </td>

@@ -11,7 +11,7 @@ Util::directAccessAllowed();
 // Deal with op and add some basic sanity checking
 $op = !empty($_POST['op']) ? $_POST['op'] : "";
 
-$displayBlock = "<div class='si_message_error'>{$LANG['save_expense_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['saveExpenseFailure']}</div>";
 $refreshRedirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=expense&amp;view=manage" />';
 
 if (empty($_POST['customer_id'])) {
@@ -28,11 +28,11 @@ if (empty($_POST['product_id'])) {
 
 if ($op === 'create') {
     if (Expense::insert()) {
-        $displayBlock = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['saveExpenseSuccess']}</div>";
     }
 } elseif ($op === 'edit') {
     if (Expense::update()) {
-        $displayBlock = "<div class='si_message_ok'>{$LANG['save_expense_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['saveExpenseSuccess']}</div>";
     }
 }
 

@@ -30,91 +30,52 @@ class SiAcl
             'user'
         ];
 
+        $adminAccess = [
+            'administrator',
+            'domain_administrator'
+        ];
+
+        $adminBillerAccess = [
+            'administrator',
+            'domain_administrator',
+            'biller'
+        ];
+
+        $adminBillerCustomerAccess = [
+            'administrator',
+            'domain_administrator',
+            'biller',
+            'customer'
+        ];
+
+        $adminCustomerAccess = [
+            'administrator',
+            'domain_administrator',
+            'customer'
+        ];
+
         $reports = [
-            'index' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_biller_by_customer' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_biller_total' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_database_log' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_debtors_aging_total' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_debtors_by_aging' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_debtors_by_amount' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_debtors_owing_by_customer' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_expense_account_by_period' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_invoice_profit' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_net_income' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_past_due' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_products_sold_by_customer' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_products_sold_total' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_sales_by_periods' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_sales_by_representative' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_sales_customers_total' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_sales_total' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_summary' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_tax_total' => [
-                'administrator',
-                'domain_administrator'
-            ],
-            'report_tax_vs_sales_by_period' => [
-                'administrator',
-                'domain_administrator'
-            ],
+            'index' =>$adminBillerCustomerAccess,
+            'reportBillerByCustomer' => $adminBillerAccess,
+            'reportBillerTotal' => $adminBillerAccess,
+            'reportDatabaseLog' => $adminAccess,
+            'reportDebtorsAgingTotal' => $adminAccess,
+            'reportDebtorsByAging' => $adminAccess,
+            'reportDebtorsByAmount' => $adminAccess,
+            'reportDebtorsOwingByCustomer' => $adminAccess,
+            'reportExpenseAccountByPeriod' => $adminAccess,
+            'reportInvoiceProfit' => $adminBillerAccess,
+            'reportNetIncome' => $adminBillerAccess,
+            'reportPastDue' => $adminBillerAccess,
+            'reportProductsSoldByCustomer' => $adminCustomerAccess,
+            'reportProductsSoldTotal' => $adminAccess,
+            'reportSalesByPeriods' => $adminAccess,
+            'reportSalesByRepresentative' => $adminAccess,
+            'reportSalesCustomersTotal' => $adminCustomerAccess,
+            'reportSalesTotal' => $adminAccess,
+            'reportSummary' => $adminAccess,
+            'reportTaxTotal' => $adminAccess,
+            'reportTaxVsSalesByPeriod' => $adminAccess,
         ];
 
         // The structure is as follows:
@@ -123,30 +84,12 @@ class SiAcl
         //          roles
         $resourcePermissions = [
             'api' => [
-                'ach' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'cron' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'invoice' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'paypal' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'recur' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'recorder' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'ach' => $adminAccess,
+                'cron' => $adminAccess,
+                'invoice' => $adminAccess,
+                'paypal' => $adminAccess,
+                'recur' => $adminAccess,
+                'recorder' => $adminAccess
             ],
             'auth' => [
                 'login' => [
@@ -155,528 +98,168 @@ class SiAcl
                 'logout' => $roles
             ],
             'billers' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
+                'create' => $adminAccess,
+                'edit' => $adminBillerAccess,
+                'manage' => $adminBillerAccess,
+                'save' => $adminBillerAccess,
+                'view' => $adminBillerAccess,
             ],
             'cron' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'delete' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'run' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'delete' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'run' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'custom_fields' => [
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'custom_flags' => [
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'customers' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator',
-                    'customer'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator',
-                    'customer'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator',
-                    'customer'
-                ],
-                'usedefault' => [
-                    'administrator',
-                    'domain_administrator',
-                    'customer'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator',
-                    'customer'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminCustomerAccess,
+                'manage' => $adminCustomerAccess,
+                'save' => $adminCustomerAccess,
+                'usedefault' => $adminCustomerAccess,
+                'view' => $adminCustomerAccess
             ],
             'documentation' => [
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'view' => $adminAccess
             ],
             'expense' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'expense_account' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'export' => [
-                'invoice' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ]
+                'invoice' => $adminBillerCustomerAccess,
             ],
             'extensions' => [
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'register' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'manage' => $adminAccess,
+                'register' => $adminAccess,
+                'save' => $adminAccess
             ],
             'index' => [
-                'index' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'index' => $adminAccess
             ],
             'install' => [
-                'essential' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'structure' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'essential' => $adminAccess,
+                'structure' => $adminAccess
             ],
             'inventory' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'invoices' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'delete' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'email' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ],
-                'itemised' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ],
-                'quick_view' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ],
-                'product_ajax' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                ],
-                'total' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                ],
-                'usedefault' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminBillerAccess,
+                'delete' => $adminAccess,
+                'edit' => $adminBillerAccess,
+                'email' => $adminBillerCustomerAccess,
+                'itemised' => $adminBillerAccess,
+                'manage' => $adminBillerCustomerAccess,
+                'quick_view' => $adminBillerCustomerAccess,
+                'product_ajax' => $adminBillerAccess,
+                'save' => $adminBillerAccess,
+                'total' => $adminBillerAccess,
+                'usedefault' => $adminAccess
             ],
             'options' => [
-                'backup_database' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'index' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage_cronlog' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage_sqlpatches' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'backup_database' => $adminAccess,
+                'index' => $adminAccess,
+                'manage_cronlog' => $adminAccess,
+                'manage_sqlpatches' => $adminAccess
             ],
             'payment_types' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'payments' => [
-                'print' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'process' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller'
-                ]
+                'print' => $adminBillerAccess,
+                'manage' => $adminBillerAccess,
+                'process' => $adminAccess,
+                'save' => $adminBillerAccess,
+                'view' => $adminBillerAccess
             ],
             'preferences' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'product_attribute' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'product_value' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'products' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'reports' => $reports,
             'si_info' => [
-                'index' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'index' => $adminAccess
             ],
             'statement' => [
-                'index' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'index' => $adminAccess,
+                'email' => $adminAccess,
+                'export' => $adminAccess
             ],
             'system_defaults' => [
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess
             ],
             'tax_rates' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminAccess,
+                'manage' => $adminAccess,
+                'save' => $adminAccess,
+                'view' => $adminAccess
             ],
             'user' => [
-                'create' => [
-                    'administrator',
-                    'domain_administrator'
-                ],
-                'edit' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ],
-                'manage' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ],
-                'save' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ],
-                'view' => [
-                    'administrator',
-                    'domain_administrator',
-                    'biller',
-                    'customer'
-                ]
+                'create' => $adminAccess,
+                'edit' => $adminBillerCustomerAccess,
+                'manage' => $adminBillerCustomerAccess,
+                'save' => $adminBillerCustomerAccess,
+                'view' => $adminBillerCustomerAccess
             ]
         ];
 

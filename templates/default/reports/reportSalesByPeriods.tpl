@@ -1,0 +1,28 @@
+{* Display the rate column ? *}
+{assign var=show_rates value=1}
+{* How may decimals for rate (0-2) *}
+{assign var=rate_precision value='1'}
+{*-------------------------------------------------------------------------------*}
+{assign var=years_shown value=$all_years|@count}
+{assign var=years_shown value=$years_shown-1}
+{assign var=years value=$all_years.0|range:$all_years.$years_shown}
+{literal}
+<script>
+  $(document).ready(function() {
+    $('.but_show_rates').click(function(e){
+      e.preventDefault();
+      $('.rate').toggle();
+    });
+  });
+</script>
+{/literal}
+
+<div class='si_report_title1 si_center'>{$LANG.monthlySalesPerYear}</div>
+
+<div class='si_report_title2 si_center'>{$LANG.sales}</div>
+{totals_by_period type='sales'}
+{include file=$path|cat:'reportSalesByPeriodsInclude.tpl'}
+
+<div class='si_report_title2 si_center'>{$LANG.payments}</div>
+{totals_by_period type='payments'}
+{include file=$path|cat:'reportSalesByPeriodsInclude.tpl'}

@@ -4,7 +4,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <link rel="stylesheet" type="text/css" href="{$css|urlSafe}" media="all">
       <title>{$preference.pref_inv_wording|htmlSafe}
-         {$LANG.number_short}: {$invoice.index_id|htmlSafe}
+         {$LANG.numberShort}: {$invoice.index_id|htmlSafe}
       </title>
    </head>
    <body>
@@ -42,20 +42,20 @@
                         </tr>
                         {/if}
                         <tr>
-                           <td class='clean left'>{$LANG.address_uc}:</td>
+                           <td class='clean left'>{$LANG.addressUc}:</td>
                            <td class='clean left'>
                               {if $biller.street_address != null}{$biller.street_address|htmlSafe}{/if} {if $biller.city != null }{$biller.city|htmlSafe},{/if} {if $biller.state != null } {$biller.state|htmlSafe},{/if} {if $biller.zip_code != null } {$biller.zip_code|htmlSafe} {/if} {if $biller.country != null }, {$biller.country|htmlSafe}{/if}
                            </td>
                         </tr>
                         {if $biller.street_address2 != null}
                         <tr>
-                           <td class='clean left'>{$LANG.address_uc}:</td>
+                           <td class='clean left'>{$LANG.addressUc}:</td>
                            <td class='clean left'>{$biller.street_address2|htmlSafe}</td>
                         </tr>
                         {/if} 
 						{if $biller.phone != null }
                         <tr>
-                           <td class='clean left'>{$LANG.phone}:</td>
+                           <td class='clean left'>{$LANG.phoneUc}:</td>
                            <td class='clean left'>{$biller.phone|htmlSafe}</td>
                         </tr>
                         {/if} {if $biller.mobile != null }
@@ -100,19 +100,19 @@
                         </tr>
                         {/if}
                         <tr>
-                           <td class='clean left'>{$LANG.address_uc}:</td>
+                           <td class='clean left'>{$LANG.addressUc}:</td>
                            <td class='clean left'>
                               {if $customer.street_address != null}{$customer.street_address|htmlSafe}{/if} {if $customer.city != null }{$customer.city|htmlSafe},{/if} {if $customer.state != null } {$customer.state|htmlSafe},{/if} {if $customer.zip_code != null } {$customer.zip_code|htmlSafe} {/if} {if $customer.country != null }, {$customer.country|htmlSafe}{/if}
                            </td>
                         </tr>
                         {if $customer.street_address2 != null}
                         <tr>
-                           <td class='clean left'>{$LANG.address_uc2}:</td>
+                           <td class='clean left'>{$LANG.addressUc2}:</td>
                            <td class='clean left'>{$customer.street_address2|htmlSafe}</td>
                         </tr>
                         {/if} {if $customer.phone != null }
                         <tr>
-                           <td class='clean left'>{$LANG.phone}:</td>
+                           <td class='clean left'>{$LANG.phoneUc}:</td>
                            <td class='clean left'>{$customer.phone|htmlSafe}</td>
                         </tr>
                         {/if} {if $customer.mobile != null }
@@ -140,8 +140,8 @@
                      <!-- Invoice details -->
                      <h2>{$preference.pref_inv_heading|htmlSafe}</h2>
                      <!-- Summary -->
-                     {$LANG.number_short} {$invoice.index_id} {if $invoice.custom_field1 != null} {$customFieldLabels.invoice_cf1|htmlSafe} {$invoice.custom_field1|htmlSafe} {/if}
-                     <span>{$LANG.date_uc}: {$invoice.date|date_format:"%d.%m.%Y"}</span>
+                     {$LANG.numberShort} {$invoice.index_id} {if $invoice.custom_field1 != null} {$customFieldLabels.invoice_cf1|htmlSafe} {$invoice.custom_field1|htmlSafe} {/if}
+                     <span>{$LANG.dateUc}: {$invoice.date|date_format:"%d.%m.%Y"}</span>
                   </td>
                </tr>
             </tbody>
@@ -153,14 +153,15 @@
             <thead>
                <tr>
                   {if ($invoice.type_id == 2) || ($invoice.type_id == 3) }
-                  <th class="clean center bleft bdown">{$LANG.item}</th>
-                  <th class="clean center bleft bdown">{$LANG.products}</th>
-                  <th class="clean center bleft bdown">{$LANG.unit_of_measurement}</th>
-                  <th class="clean center bleft bdown">{$LANG.quantity}</th>
-                  <th class="clean center bleft bdown">{$LANG.product_unit_price}</th>
-                    <th class="clean center bleft bdown">{$LANG.product_value}</th>
-                  {/if} {if $invoice.type_id == 1 }
-                  <th class="clean center bleft bdown">{$LANG.description_uc}</th>
+                    <th class="clean center bleft bdown">{$LANG.item}</th>
+                    <th class="clean center bleft bdown">{$LANG.products}</th>
+                    <th class="clean center bleft bdown">{$LANG.unitOfMeasurement}</th>
+                    <th class="clean center bleft bdown">{$LANG.quantity}</th>
+                    <th class="clean center bleft bdown">{$LANG.productUnitPrice}</th>
+                    <th class="clean center bleft bdown">{$LANG.productValue}</th>
+                  {/if}
+                  {if $invoice.type_id == 1 }
+                    <th class="clean center bleft bdown">{$LANG.descriptionUc}</th>
                   {/if}
                </tr>
                <tr>
@@ -206,18 +207,18 @@
                   <td class="clean left bleft" colspan="2">Intocmit de Cristian Sava <br>
                      Cnp:1790726513500, {if $biller.fax != null }{$LANG.CI}: {$biller.fax|htmlSafe}{/if}
                   </td>
-                  <td class="clean center bleft bdown" style='font-weight:bold'>{$LANG.amount_uc}:</td>
+                  <td class="clean center bleft bdown" style='font-weight:bold'>{$LANG.amountUc}:</td>
                   <td class="clean center bleft bdown" style='font-weight:bold'>{$invoice.total|utilNumber} {$preference.pref_currency_sign}</td>
                </tr>
                <tr class="clean left bleft">
                   <td class="clean left bleft" style="height: 23px" colspan="2">
-                     {$LANG.attention_short}: {$customer.attention|htmlSafe}
+                     {$LANG.attentionShort}: {$customer.attention|htmlSafe}
                      <br>
                      {if $customer.fax != null }{$LANG.CI}: {$customer.fax|htmlSafe}{/if}
                   </td>
                </tr>
                <tr class="clean left bleft">
-                  <td class="clean left bleft" colspan="2">{$LANG.date_uc}: {$invoice.date|date_format:"%d.%m.%Y"}<br>Semnaturile:</td>
+                  <td class="clean left bleft" colspan="2">{$LANG.dateUc}: {$invoice.date|date_format:"%d.%m.%Y"}<br>Semnaturile:</td>
                </tr>
             </tbody>
          </table>

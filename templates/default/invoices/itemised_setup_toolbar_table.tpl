@@ -1,43 +1,43 @@
 <table class="si_table_toolbar">
     {if empty($billers)}
         <tr>
-            <th>{$LANG.setup_as_biller}</th>
+            <th>{$LANG.setupAsBiller}</th>
             <td class="si_toolbar">
                 <a href="index.php?module=billers&amp;view=create" class="positive">
                     <img src="../../../images/user_add.png" alt=""/>
-                    {$LANG.add_new_biller}
+                    {$LANG.addNewBiller}
                 </a>
             </td>
         </tr>
     {/if}
     {if empty($customers)}
         <tr>
-            <th>{$LANG.setup_add_customer}</th>
+            <th>{$LANG.setupAddCustomer}</th>
             <td class="si_toolbar">
                 <a href="index.php?module=customers&amp;view=create" class="positive">
                     <img src="../../../images/vcard_add.png" alt=""/>
-                    {$LANG.customer_add}
+                    {$LANG.customerAdd}
                 </a>
             </td>
         </tr>
     {/if}
     {if empty($products)}
         <tr>
-            <th>{$LANG.setup_add_products}</th>
+            <th>{$LANG.setupAddProducts}</th>
             <td class="si_toolbar">
                 <a href="index.php?module=products&amp;view=create" class="positive">
                     <img src="../../../images/cart_add.png" alt=""/>
-                    {$LANG.add_new_product}
+                    {$LANG.addNewProduct}
                 </a>
             </td>
         </tr>
     {/if}
     <tr>
-        <th>{$LANG.setup_customisation}</th>
+        <th>{$LANG.setupCustomization}</th>
         <td class="si_toolbar">
             <a href="index.php?module=system_defaults&amp;view=manage" class="">
                 <img src="../../../images/cog_edit.png" alt=""/>
-                {$LANG.si_defaults}
+                {$LANG.siDefaults}
             </a>
         </td>
     </tr>

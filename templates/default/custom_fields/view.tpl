@@ -20,15 +20,15 @@
                 <td>{$cf.cf_id|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.custom_field_db_field_name}:</th>
+                <th class="details_screen">{$LANG.customFieldDbFieldName}:</th>
                 <td>{$cf.cf_custom_field|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.custom_field}:</th>
+                <th class="details_screen">{$LANG.customField}:</th>
                 <td>{$cf.name|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.custom_label}:</th>
+                <th class="details_screen">{$LANG.customLabel}:</th>
                 <td>{$cf.cf_custom_label|htmlSafe}</td>
             </tr>
         </table>

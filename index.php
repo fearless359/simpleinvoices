@@ -460,7 +460,7 @@ if ($menu) {
     // <!-- BEFORE:tax_rates -->
     // <li>
     // <a {if $pageActive == "custom_flags"} class="active"{/if} href="index.php?module=custom_flags&amp;view=manage">
-    // {$LANG.custom_flags_uc}
+    // {$LANG.customFlagsUc}
     // </a>
     // </li>
     // {if $subPageActive == "custom_flags_view"}

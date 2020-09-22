@@ -2,21 +2,21 @@
 <!--suppress HtmlFormInputWithoutLabel -->
     <meta http-equiv="refresh" content="2;URL=index.php?module=payments&amp;view=manage" />
 <br />
-{$LANG.save_eway_success}
+{$LANG.saveEwaySuccess}
 <br />
 <br />
 {/if}
 {if $saved == 'check_failed' }
 <meta http-equiv="refresh" content="2;URL=index.php?module=payments&amp;view=manage" />
 <br />
-{$LANG.save_eway_check_failed}
+{$LANG.saveEwayCheckFailed}
 <br />
 <br />
 {/if}
 {if $saved == 'false' }
 <meta http-equiv="refresh" content="2;URL=index.php?module=payments&amp;view=manage" />
 <br />
-{$LANG.save_eway_failure}
+{$LANG.saveEwayFailure}
 <br />
 <br />
 {/if}
@@ -24,7 +24,7 @@
 {if $saved == false}
     {if $smarty.post.op == 'add' AND $smarty.post.invoice_id == ''}
         <div class="validation_alert"><img src="../../../images/important.png" alt="" />
-            {$LANG.select_invoice}</div>
+            {$LANG.selectInvoice}</div>
         <hr />
     {/if}
     <form name="frmpost" method="POST" id="frmpost"
@@ -32,7 +32,7 @@
         <br />
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.invoice_uc}</td>
+                <td class="details_screen">{$LANG.invoiceUc}</td>
                 <td>
                     <select name="invoice_id" class="validate[required]">
                         <option value=''></option>
@@ -46,7 +46,7 @@
             <tr>
                 <td colspan=2>
                     <br />
-                    {$LANG.warning_eway}
+                    {$LANG.warningEway}
                     <br />
                 </td>
             </tr>

@@ -3,7 +3,7 @@
     <div class="si_cust_info">
         <table class="center">
             <tr>
-                <th class="details_screen">{$LANG.amount_uc}:</th>
+                <th class="details_screen">{$LANG.amountUc}:</th>
                 <td>{$expense.amount|utilCurrency}</td>
             </tr>
             <tr>
@@ -19,11 +19,11 @@
                 <td>{$detail.expense_tax_total|utilCurrency}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.expense_account}:</th>
+                <th class="details_screen">{$LANG.expenseAccount}:</th>
                 <td>{$expense.ea_name}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.date_uc}:</th>
+                <th class="details_screen">{$LANG.dateUc}:</th>
                 <td>{$expense.date|utilDate}</td>
             </tr>
             <tr>
@@ -35,11 +35,11 @@
                 <td>{if isset($expense.c_name)}{$expense.c_name}{/if}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.invoice_uc}:</th>
+                <th class="details_screen">{$LANG.invoiceUc}:</th>
                 <td>{if isset($detail.invoice.index_name)}{$detail.invoice.index_name}{/if}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.product_uc}:</th>
+                <th class="details_screen">{$LANG.productUc}:</th>
                 <td>{if isset($expense.p_desc)}{$expense.p_desc}{/if}</td>
             </tr>
             <tr>

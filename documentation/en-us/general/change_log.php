@@ -447,7 +447,7 @@
                     message support via the "help" keyword.<br/>
                     Ex:<br/>
                     &lt;a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
-                       title="{$LANG.custom_flags_uc}"&gt;&lt;img src="{$helpImagePath}help-small.png" alt="" /&gt;&lt;/a&gt;
+                       title="{$LANG.customFlagsUc}"&gt;&lt;img src="{$helpImagePath}help-small.png" alt="" /&gt;&lt;/a&gt;
                 </li>
                 <li>Created SystemDefaults class to consolidate function from sql_queries.php.</li>
             </ul>
@@ -764,7 +764,7 @@
           <li>Introduced user_group table patch</li>
           <li>domain_id and group_id field changes in users table and dropping of old defaults and auth_challenges table</li>
           <li>Migrated PHPReports to library/phpreports and modified the existing reports to use it</li>
-          <li>Corrected SQL in report_products_sold_by_customer</li>
+          <li>Corrected SQL in reportProductsSoldByCustomer</li>
           <li>Corrected Spanish translation file for correct encoding and double quote typo</li>
           <li>Fixed email.php with new location of pdf cache folder - ./cache - no need for out symlink</li>
           <li>Fix for undefined $title in invoice output templates and html syntax fixes</li>

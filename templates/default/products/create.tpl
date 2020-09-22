@@ -8,15 +8,15 @@
             <div id="tabs_customer">
                 <ul class="anchors">
                     <li><a href="#section-1" target="_top">{$LANG.detailsUc}</a></li>
-                    <li><a href="#section-2" target="_top">{$LANG.custom_uc}&nbsp;{$LANG.fields_uc}&nbsp;&amp;&nbsp;{$LANG.flags_uc}</a></li>
+                    <li><a href="#section-2" target="_top">{$LANG.customUc}&nbsp;{$LANG.fieldsUc}&nbsp;&amp;&nbsp;{$LANG.flagsUc}</a></li>
                     <li><a href="#section-3" target="_top">{$LANG.notes}</a></li>
                 </ul>
                 <div id="section-1" class="fragment">
                     <table>
                         <tr>
-                            <th class="details_screen">{$LANG.description_uc}:
-                                <a class="cluetip" href="#" title="{$LANG.required_field}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
+                            <th class="details_screen">{$LANG.descriptionUc}:
+                                <a class="cluetip" href="#" title="{$LANG.requiredField}" tabindex="-1"
+                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
                                     <img src="{$helpImagePath}required-small.png" alt=""/>
                                 </a>
                             </th>
@@ -26,7 +26,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="details_screen">{$LANG.unit_price}: </th>
+                            <th class="details_screen">{$LANG.unitPrice}: </th>
                             <td>
                                 <input type="text" class="si_input edit" name="unit_price" size="25" tabindex="20"
                                        value="{if isset($smarty.post.unit_price)}{$smarty.post.unit_price|htmlSafe}{/if}"/>
@@ -34,9 +34,9 @@
                         </tr>
                         {if $defaults.inventory == '1'}
                             <tr>
-                                <th class="details_screen">{$LANG.cost_uc}:
-                                    <a class="cluetip" href="#" title="{$LANG.cost_uc}" tabindex="-1"
-                                       rel="index.php?module=documentation&amp;view=view&amp;page=help_cost">
+                                <th class="details_screen">{$LANG.costUc}:
+                                    <a class="cluetip" href="#" title="{$LANG.costUc}" tabindex="-1"
+                                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCost">
                                         <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
@@ -46,7 +46,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="details_screen">{$LANG.reorder_level}: </th>
+                                <th class="details_screen">{$LANG.reorderLevel}: </th>
                                 <td>
                                     <input type="text" class="si_input edit" name="reorder_level" size="25" tabindex="40"
                                            value="{if isset($smarty.post.reorder_level)}{$smarty.post.reorder_level|htmlSafe}{/if}"/>
@@ -54,7 +54,7 @@
                             </tr>
                         {/if}
                         <tr>
-                            <th class="details_screen">{$LANG.default_tax}: </th>
+                            <th class="details_screen">{$LANG.defaultTax}: </th>
                             <td>
                                 <select name="default_tax_id" class="si_input" tabindex="50">
                                     <option value=''></option>
@@ -75,8 +75,8 @@
                         {if !empty($customFieldLabel.product_cf1)}
                             <tr>
                                 <th class="details_screen">{$customFieldLabel.product_cf1|htmlSafe}:
-                                    <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                                       rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                         <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
@@ -87,8 +87,8 @@
                         {if !empty($customFieldLabel.product_cf2)}
                             <tr>
                                 <th class="details_screen">{$customFieldLabel.product_cf2|htmlSafe}:
-                                    <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                                       rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                         <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
@@ -99,8 +99,8 @@
                         {if !empty($customFieldLabel.product_cf3)}
                             <tr>
                                 <th class="details_screen">{$customFieldLabel.product_cf3|htmlSafe}:
-                                    <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                                       rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                         <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
@@ -111,8 +111,8 @@
                         {if !empty($customFieldLabel.product_cf4)}
                             <tr>
                                 <th class="details_screen">{$customFieldLabel.product_cf4|htmlSafe}:
-                                    <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                                       rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                         <img src="{$helpImagePath}help-small.png" alt=""/>
                                     </a>
                                 </th>
@@ -136,7 +136,7 @@
                         {/foreach}
                         {if $defaults.product_attributes}
                             <tr>
-                                <th class="details_screen">{$LANG.product_attributes}: </th>
+                                <th class="details_screen">{$LANG.productAttributes}: </th>
                                 <td></td>
                             </tr>
                             {foreach $attributes as $attribute}
@@ -161,21 +161,21 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="details_screen">{$LANG.note_attributes}: </th>
+                            <th class="details_screen">{$LANG.noteAttributes}: </th>
                             <td></td>
                         </tr>
                         <tr>
                             <td></td>
                             <th class="details_screen product_attribute">
                                 <input type="checkbox" name="notes_as_description" class="si_input" value="true" tabindex="140"/>
-                                {$LANG.note_as_description}
+                                {$LANG.noteAsDescription}
                             </th>
                         </tr>
                         <tr>
                             <td></td>
                             <th class="details_screen product_attribute">
                                 <input type="checkbox" name="show_description" class="si_input" value="true" tabindex="150"/>
-                                {$LANG.note_expand}
+                                {$LANG.noteExpand}
                             </th>
                         </tr>
                     </table>

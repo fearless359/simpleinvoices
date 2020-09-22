@@ -13,9 +13,9 @@
     <div class="si_form">
         <table>
             <tr>
-                <th class="details_screen">{$LANG.description_uc}:
+                <th class="details_screen">{$LANG.descriptionUc}:
                     <a class="cluetip cluetip-clicked" href="#" title="Payment Type Description" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
                         <img src="{$helpImagePath}required-small.png" alt="(required)"/>
                     </a>
                 </th>

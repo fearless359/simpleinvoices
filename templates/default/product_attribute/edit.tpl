@@ -2,7 +2,7 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=product_attribute&amp;view=save&amp;id={$smarty.get.id}">
-    <div class="si_center"><h2>{$LANG.product_attribute}</h2></div>
+    <div class="si_center"><h2>{$LANG.productAttribute}</h2></div>
     <table class="center">
         <tr>
             <th class="details_screen">{$LANG.name}:</th>

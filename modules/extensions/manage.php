@@ -18,15 +18,15 @@ if ($action == 'toggle') {
 }
 
 $plugins = [];
-$plugins[] = "<img src=\"images/plugin_disabled.png\" alt=\"{$LANG['plugin_not_registered']}\" title=\"{$LANG['plugin_not_registered']}\" />";
-$plugins[] = "<img src=\"images/plugin.png\"          alt=\"{$LANG['plugin_registered']}\" title=\"{$LANG['plugin_registered']}\" />";
-$plugins[] = "<img src=\"images/plugin_delete.png\"   alt=\"{$LANG['plugin_unregister']}\" title=\"{$LANG['plugin_unregister']}\" />";
-$plugins[] = "<img src=\"images/plugin_add.png\"      alt=\"{$LANG['plugin_register']}\" title=\"{$LANG['plugin_register']}\" />";$smarty->assign('plugins', $plugins);
+$plugins[] = "<img src=\"images/plugin_disabled.png\" alt=\"{$LANG['pluginNotRegistered']}\" title=\"{$LANG['pluginNotRegistered']}\" />";
+$plugins[] = "<img src=\"images/plugin.png\"          alt=\"{$LANG['pluginRegistered']}\" title=\"{$LANG['pluginRegistered']}\" />";
+$plugins[] = "<img src=\"images/plugin_delete.png\"   alt=\"{$LANG['pluginUnregister']}\" title=\"{$LANG['pluginUnregister']}\" />";
+$plugins[] = "<img src=\"images/plugin_add.png\"      alt=\"{$LANG['pluginRegister']}\" title=\"{$LANG['pluginRegister']}\" />";$smarty->assign('plugins', $plugins);
 
 $lights = [];
 $lights[] = "<img src=\"images/lightbulb_off.png\"    alt=\"{$LANG['disabled']}\" title=\"{$LANG['disabled']}\" />";
 $lights[] = "<img src=\"images/lightbulb.png\"        alt=\"{$LANG['enabled']}\" title=\"{$LANG['enabled']}\" />";
-$lights[] = "<img src=\"images/lightswitch16x16.png\" alt=\"{$LANG['toggle_status']}\" title=\"{$LANG['toggle_status']}\" />";$smarty->assign('lights', $lights);
+$lights[] = "<img src=\"images/lightswitch16x16.png\" alt=\"{$LANG['toggleStatus']}\" title=\"{$LANG['toggleStatus']}\" />";$smarty->assign('lights', $lights);
 
 $rows = Extensions::getAllWithDirs();
 

@@ -12,9 +12,9 @@
             <table>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.associated_table}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_associated_table"
-                           title="{$LANG.associated_table}">
+                        {$LANG.associatedTable}
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsAssociatedTable"
+                           title="{$LANG.associatedTable}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -22,9 +22,9 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.flag_number}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_flag_number"
-                           title="{$LANG.flag_number}">
+                        {$LANG.flagNumber}
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsFlagNumber"
+                           title="{$LANG.flagNumber}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -32,19 +32,19 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.field_label_uc}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_field_label"
-                           title="{$LANG.field_label_uc}">
+                        {$LANG.fieldLabelUc}
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsFieldLabel"
+                           title="{$LANG.fieldLabelUc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="text" name="{$LANG.field_label_uc|lower}" class="si_input" size="20"
+                    <td><input type="text" name="{$LANG.fieldLabelUc|lower}" class="si_input" size="20"
                                value="{if isset($cflg.field_label)}{$cflg.field_label|escape}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.enabled}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_enable"
-                           title="{$LANG.custom_flags_uc}">
+                    <th class="details_screen">{$LANG.customFlagsUc}
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsEnable"
+                           title="{$LANG.customFlagsUc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -54,9 +54,9 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.reset_custom_flags}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_reset_custom_flags_products"
-                           title="{$LANG.reset_custom_flags}">
+                        {$LANG.resetCustomFlags}
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpResetCustomFlagsProducts"
+                           title="{$LANG.resetCustomFlags}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -64,15 +64,15 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.field_help_uc}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_flags_field_help"
-                           title="{$LANG.field_help_uc}">
+                        {$LANG.fieldHelpUc}
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsFieldHelp"
+                           title="{$LANG.fieldHelpUc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input name="{$LANG.field_help_uc|lower}" id="{$LANG.field_help_uc|lower}" {if isset($cflg.field_help)}value="{$cflg.field_help|outHtml}"{/if} type="hidden">
-                        <trix-editor input="{$LANG.field_help_uc|lower}" class="si_input"></trix-editor>
+                        <input name="{$LANG.fieldHelpUc|lower}" id="{$LANG.fieldHelpUc|lower}" {if isset($cflg.field_help)}value="{$cflg.field_help|outHtml}"{/if} type="hidden">
+                        <trix-editor input="{$LANG.fieldHelpUc|lower}" class="si_input"></trix-editor>
                     </td>
                 </tr>
             </table>

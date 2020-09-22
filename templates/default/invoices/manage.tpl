@@ -12,10 +12,10 @@
     <div class="si_toolbar si_toolbar_top si_toolbar_top_left">
         <a href="index.php?module=invoices&amp;view=itemised" class="">
             <img src="../../../images/add.png" alt="" />
-            {$LANG.new_invoice}
+            {$LANG.newInvoice}
         </a>
     </div>
-    <div class="si_message">{$LANG.no_invoices}</div>
+    <div class="si_message">{$LANG.noInvoices}</div>
 {else}
     <div class="si_filters_invoices si_buttons_manage_invoices">
         <span class='si_filters_title'>{$LANG.filters}:</span>
@@ -45,19 +45,19 @@
     <div class="si_toolbar si_toolbar_top si_toolbar_top_left">
         <a href="index.php?module=invoices&amp;view=itemised" class="">
             <img src="../../../images/add.png" alt=""/>
-            {$LANG.new_invoice}
+            {$LANG.newInvoice}
         </a>
     </div>
     <table id="si-data-table" class="display compact" >
         <thead>
             <tr>
                 <th>{$LANG.actions}</th>
-                <th>{$LANG.invoice_uc}#</th>
+                <th>{$LANG.invoiceUc}#</th>
                 <th>{$LANG.biller}</th>
                 <th>{$LANG.customer}</th>
-                <th>{$LANG.to_uc}</th>
+                <th>{$LANG.toUc}</th>
                 <th>{$LANG.total}</th>
-                <th>{$LANG.owing_uc}</th>
+                <th>{$LANG.owingUc}</th>
                 <th>{$LANG.aging}</th>
             </tr>
         </thead>
@@ -65,17 +65,17 @@
     <div id="overlay" class="web_dialog_overlay"></div>
     <div id="dialog" class="web_dialog flora" title="Export" style="display: none;">
         <div class="si_toolbar si_toolbar_dialog">
-            <a title="{$LANG.export_tooltip} {$LANG.export_pdf_tooltip}" class="export_pdf export_window">
+            <a title="{$LANG.exportUc} {$LANG.exportPdfTooltip}" class="export_pdf export_window">
                 <img src="../../../images/page_white_acrobat.png" alt=""/>
-                {$LANG.export_pdf}
+                {$LANG.exportPdf}
             </a>
-            <a title="{$LANG.export_tooltip} {$LANG.export_xls_tooltip} .{$config.exportSpreadsheet}" class="export_xls export_window">
+            <a title="{$LANG.exportUc} {$LANG.exportXlsTooltip} .{$config.exportSpreadsheet}" class="export_xls export_window">
                 <img src="../../../images/page_white_excel.png" alt=""/>
-                {$LANG.export_xls}
+                {$LANG.exportXls}
             </a>
-            <a title="{$LANG.export_tooltip} {$LANG.export_doc_tooltip} .{$config.exportWordProcessor}" class="export_doc export_window">
+            <a title="{$LANG.exportUc} {$LANG.exportDocTooltip} .{$config.exportWordProcessor}" class="export_doc export_window">
                 <img src="images/page_white_word.png" alt=""/>
-                {$LANG.export_doc}
+                {$LANG.exportDoc}
             </a>
             <button id="webDialogClose">{$LANG.closeUc}</button>
         </div>

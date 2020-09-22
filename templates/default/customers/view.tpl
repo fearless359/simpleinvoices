@@ -17,24 +17,24 @@
     <div class="si_cust_info">
         <table class="center">
             <tr>
-                <th class="details_screen">{$LANG.customer_name}:</th>
+                <th class="details_screen">{$LANG.customerName}:</th>
                 <td>{$customer.name}</td>
                 <td class="td_sep"></td>
-                <th class="details_screen">{$LANG.customer_department}:</th>
+                <th class="details_screen">{$LANG.customerDepartment}:</th>
                 <td>{$customer.department|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.attention_short}:</th>
+                <th class="details_screen">{$LANG.attentionShort}:</th>
                 <td>{$customer.attention|htmlSafe}</td>
                 <td class="td_sep"></td>
-                <th class="details_screen">{$LANG.phone}:</th>
+                <th class="details_screen">{$LANG.phoneUc}:</th>
                 <td>{$customer.phone|htmlSafe}</td>
             </tr>
             <tr>
                 <th class="details_screen">{$LANG.street}:</th>
                 <td>{$customer.street_address|htmlSafe}</td>
                 <td class="td_sep"></td>
-                <th class="details_screen">{$LANG.mobile_phone}:</th>
+                <th class="details_screen">{$LANG.mobilePhone}:</th>
                 <td>{$customer.mobile_phone|htmlSafe}</td>
             </tr>
             <tr>
@@ -55,7 +55,7 @@
                 <th class="details_screen">{$LANG.zip}:</th>
                 <td>{$customer.zip_code|htmlSafe}</td>
                 <td class="td_sep"></td>
-                <th class="details_screen">{$LANG.default_invoice}:</th>
+                <th class="details_screen">{$LANG.defaultInvoice}:</th>
                 <td>{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</td>
             </tr>
             <tr>
@@ -107,30 +107,30 @@
 <div class="si_form" id="si_form_cust">
     <div id="tabs_customer">
         <ul class="anchors">
-            <li><a href="#section-1" target="_top">{$LANG.summary_of_accounts}</a></li>
-            <li><a href="#section-2" target="_top">{$LANG.credit_card_details}</a></li>
-            <li><a href="#section-3" target="_top">{$LANG.customer}&nbsp;{$LANG.invoice_listings}</a></li>
-            <li {if $invoices_owing_count == 0}style="display:none"{/if}><a href="#section-4" target="_top">{$LANG.unpaid_invoices}</a></li>
+            <li><a href="#section-1" target="_top">{$LANG.summaryOfAccounts}</a></li>
+            <li><a href="#section-2" target="_top">{$LANG.creditCardDetails}</a></li>
+            <li><a href="#section-3" target="_top">{$LANG.customer}&nbsp;{$LANG.invoiceListings}</a></li>
+            <li {if $invoices_owing_count == 0}style="display:none"{/if}><a href="#section-4" target="_top">{$LANG.unpaidInvoices}</a></li>
             <li><a href="#section-5" target="_top">{$LANG.notes}</a></li>
         </ul>
         <div id="section-1" class="fragment">
             <div class="si_cust_account">
                 <table class="si_center" style="width:100%;">
                     <tr>
-                        <th class="details_screen">{$LANG.total_invoices}:</th>
+                        <th class="details_screen">{$LANG.totalInvoices}:</th>
                         <td class="si_right">{$customer.total|utilCurrency}</td>
                     </tr>
                     <tr>
                         <th class="details_screen">
                             <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">
-                                {$LANG.total_paid}
+                                {$LANG.totalPaid}
                             </a>
                             :
                         </th>
                         <td class="si_right">{$customer.paid|utilCurrency}</td>
                     </tr>
                     <tr>
-                        <th class="details_screen">{$LANG.total_owing}:</th>
+                        <th class="details_screen">{$LANG.totalOwing}:</th>
                         <td class="si_right" style="text-decoration:underline;">{$customer.owing|utilCurrency}</td>
                     </tr>
                 </table>
@@ -140,19 +140,19 @@
             <div class="si_cust_card">
                 <table>
                     <tr>
-                        <th class="details_screen">{$LANG.credit_card_holder_name}:</th>
+                        <th class="details_screen">{$LANG.creditCardHolderName}:</th>
                         <td>{$customer.credit_card_holder_name|htmlSafe}</td>
                     </tr>
                     <tr>
-                        <th class="details_screen">{$LANG.credit_card_number}:</th>
+                        <th class="details_screen">{$LANG.creditCardNumber}:</th>
                         <td>{$customer.credit_card_number_masked|htmlSafe}</td>
                     </tr>
                     <tr>
-                        <th class="details_screen">{$LANG.credit_card_expiry_month}:</th>
+                        <th class="details_screen">{$LANG.creditCardExpiryMonth}:</th>
                         <td>{$customer.credit_card_expiry_month|htmlSafe}</td>
                     </tr>
                     <tr>
-                        <th class="details_screen">{$LANG.credit_card_expiry_year}:</th>
+                        <th class="details_screen">{$LANG.creditCardExpiryYear}:</th>
                         <td>{$customer.credit_card_expiry_year|htmlSafe}</td>
                     </tr>
                 </table>
@@ -163,11 +163,11 @@
                 <table>
                     <thead>
                     <tr class="tr_head">
-                        <th class="first">{$LANG.invoice_uc}</th>
-                        <th class="details_screen">{$LANG.date_created}</th>
+                        <th class="first">{$LANG.invoiceUc}</th>
+                        <th class="details_screen">{$LANG.dateCreated}</th>
                         <th class="details_screen">{$LANG.total}</th>
                         <th class="details_screen">{$LANG.paid}</th>
-                        <th class="details_screen">{$LANG.owing_uc}</th>
+                        <th class="details_screen">{$LANG.owingUc}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -196,10 +196,10 @@
                         <tr class="tr_head">
                             <th class="first">{$LANG.actions}</th>
                             <th class="details_screen">{$LANG.id}</th>
-                            <th class="details_screen">{$LANG.date_created}</th>
+                            <th class="details_screen">{$LANG.dateCreated}</th>
                             <th class="details_screen">{$LANG.total}</th>
                             <th class="details_screen">{$LANG.paid}</th>
-                            <th class="details_screen">{$LANG.owing_uc}</th>
+                            <th class="details_screen">{$LANG.owingUc}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -209,7 +209,7 @@
                                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
                                         <img src='../../../images/view.png' class='action' alt=""/>
                                     </a>
-                                    <a title="{$LANG.process_payment_for} {$invoice.preference} {$invoice.index_id}"
+                                    <a title="{$LANG.processPaymentFor} {$invoice.preference} {$invoice.index_id}"
                                        href='index.php?module=payments&amp;view=process&amp;id={$invoice.id}&amp;op=pay_selected_invoice'>
                                         <img src='../../../images/money_dollar.png' class='action' alt=""/>
                                     </a>

@@ -17,17 +17,17 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=payment_types&amp;view=create">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.add_new_payment_type}
+        {$LANG.addNewPaymentType}
     </a>
 </div>
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_payment_types}</div>
+    <div class="si_message">{$LANG.noPaymentTypes}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.description_uc}</th>
+            <th>{$LANG.descriptionUc}</th>
             <th>{$LANG.enabled}</th>
         </tr>
         </thead>

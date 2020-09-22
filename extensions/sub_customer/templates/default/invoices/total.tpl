@@ -22,7 +22,7 @@
         {include file="$path/header.tpl" }
         <table id="itemtable" class="si_invoice_items">
             <tr>
-                <th class="left">{$LANG.description_uc}</th>
+                <th class="left">{$LANG.descriptionUc}</th>
             </tr>
             <tr>
                 <td class="si_invoice_notes">
@@ -37,7 +37,7 @@
 
         <table class="si_invoice_bot">
             <tr class="si_invoice_total">
-                <th class="">{$LANG.gross_total}</th>
+                <th class="">{$LANG.grossTotal}</th>
                 {section name=tax_header loop=$defaults.tax_per_line_item }
                     <th class="">{$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax_header.index+1|htmlSafe}{/if} </th>
                 {/section}
@@ -47,7 +47,7 @@
                 <td><input type="text" class="si_right validate[required]" name="unit_price" id="unit_price0" size="15"
                     value="{if isset($defaultInvoiceItems[0].unit_price)}{$defaultInvoiceItems[0].unit_price|utilNumber}{/if}"/></td>
                 {if !isset($taxes) }
-                    <td><p><em>{$LANG.no_taxes}</em></p></td>
+                    <td><p><em>{$LANG.noTaxes}</em></p></td>
                 {else}
                     {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
                         {assign var="taxNumber" value=$smarty.section.tax.index }
@@ -67,10 +67,10 @@
         </table>
         <table class="si_invoice_bot">
             <tr class="si_invoice_total">
-                <th class="">{$LANG.inv_pref}</th>
+                <th class="">{$LANG.invPref}</th>
                 <td>
                     {if !isset($preferences) }
-                        <p><em>{$LANG.no_preferences}</em></p>
+                        <p><em>{$LANG.noPreferences}</em></p>
                     {else}
                         <select name="preference_id">
                             {foreach $preferences as $preference}
@@ -81,7 +81,7 @@
                         </select>
                     {/if}
                 </td>
-                <th>{$LANG.sales_representative}</th>
+                <th>{$LANG.salesRepresentative}</th>
                 <td>
                     <input id="sales_representative}" name="sales_representative" size="30"
                            value="{if isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlSafe}{/if}" />
@@ -106,10 +106,10 @@
         </div>
 
         <div class="si_help_div">
-            <a class="cluetip" href="#" title="{$LANG.want_more_fields}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=help_invoice_custom_fields">
+            <a class="cluetip" href="#" title="{$LANG.wantMoreFields}"
+               rel="index.php?module=documentation&amp;view=view&amp;page=helpInvoiceCustomFields">
                 <img src="{$helpImagePath}help-small.png" alt=""/>
-                {$LANG.want_more_fields}
+                {$LANG.wantMoreFields}
             </a>
         </div>
     </div>

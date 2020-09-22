@@ -13,16 +13,16 @@ Util::directAccessAllowed();
 $op = $_POST['op'];
 
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=product_attribute&amp;view=manage' />";
-$displayBlock = "<div class=\"si_message_error\">{$LANG['save_product_attributes_failure']}</div>";
+$displayBlock = "<div class=\"si_message_error\">{$LANG['saveProductAttributesFailure']}</div>";
 
 #insert invoice_preference
 if ($op === 'create' ) {
     if (ProductAttributes::insert() > 0) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveProductAttributesSuccess']}</div>";
     }
 }elseif ($op === 'edit' ) {
     if (ProductAttributes::update()) {
-        $displayBlock = "<div class=\"si_message_ok\">{$LANG['save_product_attributes_success']}</div>";
+        $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveProductAttributesSuccess']}</div>";
     }
 }
 

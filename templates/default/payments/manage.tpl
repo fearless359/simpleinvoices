@@ -14,12 +14,12 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=payments&amp;view=process&amp;op=pay_invoice" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.process_payment}
+        {$LANG.processPayment}
     </a>
 {if isset($smarty.get.id)}
     <a href="index.php?module=payments&amp;view=process&amp;id={$smarty.get.id|urlencode}&amp;op=pay_selected_invoice" class="">
         <img src="../../../images/money.png" alt=""/>
-        {$LANG.payments_filtered_invoice}
+        {$LANG.paymentsFilteredInvoice}
     </a>
 {/if}
 </div>
@@ -30,13 +30,13 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.payment_uc}#</th>
-            <th>{$LANG.invoice_uc}#</th>
+            <th>{$LANG.paymentUc}#</th>
+            <th>{$LANG.invoiceUc}#</th>
             <th>{$LANG.customer}</th>
             <th>{$LANG.biller}</th>
-            <th>{$LANG.amount_uc}</th>
+            <th>{$LANG.amountUc}</th>
             <th>{$LANG.type}</th>
-            <th>{$LANG.date_uc}</th>
+            <th>{$LANG.dateUc}</th>
         </tr>
         </thead>
     </table>

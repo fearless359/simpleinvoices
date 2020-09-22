@@ -16,10 +16,10 @@
         <input type="hidden" name="domain_id" value="{if isset($biller.domain_id)}{$biller.domain_id}{/if}"/>
         <table class="center" style="width:80%;">
             <tr>
-                <th class="details_screen">{$LANG.biller_name}
+                <th class="details_screen">{$LANG.billerName}
                     <a class="cluetip" href="#" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
-                       title="{$LANG.required_field}">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField"
+                       title="{$LANG.requiredField}">
                         <img src="{$helpImagePath}required-small.png" alt=""/>
                     </a>
                 </th>
@@ -34,7 +34,7 @@
             <tr>
                 <th class="details_screen">{$LANG.street2}
                     <a class="cluetip" href="#" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_street2"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpStreet2"
                        title="{$LANG.street2}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
@@ -63,12 +63,12 @@
                            value="{if isset($biller.country)}{$biller.country|htmlSafe}{/if}" size="50"/></td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.mobile_phone}</th>
+                <th class="details_screen">{$LANG.mobilePhone}</th>
                 <td><input type="text" class="si_input" name="mobile_phone" tabindex="80"
                            value="{if isset($biller.mobile_phone)}{$biller.mobile_phone|htmlSafe}{/if}" size="50"/></td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.phone}</th>
+                <th class="details_screen">{$LANG.phoneUc}</th>
                 <td><input type="text" class="si_input" name="phone" tabindex="90"
                            value="{if isset($biller.phone)}{$biller.phone|htmlSafe}{/if}" size="50"/></td>
             </tr>
@@ -85,7 +85,7 @@
             <tr>
                 <th class="details_screen">{$LANG.signature}
                     <a class="cluetip" href="#" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_signature"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpSignature"
                        title="{$LANG.signature}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
@@ -96,35 +96,35 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.paypal_business_name}</th>
+                <th class="details_screen">{$LANG.paypalBusinessName}</th>
                 <td>
                     <input type="text" class="si_input" name="paypal_business_name" tabindex="130"
                            value="{if isset($biller.paypal_business_name)}{$biller.paypal_business_name|htmlSafe}{/if}" size="25"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.paypal_notify_url}</th>
+                <th class="details_screen">{$LANG.paypalNotifyUrl}</th>
                 <td>
                     <input type="text" class="si_input" name="paypal_notify_url" tabindex="140"
                            value="{if isset($biller.paypal_notify_url)}{$biller.paypal_notify_url|htmlSafe}{/if}" size="50"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.paypal_return_url}</th>
+                <th class="details_screen">{$LANG.paypalReturnUrl}</th>
                 <td>
                     <input type="text" class="si_input" name="paypal_return_url" tabindex="150"
                            value="{if isset($biller.paypal_return_url)}{$biller.paypal_return_url|htmlSafe}{/if}" size="50"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.eway_customer_id}</th>
+                <th class="details_screen">{$LANG.ewayCustomerId}</th>
                 <td>
                     <input type="text" class="si_input" name="eway_customer_id" tabindex="160"
                            value="{if isset($biller.eway_customer_id)}{$biller.eway_customer_id|htmlSafe}{/if}" size="50"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.paymentsgateway_api_id}</th>
+                <th class="details_screen">{$LANG.paymentsGatewayApiId}</th>
                 <td>
                     <input type="text" class="si_input" name="paymentsgateway_api_id" tabindex="170"
                            value="{if isset($biller.paymentsgateway_api_id)}{$biller.paymentsgateway_api_id|htmlSafe}{/if}" size="50"/>
@@ -134,8 +134,8 @@
                 <tr>
                     <th class="details_screen">{$customFieldLabel.biller_cf1|htmlSafe}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
-                           title="{$LANG.custom_fields}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields"
+                           title="{$LANG.customFields}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -149,8 +149,8 @@
                 <tr>
                     <th class="details_screen">{$customFieldLabel.biller_cf2|htmlSafe}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
-                           title="{$LANG.custom_fields}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields"
+                           title="{$LANG.customFields}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -164,8 +164,8 @@
                 <tr>
                     <th class="details_screen">{$customFieldLabel.biller_cf3|htmlSafe}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
-                           title="{$LANG.custom_fields|htmlSafe}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields"
+                           title="{$LANG.customFields|htmlSafe}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -179,8 +179,8 @@
                 <tr>
                     <th class="details_screen">{$customFieldLabel.biller_cf4|htmlSafe}
                         <a class="cluetip" href="#" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields"
-                           title="{$LANG.custom_fields}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields"
+                           title="{$LANG.customFields}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -191,10 +191,10 @@
                 </tr>
             {/if}
             <tr>
-                <th class="details_screen">{$LANG.logo_file}
+                <th class="details_screen">{$LANG.logoFile}
                     <a class="cluetip" href="#" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_insert_biller_text"
-                       title="{$LANG.logo_file}">
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpInsertBillerText"
+                       title="{$LANG.logoFile}">
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
                 </th>
@@ -203,7 +203,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.invoice_footer}</th>
+                <th class="details_screen">{$LANG.invoiceFooter}</th>
                 <td>
                     <input name="footer" id="footer" {if isset($biller.footer)}value="{$biller.footer|outHtml}"{/if} type="hidden">
                     <trix-editor class="si_input" input="footer" tabindex="230"></trix-editor>
@@ -224,7 +224,7 @@
             </tr>
         </table>
         <div class="si_toolbar si_toolbar_form">
-            <button type="submit" class="positive" name="save_biller" value="{$LANG.save_biller}" tabindex="260">
+            <button type="submit" class="positive" name="save_biller" value="{$LANG.saveBiller}" tabindex="260">
                 <img class="button_img" src="../../../images/tick.png" alt=""/>
                 {$LANG.save}
             </button>

@@ -8,7 +8,7 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.description_uc}</th>
+                    <th>{$LANG.descriptionUc}</th>
                     <td>
                         <input type="text" class="validate[required]" name="tax_description" size="35" tabindex="10"
                                value="{if isset($smarty.post.tax_description)}{$smarty.post.tax_description|htmlSafe}{/if}"/>
@@ -18,7 +18,7 @@
                 <tr>
                     <th>{$LANG.rate}
                         <a class="cluetip" href="#"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxRateSign">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -27,7 +27,7 @@
                                value="{if isset($smarty.post.tax_percentage)}{$smarty.post.tax_percentage|htmlSafe}{/if}"/>
                         {html_options name=type class=si_input options=$types selected=$types tabindex=30}
                     </td>
-                    <td>{$LANG.ie_10_for_10}</td>
+                    <td>{$LANG.ie10For10}</td>
                 </tr>
                 <tr>
                     <th>{$LANG.enabled}</th>
@@ -43,7 +43,7 @@
             </table>
 
             <div class="si_toolbar si_toolbar_form">
-                <button type="submit" class="positive" name="submit" tabindex="50" value="{$LANG.insert_tax_rate}">
+                <button type="submit" class="positive" name="submit" tabindex="50" value="{$LANG.insertTaxRate}">
                     <img class="button_img" src="../../../images/tick.png" alt=""/>
                     {$LANG.save}
                 </button>

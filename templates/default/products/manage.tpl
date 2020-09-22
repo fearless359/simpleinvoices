@@ -11,19 +11,19 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=products&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.add_new_product}
+        {$LANG.addNewProduct}
     </a>
 </div>
 
 {if $number_of_rows == 0 }
-    <div class="si_message">{$LANG.no_products}</div>
+    <div class="si_message">{$LANG.noProducts}</div>
 {else}
     <table id="si-data-table" class="display compact" >
         <thead>
             <tr>
                 <th>{$LANG.actions}</th>
-                <th>{$LANG.description_uc}</th>
-                <th>{$LANG.unit_price}</th>
+                <th>{$LANG.descriptionUc}</th>
+                <th>{$LANG.unitPrice}</th>
                 {if $defaults.inventory == $smarty.const.ENABLED}
                     <th>{$LANG.quantity}</th>
                 {/if}

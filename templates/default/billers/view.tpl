@@ -13,7 +13,7 @@
 <div class="si_form">
     <table>
         <tr>
-            <th class="details_screen">{$LANG.biller_name}:</th>
+            <th class="details_screen">{$LANG.billerName}:</th>
             <td class="si_input">{$biller.name}</td>
         </tr>
         <tr>
@@ -41,11 +41,11 @@
             <td class="si_input">{$biller.country}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.mobile_phone}:</th>
+            <th class="details_screen">{$LANG.mobilePhone}:</th>
             <td class="si_input">{$biller.mobile_phone}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.phone}:</th>
+            <th class="details_screen">{$LANG.phoneUc}:</th>
             <td class="si_input">{$biller.phone}</td>
         </tr>
         <tr>
@@ -61,23 +61,23 @@
             <td class="si_input">{$biller.signature}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.paypal_business_name}:</th>
+            <th class="details_screen">{$LANG.paypalBusinessName}:</th>
             <td class="si_input">{$biller.paypal_business_name}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.paypal_notify_url}:</th>
+            <th class="details_screen">{$LANG.paypalNotifyUrl}:</th>
             <td class="si_input">{$biller.paypal_notify_url}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.paypal_return_url}:</th>
+            <th class="details_screen">{$LANG.paypalReturnUrl}:</th>
             <td class="si_input">{$biller.paypal_return_url}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.eway_customer_id}:</th>
+            <th class="details_screen">{$LANG.ewayCustomerId}:</th>
             <td class="si_input">{$biller.eway_customer_id}</td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.paymentsgateway_api_id}:</th>
+            <th class="details_screen">{$LANG.paymentsGatewayApiId}:</th>
             <td class="si_input">{$biller.paymentsgateway_api_id}</td>
         </tr>
         {if !empty($customFieldLabel.biller_cf1)}
@@ -105,7 +105,7 @@
             </tr>
         {/if}
         <tr>
-            <th class="details_screen">{$LANG.logo_file}:</th>
+            <th class="details_screen">{$LANG.logoFile}:</th>
             <td class="si_input">
                 {if $biller.logo != ''}
                     <img src="templates/invoices/logos/{$biller.logo}" alt="{$biller.logo}">
@@ -115,7 +115,7 @@
             </td>
         </tr>
         <tr>
-            <th class="details_screen">{$LANG.invoice_footer}:</th>
+            <th class="details_screen">{$LANG.invoiceFooter}:</th>
             <td class="si_input">{$biller.footer}</td>
         </tr>
         <tr>

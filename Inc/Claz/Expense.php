@@ -82,7 +82,7 @@ class Expense
 
             $case = new CaseStmt("status", "status_wording");
             $case->addWhen("=", ENABLED, $LANG['paid']);
-            $case->addWhen("!=", ENABLED, $LANG['not_paid'], true);
+            $case->addWhen("!=", ENABLED, $LANG['notPaid'], true);
             $pdoDb->addToCaseStmts($case);
 
             // This is a fudge until sub-select can be added to the features.
@@ -114,7 +114,7 @@ class Expense
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['p_desc'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['p_desc'];
-                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paid'] : $LANG['not_paid'];
+                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paid'] : $LANG['notPaid'];
                 $expenses[] = $row;
             }
         } catch (PdoDbException $pde) {

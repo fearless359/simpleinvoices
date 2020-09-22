@@ -15,7 +15,7 @@
  *      https://simpleinvoices.group
  *}
 
-<h3>{$LANG.cron_uc} {$LANG.logUc} - {$LANG.recurrent} {$LANG.invoices_uc} {$LANG.inserted}</h3>
+<h3>{$LANG.cronUc} {$LANG.logUc} - {$LANG.recurrent} {$LANG.invoicesUc} {$LANG.inserted}</h3>
 <hr />
 <table class="manage" id="live-grid" class="center">
   <colgroup>
@@ -27,8 +27,8 @@
   <thead>
     <tr>
       <th class="sortable">{$LANG.id}</th>
-      <th class="sortable">{$LANG.date_uc}</th>
-      <th class="sortable">{$LANG.cron_uc} {$LANG.id}</th>
+      <th class="sortable">{$LANG.dateUc}</th>
+      <th class="sortable">{$LANG.cronUc} {$LANG.id}</th>
       <!--    <th class="sortable">Invoice No</th> -->
     </tr>
   </thead>

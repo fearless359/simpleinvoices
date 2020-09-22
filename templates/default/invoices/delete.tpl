@@ -18,7 +18,7 @@
     <br/>
     {if $invoicePaid == 0}
         <div class="si_message_warning">
-            {$LANG.confirm_delete}
+            {$LANG.confirmDelete}
             {$preference.pref_inv_wording|htmlSafe}
             {$invoice.index_id|htmlSafe}
         </div>
@@ -30,7 +30,7 @@
                         <div class="si_toolbar si_toolbar_form">
                             <button type="submit" class="positive" name="submit">
                                 <img class="button_img" src="../../../images/tick.png" alt=""/>
-                                {$LANG.yes_uc}
+                                {$LANG.yesUc}
                             </button>
                             <input type="hidden" name="doDelete" value="y"/>
                             <a href="index.php?module=invoices&amp;view=manage" class="negative">
@@ -45,8 +45,8 @@
     {else}
         <span class="welcome">
             {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}
-            {$LANG.delete_has_payments1} {$preference.pref_currency_sign}
-            {$invoicePaid|utilNumber} {$LANG.delete_has_payments2}
+            {$LANG.deleteHasPayments1} {$preference.pref_currency_sign}
+            {$invoicePaid|utilNumber} {$LANG.deleteHasPayments2}
         </span>
         <br/>
         {* LANG_TODO: Add help section here!! *}

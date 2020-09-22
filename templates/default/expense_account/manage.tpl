@@ -14,7 +14,7 @@
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=expense_account&amp;view=create" class="positive">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.add_new_expense_account}
+        {$LANG.addNewExpenseAccount}
     </a>
 </div>
 <br />

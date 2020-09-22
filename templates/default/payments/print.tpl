@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-  <title>{$preference.pref_inv_wording|htmlSafe} {$LANG.number_short|htmlSafe}: {$invoice.index_id|htmlSafe}</title>
+  <title>{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort|htmlSafe}: {$invoice.index_id|htmlSafe}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="shortcut icon" href="../../../images/favicon.ico"/>
   {if isset($css)}
@@ -15,7 +15,7 @@
     <tr>
       <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" style="border:0; text-align:left;margin: 0 10px;" alt=""></td>
       <th class="si_right">
-        <span class="font1">{$LANG.receiptUc} {$LANG.for} {$LANG.payment_id}&nbsp;{$payment.id|htmlSafe}</span>
+        <span class="font1">{$LANG.receiptUc} {$LANG.for} {$LANG.paymentId}&nbsp;{$payment.id|htmlSafe}</span>
       </th>
     </tr>
     <tr>
@@ -270,11 +270,11 @@
       <td colspan="6"><br /></td>
     </tr>
     <tr>
-      <td class="tbl1-bottom col1"><b>{$LANG.payment_id}</b></td>
+      <td class="tbl1-bottom col1"><b>{$LANG.paymentId}</b></td>
       <td class="tbl1-bottom col1" colspan="3"><b>{$preference.pref_description|htmlSafe}{$LANG.id}</b></td>
-      <td class="tbl1-bottom col1 si_right"><b>{$LANG.amount_uc}</b></td>
-      <td class="tbl1-bottom col1 si_right"><b>{$LANG.date_uc}</b></td>
-      <td class="tbl1-bottom col1 si_right"><b>{$LANG.payment_type}</b></td>
+      <td class="tbl1-bottom col1 si_right"><b>{$LANG.amountUc}</b></td>
+      <td class="tbl1-bottom col1 si_right"><b>{$LANG.dateUc}</b></td>
+      <td class="tbl1-bottom col1 si_right"><b>{$LANG.paymentType}</b></td>
     </tr>
     <tr class="">
       <td class="">{$payment.id|htmlSafe}</td>

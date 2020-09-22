@@ -1,10 +1,10 @@
 <table class='si_invoice_view'>
     <!-- Invoice Summary section -->
     <tr class="tr_head">
-        <th>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.number_short}:</th>
+        <th>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.numberShort}:</th>
         <td>{$invoice.index_id|htmlSafe}</td>
         <td></td>
-        <th>{$preference.pref_inv_wording} {$LANG.date_uc}:</th>
+        <th>{$preference.pref_inv_wording} {$LANG.dateUc}:</th>
         <td colspan="5">{$invoice.display_date|htmlSafe}</td>
     </tr>
     {$customFields.1}
@@ -19,13 +19,13 @@
         <th>{$LANG.biller}:</th>
         <td colspan="4">{$biller.name|htmlSafe}</td>
         <td class="si_switch">
-            <a href='#' class="show_biller" title="{$LANG.show_details}"
+            <a href='#' class="show_biller" title="{$LANG.showDetails}"
                onclick="$('.biller').show();$('.hide_biller').show();$('.show_biller').hide();">
-                <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.show_details}"/>
+                <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
             </a>
-            <a href='#' class="hide_biller si_hide" title="{$LANG.hide_details}"
+            <a href='#' class="hide_biller si_hide" title="{$LANG.hideDetails}"
                onclick="$('.biller').hide();$('.hide_biller').hide();$('.show_biller').show();">
-                <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hide_details}"/>
+                <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
             </a>
         </td>
     </tr>
@@ -40,13 +40,13 @@
     <tr class="biller si_hide">
         <th>{$LANG.city}:</th>
         <td colspan="3">{$biller.city|htmlSafe}</td>
-        <th>{$LANG.phone_short}:</th>
+        <th>{$LANG.phoneShort}:</th>
         <td>{$biller.phone|htmlSafe}</td>
     </tr>
     <tr class="biller si_hide">
         <th>{$LANG.state}, {$LANG.zip}:</th>
         <td colspan="3">{$biller.state|htmlSafe},&nbsp;{$biller.zip_code|htmlSafe}</td>
-        <th>{$LANG.mobile_short}:</th>
+        <th>{$LANG.mobileShort}:</th>
         <td>{$biller.mobile_phone|htmlSafe}</td>
     </tr>
     <tr class="biller si_hide">
@@ -91,18 +91,18 @@
         <th>{$LANG.customer}:</th>
         <td colspan="4">{$customer.name|htmlSafe}</td>
         <td class="si_switch">
-            <a href='#' class="show_customer" title="{$LANG.show_details}"
+            <a href='#' class="show_customer" title="{$LANG.showDetails}"
                onclick="$('.customer').show();$('.hide_customer').show();$('.show_customer').hide();">
-                <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.show_details}"/>
+                <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
             </a>
-            <a href='#' class="hide_customer si_hide" title="{$LANG.hide_details}"
+            <a href='#' class="hide_customer si_hide" title="{$LANG.hideDetails}"
                onclick="$('.customer').hide();$('.hide_customer').hide();$('.show_customer').show();">
-                <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hide_details}"/>
+                <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
             </a>
         </td>
     </tr>
     <tr class="customer si_hide">
-        <th>{$LANG.attention_short}:</th>
+        <th>{$LANG.attentionShort}:</th>
         <td colspan="5" class="align_left">{$customer.attention|htmlSafe}</td>
     </tr>
     <tr class="customer si_hide">
@@ -116,13 +116,13 @@
     <tr class="customer si_hide">
         <th>{$LANG.city}:</th>
         <td colspan="3">{$customer.city|htmlSafe}</td>
-        <th>{$LANG.phone_short}:</th>
+        <th>{$LANG.phoneShort}:</th>
         <td>{$customer.phone|htmlSafe}</td>
     </tr>
     <tr class="customer si_hide">
         <th>{$LANG.state}, {$LANG.zip}:</th>
         <td colspan="3">{$customer.state|htmlSafe},&nbsp;{$customer.zip_code|htmlSafe}</td>
-        <th>{$LANG.mobile_short}:</th>
+        <th>{$LANG.mobileShort}:</th>
         <td>{$customer.mobile_phone|htmlSafe}</td>
     </tr>
     <tr class="customer si_hide">
@@ -160,13 +160,13 @@
         </tr>
     {/if}
     <tr class="customer si_hide">
-        <th>{$LANG.default_invoice}:</th>
+        <th>{$LANG.defaultInvoice}:</th>
         <td colspan="4">{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</td>
         <td class='details_screen align_right'>
             {if $customer.default_invoice != $invoice.index_id}
                 <a href="?module=invoices&amp;view=usedefault&amp;action=update_template&amp;index_id={$invoice.index_id}&amp;customer_id={$customer.id}"
-                   title="{$LANG.invoice_uc} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}">
-                    <img src="../../../images/load.png" alt="{$LANG.invoice_uc} {$invoice.index_id} {$LANG.as_template} {$LANG.for} {$customer.name}"/>
+                   title="{$LANG.invoiceUc} {$invoice.index_id} {$LANG.asTemplate} {$LANG.for} {$customer.name}">
+                    <img src="../../../images/load.png" alt="{$LANG.invoiceUc} {$invoice.index_id} {$LANG.asTemplate} {$LANG.for} {$customer.name}"/>
                 </a>
             {/if}
         </td>

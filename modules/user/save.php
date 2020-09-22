@@ -24,7 +24,7 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=user&amp;view=manage' />";
-$displayBlock = "<div class='si_message_error'>{$LANG['save_user_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['saveUserFailure']}</div>";
 
 // Deal with op and add some basic sanity checking
 $op = !empty($_POST['op']) ? $_POST['op'] : NULL;
@@ -48,14 +48,14 @@ if ($ok) {
     if ($op === 'create') {
         try {
             if (User::insertUser() > 0) {
-                $displayBlock = "<div class='si_message_ok'>{$LANG['save_user_success']}</div>";
+                $displayBlock = "<div class='si_message_ok'>{$LANG['saveUserSuccess']}</div>";
             }
         } catch (PdoDbException $pde) {
             exit("modules/user/save.php Unexpected error: {$pde->getMessage()}");
         }
     } elseif ($op === 'edit' && isset($_POST['save_user'])) {
         if (User::updateUser($excludePwd)) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['save_user_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['saveUserSuccess']}</div>";
         }
     }
 }

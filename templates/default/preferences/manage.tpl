@@ -14,21 +14,21 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=preferences&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.add_new_preference}
+        {$LANG.addNewPreference}
     </a>
 </div>
 
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_preferences}</div>
+    <div class="si_message">{$LANG.noPreferences}</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
             <th>{$LANG.id}</th>
-            <th>{$LANG.description_uc}</th>
-            <th>{$LANG.invoice_numbering_group}</th>
-            <th>{$LANG.set_aging}</th>
+            <th>{$LANG.descriptionUc}</th>
+            <th>{$LANG.invoiceNumberingGroup}</th>
+            <th>{$LANG.setAging}</th>
             <th class="si_center">{$LANG.language}</th>
             <th class="si_center">{$LANG.locale}</th>
             <th class="si_center">{$LANG.enabled}</th>
@@ -85,9 +85,9 @@
     </script>
 {/if}
 <div class="si_help_div">
-    <a class="cluetip" href="#" title="{$LANG.whats_all_this_inv_pref}"
-       rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_what_the">
+    <a class="cluetip" href="#" title="{$LANG.whatsAllThisInvPref}"
+       rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefWhatThe">
         <img src="{$helpImagePath}help-small.png" alt=""/>
-        {$LANG.whats_all_this_inv_pref}
+        {$LANG.whatsAllThisInvPref}
     </a>
 </div>

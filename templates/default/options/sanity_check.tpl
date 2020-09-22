@@ -16,7 +16,7 @@
 *	https://simpleinvoices.group*/
 *}
 
-<b>{$LANG.sanity_check}</b>
+<b>{$LANG.sanityCheck}</b>
 <hr />
 <div id="left">
    <br />

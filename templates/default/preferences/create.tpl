@@ -7,9 +7,9 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.description_uc}:
-                        <a class="cluetip" href="#" title="{$LANG.required_field}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_description">
+                    <th>{$LANG.descriptionUc}:
+                        <a class="cluetip" href="#" title="{$LANG.requiredField}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefDescription">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
@@ -19,26 +19,26 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.currency_sign}:
-                        <a class="cluetip" href="#" title="{$LANG.currency_sign}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_currency_sign">
+                    <th>{$LANG.currencySign}:
+                        <a class="cluetip" href="#" title="{$LANG.currencySign}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefCurrencySign">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
                         <input type="text" name="p_currency_sign" class="si_input" tabindex="20"
                                value="{if isset($smarty.post.p_currency_sign)}{$smarty.post.p_currency_sign|htmlSafe}{/if}" size="15"/>
-                        <a class="cluetip" href="#" title="{$LANG.currency_sign}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_currency_sign">
-                            {$LANG.currency_sign_non_dollar}
+                        <a class="cluetip" href="#" title="{$LANG.currencySign}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefCurrencySign">
+                            {$LANG.currencySignNonDollar}
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.currency_code}:
-                        <a class="cluetip" href="#" title="{$LANG.currency_code}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_currency_code">
+                    <th>{$LANG.currencyCode}:
+                        <a class="cluetip" href="#" title="{$LANG.currencyCode}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCurrencyCode">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -48,9 +48,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_heading}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_heading}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_heading">
+                    <th>{$LANG.invoiceHeading}:
+                        <a class="cluetip" href="#" title="{$LANG.invoiceHeading}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoiceHeading">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -60,9 +60,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_wording}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_wording}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_wording">
+                    <th>{$LANG.invoiceWording}:
+                        <a class="cluetip" href="#" title="{$LANG.invoiceWording}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoiceWording">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -72,9 +72,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_detail_heading}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_detail_heading}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_heading">
+                    <th>{$LANG.invoiceDetailHeading}:
+                        <a class="cluetip" href="#" title="{$LANG.invoiceDetailHeading}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoiceDetailHeading">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -84,9 +84,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_detail_line}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_detail_line}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_line">
+                    <th>{$LANG.invoiceDetailLine}:
+                        <a class="cluetip" href="#" title="{$LANG.invoiceDetailLine}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoiceDetailLine">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -96,22 +96,22 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.include_online_payment}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_detail_line}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_detail_line">
+                    <th>{$LANG.includeOnlinePayment}:
+                        <a class="cluetip" href="#" title="{$LANG.invoiceDetailLine}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoiceDetailLine">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
                         <input type=checkbox name=include_online_payment[] class="si_input" value='paypal' tabindex="80">{$LANG.paypal}
-                        <input type=checkbox name=include_online_payment[] class="si_input" value='eway_merchant_xml' tabindex="81">{$LANG.eway_merchant_xml}
-                        <input type=checkbox name=include_online_payment[] class="si_input" value='paymentsgateway' tabindex="82">{$LANG.paymentsgateway}
+                        <input type=checkbox name=include_online_payment[] class="si_input" value='eway_merchant_xml' tabindex="81">{$LANG.ewayMerchantXml}
+                        <input type=checkbox name=include_online_payment[] class="si_input" value='paymentsgateway' tabindex="82">{$LANG.paymentsGateway}
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_payment_method}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_payment_method}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_payment_method">
+                    <th>{$LANG.invoicePaymentMethod}:
+                        <a class="cluetip" href="#" title="{$LANG.invoicePaymentMethod}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoicePaymentMethod">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -121,9 +121,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_payment_line_1_name}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_payment_line_1_name}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line1_name">
+                    <th>{$LANG.invoicePaymentLine1Name}:
+                        <a class="cluetip" href="#" title="{$LANG.invoicePaymentLine1Name}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefPaymentLine1_name">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -133,9 +133,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_payment_line_1_value}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_payment_line_1_value}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line1_value">
+                    <th>{$LANG.invoicePaymentLine1Value}:
+                        <a class="cluetip" href="#" title="{$LANG.invoicePaymentLine1Value}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefPaymentLine1_value">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -145,9 +145,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_payment_line_2_name}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_payment_line_2_name}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line2_name">
+                    <th>{$LANG.invoicePaymentLine2Name}:
+                        <a class="cluetip" href="#" title="{$LANG.invoicePaymentLine2Name}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefPaymentLine2_name">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -157,9 +157,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_payment_line_2_value}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_payment_line_2_value}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_payment_line2_value">
+                    <th>{$LANG.invoicePaymentLine2Value}:
+                        <a class="cluetip" href="#" title="{$LANG.invoicePaymentLine2Value}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefPaymentLine2_value">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -171,7 +171,7 @@
                 <tr>
                     <th>{$LANG.status}:
                         <a class="cluetip" href="#" title="{$LANG.status}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_status">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefStatus">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -183,18 +183,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invoice_numbering_group}:
-                        <a class="cluetip" href="#" title="{$LANG.invoice_numbering_group}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_numbering_group">
+                    <th>{$LANG.invoiceNumberingGroup}:
+                        <a class="cluetip" href="#" title="{$LANG.invoiceNumberingGroup}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoiceNumberingGroup">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
                         {if !isset($preferences) }
-                            <p class="si_input"><em>{$LANG.no_preferences}</em></p>
+                            <p class="si_input"><em>{$LANG.noPreferences}</em></p>
                         {else}
                             <select name="index_group" class="si_input" tabindex="150">
-                                <option value="">{$LANG.use_this_pref}</option>
+                                <option value="">{$LANG.useThisPref}</option>
                                 {foreach $preferences as $preference}
                                     <option {if $preference.pref_id == $defaults.preference} selected {/if}
                                             value="{$preference.pref_id|htmlSafe}">{$preference.pref_description|htmlSafe} ({$preference.pref_id|htmlSafe})
@@ -206,9 +206,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.set_aging}:
-                        <a class="cluetip" href="#" title="{$LANG.set_aging}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_set_aging">
+                    <th>{$LANG.setAging}:
+                        <a class="cluetip" href="#" title="{$LANG.setAging}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpSetAging">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -222,7 +222,7 @@
                 <tr>
                     <th>{$LANG.locale}:
                         <a class="cluetip" href="#" title="{$LANG.locale}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_locale">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefLocale">
                             <img src="{$helpImagePath}help-small.png" alt=""/></a>
                     </th>
                     <td>
@@ -237,7 +237,7 @@
                 <tr>
                     <th>{$LANG.enabled}:
                         <a class="cluetip" href="#" title="{$LANG.enabled}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_inv_pref_invoice_enabled">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefInvoiceEnabled">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>

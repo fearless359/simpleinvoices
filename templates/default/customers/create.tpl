@@ -17,9 +17,9 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th class="details_screen">{$LANG.customer_name}:
-                        <a class="cluetip" href="#" title="{$LANG.required_field}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
+                    <th class="details_screen">{$LANG.customerName}:
+                        <a class="cluetip" href="#" title="{$LANG.requiredField}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
@@ -27,14 +27,14 @@
                                value="{if isset($smarty.post.name)}{$smarty.post.name|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.customer_department}: </th>
+                    <th class="details_screen">{$LANG.customerDepartment}: </th>
                     <td><input type="text" name="department" id="department" class="si_input" size="25" tabindex="15"
                                value="{if isset($smarty.post.department)}{$smarty.post.department|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.customer_contact}:
-                        <a href="#" class="cluetip" title="{$LANG.customer_contact}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_customer_contact">
+                    <th class="details_screen">{$LANG.customerContact}:
+                        <a href="#" class="cluetip" title="{$LANG.customerContact}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomerContact">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -49,7 +49,7 @@
                 <tr>
                     <th class="details_screen">{$LANG.street2}:
                         <a class="cluetip" href="#" title="{$LANG.street2}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_street2">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpStreet2">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
@@ -77,12 +77,12 @@
                                value="{if isset($smarty.post.country)}{$smarty.post.country|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.phone}: </th>
+                    <th class="details_screen">{$LANG.phoneUc}: </th>
                     <td><input type="text" name="phone" class="si_input" size="25" tabindex="90"
                                value="{if isset($smarty.post.phone)}{$smarty.post.phone|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.mobile_phone}: </th>
+                    <th class="details_screen">{$LANG.mobilePhone}: </th>
                     <td><input type="text" name="mobile_phone" class="si_input" size="25" tabindex="100"
                                value="{if isset($smarty.post.mobile_phone)}{$smarty.post.mobile_phone|htmlSafe}{/if}"/></td>
                 </tr>
@@ -97,30 +97,30 @@
                                value="{if isset($smarty.post.email)}{$smarty.post.email|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.credit_card_holder_name}: </th>
+                    <th class="details_screen">{$LANG.creditCardHolderName}: </th>
                     <td><input type="text" name="credit_card_holder_name" class="si_input" size="25" tabindex="130"
                                value="{if isset($smarty.post.credit_card_holder_name)}{$smarty.post.credit_card_holder_name|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.credit_card_number}: </th>
+                    <th class="details_screen">{$LANG.creditCardNumber}: </th>
                     <td><input type="text" name="credit_card_number" class="si_input" size="25" tabindex="140"
                                value="{if isset($smarty.post.credit_card_number)}{$smarty.post.credit_card_number|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.credit_card_expiry_month}: </th>
+                    <th class="details_screen">{$LANG.creditCardExpiryMonth}: </th>
                     <td><input type="text" name="credit_card_expiry_month" class="si_input" size="5" tabindex="150"
                                value="{if isset($smarty.post.credit_card_expiry_month)}{$smarty.post.credit_card_expiry_month|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.credit_card_expiry_year}: </th>
+                    <th class="details_screen">{$LANG.creditCardExpiryYear}: </th>
                     <td><input type="text" name="credit_card_expiry_year" class="si_input" size="5" tabindex="160"
                                value="{if isset($smarty.post.credit_card_expiry_year)}{$smarty.post.credit_card_expiry_year|htmlSafe}{/if}"/></td>
                 </tr>
                 {if !empty($customFieldLabel.customer_cf1)}
                     <tr>
                         <th class="details_screen">{$customFieldLabel.customer_cf1|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
@@ -131,8 +131,8 @@
                 {if !empty($customFieldLabel.customer_cf2)}
                     <tr>
                         <th class="details_screen">{$customFieldLabel.customer_cf2|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
@@ -143,8 +143,8 @@
                 {if !empty($customFieldLabel.customer_cf3)}
                     <tr>
                         <th class="details_screen">{$customFieldLabel.customer_cf3|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
@@ -155,8 +155,8 @@
                 {if !empty($customFieldLabel.customer_cf4)}
                     <tr>
                         <th class="details_screen">{$customFieldLabel.customer_cf4|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.custom_fields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=help_custom_fields">
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>

@@ -6,14 +6,14 @@
  *	 GPL v2 or above
  *}
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_invoices}.</div>
+    <div class="si_message">{$LANG.noInvoices}.</div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.custom_field}</th>
-            <th>{$LANG.custom_label}</th>
+            <th>{$LANG.customField}</th>
+            <th>{$LANG.customLabel}</th>
         </tr>
         </thead>
         <tbody>
@@ -52,13 +52,13 @@
         {/literal}
     </script>
     <div class="si_help_div">
-        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_what_are_custom_fields" title="{$LANG.what_are_custom_fields}">
-            {$LANG.what_are_custom_fields}
+        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpWhatAreCustomFields" title="{$LANG.whatAreCustomFields}">
+            {$LANG.whatAreCustomFields}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
         ::
-        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_manage_custom_fields" title="{$LANG.whats_this_page_about}">
-            {$LANG.whats_this_page_about}
+        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpManageCustomFields" title="{$LANG.whatsThisPageAbout}">
+            {$LANG.whatsThisPageAbout}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
     </div>

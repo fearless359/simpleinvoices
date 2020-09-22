@@ -11,7 +11,7 @@
 <br/>
 <table class="center" >
     <tr>
-        <th class="details_screen left">{$LANG.invoice_uc}: </th>
+        <th class="details_screen left">{$LANG.invoiceUc}: </th>
         <td class="si_input">
             <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlSafe}">
                 {$cron.index_id|htmlSafe}
@@ -19,27 +19,27 @@
         </td>
     </tr>
     <tr>
-        <th class="details_screen left">{$LANG.start_date}: </th>
+        <th class="details_screen left">{$LANG.startDate}: </th>
         <td class="si_input">{$cron.start_date|htmlSafe}</td>
     </tr>
     <tr>
-        <th class="details_screen left">{$LANG.end_date}: </th>
+        <th class="details_screen left">{$LANG.endDate}: </th>
         <td class="si_input">{$cron.end_date|htmlSafe}</td>
     </tr>
     <tr>
-        <th class="details_screen left">{$LANG.recur_each}: </th>
+        <th class="details_screen left">{$LANG.recurEach}: </th>
         <td class="si_input">{$cron.recurrence|htmlSafe} {$cron.recurrence_type|htmlSafe}</td>
     </tr>
     <tr>
-        <th class="details_screen left">{$LANG.email_biller_after_cron}: </th>
+        <th class="details_screen left">{$LANG.emailBillerAfterCron}: </th>
         <td class="si_input">
-            {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yes_uc}{else}{$LANG.no_uc}{/if}
+            {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yesUc}{else}{$LANG.noUc}{/if}
         </td>
     </tr>
     <tr>
-        <th class="details_screen left">{$LANG.email_customer_after_cron}: </th>
+        <th class="details_screen left">{$LANG.emailCustomerAfterCron}: </th>
         <td class="si_input">
-            {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yes_uc}{else}{$LANG.no_uc}{/if}
+            {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yesUc}{else}{$LANG.noUc}{/if}
         </td>
     </tr>
 </table>

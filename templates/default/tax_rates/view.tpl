@@ -1,13 +1,13 @@
 <div class="si_form">
     <table>
         <tr>
-            <th class="details_screen">{$LANG.description_uc}:</th>
+            <th class="details_screen">{$LANG.descriptionUc}:</th>
             <td>{$tax.tax_description|htmlSafe}</td>
         </tr>
         <tr>
             <th class="details_screen">{$LANG.rate}:
-                <a class="cluetip" href="#" title="{$LANG.tax_rate}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=help_tax_rate_sign">
+                <a class="cluetip" href="#" title="{$LANG.taxRate}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxRateSign">
                     <img src="{$helpImagePath}help-small.png" alt=""/>
                 </a>
             </th>

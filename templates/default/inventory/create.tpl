@@ -8,7 +8,7 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th class="details_screen">{$LANG.product_uc}: </th>
+                    <th class="details_screen">{$LANG.productUc}: </th>
                     <td>
                         <select name="product_id" class="si_input validate[required] product_inventory_change" tabindex="10">
                             <option value=''></option>
@@ -27,14 +27,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.date_uc}: </th>
+                    <th class="details_screen">{$LANG.dateUc}: </th>
                     <td>
                         <input type="text" name="date" id="date" class="si_input validate[required,custom[date],length[0,10]] date-picker" size="10" tabindex="30"
                                value="{if !empty($smarty.post.date)}{$smarty.post.date}{else}{'now'|date_format:'%Y-%m-%d'}{/if}"/>
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.cost_uc}: </th>
+                    <th class="details_screen">{$LANG.costUc}: </th>
                     <td>
                         <input class="si_input validate[required]" name="cost" id="cost" size="10" tabindex="40"
                                {if !empty($smarty.post.cost)}value="{$smarty.post.cost}"{/if}>

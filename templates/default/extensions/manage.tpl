@@ -12,14 +12,14 @@
  *      GPL v3 or above
  *}
 {if $number_of_rows == 0}
-    <p><em>{$LANG.no_uc} {$LANG.extensons} {$LANG.registered}</em></p>
+    <p><em>{$LANG.noUc} {$LANG.extensons} {$LANG.registered}</em></p>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
             <th>{$LANG.name}</th>
-            <th>{$LANG.description_uc}</th>
+            <th>{$LANG.descriptionUc}</th>
             <th>{$LANG.status}</th>
         </tr>
         </thead>
@@ -28,7 +28,7 @@
             <tr>
                 <td class="si_center">
                     {if $extension.name == 'core'}
-                        {$LANG.always_enabled}
+                        {$LANG.alwaysEnabled}
                     {else}
                         {if $extension.registered == $smarty.const.ENABLED}
                             <a class="index_table" title="{$extension.plugin_unregister}"

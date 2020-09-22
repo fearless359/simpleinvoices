@@ -10,7 +10,7 @@
 <div class="si_form">
     <table>
         <tr>
-            <th class="details_screen">{$LANG.description_uc}:</th>
+            <th class="details_screen">{$LANG.descriptionUc}:</th>
             <td>{$paymentType.pt_description|htmlSafe}</td>
         </tr>
         <tr>

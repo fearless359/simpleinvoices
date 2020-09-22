@@ -127,8 +127,8 @@ class CustomFlags
             $rows = $pdoDb->request("SELECT", "custom_flags");
             foreach ($rows as $row) {
                 $row['id'] = self::implodeId($row['associated_table'], $row['flg_id']);
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['custom_flags_uc'];
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['custom_flags_uc'];
+                $row['vname'] = $LANG['view'] . ' ' . $LANG['customFlagsUc'];
+                $row['ename'] = $LANG['edit'] . ' ' . $LANG['customFlagsUc'];
                 $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
                 $cflgs[] = $row;
             }

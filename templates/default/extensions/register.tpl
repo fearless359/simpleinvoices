@@ -13,7 +13,7 @@
                 </td>
             </tr>
             <tr>
-                <th>{$LANG.description_uc}</th>
+                <th>{$LANG.descriptionUc}</th>
                 <td>
                     <input type="text" name="description" readonly value="{if isset($description)}{$description|htmlSafe}{/if}"/>
                 </td>

@@ -13,9 +13,9 @@
 *
 *  Website:
 *      https://simpleinvoices.group*}
+<!--suppress HtmlFormInputWithoutLabel -->
 {if $smarty.get.stage == 1 }
     {if $error == 1 }
-        <!--suppress HtmlFormInputWithoutLabel -->
         <div class="si_message_error"><h2>{$message}</h2></div>
     {/if}
     <div class="si_center">
@@ -26,55 +26,56 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.email_from}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_from"
-                           title="{$LANG.email_from} {$LANG.required_field}">
+                    <th>{$LANG.emailFrom}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailFrom"
+                           title="{$LANG.emailFrom} {$LANG.requiredField}">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_from" size="50" value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="10"
-                               class="validate[required]"/>
+                        <input type="text" name="emailFrom" size="50" class="si_input validate[required]"
+                               value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="10"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email_to}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_to"
-                           title="{$LANG.email_to} {$LANG.required_field}">
+                    <th>{$LANG.emailTo}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailTo"
+                           title="{$LANG.emailTo} {$LANG.requiredField}">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_to" size="50" value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}" tabindex="20"
-                               class="validate[required]"/>
+                        <input type="text" name="emailTo" size="50" class="si _input validate[required]"
+                               value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}" tabindex="20"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email_bcc}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_bcc"
-                           title="{$LANG.email_bcc}">
+                    <th>{$LANG.emailBcc}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailBcc"
+                           title="{$LANG.emailBcc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="text" name="email_bcc" size="50" value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="30"/></td>
+                    <td><input type="text" name="emailBcc" class="si_input" size="50"
+                               value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="30"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.subject}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
-                           title="{$LANG.subject} {$LANG.required_field}">
+                    <th>{$LANG.subject}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField"
+                           title="{$LANG.subject} {$LANG.requiredField}">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_subject" size="70" class="validate[required]" tabindex="40"
+                        <input type="text" name="emailSubject" size="70" class="si_input validate[required]" tabindex="40"
                                value="{$invoice.index_name|htmlSafe} from {$biller.name|htmlSafe} is attached"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.message}</th>
+                    <th>{$LANG.message}:</th>
                     <td>
-                        <input name="email_notes" id="email_notes" {if isset($biller.signature)}value="{$biller.signature|outHtml}"{/if} type="hidden">
-                        <trix-editor input="email_notes" tabindex="50"></trix-editor>
+                        <input name="emailNotes" id="emailNotes" {if isset($biller.signature)}value="{$biller.signature|outHtml}"{/if} type="hidden">
+                        <trix-editor input="emailNotes" class="si_input" tabindex="50"></trix-editor>
                     </td>
                 </tr>
                 <!--  TODO: Eventual use for adding additional attachments

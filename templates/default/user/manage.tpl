@@ -14,12 +14,12 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=user&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.user_add}
+        {$LANG.userAdd}
     </a>
 </div>
 
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_users}</div>
+    <div class="si_message">{$LANG.noUsers}</div>
 {else}
     <table id="si-data-table" class="display compact" >
         <thead>
@@ -29,7 +29,7 @@
             <th>{$LANG.email}</th>
             <th>{$LANG.role}</th>
             <th class="si_center">{$LANG.enabled}</th>
-            <th>{$LANG.user_id}</th>
+            <th>{$LANG.userId}</th>
         </tr>
         </thead>
         <tbody>

@@ -23,9 +23,9 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th>{$LANG.payment_type_description}:
-                        <a class="cluetip" href="#" title="{$LANG.required_field}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field">
+                    <th>{$LANG.paymentTypeDescription}:
+                        <a class="cluetip" href="#" title="{$LANG.requiredField}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>

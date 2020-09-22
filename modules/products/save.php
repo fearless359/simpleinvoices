@@ -8,20 +8,20 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$displayMessage = "<div class='si_message_error'>{$LANG['save_product_failure']}</div>";
+$displayMessage = "<div class='si_message_error'>{$LANG['saveProductFailure']}</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=products&amp;view=manage' />";
 
 $op = $_POST['op'];
 if ($op === 'create') {
     if (isset($_POST['save_product'])) {
         if (Product::insertProduct() > 0) {
-            $displayMessage = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
+            $displayMessage = "<div class='si_message_ok'>{$LANG['saveProductSuccess']}</div>";
         }
     }
 } elseif ($op === 'edit') {
     if (isset($_POST ['save_product'])) {
         if (Product::updateProduct()) {
-            $displayMessage = "<div class='si_message_ok'>{$LANG['save_product_success']}</div>";
+            $displayMessage = "<div class='si_message_ok'>{$LANG['saveProductSuccess']}</div>";
         }
     }
 }

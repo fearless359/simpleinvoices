@@ -6,7 +6,7 @@
     {if isset($smarty.post.name)}
         <!--suppress HtmlFormInputWithoutLabel -->
         <div class="validation_alert">
-            <img src="images/important.png" alt=""/> {$LANG.account_name_needed}
+            <img src="images/important.png" alt=""/> {$LANG.accountNameNeeded}
         </div>
         <hr/>
     {/if}
@@ -18,8 +18,8 @@
         <table class="center">
             <tr>
                 <td class="details_screen">{$LANG.name}
-                    <a class="cluetip" href="#" title="{$LANG.required_field}"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=help_expense_accounts">
+                    <a class="cluetip" href="#" title="{$LANG.requiredField}"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpExpenseAccounts">
                         <img src="{$helpImagePath}required-small.png" alt=""/>
                     </a>
                     &nbsp;

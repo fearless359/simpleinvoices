@@ -31,7 +31,7 @@ function compareNameIndex($aVal, $bVal)
 
 $defaults = SystemDefaults::loadValues();
 $value = '';
-$description = "{$LANG['no_defaults']}";
+$description = "{$LANG['noDefaults']}";
 $default = null;
 
 $getVal = empty($_GET['submit']) ? '' : trim($_GET['submit']);
@@ -40,7 +40,7 @@ switch ($getVal) {
         $default = "biller";
         $billers = Biller::getAll(true);
         if (empty($billers)) {
-            $value = "<p><em>{$LANG['no_billers']}</em></p>\n";
+            $value = "<p><em>{$LANG['noBillers']}</em></p>\n";
         } else {
             $value  = "<select name='value'>\n";
             $value .= "  <option value='0'></option>\n";
@@ -53,7 +53,7 @@ switch ($getVal) {
             $value .= "</select>\n";
         }
 
-        $description = "{$LANG['biller_name']}";
+        $description = "{$LANG['billerName']}";
         break;
 
     case "company_logo":
@@ -77,7 +77,7 @@ switch ($getVal) {
 
     case "company_name_item":
         $default     = $getVal;
-        $description = "{$LANG['company_name_item_label']}";
+        $description = "{$LANG['companyNameItemLabel']}";
         $attribute   = Util::htmlSafe($defaults[$default]);
         $value       = "<input type='text' size='60' name='value' value='{$attribute}' required />\n";
         $found       = true;
@@ -88,7 +88,7 @@ switch ($getVal) {
         $customers = Customer::getAll(['enabled_only' => true]);
 
         if (empty($customers)) {
-            $value  = "<p><em>{$LANG['no_customers']}</em></p>" . "\n";
+            $value  = "<p><em>{$LANG['noCustomers']}</em></p>" . "\n";
         } else {
             $value  = "<select name='value'>\n";
             $value .= "  <option value='0'> </option>\n";
@@ -101,7 +101,7 @@ switch ($getVal) {
             $value .= "</select>\n";
         }
 
-        $description = "{$LANG['customer_name']}";
+        $description = "{$LANG['customerName']}";
         break;
 
     case "def_inv_template":
@@ -137,13 +137,13 @@ switch ($getVal) {
          * Make drop down list invoice template - end
          ****************************************************************/
 
-        $description = $LANG['default_inv_template'];
+        $description = $LANG['defaultInvTemplate'];
         break;
 
     case "def_payment_type":
         $payments = PaymentType::getAll(true);
         if (empty($payments)) {
-            $value = "<p><em>{$LANG['payment_type']}</em></p>";
+            $value = "<p><em>{$LANG['paymentType']}</em></p>";
         } else {
             $default = "payment_type";
             $value   = "<select name='value'>\n";
@@ -158,14 +158,14 @@ switch ($getVal) {
             }
         }
 
-        $description = "{$LANG['payment_type']}";
+        $description = "{$LANG['paymentType']}";
         break;
 
     case "default_invoice":
         $default = "default_invoice";
         $value = "<input type='text' size='10' name='value' class='validate[required,custom[number]' value='" .
                          Util::htmlSafe($defaults['default_invoice']) . "'>";
-        $description = "{$LANG['default_invoice']}";
+        $description = "{$LANG['defaultInvoice']}";
         break;
 
     case "delete":
@@ -184,7 +184,7 @@ switch ($getVal) {
             1 => $LANG['enabled']
         ];
         $default     = "expense";
-        $description = $LANG['expense_uc'];
+        $description = $LANG['expenseUc'];
         $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
@@ -219,7 +219,7 @@ switch ($getVal) {
         $default = "line_items";
         $value = "<input type='text' size='25' name='value' class='validate[required,custom[number]' value='" .
                          Util::htmlSafe($defaults['line_items']) . "'>";
-        $description = "{$LANG['default_number_items']}";
+        $description = "{$LANG['defaultNumberItems']}";
         break;
 
     case "logging":
@@ -258,7 +258,7 @@ switch ($getVal) {
         $preferences = Preferences::getActivePreferences();
 
         if (empty($preferences)) {
-            $value = "<p><em>{$LANG['no_preferences']}</em></p>\n";
+            $value = "<p><em>{$LANG['noPreferences']}</em></p>\n";
         } else {
             $default = "preference";
             $value   = "<select name='value'>\n";
@@ -273,7 +273,7 @@ switch ($getVal) {
             }
         }
 
-        $description = "{$LANG['inv_pref']}";
+        $description = "{$LANG['invPref']}";
         break;
 
     case "product_attributes":
@@ -282,7 +282,7 @@ switch ($getVal) {
             ENABLED => $LANG['enabled']
         ];
         $default     = "product_attributes";
-        $description = $LANG['product_attributes'];
+        $description = $LANG['productAttributes'];
         $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
@@ -300,7 +300,7 @@ switch ($getVal) {
         $default = "tax";
         $taxes = Taxes::getActiveTaxes();
         if (empty($taxes)) {
-            $value = "<p><em>{$LANG['no_tax_rates']}</em></p>\n";
+            $value = "<p><em>{$LANG['noTaxRates']}</em></p>\n";
         } else {
             $value = "<select name='value'>\n";
             $value .= "  <option value='0'> </option>\n";
@@ -318,7 +318,7 @@ switch ($getVal) {
     case "tax_per_line_item":
         $default = "tax_per_line_item";
         $value = "<input type='text' size='25' name='value' value='" . Util::htmlSafe($defaults['tax_per_line_item']) . "'>\n";
-        $description = "{$LANG['number_of_taxes_per_line_item']}";
+        $description = "{$LANG['numberOfTaxesPerLineItem']}";
         break;
 
     default:
@@ -342,7 +342,7 @@ switch ($getVal) {
         if (!$found) {
             $default = null;
             $value = '';
-            $description = "{$LANG['no_defaults']}";
+            $description = "{$LANG['noDefaults']}";
         }
         break;
 }

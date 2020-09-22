@@ -3553,7 +3553,7 @@ class SqlPatchManager
         self::makePatch('296', $patch);
 
         $ud = $pdoDbAdmin->checkFieldExists("user", "username");
-        $conam = $LANG['company_name'];
+        $conam = $LANG['companyName'];
         $cologo = 'simple_invoices_logo.png';
         $patch = [
             'name' => 'Add User Security enhancement fields and values',

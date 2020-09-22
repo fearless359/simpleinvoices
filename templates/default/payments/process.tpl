@@ -19,23 +19,23 @@
                 <tr>
                     <th class="details_screen">{$LANG.customer}</th>
                     <td>{$customer.name|htmlSafe}</td>
-                    <th class="details_screen">{$LANG.owing_uc}</th>
+                    <th class="details_screen">{$LANG.owingUc}</th>
                     <td style="text-decoration: underline;">{$invoice.owing|utilNumber}</td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.amount_uc}</th>
+                    <th class="details_screen">{$LANG.amountUc}</th>
                     <td colspan="5">
                         <input type="text" name="ac_amount" size="25" class="validate[required,custom[number]]"
                                value="{$invoice.owing|utilNumber}"/>
                         <a class="cluetip" href="#"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=help_process_payment_auto_amount"
-                           title="{$LANG.process_payment_auto_amount}">
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpProcessPaymentAutoAmount"
+                           title="{$LANG.processPaymentAutoAmount}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.date_formatted}</th>
+                    <th class="details_screen">{$LANG.dateFormatted}</th>
                     <td colspan="5">
                         <input type="text" name="ac_date" id="date1"
                                class="validate[required,custom[date],length[0,10]] date-picker"
@@ -44,7 +44,7 @@
                 </tr>
             {elseif $smarty.get.op === "pay_invoice"}
                 <tr>
-                    <th class="details_screen">{$LANG.invoice_uc}</th>
+                    <th class="details_screen">{$LANG.invoiceUc}</th>
                     <td colspan="3">
                         <select name="invoice_id" class="si_input validate[required]">
                             <option value=''></option>
@@ -55,7 +55,7 @@
                                     {$invoice.biller|htmlSafe},
                                     {$invoice.customer|htmlSafe},
                                     {$LANG.total} {$invoice.total|utilNumber} :
-                                    {$LANG.owing_uc} {$invoice.owing|utilNumber}
+                                    {$LANG.owingUc} {$invoice.owing|utilNumber}
                                     )
                                 </option>
                             {/foreach}
@@ -63,11 +63,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.amount_uc}</th>
+                    <th class="details_screen">{$LANG.amountUc}</th>
                     <td colspan="3"><input type="text" name="ac_amount" size="25" class="si_input"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.date_formatted}</th>
+                    <th class="details_screen">{$LANG.dateFormatted}</th>
                     <td colspan="3">
                         <input type="text" class="si_input date-picker" name="ac_date" id="date1"
                                value="{if isset($today)}{$today|htmlSafe}{/if}"/>
@@ -75,10 +75,10 @@
                 </tr>
             {/if}
             <tr>
-                <th class="details_screen">{$LANG.payment_type_method}</th>
+                <th class="details_screen">{$LANG.paymentTypeMethod}</th>
                 <td>
                     {if !$paymentTypes}
-                        <p><em>{$LANG.no_payment_types}</em></p>
+                        <p><em>{$LANG.noPaymentTypes}</em></p>
                     {else}
                         <select name="ac_payment_type" class="si_input" id="pymt_type">
                             {foreach $paymentTypes as $paymentType}
@@ -90,7 +90,7 @@
                         </select>
                     {/if}
                 </td>
-                <th class="details_screen">{$LANG.check_number}</th>
+                <th class="details_screen">{$LANG.checkNumber}</th>
                 <td>
                     <input type="text" name="ac_check_number" class="si_input" id="chk_num" size="10"/>
                     {literal}

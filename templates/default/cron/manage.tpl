@@ -12,23 +12,23 @@
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=cron&amp;view=create" class="">
         <img src="../../../images/add.png" alt=""/>
-        {$LANG.new_recurrence}
+        {$LANG.newRecurrence}
     </a>
 </div>
 
 {if $number_of_rows == 0}
-    <div class="si_message">{$LANG.no_crons} </div>
+    <div class="si_message">{$LANG.noCrons} </div>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.invoice_id}</th>
-            <th>{$LANG.start_date_short}</th>
-            <th>{$LANG.end_date_short}</th>
-            <th>{$LANG.recur_each}</th>
-            <th>{$LANG.email_biller}</th>
-            <th>{$LANG.email_customer}</th>
+            <th>{$LANG.invoiceId}</th>
+            <th>{$LANG.startDateShort}</th>
+            <th>{$LANG.endDateShort}</th>
+            <th>{$LANG.recurEach}</th>
+            <th>{$LANG.emailBiller}</th>
+            <th>{$LANG.emailCustomer}</th>
             <th>{$LANG.customer}</th>
         </tr>
         </thead>

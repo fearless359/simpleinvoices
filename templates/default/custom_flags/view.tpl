@@ -9,15 +9,15 @@
     <div class="si_cust_info">
         <table>
             <tr>
-                <th class="details_screen">{$LANG.associated_table}:</th>
+                <th class="details_screen">{$LANG.associatedTable}:</th>
                 <td>{$cflg.associated_table|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.flag_number}:</th>
+                <th class="details_screen">{$LANG.flagNumber}:</th>
                 <td>{$cflg.flg_id|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.field_label_uc}:</th>
+                <th class="details_screen">{$LANG.fieldLabelUc}:</th>
                 <td>{$cflg.field_label|htmlSafe}</td>
             </tr>
             <tr>
@@ -25,7 +25,7 @@
                 <td>{$cflg.enabled_text|htmlSafe}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.field_help_uc}:</th>
+                <th class="details_screen">{$LANG.fieldHelpUc}:</th>
                 <td>{$cflg.field_help|htmlSafe}</td>
             </tr>
         </table>

@@ -20,7 +20,7 @@ if (isset($_POST['include_online_payment']) &&
     }
 }
 
-$displayBlock = "<div class='si_message_error'>{$LANG['save_preference_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['savePreferenceFailure']}</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=preferences&amp;view=manage' />";
 
 // @formatter:off
@@ -53,7 +53,7 @@ if (  $op === 'create' ) {
         if ($id == 0) {
             error_log("preferences save.php insert_preference failed");
         } else {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['save_preference_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['savePreferenceSuccess']}</div>";
             // If index_group is empty, assign the pref_id assigned to it.
             if (empty($_POST['index_group'])) {
                 $pdoDb->setFauxPost(["index_group" => $id]);
@@ -64,7 +64,7 @@ if (  $op === 'create' ) {
     } catch (PdoDbException $pde) {
         error_log("preferences save.php insert_preference insert error: " . $pde->getMessage());
         // Set $displayBlock as it might have been set to insert success but error from update
-        $displayBlock = "<div class='si_message_error'>{$LANG['save_preference_failure']}</div>";
+        $displayBlock = "<div class='si_message_error'>{$LANG['savePreferenceFailure']}</div>";
     }
 } elseif ($op === 'edit' ) {
     if (isset($_POST['save_preference'])) {
@@ -94,7 +94,7 @@ if (  $op === 'create' ) {
             if ($pdoDb->request("UPDATE", "preferences") === false) {
                 error_log("preferences save.php edit_preference id[{$_GET['id']}] update failed");
             } else {
-                $displayBlock = "<div class='si_message_ok'>{$LANG['save_preference_success']}</div>";
+                $displayBlock = "<div class='si_message_ok'>{$LANG['savePreferenceSuccess']}</div>";
             }
         } catch (PdoDbException $pde) {
             error_log("preferences save.php edit_preference insert error: " . $pde->getMessage());

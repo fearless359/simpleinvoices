@@ -1,7 +1,7 @@
 
 <table class="left" style="width:100%;">
     <tr class="tbl1 col1" >
-        <td class="tbl1 col1 tbl1-right" colspan="6"><b>{$LANG.description_uc}</b></td>
+        <td class="tbl1 col1 tbl1-right" colspan="6"><b>{$LANG.descriptionUc}</b></td>
     </tr>
 
 	<tr class="tbl1-left tbl1-right">

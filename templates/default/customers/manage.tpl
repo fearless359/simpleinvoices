@@ -13,48 +13,48 @@
  *}
 {if $first_run_wizard == true}
     <div class="si_message">
-        {$LANG.thank_you} {$LANG.before_starting}
+        {$LANG.thankYou} {$LANG.beforeStarting}
     </div>
     <table class="si_table_toolbar">
         {if $number_of_billers == 0}
             <tr>
-                <th>{$LANG.setup_as_biller}</th>
+                <th>{$LANG.setupAsBiller}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=billers&amp;view=create" class="positive">
                         <img src="../../../images/user_add.png" alt=""/>
-                        {$LANG.add_new_biller}
+                        {$LANG.addNewBiller}
                     </a>
                 </td>
             </tr>
         {/if}
         {if $number_of_customers == 0}
             <tr>
-                <th>{$LANG.setup_add_customer}</th>
+                <th>{$LANG.setupAddCustomer}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=customers&amp;view=create" class="positive">
                         <img src="../../../images/vcard_add.png" alt=""/>
-                        {$LANG.customer_add}
+                        {$LANG.customerAdd}
                     </a>
                 </td>
             </tr>
         {/if}
         {if $number_of_products == 0}
             <tr>
-                <th>{$LANG.setup_add_products}</th>
+                <th>{$LANG.setupAddProducts}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=products&amp;view=create" class="positive">
                         <img src="../../../images/cart_add.png" alt=""/>
-                        {$LANG.add_new_product}
+                        {$LANG.addNewProduct}
                     </a>
                 </td>
             </tr>
         {/if}
         <tr>
-            <th>{$LANG.setup_customisation}</th>
+            <th>{$LANG.setupCustomization}</th>
             <td class="si_toolbar">
                 <a href="index.php?module=system_defaults&amp;view=manage" class="">
                     <img src="../../../images/cog_edit.png" alt=""/>
-                    {$LANG.si_defaults}
+                    {$LANG.siDefaults}
                 </a>
             </td>
         </tr>
@@ -64,7 +64,7 @@
          {if $smarty.session.role_name == 'customer'}style="display:none"{/if}>
         <a href="index.php?module=customers&amp;view=create" class="">
             <img src="../../../images/add.png" alt=""/>
-            {$LANG.customer_add}
+            {$LANG.customerAdd}
         </a>
     </div>
     <table id="si-data-table" class="display compact" >
@@ -72,11 +72,11 @@
             <tr>
                 <th>{$LANG.actions}</th>
                 <th>{$LANG.name}</th>
-                <th>{$LANG.customer_department}</th>
-                <th>{$LANG.last_invoice}</th>
+                <th>{$LANG.customerDepartment}</th>
+                <th>{$LANG.lastInvoice}</th>
                 <th>{$LANG.total}</th>
                 <th>{$LANG.paid}</th>
-                <th>{$LANG.owing_uc}</th>
+                <th>{$LANG.owingUc}</th>
                 <th>{$LANG.enabled}</th>
             </tr>
         </thead>

@@ -1,4 +1,4 @@
-<div class="si_center"><h2>{$LANG.product_value}</h2></div>
+<div class="si_center"><h2>{$LANG.productValue}</h2></div>
 <table class="center">
     <tr>
         <th class="details_screen left">{$LANG.attribute}:</th>

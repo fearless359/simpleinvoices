@@ -91,8 +91,8 @@ class Cron
 
             $rows = $pdoDb->request("SELECT", "cron", "cron");
             foreach ($rows as $row) {
-                $row['email_biller_nice'] = $row['email_biller'] == ENABLED ? $LANG['yes_uc'] : $LANG['no_uc'];
-                $row['email_customer_nice'] = $row['email_customer'] == ENABLED ? $LANG['yes_uc'] : $LANG['no_uc'];
+                $row['email_biller_nice'] = $row['email_biller'] == ENABLED ? $LANG['yesUc'] : $LANG['noUc'];
+                $row['email_customer_nice'] = $row['email_customer'] == ENABLED ? $LANG['yesUc'] : $LANG['noUc'];
                 $crons[] = $row;
             }
         } catch (PdoDbException $pde) {

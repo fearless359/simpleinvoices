@@ -1,7 +1,7 @@
 <tr class="tbl1 col1">
-  <td class="tbl1"><b>{$LANG.quantity_short}</b></td>
+  <td class="tbl1"><b>{$LANG.quantityShort}</b></td>
   <td class="tbl1" colspan="3"><b>{$LANG.item}</b></td>
-  <td class="tbl1"><b>{$LANG.unit_cost}</b></td>
+  <td class="tbl1"><b>{$LANG.unitCost}</b></td>
   <td class="tbl1 si_right"><b>{$LANG.price}</b></td>
 </tr>
 
@@ -26,7 +26,7 @@
   <tr class="tbl1-left tbl1-right">
     <td class="tbl1-left"></td>
     <td class="tbl1-right" colspan="5">
-      <i>{$LANG.description_uc}: </i>{$invoiceItem.description|htmlSafe}
+      <i>{$LANG.descriptionUc}: </i>{$invoiceItem.description|htmlSafe}
     </td>
   </tr>
   <tr>
@@ -86,7 +86,7 @@
 {/php}
 <tr>
   <td colspan="3"></td>
-  <td class="si_right" colspan="2">{$LANG.gross_total}</td>
+  <td class="si_right" colspan="2">{$LANG.grossTotal}</td>
   <td class="si_right">
     {$preference.pref_currency_sign}{$invoice_gross_total|utilNumber}
   </td>

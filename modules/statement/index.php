@@ -40,27 +40,27 @@ function lastOfMonth() {
     return date ( "Y-m-d", strtotime ( '31-12-' . date ( 'Y' ) . ' 00:00:00' ) );
 }
 
-$startDate  = isset($_POST['start_date'] ) ? $_POST['start_date']: firstOfMonth();
-$endDate    = isset($_POST['end_date']   ) ? $_POST['end_date']  : lastOfMonth ();
+$startDate  = isset($_POST['startDate'] ) ? $_POST['startDate']: firstOfMonth();
+$endDate    = isset($_POST['endDate']   ) ? $_POST['endDate']  : lastOfMonth ();
 $billerId   = isset($_POST['biller_id']  ) ? intval($_POST['biller_id'])  : null;
 $customerId = isset($_POST['customer_id']) ? intval($_POST['customer_id']): null;
 
-$showOnlyUnpaid    = "no";
-$doNotFilterByDate = "no";
-$invoices          = [];
-$statement         = ["total" => 0, "owing" => 0, "paid" => 0];
+$showOnlyUnpaid = "no";
+$filterByDate   = "yes";
+$invoices       = [];
+$statement      = ["total" => 0, "owing" => 0, "paid" => 0];
 
 if (isset($_POST['submit'])) {
     try {
         $havings = [];
-        if (isset($_POST['do_not_filter_by_date'])) {
-            $doNotFilterByDate = "yes";
-        } else {
-            $doNotFilterByDate = "no";
+        if (isset($_POST['filterByDate'])) {
+            $filterByDate = "yes";
             $havings[] = ["date_between" => [$startDate, $endDate]];
+        } else {
+            $filterByDate = "no";
         }
 
-        if (isset($_POST['show_only_unpaid'])) {
+        if (isset($_POST['showOnlyUnpaid'])) {
             $showOnlyUnpaid = "yes";
             $havings[] = ["money_owed" => ''];
         } else {
@@ -105,22 +105,21 @@ if (empty($customerId)) {
     $customerDetails = Customer::getOne($customerId);
 }
 
-$smarty->assign('biller_id'       , $billerId);
-$smarty->assign('billers'         , $billers);
-$smarty->assign('biller_count'    , $billerCount);
-$smarty->assign('biller_details'  , $billerDetails);
-$smarty->assign('customer_id'     , $customerId);
-$smarty->assign('customers'       , $customers);
-$smarty->assign('customer_count'  , $customerCount);
-$smarty->assign('customer_details', $customerDetails);
-
-$smarty->assign('show_only_unpaid'     , $showOnlyUnpaid);
-$smarty->assign('do_not_filter_by_date', $doNotFilterByDate);
+$smarty->assign('billerId'       , $billerId);
+$smarty->assign('billers'        , $billers);
+$smarty->assign('biller_count'   , $billerCount);
+$smarty->assign('billerDetails'  , $billerDetails);
+$smarty->assign('customerId'     , $customerId);
+$smarty->assign('customers'      , $customers);
+$smarty->assign('customerCount'  , $customerCount);
+$smarty->assign('customerDetails', $customerDetails);
+$smarty->assign('showOnlyUnpaid' , $showOnlyUnpaid);
+$smarty->assign('filterByDate'   , $filterByDate);
 
 $smarty->assign('invoices'  , $invoices);
 $smarty->assign('statement' , $statement);
-$smarty->assign('start_date', $startDate);
-$smarty->assign('end_date'  , $endDate);
+$smarty->assign('startDate' , $startDate);
+$smarty->assign('endDate'   , $endDate);
 
 $smarty->assign('pageActive', 'report');
 $smarty->assign('active_tab', '#home');

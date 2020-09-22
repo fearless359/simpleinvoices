@@ -10,7 +10,7 @@
         {assign var='tmp_lang_view' value=$LANG.$tmp_lang_view|default:$LANG.$view|default:$view}
         {$smarty.capture.hook_head_start}
     {/strip}
-    <title>{$tmp_lang_module} : {$tmp_lang_view} - {$LANG.company_name} </title>
+    <title>{$tmp_lang_module} : {$tmp_lang_view} - {$LANG.companyName} </title>
     <meta charset="UTF-8"/>
     <meta name="robots" content="noindex, nofollow"/>
 

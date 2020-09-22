@@ -16,67 +16,66 @@
  *  https://simpleinvoices.group *}
 {if $smarty.get.stage == 1 }
     {if $error == 1}
+        <!--suppress HtmlFormInputWithoutLabel -->
         <div class="si_message_error"><h2>{if isset($message)}{$message}{/if}</h2></div>{/if}
         <form name="frmpost" method="POST" id="frmpost"
-              action="index.php?module=statement&amp;view=email&amp;stage=2&amp;biller_id={$smarty.get.biller_id|urlencode}&amp;customer_id={$smarty.get.customer_id|urlencode}&amp;start_date={$smarty.get.start_date|urlencode}&amp;end_date={$smarty.get.end_date|urlencode}&amp;show_only_unpaid={$smarty.get.show_only_unpaid|urlencode}&amp;format=file">
+              action="index.php?module=statement&amp;view=email&amp;stage=2&amp;billerId={$smarty.get.billerId|urlencode}&amp;customerId={$smarty.get.customerId|urlencode}&amp;startDate={$smarty.get.startDate|urlencode}&amp;endDate={$smarty.get.endDate|urlencode}&amp;showOnlyUnpaid={$smarty.get.showOnlyUnpaid|urlencode}&amp;format=file">
             <div class="si_center">
-                <h3>Email {$customer.name|htmlSafe} to Customer as PDF</h3>
+                <h3>{$LANG.email} {$customer.name|htmlSafe} {$LANG.to} {$LANG.customer} {$LANG.asLc} {$LANG.pdf}</h3>
             </div>
             <div class="si_form"></div>
             <table class="center">
                 <tr>
-                    <th>{$LANG.email_from}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_from"
-                           title="{$LANG.email_from}">
+                    <th class="left details_screen">{$LANG.emailFrom}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailFrom"
+                           title="{$LANG.emailFrom}">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_from" size="50" value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"
-                               class="validate[required]" tabindex="10" autofocus/>
+                        <input type="text" name="emailFrom" size="50" class="si_input validate[required]" tabindex="10" autofocus
+                               value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email_to}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_to"
-                           title="{$LANG.email_to}">
+                    <th class="left details_screen">{$LANG.emailTo}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailTo"
+                           title="{$LANG.emailTo}">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_to" size="50" value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}"
-                               class="validate[required]" tabindex="20"/>
+                        <input type="text" name="emailTo" size="50" class="si_input validate[required]" tabindex="20"
+                               value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.email_bcc}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_email_bcc"
-                           title="{$LANG.email_bcc}">
+                    <th class="left details_screen">{$LANG.emailBcc}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailBcc"
+                           title="{$LANG.emailBcc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td><input type="text" name="email_bcc" size="50" value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="30"/></td>
+                    <td><input type="text" name="emailBcc" class="si_input" size="50" tabindex="30"
+                               value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.subject}
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=help_required_field"
-                           title="{$LANG.subject} {$LANG.required_field}">
+                    <th class="left details_screen">{$LANG.subject}:
+                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField"
+                           title="{$LANG.subject} {$LANG.requiredField}">
                             <img src="{$helpImagePath}required-small.png" alt=""/>
                         </a>
                     </th>
                     <td>
-                        <input type="text" name="email_subject" size="70" class="validate[required]" tabindex="40"
+                        <input type="text" name="emailSubject" size="70" class="si_input validate[required]" tabindex="40"
                                value="Statement of invoices from {$biller.name|htmlSafe} is attached"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.message}</th>
+                    <th class="left details_screen">{$LANG.message}</th>
                     <td>
-                        <!--
-                        <textarea name="email_notes" class="editor" tabindex="50">{*if !empty($biller.signature)*}{*$biller.signature|htmlSafe*}{*/if*}</textarea>
-                        -->
-                        <input name="email_notes" id="email_notes" {if isset($biller.signature)}value="{$biller.signature|outHtml}"{/if} type="hidden">
-                        <trix-editor input="email_notes" tabindex="50"></trix-editor>
+                        <input name="emailNotes" id="email_notes" {if isset($biller.signature)}value="{$biller.signature|outHtml}"{/if} type="hidden">
+                        <trix-editor input="email_notes" class="si_input" tabindex="50"></trix-editor>
                     </td>
                 </tr>
             </table>

@@ -23,7 +23,7 @@ $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=c
 
 $op = empty($_POST['op']) ? '' : $_POST['op'];
 
-$displayBlock = "<div class='si_message_error'>{$LANG['save_custom_flags_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['saveCustomFlagsFailure']}</div>";
 if (isset($_POST['cancel'])) {
     $displayBlock = "<div class='si_message_warning'>{$LANG['cancelled']}</div>";
 } elseif ($op === 'edit') {
@@ -37,7 +37,7 @@ if (isset($_POST['cancel'])) {
                 $_POST["enabled"],
                 $clearField,
                 $_POST["field_help"])) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['save_custom_flags_success']}</div>";
+            $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomFlagsSuccess']}</div>";
         }
     }
 }

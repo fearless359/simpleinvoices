@@ -11,16 +11,16 @@ Util::directAccessAllowed();
 // Deal with op and add some basic sanity checking
 $op = !empty($_POST ['op']) ? $_POST['op'] : "";
 
-$displayBlock = "<div class='si_message_error'>{$LANG['save_expense_account_failure']}</div>";
+$displayBlock = "<div class='si_message_error'>{$LANG['saveExpenseAccountFailure']}</div>";
 $refreshRedirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=expense_account&amp;view=manage" />';
 
 if ($op === 'create') {
     if (ExpenseAccount::insert()) {
-        $displayBlock = "<div class='si_message_ok'>{$LANG['save_expense_account_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['saveExpenseAccountSuccess']}</div>";
     }
 } elseif ($op === 'edit') {
     if (ExpenseAccount::update()) {
-        $displayBlock = "<div class='si_message_ok'>{$LANG['save_expense_account_success']}</div>";
+        $displayBlock = "<div class='si_message_ok'>{$LANG['saveExpenseAccountSuccess']}</div>";
     }
 }
 
