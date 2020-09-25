@@ -162,8 +162,15 @@ class SiAcl
                 'index' => $adminAccess
             ],
             'install' => [
-                'essential' => $adminAccess,
-                'structure' => $adminAccess
+                'essential' => [
+                    'all'
+                ],
+                'index' => [
+                    'all'
+                ],
+                'structure' => [
+                    'all'
+                ]
             ],
             'inventory' => [
                 'create' => $adminAccess,
@@ -187,6 +194,7 @@ class SiAcl
             ],
             'options' => [
                 'backup_database' => $adminAccess,
+                'database_sqlpatches' => $adminAccess,
                 'index' => $adminAccess,
                 'manage_cronlog' => $adminAccess,
                 'manage_sqlpatches' => $adminAccess
@@ -302,6 +310,9 @@ class SiAcl
     public static function isAllowed(string $resource, string $permission): bool
     {
         $role = self::getSessionRole();
+        if ($role == 'administrator') {
+            return true;
+        }
         /**
          * @var Acl $acl
          */

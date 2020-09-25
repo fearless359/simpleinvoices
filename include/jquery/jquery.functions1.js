@@ -71,6 +71,26 @@ function count_invoice_line_items() {
 }
 
 /*
+ * Reloads sub_customer list when parent ID changed.
+ */
+function invoiceCustomerChange(customer_id) {
+    $('#gmail_loading').show();
+    $.ajax({
+        type : 'GET',
+        url : './index.php?module=invoices&;view=sub_customer_ajax&;id=' + customer_id,
+        // data: "id: "+product_code,
+        dataType : "json",
+        success : function(data) {
+            $('#gmail_loading').hide();
+            $("#custom_field1").html(data);
+        },
+        complete : function() {
+            $('#gmail_loading').hide();
+        }
+    });
+}
+
+/*
 * function: siLog
 * purpose: wrapper function for blackbirdjs logging
 * if debugging is OFF in config.ini - then blackbirdjs.js wont be loaded in header.tpl and normal call to log.debug would fail and cause problems

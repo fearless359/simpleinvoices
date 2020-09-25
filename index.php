@@ -202,15 +202,15 @@ if ($module == "options" && $view == "database_sqlpatches") {
 
     // See if we need to verify patches have been loaded.
     if ($applyDbPatches) {
-        Log::out("index.php - config->authentication->enabled[{$config['authenticationEnabled']}] _SESSION['id']: " .
-            print_r($_SESSION['id'], true));
+        Log::out("index.php - config->authentication->enabled[{$config['authenticationEnabled']}] " .
+                                  "_SESSION['id']: " . print_r($_SESSION['id'], true));
         // If default user or an active session exists, proceed with check.
         if ($config['authenticationEnabled'] == DISABLED || isset($_SESSION['id'])) {
             // Check if there are patches to process
             if (SqlPatchManager::numberOfUnappliedPatches() > 0) {
-                $view = "database_sqlpatches";
                 $module = "options";
-                Log::out("index.php - view[$view] module[$module]");
+                $view = "database_sqlpatches";
+                Log::out("index.php - module[$module] view[$view] action[$action] Unapplied patches found");
                 if ($action == "run") {
                     SqlPatchManager::runPatches();
                 } else {
@@ -218,13 +218,13 @@ if ($module == "options" && $view == "database_sqlpatches") {
                 }
                 $menu = false;
             } else {
-                Log::out("index.php - module - " . print_r($module, true));
+                Log::out("index.php - all patches applied - module[$module] view[$view]");
                 // All patches have been applied. Now check to see if the database has been set up.
                 // It is considered setup when there is at least one biller, one customer and one product.
                 // If it has not been set up, allow the user to add a biller, customer, product or to
                 // modify the setting options.
                 if (!empty($module)) {
-                    if ($view == 'add' && ($module == 'billers' || $module == 'customers' || $module == 'products') ||
+                    if ($view == 'create' && ($module == 'billers' || $module == 'customers' || $module == 'products') ||
                         $module == 'system_defaults' && ($view == 'manage' || $view == 'edit' || $view == 'save')) {
                         $stillDoingSetup = false;
                     } else {

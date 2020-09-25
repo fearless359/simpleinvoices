@@ -4,8 +4,8 @@
 			<th colspan="4">{$LANG.totalByAgingPeriods}</th>
 		</tr>
 		<tr>
-			<th>{$LANG.total}</th>
-			<th>{$LANG.paid}</th>
+			<th>{$LANG.totalUc}</th>
+			<th>{$LANG.paidUc}</th>
 			<th>{$LANG.owingUc}</th>
 			<th>{$LANG.aging}</th>
 		</tr>

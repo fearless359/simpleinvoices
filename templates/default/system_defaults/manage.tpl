@@ -345,6 +345,21 @@
             <td tabindex="-1">{$defaults.session_timeout}</td>
         </tr>
 
+        <tr>
+            <th class="details_screen">{$LANG.subCustomer}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.subCustomer} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpSubCustomer" tabindex="-1">
+                    <img src="{$helpImagePath}help-small.png" alt=""/>
+                </a>
+            </th>
+            <td>
+                <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=sub_customer' tabindex="180">
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                </a>
+            </td>
+            <td tabindex="-1">{if $defaultSubCustomer == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+        </tr>
+
         {* This section will insert any extensions that add system-default fields *}
         {* If you create such an extension, please follow the standard above the pust a semi-coloan
            after the field label, sets tabindex=-1" to the help anchor, and a tabindex with a valur

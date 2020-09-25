@@ -187,13 +187,13 @@
                         </tr>
                     {/if}
                     <tr>
-                        <td class="">{$LANG.total}:</td>
+                        <td class="">{$LANG.totalUc}:</td>
                         <td class="si_right" colspan="3">
                             {$preference.pref_currency_sign}{$invoice.total|utilNumber}
                         </td>
                     </tr>
                     <tr>
-                        <td class="">{$LANG.paid}:</td>
+                        <td class="">{$LANG.paidUc}:</td>
                         <td class="si_right" colspan="3">
                             {$preference.pref_currency_sign}{$invoice.paid|utilNumber}
                         </td>

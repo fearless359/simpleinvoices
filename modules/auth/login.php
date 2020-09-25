@@ -19,7 +19,7 @@ use Inc\Claz\Util;
  *      GPL v3 or above
  */
 
-global $patchCount, $pdoDb, $smarty;
+global $pdoDb, $smarty;
 
 Util::allowDirectAccess();
 

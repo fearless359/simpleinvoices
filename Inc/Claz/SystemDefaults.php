@@ -317,6 +317,15 @@ class SystemDefaults
     }
 
     /**
+     * Get "sub_customer" entry from the system_defaults table.
+     * @return int 1 if enabled or 0 if not enabled.
+     */
+    public static function getSubCustomer(): int
+    {
+        return self::getValue('sub_customer');
+    }
+
+    /**
      * Get "session_timeout" entry from the system_defaults table.
      * @return int Session timeout setting in seconds
      */

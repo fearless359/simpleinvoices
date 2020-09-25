@@ -28,7 +28,7 @@ class DomainId
         } elseif (!empty($_SESSION['domain_id'])) {
             // no preset value available
             // take session value since available
-            // whether fake_auth or not
+            // whether fakeAuth or not
             $domId = $_SESSION['domain_id'];
         }
 

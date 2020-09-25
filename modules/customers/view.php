@@ -4,6 +4,7 @@ use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
 /*
@@ -33,7 +34,21 @@ $customer = Customer::getOne($cid);
 $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($customer['credit_card_number']);
 $smarty->assign('customer', $customer);
 
-$smarty->assign('invoices', Customer::getCustomerInvoices($cid));
+// Get the customers that have this customer as their parent
+$subCustomerEnabled = SystemDefaults::getSubCustomer();
+$smarty->assign('subCustomerEnabled', $subCustomerEnabled);
+if ($subCustomerEnabled) {
+    $children = Customer::getMyChildren($cid);
+    if (empty($children)) {
+        // We aren't a parent so see if we are child
+        $myParent = Customer::getMyParent($customer['parent_customer_id']);
+        $smarty->assign('parentCustomer', $myParent);
+    } else {
+        // We are a child.
+        $smarty->assign("childCustomers", $children);
+    }
+}
+$smarty->assign('invoices',Customer::getCustomerInvoices($cid));
 
 $smarty->assign('customFieldLabel', CustomFields::getLabels(true));
 
@@ -46,6 +61,5 @@ try {
 }
 
 $smarty->assign('pageActive', 'customer');
-$subPageActive  = $_GET['action'] == "view"  ? "customer_view" : "customer_edit";
-$smarty->assign('subPageActive', $subPageActive);
+$smarty->assign('subPageActive', "customer_view");
 $smarty->assign('active_tab', '#people');

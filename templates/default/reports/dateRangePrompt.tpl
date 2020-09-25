@@ -1,7 +1,7 @@
 <tr>
     <td colspan="2"
         style="font-weight: bold; font-size: 1.5em; text-align: center; text-decoration: underline;">
-        {$LANG['reportPeriod']}
+        {$LANG.reportPeriod}
     </td>
 </tr>
 <tr>

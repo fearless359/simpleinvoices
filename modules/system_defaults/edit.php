@@ -296,6 +296,16 @@ switch ($getVal) {
         $found       = true;
         break;
 
+    case "sub_customer":
+        $array = [
+            DISABLED => $LANG['disabled'],
+            ENABLED => $LANG['enabled']
+        ];
+        $default     = "sub_customer";
+        $description = $LANG['subCustomer'];
+        $value       = Util::dropDown($array, $defaults[$default]);
+        break;
+
     case "tax":
         $default = "tax";
         $taxes = Taxes::getActiveTaxes();

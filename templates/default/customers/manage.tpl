@@ -74,8 +74,8 @@
                 <th>{$LANG.name}</th>
                 <th>{$LANG.customerDepartment}</th>
                 <th>{$LANG.lastInvoice}</th>
-                <th>{$LANG.total}</th>
-                <th>{$LANG.paid}</th>
+                <th>{$LANG.totalUc}</th>
+                <th>{$LANG.paidUc}</th>
                 <th>{$LANG.owingUc}</th>
                 <th>{$LANG.enabled}</th>
             </tr>

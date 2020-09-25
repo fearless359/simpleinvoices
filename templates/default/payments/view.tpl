@@ -1,6 +1,6 @@
 {if $num_payment_recs == 0}
   <meta http-equiv="refresh" content="2;URL=index.php?module=invoices&amp;view=manage" />
-  <div class='si_message_error'>{$LANG['zeroInvoiceAmt']}</div>
+  <div class='si_message_error'>{$LANG.zeroInvoiceAmt}</div>
 {else}
   {if $num_payment_recs > 1}
     <h3>{$LANG.moreThanOnePymtRec}</h3>

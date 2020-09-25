@@ -27,7 +27,7 @@ if (!preg_match('/^[a-z]{2}_[a-z]{2}$/i', $lang_cmp)) {
 
 // Ensure that the requested lang folder exists
 if (!in_array($lang_cmp, $langs_defined, true)) {
-    die ("Invalid Language. - lang_cmp[$lang_cmp] langs_defined");
+    exit("Invalid Language. - lang_cmp[$lang_cmp] langs_defined");
 }
 
 include "en_US/lang.php";

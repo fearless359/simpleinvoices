@@ -14,7 +14,7 @@
 	</tbody>
 	<tfoot>
 	<tr>
-		<td class="page_layer si_right">{$LANG.total}</td>
+		<td class="page_layer si_right">{$LANG.totalUc}</td>
 		<td class="page_layer"><span class="bold">{$total_quantity|utilNumber:0|default:'-'}</span></td>
 	</tr>
 	</tfoot>

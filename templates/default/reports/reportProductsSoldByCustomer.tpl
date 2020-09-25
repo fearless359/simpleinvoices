@@ -16,7 +16,7 @@
 			</tr>
 		{/foreach}
 		<tr>
-			<td>{$LANG.total}</td>
+			<td>{$LANG.totalUc}</td>
 			<td>{$customer.total_quantity|utilNumber:0|default:'-'}</td>
 		</tr>
 	{/foreach}

@@ -1,9 +1,17 @@
+/*
+ * Call to reload sub_customer list if parent ID changed.
+ */
+$("#customer_id").change(function() {
+    var $customer_id = $(this).val();
+    invoiceCustomerChange($customer_id);
+});
 
 /* Product Change - updates line item with product price info */
 $(document).on("change", ".product_change", (function () {
     let $row_number = $(this).attr("data-row-num");
     let $product = $(this).val();
     let $quantity = $("#quantity" + $row_number).attr("value");
+    //noinspection JSUnresolvedFunction
     invoice_product_change($product, $row_number, $quantity);
 }));
 
@@ -94,8 +102,10 @@ $(document).ready(function () {
 
     //calc number of line items
     $(".invoice_save").click(function () {
+        // noinspection JSJQueryEfficiency
         $('#gmail_loading').show();
         count_invoice_line_items();
+        // noinspection JSJQueryEfficiency
         $('#gmail_loading').hide();
     });
 });

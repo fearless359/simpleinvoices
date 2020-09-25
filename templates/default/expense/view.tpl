@@ -15,7 +15,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.total}:</th>
+                <th class="details_screen">{$LANG.totalUc}:</th>
                 <td>{$detail.expense_tax_total|utilCurrency}</td>
             </tr>
             <tr>

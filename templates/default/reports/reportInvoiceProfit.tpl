@@ -21,7 +21,7 @@
         <td>
             <button type="submit" class="positive" name="submit" value="{$LANG.insertBiller}">
                 <img class="button_img" src="../../../images/tick.png" alt="" />
-                {$LANG['runReport']}
+                {$LANG.runReport}
             </button>
         </td>
     </tr>
@@ -32,16 +32,16 @@
     <h3>
         {$LANG.profit} {$LANG.per} {$LANG.invoice} {$LANG.based} {$LANG.on} {$LANG.average} {$LANG.product}
         {$LANG.cost} {$LANG.summary} {$LANG.for} {$LANG.the} {$LANG.period}
-        {if isset($start_date)}{$start_date|htmlSafe}{/if} {$LANG['to']} {if isset($end_date)}{$end_date|htmlSafe}{/if}
+        {if isset($start_date)}{$start_date|htmlSafe}{/if} {$LANG.to} {if isset($end_date)}{$end_date|htmlSafe}{/if}
     </h3>
 </div>
 
 <table class="center" style="width:90%;">
     <tr>
-        <th class="details_screen">{$LANG['id']}</th>
+        <th class="details_screen">{$LANG.id}</th>
         <th class="details_screen" colspan="3">{$LANG.biller}</th>
         <th class="details_screen" colspan="3">{$LANG.customer}</th>
-        <th class="details_screen si_right">{$LANG.total}</th>
+        <th class="details_screen si_right">{$LANG.totalUc}</th>
         <th class="details_screen si_right">{$LANG.costUc}</th>
         <th class="details_screen si_right">{$LANG.profit}</th>
 	</tr>
@@ -71,7 +71,7 @@
         <td class="details_screen si_right" style="font-weight:bold;">-------</td>
 	</tr>
     <tr>
-        <td class="details_screen si_right" colspan="7" style="font-weight:bold;">{$LANG['total']}:&nbsp;&nbsp;</td>
+        <td class="details_screen si_right" colspan="7" style="font-weight:bold;">{$LANG.totalUc}:&nbsp;&nbsp;</td>
         <td class="details_screen si_right">{$invoice_totals.sum_total|utilNumber}</td>
         <td class="details_screen si_right">{$invoice_totals.sum_cost|utilNumber}</td>
         <td class="details_screen si_right">{$invoice_totals.sum_profit|utilNumber}</td>

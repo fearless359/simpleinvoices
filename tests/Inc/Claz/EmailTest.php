@@ -140,7 +140,7 @@ class EmailTest extends TestCase
 
     public function testSetEmailTo()
     {
-        $this->email->setEmailTo("me@gmail.com';you@gmail.com");
+        $this->email->setEmailTo("me@gmail.com;you@gmail.com");
         self::assertEquals("me@gmail.com;you@gmail.com", $this->email->getEmailTo());
 
         self::assertFalse($this->email->setEmailTo("invalid_email_address"), "Expected failed setEmailTo() call.");

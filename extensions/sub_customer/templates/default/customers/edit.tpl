@@ -120,10 +120,16 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.creditCardHolderName}:</th>
+                <th class="details_screen">{$LANG.creditCardHolderName}:
+                    <a class="cluetip" href="#" title="{$LANG.creditCardHolderName}" tabindex="-1"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCreditCardHolderName">
+                        <img src="{$helpImagePath}help-small.png" alt=""/>
+                    </a>
+                </th>
                 <td>
-                    <input type="text" name="credit_card_holder_name"
-                           value="{if isset($customer.credit_card_holder_name)}{$customer.credit_card_holder_name|htmlSafe}{/if}" size="25" tabindex="130"/>
+                    <input type="text" name="credit_card_holder_name" id="ccName" size="25" tabindex="130"
+                           class="si_input creditCard validate[condRequired[ccNumber,ccExpMonth,ccExpYear]]"
+                           value="{if isset($customer.credit_card_holder_name)}{$customer.credit_card_holder_name|htmlSafe}{/if}"/>
                 </td>
             </tr>
             <tr>
@@ -131,24 +137,42 @@
                 <td>{$customer.credit_card_number_masked}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.creditCardNumberNew}:</th>
+                <th class="details_screen">{$LANG.creditCardNumberNew}:
+                    <a class="cluetip" href="#" title="{$LANG.creditCardNew}" tabindex="-1"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCreditCardNumber">
+                        <img src="{$helpImagePath}help-small.png" alt=""/>
+                    </a>
+                </th>
                 <td>
                     {* Note that no value is put in this field and the name is the actual database name *}
-                    <input type="text" name="credit_card_number" size="25" tabindex="140"/>
+                    <input type="text" name="credit_card_number" id="ccNumber" size="25" tabindex="140"
+                           class="si_input creditCard validate[condRequired[ccName, ccExpMonth, ccExpYear]]"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.creditCardExpiryMonth}:</th>
+                <th class="details_screen">{$LANG.creditCardExpiryMonth}:
+                    <a class="cluetip" href="#" title="{$LANG.creditCardExpiryMonth}" tabindex="-1"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCreditCardExpiryMonth">
+                        <img src="{$helpImagePath}help-small.png" alt=""/>
+                    </a>
+                </th>
                 <td>
-                    <input type="text" name="credit_card_expiry_month"
-                           value="{if isset($customer.credit_card_expiry_month)}{$customer.credit_card_expiry_month|htmlSafe}{/if}" size="5" tabindex="150"/>
+                    <input type="text" name="credit_card_expiry_month" id="ccExpMonth" size="5" tabindex="150"
+                           class="si_input creditCard validate[condRequired[ccName, ccNumber, ccExpYear]]"
+                           value="{if isset($customer.credit_card_expiry_month)}{$customer.credit_card_expiry_month|htmlSafe}{/if}"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.creditCardExpiryYear}:</th>
+                <th class="details_screen">{$LANG.creditCardExpiryYear}:
+                    <a class="cluetip" href="#" title="{$LANG.creditCardExpiryYear}" tabindex="-1"
+                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCreditCardExpiryYear">
+                        <img src="{$helpImagePath}help-small.png" alt=""/>
+                    </a>
+                </th>
                 <td>
-                    <input type="text" name="credit_card_expiry_year"
-                           value="{if isset($customer.credit_card_expiry_year)}{$customer.credit_card_expiry_year|htmlSafe}{/if}" size="5" tabindex="160"/>
+                    <input type="text" name="credit_card_expiry_year" id="ccExpYear" size="5" tabindex="160"
+                           class="si_input creditCard validate[condRequired[ccName, ccNumber, ccExpiryMonth]]"
+                           value="{if isset($customer.credit_card_expiry_year)}{$customer.credit_card_expiry_year|htmlSafe}{/if}"/>
                 </td>
             </tr>
             <tr>
@@ -266,4 +290,5 @@
     </div>
     <input type="hidden" name="op" value="edit"/>
     <input type="hidden" name="domain_id" value="{if isset($customer.domain_id)}{$customer.domain_id}{/if}"/>
+    <input type="hidden" name="origCcMaskedValue" value="{$customer.credit_card_number_masked}"/>
 </form>

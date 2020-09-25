@@ -29,7 +29,7 @@
 </form>
 <div id="top">
   <h3>{$LANG.expenseUc} {$LANG.account} {$LANG.summary} {$LANG.for}
-      {$LANG['the']} {$LANG.period} {$start_date} {$LANG.to} {$end_date}</h3>
+      {$LANG.the} {$LANG.period} {$start_date} {$LANG.to} {$end_date}</h3>
 </div>
 <table class="center">
   <tr>

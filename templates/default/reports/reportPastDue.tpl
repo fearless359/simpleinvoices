@@ -7,7 +7,7 @@
       action="index.php?module=reports&amp;view=reportPastDue" >
   <table class="center" >
     <tr>
-      <td class="details_screen">{$LANG['display']} {$LANG['detail']}</td>
+      <td class="details_screen">{$LANG.display} {$LANG.detail}</td>
       <td><input type="checkbox" name="display_detail"
                 {if isset($smarty.post.display_detail) && $smarty.post.display_detail == "yes"} checked {/if} value="yes" />
       </td>
@@ -37,7 +37,7 @@
       <th class="details_screen" style="width:2%;"></th>
       <th class="details_screen si_right" style="width:10%;">{$LANG.billed}</th>
       <th class="details_screen" style="width:2%;"></th>
-      <th class="details_screen si_right" style="width:10%;">{$LANG.paid}</th>
+      <th class="details_screen si_right" style="width:10%;">{$LANG.paidUc}</th>
       <th class="details_screen" style="width:2%;"></th>
       <th class="details_screen si_right" style="width:10%;">{$LANG.due}</th>
     </tr>
@@ -77,7 +77,7 @@
         {/foreach}    
         <tr>
           <td class="details_screen" style="margin-left:20%;">
-            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$id}&amp;action=view">{$LANG['invoice']}&nbsp;#{$index_id}</a>
+            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$id}&amp;action=view">{$LANG.invoice}&nbsp;#{$index_id}</a>
           </td>
           <td>&nbsp;</td>
           <td class="details_screen si_right" style="margin-right:auto;">{if isset($billed)}{$billed}{/if}</td>

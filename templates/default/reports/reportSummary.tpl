@@ -61,7 +61,7 @@
             &nbsp;
         </td>
         <td class="details_screen">
-            <b>{$LANG.total}</b>
+            <b>{$LANG.totalUc}</b>
         <td>
             &nbsp;
             &nbsp;

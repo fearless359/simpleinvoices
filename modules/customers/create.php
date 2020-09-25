@@ -1,12 +1,13 @@
 <?php
 
+use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\DomainId;
 use Inc\Claz\Util;
 
 /*
- * Script: add.php
- * 	    Customers add page
+ * Script: create.php
+ * 	    Customers create page
  *
  * Authors:
  *	    Justin Kelly, Nicolas Ruflin
@@ -32,7 +33,9 @@ if (!empty($_POST['op']) && $_POST['op'] == 'create' && !empty($_POST['name'])) 
     $customFieldLabel = CustomFields::getLabels(true);
     $smarty->assign('customFieldLabel', $customFieldLabel);
     $smarty->assign('domain_id', DomainId::get());
-
+    
+    $smarty->assign('parent_customers', Customer::getAll(['enabled_only' => true]));
+    
     $smarty->assign('pageActive', 'customer');
     $smarty->assign('subPageActive', 'customer_add');
     $smarty->assign('active_tab', '#people');

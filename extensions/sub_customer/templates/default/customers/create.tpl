@@ -99,8 +99,8 @@
                 </tr>
                 <tr>
                     <th class="details_screen">{$LANG.creditCardHolderName}: </th>
-                    <td><input type="text" name="credit_card_holder_name" class="si_input" size="25" tabindex="130"
-                               value="{if isset($smarty.post.credit_card_holder_name)}{$smarty.post.credit_card_holder_name|htmlSafe}{/if}"/></td>
+                    <td><input type="text" name="creditCardHolderName" class="si_input" size="25" tabindex="130"
+                               value="{if isset($smarty.post.creditCardHolderName)}{$smarty.post.creditCardHolderName|htmlSafe}{/if}"/></td>
                 </tr>
                 <tr>
                     <th class="details_screen">{$LANG.creditCardNumber}: </th>

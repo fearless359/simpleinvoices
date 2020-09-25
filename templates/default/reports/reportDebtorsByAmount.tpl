@@ -8,8 +8,8 @@
 			<th>{$LANG.invoiceUc}</th>
 			<th>{$LANG.biller}</th>
 			<th>{$LANG.customer}</th>
-			<th>{$LANG.total}</th>
-			<th>{$LANG.paid}</th>
+			<th>{$LANG.totalUc}</th>
+			<th>{$LANG.paidUc}</th>
 			<th>{$LANG.owingUc}</th>
 		</tr>
 	</thead>

@@ -34,7 +34,16 @@ $error = false;
 // The field is only non-empty if the user entered a value.
 // TODO: A proper entry and confirmation new credit card value.
 $excludeCreditCardNumber = true;
-if (!empty($_POST['credit_card_number'])) {
+if (empty($_POST['credit_card_number'])) {
+    // The edit screen only has and empty credit_card_number if the
+    // associated CC fields (name, expiry mon & year) are blank. So
+    // if the $_POST['credit_card_number'] is empty but the original
+    // masked value was not empty, then the credit_card_number field
+    // in the user's record needs to be cleared.
+    if (!empty($_POST['origCcMaskedValue'])) {
+        $excludeCreditCardNumber = false;
+    }
+} else {
     try {
         $key = $config['encryptionDefaultKey'];
         $enc = new Encryption();

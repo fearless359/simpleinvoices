@@ -83,7 +83,7 @@
         <td></td>
         <td class="align_right"><b>{$LANG.grossTotal}</b></td>
         <td class="align_right"><b>{$LANG.tax}</b></td>
-        <td class="align_right"><b>{$LANG.totalUc}</b></td>
+        <td class="align_right"><b>{$LANG.totalFullUc}</b></td>
     </tr>
     <tr class="tr_head">
         <td></td>
@@ -162,7 +162,7 @@
     <tr class="tr_tax">
         <td colspan="4"></td>
         <th class="si_right">{$LANG.subTotal}</th>
-        <td class="si_right" {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
+        <td class="si_right {if $invoiceNumberOfTaxes > 1}underline{/if}">
             {$invoice.gross|utilCurrency:$locale:$currencyCode}
         </td>
     </tr>
@@ -178,7 +178,7 @@
     <tr class="tr_tax">
         <td colspan="4"></td>
         <th class="si_right">{$LANG.taxTotal}</th>
-        <td class="si_right" style="text-decoration:underline;">
+        <td class="si_right underline">
             {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
         </td>
     </tr>
@@ -197,10 +197,10 @@
             <h5>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$invoice.index_id|htmlSafe}</h5>
             <table>
                 <tr>
-                    <th>{$LANG.total}</th>
+                    <th>{$LANG.totalUc}</th>
                     <th>
                         <a href="index.php?module=payments&amp;view=manage&amp;id={$invoice.id|urlencode}">
-                            {$LANG.paid}
+                            {$LANG.paidUc}
                         </a>
                     </th>
                     <th>{$LANG.owingUc}</th>
@@ -228,10 +228,10 @@
             </h5>
             <table>
                 <tr>
-                    <th>{$LANG.total}</th>
+                    <th>{$LANG.totalUc}</th>
                     <th>
                         <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">
-                            {$LANG.paid}
+                            {$LANG.paidUc}
                         </a>
                     </th>
                     <th>{$LANG.owingUc}</th>

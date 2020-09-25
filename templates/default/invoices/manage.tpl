@@ -30,7 +30,7 @@
             </a>
             <a href="index.php?module=invoices&amp;view=manage&amp;having=paid"
                class="{if isset($smarty.get.having) && $smarty.get.having=='paid'}selected{/if}">
-              {$LANG.paid}
+              {$LANG.paidUc}
             </a>
             <a href="index.php?module=invoices&amp;view=manage&amp;having=draft"
                class="{if isset($smarty.get.having) && $smarty.get.having=='draft'}selected{/if}">
@@ -56,7 +56,7 @@
                 <th>{$LANG.biller}</th>
                 <th>{$LANG.customer}</th>
                 <th>{$LANG.toUc}</th>
-                <th>{$LANG.total}</th>
+                <th>{$LANG.totalUc}</th>
                 <th>{$LANG.owingUc}</th>
                 <th>{$LANG.aging}</th>
             </tr>

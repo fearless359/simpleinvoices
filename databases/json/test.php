@@ -1,18 +1,24 @@
 <?php
 
-class import
+/**
+ * Class Import
+ */
+class Import
 {
     public string $file;
-    public $patternFind;
-    public $patternReplace;
+    public string $patternFind;
+    public string $patternReplace;
 
+    /**
+     * @return false|string If "$result === false" then method failed. Otherwise
+     *                      the string with file file contents is returned.
+     */
     public function getFile()
     {
-        $json = file_get_contents($this->file, true);
-        return $json;
+        return file_get_contents($this->file, true);
     }
 
-    public function replace()
+    public function replace(): string
     {
         // $string = $this->decode( $this->getFile() );
         $string = $this->getFile();
@@ -25,7 +31,11 @@ class import
         return $string;
     }
 
-    public function decode($json)
+    /**
+     * @param $json
+     * @return mixed
+     */
+    public function decode(string $json)
     {
         return json_decode($json, true);
     }
@@ -49,7 +59,7 @@ class import
                     $idx == "1" ? $columns .= $key3 : $columns .= ", " . $key3;
                     $idx == "1" ? $values .= "'" . $val3 . "'" : $values .= ", '" . $val3 . "'";
 
-                    $i++;
+                    $idx++;
                 }
 
                 $sql = "INSERT into " . $table . " (" . $columns . ") VALUES (" . $values . ");";

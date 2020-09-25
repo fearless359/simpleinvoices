@@ -1,5 +1,5 @@
 /*
- * Product Change - updates line item with product price info
+ * Call to reload sub_customer list if parent ID changed.
  */
 $("#customer_id").change(function() {
     var $customer_id = $(this).val();
@@ -7,7 +7,7 @@ $("#customer_id").change(function() {
 });
 
 /*
- * Product Change - updates line item with product price info
+ * Reloads sub_customer list when parent ID changed.
  */
 function invoice_customer_change(customer_id) {
     $('#gmail_loading').show();
@@ -24,5 +24,5 @@ function invoice_customer_change(customer_id) {
             $('#gmail_loading').hide();
         }
     });
-};
+}
 

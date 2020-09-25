@@ -59,7 +59,7 @@
         {/if}
 
         <tr>
-            <td class="">{$LANG.total}:</td>
+            <td class="">{$LANG.totalUc}:</td>
             <td class="si_right" colspan="3">{$invoice.total|utilNumber} mm</td>
         </tr>
 
@@ -204,7 +204,7 @@
                 <td class="tbl1-bottom col1"><b>{$LANG.quantityShort}</b></td>
                 <td class="tbl1-bottom col1"></td>
                 <td class="tbl1-bottom col1" colspan="3"><b>mm</b></td>
-                <td class="tbl1-bottom col1 si_right"><b>{$LANG.total}</b></td>
+                <td class="tbl1-bottom col1 si_right"><b>{$LANG.totalUc}</b></td>
             </tr>
             {foreach $invoiceItems as $invoiceItem}
                 <tr class="">

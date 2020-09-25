@@ -52,7 +52,7 @@
             <h2>{$LANG.needHelp}</h2>
             <a href="https://simpleinvoices.group/" target="_blank">{$LANG.helpCommunityForums}</a><br/>
         </div>
-        <h2>{$LANG.startWorking}</h2>
+        <h2>{$LANG.startWorkingUc}</h2>
         <div class="si_toolbar">
             <a href="index.php?module=invoices&amp;view=itemised" class="">
                 <img src="../../../images/add.png" alt=""/>{$LANG.addNewInvoice}

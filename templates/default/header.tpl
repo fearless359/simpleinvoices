@@ -49,7 +49,14 @@
             jQuery(document).ready(function () {
                 // binds form submission and fields to the validation engine
                 $('#frmpost').validationEngine({
-                    promptPosition: "centerRight"
+                    promptPosition: "centerRight",
+                    'custom_error_messages': {
+                        '.creditCard': {
+                            'required': {
+                                'message': "An entry is required if associated CC field are not blank."
+                            }
+                        }
+                    }
                 });
             });
         </script>

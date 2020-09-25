@@ -37,18 +37,13 @@ session_start();
 $role = $_SESSION['role_name'];
 
 // @formatter:off
-$billers           = Biller::getAll(true);
-$billerCount       = count($billers);
-if ($role == "biller" && $billerCount == 0) {
-    $billerCount = Biller::count();
-}
+$billers     = Biller::getAll(true);
+$billerCount = Biller::count();
 
-$customers         = Customer::getAll(['enabled_only' => true]);
-$customerCount     = count($customers);
-if ($role == "customer" && $customerCount == 0) {
-    $customerCount = Customer::count();
-}
-$products          = Product::getAll(true);
+$customers     = Customer::getAll(['enabled_only' => true]);
+$customerCount = Customer::count();
+
+$products = Product::getAll(true);
 
 $smarty->assign("first_run_wizard", $billerCount == 0 || $customerCount == 0 || empty($products));
 

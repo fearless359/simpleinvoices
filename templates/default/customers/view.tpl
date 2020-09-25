@@ -3,7 +3,7 @@
  *      Customer details template
  *
  * Last modified:
- *      2016-07-27
+ *      2020-09-24 by Richard Rowley
  *
  * License:
  *      GPL v3 or above
@@ -51,13 +51,15 @@
                 <th class="details_screen">{$LANG.email}:</th>
                 <td><a href="mailto:{$customer.email|htmlSafe}">{$customer.email|htmlSafe}</a></td>
             </tr>
-            <tr>
-                <th class="details_screen">{$LANG.zip}:</th>
-                <td>{$customer.zip_code|htmlSafe}</td>
-                <td class="td_sep"></td>
-                <th class="details_screen">{$LANG.defaultInvoice}:</th>
-                <td>{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</td>
-            </tr>
+            {if $customer.default_invoice != 0}
+                <tr>
+                    <th class="details_screen">{$LANG.zip}:</th>
+                    <td>{$customer.zip_code|htmlSafe}</td>
+                    <td class="td_sep"></td>
+                    <th class="details_screen">{$LANG.defaultInvoice}:</th>
+                    <td>{$customer.default_invoice}</td>
+                </tr>
+            {/if}
             <tr>
                 <th class="details_screen">{$LANG.state}:</th>
                 <td>{$customer.state|htmlSafe}</td>
@@ -112,6 +114,11 @@
             <li><a href="#section-3" target="_top">{$LANG.customer}&nbsp;{$LANG.invoiceListings}</a></li>
             <li {if $invoices_owing_count == 0}style="display:none"{/if}><a href="#section-4" target="_top">{$LANG.unpaidInvoices}</a></li>
             <li><a href="#section-5" target="_top">{$LANG.notes}</a></li>
+            {* If sub customer is not enabled, or if there are no parent or child customers, then do not display *}
+            <li {if !$subCustomerEnabled  || empty($parentCustomer) && empty($childCustomers)}style="display:none"{/if}>
+                {* If there is a parentCustomer then set label to parent of customer, else set to Child of customer *}
+                <a href="#section-6" target="_top">{if !empty($parentCustomer)}{$LANG.parentOfCustomers}{else}{$LANG.childOfCustomer}{/if}</a>
+            </li>
         </ul>
         <div id="section-1" class="fragment">
             <div class="si_cust_account">
@@ -127,11 +134,11 @@
                             </a>
                             :
                         </th>
-                        <td class="si_right">{$customer.paid|utilCurrency}</td>
+                        <td class="si_right underline">{$customer.paid|utilCurrency}</td>
                     </tr>
                     <tr>
                         <th class="details_screen">{$LANG.totalOwing}:</th>
-                        <td class="si_right" style="text-decoration:underline;">{$customer.owing|utilCurrency}</td>
+                        <td class="si_right">{$customer.owing|utilCurrency}</td>
                     </tr>
                 </table>
             </div>
@@ -149,7 +156,14 @@
                     </tr>
                     <tr>
                         <th class="details_screen">{$LANG.creditCardExpiryMonth}:</th>
-                        <td>{$customer.credit_card_expiry_month|htmlSafe}</td>
+                        <td>
+                            {if $customer.credit_card_expiry_month > 0 &&
+                                $customer.credit_card_expiry_month < 10}
+                                0{$customer.credit_card_expiry_month|htmlSafe}
+                            {else}
+                                {$customer.credit_card_expiry_month|htmlSafe}
+                            {/if}
+                        </td>
                     </tr>
                     <tr>
                         <th class="details_screen">{$LANG.creditCardExpiryYear}:</th>
@@ -165,8 +179,8 @@
                     <tr class="tr_head">
                         <th class="first">{$LANG.invoiceUc}</th>
                         <th class="details_screen">{$LANG.dateCreated}</th>
-                        <th class="details_screen">{$LANG.total}</th>
-                        <th class="details_screen">{$LANG.paid}</th>
+                        <th class="details_screen">{$LANG.totalUc}</th>
+                        <th class="details_screen">{$LANG.paidUc}</th>
                         <th class="details_screen">{$LANG.owingUc}</th>
                     </tr>
                     </thead>
@@ -197,8 +211,8 @@
                             <th class="first">{$LANG.actions}</th>
                             <th class="details_screen">{$LANG.id}</th>
                             <th class="details_screen">{$LANG.dateCreated}</th>
-                            <th class="details_screen">{$LANG.total}</th>
-                            <th class="details_screen">{$LANG.paid}</th>
+                            <th class="details_screen">{$LANG.totalUc}</th>
+                            <th class="details_screen">{$LANG.paidUc}</th>
                             <th class="details_screen">{$LANG.owingUc}</th>
                         </tr>
                         </thead>
@@ -233,6 +247,67 @@
         <div id="section-5" class="fragment">
             <div class="si_cust_notes">{$customer.notes|outHtml}</div>
         </div>
+        {if $subCustomerEnabled}
+            <tr><td>childCustomers: {if empty($childCustomers)}empty{else}not empty{/if}</td></tr>
+            <tr><td>parentCustomer: {if empty($parentCustomer)}empty{else}not empty{/if}</td></tr>
+            {* If childCustomers then display them *}
+            {if !empty($childCustomers)}
+                <div id="section-6" class="fragment">
+                    <div class="si_cust_invoices">
+                        <table>
+                            <thead>
+                            <tr class="tr_head">
+                                <th class="sortable">{$LANG.actions}</th>
+                                <th class="sortable">{$LANG.name}</th>
+                            </tr>
+                            {foreach $childCustomers as $cc}
+                                <tr class="index_table">
+                                    <td>
+                                        <a class='index_table' title='{$LANG.view} {$LANG.customer} {$cc.name|htmlSafe}'
+                                           href='index.php?module=customers&amp;view=view&amp;id={$cc.id|urlencode}'>
+                                            <img src='images/view.png' class='action' alt='{$LANG.view} {$LANG.customer} {$cc.name}' />
+                                        </a>
+                                        <a class='index_table' title='{$LANG.edit} {$LANG.customer} {$cc.name|htmlSafe}'
+                                           href='index.php?module=customers&amp;view=edit&amp;id={$cc.id|urlencode}'>
+                                            <img src='images/edit.png' class='action' alt='{$LANG.edit} {$LANG.customer} {$cc.name}' />
+                                        </a>
+                                    </td>
+                                    <td class="left">{$cc.name|htmlSafe}</td>
+                                </tr>
+                            {/foreach}
+                        </table>
+                    </div>
+                </div>
+            {* If parent of customer then display parent. *}
+            {elseif !empty($parentCustomer)}
+                <div id="section-6" class="fragment">
+                    <div class="si_cust_invoices">
+                        <table>
+                            <thead>
+                            <tr class="tr_head">
+                                <th class="sortable">{$LANG.actions}</th>
+                                <th class="sortable">{$LANG.name}</th>
+                            </tr>
+                            {foreach $parentCustomer as $pc}
+                                <tr class="index_table">
+                                    <td>
+                                        <a class='index_table' title='{$LANG.view} {$LANG.customer} {$pc.name|htmlSafe}'
+                                            href='index.php?module=customers&amp;view=view&amp;id={$pc.id|urlencode}'>
+                                            <img src='images/view.png' class='action' alt='{$LANG.view} {$LANG.customer} {$pc.name}' />
+                                        </a>
+                                        <a class='index_table' title='{$LANG.edit} {$LANG.customer} {$pc.name|htmlSafe}'
+                                           href='index.php?module=customers&amp;view=edit&amp;id={$pc.id|urlencode}'>
+                                            <img src='images/edit.png' class='action' alt='{$LANG.edit} {$LANG.customer} {$pc.name}' />
+                                        </a>
+                                    </td>
+                                    <td class="left">{$pc.name|htmlSafe}</td>
+                                </tr>
+                            {/foreach}
+                        </table>
+                    </div>
+                </div>
+           {/if}
+        {/if}
     </div>
     <div class="si_toolbar si_toolbar_form">
         <a href="index.php?module=customers&amp;view=edit&amp;id={$customer.id|urlencode}" class="positive">

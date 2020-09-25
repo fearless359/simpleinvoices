@@ -1,4 +1,4 @@
-<h3 class="si_report_title">{$LANG['sales']} {$LANG['in']} {$LANG['total']} {$LANG['by']} {$LANG['biller']}</h3>
+<h3 class="si_report_title">{$LANG.sales} {$LANG.in} {$LANG.total} {$LANG.by} {$LANG.biller}</h3>
 <hr />
 <table class="si_report_table">
 	<thead>

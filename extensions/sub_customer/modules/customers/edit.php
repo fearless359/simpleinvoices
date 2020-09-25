@@ -30,7 +30,7 @@ $cid = $_GET['id'];
 
 $customer = Customer::getOne($cid);
 $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($customer['credit_card_number']);
-$smarty->assign('customer',$customer);
+$smarty->assign('customer', $customer);
 
 // Get the customers that have this customer as their parent
 $subCustomers = SubCustomers::getSubCustomers($cid);
@@ -38,12 +38,18 @@ $smarty->assign('subCustomers',$subCustomers);
 $smarty->assign('subCustomerCount', count($subCustomers));
 
 $smarty->assign('parent_customers', Customer::getAll(['enabled_only' => true]));
-$smarty->assign('invoices',Customer::getCustomerInvoices($cid));
-$smarty->assign('customFieldLabel',CustomFields::getLabels(true));
+$smarty->assign('invoices', Customer::getCustomerInvoices($cid));
 
-$invoicesOwing = Invoice::getInvoicesOwing($cid);
-$smarty->assign('invoices_owing'  , $invoicesOwing);
-$smarty->assign('invoices_owing_count', count($invoicesOwing));
+$smarty->assign('customFieldLabel', CustomFields::getLabels(true));
+
+try {
+    $invoicesOwing = Invoice::getInvoicesOwing($cid);
+    $smarty->assign('invoices_owing', $invoicesOwing);
+    $smarty->assign('invoices_owing_count', count($invoicesOwing));
+} catch (PdoDbException $pde) {
+    exit("modules/customers/details.php Unexpected error: {$pde->getMessage()}");
+}
+$smarty->assign("defaults", SystemDefaults::loadValues());
 
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('subPageActive', "customer_edit");

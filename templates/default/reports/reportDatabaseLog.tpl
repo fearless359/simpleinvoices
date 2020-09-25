@@ -3,7 +3,7 @@
 {* license GPL V3 or above *}
 {* Created: 20181108 *}
 <!--suppress HtmlFormInputWithoutLabel -->
-<h1 style="position: relative; margin: 0 auto; text-align: center;">{$LANG.databaseLog} {$LANG['reportUc']}</h1>
+<h1 style="position: relative; margin: 0 auto; text-align: center;">{$LANG.databaseLog} {$LANG.reportUc}</h1>
 <hr/>
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=reports&amp;view=reportDatabaseLog">;

@@ -60,12 +60,12 @@
       </tr>
       {/if}
       <tr>
-        <td class="">{$LANG.total}:</td>
+        <td class="">{$LANG.totalUc}:</td>
         <td class="si_right" colspan="3">{$preference.pref_currency_sign}
           {$invoice.total|utilNumber}</td>
       </tr>
       <tr>
-        <td class="">{$LANG.paid}:</td>
+        <td class="">{$LANG.paidUc}:</td>
         <td class="si_right" colspan="3">{$preference.pref_currency_sign}
           {$invoice.paid|utilNumber}</td>
       </tr>
@@ -359,7 +359,7 @@
       <tr>
         <td colspan="2"></td>
         <td class="si_right" colspan="3">{$LANG.subTotal}&nbsp;</td>
-        <td class="si_right" colspan="1" {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
+        <td class="si_right  {if $invoiceNumberOfTaxes > 1}underline;{/if}" colspan="1">
           {$preference.pref_currency_sign}{$invoice.gross|utilNumber}
         </td>
       </tr>
@@ -384,7 +384,7 @@
       <tr>
         <td colspan="2"></td>
         <td class="si_right" colspan="3">{$LANG.taxTotal}&nbsp;</td>
-        <td class="si_right" colspan="1" style="text-decoration:underline;">
+        <td class="si_right {if $invoiceNumberOfTaxes > 1}underline;{/if}" colspan="1">
           {$preference.pref_currency_sign}{$invoice.total_tax|utilNumber}
         </td>
       </tr>

@@ -10,7 +10,7 @@ use Inc\Claz\SqlPatchManager;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
-global $apiRequest, $config, $databaseBuilt, $extNames, $module, $pdoDbAdmin, $view;
+global $apiRequest, $config, $databaseBuilt, $databasePopulated, $extNames, $module, $pdoDbAdmin, $view;
 
 require_once "library/smarty/libs/Smarty.class.php";
 require_once 'library/paypal/paypal.class.php';
@@ -55,6 +55,10 @@ $patchCount = 0;
 if ($databaseBuilt) {
     // Set these global variables.
     $patchCount = SqlPatchManager::lastPatchApplied();
+    if ($patchCount < SqlPatchManager::BEGINNING_PATCH_NUMBER) {
+        exit("You need to load Fearless359/SimpleInvoices version master_2019.2 prior to loading this version.");
+    }
+
     $databasePopulated = $patchCount > 0;
     if ($apiRequest && !$databasePopulated) {
         exit("Database must be populated to run a batch job.");
@@ -65,6 +69,7 @@ if ($databaseBuilt) {
 // the database is not built and populated, or
 // a request to install sample data.
 if ($apiRequest || !$databaseBuilt || !$databasePopulated || $module == 'install' && $view == 'sample_data') {
+    Log::out("apiRequest[$apiRequest] databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated] module[$module] view[$view]");
     $config['authenticationEnabled'] = DISABLED;
 }
 
@@ -121,11 +126,11 @@ if (isset($defaults['company_name'])) {
 }
 
 if (!$apiRequest) {
-    Log::out("init.php - authentication-enabled[{$config['authenticationEnabled']}] fake_auth[{$_SESSION['fake_auth']}]");
+    Log::out("init.php - authenticationEnabled[{$config['authenticationEnabled']}] fakeAuth[{$_SESSION['fakeAuth']}]");
 
     // if user logged into SimpleInvoices with authentication set to false,
     // then use the fake authentication, killing the session that was started.
-    if ($config['authenticationEnabled'] == ENABLED && $_SESSION['fake_auth'] == "1") {
+    if ($config['authenticationEnabled'] == ENABLED && $_SESSION['fakeAuth'] == "1") {
         session_name('SiAuth');
         session_start();
         session_destroy();
@@ -144,8 +149,8 @@ if (!$apiRequest) {
         $_SESSION['domain_id'] = "1";
         $_SESSION['username'] = "demo";
         $_SESSION['email'] = "demo@simpleinvoices.group";
-        // fake_auth is identifier to say that user logged in with auth off
-        $_SESSION['fake_auth'] = "1";
+        // fakeAuth is identifier to say that user logged in with auth off
+        $_SESSION['fakeAuth'] = "1";
         // No Customer login as logins disabled
         $_SESSION['user_id'] = "0";
     }

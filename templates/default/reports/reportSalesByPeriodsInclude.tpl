@@ -33,7 +33,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <th>{$LANG.total}</th>
+        <th>{$LANG.totalUc}</th>
         {foreach $years as $year}
             <td>{$this_data.total.$year|utilNumber:0|default:'-'}</td>
             {if $show_rates}

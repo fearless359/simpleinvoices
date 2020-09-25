@@ -105,7 +105,7 @@
                 <td>
                     {* enabled block *}
                     <select name="status" class="si_input ">
-                        <option value="{$smarty.const.ENABLED }" {if isset($expense.status) && $expense.status == $smarty.const.ENABLED }selected{/if}>{$LANG.paid}</option>
+                        <option value="{$smarty.const.ENABLED }" {if isset($expense.status) && $expense.status == $smarty.const.ENABLED }selected{/if}>{$LANG.paidUc}</option>
                         <option value="{$smarty.const.DISABLED}" {if isset($expense.status) && $expense.status == $smarty.const.DISABLED}selected{/if}>{$LANG.notPaid}</option>
                     </select>
                     {* /enabled block*}

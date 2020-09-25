@@ -56,11 +56,11 @@
       </tr>
       {/if}
       <tr>
-        <td>{$LANG.total}:</td>
+        <td>{$LANG.totalUc}:</td>
         <td colspan="3">{$preference.pref_currency_sign}{$invoice.total|utilNumber:2}</td>
       </tr>
       <tr>
-        <td>{$LANG.paid}:</td>
+        <td>{$LANG.paidUc}:</td>
         <td colspan="3">{$preference.pref_currency_sign}{$invoice.paid|utilNumber:2}</td>
       </tr>
       <tr>

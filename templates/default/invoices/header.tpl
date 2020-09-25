@@ -69,6 +69,23 @@
             {/if}
         </td>
     </tr>
+    {* section for sub_customer *}
+    <tr>
+        <th>{$LANG.subCustomer}</th>
+        <td>
+            {if !isset($subCustomers) || empty($subCustomers) }
+                <em>{$LANG.noSubCustomers}</em>
+            {else}
+                <select name="custom_field1" id="custom_field1">
+                    {foreach $subCustomers as $subCustomer}
+                        <option {if isset($subCustomer.id) && $subCustomer.id == $defaultCustomerID}selected{/if} value="{if isset($subCustomer.id)}{$subCustomer.id|htmlSafe}{/if}">
+                            {$subCustomer.attention|htmlSafe}
+                        </option>
+                    {/foreach}
+                </select>
+            {/if}
+        </td>
+    </tr>
     <tr>
         <th>{$LANG.dateFormatted}</th>
         <td>

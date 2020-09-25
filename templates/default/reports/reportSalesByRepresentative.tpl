@@ -88,7 +88,7 @@
             <td style="width:25%;">
                 <strong>{$LANG.salesSummary}:</strong>
                 <br/>
-                <strong>{$LANG.total}:</strong> {$statement.total|utilNumber}
+                <strong>{$LANG.totalUc}:</strong> {$statement.total|utilNumber}
                 <br/>
             </td>
         </tr>
@@ -103,7 +103,7 @@
             <td>&nbsp;&nbsp;</td>
             <td class="details_screen"><b>{$LANG.customer}</b></td>
             <td>&nbsp;&nbsp;</td>
-            <td class="details_screen"><b>{$LANG.total}</b></td>
+            <td class="details_screen"><b>{$LANG.totalUc}</b></td>
         </tr>
         {section name=invoice loop=$invoices}
             {if $smarty.section.invoice.index != 0 && $invoices[invoice].preference != $invoices[$smarty.section.invoice.index_prev].preference}

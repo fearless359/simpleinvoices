@@ -4,23 +4,24 @@ use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
 /*
- * Script: details.php
- * 	Customers details page
+ *  Script: details.php
+ *      Customers details page
  *
- * Authors:
- *	 Justin Kelly, Nicolas Ruflin
+ *  Authors:
+ *      Justin Kelly, Nicolas Ruflin
  *
- * Last edited:
+ *  Last edited:
  *      2018-12-21 by Richard Rowley
  *
- * License:
- *	    GPL v3 or above
+ *  License:
+ *      GPL v3 or above
  *
- * Website:
- * 	https://simpleinvoices.group
+ *  Website:
+ *      https://simpleinvoices.group
  */
 global $smarty;
 
@@ -33,7 +34,23 @@ $customer = Customer::getOne($cid);
 $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($customer['credit_card_number']);
 $smarty->assign('customer', $customer);
 
-$smarty->assign('invoices', Customer::getCustomerInvoices($cid));
+// Get the customers that have this customer as their parent
+$subCustomerEnabled = SystemDefaults::getSubCustomer() == ENABLED;
+$smarty->assign('subCustomerEnabled', $subCustomerEnabled);
+if ($subCustomerEnabled) {
+    $children = Customer::getMyChildren($cid);
+    $isParent = !empty($children);
+    $smarty->assign('isParent', $isParent);
+    if ($isParent) {
+        $smarty->assign("childCustomers", $children);
+    } else {
+        $smarty->assign('parentCustomers', Customer::getAll(['enabled_only' => true]));
+    }
+}
+
+$invoices = Customer::getCustomerInvoices($cid);
+$smarty->assign('invoices', $invoices);
+$smarty->assign('invoiceCount', count($invoices));
 
 $smarty->assign('customFieldLabel', CustomFields::getLabels(true));
 
@@ -44,8 +61,8 @@ try {
 } catch (PdoDbException $pde) {
     exit("modules/customers/details.php Unexpected error: {$pde->getMessage()}");
 }
+$smarty->assign("defaults", SystemDefaults::loadValues());
 
 $smarty->assign('pageActive', 'customer');
-$subPageActive  = $_GET['action'] == "view"  ? "customer_view" : "customer_edit";
-$smarty->assign('subPageActive', $subPageActive);
+$smarty->assign('subPageActive', "customer_edit");
 $smarty->assign('active_tab', '#people');

@@ -132,7 +132,7 @@
                     </tr>
                     <tr>
                         <th class="details_screen">{$LANG.totalOwing}:</th>
-                        <td class="si_right" style="text-decoration:underline;">{$customer.owing|utilCurrency}</td>
+                        <td class="si_right underline">{$customer.owing|utilCurrency}</td>
                     </tr>
                 </table>
             </div>
@@ -166,8 +166,8 @@
                     <tr class="tr_head">
                         <th class="first">{$LANG.invoiceUc}</th>
                         <th class="details_screen">{$LANG.dateCreated}</th>
-                        <th class="details_screen">{$LANG.total}</th>
-                        <th class="details_screen">{$LANG.paid}</th>
+                        <th class="details_screen">{$LANG.totalUc}</th>
+                        <th class="details_screen">{$LANG.paidUc}</th>
                         <th class="details_screen">{$LANG.owingUc}</th>
                     </tr>
                     </thead>
@@ -198,8 +198,8 @@
                             <th class="first">{$LANG.actions}</th>
                             <th class="details_screen">{$LANG.id}</th>
                             <th class="details_screen">{$LANG.dateCreated}</th>
-                            <th class="details_screen">{$LANG.total}</th>
-                            <th class="details_screen">{$LANG.paid}</th>
+                            <th class="details_screen">{$LANG.totalUc}</th>
+                            <th class="details_screen">{$LANG.paidUc}</th>
                             <th class="details_screen">{$LANG.owingUc}</th>
                         </tr>
                         </thead>

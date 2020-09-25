@@ -81,7 +81,7 @@ class Expense
             $pdoDb->addToJoins($join);
 
             $case = new CaseStmt("status", "status_wording");
-            $case->addWhen("=", ENABLED, $LANG['paid']);
+            $case->addWhen("=", ENABLED, $LANG['paidUc']);
             $case->addWhen("!=", ENABLED, $LANG['notPaid'], true);
             $pdoDb->addToCaseStmts($case);
 
@@ -114,7 +114,7 @@ class Expense
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['p_desc'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['p_desc'];
-                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paid'] : $LANG['notPaid'];
+                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paidUc'] : $LANG['notPaid'];
                 $expenses[] = $row;
             }
         } catch (PdoDbException $pde) {

@@ -17,11 +17,11 @@
             {include file="templates/default/reports/customerSelectList.tpl"}
             <tr>
                 <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
-                    <label for="customFlagId">{$LANG['exclude']} {$LANG.customFlagUc} #:</label>
+                    <label for="customFlagId">{$LANG.exclude} {$LANG.customFlagUc} #:</label>
                 </td>
                 <td>
                     <select name="customFlag" id="customFlagId">
-                        <option value="0" {if $customFlag == 0} selected {/if}>{$LANG['none']}</option>
+                        <option value="0" {if $customFlag == 0} selected {/if}>{$LANG.none}</option>
                         {foreach $customFlagLabels as $ndx => $label}
                             {if $label != ''}
                                 <option value="{$ndx+1}" {if $customFlag - 1 == $ndx} selected {/if}>{$ndx+1}&nbsp;-&nbsp;{$label}</option>

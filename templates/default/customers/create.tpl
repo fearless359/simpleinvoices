@@ -116,6 +116,24 @@
                     <td><input type="text" name="credit_card_expiry_year" class="si_input" size="5" tabindex="160"
                                value="{if isset($smarty.post.credit_card_expiry_year)}{$smarty.post.credit_card_expiry_year|htmlSafe}{/if}"/></td>
                 </tr>
+                <tr>
+                    <th class="details_screen">{$LANG.parentCustomer}: </th>
+                    <td>
+                    {if empty($parent_customers)}
+                        <em>{$LANG.noCustomers}</em>
+                    {else}
+                        <select name="parent_customer_id" class="si_input" tabindex="170">
+                            <option value=''></option>
+                            {foreach $parent_customers as $customer}
+                                <option {if isset($defaultCustomerID) && $customer.id == $defaultCustomerID}selected{/if}
+                                        value="{if isset($customer.id)}{$customer.id|htmlSafe}{/if}">
+                                    {$customer.name|htmlSafe}
+                                </option>
+                            {/foreach}
+                        </select>
+                    {/if}
+                    </td>
+                </tr>
                 {if !empty($customFieldLabel.customer_cf1)}
                     <tr>
                         <th class="details_screen">{$customFieldLabel.customer_cf1|htmlSafe}:
@@ -124,7 +142,7 @@
                                 <img src="{$helpImagePath}help-small.png" alt=""/>
                             </a>
                         </th>
-                        <td><input type="text" name="custom_field1" class="si_input" size="25" tabindex="170"
+                        <td><input type="text" name="custom_field1" class="si_input" size="25" tabindex="175"
                                    value="{if isset($smarty.post.custom_field1)}{$smarty.post.custom_field1|htmlSafe}{/if}"/></td>
                     </tr>
                 {/if}

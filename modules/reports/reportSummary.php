@@ -72,7 +72,7 @@ try {
     $pdoDb->addToSelectStmts($se);
 
     $ca = new CaseStmt("status", "status_wording");
-    $ca->addWhen("=", ENABLED, $LANG['paid']);
+    $ca->addWhen("=", ENABLED, $LANG['paidUc']);
     $ca->addWhen("<>", ENABLED, $LANG['notPaid'], true);
     $pdoDb->addToCaseStmts($ca);
 

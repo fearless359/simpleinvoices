@@ -22,8 +22,8 @@
 				<th>{$LANG.invoice}</th>
 				<th>{$LANG.biller}</th>
 				<th>{$LANG.customer}</th>
-				<th>{$LANG.total}</th>
-				<th>{$LANG.paid}</th>
+				<th>{$LANG.totalUc}</th>
+				<th>{$LANG.paidUc}</th>
 				<th>{$LANG.owingUc}</th>
 				<th>{$LANG.date|htmlSafe|ucfirst}</th>
 				<th>{$LANG.age|htmlSafe}</th>
@@ -46,7 +46,7 @@
 			{/foreach}
 
 			<tr>
-				<th colspan="6">{$LANG.total}</th>
+				<th colspan="6">{$LANG.totalUc}</th>
 				<td>{$period.sum_total|utilNumber:2|default:'-'}</td>
 				<td colspan="3"></td>
 			</tr>

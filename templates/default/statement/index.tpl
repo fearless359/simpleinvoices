@@ -125,14 +125,14 @@
             <th class="left">{$LANG.biller}:</th>
             <td>{if empty($billerDetails.name)}{$LANG.all}{else}{$billerDetails.name|htmlSafe}{/if}</td>
             <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <th>{$LANG.total}:</th>
+            <th>{$LANG.totalUc}:</th>
             <td class="si_right">{$statement.total|utilCurrency}</td>
         </tr>
         <tr>
             <th class="left">{$LANG.customer}:</th>
             <td>{if empty($customerDetails.name)}{$LANG.all}{else}{$customerDetails.name|htmlSafe}{/if}</td>
             <td colspan="2"></td>
-            <th>{$LANG.paid}:</th>
+            <th>{$LANG.paidUc}:</th>
             <td class="si_right underline">{$statement.paid|utilCurrency}</td>
         </tr>
         <tr>
@@ -155,8 +155,8 @@
                 <th>{$LANG.dateUc}</th>
                 <th>{$LANG.biller}</th>
                 <th>{$LANG.customer}</th>
-                <th class="si_right">{$LANG.total}</th>
-                <th class="si_right">{$LANG.paid}</th>
+                <th class="si_right">{$LANG.totalUc}</th>
+                <th class="si_right">{$LANG.paidUc}</th>
                 <th class="si_right">{$LANG.owingUc}</th>
             </tr>
             </thead>

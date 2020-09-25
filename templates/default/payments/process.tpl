@@ -7,13 +7,13 @@
                 <tr>
                     <th class="details_screen">{$invoice.preference|htmlSafe}</th>
                     <td>{$invoice.index_id|htmlSafe}</td>
-                    <th class="details_screen">{$LANG.total}</th>
+                    <th class="details_screen">{$LANG.totalUc}</th>
                     <td>{$invoice.total|utilNumber:2}</td>
                 </tr>
                 <tr>
                     <th class="details_screen">{$LANG.biller}</th>
                     <td>{$biller.name|htmlSafe}</td>
-                    <th class="details_screen">{$LANG.paid}</th>
+                    <th class="details_screen">{$LANG.paidUc}</th>
                     <td>{$invoice.paid|utilNumber}</td>
                 </tr>
                 <tr>
@@ -54,7 +54,7 @@
                                     (
                                     {$invoice.biller|htmlSafe},
                                     {$invoice.customer|htmlSafe},
-                                    {$LANG.total} {$invoice.total|utilNumber} :
+                                    {$LANG.totalUc} {$invoice.total|utilNumber} :
                                     {$LANG.owingUc} {$invoice.owing|utilNumber}
                                     )
                                 </option>

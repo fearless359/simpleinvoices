@@ -3,6 +3,7 @@
 namespace Inc\Claz;
 
 use Encryption;
+use Exception;
 
 /**
  * Class Customer
@@ -267,11 +268,11 @@ class Customer
     /**
      * Get the total owing for a customer.
      * @param int $id for customer to get the total for.
-     * @param bool $is_real if true, selects customer only if preferences statis is ENABLED.
+     * @param bool $isReal if true, selects customer only if preferences status is ENABLED.
      *          If false (default), selection by ID and user's domain.
      * @return float total for customer.
      */
-    public static function calcCustomerTotal(int $id, bool $is_real = false): float
+    public static function calcCustomerTotal(int $id, bool $isReal = false): float
     {
         global $pdoDb;
 
@@ -284,7 +285,7 @@ class Customer
             $jn->addSimpleItem("iv.domain_id", new DbField("ii.domain_id"));
             $pdoDb->addToJoins($jn);
 
-            if ($is_real) {
+            if ($isReal) {
                 $jn = new Join("LEFT", "preferences", "pr");
                 $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
                 $jn->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
@@ -309,18 +310,18 @@ class Customer
 
     /**
      * Find the last invoice index_id for a customer.
-     * @param int $customer_id ID of customer to get info for.
+     * @param int $customerId ID of customer to get info for.
      * @param int $lastIndexId Last index-id value for this customer
      * @param int $lastId Last id value for this customer
      */
-    public static function getLastInvoiceIds(int $customer_id, &$lastIndexId, &$lastId): void
+    public static function getLastInvoiceIds(int $customerId, &$lastIndexId, &$lastId): void
     {
         global $pdoDb;
 
         $lastIndexId = 0;
         $lastId = 0;
         try {
-            $pdoDb->addSimpleWhere('customer_id', $customer_id, 'AND');
+            $pdoDb->addSimpleWhere('customer_id', $customerId, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
 
             $fn = new FunctionStmt("MAX", new DbField("id"), 'last_id');
@@ -340,6 +341,83 @@ class Customer
 
         $lastIndexId = $rows[0]['last_index_id'];
         $lastId = $rows[0]['last_id'];
+    }
+
+    /**
+     * Check to see if this customer is a parent of other customers.
+     * @param int $cId Id of customer to check for having children.
+     * @return array Contains the list of sub-customers for the specified $cid.
+     */
+    public static function getMyChildren(int $cId): array
+    {
+        global $pdoDb;
+        try {
+            $pdoDb->addSimpleWhere("parent_customer_id", $cId, "AND");
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $pdoDb->setSelectList(['id', 'name']);
+            $rows = $pdoDb->request("SELECT", "customers");
+        } catch (PdoDbException $pde) {
+            error_log("Customer::isParent() - Error: " . $pde->getMessage());
+            return [];
+        }
+        return $rows;
+    }
+
+    public static function getMyParent(int $parentId): array
+    {
+        global $pdoDb;
+
+        $rows = [];
+        try {
+            $pdoDb->addSimpleWhere("id", $parentId, "AND");
+            $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+            $pdoDb->setSelectList(['id', 'name']);
+            $rows = $pdoDb->request("SELECT", "customers");
+        } catch (PdoDbException $pde) {
+            error_log("SubCustomers::getSubCustomers() - Error: " . $pde->getMessage());
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Get a <b>sub-customer</b> records associated with a specific <b>parent_customer_id</b>.
+     * @param int $parentId
+     * @return array <b>si_customer</b> records retrieved.
+     */
+    public static function getSubCustomers(int $parentId): array
+    {
+        global $pdoDb;
+
+        $rows = [];
+        try {
+            // This is a bit of a trick. We are adding a selection for the parent_customer_id
+            // field for all customers that have this parent. Then we call the Customer::getAll()
+            // method which will add the final select for the domain_id. So in essence we will
+            // use the standard access to perform our selection and return the standard record
+            // structure with the parent_customer_id added to the select list.
+            $pdoDb->addSimpleWhere("parent_customer_id", $parentId, "AND");
+            $rows = Customer::getAll();
+        } catch (PdoDbException $pde) {
+            error_log("SubCustomers::getSubCustomers() - Error: " . $pde->getMessage());
+        }
+
+        return $rows;
+    }
+
+    /**
+     * JSON encoded echoed output for all customers with this parent ID.
+     * @param int $parentId
+     */
+    public static function getSubCustomerAjax(int $parentId): void
+    {
+        $rows = self::getSubCustomers($parentId);
+        $output = "<option value=''></option>";
+        foreach ($rows as $row) {
+            $output .= "<option value='{$row['id']}'>{$row['name']}</option>";
+        }
+        echo json_encode($output);
+        exit();
     }
 
     /**
@@ -396,6 +474,7 @@ class Customer
             }
             $pdoDb->addSimpleWhere('id', $id, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+
             $pdoDb->request('UPDATE', 'customers');
         } catch (PdoDbException $pde) {
             error_log("Customer::updateCustomer(): Unable to update the customer record. Error: " . $pde->getMessage());
@@ -407,11 +486,11 @@ class Customer
     /**
      * Mask a string with specified string of characters exposed.
      * @param string|null $value Value to be masked.
-     * @param string $chr Character to replace masked characters.
-     * @param int $num_to_show Number of characters to leave exposed.
+     * @param string $maskChr Character to replace masked characters.
+     * @param int $numToShow Number of characters to leave exposed.
      * @return string Masked value.
      */
-    public static function maskCreditCardNumber(?string $value, string $chr = 'x', int $num_to_show = 4): string
+    public static function maskCreditCardNumber(?string $value, string $maskChr = 'x', int $numToShow = 4): string
     {
         global $config;
 
@@ -419,22 +498,27 @@ class Customer
             return '';
         }
 
-        // decrypt the value
-        $key = $config['encryptionDefaultKey'];
-        $enc = new Encryption();
-        $decryptedValue = $enc->decrypt($key, $value);
+        try {
+            // decrypt the value
+            $key = $config['encryptionDefaultKey'];
+            $enc = new Encryption();
+            $decryptedValue = $enc->decrypt($key, $value);
 
-        $len = strlen($decryptedValue);
-        if ($len <= $num_to_show) {
-            return $decryptedValue;
-        }
+            $len = strlen($decryptedValue);
+            if ($len <= $numToShow) {
+                return $decryptedValue;
+            }
 
-        $maskLen = $len - $num_to_show;
-        $maskedValue = "";
-        for ($ndx = 0; $ndx < $maskLen; $ndx++) {
-            $maskedValue .= $chr;
+            $maskLen = $len - $numToShow;
+            $maskedValue = "";
+            for ($ndx = 0; $ndx < $maskLen; $ndx++) {
+                $maskedValue .= $maskChr;
+            }
+
+            $maskedValue .= substr($decryptedValue, $maskLen);
+        } catch (Exception $exp) {
+            return $value;
         }
-        $maskedValue .= substr($value, $maskLen);
         return $maskedValue;
     }
 

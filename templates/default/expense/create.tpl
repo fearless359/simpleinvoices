@@ -10,7 +10,7 @@
                 <tr>
                     <th class="details_screen">{$LANG.expenseAccounts}</th>
                     <td>
-                        <select name="expense_account_id" class="validate[required]" tabindex="10">
+                        <select name="expense_account_id" class="si_input validate[required]" tabindex="10">
                             <option value=''></option>
                             {foreach $expense_add.expense_accounts as $expense_account}
                                 <option value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
@@ -25,14 +25,14 @@
                 <tr>
                     <th class="details_screen">{$LANG.dateFormatted}</th>
                     <td>
-                        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="date" id="date"
+                        <input type="text" name="date" id="date" class="si_input validate[required,custom[date],length[0,10]] date-picker" size="10"
                                value='{$smarty.now|date_format:"%Y-%m-%d"}' tabindex="30"/>
                     </td>
                 </tr>
                 <tr>
                     <th class="details_screen">{$LANG.biller}</th>
                     <td>
-                        <select name="biller_id" class="validate[required]">
+                        <select name="biller_id" class="si_input validate[required]" tabindex="40">
                             <option value=''></option>
                             {foreach $expense_add.billers as $biller}
                                 <option {if isset($biller.id) && $biller.id == $defaults.biller} selected {/if}
@@ -44,7 +44,7 @@
                 <tr>
                     <th class="details_screen">{$LANG.customer}</th>
                     <td>
-                        <select name="customer_id">
+                        <select name="customer_id" class="si_input" tabindex="50">
                             <option value=''></option>
                             {foreach $expense_add.customers as $customer}
                                 <option {if isset($customer.id) && $customer.id == $defaults.customer} selected {/if}
@@ -56,7 +56,7 @@
                 <tr>
                     <th class="details_screen">{$LANG.invoiceUc}</th>
                     <td>
-                        <select name="invoice_id" tabindex="60">
+                        <select name="invoice_id" class="si_input" tabindex="60">
                             <option value=''></option>
                             {foreach $expense_add.invoices as $invoice}
                                 <option value="{$invoice.id}">{$invoice.index_name}</option>
@@ -67,7 +67,7 @@
                 <tr>
                     <th class="details_screen">{$LANG.productUc}</th>
                     <td>
-                        <select name="product_id" tabindex="70">
+                        <select name="product_id" class="si_input" tabindex="70">
                             <option value=''></option>
                             {foreach $expense_add.products as $product}
                                 <option value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
@@ -81,8 +81,8 @@
                             {$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax.index+1}{/if}
                         </th>
                         <td>
-                            <select id="tax_id[0][{$smarty.section.tax.index}]"
-                                    name="tax_id[0][{$smarty.section.tax.index}]" tabindex="8{$smarty.section.tax.index}">
+                            <select name="tax_id[0][{$smarty.section.tax.index}]" id="tax_id[0][{$smarty.section.tax.index}]"
+                                    class="si_input" tabindex="8{$smarty.section.tax.index}">
                                 <option value=""></option>
                                 {foreach $taxes as $tax}
                                     <option {if $tax.tax_id == $defaults.tax AND $smarty.section.tax.index == 0} selected {/if} value="{if isset($tax.tax_id)}{$tax.tax_id}{/if}">{$tax.tax_description}</option>
@@ -94,8 +94,8 @@
                 <tr>
                     <th class="details_screen">{$LANG.status}</th>
                     <td>
-                        <select name="status" tabindex="90">
-                            <option value="1" selected>{$LANG.paid}</option>
+                        <select name="status" class="si_input" tabindex="90">
+                            <option value="1" selected>{$LANG.paidUc}</option>
                             <option value="0">{$LANG.notPaid}</option>
                         </select>
                     </td>
@@ -106,7 +106,7 @@
                 <tr>
                     <td colspan="2">
                         <input name="note" id="note" {if isset($smarty.post.notes)}value="{$smarty.post.notes|outHtml}"{/if} type="hidden">
-                        <trix-editor input="note" tabindex="100"></trix-editor>
+                        <trix-editor input="note" class="si_input" tabindex="100"></trix-editor>
                     </td>
                 </tr>
             </table>
