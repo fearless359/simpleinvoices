@@ -16,7 +16,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th>{$LANG.rate}
+                    <th>{$LANG.rateUc}
                         <a class="cluetip" href="#"
                            rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxRateSign">
                             <img src="{$helpImagePath}help-small.png" alt=""/>

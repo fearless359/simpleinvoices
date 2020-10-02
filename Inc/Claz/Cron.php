@@ -306,16 +306,19 @@ class Cron
 
                         CronLog::insert($pdoDb, $domainId, $cronId, $today);
                         $invoice = Invoice::getOne($newInvoiceId);
-                        $preference = Preferences::getOne($invoice['preference_id']);
                         $biller = Biller::getOne($invoice['biller_id']);
                         $customer = Customer::getOne($invoice['customer_id']);
+                        $preference = Preferences::getOne($invoice['preference_id']);
 
                         // email invoice
                         if ($value['email_biller'] == ENABLED || $value['email_customer'] == ENABLED) {
                             $export = new Export(Destination::STRING_RETURN);
+                            $export->setBiller($biller);
+                            $export->setCustomer($customer);
                             $export->setFormat("pdf");
-                            $export->setRecId($invoice['id']);
+                            $export->setInvoice($invoice);
                             $export->setModule('invoice');
+                            $export->setPreference($preference);
                             $pdfString = $export->execute();
 
                             $emailBody = self::emailBodyGen('cron_invoice', $customer['name'], $invoice['index_name'], $biller['name']);
@@ -357,10 +360,12 @@ class Cron
                                 if ($value['email_biller'] == ENABLED || $value['email_customer'] == ENABLED) {
                                     // Code to email a new copy of the invoice to the customer
                                     $exportRec = new Export(Destination::STRING_RETURN);
+                                    $exportRec->setBiller($biller);
+                                    $exportRec->setCustomer($customer);
                                     $exportRec->setFormat("pdf");
-                                    $exportRec->setRecId($invoice['id']);
+                                    $exportRec->setInvoice($invoice);
                                     $exportRec->setModule('invoice');
-
+                                    $exportRec->setPreference($preference);
                                     $pdfString = $exportRec->execute();
 
                                     $emailBodyRec = self::emailBodyGen('cron_invoice_receipt', $customer['name'], $invoice['index_name'], $biller['name']);

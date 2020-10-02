@@ -72,7 +72,7 @@ class Util
     public static function filenameEscape(string $str): string
     {
         // Returns an escaped value.
-        $pattern = '/[^a-z0-9\-_\.]/i';
+        $pattern = '/[^a-z0-9\-_\.\/]/i';
         return preg_replace($pattern, '_', $str);
     }
 

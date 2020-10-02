@@ -155,11 +155,11 @@
                     </tr>
                     <tr style="text-align: left;">
                         <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.numberShort}:</td>
-                        <td class="" style="text-align:right;" colspan="3">{$invoice.index_id}</td>
+                        <td class="si_right"  colspan="3">{$invoice.index_id}</td>
                     </tr>
                     <tr>
                         <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.dateUc}:</td>
-                        <td class="" style="text-align:right;" colspan="3">{$invoice.date|utilDate}</td>
+                        <td class="si_right" colspan="3">{$invoice.date|utilDate}</td>
                     </tr>
                     <!-- Show the Invoice Custom Fields if valid -->
                     {if !empty($customFieldLabels.invoice_cf1) && isset($invoice.custom_field1)}

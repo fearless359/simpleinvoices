@@ -50,9 +50,8 @@ try {
         $export->setBiller($biller);
         $export->setCustomer($customer);
         $export->setFormat("pdf");
-        $export->setRecId($invoiceId);
-        $export->setInvoice($invoice);
-        $export->setFileName('invoice');
+        $export->setInvoices($invoice);
+        $export->setModule('invoice');
         $export->setPreference($preference);
         $pdfString = $export->execute();
         Log::out("email.php - After execute");

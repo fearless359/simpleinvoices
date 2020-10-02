@@ -1,9 +1,23 @@
+{if $fileType != 'xls' && $fileType != 'doc'}
+    <link rel="shortcut icon" href="{$path}../../../images/favicon.ico"/>
+    <link rel="stylesheet" href="{$path}../../../include/jquery/css/main.css">
+{/if}
 {if !$menu}
     <hr/>
 {/if}
-<div style="text-align: center;">
+<h1 class="si_center">{$title}</h1>
+{include file=$path|cat:"library/dataRangeDisplay.tpl"};
+{if $customFlag > 0}
+    <div class="si_center">
+        <strong>
+            {$LANG.excludeUc} {$LANG.customFlagUc}:&nbsp;{$customFlag}&nbsp;-&nbsp;{$customFlagLabel}
+        </strong>
+    </div>
+{/if}
+<br/>
+<div class="si_center">
     <strong>
-        {$LANG.totalIncome}&nbsp;{$LANG.forThePeriodUc}:&nbsp;{if isset($tot_income)}{$tot_income|utilCurrency}{/if}
+        {$LANG.totalIncome}&nbsp;{$LANG.forThePeriodUc}:&nbsp;{if isset($totIncome)}{$totIncome|utilCurrency}{/if}
     </strong>
 </div>
 <br/>
@@ -12,15 +26,15 @@
     <tr style="font-weight: bold;">
         <th class="details_screen si_right" style="width:8%;">{$LANG.invoiceUc} #</th>
         <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_center" style="width:10%;">{$LANG.invoiceUc} {$LANG.open} {$LANG.dateUc}</th>
+        <th class="details_screen si_center" style="width:10%;">{$LANG.open} {$LANG.dateUc}</th>
         <th class="details_screen" style="width:2%;"></th>
         <th class="details_screen si_center" style="width:23%;">{$LANG.customer}</th>
         <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_right" style="width:10%;">{$LANG.invoiceTotal}</th>
+        <th class="details_screen si_right" style="width:10%;">{$LANG.totalUc}</th>
         <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_right" style="width:10%;">{$LANG.totalPaid}</th>
+        <th class="details_screen si_right" style="width:10%;">{$LANG.paidUc}</th>
         <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_right" style="width:15%;">{$LANG.totalPaidThisPeriod}</th>
+        <th class="details_screen si_right" style="width:15%;">{$LANG.paidThisPeriod}</th>
     </tr>
     </thead>
     <tbody>
@@ -44,12 +58,11 @@
                 {$invoice->totalPayments|utilCurrency}
             </td>
             <td>&nbsp;</td>
-            <td class="details_screen si_right"
-                {if $invoice@last}style="text-decoration:underline;"{/if}>
+            <td class="details_screen si_right {if $invoice@last}underline{/if}">
                 {$invoice->totalPeriodPayments|utilCurrency}
             </td>
         <tr>
-        {if $display_detail}
+        {if $displayDetail}
             {foreach $invoice->items as $item}
                 <tr>
                     <td>&nbsp;</td>
@@ -63,7 +76,7 @@
     {/foreach}
     <tr>
         <td colspan="10">&nbsp;</td>
-        <td class="details_screen si_right">{if isset($tot_income)}{$tot_income|utilCurrency}{/if}</td>
+        <td class="details_screen si_right">{if isset($totIncome)}{$totIncome|utilCurrency}{/if}</td>
     </tr>
     </tbody>
 </table>

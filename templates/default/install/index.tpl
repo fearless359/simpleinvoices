@@ -37,24 +37,24 @@
 <br/>
 <table class="center">
     <tr>
-        <th style="text-align: right; margin-right: 0; font-weight: bold; text-decoration: underline;">{$LANG.propertyUc}</th>
-        <th style="text-align: left; padding-left: 40px; font-weight: bold; text-decoration: underline;">{$LANG.value}</th>
+        <th class="si_right bold underline" style="margin-right: 0;">{$LANG.propertyUc}</th>
+        <th class="left bold underline" style="text-align: left; padding-left: 40px;">{$LANG.value}</th>
     </tr>
     <tr>
-        <td style="text-align: right; margin-right: 0;">{$LANG.hostUc}</td>
-        <td style="text-align: left; padding-left: 40px;">{$config.databaseHost}</td>
+        <td class="si_right" style="margin-right: 0;">{$LANG.hostUc}</td>
+        <td class="si_left" style="padding-left: 40px;">{$config.databaseHost}</td>
     </tr>
     <tr>
-        <td style="text-align: right; margin-right: 0;">{$LANG.databaseUc}</td>
-        <td style="text-align: left; padding-left: 40px;">{$config.databaseDbname}</td>
+        <td class="si_right" style="margin-right: 0;">{$LANG.databaseUc}</td>
+        <td class="si_left" style="padding-left: 40px;">{$config.databaseDbname}</td>
     </tr>
     <tr>
-        <td style="text-align: right; margin-right: 0;">{$LANG.username}</td>
-        <td style="text-align: left; padding-left: 40px;">{$config.databaseUsername}</td>
+        <td class="si_right" style="margin-right: 0;">{$LANG.username}</td>
+        <td class="si_left" style="padding-left: 40px;">{$config.databaseUsername}</td>
     </tr>
     <tr>
-        <td style="text-align: right; margin-right: 0;">{$LANG.password}</td>
-        <td style="text-align: left; padding-left: 40px;">**********</td>
+        <td class="si_right" style="margin-right: 0;">{$LANG.password}</td>
+        <td class="si_left" style="padding-left: 40px;">**********</td>
     </tr>
 </table>
 <div class="si_toolbar si_toolbar_form">

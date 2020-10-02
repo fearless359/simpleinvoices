@@ -11,7 +11,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.rate}:
+                <th class="details_screen">{$LANG.rateUc}:
                     <a class="cluetip" href="#" title="{$LANG.taxRate}" tabindex="-1"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxRateSign">
                         <img src="{$helpImagePath}help-small.png" alt=""/>

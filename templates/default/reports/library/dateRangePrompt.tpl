@@ -1,6 +1,6 @@
 <tr>
-    <td colspan="2"
-        style="font-weight: bold; font-size: 1.5em; text-align: center; text-decoration: underline;">
+    <td class="si_center bold underline" colspan="2"
+        style="font-size: 1.5em;">
         {$LANG.reportPeriod}
     </td>
 </tr>
@@ -8,7 +8,7 @@
     <td colspan="2">&nbsp;</td>
 </tr>
 <tr style="margin: 0 auto; width: 100%;">
-    <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
+    <td class="si_right nowrap" style="padding-right: 10px; width: 47%;">
         <label for="startDateId">{$LANG.activityUc} {$LANG.startDate}:</label>
     </td>
     <td>
@@ -18,7 +18,7 @@
     </td>
 </tr>
 <tr style="margin: 0 auto; width: 100%;">
-    <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
+    <td class="si_right nowrap" style="padding-right: 10px; width: 47%;">
         <label for="endDateId">{$LANG.activityUc} {$LANG.endDate}:</label>
     </td>
     <td>

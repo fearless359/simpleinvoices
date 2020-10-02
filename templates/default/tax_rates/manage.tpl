@@ -27,7 +27,7 @@
         <tr>
             <th>{$LANG.actions}</th>
             <th>{$LANG.descriptionUc}</th>
-            <th>{$LANG.rate}</th>
+            <th>{$LANG.rateUc}</th>
             <th>{$LANG.enabled}</th>
         </tr>
         </thead>

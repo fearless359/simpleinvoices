@@ -102,6 +102,10 @@ table.center {
     text-decoration: underline;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 table.left {
   float:left;
   margin-left:auto;
@@ -1005,11 +1009,6 @@ a.cluetip:hover img {
     color: #00b900;
     border-left-width: 0;
     padding-left: 5px;
-    display: none;
-}
-
-.si_report_table .neg_rate {
-    color: #da100d;
 }
 
 .si_button_mini {

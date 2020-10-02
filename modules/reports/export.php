@@ -13,29 +13,56 @@ use Mpdf\Output\Destination;
  *
  * Website:
  * https://simpleinvoices.group */
+global $module;
+
 // @formatter:off
-$billerId       = isset($_GET['billerId'])       ? $_GET['billerId']       : "";
-$customerId     = isset($_GET['customerId'])     ? $_GET['customerId']     : "";
+$billerId       = isset($_GET['billerId'])       ? $_GET['billerId']       : null;
+$customerId     = isset($_GET['customerId'])     ? $_GET['customerId']     : null;
 $displayDetail  = isset($_GET['displayDetail'])  ? $_GET['displayDetail']  : "no";
-$filterByDate   = isset($_GET['filterByDate'])   ? $_GET['filterByDate']   : "no";
 $endDate        = isset($_GET['endDate'])        ? $_GET['endDate']        : "";
-$reportFileType = isset($_GET['reportFileType']) ? $_GET['reportFileType'] : "";
-$reportFormat   = isset($_GET['reportFormat'])   ? $_GET['reportFormat']   : "file";
-$reportFileName = isset($_GET['reportFileName']) ? $_GET['reportFileName'] : "";
+$fileName       = isset($_GET['fileName'])       ? $_GET['fileName']       : "";
+$fileType       = isset($_GET['fileType'])       ? $_GET['fileType']       : "";
+$filterByDate   = isset($_GET['filterByDate'])   ? $_GET['filterByDate']   : "no";
+$format         = isset($_GET['format'])         ? $_GET['format']         : "file";
 $showOnlyUnpaid = isset($_GET['showOnlyUnpaid']) ? $_GET['showOnlyUnpaid'] : "no";
 $startDate      = isset($_GET['startDate'])      ? $_GET['startDate']      : "";
 // @formatter:on
+
+switch ($fileName) {
+    case 'reportNetIncome':
+        $customFlag = isset($_GET['customFlag']) ? $_GET['customFlag'] : '0';
+        $customFlagLabel = isset($_GET['customFlagLabel']) ? $_GET['customFlagLabel'] : '';
+        include "modules/reports/reportNetIncomeReportData.php";
+        $params = [
+            'customerId' => $customerId,
+            'customFlag' => $customFlag,
+            'customFlagLabel' => $customFlagLabel
+        ];
+        break;
+
+    case 'reportSalesByPeriods':
+        include "modules/reports/reportSalesByPeriodsData.php";
+        break;
+
+    case 'reportSalesTotal':
+        include "modules/reports/reportSalesTotalData.php";
+        break;
+
+    default:
+        exit("Undefined fileName");
+}
 
 // get the invoice id
 $export = new Export(Destination::DOWNLOAD);
 $export->setBillerId($billerId);
 $export->setCustomerId($customerId);
 $export->setDisplayDetail($displayDetail);
-$export->setFilterByDate($filterByDate);
 $export->setEndDate($endDate);
-$export->setReportFileType($reportFileType);
-$export->setReportFormat($reportFormat);
-$export->setReportFileName($reportFileName);
+$export->setFileName($fileName);
+$export->setFileType($fileType);
+$export->setFilterByDate($filterByDate);
+$export->setFormat($format);
+$export->setModule($module);
 $export->setShowOnlyUnpaid($showOnlyUnpaid);
 $export->setStartDate($startDate);
 try {

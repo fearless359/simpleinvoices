@@ -66,12 +66,12 @@
  {/section}
     <tr>
         <td class="details_screen" colspan="7"></td>
-        <td class="details_screen si_right" style="font-weight:bold;">-------</td>
-        <td class="details_screen si_right" style="font-weight:bold;">-------</td>
-        <td class="details_screen si_right" style="font-weight:bold;">-------</td>
+        <td class="details_screen si_right bold">-------</td>
+        <td class="details_screen si_right bold">-------</td>
+        <td class="details_screen si_right bold">-------</td>
 	</tr>
     <tr>
-        <td class="details_screen si_right" colspan="7" style="font-weight:bold;">{$LANG.totalUc}:&nbsp;&nbsp;</td>
+        <td class="details_screen si_right bold" colspan="7">{$LANG.totalUc}:&nbsp;&nbsp;</td>
         <td class="details_screen si_right">{$invoice_totals.sum_total|utilNumber}</td>
         <td class="details_screen si_right">{$invoice_totals.sum_cost|utilNumber}</td>
         <td class="details_screen si_right">{$invoice_totals.sum_profit|utilNumber}</td>

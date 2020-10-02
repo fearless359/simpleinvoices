@@ -13,5 +13,5 @@ function lastOfMonth() {
     return date ( "Y-m-d", strtotime ( 'last day of this month') );
 }
 
-$startDate  = isset($_POST['start_date'] ) ? $_POST['start_date']: firstOfMonth();
-$endDate    = isset($_POST['end_date']   ) ? $_POST['end_date']  : lastOfMonth ();
+$startDate  = isset($_POST['startDate'] ) ? $_POST['startDate']: firstOfMonth();
+$endDate    = isset($_POST['endDate']   ) ? $_POST['endDate']  : lastOfMonth ();

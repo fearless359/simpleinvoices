@@ -318,7 +318,6 @@ class SiAcl
          */
         $acl = unserialize($_SESSION['acl']);
 
-        /** @noinspection PhpUndefinedFieldInspection */
         return $acl->can->{$role}->{$permission}($resource);
     }
 

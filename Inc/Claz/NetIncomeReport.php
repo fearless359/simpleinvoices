@@ -14,7 +14,7 @@ class NetIncomeReport
      * @param int $excludeCustomFlagItems
      * @return array
      */
-    public function selectRptItems(string $startDate, string $stopDate, int $customerId, int $excludeCustomFlagItems)
+    public static function selectRptItems(string $startDate, string $stopDate, int $customerId, int $excludeCustomFlagItems)
     {
         global $pdoDb;
 

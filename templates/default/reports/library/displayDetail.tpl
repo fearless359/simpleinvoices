@@ -1,5 +1,5 @@
 <tr>
-    <td class="details_screen" style="text-align:right; padding-right: 10px; white-space: nowrap; width: 47%;">
+    <td class="details_screen si_right nowrap" style="padding-right: 10px; width: 47%;">
         <label for="displayDetailId">{$LANG.display} {$LANG.detail}:</label>
     </td>
     <td><input type="checkbox" name="displayDetail" id="displayDetailId"

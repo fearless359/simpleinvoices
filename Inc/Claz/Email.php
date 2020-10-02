@@ -154,6 +154,17 @@ class Email
                 }
                 break;
 
+            case "reports":
+                $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=reports&amp;view=index' />";
+                if ($result == 0) {
+                    $message = $this->pdfFileName . ' could not be sent';
+                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                } else {
+                    $message = $this->pdfFileName . ' has been sent';
+                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                }
+                break;
+
             case "statement":
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=statement&amp;view=index' />";
                 if ($result == 0) {
@@ -290,6 +301,7 @@ class Email
     public function setFormat(string $format): void
     {
         if ($format != 'invoice' &&
+            $format != 'reports' &&
             $format != 'statement' &&
             $format != 'cron' &&
             $format != 'cron_invoice') {

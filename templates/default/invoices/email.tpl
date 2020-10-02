@@ -92,7 +92,7 @@
                 {$LANG.email}
             </button>
         </div>
-        <input type="hidden" name="op" value="insert_customer"/>
+{*        <input type="hidden" name="op" value="insert_customer"/>*}
     </form>
 {elseif $smarty.get.stage == 2}
     {include file="templates/default/invoices/save.tpl"}

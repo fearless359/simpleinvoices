@@ -81,6 +81,7 @@
     {/if}
     {$smarty.capture.hook_head_end}
 </head>
-<body class="body_si body_module_{$module} body_view_{$view}">
+{*<body class="body_si body_module_{$module} body_view_{$view}">*}
+<body class="body_si body_module_{$module}">
 {$smarty.capture.hook_body_start}
 <div class="si_grey_background"></div>

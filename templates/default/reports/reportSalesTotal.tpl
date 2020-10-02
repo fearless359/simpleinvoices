@@ -1,28 +1,23 @@
-<table class="si_report_table">
-  <thead>
-    <tr>
-      <th colspan="3">{$LANG.totalSales}</th>
-    </tr>
-    <tr>
-      <th class="align_left">{$LANG.invoicePreferences}</th>
-      <th class="align_right">{$LANG.invoicesUc}</th>
-      <th class="align_right">{$LANG.totalSales}</th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <td class="page_layer si_right" colspan="2">{$LANG.totalSales}:
-      </td>
-      <td class="page_layer si_right"><span class="bold">{$grandTotalSales|utilNumber:2|default:'-'}</span></td>
-    </tr>
-  </tfoot>
-  <tbody>
-    {foreach $data as $totalSales}
-    <tr>
-      <td class="align_left">{$totalSales.template|htmlSafe}</td>
-      <td class="align_right">{$totalSales.count|utilNumber:0|default:'-'}</td>
-      <td class="align_right">{$totalSales.total|utilNumber:2|default:'-'}</td>
-    </tr>
-    {/foreach}
-  </tbody>
-</table>
+{include file="templates/default/reports/library/reportTitle.tpl" title=$title}
+{include file="templates/default/reports/library/exportButtons.tpl"
+         params=[
+             'endDate' => $endDate|urlencode,
+             'fileName' => "reportSalesTotal",
+             'startDate' => $startDate|urlencode,
+             'title' => $title|urlencode
+         ]
+}
+{if $menu}
+    <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=reports&amp;view=reportSalesTotal">
+        <table class="center">
+            {include file="templates/default/reports/library/dateRangePrompt.tpl"}
+        </table>
+        <br/>
+        {include file="templates/default/reports/library/runReportButton.tpl" value="reportSalesTotal" label=$LANG.runReport}
+        <br/>
+    </form>
+{/if}
+{if isset($smarty.post.submit) || $view == "export"}
+    {include file="templates/default/reports/reportSalesTotalBody.tpl"}
+{/if}

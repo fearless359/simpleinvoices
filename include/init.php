@@ -182,16 +182,18 @@ if ($config['authenticationEnabled'] == ENABLED) {
  * Array: $earlyExit - Add pages that don't need a header or
  * that exit prior to adding the template add in here
  * *************************************************************/
-$earlyExit = [];
-$earlyExit[] = "auth_login";
-$earlyExit[] = "api_cron";
-$earlyExit[] = "auth_logout";
-$earlyExit[] = "export_pdf";
-$earlyExit[] = "export_invoice";
-$earlyExit[] = "statement_export";
-$earlyExit[] = "invoice_template";
-$earlyExit[] = "payments_print";
-$earlyExit[] = "documentation_view";
+$earlyExit = [
+    "api_cron",
+    "auth_login",
+    "auth_logout",
+    "documentation_view",
+    "export_invoice",
+    "export_pdf",
+    "invoice_template",
+    "payments_print",
+    "reports_export",
+    "statement_export"
+];
 
 switch ($module) {
     case "export":

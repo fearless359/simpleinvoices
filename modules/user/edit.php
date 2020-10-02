@@ -30,7 +30,7 @@ global $smarty, $LANG;
 
 $user = User::getOne($_GET['id']);
 
-$custInfo = Customer::getAll(['no_totals' => true]);
+$custInfo = Customer::getAll(['noTotals' => true]);
 $billers = Biller::getAll();
 
 if ($user['user_id'] == 0) {

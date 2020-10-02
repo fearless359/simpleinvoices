@@ -14,27 +14,27 @@ use Mpdf\Output\Destination;
  * Website:
  * https://simpleinvoices.group */
 // @formatter:off
-$billerId       = isset($_GET ['billerId'])       ? $_GET ['billerId']       : null;
-$customerId     = isset($_GET ['customerId'])     ? $_GET ['customerId']     : null;
-$startDate      = isset($_GET ['startDate'])      ? $_GET ['startDate']      : "";
-$endDate        = isset($_GET ['endDate'])        ? $_GET ['endDate']        : "";
-$showOnlyUnpaid = isset($_GET ['showOnlyUnpaid']) ? $_GET ['showOnlyUnpaid'] : "no";
-$filterByDate   = isset($_GET ['filterByDate'])   ? $_GET ['filterByDate']   : "yes";
-$format         = isset($_GET ['format'])         ? $_GET ['format']         : "";
-$fileType       = isset($_GET ['filetype'])       ? $_GET ['filetype']       : "";
+$billerId       = isset($_GET ['billerId'])       ? intval($_GET ['billerId'])   : null;
+$customerId     = isset($_GET ['customerId'])     ? intval($_GET ['customerId']) : null;
+$startDate      = isset($_GET ['startDate'])      ? $_GET ['startDate']          : "";
+$endDate        = isset($_GET ['endDate'])        ? $_GET ['endDate']            : "";
+$showOnlyUnpaid = isset($_GET ['showOnlyUnpaid']) ? $_GET ['showOnlyUnpaid']     : "no";
+$filterByDate   = isset($_GET ['filterByDate'])   ? $_GET ['filterByDate']       : "yes";
+$format         = isset($_GET ['format'])         ? $_GET ['format']             : "";
+$fileType       = isset($_GET ['filetype'])       ? $_GET ['filetype']           : "";
 // @formatter:on
 
 // get the invoice id
 $export = new Export(Destination::DOWNLOAD);
-$export->setFormat($format);
-$export->setFileType($fileType);
-$export->setFileName('statement');
 $export->setBillerId($billerId);
 $export->setCustomerId($customerId);
-$export->setStartDate($startDate);
 $export->setEndDate($endDate);
-$export->setShowOnlyUnpaid($showOnlyUnpaid);
+$export->setFileType($fileType);
 $export->setFilterByDate($filterByDate);
+$export->setFormat($format);
+$export->setModule('statement');
+$export->setShowOnlyUnpaid($showOnlyUnpaid);
+$export->setStartDate($startDate);
 try {
     $export->execute();
 } catch (PdoDbException $pde) {

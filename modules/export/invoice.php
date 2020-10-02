@@ -21,8 +21,8 @@ $id       = isset($_GET['id']      ) ? $_GET['id']       : "";
 $export = new Export(Destination::DOWNLOAD);
 $export->setFormat($format);
 $export->setFileType($fileType);
-$export->setRecId($id);
-$export->setFileName('invoice');
+$export->setInvoiceId($id);
+$export->setModule('invoice');
 try {
     $export->execute();
 } catch (PdoDbException $pde) {

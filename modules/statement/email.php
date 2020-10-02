@@ -55,7 +55,7 @@ $showOnlyUnpaid = empty($_GET['showOnlyUnpaid']) ? "no" : $_GET['showOnlyUnpaid'
 if ($_GET['stage'] == 2) {
     $export = new Export(Destination::STRING_RETURN);
     $export->setFormat('pdf');
-    $export->setFileName('statement');
+    $export->setModule('statement');
     if (empty($billerId)) {
         $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=statement&amp;view=index' />";
         $displayBlock = "<div class='si_message_error'>{$message}</div>";

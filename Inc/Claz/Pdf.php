@@ -35,7 +35,7 @@ class Pdf
                 $pdfname .= '.pdf';
             }
 
-            Log::out("Pdf::generate() - pdfname[{$pdfname}] destination[{$destination}]");
+            Log::out("Pdf::generate() - pdfname[{$pdfname}] destination[{$destination}] htmlToPdf[{$htmlToPdf}]");
             $mpdf = new Mpdf([
                 'tempDir'           => 'tmp/pdf_tmp',
                 'format'            => $config['exportPdfPaperSize'],
@@ -50,11 +50,10 @@ class Pdf
             $mpdf->WriteHTML($htmlToPdf);
 
             Log::out("Pdf::generate() - Before Output");
-            $result = $mpdf->Output($pdfname, $destination);
+            $pdfString = $mpdf->Output($pdfname, $destination);
 
             if ($destination == Destination::STRING_RETURN) {
-                Log::out("Pdf::generate() - returning Output result");
-                return $result;
+                return $pdfString;
             }
         } catch (MpdfException $mpdfException) {
             error_log('Pdf::generate(): exception - ' . $mpdfException->getMessage());

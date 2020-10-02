@@ -48,7 +48,7 @@ class Customer
      *              will be selected. Set to <b>false</b> to select all <b>customers</b> records.
      *          incl_cust_id - If set, makes sure this customer is included regardless of the
      *              <b>enabled_only</b> option setting.
-     *          no_totals - Set to <b>true</b> if only customer record fields to be returned.
+     *          noTotals - Set to <b>true</b> if only customer record fields to be returned.
      *              Set to <b>false</b> to add calculated totals field (Default if not specified).
      *          An empty array if none of these parameters needed.
      * @return array Customers selected.
@@ -139,7 +139,7 @@ class Customer
      *              will be selected. Set to <b>false</b> to select all <b>customers</b> records.
      *          incl_cust_id - If set, makes sure this customer is included regardless of the
      *              <b>enabled_only</b> option setting.
-     *          no_totals - Set to <b>true</b> if only customer record fields to be returned.
+     *          noTotals - Set to <b>true</b> if only customer record fields to be returned.
      *              Set to <b>false</b> to add calculated totals field (Default if not specified).
      *          order_by_set - Set to <b>true</b> if caller set the ORDER BY option. Set to
      *              <b>false</b> to order by name (default if not specified.
@@ -152,7 +152,7 @@ class Customer
         $id          = empty($params['id'])           ? null  : $params['id'];
         $enabledOnly = empty($params['enabled_only']) ? false : $params['enabled_only'];
         $inclCustId  = empty($params['incl_cust_id']) ? null  : $params['incl_cust_id'];
-        $noTotals    = empty($params['no_totals'])    ? false : $params['no_totals'];
+        $noTotals    = empty($params['noTotals'])    ? false : $params['noTotals'];
         $orderBySet  = empty($params['order_by_set']) ? false : $params['order_by_set'];
         // @formatter:on
 

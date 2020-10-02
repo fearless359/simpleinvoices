@@ -1,28 +1,33 @@
-{* Display the rate column ? *}
-{assign var=show_rates value=1}
-{* How may decimals for rate (0-2) *}
-{assign var=rate_precision value='1'}
-{*-------------------------------------------------------------------------------*}
-{assign var=years_shown value=$all_years|@count}
-{assign var=years_shown value=$years_shown-1}
-{assign var=years value=$all_years.0|range:$all_years.$years_shown}
-{literal}
-<script>
-  $(document).ready(function() {
-    $('.but_show_rates').click(function(e){
-      e.preventDefault();
-      $('.rate').toggle();
-    });
-  });
-</script>
-{/literal}
-
-<div class='si_report_title1 si_center'>{$LANG.monthlySalesPerYear}</div>
-
-<div class='si_report_title2 si_center'>{$LANG.sales}</div>
-{totals_by_period type='sales'}
-{include file=$path|cat:'reportSalesByPeriodsInclude.tpl'}
-
-<div class='si_report_title2 si_center'>{$LANG.payments}</div>
-{totals_by_period type='payments'}
-{include file=$path|cat:'reportSalesByPeriodsInclude.tpl'}
+{include file=$path|cat:"library/reportTitle.tpl" title=$title}
+{include file=$path|cat:"library/exportButtons.tpl"
+         params=[
+             'fileName' => "reportSalesByPeriods",
+             'showRates' => "{$showRates}",
+             'title' => $title|urlencode
+        ]
+}
+{if $menu}
+<!--suppress HtmlFormInputWithoutLabel -->
+    <form name="frmpost" method="POST" id="frmpost"
+      action="index.php?module=reports&amp;view=reportSalesByPeriods">
+    <table class="center">
+        <tr>
+            <th class="details_screen">{$LANG.showUc} {$LANG.ratesUc}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.showUc} {$LANG.ratesUc}" tabindex="-1"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpMonthlySalesAndPaymentsPerYearRates">
+                    <img src="{$helpImagePath}help-small.png" alt=""/>
+                </a>
+                &nbsp;&nbsp;
+            </th>
+            <td>
+                <input type="checkbox" name="showRates"
+                       {if isset($smarty.post.showRates) && $smarty.post.showRates == "yes"} checked {/if} value="yes"/>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    {include file="templates/default/reports/library/runReportButton.tpl" value="salesByPeriods" label=$LANG.runReport}
+    <br/>
+</form>
+{/if}
+{include file=$path|cat:"reportSalesByPeriodsBody.tpl"}

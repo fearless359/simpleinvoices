@@ -36,7 +36,6 @@ class SqlPatchManager
             die("SqlPatchManager::makePatch() error. See error log for more information.");
         }
 
-        Log::out("SqlPatchManager::makePatch() - num[$num] patch: " . print_r($patch, true));
         self::$patchLines[] = [
             'sql_patch_ref' => $num,
             'name' => $patch['name'],
@@ -430,7 +429,6 @@ class SqlPatchManager
         self::makePatch('321', $patch);
         unset($ud);
         unset($flg);
-
         // @formatter:on
     }
 

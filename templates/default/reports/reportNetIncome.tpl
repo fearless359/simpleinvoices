@@ -1,23 +1,25 @@
-{include file="templates/default/reports/reportTitle.tpl" title=$LANG.netIncomeReport}
-{include file="templates/default/reports/exportButtons.tpl"
+{include file=$path|cat:"library/reportTitle.tpl" title=$title}
+{include file=$path|cat:"library/exportButtons.tpl"
          params=[
-            'startDate' => $startDate|urlencode,
-            'endDate' => $endDate|urlencode,
-            'customerId' => $customerId|urlencode,
-            'excludeCustomFlag' => $customFlag.value|urlencode,
-            'displayDetail' => $displayDetail|urlencode
+             'customFlag' => $customFlag|urlencode,
+             'customFlagLabel' => $customFlagLabel|urlencode,
+             'customerId' => $customerId|urlencode,
+             'displayDetail' => $displayDetail|urlencode,
+             'endDate' => $endDate|urlencode,
+             'fileName' => "reportNetIncome",
+             'startDate' => $startDate|urlencode,
+             'title' => $title|urlencode
          ]
 }
-
 {if $menu}
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=reports&amp;view=reportNetIncome">
         <table class="center">
-            {include file="templates/default/reports/dateRangePrompt.tpl"}
-            {include file="templates/default/reports/customerSelectList.tpl"}
+            {include file="templates/default/reports/library/dateRangePrompt.tpl"}
+            {include file="templates/default/reports/library/customerSelectList.tpl"}
             <tr>
-                <td style="text-align: right; padding-right: 10px; white-space: nowrap; width: 47%;">
-                    <label for="customFlagId">{$LANG.exclude} {$LANG.customFlagUc} #:</label>
+                <td class="si_right nowrap" style="padding-right: 10px; width: 47%;">
+                    <label for="customFlagId">{$LANG.excludeUc} {$LANG.customFlagUc} #:</label>
                 </td>
                 <td>
                     <select name="customFlag" id="customFlagId">
@@ -30,13 +32,13 @@
                     </select>
                 </td>
             </tr>
-            {include file="templates/default/reports/displayDetail.tpl"}
+            {include file="templates/default/reports/library/displayDetail.tpl"}
         </table>
         <br/>
-        {include file="templates/default/reports/runReportButton.tpl" value="statement_report" label=$LANG.runReport}
+        {include file="templates/default/reports/library/runReportButton.tpl" value="netIncomeReport" label=$LANG.runReport}
         <br/>
     </form>
 {/if}
-{if isset($smarty.post.submit) || $view == export}
+{if isset($smarty.post.submit) || $view == "export"}
     {include file="templates/default/reports/reportNetIncomeBody.tpl"}
 {/if}

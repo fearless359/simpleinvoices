@@ -39,7 +39,6 @@ Util::allowDirectAccess();
 $module = isset($_GET['module']) ? Util::filenameEscape($_GET['module']) : "";
 $view = isset($_GET['view']) ? Util::filenameEscape($_GET['view']) : "";
 $action = isset($_GET['case']) ? Util::filenameEscape($_GET['case']) : "";
-
 $apiRequest = $module == 'api';
 
 require_once 'config/define.php';
@@ -287,6 +286,7 @@ Log::out("index.php - module[" . (empty($module) ? "" : $module) .
     "] action[" . (empty($action) ? "" : $action) .
     "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
     "] menu[$menu]");
+$smarty->assign('menu', $menu);
 
 if (!CheckPermission::isAllowed($module, $view)) {
     $role = SiAcl::getSessionRole();
@@ -388,7 +388,7 @@ $extensionPhpInsertFiles = [];
 $performExtensionPhpInsertions = $module == 'system_defaults' && $view == 'edit';
 $extensionPhpFile = 0;
 foreach ($extNames as $extName) {
-    $phpFile = "extensions/$extName/modules/$module/$view.php";
+        $phpFile = "extensions/$extName/modules/$module/$view.php";
     if (file_exists($phpFile)) {
         Log::out("index.php - extension module exists - phpFile[$phpFile]");
         // If $performExtensionPhpInsertions is true, then the extension php
@@ -397,7 +397,7 @@ foreach ($extNames as $extName) {
         if ($performExtensionPhpInsertions) {
             // @formatter:off
             $vals = [
-                "file"   => $phpFile,
+                "file" => $phpFile,
                 "module" => $module,
                 "view"   => $view
             ];
@@ -411,6 +411,10 @@ foreach ($extNames as $extName) {
     }
 }
 Log::out("index.php - After extension_php_insert_files, etc.");
+if ($module == "reports" && $view == "export") {
+    // TODO: Make this relative to an extension if present.
+    $smarty->assign('path', 'templates/default/reports/');
+}
 
 if ($extensionPhpFile == 0) {
     $myPath = Util::getCustomPath("$module/$view", 'module');
@@ -424,7 +428,7 @@ if ($extensionPhpFile == 0) {
 // Include php file for the requested page section - END
 // **********************************************************
 if ($module == "export" || $view == "export") {
-    Log::out("index.php - Before export exit");
+    Log::out("index.php - path[{$path}] Before export exit");
     exit(0);
 }
 Log::out("index.php - After export/export exit");
@@ -625,9 +629,9 @@ $smarty->assign("perform_extension_insertions", $performExtensionInsertions);
 // If this is not an extension, $path and $realPath are the same. If it is an extension,
 // $path is relative to the extension and $realPath is relative to the standard library path.
 $smarty->assign("path", $path);
-$smarty->assign("real_path", $realPath);
+$smarty->assign("realPath", $realPath);
 
-Log::out("index.php - path[$path] my_tpl_path[$myTplPath]");
+Log::out("index.php - path[$path] my_tpl_path[$myTplPath] realPath[$realPath]");
 $smarty->$smartyOutput($myTplPath);
 Log::out("index.php - After output my_tpl_path[$myTplPath]");
 
