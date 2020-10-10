@@ -29,7 +29,7 @@
             <th>{$LANG.recurEach}</th>
             <th>{$LANG.emailBiller}</th>
             <th>{$LANG.emailCustomer}</th>
-            <th>{$LANG.customer}</th>
+            <th>{$LANG.customerUc}</th>
         </tr>
         </thead>
         <tbody>

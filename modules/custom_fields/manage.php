@@ -23,4 +23,4 @@ $smarty->assign("cfs",$cfs);
 $smarty->assign('number_of_rows', count($cfs));
 
 $smarty->assign('pageActive', 'custom_field');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

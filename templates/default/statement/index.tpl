@@ -28,7 +28,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="billerId">{$LANG.biller}:
+                        <label for="billerId">{$LANG.billerUc}:
                     </th>
                     <td>
                         <select name="billerId" id="billerId" class="si_input" tabindex="30">
@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="customerId">{$LANG.customer}:</label>
+                        <label for="customerId">{$LANG.customerUc}:</label>
                     </th>
                     <td>
                         <select name="customerId" id="customerId" class="si_input" tabindex="40">
@@ -62,11 +62,11 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="filterId">{$LANG.filterByDatesUc}:</label>
+                        <label for="filterId">{$LANG.filterByDateRangeUc}:</label>
                     </th>
                     <td>
-                        <input type="checkbox" name="filterByDate" id="filterId" class="si_input" tabindex="50"
-                                {if $filterByDate== "yes"} checked {/if} value="yes">
+                        <input type="checkbox" name="filterByDateRange" id="filterId" class="si_input" tabindex="50"
+                                {if $filterByDateRange== "yes"} checked {/if} value="yes">
                     </td>
                 </tr>
                 <tr>
@@ -90,24 +90,24 @@
     {if isset($smarty.post.submit)}
         <div class="si_toolbar si_toolbar_top">
             <a title="{$LANG.printPreview}" target="_blank"
-               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDate={$filterByDate|urlencode}&amp;format=print">
+               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=print">
                 <img src='../../../images/printer.png' class='action' alt=""/>&nbsp;{$LANG.printPreview}
             </a>
             <!-- EXPORT TO PDF -->
             <a title="{$LANG.exportPdf}"
-               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDate={$filterByDate|urlencode}&amp;format=pdf">
+               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=pdf">
                 <img src='../../../images/page_white_acrobat.png' class='action' alt=""/>&nbsp;{$LANG.exportPdf}
             </a>
             <a title="{$LANG.exportUc} {$LANG.exportXlsTooltip} .{$config.exportSpreadsheet} {$LANG.formatTooltip}"
-               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDate={$filterByDate|urlencode}&amp;format=file&amp;filetype={$config.exportSpreadsheet}">
+               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=file&amp;filetype={$config.exportSpreadsheet}">
                 <img src='../../../images/page_white_excel.png' class='action' alt=""/>&nbsp;{$LANG.exportAs}.{$config.exportSpreadsheet}
             </a>
             <a title="{$LANG.exportUc} {$LANG.exportDocTooltip} .{$config.exportWordProcessor} {$LANG.formatTooltip}"
-               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDate={$filterByDate|urlencode}&amp;format=file&amp;filetype={$config.exportWordProcessor}">
+               href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=file&amp;filetype={$config.exportWordProcessor}">
                 <img src='../../../images/page_white_word.png' class='action' alt=""/>&nbsp;{$LANG.exportAs}.{$config.exportWordProcessor}
             </a>
             <a title="{$LANG.email}"
-               href="index.php?module=statement&amp;view=email&amp;stage=1&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDate={$filterByDate|urlencode}&amp;format=file">
+               href="index.php?module=statement&amp;view=email&amp;stage=1&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=file">
                 <img src='../../../images/mail-message-new.png' class='action' alt=""/>&nbsp;{$LANG.email}
             </a>
         </div>
@@ -122,15 +122,15 @@
             <th colspan="6"></th>
         </tr>
         <tr>
-            <th class="left">{$LANG.biller}:</th>
-            <td>{if empty($billerDetails.name)}{$LANG.all}{else}{$billerDetails.name|htmlSafe}{/if}</td>
+            <th class="left">{$LANG.billerUc}:</th>
+            <td>{if empty($billerDetails.name)}{$LANG.allUc}{else}{$billerDetails.name|htmlSafe}{/if}</td>
             <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <th>{$LANG.totalUc}:</th>
             <td class="si_right">{$statement.total|utilCurrency}</td>
         </tr>
         <tr>
-            <th class="left">{$LANG.customer}:</th>
-            <td>{if empty($customerDetails.name)}{$LANG.all}{else}{$customerDetails.name|htmlSafe}{/if}</td>
+            <th class="left">{$LANG.customerUc}:</th>
+            <td>{if empty($customerDetails.name)}{$LANG.allUc}{else}{$customerDetails.name|htmlSafe}{/if}</td>
             <td colspan="2"></td>
             <th>{$LANG.paidUc}:</th>
             <td class="si_right underline">{$statement.paid|utilCurrency}</td>
@@ -141,7 +141,7 @@
         </tr>
         <tr><th>&nbsp;</th></tr>
         <tr>
-            {if $filterByDate == "yes"}
+            {if $filterByDateRange == "yes"}
                 <th colspan="6">{$LANG.statementForThePeriod} {if isset($startDate)}{$startDate|htmlSafe}{/if} {$LANG.to} {if isset($endDate)}{$endDate|htmlSafe}{/if}</th>
             {/if}
         </tr>
@@ -151,10 +151,10 @@
         <table class="center" style="width:100%;">
             <thead>
             <tr>
-                <th>{$LANG.id}</th>
+                <th>{$LANG.idUc}</th>
                 <th>{$LANG.dateUc}</th>
-                <th>{$LANG.biller}</th>
-                <th>{$LANG.customer}</th>
+                <th>{$LANG.billerUc}</th>
+                <th>{$LANG.customerUc}</th>
                 <th class="si_right">{$LANG.totalUc}</th>
                 <th class="si_right">{$LANG.paidUc}</th>
                 <th class="si_right">{$LANG.owingUc}</th>

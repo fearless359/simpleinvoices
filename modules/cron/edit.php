@@ -10,4 +10,4 @@ $smarty->assign('invoice_all', Invoice::getAll());
 
 $smarty->assign('pageActive', 'cron');
 $smarty->assign('subPageActive', 'cron_view');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

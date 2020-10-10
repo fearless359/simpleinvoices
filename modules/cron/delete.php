@@ -27,4 +27,4 @@ $smarty->assign('cron', Cron::getOne($_GET['id']));
 
 $smarty->assign('pageActive', 'cron');
 $smarty->assign('subPageActive', 'cron_manage');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

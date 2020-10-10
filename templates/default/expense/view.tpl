@@ -27,11 +27,11 @@
                 <td>{$expense.date|utilDate}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.biller}:</th>
+                <th class="details_screen">{$LANG.billerUc}:</th>
                 <td>{if isset($expense.b_name)}{$expense.b_name}{/if}</td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.customer}:</th>
+                <th class="details_screen">{$LANG.customerUc}:</th>
                 <td>{if isset($expense.c_name)}{$expense.c_name}{/if}</td>
             </tr>
             <tr>

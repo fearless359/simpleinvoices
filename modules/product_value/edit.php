@@ -25,5 +25,5 @@ $smarty->assign("product_attributes", ProductAttributes::getAll());
 
 $pageActive = "product_value_manage";
 $smarty->assign('pageActive', $pageActive);
-$smarty->assign('active_tab', '#product');
+$smarty->assign('activeTab', '#product');
 

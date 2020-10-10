@@ -1,50 +1,26 @@
 <?php
 
-use Inc\Claz\DbField;
-use Inc\Claz\DomainId;
-use Inc\Claz\FunctionStmt;
-use Inc\Claz\Join;
-use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 
-global $pdoDb, $smarty;
+global $endDate, $LANG, $menu, $pdoDb, $smarty, $startDate;
 
-try {
-    $pdoDb->setSelectList('c.name');
-    $pdoDb->addToFunctions(new FunctionStmt('SUM', 'ii.total', 'sum_total'));
+Util::directAccessAllowed();
 
-    $jn = new Join('INNER', 'invoices', 'iv');
-    $jn->addSimpleItem('c.id', new DbField('iv.customer_id'), 'AND');
-    $jn->addSimpleItem('c.domain_id', new DbField('iv.domain_id'));
-    $pdoDb->addToJoins($jn);
+include 'library/dateRangePrompt.php';
 
-    $jn = new Join('INNER', 'invoice_items', 'ii');
-    $jn->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
-    $jn->addSimpleItem('ii.domain_id', new DbField('iv.domain_id'));
-    $pdoDb->addToJoins($jn);
+$customerId = isset($_POST['customerId']) ? intval($_POST['customerId']) : 0;
 
-    $jn = new Join('INNER', 'preferences', 'pr');
-    $jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
-    $jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
-    $pdoDb->addToJoins($jn);
+$smarty->assign('startDate', $startDate);
+$smarty->assign('endDate', $endDate);
+$smarty->assign('customerId', $customerId);
 
-    $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
-    $pdoDb->addSimpleWhere('c.domain_id', DomainId::get());
+$smarty->assign('title', $LANG["totalSalesByCustomer"]);
 
-    $pdoDb->setGroupBy('c.name');
-
-    $rows = $pdoDb->request('SELECT', 'customers', 'c');
-
-    $totalSales = 0;
-    foreach ($rows as $row) {
-        $totalSales += $row['sum_total'];
-    }
-
-    $smarty->assign('data', $rows);
-    $smarty->assign('total_sales', $totalSales);
-} catch (PdoDbException $pde) {
-    exit("modules/reports/reports_sales_customers_total.php Unexpected error: {$pde->getMessage()}");
-}
+include 'reportSalesCustomersTotalData.php';
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
-
+$smarty->assign('activeTab', '#home');
+if (!isset($menu)) {
+    $menu = true;
+}
+$smarty->assign('menu', $menu);

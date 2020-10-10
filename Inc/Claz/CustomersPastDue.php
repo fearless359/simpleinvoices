@@ -12,10 +12,12 @@ class CustomersPastDue
 {
     /**
      * Collect past dues information for each customer
-     * @param string $language Language code (ex "en_US") used to set currency type.
+     * @param float $grandTotalBilled
+     * @param float $grandTotalPaid
+     * @param float $grandTotalOwed
      * @return array of past due information for customers.
      */
-    public static function getCustInfo($language)
+    public static function getCustInfo(float &$grandTotalBilled, float &$grandTotalPaid, float &$grandTotalOwed): array
     {
         global $pdoDb;
 
@@ -31,6 +33,9 @@ class CustomersPastDue
             $pdoDb->setSelectList([new DbField('id', 'cid'), 'name']);
             $custRows = $pdoDb->request("SELECT", "customers");
 
+            $grandTotalBilled = 0;
+            $grandTotalPaid = 0;
+            $grandTotalDue = 0;
             foreach ($custRows as $custRow) {
                 $cid = $custRow['cid'];
                 $name = $custRow['name'];
@@ -60,7 +65,7 @@ class CustomersPastDue
 
                 $payments = [];
                 foreach ($rows as $row) {
-                    $payments[$row['id']] = doubleval($row['paid']);
+                    $payments[$row['id']] = $row['paid'];
                 }
 
                 $pdoDb->addToFunctions(new FunctionStmt('SUM', 'COALESCE(ii.total, 0)', 'billed'));
@@ -92,28 +97,22 @@ class CustomersPastDue
                 foreach ($rows as $row) {
                     $id = $row['id'];
                     $indexId = $row['index_id'];
-                    $billed = doubleval($row['billed']);
+                    $billed = $row['billed'];
                     $paid = empty($payments[$id]) ? 0.00 : $payments[$id];
                     $owed = $billed - $paid;
                     if ($owed != 0) {
-                        $fmtdBilled = Util::currency(doubleval($billed));
-                        $fmtdPaid = Util::currency(doubleval($paid));
-                        $fmtdOwed = Util::currency(doubleval($owed));
-
-                        $invInfo[] = new InvInfo($id, $indexId, $fmtdBilled, $fmtdPaid, $fmtdOwed);
-
+                        $invInfo[] = new InvInfo($id, $indexId, $billed, $paid, $owed);
                         $totBilled += $billed;
                         $totPaid += $paid;
+                        $grandTotalBilled += $billed;
+                        $grandTotalPaid += $paid;
                     }
                 }
 
                 if (!empty($invInfo)) {
                     $totOwed = $totBilled - $totPaid;
-                    $fmtdBilled = Util::currency(doubleval($totBilled));
-                    $fmtdPaid = Util::currency(doubleval($totPaid));
-                    $fmtdOwed = Util::currency(doubleval($totOwed));
-
-                    $custInfo[$cid] = new CustInfo($name, $fmtdBilled, $fmtdPaid, $fmtdOwed, $invInfo);
+                    $grandTotalOwed += $totOwed;
+                    $custInfo[$cid] = new CustInfo($name, $totBilled, $totPaid, $totOwed, $invInfo);
                 }
             }
         } catch (Exception $exp) {

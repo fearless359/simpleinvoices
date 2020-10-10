@@ -142,7 +142,7 @@ try {
     $smarty->assign ("customFields", $customFields);
 
     $smarty->assign ("billers"     , Biller::getAll(true));
-    $smarty->assign ("customers"   , Customer::getAll(['enabled_only' => true, 'incl_cust_id' => "{$invoice['customer_id']}"]));
+    $smarty->assign ("customers"   , Customer::getAll(['enabledOnly' => true, 'incl_cust_id' => "{$invoice['customer_id']}"]));
     $smarty->assign ("defaults"    , SystemDefaults::loadValues());
     $smarty->assign ("preference"  , Preferences::getOne($invoice['preference_id']));
     $smarty->assign ("preferences" , Preferences::getActivePreferences());
@@ -156,5 +156,5 @@ try {
 
 $smarty->assign('pageActive', 'invoice');
 $smarty->assign('subPageActive', 'invoice_edit');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');
 

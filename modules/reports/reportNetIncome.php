@@ -14,22 +14,19 @@ use Inc\Claz\Util;
  *
  * Website: https://simpleinvoices.group
  */
-global $endDate, $LANG, $menu, $pdoDb, $smarty, $startDate;
+global $endDate, $LANG, $menu, $smarty, $startDate;
 
 Util::directAccessAllowed();
 
 include 'library/dateRangePrompt.php';
+include 'library/displayDetailPrompt.php';
 
 $customFlag = !empty($_POST['customFlag']) ? intval($_POST['customFlag']) : 0;
 $customerId = isset($_POST['customerId']) ? intval($_POST['customerId']) : 0;
-$displayDetail = isset($_POST['displayDetail']) ? $_POST['displayDetail'] : 'no';
 
 $customFlagLabels = CustomFlags::getCustomFlagLabels();
 
-$smarty->assign('startDate', $startDate);
-$smarty->assign('endDate', $endDate);
 $smarty->assign('customerId', $customerId);
-$smarty->assign('displayDetail', $displayDetail);
 
 $smarty->assign('customFlag', $customFlag);
 $cfLabel = $customFlag > 0 ? $customFlagLabels[$customFlag - 1] : '';
@@ -37,10 +34,10 @@ $smarty->assign('customFlagLabel', $cfLabel);
 $smarty->assign('customFlagLabels', $customFlagLabels);
 $smarty->assign('title', $LANG["netIncomeReport"]);
 
-include "modules/reports/reportNetIncomeReportData.php";
+include "modules/reports/reportNetIncomeData.php";
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
+$smarty->assign('activeTab', '#home');
 
 if (!isset($menu)) {
     $menu = true; // Causes menu section of report gen page to display.

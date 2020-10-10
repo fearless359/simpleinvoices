@@ -1,35 +1,29 @@
-<table class="si_report_table">
-	<thead>
-		<tr>
-			<th colspan="7">{$LANG.debtorsByAmountOwed}</th>
-		</tr>
-		<tr>
-			<th>{$LANG.invoiceId}</th>
-			<th>{$LANG.invoiceUc}</th>
-			<th>{$LANG.biller}</th>
-			<th>{$LANG.customer}</th>
-			<th>{$LANG.totalUc}</th>
-			<th>{$LANG.paidUc}</th>
-			<th>{$LANG.owingUc}</th>
-		</tr>
-	</thead>
-	<tfoot>
-		<tr>
-			<td colspan="6" class="page_layer si_right">{$LANG.totalOwed}</td>
-			<td class="page_layer left"><span class="bold">{$total_owed|utilNumber:2|default:'-'}</span></td>
-		</tr>
-	</tfoot>
-	<tbody>
-	{foreach $data as $invoice}
-		<tr>
-			<td>{$invoice.id|htmlSafe}</td>
-			<td>{$invoice.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}</td>
-			<td>{$invoice.biller|htmlSafe}</td>
-			<td>{$invoice.customer|htmlSafe}</td>
-			<td>{$invoice.inv_total|utilNumber:2|default:'0'}</td>
-			<td>{$invoice.inv_paid|utilNumber:2|default:'0'}</td>
-			<td>{$invoice.inv_owing|utilNumber:2|default:'0'}</td>
-		</tr>
-	{/foreach}
-	</tbody>
-</table>
+{include file=$path|cat:"library/reportTitle.tpl" title=$title}
+{include file=$path|cat:"library/exportButtons.tpl"
+		 params=[
+		     'fileName' => "reportDebtorsByAmount",
+		     'includePaidInvoices' => $includePaidInvoices|urlencode,
+		     'title' => $title|urlencode
+		 ]
+}
+{if $menu}
+	<form name="frmpost" method="POST" id="frmpost"
+		  action="index.php?module=reports&amp;view=reportDebtorsByAmount">
+		<table class="center">
+			<tr>
+				<td class="details_screen si_right nowrap" style="padding-right: 10px; width: 47%;">
+					<label for="includePaidInvoicesId">{$LANG.includeUc} {$LANG.paid} {$LANG.invoices}:</label>
+				</td>
+				<td><input type="checkbox" name="includePaidInvoices" id="includePaidInvoicesId"
+					{if isset($smarty.post.includePaidInvoices) && $smarty.post.includePaidInvoices == "yes"} checked {/if} value="yes"/>
+				</td>
+			</tr>
+		</table>
+		<br/>
+		{include file=$path|cat:"library/runReportButton.tpl" value="reportDebtorsByAmount" label=$LANG.runReport}
+		<br/>
+	</form>
+{/if}
+{if isset($smarty.post.submit) || $view == "export"}
+	{include file=$path|cat:"reportDebtorsByAmountBody.tpl"}
+{/if}

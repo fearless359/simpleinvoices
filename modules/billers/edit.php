@@ -40,4 +40,4 @@ $smarty->assign('customFieldLabel', CustomFields::getLabels(true));
 $smarty->assign('pageActive', 'biller');
 $subPageActive = $_GET['action'] =="view"  ? "biller_view" : "biller_edit" ;
 $smarty->assign('subPageActive', $subPageActive);
-$smarty->assign('active_tab', '#people');
+$smarty->assign('activeTab', '#people');

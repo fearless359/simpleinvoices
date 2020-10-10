@@ -30,4 +30,4 @@ $smarty->assign("add_button_link", $addButtonLink);
 $smarty->assign("add_button_msg", $addButtonMsg);
 
 $smarty->assign('pageActive', 'expense');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

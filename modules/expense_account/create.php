@@ -16,4 +16,4 @@ if (!empty($_POST['name'])) {
 $smarty->assign('domain_id', DomainId::get());
 $smarty->assign('pageActive'   , 'expense_account');
 $smarty->assign('subPageActive', 'add');
-$smarty->assign('active_tab'   , '#money');
+$smarty->assign('activeTab'   , '#money');

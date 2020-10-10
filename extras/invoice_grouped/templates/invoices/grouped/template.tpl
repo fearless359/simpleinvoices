@@ -122,7 +122,7 @@
     <table class="left">
       <!-- Biller section - start -->
       <tr>
-        <td class="tbl1-bottom col1"><b>{$LANG.biller}:</b></td>
+        <td class="tbl1-bottom col1"><b>{$LANG.billerUc}:</b></td>
         <td class="col1 tbl1-bottom">{$biller.name|htmlSafe}</td>
       </tr> 
       {if isset($biller.street_address)}
@@ -179,7 +179,7 @@
       </tr>
       <!-- Customer section - start -->
       <tr>
-        <td class="tbl1-bottom col1" ><b>{$LANG.customer}:</b></td>
+        <td class="tbl1-bottom col1" ><b>{$LANG.customerUc}:</b></td>
         <td class="tbl1-bottom col1" colspan="3">{$customer.name}</td>
       </tr>
       {if isset($customer.attention) }

@@ -34,9 +34,9 @@ if (!empty($_POST['op']) && $_POST['op'] == 'create' && !empty($_POST['name'])) 
     $smarty->assign('customFieldLabel', $customFieldLabel);
     $smarty->assign('domain_id', DomainId::get());
     
-    $smarty->assign('parent_customers', Customer::getAll(['enabled_only' => true]));
+    $smarty->assign('parent_customers', Customer::getAll(['enabledOnly' => true]));
     
     $smarty->assign('pageActive', 'customer');
     $smarty->assign('subPageActive', 'customer_add');
-    $smarty->assign('active_tab', '#people');
+    $smarty->assign('activeTab', '#people');
 }

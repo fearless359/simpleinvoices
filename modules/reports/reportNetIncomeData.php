@@ -3,8 +3,11 @@
 use Inc\Claz\Customer;
 use Inc\Claz\NetIncomeReport;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 
-global $customerId, $customFlag, $endDate, $smarty, $startDate, $pdoDb;
+global $customerId, $customFlag, $endDate, $pdoDb, $smarty, $startDate;
+
+Util::directAccessAllowed();
 
 /**
  * Compare last activity dates for sorting
@@ -19,7 +22,6 @@ function custCmp(array $a, array $b): bool
 
 $customers = [];
 $rows = Customer::getAll(['noTotals' => true]);
-
 foreach ($rows as $row) {
     $row['last_activity_date'] = '0000-01-01'; // Default to no activity date equivalent
     try {

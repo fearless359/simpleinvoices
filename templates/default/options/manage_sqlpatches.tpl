@@ -27,7 +27,7 @@
 	</colgroup>
 	<thead>
 	<tr>
-		<th class="sortable">{$LANG.patchUc} {$LANG.id}</th>
+		<th class="sortable">{$LANG.patchUc} {$LANG.idUc}</th>
 		<th class="sortable">{$LANG.descriptionUc}</th>
 		<th class="sortable">{$LANG.releaseUc}</th>
 	</tr>

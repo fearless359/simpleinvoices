@@ -1,4 +1,5 @@
-{if isset($smarty.post.submit) || isset($showReportExportButtons) && $showReportExportButtons}
+{if isset($smarty.post.submit) || (isset($showReportExportButtons) && $showReportExportButtons) ||
+                                  (isset($displayExportButtonsNow) && $displayExportButtonsNow)}
     <div class="si_toolbar si_toolbar_top">
         <a title="{$LANG.printPreview}" target="_blank"
            href="index.php?module=reports&amp;view=export{foreach $params as $key => $val}&amp;{$key}={$val}{/foreach}&amp;format=print">

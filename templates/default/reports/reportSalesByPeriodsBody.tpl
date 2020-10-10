@@ -12,7 +12,7 @@
 {assign var=yearsShown value=$yearsShown-1}
 {assign var=years value=$allYears.0|range:$allYears.$yearsShown}
 
-<h2 class='si_report_title2 si_center'>{$LANG.sales}</h2>
+<h2 class='si_report_title2 si_center'>{$LANG.salesUc}</h2>
 {totals_by_period type='sales'}
 {include file='templates/default/reports/reportSalesByPeriodsInclude.tpl'}
 

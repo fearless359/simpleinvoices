@@ -18,5 +18,5 @@ if (!empty($_POST['invoice_id'])) {
 
     $smarty->assign('pageActive', 'cron');
     $smarty->assign('subPageActive', 'cron_add');
-    $smarty->assign('active_tab', '#money');
+    $smarty->assign('activeTab', '#money');
 }

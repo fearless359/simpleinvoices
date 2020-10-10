@@ -40,4 +40,4 @@ $smarty->assign("cf",$cf);
 
 $smarty->assign('pageActive'   , 'custom_field');
 $smarty->assign('subPageActive', "custom_fields_edit");
-$smarty->assign('active_tab'   , '#setting');
+$smarty->assign('activeTab'   , '#setting');

@@ -1,4 +1,6 @@
 <?php
+global $smarty;
+
 /**
  * @return string first of month date.
  */
@@ -15,3 +17,6 @@ function lastOfMonth() {
 
 $startDate  = isset($_POST['startDate'] ) ? $_POST['startDate']: firstOfMonth();
 $endDate    = isset($_POST['endDate']   ) ? $_POST['endDate']  : lastOfMonth ();
+
+$smarty->assign('startDate', $startDate);
+$smarty->assign('endDate', $endDate);

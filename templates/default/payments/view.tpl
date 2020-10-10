@@ -11,7 +11,7 @@
         <th class="details_screen">{$LANG.paymentId}: </th>
         <td>{$payment.id|htmlSafe}</td>
         <th class="details_screen">{$LANG.invoiceId}: </th>
-        <td><a href='index.php?module=invoices&amp;view=quick_view&amp;id={$payment.ac_inv_id|htmlSafe}&amp;action=view'>{$payment.iv_index_id|htmlSafe}</a></td>
+        <td><a href='index.php?module=invoices&amp;view=quick_view&amp;id={$payment.ac_inv_id|htmlSafe}'>{$payment.iv_index_id|htmlSafe}</a></td>
       </tr>
       <tr>
         <th class="details_screen">{$LANG.amountUc}: </th>
@@ -20,11 +20,11 @@
         <td>{$payment.date|htmlSafe}</td>
       </tr>
       <tr>
-        <th class="details_screen">{$LANG.biller}: </th>
+        <th class="details_screen">{$LANG.billerUc}: </th>
         <td colspan="3">{$payment.bname|htmlSafe}</td>
       </tr>
       <tr>
-        <th class="details_screen">{$LANG.customer}: </th>
+        <th class="details_screen">{$LANG.customerUc}: </th>
         <td colspan="3">{$payment.cname|htmlSafe}</td>
       </tr>
       <tr>

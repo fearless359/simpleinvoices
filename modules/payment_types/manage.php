@@ -14,4 +14,4 @@ $smarty->assign('payment_types', $paymentTypes);
 $smarty->assign('number_of_rows', count($paymentTypes));
 
 $smarty->assign('pageActive'  , 'payment_type');
-$smarty->assign('active_tab'  , '#setting');
+$smarty->assign('activeTab'  , '#setting');

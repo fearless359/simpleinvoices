@@ -8,9 +8,9 @@
     <td colspan="2">&nbsp;</td>
 </tr>
 <tr style="margin: 0 auto; width: 100%;">
-    <td class="si_right nowrap" style="padding-right: 10px; width: 47%;">
+    <th class="si_right nowrap" style="padding-right: 10px; width: 47%;">
         <label for="startDateId">{$LANG.activityUc} {$LANG.startDate}:</label>
-    </td>
+    </th>
     <td>
         <input type="text" name="startDate" id="startDateId" size="10"
                class="validate[required,custom[date],length[0,10]] date-picker"
@@ -18,12 +18,13 @@
     </td>
 </tr>
 <tr style="margin: 0 auto; width: 100%;">
-    <td class="si_right nowrap" style="padding-right: 10px; width: 47%;">
+    <th class="si_right nowrap" style="padding-right: 10px; width: 47%;">
         <label for="endDateId">{$LANG.activityUc} {$LANG.endDate}:</label>
-    </td>
+    </th>
     <td>
         <input type="text"  name="endDate" id="endDateId" size="10"
                class="validate[required,custom[date],length[0,10]] date-picker"
                value='{if isset($endDate)}{$endDate}{/if}'/>
     </td>
 </tr>
+<tr><td colspan="2">&nbsp;</td></tr>

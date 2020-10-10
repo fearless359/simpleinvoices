@@ -44,4 +44,4 @@ $smarty->assign("defaultPreference"       , Preferences::getDefaultPreference())
 $smarty->assign("defaultTax"              , Taxes::getDefaultTax());
 
 $smarty->assign('pageActive', 'system_default');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

@@ -14,5 +14,5 @@ if (!empty($_POST['product_id'])) {
 
     $smarty->assign('pageActive', 'inventory');
     $smarty->assign('subPageActive', 'inventory_add');
-    $smarty->assign('active_tab', '#product');
+    $smarty->assign('activeTab', '#product');
 }

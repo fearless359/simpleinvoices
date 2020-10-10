@@ -24,4 +24,4 @@ $cflgs = CustomFlags::getCustomFlagsQualified('products', true);
 $smarty->assign("cflgs", $cflgs);
 
 $smarty->assign('pageActive', 'product_manage');
-$smarty->assign('active_tab', '#product');
+$smarty->assign('activeTab', '#product');

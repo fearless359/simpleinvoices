@@ -30,4 +30,6 @@
     <br/>
 </form>
 {/if}
-{include file=$path|cat:"reportSalesByPeriodsBody.tpl"}
+{if isset($smarty.post.submit) || $view == "export"}
+    {include file=$path|cat:"reportSalesByPeriodsBody.tpl"}
+{/if}

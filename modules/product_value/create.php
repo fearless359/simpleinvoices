@@ -16,5 +16,5 @@ if (!empty($_POST['value'])) {
     $smarty->assign("product_attributes", ProductAttributes::getAll());
 
     $smarty->assign('pageActive', "product_value_add");
-    $smarty->assign('active_tab', '#product');
+    $smarty->assign('activeTab', '#product');
 }

@@ -18,5 +18,5 @@ if (!empty($_POST['tax_description'])) {
 
     $smarty->assign('pageActive', 'tax_rate');
     $smarty->assign('subPageActive', 'tax_rate_add');
-    $smarty->assign('active_tab', '#setting');
+    $smarty->assign('activeTab', '#setting');
 }

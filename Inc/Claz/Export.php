@@ -20,13 +20,14 @@ class Export
     private ?int $customerId;
     private string $destination;
     private string $displayDetail;
-    private string $filterByDate;
+    private string $filterByDateRange;
     private string $endDate;
     private string $fileName;
     private string $fileType;
     private string $format;
     private ?int $invoiceId;
     private array $invoices;
+    private bool $landscape;
     private string $module;
     private array $params;
     private ?int $paymentId;
@@ -50,27 +51,28 @@ class Export
         }
 
         // @formatter:off
-        $this->biller         = [];
-        $this->billerId       = null;
-        $this->customer       = [];
-        $this->customerId     = null;
-        $this->destination    = $destination;
-        $this->displayDetail  = "no";
-        $this->filterByDate   = "yes";
-        $this->endDate        = "";
-        $this->fileName       = "";
-        $this->fileType       = "";
-        $this->format         = "";
-        $this->module         = "";
-        $this->invoices       = [];
-        $this->invoiceId      = null;
-        $this->payments       = [];
-        $this->paymentId      = null;
-        $this->params         = [];
-        $this->preference     = [];
-        $this->preferenceId   = null;
-        $this->showOnlyUnpaid = "no";
-        $this->startDate      = "";
+        $this->biller            = [];
+        $this->billerId          = null;
+        $this->customer          = [];
+        $this->customerId        = null;
+        $this->destination       = $destination;
+        $this->displayDetail     = "no";
+        $this->endDate           = "";
+        $this->fileName          = "";
+        $this->fileType          = "";
+        $this->filterByDateRange = "yes";
+        $this->format            = "";
+        $this->invoiceId         = null;
+        $this->invoices          = [];
+        $this->landscape         = false;
+        $this->module            = "";
+        $this->params            = [];
+        $this->paymentId         = null;
+        $this->payments          = [];
+        $this->preference        = [];
+        $this->preferenceId      = null;
+        $this->showOnlyUnpaid    = "no";
+        $this->startDate         = "";
         // @formatter:on
     }
 
@@ -103,7 +105,7 @@ class Export
         // formatter:off
         switch ($this->format) {
             case "pdf":
-                return Pdf::generate($data, $this->fileName, $this->destination);
+                return Pdf::generate($data, $this->fileName, $this->destination, $this->landscape);
 
             case "print":
                 echo $data;
@@ -283,7 +285,7 @@ class Export
                     $smarty->assign("preference"       , $preference);
                     $smarty->assign("customFieldLabels", $customFieldLabels);
                     $smarty->assign('pageActive'       , 'payment');
-                    $smarty->assign('active_tab'       , '#money');
+                    $smarty->assign('activeTab'       , '#money');
 
                     $css = $siUrl . "templates/invoices/default/style.css";
                     $smarty->assign('css', $css);
@@ -296,7 +298,7 @@ class Export
 
             case "statement":
                 try {
-                    if ($this->filterByDate == "yes") {
+                    if ($this->filterByDateRange == "yes") {
                         $pdoDb->setHavings(Invoice::buildHavings("date_between", [$this->startDate, $this->endDate]));
                     }
 
@@ -333,25 +335,25 @@ class Export
                         if (!empty($this->customerId)) {
                             $pdfFileName .= '_' . $this->customerId;
                         }
-                        if ($this->filterByDate == "yes") {
+                        if ($this->filterByDateRange == "yes") {
                             $pdfFileName .= '_' . $this->startDate;
                             $pdfFileName .= '_' . $this->endDate;
                         }
                         $this->fileName = $pdfFileName;
                     }
 
-                    $smarty->assign('billerId'       , $this->billerId);
-                    $smarty->assign('billerDetails'  , $billerDetails);
-                    $smarty->assign('billers'        , $billers);
-                    $smarty->assign('customerId'     , $this->customerId);
-                    $smarty->assign('customerDetails', $customerDetails);
-                    $smarty->assign('showOnlyUnpaid' , $this->showOnlyUnpaid);
-                    $smarty->assign('filterByDate'   , $this->filterByDate);
-                    $smarty->assign('invoices'       , $invoices);
-                    $smarty->assign('startDate'      , $this->startDate);
-                    $smarty->assign('endDate'        , $this->endDate);
-                    $smarty->assign('statement'      , $statement);
-                    $smarty->assign('menu'           , false);
+                    $smarty->assign('billerId'         , $this->billerId);
+                    $smarty->assign('billerDetails'    , $billerDetails);
+                    $smarty->assign('billers'          , $billers);
+                    $smarty->assign('customerId'       , $this->customerId);
+                    $smarty->assign('customerDetails'  , $customerDetails);
+                    $smarty->assign('showOnlyUnpaid'   , $this->showOnlyUnpaid);
+                    $smarty->assign('filterByDateRange', $this->filterByDateRange);
+                    $smarty->assign('invoices'         , $invoices);
+                    $smarty->assign('startDate'        , $this->startDate);
+                    $smarty->assign('endDate'          , $this->endDate);
+                    $smarty->assign('statement'        , $statement);
+                    $smarty->assign('menu'             , false);
                     $data = $smarty->fetch("templates/default/statement/index.tpl");
                 } catch (Exception $exp) {
                     error_log("Export::getData() - statement - error: " . $exp->getMessage());
@@ -379,12 +381,12 @@ class Export
 
     private function getReportData(): string
     {
-        global $smarty;
+        global $path, $smarty;
 
         $this->fileName = empty($_GET['fileName']) ? "" : $_GET['fileName'];
         $this->fileType = empty($_GET['fileType']) ? "" : $_GET['fileType'];
         if (empty($this->fileName)) {
-            $str = "Export::getReportData() - Undefined fileName.";
+            $str = "Export::getReportData() - Undefined fileName[{$this->fileName}].";
             error_log($str);
             exit($str);
         }
@@ -394,26 +396,10 @@ class Export
             Log::out("Export::getReportData() - \$_GET info: key[{$key}] value[{$value}]");
             $smarty->assign($key, $value);
         }
+
         $smarty->assign('menu', true);
 
-        switch ($this->fileName) {
-            case 'reportNetIncome':
-                $template = "templates/default/reports/reportNetIncomeBody.tpl";
-                break;
-
-            case 'reportSalesByPeriods':
-                $template = "templates/default/reports/reportSalesByPeriodsBody.tpl";
-                break;
-
-            case 'reportSalesTotal':
-                $template = "templates/default/reports/reportSalesTotalBody.tpl";
-                break;
-
-            default:
-                $str = "Export::getReportData() - Invalid fileName[{$this->fileName}]";
-                error_log($str);
-                exit($str);
-        }
+        $template = "{$path}{$this->fileName}Body.tpl";
 
         try {
             $fetched = $smarty->fetch($template);
@@ -519,12 +505,12 @@ class Export
 
     public function getFilterByDate(): string
     {
-        return $this->filterByDate;
+        return $this->filterByDateRange;
     }
 
-    public function setFilterByDate(string $filterByDate): void
+    public function setFilterByDateRange(string $filterByDateRange): void
     {
-        $this->filterByDate = $filterByDate;
+        $this->filterByDateRange = $filterByDateRange;
     }
 
     public function getEndDate(): string
@@ -585,6 +571,16 @@ class Export
     public function setInvoiceId(int $invoiceId): void
     {
         $this->invoiceId = $invoiceId;
+    }
+
+    public function getLandscape(): bool
+    {
+        return $this->landscape;
+    }
+
+    public function setLandscape(bool $landscape): void
+    {
+        $this->landscape = $landscape;
     }
 
     public function getModule(): string

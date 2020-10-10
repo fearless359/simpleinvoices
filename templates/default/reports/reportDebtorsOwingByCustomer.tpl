@@ -1,31 +1,27 @@
-<table class="si_report_table">
-	<thead>
-		<tr>
-			<th colspan="5">{$LANG.debtorsByAmountOwingCustomer}</th>
-		</tr>
-		<tr>
-			<th>{$LANG.id}</th>
-			<th>{$LANG.customer}</th>
-			<th>{$LANG.totalUc}</th>
-			<th>{$LANG.paidUc}</th>
-			<th>{$LANG.owingUc}</th>
-		</tr>
-	</thead>
-	<tfoot>
-		<tr>
-			<th colspan="4">{$LANG.totalOwing}</th>
-			<td>{$total_owed|utilNumber:2|default:'-'}</td>
-		</tr>
-	</tfoot>
-	<tbody>
-	{foreach $data as $customer}
-		<tr>
-			<td>{$customer.cid|htmlSafe}</td>
-			<td>{$customer.customer|htmlSafe}</td>
-			<td>{$customer.inv_total|utilNumber:2|default:'-'}</td>
-			<td>{$customer.inv_paid|utilNumber:2|default:'-'}</td>
-			<td>{$customer.inv_owing|utilNumber:2|default:'-'}</td>
-		</tr>
-	{/foreach}
-	</tbody>
-</table>
+{include file=$path|cat:"library/reportTitle.tpl" title=$title}
+{include file=$path|cat:"library/exportButtons.tpl"
+		 params=[
+			 'endDate' => $endDate|urlencode,
+		     'fileName' => "reportDebtorsOwingByCustomer",
+			 'filterByDateRange' => $filterByDateRange|urlencode,
+		     'includeAllCustomers' => $includeAllCustomers|urlencode,
+			 'startDate' => $startDate|urlencode,
+		     'title' => $title|urlencode
+		 ]
+}
+{if $menu}
+	<form name="frmpost" method="POST" id="frmpost"
+		  action="index.php?module=reports&amp;view=reportDebtorsOwingByCustomer">
+		<table class="center">
+			{include file=$path|cat:"library/dateRangePrompt.tpl"}
+			{include file=$path|cat:"library/filterByDateRange.tpl"}
+			{include file=$path|cat:"library/includeAllCustomersPrompt.tpl"}
+		</table>
+		<br/>
+		{include file=$path|cat:"library/runReportButton.tpl" value="reportDebtorsOwingByCustomer" label=$LANG.runReport}
+		<br/>
+	</form>
+{/if}
+{if isset($smarty.post.submit) || $view == "export"}
+	{include file=$path|cat:"reportDebtorsOwingByCustomerBody.tpl"}
+{/if}

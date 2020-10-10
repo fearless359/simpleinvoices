@@ -33,5 +33,5 @@ if (!empty($_POST['username'])) {
 
     $smarty->assign('pageActive', 'user');
     $smarty->assign('subPageActive', 'user_add');
-    $smarty->assign('active_tab', '#people');
+    $smarty->assign('activeTab', '#people');
 }

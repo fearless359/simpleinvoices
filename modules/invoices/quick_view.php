@@ -100,7 +100,7 @@ try {
 
     $smarty->assign('pageActive'   , 'invoice');
     $smarty->assign('subPageActive', 'invoice_view');
-    $smarty->assign('active_tab'   , '#money');
+    $smarty->assign('activeTab'   , '#money');
     // @formatter:on
 } catch (PdoDbException $pde) {
 

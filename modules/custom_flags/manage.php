@@ -26,4 +26,4 @@ $smarty->assign('cflgs', $cflgs);
 $smarty->assign('number_of_rows', count($cflgs));
 
 $smarty->assign('pageActive', 'custom_flags');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

@@ -53,4 +53,4 @@ if (!$firstRunWizard) {
 }
 
 $smarty->assign('pageActive', 'customer');
-$smarty->assign('active_tab', '#people');
+$smarty->assign('activeTab', '#people');

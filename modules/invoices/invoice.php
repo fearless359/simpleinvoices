@@ -40,7 +40,7 @@ $role = $_SESSION['role_name'];
 $billers     = Biller::getAll(true);
 $billerCount = Biller::count();
 
-$customers     = Customer::getAll(['enabled_only' => true]);
+$customers     = Customer::getAll(['enabledOnly' => true]);
 $customerCount = Customer::count();
 
 $products = Product::getAll(true);

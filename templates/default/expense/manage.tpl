@@ -27,8 +27,8 @@
             <th>{$LANG.tax}</th>
             <th>{$LANG.totalUc}</th>
             <th>{$LANG.expenseAccounts}</th>
-            <th>{$LANG.biller}</th>
-            <th>{$LANG.customer}</th>
+            <th>{$LANG.billerUc}</th>
+            <th>{$LANG.customerUc}</th>
             <th>{$LANG.invoiceUc}</th>
             <th>{$LANG.status}</th>
         </tr>

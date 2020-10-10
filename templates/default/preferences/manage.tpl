@@ -25,7 +25,7 @@
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.id}</th>
+            <th>{$LANG.idUc}</th>
             <th>{$LANG.descriptionUc}</th>
             <th>{$LANG.invoiceNumberingGroup}</th>
             <th>{$LANG.setAging}</th>

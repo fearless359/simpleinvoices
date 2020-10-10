@@ -45,19 +45,19 @@ $endDate    = isset($_POST['endDate']   ) ? $_POST['endDate']  : lastOfMonth ();
 $billerId   = isset($_POST['biller_id']  ) ? intval($_POST['biller_id'])  : null;
 $customerId = isset($_POST['customer_id']) ? intval($_POST['customer_id']): null;
 
-$showOnlyUnpaid = "no";
-$filterByDate   = "yes";
-$invoices       = [];
-$statement      = ["total" => 0, "owing" => 0, "paid" => 0];
+$showOnlyUnpaid    = "no";
+$filterByDateRange = "yes";
+$invoices          = [];
+$statement         = ["total" => 0, "owing" => 0, "paid" => 0];
 
 if (isset($_POST['submit'])) {
     try {
         $havings = [];
-        if (isset($_POST['filterByDate'])) {
-            $filterByDate = "yes";
+        if (isset($_POST['filterByDateRange'])) {
+            $filterByDateRange = "yes";
             $havings[] = ["date_between" => [$startDate, $endDate]];
         } else {
-            $filterByDate = "no";
+            $filterByDateRange = "no";
         }
 
         if (isset($_POST['showOnlyUnpaid'])) {
@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
 // @formatter:off
 $billers         = Biller::getAll(true);
 $billerCount     = count($billers);
-$customers       = Customer::getAll(['enabled_only' => true]);
+$customers       = Customer::getAll(['enabledOnly' => true]);
 $customerCount   = count($customers);
 
 if (empty($billerId)) {
@@ -105,16 +105,16 @@ if (empty($customerId)) {
     $customerDetails = Customer::getOne($customerId);
 }
 
-$smarty->assign('billerId'       , $billerId);
-$smarty->assign('billers'        , $billers);
-$smarty->assign('biller_count'   , $billerCount);
-$smarty->assign('billerDetails'  , $billerDetails);
-$smarty->assign('customerId'     , $customerId);
-$smarty->assign('customers'      , $customers);
-$smarty->assign('customerCount'  , $customerCount);
-$smarty->assign('customerDetails', $customerDetails);
-$smarty->assign('showOnlyUnpaid' , $showOnlyUnpaid);
-$smarty->assign('filterByDate'   , $filterByDate);
+$smarty->assign('billerId'         , $billerId);
+$smarty->assign('billers'          , $billers);
+$smarty->assign('biller_count'     , $billerCount);
+$smarty->assign('billerDetails'    , $billerDetails);
+$smarty->assign('customerId'       , $customerId);
+$smarty->assign('customers'        , $customers);
+$smarty->assign('customerCount'    , $customerCount);
+$smarty->assign('customerDetails'  , $customerDetails);
+$smarty->assign('showOnlyUnpaid'   , $showOnlyUnpaid);
+$smarty->assign('filterByDateRange', $filterByDateRange);
 
 $smarty->assign('invoices'  , $invoices);
 $smarty->assign('statement' , $statement);
@@ -122,7 +122,7 @@ $smarty->assign('startDate' , $startDate);
 $smarty->assign('endDate'   , $endDate);
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
+$smarty->assign('activeTab', '#home');
 
 if (!isset($menu)) {
     $menu = true; // Causes menu section of report gen page to display.

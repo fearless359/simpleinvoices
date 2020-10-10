@@ -69,7 +69,7 @@
     <table class="left">
         <!-- Biller section - start -->
         <tr>
-            <td class="tbl1-bottom col1" style="border:1px; padding:2px; border-spacing:1px;"><b>{$LANG.biller}:</b></td>
+            <td class="tbl1-bottom col1" style="border:1px; padding:2px; border-spacing:1px;"><b>{$LANG.billerUc}:</b></td>
             <td class="col1 tbl1-bottom" style="border:1px; padding:2px; border-spacing:1px;" colspan="3">{$biller.name}</td>
         </tr>
 
@@ -131,7 +131,7 @@
 
         <!-- Customer section - start -->
         <tr>
-            <td class="tbl1-bottom col1"><b>{$LANG.customer}:</b></td>
+            <td class="tbl1-bottom col1"><b>{$LANG.customerUc}:</b></td>
             <td class="tbl1-bottom col1" colspan="3">{$customer.name}</td>
         </tr>
 

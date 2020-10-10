@@ -12,7 +12,7 @@
       <div class="si_box_auth_pad">
         <table>
           <tr>
-              <th>{$LANG.id}</th>
+              <th>{$LANG.idUc}</th>
             <td><input name="user" size="25" type="text" title="user" value="" /></td>
           </tr>
           <tr>

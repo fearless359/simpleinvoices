@@ -26,5 +26,5 @@ $smarty->assign("products"   , $products);
 $smarty->assign("preferences", Preferences::getAll());
 
 $smarty->assign('pageActive' , 'dashboard');
-$smarty->assign('active_tab' , '#home');
+$smarty->assign('activeTab' , '#home');
 // @formatter:on

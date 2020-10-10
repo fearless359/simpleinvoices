@@ -32,8 +32,8 @@
             <th>{$LANG.actions}</th>
             <th>{$LANG.paymentUc}#</th>
             <th>{$LANG.invoiceUc}#</th>
-            <th>{$LANG.customer}</th>
-            <th>{$LANG.biller}</th>
+            <th>{$LANG.customerUc}</th>
+            <th>{$LANG.billerUc}</th>
             <th>{$LANG.amountUc}</th>
             <th>{$LANG.type}</th>
             <th>{$LANG.dateUc}</th>

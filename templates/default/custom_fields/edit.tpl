@@ -17,7 +17,7 @@
     <div class="si_form">
         <table>
             <tr>
-                <th class="details_screen">{$LANG.id}:</th>
+                <th class="details_screen">{$LANG.idUc}:</th>
                 <td class="si_input">{$cf.cf_id|htmlSafe}</td>
             </tr>
             <tr>

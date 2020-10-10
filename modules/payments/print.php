@@ -94,7 +94,7 @@ if (!empty($customFieldLabels['biller_cf4']) &&
 }
 
 $custInfo = [];
-$custInfo[] = [$LANG['customer'].':', $customer['name']];
+$custInfo[] = [$LANG['customerUc'].':', $customer['name']];
 if (!empty($customer['attention'])) {
     $custInfo[] = [$LANG['attentionShort'].':',$customer['attention']];
 }
@@ -190,5 +190,5 @@ $smarty->assign("cust_info"        , $custInfo);
 $smarty->assign("cust_info_count"  , count($custInfo));
 $smarty->assign("customFieldLabels", $customFieldLabels);
 $smarty->assign('pageActive'       , 'payment');
-$smarty->assign('active_tab'       , '#money');
+$smarty->assign('activeTab'       , '#money');
 // @formatter:on

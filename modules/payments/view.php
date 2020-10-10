@@ -36,4 +36,4 @@ if ($numPymtRecs > 0) {
 }
 
 $smarty->assign('pageActive', 'payment');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

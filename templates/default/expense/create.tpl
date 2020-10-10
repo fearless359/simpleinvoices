@@ -12,7 +12,7 @@
                     <td>
                         <select name="expense_account_id" class="si_input validate[required]" tabindex="10">
                             <option value=''></option>
-                            {foreach $expense_add.expense_accounts as $expense_account}
+                            {foreach $expenseAdd.expense_accounts as $expense_account}
                                 <option value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
                             {/foreach}
                         </select>
@@ -30,11 +30,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.biller}</th>
+                    <th class="details_screen">{$LANG.billerUc}</th>
                     <td>
                         <select name="biller_id" class="si_input validate[required]" tabindex="40">
                             <option value=''></option>
-                            {foreach $expense_add.billers as $biller}
+                            {foreach $expenseAdd.billers as $biller}
                                 <option {if isset($biller.id) && $biller.id == $defaults.biller} selected {/if}
                                         value="{if isset($biller.id)}{$biller.id}{/if}" tabindex="40">{$biller.name}</option>
                             {/foreach}
@@ -42,11 +42,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.customer}</th>
+                    <th class="details_screen">{$LANG.customerUc}</th>
                     <td>
                         <select name="customer_id" class="si_input" tabindex="50">
                             <option value=''></option>
-                            {foreach $expense_add.customers as $customer}
+                            {foreach $expenseAdd.customers as $customer}
                                 <option {if isset($customer.id) && $customer.id == $defaults.customer} selected {/if}
                                         value="{if isset($customer.id)}{$customer.id}{/if}" tabindex="50">{$customer.name}</option>
                             {/foreach}
@@ -58,7 +58,7 @@
                     <td>
                         <select name="invoice_id" class="si_input" tabindex="60">
                             <option value=''></option>
-                            {foreach $expense_add.invoices as $invoice}
+                            {foreach $expenseAdd.invoices as $invoice}
                                 <option value="{$invoice.id}">{$invoice.index_name}</option>
                             {/foreach}
                         </select>
@@ -69,7 +69,7 @@
                     <td>
                         <select name="product_id" class="si_input" tabindex="70">
                             <option value=''></option>
-                            {foreach $expense_add.products as $product}
+                            {foreach $expenseAdd.products as $product}
                                 <option value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
                             {/foreach}
                         </select>

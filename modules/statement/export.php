@@ -14,14 +14,14 @@ use Mpdf\Output\Destination;
  * Website:
  * https://simpleinvoices.group */
 // @formatter:off
-$billerId       = isset($_GET ['billerId'])       ? intval($_GET ['billerId'])   : null;
-$customerId     = isset($_GET ['customerId'])     ? intval($_GET ['customerId']) : null;
-$startDate      = isset($_GET ['startDate'])      ? $_GET ['startDate']          : "";
-$endDate        = isset($_GET ['endDate'])        ? $_GET ['endDate']            : "";
-$showOnlyUnpaid = isset($_GET ['showOnlyUnpaid']) ? $_GET ['showOnlyUnpaid']     : "no";
-$filterByDate   = isset($_GET ['filterByDate'])   ? $_GET ['filterByDate']       : "yes";
-$format         = isset($_GET ['format'])         ? $_GET ['format']             : "";
-$fileType       = isset($_GET ['filetype'])       ? $_GET ['filetype']           : "";
+$billerId          = isset($_GET ['billerId'])          ? intval($_GET ['billerId'])   : null;
+$customerId        = isset($_GET ['customerId'])        ? intval($_GET ['customerId']) : null;
+$startDate         = isset($_GET ['startDate'])         ? $_GET ['startDate']          : "";
+$endDate           = isset($_GET ['endDate'])           ? $_GET ['endDate']            : "";
+$showOnlyUnpaid    = isset($_GET ['showOnlyUnpaid'])    ? $_GET ['showOnlyUnpaid']     : "no";
+$filterByDateRange = isset($_GET ['filterByDateRange']) ? $_GET ['filterByDateRange']  : "yes";
+$format            = isset($_GET ['format'])            ? $_GET ['format']             : "";
+$fileType          = isset($_GET ['filetype'])          ? $_GET ['filetype']           : "";
 // @formatter:on
 
 // get the invoice id
@@ -30,7 +30,7 @@ $export->setBillerId($billerId);
 $export->setCustomerId($customerId);
 $export->setEndDate($endDate);
 $export->setFileType($fileType);
-$export->setFilterByDate($filterByDate);
+$export->setFilterByDateRange($filterByDateRange);
 $export->setFormat($format);
 $export->setModule('statement');
 $export->setShowOnlyUnpaid($showOnlyUnpaid);

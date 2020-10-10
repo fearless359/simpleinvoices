@@ -28,7 +28,7 @@
         <li><a href="#home"><span>{$LANG.home}</span></a></li>
         <li><a href="#money"><span>{$LANG.money}</span></a></li>
         <li><a href="#people"><span>{$LANG.people}</span></a></li>
-        <li><a href="#product"><span>{$LANG.products}</span></a></li>
+        <li><a href="#product"><span>{$LANG.productsUc}</span></a></li>
         <!-- SECTION:tabs -->
         {$smarty.capture.hook_tabmenu_main_end}
         <li id="si_tab_settings"><a href="#setting"><span>{$LANG.settingsUc}</span></a></li>
@@ -104,7 +104,7 @@
             {if isset($subPageActive) && $subPageActive == "biller_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:customers -->
-            <li><a {if isset($pageActive) && $pageActive== "customer"}class="active" {/if}href="index.php?module=customers&amp;view=manage">{$LANG.customers}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "customer"}class="active" {/if}href="index.php?module=customers&amp;view=manage">{$LANG.customersUc}</a></li>
             {if isset($subPageActive) && $subPageActive == "customer_add"}
                 <li><a class="active active_subpage" href="#">{$LANG.add}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "customer_view"}
@@ -125,7 +125,7 @@
     <div id="product">
         <ul class="subnav">
             <!-- SECTION:manage_products -->
-            <li><a {if isset($pageActive) && $pageActive== "product_manage"}class="active" {/if}href="index.php?module=products&amp;view=manage">{$LANG.products}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "product_manage"}class="active" {/if}href="index.php?module=products&amp;view=manage">{$LANG.productsUc}</a></li>
             {if isset($subPageActive) && $subPageActive == "product_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "product_edit"}

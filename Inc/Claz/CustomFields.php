@@ -57,16 +57,16 @@ class CustomFields
         // function to return false if invalid custom_field
         switch ($getCfLetter) {
             case "b":
-                $customFieldName = $LANG['biller'];
+                $customFieldName = $LANG['billerUc'];
                 break;
             case "c":
-                $customFieldName = $LANG['customer'];
+                $customFieldName = $LANG['customerUc'];
                 break;
             case "i":
                 $customFieldName = $LANG['invoice'];
                 break;
             case "p":
-                $customFieldName = $LANG['products'];
+                $customFieldName = $LANG['productsUc'];
                 break;
             default:
                 $customFieldName = false;

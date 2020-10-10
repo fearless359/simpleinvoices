@@ -6,7 +6,7 @@
     <hr/>
 {/if}
 <h1 class="si_center">{$title}</h1>
-{include file=$path|cat:"library/dataRangeDisplay.tpl"};
+{include file=$path|cat:"library/dateRangeDisplay.tpl"}
 {if $customFlag > 0}
     <div class="si_center">
         <strong>
@@ -21,62 +21,56 @@
     </strong>
 </div>
 <br/>
-<table class="center" style="width:90%;">
+<table class="si_report_table">
     <thead>
-    <tr style="font-weight: bold;">
-        <th class="details_screen si_right" style="width:8%;">{$LANG.invoiceUc} #</th>
-        <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_center" style="width:10%;">{$LANG.open} {$LANG.dateUc}</th>
-        <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_center" style="width:23%;">{$LANG.customer}</th>
-        <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_right" style="width:10%;">{$LANG.totalUc}</th>
-        <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_right" style="width:10%;">{$LANG.paidUc}</th>
-        <th class="details_screen" style="width:2%;"></th>
-        <th class="details_screen si_right" style="width:15%;">{$LANG.paidThisPeriod}</th>
-    </tr>
+        <tr>
+            <th class="details_screen si_right">{$LANG.invoiceUc} #</th>
+            <th class="details_screen si_center">{$LANG.open} {$LANG.dateUc}</th>
+            <th class="details_screen si_center">{$LANG.customerUc}</th>
+            <th class="details_screen si_right">{$LANG.totalUc}</th>
+            <th class="details_screen si_right">{$LANG.paidUc}</th>
+            <th class="details_screen si_right">{$LANG.paidThisPeriod}</th>
+        </tr>
     </thead>
     <tbody>
     {foreach $invoices as $invoice}
-        <tr>
-            <td class="details_screen si_right">
-                <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice->id}&amp;action=view">
+        <tr class="tr_{cycle values="A,B"}">
+            <td class="si_right">
+                {if ($view == "reportNetIncome")}
+                <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice->id}">
                     {$invoice->indexId}
                 </a>
+                {else}
+                    {$invoice->indexId}
+                {/if}
             </td>
-            <td>&nbsp;</td>
-            <td class="details_screen si_center">{$invoice->date|date_format:"%m/%d/%Y"}</td>
-            <td>&nbsp;</td>
-            <td class="details_screen">{$invoice->customerName}</td>
-            <td>&nbsp;</td>
-            <td class="details_screen si_right">
+            <td class="si_center">{$invoice->date|date_format:"%m/%d/%Y"}</td>
+            <td>{$invoice->customerName}</td>
+            <td class="si_right">
                 {$invoice->totalAmount|utilCurrency}
             </td>
-            <td>&nbsp;</td>
-            <td class="details_screen si_right">
+            <td class="si_right">
                 {$invoice->totalPayments|utilCurrency}
             </td>
-            <td>&nbsp;</td>
-            <td class="details_screen si_right {if $invoice@last}underline{/if}">
+            <td class="si_right {if $invoice@last}underline{/if}">
                 {$invoice->totalPeriodPayments|utilCurrency}
             </td>
         <tr>
-        {if $displayDetail}
+        {if $displayDetail == 'yes'}
             {foreach $invoice->items as $item}
-                <tr>
-                    <td>&nbsp;</td>
-                    <td class="si_right">{$LANG.descriptionUc}:</td>
-                    <td colspan="4">{$item->description}</td>
-                    <td class="si_right">{$LANG.amountUc}:</td>
-                    <td class="si_right">{$item->amount|utilCurrency}</td>
+                <tr class="tr_{cycle values="A,B"}">
+                    <td class="si_right" colspan="3">{$item->description}:</td>
+                    <td class="si_right" colspan="2">{$item->amount|utilCurrency}&nbsp;&nbsp;&nbsp;</td>
+                    <td></td>
                 </tr>
             {/foreach}
         {/if}
     {/foreach}
-    <tr>
-        <td colspan="10">&nbsp;</td>
-        <td class="details_screen si_right">{if isset($totIncome)}{$totIncome|utilCurrency}{/if}</td>
-    </tr>
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5">{$LANG.totalUc}</td>
+            <td class="details_screen si_right">{if isset($totIncome)}{$totIncome|utilCurrency}{/if}</td>
+        </tr>
+    </tfoot>
 </table>

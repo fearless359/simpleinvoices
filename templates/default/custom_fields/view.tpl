@@ -16,7 +16,7 @@
     <div class="si_cust_info">
         <table>
             <tr>
-                <th class="details_screen">{$LANG.id}:</th>
+                <th class="details_screen">{$LANG.idUc}:</th>
                 <td>{$cf.cf_id|htmlSafe}</td>
             </tr>
             <tr>

@@ -965,7 +965,7 @@ a.cluetip:hover img {
 
 .si_report_table td,
 .si_report_table th {
-    text-align: right;
+    /*text-align: right;*/
     padding: 2px 5px 2px 10px;
     border-left: 1px solid #ddd;
     border-top: 1px solid #FAFAFA;

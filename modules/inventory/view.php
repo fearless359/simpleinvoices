@@ -10,4 +10,4 @@ $smarty->assign('product_all', Product::getAll(true));
 
 $smarty->assign('pageActive', 'inventory');
 $smarty->assign('subPageActive', 'inventory_edit');
-$smarty->assign('active_tab', '#product');
+$smarty->assign('activeTab', '#product');

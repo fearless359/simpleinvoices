@@ -31,4 +31,4 @@ $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive'   , 'payment');
-$smarty->assign('active_tab'   , '#money');
+$smarty->assign('activeTab'   , '#money');

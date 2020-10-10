@@ -29,34 +29,9 @@ use Inc\Claz\WhereItem;
  * Website:
  * 	https://simpleinvoices.group
  */
-global $LANG, $smarty, $pdoDb;
+global $endDate, $LANG, $smarty, $pdoDb, $startDate;
 
 Util::directAccessAllowed();
-
-$domainId = DomainId::get();
-
-/**
- * @return false|string
- */
-function firstOfMonth() {
-	return date("Y-m-d", strtotime('01-'.date('m').'-'.date('Y').' 00:00:00'));
-}
-
-/**
- * @return false|string
- */
-function lastOfMonth() {
-	return date("Y-m-d",
-        strtotime('-1 second',
-            strtotime('+1 month',
-                strtotime('01-'.date('m').'-'.date('Y').' 00:00:00')
-            )
-        )
-    );
-}
-
-$startDate = isset($_POST['start_date']) ? $_POST['start_date'] : firstOfMonth() ;
-$endDate   = isset($_POST['end_date'])   ? $_POST['end_date']   : lastOfMonth()  ;
 
 try {
     $pdoDb->setSelectList(["e.amount AS expense", "e.status AS status", "ea.name AS account"]);
@@ -81,7 +56,7 @@ try {
     $jn->addSimpleItem("e.domain_id", new DbField("ea.domain_id"));
     $pdoDb->addToJoins($jn);
 
-    $pdoDb->addSimpleWhere("e.domain_id", $domainId, "AND");
+    $pdoDb->addSimpleWhere("e.domain_id", DomainId::get(), "AND");
     $pdoDb->addToWhere(new WhereItem(false, "e.date", "BETWEEN", [$startDate, $endDate], false));
 
     $accounts = $pdoDb->request("SELECT", "expense", "e");
@@ -93,11 +68,6 @@ try {
     $smarty->assign('accounts'  , $accounts);
     $smarty->assign('payments'  , $payments);
     $smarty->assign('invoices'  , $invoices);
-    $smarty->assign('start_date', $startDate);
-    $smarty->assign('end_date'  , $endDate);
 } catch (PdoDbException $pde) {
     die("reportSummary error: {$pde->getMessage()}");
 }
-
-$smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');

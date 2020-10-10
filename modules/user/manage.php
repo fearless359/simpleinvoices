@@ -30,4 +30,4 @@ $smarty->assign('users', $users);
 $smarty->assign("number_of_rows", count($users));
 
 $smarty->assign('pageActive', 'user');
-$smarty->assign('active_tab', '#people');
+$smarty->assign('activeTab', '#people');

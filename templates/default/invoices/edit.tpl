@@ -44,7 +44,7 @@
                 {/if}
             </tr>
             <tr>
-                <th>{$LANG.biller}</th>
+                <th>{$LANG.billerUc}</th>
                 <td>
                     {if !isset($billers) }
                         <em>{$LANG.noBillers}</em>
@@ -60,7 +60,7 @@
                 </td>
             </tr>
             <tr>
-                <th>{$LANG.customer}</th>
+                <th>{$LANG.customerUc}</th>
                 <td>
                     {if !isset($customers)}
                         <em>{$LANG.noCustomers}</em>

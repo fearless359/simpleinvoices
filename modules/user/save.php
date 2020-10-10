@@ -64,4 +64,4 @@ $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'user');
-$smarty->assign('active_tab', '#people');
+$smarty->assign('activeTab', '#people');

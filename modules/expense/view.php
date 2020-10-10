@@ -31,4 +31,4 @@ $smarty->assign('defaults', SystemDefaults::loadValues());
 
 $smarty->assign('pageActive', 'expense');
 $smarty->assign('subPageActive', 'view');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

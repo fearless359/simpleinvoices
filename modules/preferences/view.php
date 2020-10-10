@@ -25,5 +25,5 @@ $smarty->assign('localeList', Util::getLocaleList());
 
 $smarty->assign('pageActive', 'preference');
 $smarty->assign('subPageActive', "preferences_view");
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');
 

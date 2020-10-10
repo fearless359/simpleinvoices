@@ -87,4 +87,4 @@ $smarty->assign('bilr', $bilr);
 $smarty->assign('pageActive', 'user');
 
 $smarty->assign('subPageActive', "user_edit");
-$smarty->assign('active_tab', '#people');
+$smarty->assign('activeTab', '#people');

@@ -29,5 +29,5 @@ if (!empty($_POST['description'])) {
     $smarty->assign("attributes", $attributes);
 
     $smarty->assign('pageActive', 'product_add');
-    $smarty->assign('active_tab', '#product');
+    $smarty->assign('activeTab', '#product');
 }

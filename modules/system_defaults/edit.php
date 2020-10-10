@@ -85,7 +85,7 @@ switch ($getVal) {
 
     case "customer":
         $default = "customer";
-        $customers = Customer::getAll(['enabled_only' => true]);
+        $customers = Customer::getAll(['enabledOnly' => true]);
 
         if (empty($customers)) {
             $value  = "<p><em>{$LANG['noCustomers']}</em></p>" . "\n";
@@ -362,4 +362,4 @@ $smarty->assign('value', $value);
 $smarty->assign('description', $description);
 $smarty->assign('default', $default);
 $smarty->assign('pageActive', 'system_default');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

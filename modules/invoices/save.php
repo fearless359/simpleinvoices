@@ -155,4 +155,4 @@ $smarty->assign('refresh_redirect', $refreshRedirect);
 $smarty->assign('id', $id);
 
 $smarty->assign('pageActive', $pageActive);
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

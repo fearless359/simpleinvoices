@@ -13,4 +13,4 @@ $smarty->assign('product_attributes', $productAttributes);
 $smarty->assign("number_of_rows", count($productAttributes));
 
 $smarty->assign('pageActive', "product_attribute_manage");
-$smarty->assign('active_tab', '#product');
+$smarty->assign('activeTab', '#product');

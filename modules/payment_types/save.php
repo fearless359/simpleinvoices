@@ -29,4 +29,4 @@ $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'payment_type');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

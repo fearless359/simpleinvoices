@@ -28,13 +28,13 @@
     {if $performExtensionInsertions == true}
         {section name=idx loop=$extensionInsertionFiles}
             {if $extensionInsertionFiles[idx].module  == 'reports' &&
-            $extensionInsertionFiles[idx].section == $before|cat:$LANG.sales}
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.salesUc}
                 {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
 
-    <h2>{$LANG.sales}<a id="sales" href=""></a></h2>
+    <h2>{$LANG.salesUc}<a id="sales" href=""></a></h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportSalesTotal" class="">
             <img src="../../../images/money.png" alt=""/>
@@ -60,7 +60,7 @@
         {if $performExtensionInsertions == true}
             {section name=idx loop=$extensionInsertionFiles}
                 {if $extensionInsertionFiles[idx].module  == 'reports' &&
-                $extensionInsertionFiles[idx].section == $LANG.sales}
+                $extensionInsertionFiles[idx].section == $LANG.salesUc}
                     {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
@@ -71,12 +71,12 @@
         {if $performExtensionInsertions == true}
             {section name=idx loop=$extensionInsertionFiles}
                 {if $extensionInsertionFiles[idx].module  == 'reports' &&
-                $extensionInsertionFiles[idx].section == $before|cat:$LANG.profit}
+                $extensionInsertionFiles[idx].section == $before|cat:$LANG.profitUc}
                     {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
         {/if}
-        <h2>{$LANG.profit}</h2>
+        <h2>{$LANG.profitUc}</h2>
         <div class="si_toolbar">
             <a href="index.php?module=reports&amp;view=reportInvoiceProfit" class="">
                 <img src="../../../images/money.png" alt=""/>
@@ -121,13 +121,13 @@
     {if $performExtensionInsertions == true}
         {section name=idx loop=$extensionInsertionFiles}
             {if $extensionInsertionFiles[idx].module  == 'reports' &&
-            $extensionInsertionFiles[idx].section == $before|cat:$LANG.products}
+            $extensionInsertionFiles[idx].section == $before|cat:$LANG.productsUc}
                 {include file=$extensionInsertionFiles[idx].file}
             {/if}
         {/section}
     {/if}
 
-    <h2>{$LANG.products}</h2>
+    <h2>{$LANG.productsUc}</h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportProductsSoldTotal" class="">
             <img src="../../../images/cart.png" alt=""/>
@@ -140,7 +140,7 @@
         {if $performExtensionInsertions == true}
             {section name=idx loop=$extensionInsertionFiles}
                 {if $extensionInsertionFiles[idx].module  == 'reports' &&
-                $extensionInsertionFiles[idx].section == $LANG.products}
+                $extensionInsertionFiles[idx].section == $LANG.productsUc}
                     {include file=$extensionInsertionFiles[idx].file}
                 {/if}
             {/section}
@@ -228,7 +228,7 @@
                 <img src="../../../images/money_delete.png" alt=""/>
                 {$LANG.expenseUc} {$LANG.accountsUc} {$LANG.by} {$LANG.periodUc}
             </a>
-            <a href="index.php?module=reports&amp;view=reportSummary" class="">
+            <a href="index.php?module=reports&amp;view=reportExpenseSummary" class="">
                 <img src="../../../images/money_delete.png" alt=""/>
                 {$LANG.expenseUc} {$LANG.accountUc} {$LANG.summaryUc}
             </a>

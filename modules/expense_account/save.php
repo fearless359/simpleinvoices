@@ -28,4 +28,4 @@ $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign ( 'pageActive', 'expense_account_manage' );
-$smarty->assign ( 'active_tab', '#money' );
+$smarty->assign ( 'activeTab', '#money' );

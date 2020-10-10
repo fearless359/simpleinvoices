@@ -46,4 +46,4 @@ $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'custom_flags');
-$smarty->assign('active_tab', '#settings');
+$smarty->assign('activeTab', '#settings');

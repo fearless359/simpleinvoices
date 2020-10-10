@@ -20,5 +20,5 @@ $smarty->assign('display_block',$displayBlock);
 $smarty->assign('refresh_redirect',$refreshRedirect);
 
 $smarty->assign('pageActive', 'system_default');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');
 

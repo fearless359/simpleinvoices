@@ -22,7 +22,7 @@
         <span class='si_filters_links'>
             <a href="index.php?module=invoices&amp;view=manage"
                class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">
-              {$LANG.all}
+              {$LANG.allUc}
             </a>
             <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed"
                class="{if isset($smarty.get.having) && $smarty.get.having=='money_owed'}selected{/if}">
@@ -53,8 +53,8 @@
             <tr>
                 <th>{$LANG.actions}</th>
                 <th>{$LANG.invoiceUc}#</th>
-                <th>{$LANG.biller}</th>
-                <th>{$LANG.customer}</th>
+                <th>{$LANG.billerUc}</th>
+                <th>{$LANG.customerUc}</th>
                 <th>{$LANG.toUc}</th>
                 <th>{$LANG.totalUc}</th>
                 <th>{$LANG.owingUc}</th>

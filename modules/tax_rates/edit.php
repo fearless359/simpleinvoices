@@ -16,4 +16,4 @@ $smarty->assign('orig_description', $tax['tax_description']);
 
 $smarty->assign('pageActive', 'tax_rate');
 $smarty->assign('subPageActive', "tax_rates_edit");
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

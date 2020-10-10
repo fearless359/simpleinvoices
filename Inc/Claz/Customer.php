@@ -44,10 +44,10 @@ class Customer
     /**
      * Retrieve all <b>customers</b> records per specified option.
      * @param array $params Array of options for processing the request. Settings are:
-     *          enabled_only - Set to <b>true</b> if only Customers that are <i>Enabled</i>
+     *          enabledOnly - Set to <b>true</b> if only Customers that are <i>Enabled</i>
      *              will be selected. Set to <b>false</b> to select all <b>customers</b> records.
      *          incl_cust_id - If set, makes sure this customer is included regardless of the
-     *              <b>enabled_only</b> option setting.
+     *              <b>enabledOnly</b> option setting.
      *          noTotals - Set to <b>true</b> if only customer record fields to be returned.
      *              Set to <b>false</b> to add calculated totals field (Default if not specified).
      *          An empty array if none of these parameters needed.
@@ -71,8 +71,8 @@ class Customer
 
         $customerSession = $_SESSION['role_name'] == 'customer';
 
-        $viewCust = $LANG['view'] . " " . $LANG['customer'];
-        $editCust = $LANG['edit'] . " " . $LANG['customer'];
+        $viewCust = $LANG['view'] . " " . $LANG['customerUc'];
+        $editCust = $LANG['edit'] . " " . $LANG['customerUc'];
         $defaultInv = $LANG['newUc'] . " " . $LANG['defaultInvoice'];
 
         try {
@@ -135,10 +135,10 @@ class Customer
      * Retrieve all <b>customers</b> records per specified option.
      * @param array $params Array of options for processing the request. Settings are:
      *          id - id of customer to retrieve. Defaults to all customers to be considered.
-     *          enabled_only - Set to <b>true</b> if only Customers that are <i>Enabled</i>
+     *          enabledOnly - Set to <b>true</b> if only Customers that are <i>Enabled</i>
      *              will be selected. Set to <b>false</b> to select all <b>customers</b> records.
      *          incl_cust_id - If set, makes sure this customer is included regardless of the
-     *              <b>enabled_only</b> option setting.
+     *              <b>enabledOnly</b> option setting.
      *          noTotals - Set to <b>true</b> if only customer record fields to be returned.
      *              Set to <b>false</b> to add calculated totals field (Default if not specified).
      *          order_by_set - Set to <b>true</b> if caller set the ORDER BY option. Set to
@@ -150,7 +150,7 @@ class Customer
 
         // @formatter::off
         $id          = empty($params['id'])           ? null  : $params['id'];
-        $enabledOnly = empty($params['enabled_only']) ? false : $params['enabled_only'];
+        $enabledOnly = empty($params['enabledOnly']) ? false : $params['enabledOnly'];
         $inclCustId  = empty($params['incl_cust_id']) ? null  : $params['incl_cust_id'];
         $noTotals    = empty($params['noTotals'])    ? false : $params['noTotals'];
         $orderBySet  = empty($params['order_by_set']) ? false : $params['order_by_set'];

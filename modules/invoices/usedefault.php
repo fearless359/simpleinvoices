@@ -49,7 +49,7 @@ if ($_GET ['action'] == 'update_template') {
 
         $smarty->assign('pageActive', 'invoice');
         $smarty->assign('subPageActive', 'invoice_view');
-        $smarty->assign('active_tab', '#money');
+        $smarty->assign('activeTab', '#money');
     } catch (PdoDbException $pde) {
         exit("modules/invoices/usedefault.php Unexpected error {$pde->getMessage()}");
     }
@@ -90,7 +90,7 @@ if ($_GET ['action'] == 'update_template') {
 
             $smarty->assign('pageActive', 'invoice_new');
             $smarty->assign('subPageActive', 'invoice_new_itemised');
-            $smarty->assign('active_tab', '#money');
+            $smarty->assign('activeTab', '#money');
         }
     } catch (PdoDbException $pde) {
         exit("modules/invoices/usedefault.php (2)Unexpected error {$pde->getMessage()}");

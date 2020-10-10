@@ -37,4 +37,4 @@ $smarty->assign('noEntryMsg', $noEntryMsg);
 
 $smarty->assign('subPageActive', $subPageActive);
 $smarty->assign('pageActive', 'payment');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

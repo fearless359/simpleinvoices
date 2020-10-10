@@ -11,13 +11,13 @@
                     <td>{$invoice.total|utilNumber:2}</td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.biller}</th>
+                    <th class="details_screen">{$LANG.billerUc}</th>
                     <td>{$biller.name|htmlSafe}</td>
                     <th class="details_screen">{$LANG.paidUc}</th>
                     <td>{$invoice.paid|utilNumber}</td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.customer}</th>
+                    <th class="details_screen">{$LANG.customerUc}</th>
                     <td>{$customer.name|htmlSafe}</td>
                     <th class="details_screen">{$LANG.owingUc}</th>
                     <td style="text-decoration: underline;">{$invoice.owing|utilNumber}</td>

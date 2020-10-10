@@ -107,5 +107,5 @@ $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
 $smarty->assign('pageActive', 'preference');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');
 

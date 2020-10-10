@@ -42,4 +42,4 @@ if (!empty($having)) {
 $smarty->assign('get_having', $having);
 
 $smarty->assign('pageActive', "invoice");
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

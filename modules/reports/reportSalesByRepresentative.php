@@ -1,10 +1,6 @@
 <?php
 
-use Inc\Claz\DomainId;
-use Inc\Claz\FunctionStmt;
-use Inc\Claz\Invoice;
 use Inc\Claz\Util;
-use Inc\Claz\WhereItem;
 
 /*
  *  Script:
@@ -22,59 +18,23 @@ use Inc\Claz\WhereItem;
  *  Website:
  *      https://simpleinvoices.group
  */
-global $menu, $pdoDb, $smarty;
+global $endDate, $LANG, $menu, $smarty, $startDate;
 
 Util::directAccessAllowed();
 
-function firstOfMonth() {
-    return date("Y-m-d", strtotime('01-01-' . date('Y') . ' 00:00:00'));
-}
-function lastOfMonth() {
-    return date("Y-m-d", strtotime('31-12-' . date('Y') . ' 00:00:00'));
-}
+include 'library/dateRangePrompt.php';
+include 'library/filterByDateRangePrompt.php';
 
-// @formatter:off
-$start_date     = (isset($_POST['start_date']    ) ? $_POST['start_date']     : firstOfMonth());
-$end_date       = (isset($_POST['end_date']      ) ? $_POST['end_date']       : lastOfMonth());
-$sales_rep      = (isset($_POST['sales_rep']     ) ? $_POST['sales_rep']      : "");
-$filter_by_date = (isset($_POST['filter_by_date']) ? $_POST['filter_by_date'] : "no");
+$salesRep = isset($_POST['salesRep']) ? $_POST['salesRep'] : "";
+$smarty->assign('salesRep', $salesRep);
 
-$invoices = array();
-$statement = array("total" => 0, "owing" => 0, "paid" => 0);
-if (isset($_POST['submit'])) {
-    $pdoDb->addSimpleWhere("iv.sales_representative", $sales_rep, 'AND');
-    if (isset($_POST['filter_by_date'])) {
-        $invoices = Invoice::getAllWithHavings(array("date_between" => array($start_date, $end_date)), "date");
-        $filter_by_date = "yes";
-    } else {
-        $invoices = Invoice::getAll("date", "asc");
-    }
+$smarty->assign('title', "{$LANG['salesRepresentative']} {$LANG['reportUc']}");
 
-    foreach ( $invoices as $row ) {
-        $statement['total'] += $row['total'];
-        $statement['owing'] += $row['owing'];
-        $statement['paid' ] += $row['paid'];
-    }
-}
-
-$pdoDb->addToWhere(new WhereItem(false, "sales_representative", "<>", "", false, "AND"));
-$pdoDb->addSimpleWhere("domain_id", DomainId::get());
-$pdoDb->addToFunctions(new FunctionStmt("DISTINCT", "sales_representative"));
-$rows = $pdoDb->request("SELECT", "invoices");
-$sales_reps = array();
-foreach ($rows as $row) {
-    $sales_reps[] = $row['sales_representative'];
-}
-
-$smarty->assign('sales_reps'    , $sales_reps);
-$smarty->assign('sales_rep'     , $sales_rep);
-$smarty->assign('filter_by_date', $filter_by_date);
-$smarty->assign('invoices'      , $invoices);
-$smarty->assign('statement'     , $statement);
-$smarty->assign('start_date'    , $start_date);
-$smarty->assign('end_date'      , $end_date);
+include "modules/reports/reportSalesByRepresentativeData.php";
 
 $smarty->assign('pageActive', 'report' );
-$smarty->assign('active_tab', '#home' );
-$smarty->assign('menu'      , $menu );
-// @formatter:on
+$smarty->assign('activeTab', '#home' );
+if (!isset($menu)) {
+    $menu = true;
+}
+$smarty->assign('menu', $menu );

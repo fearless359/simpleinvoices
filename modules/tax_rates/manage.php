@@ -14,4 +14,4 @@ $smarty->assign("taxes", $taxes);
 $smarty->assign('number_of_rows', count($taxes));
 
 $smarty->assign('pageActive', 'tax_rate');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

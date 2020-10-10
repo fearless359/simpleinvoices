@@ -25,18 +25,18 @@ Util::directAccessAllowed();
 $error = false;
 $message = "Unable to process email request.";
 
-$billerId       = isset($_GET['billerId'])       ? $_GET['billerId']       : null;
-$customerId     = isset($_GET['customerId'])     ? $_GET['customerId']     : null;
-$displayDetail  = isset($_GET['displayDetail'])  ? $_GET['displayDetail']  : "no";
-$endDate        = isset($_GET['endDate'])        ? $_GET['endDate']        : "";
-$fileName       = isset($_GET['fileName'])       ? $_GET['fileName']       : "";
-$fileType       = isset($_GET['fileType'])       ? $_GET['fileType']       : "";
-$filterByDate   = isset($_GET['filterByDate'])   ? $_GET['filterByDate']   : "no";
-$format         = isset($_GET['format'])         ? $_GET['format']         : "file";
-$showOnlyUnpaid = isset($_GET['showOnlyUnpaid']) ? $_GET['showOnlyUnpaid'] : "no";
-$startDate      = isset($_GET['startDate'])      ? $_GET['startDate']      : "";
-$stage          = isset($_GET['stage'])          ? $_GET['stage']          : 1;
-$title          = isset($_GET['title'])          ? $_GET['title']          : "";
+$billerId          = isset($_GET['billerId'])          ? $_GET['billerId']          : null;
+$customerId        = isset($_GET['customerId'])        ? $_GET['customerId']        : null;
+$displayDetail     = isset($_GET['displayDetail'])     ? $_GET['displayDetail']     : "no";
+$endDate           = isset($_GET['endDate'])           ? $_GET['endDate']           : "";
+$fileName          = isset($_GET['fileName'])          ? $_GET['fileName']          : "";
+$fileType          = isset($_GET['fileType'])          ? $_GET['fileType']          : "";
+$filterByDateRange = isset($_GET['filterByDateRange']) ? $_GET['filterByDateRange'] : "yes";
+$format            = isset($_GET['format'])            ? $_GET['format']            : "file";
+$showOnlyUnpaid    = isset($_GET['showOnlyUnpaid'])    ? $_GET['showOnlyUnpaid']    : "no";
+$startDate         = isset($_GET['startDate'])         ? $_GET['startDate']         : "";
+$stage             = isset($_GET['stage'])             ? $_GET['stage']             : 1;
+$title             = isset($_GET['title'])             ? $_GET['title']             : "";
 
 if (empty($billerId)) {
     $biller = Biller::getDefaultBiller();
@@ -58,11 +58,77 @@ if (empty($customerId)) {
     $customer = Customer::getOne($customerId);
 }
 
+// Note that the $params array is used to supply parameters
+// to the "action" parameter of the email form.
 switch ($fileName) {
+    case 'reportBillerByCustomer':
+        include "modules/reports/reportBillerByCustomerData.php";
+        $params = [
+            'billerId' => $billerId,
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportBillerTotal':
+        include "modules/reports/reportBillerTotalData.php";
+        $params = [
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportDebtorsByAmount':
+        $includePaidInvoices = isset($_GET['includePaidInvoices']) ? $_GET['includePaidInvoices'] : 'no';
+        include "modules/reports/reportDebtorsByAmountData.php";
+        $params = [
+            'includePaidInvoices' => $includePaidInvoices,
+            'fileName' => $fileName,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportDebtorsOwingByCustomer':
+        $includeAllCustomers = isset($_GET['includeAllCustomers']) ? $_GET['includeAllCustomers'] : 'no';
+        include "modules/reports/reportDebtorsOwingByCustomerData.php";
+        $params = [
+            'includeAllCustomers' => $includeAllCustomers,
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'filterByDateRange' => $filterByDateRange,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportExpenseAccountByPeriod':
+        include "modules/reports/reportExpenseAccountByPeriodData.php";
+        $params = [
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportExpenseSummary':
+        include "modules/reports/reportExpenseSummaryData.php";
+        $params = [
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
     case 'reportNetIncome':
         $customFlag = isset($_GET['customFlag']) ? $_GET['customFlag'] : '0';
         $customFlagLabel = isset($_GET['customFlagLabel']) ? $_GET['customFlagLabel'] : '';
-        include "modules/reports/reportNetIncomeReportData.php";
+        include "modules/reports/reportNetIncomeData.php";
         $params = [
             'billerId' => $billerId,
             'customerId' => $customerId,
@@ -71,15 +137,35 @@ switch ($fileName) {
             'displayDetail' => $displayDetail,
             'endDate' => $endDate,
             'fileName' => $fileName,
-            'filterByDate' => $filterByDate,
+            'filterByDateRange' => $filterByDateRange,
             'showOnlyUnpaid' => $showOnlyUnpaid,
             'startDate' => $startDate,
             'title' => $title
         ];
         break;
 
-    case 'reportSalesTotal':
-        include "modules/reports/reportSalesTotalData.php";
+    case 'reportPastDue':
+        include "modules/reports/reportPastDueData.php";
+        $params = [
+            'displayDetail' => $displayDetail,
+            'fileName' => $fileName,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportProductsSoldByCustomer':
+        include "modules/reports/reportProductsSoldByCustomerData.php";
+        $params = [
+            'customerId' => $customerId,
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportProductsSoldTotal':
+        include "modules/reports/reportProductsSoldTotalData.php";
         $params = [
             'endDate' => $endDate,
             'fileName' => $fileName,
@@ -98,8 +184,57 @@ switch ($fileName) {
         ];
         break;
 
+    case 'reportSalesByRepresentative':
+        $salesRep = isset($_GET['salesRep']) ? $_GET['salesRep'] : "";
+        include "modules/reports/reportSalesByRepresentativeData.php";
+        $params = [
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'filterByDateRange' => $filterByDateRange,
+            'salesRep' => $salesRep,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportSalesCustomersTotal':
+        include "modules/reports/reportSalesCustomersTotalData.php";
+        $params = [
+            'customerId' => $customerId,
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportSalesTotal':
+        include "modules/reports/reportSalesTotalData.php";
+        $params = [
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
+    case 'reportTaxTotal':
+        include "modules/reports/reportTaxTotalData.php";
+        $params = [
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
     default:
-        exit("Undefined fileName");
+        include "modules/reports/{$fileName}Data.php";
+        $params = [
+            'fileName' => $fileName,
+            'title' => $title
+        ];
+        break;
 }
 $smarty->assign('params', $params);
 
@@ -123,7 +258,7 @@ if ($stage == 2) {
             $export->setEndDate($endDate);
             $export->setFileName($fileName);
             $export->setFileType($fileType);
-            $export->setFilterByDate($filterByDate);
+            $export->setFilterByDateRange($filterByDateRange);
             $export->setFormat($format);
             $export->setModule($module);
             $export->setShowOnlyUnpaid($showOnlyUnpaid);
@@ -155,11 +290,12 @@ if ($stage == 2) {
     $error = true;
 }
 
-$smarty->assign('error'   , $error ? "1":"0");
-$smarty->assign('message' , $message);
-$smarty->assign('biller'  , $biller);
+$smarty->assign('biller', $biller);
 $smarty->assign('customer', $customer);
-$smarty->assign('subject' , $title);
+
+$smarty->assign('error', $error ? "1":"0");
+$smarty->assign('message', $message);
+$smarty->assign('subject', $title);
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
+$smarty->assign('activeTab', '#home');

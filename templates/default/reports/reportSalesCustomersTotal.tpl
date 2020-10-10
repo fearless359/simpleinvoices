@@ -1,21 +1,26 @@
-<table class="si_report_table">
-	<thead>
-		<tr>
-			<th colspan="2">{$LANG.totalSalesByCustomer}</th>
-		</tr>
-	</thead>
-	<tfoot>
-		<tr>
-			<td class="page_layer si_right">{$LANG.totalSales}</td>
-			<td class="page_layer"><span class="BOLD">{$total_sales|utilNumber:2|default:'-'}</span></td>
-		</tr>
-	</tfoot>
-	<tbody>
-	{foreach $data as $customer}
-		<tr class="tr_{cycle values="A,B"}">
-			<td>{$customer.name|htmlSafe}</td>
-			<td>{$customer.sum_total|utilNumber:2|default:'-'}</td>
-		</tr>
-	{/foreach}
-	</tbody>
-</table>
+{include file=$path|cat:"library/reportTitle.tpl" title=$title}
+{include file=$path|cat:"library/exportButtons.tpl"
+	params=[
+		'customerId' => $customerId|urlencode,
+		'endDate' => $endDate|urlencode,
+		'fileName' => "reportSalesCustomersTotal",
+		'startDate' => $startDate|urlencode,
+		'title' => $title|urlencode
+	]
+}
+{if $menu}
+	<!--suppress HtmlFormInputWithoutLabel -->
+	<form name="frmpost" method="POST" id="frmpost"
+		  action="index.php?module=reports&amp;view=reportSalesCustomersTotal">
+		<table class="center">
+			{include file="templates/default/reports/library/dateRangePrompt.tpl"}
+			{include file="templates/default/reports/library/customerSelectList.tpl"}
+		</table>
+		<br/>
+		{include file="templates/default/reports/library/runReportButton.tpl" value="reportSalesCustomersTotal" label=$LANG.runReport}
+		<br/>
+	</form>
+{/if}
+{if isset($smarty.post.submit) || $view == "export"}
+	{include file=$path|cat:"reportSalesCustomersTotalBody.tpl"}
+{/if}

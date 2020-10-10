@@ -2,4 +2,4 @@
 global $smarty;
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
+$smarty->assign('activeTab', '#home');

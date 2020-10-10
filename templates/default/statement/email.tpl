@@ -21,7 +21,7 @@
         <form name="frmpost" method="POST" id="frmpost"
               action="index.php?module=statement&amp;view=email&amp;stage=2&amp;billerId={$smarty.get.billerId|urlencode}&amp;customerId={$smarty.get.customerId|urlencode}&amp;startDate={$smarty.get.startDate|urlencode}&amp;endDate={$smarty.get.endDate|urlencode}&amp;showOnlyUnpaid={$smarty.get.showOnlyUnpaid|urlencode}&amp;format=file">
             <div class="si_center">
-                <h3>{$LANG.email} {$customer.name|htmlSafe} {$LANG.to} {$LANG.customer} {$LANG.asLc} {$LANG.pdf}</h3>
+                <h3>{$LANG.email} {$customer.name|htmlSafe} {$LANG.to} {$LANG.customerUc} {$LANG.asLc} {$LANG.pdf}</h3>
             </div>
             <div class="si_form"></div>
             <table class="center">

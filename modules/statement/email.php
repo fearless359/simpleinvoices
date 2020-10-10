@@ -46,7 +46,7 @@ if (empty($_GET['customerId'])) {
 }
 $customerId = $customer['id'];
 
-$filterByDate = empty($_GET['filterByDate']) ? 'yes' : $_GET['filterByDate'];
+$filterByDateRange = empty($_GET['filterByDateRange']) ? 'yes' : $_GET['filterByDateRange'];
 $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : "";
 $endDate = isset($_GET['endDate']  ) ? $_GET['endDate']   : "";
 
@@ -71,7 +71,7 @@ if ($_GET['stage'] == 2) {
             $export->setStartDate($startDate);
             $export->setEndDate($endDate);
             $export->setShowOnlyUnpaid($showOnlyUnpaid);
-            $export->setFilterByDate($filterByDate);
+            $export->setFilterByDateRange($filterByDateRange);
             $pdfString = $export->execute();
 
             $email = new Email();
@@ -105,4 +105,4 @@ $smarty->assign('biller'  , $biller);
 $smarty->assign('customer', $customer);
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
+$smarty->assign('activeTab', '#home');

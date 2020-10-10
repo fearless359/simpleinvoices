@@ -111,7 +111,7 @@
         <ul class="anchors">
             <li><a href="#section-1" target="_top">{$LANG.summaryOfAccounts}</a></li>
             <li><a href="#section-2" target="_top">{$LANG.creditCardDetails}</a></li>
-            <li><a href="#section-3" target="_top">{$LANG.customer}&nbsp;{$LANG.invoiceListings}</a></li>
+            <li><a href="#section-3" target="_top">{$LANG.customerUc}&nbsp;{$LANG.invoiceListings}</a></li>
             <li {if $invoices_owing_count == 0}style="display:none"{/if}><a href="#section-4" target="_top">{$LANG.unpaidInvoices}</a></li>
             <li><a href="#section-5" target="_top">{$LANG.notes}</a></li>
             {* If sub customer is not enabled, or if there are no parent or child customers, then do not display *}
@@ -209,7 +209,7 @@
                         <thead>
                         <tr class="tr_head">
                             <th class="first">{$LANG.actions}</th>
-                            <th class="details_screen">{$LANG.id}</th>
+                            <th class="details_screen">{$LANG.idUc}</th>
                             <th class="details_screen">{$LANG.dateCreated}</th>
                             <th class="details_screen">{$LANG.totalUc}</th>
                             <th class="details_screen">{$LANG.paidUc}</th>
@@ -263,13 +263,13 @@
                             {foreach $childCustomers as $cc}
                                 <tr class="index_table">
                                     <td>
-                                        <a class='index_table' title='{$LANG.view} {$LANG.customer} {$cc.name|htmlSafe}'
+                                        <a class='index_table' title='{$LANG.view} {$LANG.customerUc} {$cc.name|htmlSafe}'
                                            href='index.php?module=customers&amp;view=view&amp;id={$cc.id|urlencode}'>
-                                            <img src='images/view.png' class='action' alt='{$LANG.view} {$LANG.customer} {$cc.name}' />
+                                            <img src='images/view.png' class='action' alt='{$LANG.view} {$LANG.customerUc} {$cc.name}' />
                                         </a>
-                                        <a class='index_table' title='{$LANG.edit} {$LANG.customer} {$cc.name|htmlSafe}'
+                                        <a class='index_table' title='{$LANG.edit} {$LANG.customerUc} {$cc.name|htmlSafe}'
                                            href='index.php?module=customers&amp;view=edit&amp;id={$cc.id|urlencode}'>
-                                            <img src='images/edit.png' class='action' alt='{$LANG.edit} {$LANG.customer} {$cc.name}' />
+                                            <img src='images/edit.png' class='action' alt='{$LANG.edit} {$LANG.customerUc} {$cc.name}' />
                                         </a>
                                     </td>
                                     <td class="left">{$cc.name|htmlSafe}</td>
@@ -291,13 +291,13 @@
                             {foreach $parentCustomer as $pc}
                                 <tr class="index_table">
                                     <td>
-                                        <a class='index_table' title='{$LANG.view} {$LANG.customer} {$pc.name|htmlSafe}'
+                                        <a class='index_table' title='{$LANG.view} {$LANG.customerUc} {$pc.name|htmlSafe}'
                                             href='index.php?module=customers&amp;view=view&amp;id={$pc.id|urlencode}'>
-                                            <img src='images/view.png' class='action' alt='{$LANG.view} {$LANG.customer} {$pc.name}' />
+                                            <img src='images/view.png' class='action' alt='{$LANG.view} {$LANG.customerUc} {$pc.name}' />
                                         </a>
-                                        <a class='index_table' title='{$LANG.edit} {$LANG.customer} {$pc.name|htmlSafe}'
+                                        <a class='index_table' title='{$LANG.edit} {$LANG.customerUc} {$pc.name|htmlSafe}'
                                            href='index.php?module=customers&amp;view=edit&amp;id={$pc.id|urlencode}'>
-                                            <img src='images/edit.png' class='action' alt='{$LANG.edit} {$LANG.customer} {$pc.name}' />
+                                            <img src='images/edit.png' class='action' alt='{$LANG.edit} {$LANG.customerUc} {$pc.name}' />
                                         </a>
                                     </td>
                                     <td class="left">{$pc.name|htmlSafe}</td>

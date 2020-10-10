@@ -26,9 +26,9 @@
   </colgroup>
   <thead>
     <tr>
-      <th class="sortable">{$LANG.id}</th>
+      <th class="sortable">{$LANG.idUc}</th>
       <th class="sortable">{$LANG.dateUc}</th>
-      <th class="sortable">{$LANG.cronUc} {$LANG.id}</th>
+      <th class="sortable">{$LANG.cronUc} {$LANG.idUc}</th>
       <!--    <th class="sortable">Invoice No</th> -->
     </tr>
   </thead>

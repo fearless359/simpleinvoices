@@ -40,5 +40,5 @@ $smarty->assign("extensions", $extensions);
 $smarty->assign('number_of_rows', count($extensions));
 
 $smarty->assign('pageActive', 'setting');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');
 $smarty->assign('subPageActive', 'setting_extensions');

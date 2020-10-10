@@ -411,9 +411,11 @@ foreach ($extNames as $extName) {
     }
 }
 Log::out("index.php - After extension_php_insert_files, etc.");
-if ($module == "reports" && $view == "export") {
+if ($module == "reports" && ($view == "export" || $view == "email")) {
     // TODO: Make this relative to an extension if present.
-    $smarty->assign('path', 'templates/default/reports/');
+    $path = 'templates/default/reports/';
+    $smarty->assign('path', $path);
+    Log::out("index.php - reports export/email path[{$path}]");
 }
 
 if ($extensionPhpFile == 0) {
@@ -424,6 +426,7 @@ if ($extensionPhpFile == 0) {
         include $myPath;
     }
 }
+
 // **********************************************************
 // Include php file for the requested page section - END
 // **********************************************************
@@ -560,6 +563,9 @@ $performExtensionInsertions =
 Log::out("index.php - performExtensionInsertions[{$performExtensionInsertions}]");
 Log::out("index.php - extNames: " .print_r($extNames, true));
 foreach ($extNames as $extName) {
+    if ($extName == "core") {
+        continue;
+    }
     $tplFile = "extensions/$extName/templates/default/$module/$view.tpl";
     Log::out("index.php - extension tplFile[{$tplFile}]");
     if (file_exists($tplFile)) {
@@ -621,7 +627,7 @@ if ($extensionTemplates == 0) {
         $extensionTemplates++;
     }
 }
-Log::out("index.php - final myTplPath[{$myTplPath}]");
+Log::out("index.php - final path[{$path}] realPath[{$realPath}] myTplPath[{$myTplPath}]");
 
 $smarty->assign("extension_insertion_files", $extensionInsertionFiles);
 $smarty->assign("perform_extension_insertions", $performExtensionInsertions);

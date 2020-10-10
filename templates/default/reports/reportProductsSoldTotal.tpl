@@ -1,21 +1,23 @@
-<table class="si_report_table">
-	<thead>
-		<tr>
-			<th class="bold" colspan="2">{$LANG.productsSoldTotal}</th>
-		</tr>
-	</thead>
-	<tbody>
-	{foreach $data as $customer}
-		<tr class="tr_{cycle values="A,B"}">
-			<td>{$customer.description|htmlSafe}</td>
-			<td>{$customer.sum_quantity|utilNumber:0|default:'-'}</td>
-		</tr>
-	{/foreach}
-	</tbody>
-	<tfoot>
-	<tr>
-		<td class="page_layer si_right">{$LANG.totalUc}</td>
-		<td class="page_layer"><span class="bold">{$total_quantity|utilNumber:0|default:'-'}</span></td>
-	</tr>
-	</tfoot>
-</table>
+{include file=$path|cat:"library/reportTitle.tpl" title=$title}
+{include file=$path|cat:"library/exportButtons.tpl"
+         params=[
+			'endDate' => $endDate|urlencode,
+			'fileName' => "reportProductsSoldTotal",
+			'startDate' => $startDate|urlencode,
+			'title' => $title|urlencode
+			]
+}
+{if $menu}
+	<form name="frmpost" method="POST" id="frmpost"
+		  action="index.php?module=reports&amp;view=reportProductsSoldTotal">
+		<table class="center">
+			{include file=$path|cat:"library/dateRangePrompt.tpl"}
+		</table>
+		<br/>
+		{include file=$path|cat:"library/runReportButton.tpl" value="reportProductsSoldTotal" label=$LANG.runReport}
+		<br/>
+	</form>
+{/if}
+{if isset($smarty.post.submit) || $view == "export"}
+	{include file=$path|cat:"reportProductsSoldTotalBody.tpl"}
+{/if}

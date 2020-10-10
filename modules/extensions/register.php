@@ -35,4 +35,4 @@ $smarty->assign('description', $description);
 // @formatter:on
 
 $smarty->assign('pageActive', 'extensions');
-$smarty->assign('active_tab', '#settings');
+$smarty->assign('activeTab', '#settings');

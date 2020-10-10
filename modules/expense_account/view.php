@@ -12,4 +12,4 @@ $smarty->assign('expense_account', ExpenseAccount::getOne($_GET['id']));
 
 $smarty->assign('pageActive', 'expense_account');
 $smarty->assign('subPageActive', "view");
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

@@ -19,5 +19,5 @@ if (!empty($_POST['p_description'])) {
 
     $smarty->assign('pageActive', 'preference');
     $smarty->assign('subPageActive', 'preferences_add');
-    $smarty->assign('active_tab', '#setting');
+    $smarty->assign('activeTab', '#setting');
 }

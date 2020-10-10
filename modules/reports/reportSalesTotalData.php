@@ -6,9 +6,12 @@ use Inc\Claz\FunctionStmt;
 use Inc\Claz\Join;
 use Inc\Claz\OnClause;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
 global $endDate, $pdoDb, $startDate, $smarty;
+
+Util::directAccessAllowed();
 
 try {
     $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
@@ -23,8 +26,7 @@ try {
     $pdoDb->addToFunctions(new FunctionStmt('SUM', new DbField('ii.total'), 'total'));
 
     $onClause = new OnClause();
-    $onClause->addItem(new WhereItem(false, "date", ">=", $startDate, false, 'AND'));
-    $onClause->addItem(new WhereItem( false, "date", "<=", $endDate, false, 'AND'));
+    $onClause->addItem(new WhereItem(false, 'iv.date', 'BETWEEN', [$startDate, $endDate], false, "AND"));
     $onClause->addSimpleItem('iv.id', new DbField('ii.invoice_id'), 'AND');
     $onClause->addSimpleItem('iv.domain_id', new DbField('ii.domain_id'));
     $jn = new Join('INNER', 'invoices', 'iv');

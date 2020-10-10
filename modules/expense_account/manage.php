@@ -17,4 +17,4 @@ $smarty->assign("number_of_rows", count($expenseAccounts));
 $smarty->assign("display_block", $displayBlock);
 
 $smarty->assign('pageActive', 'expense_account');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

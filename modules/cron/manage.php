@@ -27,4 +27,4 @@ $smarty->assign('crons', $crons);
 $smarty->assign("number_of_rows", count($crons));
 
 $smarty->assign('pageActive', 'cron');
-$smarty->assign('active_tab', '#money');
+$smarty->assign('activeTab', '#money');

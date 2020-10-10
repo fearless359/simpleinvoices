@@ -10,24 +10,24 @@ class InvInfo
 {
     public int $id;
     public int $indexId;
-    public string $fmtdBilled;
-    public string $fmtdPaid;
-    public string $fmtdOwed;
+    public string $billed;
+    public string $paid;
+    public string $owed;
 
     /**
      * InvInfo constructor.
      * @param int $id
      * @param int $indexId
-     * @param string $fmtdBilled
-     * @param string $fmtdPaid
-     * @param string $fmtdOwed
+     * @param string $billed
+     * @param string $paid
+     * @param string $owed
      */
-    public function __construct(int $id, int $indexId, string $fmtdBilled, string $fmtdPaid, string $fmtdOwed)
+    public function __construct(int $id, int $indexId, string $billed, string $paid, string $owed)
     {
-        $this->id = $id;
+        $this->id      = $id;
         $this->indexId = $indexId;
-        $this->fmtdBilled = $fmtdBilled;
-        $this->fmtdPaid = $fmtdPaid;
-        $this->fmtdOwed = $fmtdOwed;
+        $this->billed  = $billed;
+        $this->paid    = $paid;
+        $this->owed    = $owed;
     }
 }

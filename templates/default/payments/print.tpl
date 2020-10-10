@@ -271,7 +271,7 @@
     </tr>
     <tr>
       <td class="tbl1-bottom col1"><b>{$LANG.paymentId}</b></td>
-      <td class="tbl1-bottom col1" colspan="3"><b>{$preference.pref_description|htmlSafe}{$LANG.id}</b></td>
+      <td class="tbl1-bottom col1" colspan="3"><b>{$preference.pref_description|htmlSafe}{$LANG.idUc}</b></td>
       <td class="tbl1-bottom col1 si_right"><b>{$LANG.amountUc}</b></td>
       <td class="tbl1-bottom col1 si_right"><b>{$LANG.dateUc}</b></td>
       <td class="tbl1-bottom col1 si_right"><b>{$LANG.paymentType}</b></td>

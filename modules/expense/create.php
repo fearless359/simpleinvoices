@@ -17,7 +17,7 @@ if (!empty( $_POST ['expense_account_id'] )) {
     include "modules/expense/save.php";
 } else {
     try {
-        $smarty->assign('expense_add', Expense::additionalInfo());
+        $smarty->assign('expenseAdd', Expense::additionalInfo());
     } catch (PdoDbException $pde) {
         exit("modules/expense/add.php Unexpected error: {$pde->getMessage()}");
     }
@@ -27,5 +27,5 @@ if (!empty( $_POST ['expense_account_id'] )) {
 
     $smarty->assign('pageActive', 'expense');
     $smarty->assign('subPageActive', 'add');
-    $smarty->assign('active_tab', '#money');
+    $smarty->assign('activeTab', '#money');
 }

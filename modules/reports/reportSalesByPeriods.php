@@ -28,7 +28,7 @@ include 'modules/reports/reportSalesByPeriodsData.php';
 $smarty->assign('title', $LANG["monthlySalesPerYear"]);
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
+$smarty->assign('activeTab', '#home');
 if (!isset($menu)) {
     $menu = true;
 }

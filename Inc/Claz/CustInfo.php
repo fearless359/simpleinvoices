@@ -7,16 +7,16 @@ namespace Inc\Claz;
  */
 class CustInfo {
     public string $name;
-    public string $fmtdBilled;
-    public string $fmtdPaid;
-    public string $fmtdOwed;
+    public string $billed;
+    public string $paid;
+    public string $owed;
     public array $invInfo;
 
-    public function __construct(string $name, string $fmtdBilled, string $fmtdPaid, string $fmtdOwed, array $invInfo) {
-        $this->name       = $name;
-        $this->fmtdBilled = $fmtdBilled;
-        $this->fmtdPaid   = $fmtdPaid;
-        $this->fmtdOwed   = $fmtdOwed;
-        $this->invInfo    = $invInfo;
+    public function __construct(string $name, string $billed, string $paid, string $owed, array $invInfo) {
+        $this->name    = $name;
+        $this->billed  = $billed;
+        $this->paid    = $paid;
+        $this->owed    = $owed;
+        $this->invInfo = $invInfo;
     }
 }

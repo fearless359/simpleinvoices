@@ -153,7 +153,7 @@ class Expense
                 $addInfo['expense_account'] = ExpenseAccount::getOne($expense['ea_id']);
             }
         } else {
-            $params = $enabledOnly ? ['enabled_only' => 1] : [];
+            $params = $enabledOnly ? ['enabledOnly' => 1] : [];
             $addInfo['customers']        = Customer::getAll($params);
             $addInfo['billers']          = Biller::getAll($enabledOnly);
             $addInfo['invoices']         = Invoice::getAll();

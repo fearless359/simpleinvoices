@@ -81,7 +81,7 @@
             </tr>
         </table>
         <div class="si_toolbar si_toolbar_form">
-            <button type="submit" class="invoice_save positive" name="submit" value="{$LANG.email}" tabindex="60">
+            <button type="submit" class="positive" name="submit" value="{$LANG.email}" tabindex="60">
                 <img class="button_img" src="../../../images/tick.png" alt=""/>
                 {$LANG.email}
             </button>

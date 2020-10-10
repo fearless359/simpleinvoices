@@ -30,4 +30,4 @@ $smarty->assign('display_block',$displayBlock);
 $smarty->assign('refresh_redirect',$refreshRedirect);
 
 $smarty->assign('pageActive', 'product_attribute_manage');
-$smarty->assign('active_tab', '#product');
+$smarty->assign('activeTab', '#product');

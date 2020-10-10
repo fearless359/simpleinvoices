@@ -34,5 +34,5 @@ $smarty->assign ( 'saved', $saved );
 
 $smarty->assign ( 'pageActive', 'payment' );
 $smarty->assign ( 'subPageActive', 'payment_eway' );
-$smarty->assign ( 'active_tab', '#money' );
+$smarty->assign ( 'activeTab', '#money' );
 

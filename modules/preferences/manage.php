@@ -14,4 +14,4 @@ $smarty->assign("preferences", $preferences);
 $smarty->assign('number_of_rows', count($preferences));
 
 $smarty->assign('pageActive', 'preference');
-$smarty->assign('active_tab', '#setting');
+$smarty->assign('activeTab', '#setting');

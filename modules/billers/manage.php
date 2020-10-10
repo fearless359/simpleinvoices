@@ -38,4 +38,4 @@ $smarty->assign('billers', $billers);
 $smarty->assign('number_of_rows', count($billers));
 
 $smarty->assign('pageActive', 'biller');
-$smarty->assign('active_tab', '#people');
+$smarty->assign('activeTab', '#people');

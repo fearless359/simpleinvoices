@@ -29,7 +29,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.biller}</th>
+                <th class="details_screen">{$LANG.billerUc}</th>
                 <td>
                     <select name="biller_id" class="si_input validate[required]">
                         <option value=''></option>
@@ -41,7 +41,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.customer}</th>
+                <th class="details_screen">{$LANG.customerUc}</th>
                 <td>
                     <select name="customer_id" class="si_input ">
                         <option value=''></option>

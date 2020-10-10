@@ -17,7 +17,7 @@
                   <td colspan="2"  style="text-align: left; width:300px;">
                      <table style="width:50%;">
                         <tr>
-                           <td class='clean left'><strong>{$LANG.biller}</strong></td>
+                           <td class='clean left'><strong>{$LANG.billerUc}</strong></td>
                            <td class='clean left' style='font-weight:bold'>{$biller.name|htmlSafe}</td>
                         </tr>
                         {if $biller.custom_field1 != null }
@@ -75,7 +75,7 @@
                   <td colspan="2"  style="text-align: right; width:300px;">
                      <table style="width:50%;">
                         <tr>
-                           <td class='clean left'><b>{$LANG.customer}</b></td>
+                           <td class='clean left'><b>{$LANG.customerUc}</b></td>
                            <td class='clean left' style='font-weight:bold'>{$customer.name|htmlSafe}</td>
                         </tr>
                         {if $customer.custom_field1 != null }
@@ -154,7 +154,7 @@
                <tr>
                   {if ($invoice.type_id == 2) || ($invoice.type_id == 3) }
                     <th class="clean center bleft bdown">{$LANG.item}</th>
-                    <th class="clean center bleft bdown">{$LANG.products}</th>
+                    <th class="clean center bleft bdown">{$LANG.productsUc}</th>
                     <th class="clean center bleft bdown">{$LANG.unitOfMeasurement}</th>
                     <th class="clean center bleft bdown">{$LANG.quantity}</th>
                     <th class="clean center bleft bdown">{$LANG.productUnitPrice}</th>

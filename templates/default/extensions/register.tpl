@@ -31,7 +31,7 @@
         </div>
     </div>
     {if ($action=="unregister" & $count) > 0}
-        <h3 class="si_message_warning">{$LANG.warningUcAll}: {$LANG.all} {$count|htmlSafe} {$LANG.extensionSpecificSettings}!</h3>
+        <h3 class="si_message_warning">{$LANG.warningUcAll}: {$LANG.allUc} {$count|htmlSafe} {$LANG.extensionSpecificSettings}!</h3>
     {/if}
     <input type="hidden" name="action" value="{if isset($action)}{$action|htmlSafe}{/if}"/>
 </form>

@@ -44,7 +44,7 @@ if ($subCustomerEnabled) {
     if ($isParent) {
         $smarty->assign("childCustomers", $children);
     } else {
-        $smarty->assign('parentCustomers', Customer::getAll(['enabled_only' => true]));
+        $smarty->assign('parentCustomers', Customer::getAll(['enabledOnly' => true]));
     }
 }
 
@@ -65,4 +65,4 @@ $smarty->assign("defaults", SystemDefaults::loadValues());
 
 $smarty->assign('pageActive', 'customer');
 $smarty->assign('subPageActive', "customer_edit");
-$smarty->assign('active_tab', '#people');
+$smarty->assign('activeTab', '#people');

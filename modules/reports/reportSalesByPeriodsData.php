@@ -5,9 +5,12 @@ use Inc\Claz\DomainId;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
 global $pdoDb, $smarty;
+
+Util::directAccessAllowed();
 
 /**
  * @param $thisYearAmount

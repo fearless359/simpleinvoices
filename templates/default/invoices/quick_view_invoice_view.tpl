@@ -16,7 +16,7 @@
     </tr>
     <!-- Biller section -->
     <tr class="tr_head">
-        <th>{$LANG.biller}:</th>
+        <th>{$LANG.billerUc}:</th>
         <td colspan="4">{$biller.name|htmlSafe}</td>
         <td class="si_switch">
             <a href='#' class="show_biller" title="{$LANG.showDetails}"
@@ -88,7 +88,7 @@
     </tr>
     <!-- Customer section -->
     <tr class="tr_head">
-        <th>{$LANG.customer}:</th>
+        <th>{$LANG.customerUc}:</th>
         <td colspan="4">{$customer.name|htmlSafe}</td>
         <td class="si_switch">
             <a href='#' class="show_customer" title="{$LANG.showDetails}"

@@ -2,16 +2,18 @@
 
 global $endDate, $LANG, $menu, $startDate, $smarty;
 
+use Inc\Claz\Util;
+
+Util::directAccessAllowed();
+
 include 'library/dateRangePrompt.php';
 
 include 'modules/reports/reportSalesTotalData.php';
 
-$smarty->assign('startDate', $startDate);
-$smarty->assign('endDate', $endDate);
 $smarty->assign('title', $LANG["totalSales"]);
 
 $smarty->assign('pageActive', 'report');
-$smarty->assign('active_tab', '#home');
+$smarty->assign('activeTab', '#home');
 if (!isset($menu)) {
     $menu = true;
 }

@@ -27,4 +27,4 @@ if (file_put_contents("public/data.json", $data) === false) {
 $smarty->assign("number_of_rows",count($inventories));
 
 $smarty->assign('pageActive', 'inventory');
-$smarty->assign('active_tab', '#product');
+$smarty->assign('activeTab', '#product');
