@@ -25,7 +25,7 @@ $customer = Customer::getOne($payment['customer_id']);
 $customFieldLabels = CustomFields::getLabels(true);
 
 $billerInfo = [];
-$billerInfo[] = [$LANG['name'].':',$biller['name']];
+$billerInfo[] = [$LANG['nameUc'].':',$biller['name']];
 $needsLbl = true;
 if (!empty($biller['street_address'])) {
     $billerInfo[] = [$LANG['addressUc'].':',$biller['street_address']];

@@ -6,7 +6,7 @@
     <div class="si_form">
         <table>
             <tr>
-                <th>{$LANG.name}</th>
+                <th>{$LANG.nameUc}</th>
                 <td>
                     <input type="text" name="name" readonly value="{if isset($name)}{$name|htmlSafe}{/if}"/>
                     <input type="text" name="id" readonly size="3" value="{if isset($id)}{$id|htmlSafe}{/if}"/>

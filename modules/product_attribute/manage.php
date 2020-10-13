@@ -10,7 +10,7 @@ Util::directAccessAllowed();
 
 $productAttributes = ProductAttributes::getAll();
 $smarty->assign('product_attributes', $productAttributes);
-$smarty->assign("number_of_rows", count($productAttributes));
+$smarty->assign("numberOfRows", count($productAttributes));
 
 $smarty->assign('pageActive', "product_attribute_manage");
 $smarty->assign('activeTab', '#product');

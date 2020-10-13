@@ -20,7 +20,7 @@
         {$LANG.addNewPaymentType}
     </a>
 </div>
-{if $number_of_rows == 0}
+{if $numberOfRows == 0}
     <div class="si_message">{$LANG.noPaymentTypes}</div>
 {else}
     <table id="si-data-table" class="display compact">

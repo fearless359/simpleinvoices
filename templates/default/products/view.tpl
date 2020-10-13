@@ -80,26 +80,38 @@
                     </td>
                 </tr>
             {/foreach}
-            {if isset($defaults.product_attributes)}
+            {if isset($defaults.product_attributes) && $defaults.product_attributes == $smarty.const.ENABLED}
                 <tr>
                     <th class="details_screen">{$LANG.productAttributes}:</th>
                     <td></td>
                 </tr>
                 {foreach $attributes as $attribute}
-                    {assign var="i" value=$attribute.id}
+                    {assign "idx" $attribute.id}
                     {if $attribute.enabled == $smarty.const.ENABLED ||
-                    (isset($product.attribute_decode[$i]) && $product.attribute_decode[$i] == 'true')}
+                    (isset($product.attribute_decode[$idx]) && $product.attribute_decode[$idx] == 'true')}
                         <tr>
                             <td></td>
                             <th class="details_screen product_attribute">
-                                <input type="checkbox" disabled="disabled" name="attribute{$i}"
-                                       {if isset($product.attribute_decode[$i]) &&
-                                       $product.attribute_decode[$i] == 'true'}checked{/if} value="true"/>
+                                <input type="checkbox" disabled="disabled" name="attribute{$idx}"
+                                       {if isset($product.attribute_decode[$idx]) &&
+                                       $product.attribute_decode[$idx] == 'true'}checked{/if} value="true"/>
                                 {$attribute.name}
                             </th>
                         </tr>
                     {/if}
                 {/foreach}
+            {/if}
+            {if $defaults.product_groups == $smarty.const.ENABLED}
+                <tr>
+                    <th class="details_screen">{$LANG.productGroupUc}:</th>
+                    <td>
+                        {if empty($product.product_group)}
+                            &nbsp;
+                        {else}
+                            {$productGroup.name}{if $productGroup.markup > 0}&nbsp;({$LANG.productMarkupUc}&nbsp;=&nbsp;{$productGroup.markup}%){/if}
+                        {/if}
+                    </td>
+                </tr>
             {/if}
             <tr>
                 <th class="details_screen">{$LANG.notes}:</th>

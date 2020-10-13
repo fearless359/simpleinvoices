@@ -24,7 +24,7 @@ if (file_put_contents("public/data.json", $data) === false) {
     die("Unable to create public/data.json file");
 }
 
-$smarty->assign("number_of_rows",count($inventories));
+$smarty->assign("numberOfRows",count($inventories));
 
 $smarty->assign('pageActive', 'inventory');
 $smarty->assign('activeTab', '#product');

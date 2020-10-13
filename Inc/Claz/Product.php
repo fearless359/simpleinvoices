@@ -46,10 +46,9 @@ class Product
 
     /**
      * Minimize the amount of data returned to the manage table.
-     * @param bool $inventory Set true if inventory is enabled; false if not.
      * @return array Data for the manage table rows.
      */
-    public static function manageTableInfo(bool $inventory): array
+    public static function manageTableInfo(): array
     {
         global $config;
 
@@ -70,26 +69,17 @@ class Product
             $enabled = "<span style='display: none'>{$row['enabled_text']}</span>" .
                        "<img src='{$image}' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
 
-            if ($inventory) {
-                $tableRows[] = [
-                    'action' => $action,
-                    'description' => $row['description'],
-                    'unit_price' => $row['unit_price'],
-                    'quantity' => isset($row['quantity']) ? $row['quantity'] : '0',
-                    'enabled' => $enabled,
-                    'currency_code' => $config['localCurrencyCode'],
-                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config['localLocale'])
-                ];
-            } else {
-                $tableRows[] = [
-                    'action' => $action,
-                    'description' => $row['description'],
-                    'unit_price' => $row['unit_price'],
-                    'enabled' => $enabled,
-                    'currency_code' => $config['localCurrencyCode'],
-                    'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config['localLocale'])
-                ];
-            }
+            $tableRows[] = [
+                'action' => $action,
+                'description' => $row['description'],
+                'product_group' => $row['product_group'],
+                'unit_price' => $row['unit_price'],
+                'markup_price' => $row['markup_price'],
+                'quantity' => isset($row['quantity']) ? $row['quantity'] : '0',
+                'enabled' => $enabled,
+                'currency_code' => $config['localCurrencyCode'],
+                'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config['localLocale'])
+            ];
             // @formatter:on
         }
         return $tableRows;
@@ -168,6 +158,13 @@ class Product
                 $row['vname'] = $LANG['view'] . ' ' . $row['description'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['description'];
                 $row['image'] = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
+
+                $markupPrice = $row['unit_price'];
+                if (!empty($row['product_group'])) {
+                    $productGroup = ProductGroups::getOne($row['product_group']);
+                    $markupPrice += $markupPrice * ($productGroup['markup'] / 100);
+                }
+                $row['markup_price'] = $markupPrice;
                 $products[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -241,6 +238,7 @@ class Product
                 'enabled' => $enabled,
                 'visible' => $visible,
                 'attribute' => json_encode($attr),
+                'product_group' => isset($_POST['product_group']) ? $_POST['product_group'] : "",
                 'notes_as_description' => $notesAsDescription,
                 'show_description' => $showDescription
             ];
@@ -305,6 +303,7 @@ class Product
                 'cost'                 => $cost,
                 'reorder_level'        => isset($_POST['reorder_level'])   ? $_POST['reorder_level']  : "0",
                 'attribute'            => json_encode($attr),
+                'product_group'        => isset($_POST['product_group'])   ? $_POST['product_group']  : "",
                 'notes_as_description' => $notesAsDescription,
                 'show_description'     => $showDescription
             ];

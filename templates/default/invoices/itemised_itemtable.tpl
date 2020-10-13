@@ -36,7 +36,8 @@
                 {else}
                     <select id="products{$line|htmlSafe}" name="products{$line|htmlSafe}"
                             class="si_input product_change{if $line == 0} validate[required]{/if}"
-                            data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}">
+                            data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
+                            data-product-groups-enabled="{$defaults.product_groups}">
                         <option value=""></option>
                         {foreach $products as $product}
                             <option value="{if isset($product.id)}{$product.id|htmlSafe}{/if}"

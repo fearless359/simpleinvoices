@@ -17,7 +17,7 @@
         <br/>
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.name}
+                <td class="details_screen">{$LANG.nameUc}
                     <a class="cluetip" href="#" title="{$LANG.requiredField}"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpExpenseAccounts">
                         <img src="{$helpImagePath}required-small.png" alt=""/>

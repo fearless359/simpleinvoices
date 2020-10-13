@@ -20,11 +20,11 @@
                     <tr>
                         <th class="details_screen">{$LANG.productUnitPrice}:</th>
                         <td>
-                          <input type="text" name="unit_price" class="si_input" size="25" tabindex="20"
-                                 value="{$product.unit_price|utilNumberTrim}"/>
+                            <input type="text" name="unit_price" class="si_input" size="25" tabindex="20"
+                                   value="{$product.unit_price|utilNumberTrim}"/>
                         </td>
                     </tr>
-                    {if $defaults.inventory == '1'}
+                    {if $defaults.inventory == $smarty.const.ENABLED}
                         <tr>
                             <th class="details_screen">{$LANG.costUc}:
                                 <a class="cluetip" href="#" title="{$LANG.costUc}" tabindex="-1"
@@ -58,6 +58,21 @@
                             </select>
                         </td>
                     </tr>
+                    {if $defaults.product_groups == $smarty.const.ENABLED}
+                        <tr>
+                            <th class="details_screen">{$LANG.productGroupUc}:</th>
+                            <td>
+                                <select name="product_group" class="si_input">
+                                    <option value=''></option>
+                                    {foreach $productGroups as $productGroup}
+                                        <option value="{$productGroup.name|htmlSafe}"
+                                                {if isset($product.product_group) && $product.product_group == $productGroup.name}selected{/if}>{$productGroup.name|htmlSafe}{if $productGroup.markup > 0}&nbsp;({$LANG.markupUc}&nbsp;=&nbsp;{$productGroup.markup}%){/if}
+                                        </option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                    {/if}
                 </table>
             </div>
             <div id="section-2">
@@ -188,7 +203,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th class="details_screen">{$LANG.productEnabled}: </th>
+                        <th class="details_screen">{$LANG.productEnabled}:</th>
                         <td>{html_options name=enabled class=si_input options=$enabled selected=$product.enabled tabindex=110}</td>
                     </tr>
                 </table>

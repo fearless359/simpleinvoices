@@ -162,7 +162,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultDelete == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultDelete == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -177,7 +177,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultExpense == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultExpense == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -192,7 +192,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultInventory == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultInventory == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -222,7 +222,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultLogging == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultLogging == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -256,21 +256,6 @@
         </tr>
 
         <tr>
-            <th class="details_screen">{$LANG.productAttributes}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.productAttributes} {$LANG.setting}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpProductAttributes" tabindex="-1">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
-            </th>
-            <td>
-                <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_attributes' tabindex="180">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
-                </a>
-            </td>
-            <td tabindex="-1">{if $defaultProductAttributes == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
-        </tr>
-
-        <tr>
             <th class="details_screen">{$LANG.passwordLower}:
                 <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordLower} {$LANG.setting}"
                    rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordLower" tabindex="-1">
@@ -282,7 +267,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultPasswordLower == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultPasswordLower == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -297,7 +282,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultPasswordNumber == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultPasswordNumber == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -312,7 +297,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultPasswordSpecial == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultPasswordSpecial == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -327,7 +312,37 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultPasswordUpper == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultPasswordUpper == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+        </tr>
+
+        <tr>
+            <th class="details_screen">{$LANG.productAttributes}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.productAttributes} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpProductAttributes" tabindex="-1">
+                    <img src="{$helpImagePath}help-small.png" alt=""/>
+                </a>
+            </th>
+            <td>
+                <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_attributes' tabindex="223">
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                </a>
+            </td>
+            <td tabindex="-1">{if $defaultProductAttributes == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+        </tr>
+
+        <tr>
+            <th class="details_screen">{$LANG.productGroupsUc}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.productGroupsUc} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpProductGroups" tabindex="-1">
+                    <img src="{$helpImagePath}help-small.png" alt=""/>
+                </a>
+            </th>
+            <td>
+                <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_groups' tabindex="226">
+                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                </a>
+            </td>
+            <td tabindex="-1">{if $defaultProductGroups == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         <tr>
@@ -357,7 +372,7 @@
                     <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
-            <td tabindex="-1">{if $defaultSubCustomer == 1}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+            <td tabindex="-1">{if $defaultSubCustomer == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
         </tr>
 
         {* This section will insert any extensions that add system-default fields *}

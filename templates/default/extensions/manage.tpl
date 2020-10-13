@@ -11,14 +11,14 @@
  *  License:
  *      GPL v3 or above
  *}
-{if $number_of_rows == 0}
+{if $numberOfRows == 0}
     <p><em>{$LANG.noUc} {$LANG.extensons} {$LANG.registered}</em></p>
 {else}
     <table id="si-data-table" class="display compact">
         <thead>
         <tr>
             <th>{$LANG.actions}</th>
-            <th>{$LANG.name}</th>
+            <th>{$LANG.nameUc}</th>
             <th>{$LANG.descriptionUc}</th>
             <th>{$LANG.status}</th>
         </tr>

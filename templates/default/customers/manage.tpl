@@ -71,7 +71,7 @@
         <thead>
             <tr>
                 <th>{$LANG.actions}</th>
-                <th>{$LANG.name}</th>
+                <th>{$LANG.nameUc}</th>
                 <th>{$LANG.customerDepartment}</th>
                 <th>{$LANG.lastInvoice}</th>
                 <th>{$LANG.totalUc}</th>

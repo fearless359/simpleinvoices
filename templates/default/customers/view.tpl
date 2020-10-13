@@ -258,7 +258,7 @@
                             <thead>
                             <tr class="tr_head">
                                 <th class="sortable">{$LANG.actions}</th>
-                                <th class="sortable">{$LANG.name}</th>
+                                <th class="sortable">{$LANG.nameUc}</th>
                             </tr>
                             {foreach $childCustomers as $cc}
                                 <tr class="index_table">
@@ -286,7 +286,7 @@
                             <thead>
                             <tr class="tr_head">
                                 <th class="sortable">{$LANG.actions}</th>
-                                <th class="sortable">{$LANG.name}</th>
+                                <th class="sortable">{$LANG.nameUc}</th>
                             </tr>
                             {foreach $parentCustomer as $pc}
                                 <tr class="index_table">

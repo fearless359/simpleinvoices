@@ -286,6 +286,16 @@ switch ($getVal) {
         $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
+    case "product_groups":
+        $array = [
+            DISABLED => $LANG['disabled'],
+            ENABLED => $LANG['enabled']
+        ];
+        $default     = "product_groups";
+        $description = $LANG['productGroupsUc'];
+        $value       = Util::dropDown($array, $defaults[$default]);
+        break;
+
     case "session_timeout":
         // The $description, $default, $value fields are required to set up the generic
         // edit template for this extension value.

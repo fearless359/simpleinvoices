@@ -139,20 +139,25 @@ session_start();
 $extNames = [];
 $helpImagePath = "images/";
 
+// formatter:off
 include_once "include/init.php";
 global $LANG,
        $earlyExit,
        $extNames,
        $menu,
+       $path,
        $siUrl,
        $smarty,
        $smartyOutput;
+// formatter:on
 
 Log::out("index.php - After init.php - module($module] view[$view]");
 foreach ($extNames as $extName) {
     if (file_exists("extensions/{$extName}/include/init.php")) {
         /** @noinspection PhpIncludeInspection */
-        require_once "extensions/{$extName}/include/init.php";
+        $extInitFile = "extensions/{$extName}/include/init.php";
+        Log::out("index.php - extInitFile[{$extInitFile}]");
+        require_once $extInitFile;
     }
 }
 Log::out("index.php - After processing init.php for extensions");

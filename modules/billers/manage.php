@@ -35,7 +35,7 @@ foreach ($rows as $row) {
 }
 
 $smarty->assign('billers', $billers);
-$smarty->assign('number_of_rows', count($billers));
+$smarty->assign('numberOfRows', count($billers));
 
 $smarty->assign('pageActive', 'biller');
 $smarty->assign('activeTab', '#people');

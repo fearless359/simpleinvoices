@@ -37,7 +37,7 @@ foreach ($rows as $row) {
 }
 
 $smarty->assign("extensions", $extensions);
-$smarty->assign('number_of_rows', count($extensions));
+$smarty->assign('numberOfRows', count($extensions));
 
 $smarty->assign('pageActive', 'setting');
 $smarty->assign('activeTab', '#setting');

@@ -3,7 +3,7 @@
     <div class="si_cust_info">
         <table class="center">
         <tr>
-                <th class="details_screen">{$LANG.name}:&nbsp;</th>
+                <th class="details_screen">{$LANG.nameUc}:&nbsp;</th>
                 <td>{$expense_account.name}</td>
             </tr>
         </table>

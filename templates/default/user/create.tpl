@@ -1,5 +1,5 @@
 {*
- * Script: add.tpl
+ * Script: create.tpl
  *   User add template
  *
  * Authors:

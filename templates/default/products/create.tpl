@@ -32,7 +32,7 @@
                                        value="{if isset($smarty.post.unit_price)}{$smarty.post.unit_price|htmlSafe}{/if}"/>
                             </td>
                         </tr>
-                        {if $defaults.inventory == '1'}
+                        {if $defaults.inventory == $smarty.const.ENABLED}
                             <tr>
                                 <th class="details_screen">{$LANG.costUc}:
                                     <a class="cluetip" href="#" title="{$LANG.costUc}" tabindex="-1"
@@ -68,6 +68,21 @@
                             <th class="details_screen">{$LANG.enabled}: </th>
                             <td>{html_options class="edit, si_input" name=enabled options=$enabled selected=1 tabindex=60}</td>
                         </tr>
+                        {if $defaults.product_groups == $smarty.const.ENABLED}
+                            <tr>
+                                <th class="details_screen">{$LANG.productGroupUc}:</th>
+                                <td>
+                                    <select name="product_group" class="si_input">
+                                        <option value=''></option>
+                                        {foreach $productGroups as $productGroup}
+                                            <option value="{$productGroup.name|htmlSafe}"
+                                                    {if isset($product.product_group) && $product.product_group == $productGroup.name}selected{/if}>{$productGroup.name|htmlSafe}{if $productGroup.markup > 0}&nbsp;({$LANG.markupUc}&nbsp;=&nbsp;{$productGroup.markup}%){/if}
+                                            </option>
+                                        {/foreach}
+                                    </select>
+                                </td>
+                            </tr>
+                        {/if}
                     </table>
                 </div>
                 <div id="section-2" class="fragment">

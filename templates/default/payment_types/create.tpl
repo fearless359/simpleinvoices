@@ -1,5 +1,5 @@
 {*
- *  Script: add.tpl
+ *  Script: create.tpl
  * 	    Payment type add template
  *
  *  Authors:

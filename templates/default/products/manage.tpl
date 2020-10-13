@@ -15,24 +15,26 @@
     </a>
 </div>
 
-{if $number_of_rows == 0 }
+{if $numberOfRows == 0}
     <div class="si_message">{$LANG.noProducts}</div>
 {else}
     <table id="si-data-table" class="display compact" >
         <thead>
             <tr>
-                <th>{$LANG.actions}</th>
+                <th class="si_center">{$LANG.actions}</th>
                 <th>{$LANG.descriptionUc}</th>
-                <th>{$LANG.unitPrice}</th>
-                {if $defaults.inventory == $smarty.const.ENABLED}
-                    <th>{$LANG.quantity}</th>
-                {/if}
-                <th>{$LANG.enabled}</th>
+                <th class="si_center">{$LANG.productGroupUc}</th>
+                <th class="si_center">{$LANG.unitPrice}</th>
+                <th class="si_center">{$LANG.markupUc} {$LANG.priceUc}</th>
+                <th class="si_right">{$LANG.quantity}</th>
+                <th class="si_center">{$LANG.enabled}</th>
             </tr>
         </thead>
     </table>
     <!--suppress JSUnusedLocalSymbols -->
     <script>
+        let productGroupEnabled = {$defaults.product_groups} == {$smarty.const.ENABLED},
+            inventoryEnabled = {$defaults.inventory} == {$smarty.const.ENABLED}
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
@@ -42,6 +44,7 @@
                 "columns": [
                     { "data": "action" },
                     { "data": "description" },
+                    { "data": "product_group"},
                     { "data": "unit_price",
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
@@ -51,27 +54,38 @@
                             return formatter.format(data);
                         }
                     },
-                    {/literal}{if $defaults.inventory == $smarty.const.ENABLED}{literal}
+                    { "data": "markup_price",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currency_code']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
                     { "data": "quantity",
                         "render": function(data, type, row) {
                             let val = data.toString();
                             return parseFloat(val);
                         }
                     },
-                    {/literal}{/if}{literal}
                     { "data": "enabled" },
                 ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "columnDefs": [
                     {"targets": 0, "className": 'dt-body-center', "orderable": false },
                     {"targets": 1 },
-                    {"targets": 2, "className": 'dt-body-right' },
-                    {/literal}{if $defaults.inventory == $smarty.const.ENABLED}{literal}
+                    {"targets": 2,
+                        "visible": productGroupEnabled
+                    },
                     {"targets": 3, "className": 'dt-body-right' },
-                    {"targets": 4, "className": 'dt-body-center' }
-                    {/literal}{else}{literal}
-                    {"targets": 3, "className": 'dt-body-center' }
-                    {/literal}{/if}{literal}
+                    {"targets": 4, "className": 'dt-body-right',
+                        "visible": productGroupEnabled
+                    },
+                    {"targets": 5, "className": 'dt-body-right',
+                        "visible": inventoryEnabled
+                    },
+                    {"targets": 6, "className": 'dt-body-center' }
                 ],
                 "colReorder": true
             });

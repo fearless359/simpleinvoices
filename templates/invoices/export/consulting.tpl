@@ -2,7 +2,7 @@
   <td class="tbl1"><b>{$LANG.quantityShort}</b></td>
   <td class="tbl1" colspan="3"><b>{$LANG.item}</b></td>
   <td class="tbl1"><b>{$LANG.unitCost}</b></td>
-  <td class="tbl1 si_right"><b>{$LANG.price}</b></td>
+  <td class="tbl1 si_right"><b>{$LANG.priceUc}</b></td>
 </tr>
 
 {foreach $invoiceItems as $invoiceItem}

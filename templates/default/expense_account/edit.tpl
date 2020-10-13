@@ -4,7 +4,7 @@
     <br/>
     <table class="center">
         <tr>
-            <th class="left">{$LANG.name}:</th>
+            <th class="left">{$LANG.nameUc}:</th>
             <td>
                 <input type="text" name="name" size="50" value="{if isset($expense_account.name)}{$expense_account.name}{/if}" id="name" class="validate[required]"/>
             </td>

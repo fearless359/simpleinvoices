@@ -1,5 +1,5 @@
 {*
- * Script: add.tpl
+ * Script: create.tpl
  *    Customers add template
  *
  * Last edited:

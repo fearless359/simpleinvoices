@@ -49,7 +49,7 @@ if (!$firstRunWizard) {
         die("Unable to create public/data.json file");
     }
 
-    $smarty->assign('number_of_rows', $customerCount);
+    $smarty->assign('numberOfRows', $customerCount);
 }
 
 $smarty->assign('pageActive', 'customer');

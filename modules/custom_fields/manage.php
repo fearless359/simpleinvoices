@@ -20,7 +20,7 @@ Util::directAccessAllowed();
 
 $cfs = CustomFields::getAll();
 $smarty->assign("cfs",$cfs);
-$smarty->assign('number_of_rows', count($cfs));
+$smarty->assign('numberOfRows', count($cfs));
 
 $smarty->assign('pageActive', 'custom_field');
 $smarty->assign('activeTab', '#setting');

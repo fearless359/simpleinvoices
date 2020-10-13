@@ -15,7 +15,7 @@
     </a>
 </div>
 <br />
-{if $number_of_rows == 0 }
+{if $numberOfRows == 0 }
     {$display_block}
 {else}
     <table id="si-data-table" class="display compact">

@@ -24,7 +24,7 @@ if ($numberOfRows == 0) {
 }
 
 $smarty->assign('expenses', $expenses);
-$smarty->assign("number_of_rows", $numberOfRows );
+$smarty->assign("numberOfRows", $numberOfRows );
 $smarty->assign("display_block", $displayBlock);
 $smarty->assign("add_button_link", $addButtonLink);
 $smarty->assign("add_button_msg", $addButtonMsg);

@@ -14,7 +14,7 @@
         {$LANG.addProductValue}
     </a>
 </div>
-{if $number_of_rows == 0}
+{if $numberOfRows == 0}
     <div class="si_message">{$LANG.noProductValues}</div>
 {else}
     <table id="si-data-table" class="display compact">

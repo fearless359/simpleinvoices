@@ -194,7 +194,8 @@
                                 <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
                                         data-row-num="{$line|htmlSafe}"
                                         class="si_input product_change{if $line == 0} validate[required]{/if}"
-                                        data-description="{$LANG.descriptionUc}">
+                                        data-description="{$LANG.descriptionUc}"
+                                        data-product-groups-enabled="{$defaults.product_groups}">
                                     {foreach $products as $product}
                                         <option {if $product.id == $invoiceItem.product_id} selected {/if}
                                                 value="{if isset($product.id)}{$product.id|htmlSafe}{/if}">{$product.description|htmlSafe}</option>

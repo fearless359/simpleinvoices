@@ -1,5 +1,5 @@
 {*
- * Script: add.tpl
+ * Script: create.tpl
  *  Biller add template
  *
  * Last edited:

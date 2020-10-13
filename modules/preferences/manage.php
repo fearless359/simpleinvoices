@@ -11,7 +11,7 @@ Util::directAccessAllowed();
 $preferences = Preferences::getAll();
 
 $smarty->assign("preferences", $preferences);
-$smarty->assign('number_of_rows', count($preferences));
+$smarty->assign('numberOfRows', count($preferences));
 
 $smarty->assign('pageActive', 'preference');
 $smarty->assign('activeTab', '#setting');

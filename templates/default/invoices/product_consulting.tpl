@@ -22,7 +22,7 @@
     <tr>
         <td class="details_screen">{$LANG.quantity}</td>
         <td class="details_screen">{$LANG.descriptionUc}</td>
-        <td class="details_screen">{$LANG.price}</td>
+        <td class="details_screen">{$LANG.priceUc}</td>
     </tr>
     {section name=line start=0 loop=$dynamic_line_items step=1}
         <tr>

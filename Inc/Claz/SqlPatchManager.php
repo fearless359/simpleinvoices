@@ -86,7 +86,7 @@ class SqlPatchManager
         }
 
         // Add and initialize source column if not in table.
-//        self::addSourceColumn();
+        //        self::addSourceColumn();
         return self::$patchCount - self::lastPatchApplied();
     }
 
@@ -98,8 +98,8 @@ class SqlPatchManager
         global $LANG, $smarty;
         $pageInfo = [
             'message' => "{$LANG['theUc']} {$LANG['database']} {$LANG['patches']} {$LANG['are']} {$LANG['up']} {$LANG['to']} " .
-                         "{$LANG['date']}. {$LANG['youUc']} {$LANG['can']} {$LANG['continue']} {$LANG['working']} {$LANG['with']} " .
-                         "{$LANG['simpleInvoices']}",
+                "{$LANG['date']}. {$LANG['youUc']} {$LANG['can']} {$LANG['continue']} {$LANG['working']} {$LANG['with']} " .
+                "{$LANG['simpleInvoices']}",
             'html' => "<div class='si_toolbar si_toolbar_form'><a href='index.php'>{$LANG['homeUcAll']}</a></div>",
             'refresh' => 3
         ];
@@ -137,6 +137,13 @@ class SqlPatchManager
                     $smartyRow['result'] = "skip";
                 }
             } else {
+                // Validate patches before being applied
+                if ($id == 321) {
+                    self::prePatch321();
+                } elseif ($id == 322) {
+                    self::prePatch322();
+                }
+
                 // patch hasn't been run, so run it
                 $pdoDbAdmin->query($patch['patch']);
 
@@ -156,6 +163,13 @@ class SqlPatchManager
                     // Caught below
                     throw new PdoDbException("SqlPatchManager::runSqlPatch() = Unable to insert into sql_patchmanager.");
                 }
+
+                if ($id == 321) {
+                    self::postPatch321();
+                } elseif ($id == 322) {
+                    self::postPatch322();
+                }
+
             }
         } catch (PdoDbException $pde) {
             error_log("SqlPatchManager::runSqlPatch() - " . $pde->getMessage());
@@ -224,8 +238,8 @@ class SqlPatchManager
                     exit("SqlPatchManager::runPatches() error. See error log for additional details.");
                 }
                 $pageInfo['message'] = "{$LANG['theUc']} {$LANG['database']} {$LANG['patches']} {$LANG['have']} {$LANG['now']} " .
-                                       "{$LANG['been']} {$LANG['applied']}. {$LANG['youUc']} {$LANG['can']} {$LANG['now']} " .
-                                       "{$LANG['startWorking']} {$LANG['with']} {$LANG['simpleInvoices']}";
+                    "{$LANG['been']} {$LANG['applied']}. {$LANG['youUc']} {$LANG['can']} {$LANG['now']} " .
+                    "{$LANG['startWorking']} {$LANG['with']} {$LANG['simpleInvoices']}";
                 $pageInfo['html'] .= "<div class='si_toolbar si_toolbar_form'><a href='index.php'>{$LANG['homeUcAll']}</a></div>";
                 $pageInfo['refresh'] = 5;
             }
@@ -233,13 +247,13 @@ class SqlPatchManager
 
         if ($initPatchTable) {
             $pageInfo['html'] .= "{$LANG['stepUc']} 1 - {$LANG['thisUc']} {$LANG['is']} {$LANG['the']} {$LANG['first']} {$LANG['time']} " .
-                                 "{$LANG['databaseUc']} {$LANG['updatesUc']} {$LANG['has']} {$LANG['been']} {$LANG['run']}";
+                "{$LANG['databaseUc']} {$LANG['updatesUc']} {$LANG['has']} {$LANG['been']} {$LANG['run']}";
             $pageInfo['html'] .= self::initializeSqlPatchTable();
             $pageInfo['html'] .= "<br />{$LANG['nowUc']} {$LANG['that']} {$LANG['the']} {$LANG['databaseUc']} {$LANG['upgrade']} " .
-                                 "{$LANG['table']} {$LANG['has']} {$LANG['been']} {$LANG['initialized']}, {$LANG['click']} {$LANG['the']} " .
-                                 "{$LANG['following']} {$LANG['button']} {$LANG['to']} {$LANG['return']} {$LANG['to']} {$LANG['the']} " .
-                                 "{$LANG['databaseUpgradeManager']} {$LANG['page']} {$LANG['to']} {$LANG['run']} {$LANG['the']} " .
-                                 "{$LANG['remaining']} {$LANG['patches']}." .
+                "{$LANG['table']} {$LANG['has']} {$LANG['been']} {$LANG['initialized']}, {$LANG['click']} {$LANG['the']} " .
+                "{$LANG['following']} {$LANG['button']} {$LANG['to']} {$LANG['return']} {$LANG['to']} {$LANG['the']} " .
+                "{$LANG['databaseUpgradeManager']} {$LANG['page']} {$LANG['to']} {$LANG['run']} {$LANG['the']} " .
+                "{$LANG['remaining']} {$LANG['patches']}." .
                 "<div class='si_toolbar si_toolbar_form'><a href='index.php?module=options&amp;view=database_sqlpatches'>{$LANG['continueUc']}</a></div>.";
         }
 
@@ -261,10 +275,10 @@ class SqlPatchManager
         $pageInfo['message'] = "Your version of SimpleInvoices can now be upgraded. With this new release there are database patches that need to be applied";
         $pageInfo['html'] =
             "<div class='si_message_install'>" .
-                "{$LANG['theUc']} {$LANG['list']} {$LANG['below']} {$LANG['describes']} {$LANG['which']} {$LANG['patches']} {$LANG['have']} {$LANG['andLc']} " .
-                "{$LANG['have']} {$LANG['not']} {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}. {$LANG['if']} " .
-                "{$LANG['there']} {$LANG['are']} {$LANG['patches']} {$LANG['that']} {$LANG['have']} {$LANG['notLc']} {$LANG['been']} {$LANG['applied']}, " .
-                "{$LANG['run']} {$LANG['the']} {$LANG['database']} {$LANG['update']} {$LANG['by']} {$LANG['clicking']} {$LANG['update']}." .
+            "{$LANG['theUc']} {$LANG['list']} {$LANG['below']} {$LANG['describes']} {$LANG['which']} {$LANG['patches']} {$LANG['have']} {$LANG['andLc']} " .
+            "{$LANG['have']} {$LANG['not']} {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}. {$LANG['if']} " .
+            "{$LANG['there']} {$LANG['are']} {$LANG['patches']} {$LANG['that']} {$LANG['have']} {$LANG['notLc']} {$LANG['been']} {$LANG['applied']}, " .
+            "{$LANG['run']} {$LANG['the']} {$LANG['database']} {$LANG['update']} {$LANG['by']} {$LANG['clicking']} {$LANG['update']}." .
             "</div>" .
             "<div class='si_message_warning'>{$LANG['warningUcAll']}: {$LANG['pleaseUc']} {$LANG['backupYouDatabase']} {$LANG['before']} {$LANG['upgrading']}!</div>" .
             "<div class='si_toolbar si_toolbar_form'>" .
@@ -364,7 +378,7 @@ class SqlPatchManager
                 'sql_patch' => 'Add set_aging field to si_preferences',
                 'sql_release' => '20200123',
                 'sql_statement' => "ALTER TABLE `si_preferences` ADD COLUMN `set_aging` BOOL NOT NULL DEFAULT  '0' AFTER `index_group`;" .
-                                   "UPDATE `si_preferences` SET `set_aging` = 1 WHERE pref_id = '1';"
+                    "UPDATE `si_preferences` SET `set_aging` = 1 WHERE pref_id = '1';"
             ]);
 
             if ($pdoDbAdmin->request('INSERT', 'sql_patchmanager') == 0) {
@@ -379,6 +393,97 @@ class SqlPatchManager
         }
 
         return $log;
+    }
+
+
+    /**
+     * Save product group information for those with extension enabled.
+     */
+    private static function prePatch321()
+    {
+        global $pdoDbAdmin, $subCustomerExtEnabled;
+
+        // If the extension has been enabled at some time, the "parent_customer_id" field will
+        // exist in the "customers" table. If that is the case, we need to determine if the
+        // extension is still enabled.
+        try {
+            $fldExists = $pdoDbAdmin->checkFieldExists("customers", "parent_customer_id");
+            if ($fldExists) {
+                $pdoDbAdmin->addSimpleWhere("name", "sub_customer", "AND");
+                $pdoDbAdmin->addSimpleWhere("domain_id", DomainId::get());
+                $recs = $pdoDbAdmin->request("SELECT", "extensions");
+                $subCustomerExtEnabled = empty($recs) ? DISABLED : $recs[0]['enabled'];
+            } else {
+                $subCustomerExtEnabled = DISABLED;
+            }
+        } catch (PdoDbException $pde) {
+            $str = "SqlPatchManager::prePatch321() - Unexpected error: " . $pde->getMessage();
+            error_log($str);
+            exit($str);
+        }
+    }
+
+    /**
+     * Special handling for patch #321
+     */
+    private static function postPatch321()
+    {
+        global $subCustomerExtEnabled;
+
+        if ($subCustomerExtEnabled == ENABLED) {
+            if (!SystemDefaults::updateDefault('product_groups', ENABLED)) {
+                error_log("SqlPatchManager::postPatch321() - DB update failed.");
+                exit("SqlPatchManager::postPatch321() error. See error log for additional details.");
+            }
+        }
+    }
+
+    /**
+     * Save product group information for those with extension enabled.
+     */
+    private static function prePatch322()
+    {
+        global $pdoDbAdmin, $productGroupEnabled;
+
+        try {
+            $pdoDbAdmin->addSimpleWhere('name', 'invoice_grouped');
+            $rows = $pdoDbAdmin->request('SELECT', 'extensions');
+
+            $extEnabled = empty($rows) ? false : $rows[0]['enabled'] == ENABLED;
+            if ($extEnabled) {
+                $pdoDbAdmin->addSimpleWhere('cf_custom_field', "product_cf1");
+                $rows = $pdoDbAdmin->request('SELECT', 'custom_fields');
+                $productGroupEnabled = empty($rows[0]['cf_custom_label']) ? false : true;
+            } else {
+                $productGroupEnabled = false;
+            }
+        } catch (PdoDbException $pde) {
+            $str = "SqlPatchManager::prePatch322() - Error: {$pde->getMessage()}";
+            error_log($str);
+            exit($str);
+        }
+    }
+
+    /**
+     * Special handling for patch #322
+     */
+    private static function postPatch322()
+    {
+        global $pdoDbAdmin, $productGroupEnabled;
+
+        if ($productGroupEnabled) {
+            try {
+                $pdoDbAdmin->setFauxPost(['value' => ENABLED]);
+                $pdoDbAdmin->addSimpleWhere('name', 'product_groups');
+                if (!$pdoDbAdmin->request('UPDATE', 'system_defaults')) {
+                    error_log("SqlPatchManager::postPatch322() - DB update failed.");
+                    exit("SqlPatchManager::postPatch322() error. See error log for additional details.");
+                }
+            } catch (PdoDbException $pde) {
+                error_log("SqlPatchManager::postPatch322() - Error: " . $pde->getMessage());
+                exit("SqlPatchManager::postPatch322() error. See error log for additional details.");
+            }
+        }
     }
 
 
@@ -400,35 +505,40 @@ class SqlPatchManager
         ];
         self::makePatch('320', $patch);
 
-        try {
-            $ud = $pdoDbAdmin->checkFieldExists("customers", "parent_customer_id");
-            if ($ud) {
-                $pdoDbAdmin->addSimpleWhere("name", "sub_customer", "AND");
-                $pdoDbAdmin->addSimpleWhere("domain_id", DomainId::get());
-                $recs = $pdoDbAdmin->request("SELECT", "extensions");
-                $flg = empty($recs) ? DISABLED : $recs[0]['enabled'];
-            } else {
-                $flg = DISABLED;
-            }
-        } catch (PdoDbException $pde) {
-            $str = "SqlPatchManager::loadPatches() - Unexpected error: " . $pde->getMessage();
-            error_log($str);
-            exit($str);
-        }
-
+        $fldExists = $pdoDbAdmin->checkFieldExists("customers", "parent_customer_id");
         $patch = [
             'name' => 'Add parent_customer_id field to the database',
-            'patch' => $ud ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'sub_customer';" .
-                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('sub_customer', $flg, $domainId, 1);" :
+            'patch' => $fldExists ?
+                "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'sub_customer';" .
+                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('sub_customer', 0, $domainId, 1);" :
                 "ALTER TABLE `" . TB_PREFIX . "customers` ADD `parent_customer_id` INT(11) NULL AFTER `notes`;" .
                 "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'sub_customer';" .
-                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('sub_customer', $flg, $domainId, 1);",
+                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('sub_customer', 0, $domainId, 1);",
             'date' => "20200924",
             'source' => 'fearless359'
         ];
         self::makePatch('321', $patch);
-        unset($ud);
-        unset($flg);
+        unset($fldExists);
+        unset($extEnabled);
+
+        $tblExists = $pdoDbAdmin->checkTableExists( 'product_groups');
+        $patch = [
+            'name' => 'Add product_groups table to the database.',
+            'patch' => $tblExists ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'invoice_grouped';" :
+                "CREATE TABLE `" . TB_PREFIX . "product_groups` (name VARCHAR(60) NOT NULL PRIMARY KEY, " .
+                                                                "markup INT(2) NOT NULL DEFAULT 0) ENGINE = InnoDb;" .
+                "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'invoice_grouped';" .
+                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('product_groups', 0, $domainId, 1);" .
+                "ALTER TABLE `" . TB_PREFIX . "products` ADD product_group VARCHAR(60) NOT NULL DEFAULT '';" .
+                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Labor', 0);" .
+                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Equipment', 0);" .
+                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Materials', 0);" .
+                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Subcontractor', 0);",
+            'date' => "20201010",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('322', $patch);
+
         // @formatter:on
     }
 

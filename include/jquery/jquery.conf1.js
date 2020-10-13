@@ -8,11 +8,12 @@ $("#customer_id").change(function() {
 
 /* Product Change - updates line item with product price info */
 $(document).on("change", ".product_change", (function () {
-    let $row_number = $(this).attr("data-row-num");
-    let $product = $(this).val();
-    let $quantity = $("#quantity" + $row_number).attr("value");
+    let product = $(this).val();
+    let row_number = $(this).attr("data-row-num");
+    let product_groups_enabled = $(this).attr("data-product-groups-enabled");
+    let quantity = $("#quantity" + row_number).attr("value");
     //noinspection JSUnresolvedFunction
-    invoice_product_change($product, $row_number, $quantity);
+    invoice_product_change(product, row_number, quantity, product_groups_enabled);
 }));
 
 // Click on export invoice button and build href for pdf, doc and xls

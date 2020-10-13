@@ -8,7 +8,7 @@
         <hr/>
         <table class="center">
             <tr>
-                <th class="left">{$LANG.name}</th>
+                <th class="left">{$LANG.nameUc}</th>
                 <td><input type="text" name="name" class="validate[required]" size="50"
                            value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}" /></td>
             </tr>

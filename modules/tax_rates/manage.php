@@ -11,7 +11,7 @@ Util::directAccessAllowed();
 $taxes = Taxes::getAll();
 
 $smarty->assign("taxes", $taxes);
-$smarty->assign('number_of_rows', count($taxes));
+$smarty->assign('numberOfRows', count($taxes));
 
 $smarty->assign('pageActive', 'tax_rate');
 $smarty->assign('activeTab', '#setting');

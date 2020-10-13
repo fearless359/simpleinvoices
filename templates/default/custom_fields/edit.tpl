@@ -31,7 +31,7 @@
             <tr>
                 <th class="details_screen">{$LANG.customLabel}:</th>
                 <td>
-                    <input type="text" name="si_input" id="cf_custom_label_maint" size="25" autofocus tabindex="10"
+                    <input type="text" name="cfLabel" id="cfLabelMaint" size="25" autofocus tabindex="10"
                            value="{if isset($cf.cf_custom_label)}{$cf.cf_custom_label|htmlSafe}{/if}"/>
                 </td>
             </tr>
@@ -42,7 +42,7 @@
                         <img src="{$helpImagePath}help-small.png" alt=""/>
                     </a>
                 </th>
-                <td><input type="checkbox" name="clear_data" id="clear_data_option" class="si_input" value="yes" disabled tabindex="20"/></td>
+                <td><input type="checkbox" name="clear_data" id="clearDataOption" class="si_input" value="yes" disabled tabindex="20"/></td>
             </tr>
         </table>
 
@@ -63,11 +63,11 @@
 {literal}
     <script>
         $(document).ready(function () {
-            $('#cf_custom_label_maint').change(function () {
+            $('#cfLabelMaint').change(function () {
                 if (!$(this).val()) {
-                    $('#clear_data_option').attr('disabled');
+                    $('#clearDataOption').attr('disabled');
                 } else {
-                    $('#clear_data_option').removeAttr('disabled');
+                    $('#clearDataOption').removeAttr('disabled');
                 }
             });
         });

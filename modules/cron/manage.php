@@ -24,7 +24,7 @@ Util::directAccessAllowed();
 $crons = Cron::getAll();
 
 $smarty->assign('crons', $crons);
-$smarty->assign("number_of_rows", count($crons));
+$smarty->assign("numberOfRows", count($crons));
 
 $smarty->assign('pageActive', 'cron');
 $smarty->assign('activeTab', '#money');

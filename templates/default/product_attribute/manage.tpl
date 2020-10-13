@@ -17,14 +17,14 @@
     {$LANG.addProductAttribute}
   </a>
 </div>
-{if $number_of_rows == 0}
+{if $numberOfRows == 0}
   <div class="si_message">{$LANG.noProductAttributes}</div>
 {else}
   <table id="si-data-table" class="display compact">
     <thead>
     <tr>
       <th>{$LANG.actions}</th>
-      <th>{$LANG.name}</th>
+      <th>{$LANG.nameUc}</th>
       <th>{$LANG.type}</th>
       <th>{$LANG.enabled}</th>
       <th>{$LANG.visible}</th>

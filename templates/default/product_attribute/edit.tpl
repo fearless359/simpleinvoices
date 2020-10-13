@@ -5,7 +5,7 @@
     <div class="si_center"><h2>{$LANG.productAttribute}</h2></div>
     <table class="center">
         <tr>
-            <th class="details_screen">{$LANG.name}:</th>
+            <th class="details_screen">{$LANG.nameUc}:</th>
             <td><input type="text" name="name" class="si_input validate[required]" size="50" tabindex="10"
                        value="{if isset($product_attribute.name)}{$product_attribute.name}{/if}"/></td>
         </tr>

@@ -1,7 +1,7 @@
 <div class="si_center"><h2>{$LANG.productAttribute}</h2></div>
 <table class="center">
     <tr>
-        <th class="details_screen">{$LANG.name}:</th>
+        <th class="details_screen">{$LANG.nameUc}:</th>
         <td class="si_input">{$product_attribute.name}
     </tr>
     <tr>

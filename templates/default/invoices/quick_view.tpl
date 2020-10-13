@@ -52,7 +52,7 @@
        href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice.id|urlencode}">
         <img src='../../../images/mail-message-new.png' class='action' alt="{$LANG.email}"/>&nbsp;{$LANG.email}
     </a>
-    {if $defaults.delete == '1' && $smarty.session.role_name != 'biller' && $smarty.session.role_name != 'customer'}
+    {if $defaults.delete == $smarty.const.ENABLED && $smarty.session.role_name != 'biller' && $smarty.session.role_name != 'customer'}
         <a title="{$LANG.delete} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
            href="index.php?module=invoices&amp;view=delete&amp;stage=1&amp;id={$invoice.id|urlencode}">
             <img src='../../../images/delete.png' class='action' alt="{$LANG.delete}"/>&nbsp;{$LANG.delete}

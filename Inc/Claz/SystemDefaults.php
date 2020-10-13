@@ -317,6 +317,15 @@ class SystemDefaults
     }
 
     /**
+     * Get "product_groups" entry from the system_defaults table.
+     * @return int 1 if enabled or 0 if not enabled.
+     */
+    public static function getProductGroups(): int
+    {
+        return self::getValue('product_groups');
+    }
+
+    /**
      * Get "sub_customer" entry from the system_defaults table.
      * @return int 1 if enabled or 0 if not enabled.
      */

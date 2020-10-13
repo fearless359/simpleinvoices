@@ -34,10 +34,9 @@ $clearData = isset($_POST['clear_data']) && strtolower($_POST['clear_data']) == 
 
 // Set function parameters so call will fail but not thrown an error.
 $cfId = isset($_GET['id']) ? $_GET['id'] : 0;  // 0 is an invalid id
-$cfLabel = isset($_POST['cf_custom_label']) ? $_POST['cf_custom_label'] : '';
+$cfLabel = isset($_POST['cfLabel']) ? $_POST['cfLabel'] : '';
 
-$op = !empty($_POST['op']) ? $_POST['op'] : null;
-if ($op === 'edit') {
+if (!empty($_POST['op']) && $_POST['op'] === 'edit') {
     if (CustomFields::update($cfId, $cfLabel)) {
         $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomFieldSuccess']}</div>";
         if ($clearData) {

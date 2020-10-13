@@ -13,7 +13,7 @@ $displayBlock = "<div class='si_message_error'>{$LANG['noExpenseAccounts']}</div
 $expenseAccounts = ExpenseAccount::getAll();
 
 $smarty->assign('expense_accounts', $expenseAccounts);
-$smarty->assign("number_of_rows", count($expenseAccounts));
+$smarty->assign("numberOfRows", count($expenseAccounts));
 $smarty->assign("display_block", $displayBlock);
 
 $smarty->assign('pageActive', 'expense_account');

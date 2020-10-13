@@ -3,6 +3,7 @@
 use Inc\Claz\CustomFields;
 use Inc\Claz\CustomFlags;
 use Inc\Claz\ProductAttributes;
+use Inc\Claz\ProductGroups;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Taxes;
 use Inc\Claz\Util;
@@ -25,8 +26,9 @@ if (!empty($_POST['description'])) {
     $smarty->assign('cflgs', $cflgs);
     $smarty->assign('taxes', $taxes);
 
-    $attributes = ProductAttributes::getAll(true);
-    $smarty->assign("attributes", $attributes);
+    $smarty->assign("attributes", ProductAttributes::getAll(true));
+
+    $smarty->assign('productGroups', ProductGroups::getAll());
 
     $smarty->assign('pageActive', 'product_add');
     $smarty->assign('activeTab', '#product');

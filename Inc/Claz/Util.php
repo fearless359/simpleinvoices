@@ -89,6 +89,7 @@ class Util
     {
         $myCustomPath = "custom/";
         $out = null;
+        Log::out("Util::getCustomPath() - name[{$name}] mode[{$mode}]");
         if ($mode == 'template') {
             if (file_exists("{$myCustomPath}default_template/{$name}.tpl")) {
                 $out = "{$myCustomPath}default_template/{$name}.tpl";

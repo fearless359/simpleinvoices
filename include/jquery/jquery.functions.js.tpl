@@ -3,7 +3,7 @@
     /*
     * Product Change - updates line item with product price info
     */
-    function invoice_product_change(product, row_number, quantity) {
+    function invoice_product_change(product, row_number, quantity, product_groups_enabled) {
 
         $('#gmail_loading').show();
         $.ajax({
@@ -20,7 +20,11 @@
                     $("#quantity" + row_number).attr("value", "1");
                 }
 
-                $("#unit_price" + row_number).attr("value", data['unit_price']);
+                if (product_groups_enabled === '1') {
+                    $("#unit_price" + row_number).attr("value", data['markup_price']);
+                } else {
+                    $("#unit_price" + row_number).attr("value", data['unit_price']);
+                }
 
                 $("#tax_id\\[" + row_number + "\\]\\[0\\]").val(data['default_tax_id']);
                 if (data['default_tax_id_2'] === null) {

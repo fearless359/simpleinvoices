@@ -17,7 +17,7 @@
                 <th>{$LANG.quantityShort}</th>
                 <th colspan="2">{$LANG.item}</th>
                 <th class="si_right">{$LANG.unitCost}</th>
-                <th class="si_right">{$LANG.price}</th>
+                <th class="si_right">{$LANG.priceUc}</th>
             </tr>
         </table>
     </td>

@@ -2,6 +2,7 @@
 
 use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Product;
 use Inc\Claz\Util;
 
 global $pdoDb;
@@ -13,18 +14,9 @@ $rowId = Util::htmlSafe($_GET['row']);
 $id = $_GET['id'];
 if (!empty($id)) {
     $output = [];
-    $rows = [];
-    try {
-        $pdoDb->addSimpleWhere("id", $id, "AND");
-        $pdoDb->addSimpleWhere("domain_id", $_SESSION['domain_id']);
-        $pdoDb->setLimit(1);
-        $rows = $pdoDb->request("SELECT", "products");
-    } catch (PdoDbException $pde) {
-        error_log("modules/invoices/product_ajax.php - error: " . $pde->getMessage());
-    }
 
-    if (!empty($rows)) {
-        $row = $rows[0];
+    $row = Product::getOne($id);
+    if (!empty($row)) {
         $attr = empty($row['attribute']) ? "[]" : $row['attribute'];
         $html = "";
         $jsonAtt = json_decode($attr);
@@ -99,6 +91,7 @@ if (!empty($id)) {
         // Format with decimal places with precision as defined in config.ini
         // @formatter:off
         $output['unit_price']           = Util::number($row['unit_price']);
+        $output['markup_price']         = Util::number($row['markup_price']);
         $output['default_tax_id']       = isset($row['default_tax_id']) ? $row['default_tax_id'] : "";
         $output['default_tax_id_2']     = isset($row['default_tax_id_2']) ? $row['default_tax_id_2'] : "";
         $output['attribute']            = isset($row['attribute']) ? $row['default_tax_id_2'] : "";
