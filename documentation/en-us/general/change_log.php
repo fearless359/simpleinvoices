@@ -25,6 +25,8 @@
                     files respectively.</li>
                 <li>Added program to perform one time conversion of the custom.config.php file on
                     existing installs into the new custom.config.ini format file.</li>
+                <li>Updated all reports to use new framework that provides print, export and
+                    email options.</li>
             </ul>
         </li>
         <li>2020-08-05 - <b>2019.2.30</b>
