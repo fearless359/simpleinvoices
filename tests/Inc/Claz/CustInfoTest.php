@@ -24,9 +24,9 @@ class CustInfoTest extends TestCase
         $custInfo = new CustInfo('myName', '50.49', '50.00', '.49', []);
 
         Assert::assertEquals('myName', $custInfo->name);
-        Assert::assertEquals('50.49', $custInfo->fmtdBilled);
-        Assert::assertEquals('50.00', $custInfo->fmtdPaid);
-        Assert::assertEquals('.49', $custInfo->fmtdOwed);
+        Assert::assertEquals('50.49', $custInfo->billed);
+        Assert::assertEquals('50.00', $custInfo->paid);
+        Assert::assertEquals('.49', $custInfo->owed);
         Assert::assertEmpty($custInfo->invInfo);
     }
 }

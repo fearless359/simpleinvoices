@@ -13,12 +13,18 @@
   </div>
   <div id="left">
     <ul>
-        <li>2020-08-06 - <b>2020.0.00</b>
+        <li>2020-10-15 - <b>2020.0.00</b>
             <ul>
                 <li>New master branch based on PHP 7.4 standard.</li>
                 <li>Removed mini and measurement extensions. Mini didn't work and measurement
                     is a template type, not an extension.</li>
+                <li>Incorporated the sub-customer and invoice-grouped (aka product-groups) into
+                    the standard program. See options in SI Defaults.</li>
                 <li>Removed flexigrid images and moved used images to images directory.</li>
+                <li>Converted config.php and custom.config.php file to config.ini and custom.config.ini
+                    files respectively.</li>
+                <li>Added program to perform one time conversion of the custom.config.php file on
+                    existing installs into the new custom.config.ini format file.</li>
             </ul>
         </li>
         <li>2020-08-05 - <b>2019.2.30</b>

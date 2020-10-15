@@ -23,8 +23,8 @@ class InvInfoTest extends TestCase
         $invInfo = new InvInfo(1, 2, "$50.49", "$50.00", "$0.49");
         self::assertEquals(1, $invInfo->id);
         self::assertEquals(2, $invInfo->indexId);
-        self::assertEquals("$50.49", $invInfo->fmtdBilled);
-        self::assertEquals("$50.00", $invInfo->fmtdPaid);
-        self::assertEquals("$0.49", $invInfo->fmtdOwed);
+        self::assertEquals("$50.49", $invInfo->billed);
+        self::assertEquals("$50.00", $invInfo->paid);
+        self::assertEquals("$0.49", $invInfo->owed);
     }
 }

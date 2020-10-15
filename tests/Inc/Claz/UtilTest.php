@@ -1,18 +1,14 @@
 <?php
 
-/**
- * @name UtilTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190315
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class UtilTest
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190315
  * @package test\Inc\Claz
  */
 class UtilTest extends TestCase
@@ -337,17 +333,17 @@ class UtilTest extends TestCase
         self::assertEquals( "../css/validationEngine.jquery.css", $str);
     }
 
-    public function testOutHtml()
-    {
-        $actual = Util::outHtml("<b>Inline <del>context <div>No block allowed</div></del></b>");
-        self::assertEquals("<b>Inline <del>context No block allowed</del></b>", $actual);
-
-        $actual = Util::outHtml("<b>Bold");
-        self::assertEquals("<b>Bold</b>", $actual);
-
-        $actual = Util::outHtml("<!--suppress HtmlDeprecatedTag --><center>Centered</center>");
-        self::assertEquals('<div style="text-align:center;">Centered</div>', $actual);
-    }
+//    public function testOutHtml()
+//    {
+//        $actual = Util::outHtml("<b>Inline <del>context <div>No block allowed</div></del></b>");
+//        self::assertEquals("<b>Inline <del>context No block allowed</del></b>", $actual);
+//
+//        $actual = Util::outHtml("<b>Bold");
+//        self::assertEquals("<b>Bold</b>", $actual);
+//
+//        $actual = Util::outHtml("<!--suppress HtmlDeprecatedTag --><center>Centered</center>");
+//        self::assertEquals('<div style="text-align:center;">Centered</div>', $actual);
+//    }
 
     public function testSqlDateWithTime()
     {
