@@ -50,6 +50,7 @@ try {
         $export->setBiller($biller);
         $export->setCustomer($customer);
         $export->setFormat("pdf");
+        $export->setInvoiceId($invoice['id']);
         $export->setInvoices($invoice);
         $export->setModule('invoice');
         $export->setPreference($preference);

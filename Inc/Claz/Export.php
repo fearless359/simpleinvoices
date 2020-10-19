@@ -179,7 +179,11 @@ class Export
         switch ($this->module) {
             case "invoice":
                 try {
-                    $invoice = Invoice::getOne($this->invoiceId);
+                    if (empty($this->invoices)) {
+                        $invoice = Invoice::getOne($this->invoiceId);
+                    } else {
+                        $invoice = $this->invoices;
+                    }
 
                     $this->fileName = str_replace(" ", "_", $invoice['index_name']);
                     Log::out("Export::getData() - file_name[$this->fileName]");
@@ -260,7 +264,11 @@ class Export
 
             case "payment":
                 try {
-                    $payment = Payment::getOne($this->paymentId);
+                    if (empty($this->payments)) {
+                        $payment = Payment::getOne($this->paymentId);
+                    } else {
+                        $payment = $this->payments;
+                    }
 
                     // Get Invoice preference to link from this screen back to the invoice
                     $invoice = Invoice::getOne($payment['ac_inv_id']);

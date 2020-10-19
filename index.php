@@ -180,8 +180,7 @@ if (!isset($menu)) {
     $menu = true;
 }
 
-// Check for any un-applied SQL patches when going home
-// TODO - redo this code
+// Check for any unapplied SQL patches
 Log::out("index.php - module[$module] view[$view] " .
     "databaseBuilt[$databaseBuilt] databasePopulated[$databasePopulated]");
 
@@ -416,9 +415,20 @@ foreach ($extNames as $extName) {
     }
 }
 Log::out("index.php - After extension_php_insert_files, etc.");
+
+// Determine reports template path for an extension or standard path.
 if ($module == "reports" && ($view == "export" || $view == "email")) {
-    // TODO: Make this relative to an extension if present.
-    $path = 'templates/default/reports/';
+    $path = '';
+    foreach ($extNames as $extName) {
+        $phpFile = "extensions/$extName/templates/default/reports/$view.php";
+        if (file_exists($phpFile)) {
+            $path = "extensions/$extName/templates/default/reports";
+        }
+    }
+
+    if (empty($path)) {
+        $path = 'templates/default/reports/';
+    }
     $smarty->assign('path', $path);
     Log::out("index.php - reports export/email path[{$path}]");
 }
@@ -620,7 +630,7 @@ foreach ($extNames as $extName) {
 }
 
 // TODO: if more than one extension has a template for the requested file, that's trouble :(
-// This won't happen for reports, standard menu.tpl and system_defaults menu.tpl given
+// This won't happen the standard menu.tpl and system_defaults menu.tpl given
 // changes implemented in this file for them. Similar changes should be implemented for
 // other templates as needed.
 if ($extensionTemplates == 0) {

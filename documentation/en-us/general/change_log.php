@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-10-16 - <b>2020.0.01</b>
+            <ul>
+                <li>Add extension check for report template path.</li>
+                <li>Fix issue with emailing invoice pdfs.</li>
+            </ul>
+        </li>
         <li>2020-10-15 - <b>2020.0.00</b>
             <ul>
                 <li>New master branch based on PHP 7.4 standard.</li>
