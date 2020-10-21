@@ -183,6 +183,7 @@ class Export
                         $invoice = Invoice::getOne($this->invoiceId);
                     } else {
                         $invoice = $this->invoices;
+                        $this->invoiceId = $invoice['id'];
                     }
 
                     $this->fileName = str_replace(" ", "_", $invoice['index_name']);

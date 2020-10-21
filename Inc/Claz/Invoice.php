@@ -609,11 +609,11 @@ class Invoice
     /**
      * Insert a new invoice_item and the invoice_item_tax records.
      * @param array Associative array keyed by field name with its assigned value.
-     * @param array $taxIds
+     * @param array|null $taxIds
      * @return int Unique ID of the new invoice_item record.
      * @throws PdoDbException
      */
-    private static function insertItem(array $list, array $taxIds): int
+    private static function insertItem(array $list, ?array $taxIds): int
     {
         global $pdoDb;
 
@@ -922,13 +922,13 @@ class Invoice
     /**
      * Insert/update the multiple taxes for a invoice line item.
      * @param int $invoiceItemId
-     * @param array $lineItemTaxIds
+     * @param array|null $lineItemTaxIds
      * @param float $unitPrice
      * @param int $quantity
      * @param bool $update
      * @throws PdoDbException
      */
-    public static function chgInvoiceItemTax(int $invoiceItemId, array $lineItemTaxIds, float $unitPrice,
+    public static function chgInvoiceItemTax(int $invoiceItemId, ?array $lineItemTaxIds, float $unitPrice,
                                              int $quantity, bool $update): void
     {
         try {
@@ -1397,6 +1397,7 @@ class Invoice
                 'total'      => $invoiceItem['total'],
                 'attribute'  => $invoiceItem['attribute']
             ];
+error_log(print_r($invoiceItem, true));
             self::insertItem($list, $invoiceItem['tax_id']);
         }
         // @formatter:on

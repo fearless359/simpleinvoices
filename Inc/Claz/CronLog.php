@@ -66,10 +66,15 @@ class CronLog
             $pdoDb->addSimpleWhere("run_date", $run_date, "AND");
             $pdoDb->addSimpleWhere("domain_id", $domainId);
             $pdoDb->addToFunctions("COUNT(*) AS count");
+
             $rows = $pdoDb->request("SELECT", "cron_log");
         } catch (PdoDbException $pde) {
             error_log("CronLog::check() - Error: " . $pde->getMessage());
         }
-        return !empty($rows);
+error_log(print_r($rows, true));
+        if (empty($rows)) {
+            return false;
+        }
+        return !empty($rows[0]) && $rows[0]['count'] > 0 ? true : false;
     }
 }

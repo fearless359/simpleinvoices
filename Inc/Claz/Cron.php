@@ -316,7 +316,7 @@ class Cron
                             $export->setBiller($biller);
                             $export->setCustomer($customer);
                             $export->setFormat("pdf");
-                            $export->setInvoice($invoice);
+                            $export->setInvoices($invoice);
                             $export->setModule('invoice');
                             $export->setPreference($preference);
                             $pdfString = $export->execute();
@@ -363,7 +363,7 @@ class Cron
                                     $exportRec->setBiller($biller);
                                     $exportRec->setCustomer($customer);
                                     $exportRec->setFormat("pdf");
-                                    $exportRec->setInvoice($invoice);
+                                    $exportRec->setInvoices($invoice);
                                     $exportRec->setModule('invoice');
                                     $exportRec->setPreference($preference);
                                     $pdfString = $exportRec->execute();
