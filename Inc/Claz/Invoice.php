@@ -338,7 +338,10 @@ class Invoice
             $invoices = [];
             foreach ($rows as $row) {
                 $owing = $row['total'] - $row['paid'];
-                if (Util::numberTrim($owing) != Util::numberTrim($row['owing']) && $row['preference_id'] == 1) {
+                // Check to case where owing on invoice differs from calculated owing.
+                // Also ignore contrived owing value of 1.
+                if (Util::numberTrim($row['owing']) != 1 &&
+                    Util::numberTrim($row['owing']) != Util::numberTrim($owing) && $row['preference_id'] == 1) {
                     error_log("Invoice::getInvoices() - Owing discrepancy on invoice id[{$row['id']}] - index_id[{$row['index_id']}]. " .
                         "Calculated owing[$owing] not equal to invoices table owning[{$row['owing']}]");
                 }
