@@ -638,7 +638,7 @@ class Invoice
     /**
      * Insert a new <b>invoice_items</b> record.
      * @param int $invoiceId <b>id</b>
-     * @param int $quantity
+     * @param float $quantity
      * @param int $productId
      * @param array $taxIds
      * @param string $description
@@ -647,7 +647,7 @@ class Invoice
      * @return int <b>id</b> of new <i>invoice_items</i> record. 0 if insert failed.
      * @throws PdoDbException
      */
-    public static function insertInvoiceItem(int $invoiceId, int $quantity, int $productId, array $taxIds,
+    public static function insertInvoiceItem(int $invoiceId, float $quantity, int $productId, array $taxIds,
                                              string $description = "", float $unitPrice = 0, ?array $attribute = null): int
     {
         global $LANG;
@@ -746,16 +746,16 @@ class Invoice
     /**
      * Update invoice_items table for a specific entry.
      * @param int $id Unique id for the record to be updated.
-     * @param int $quantity Number of items
+     * @param float $quantity Number of items
      * @param int $productId Unique id of the si_products record for this item.
      * @param array  $taxIds Unique id for the taxes to apply to this line item.
      * @param string $description Extended description for this line item.
      * @param float $unitPrice Price of each unit of this item.
-     * @param string $attribute Attributes for invoice.
+     * @param array|null $attribute Attributes for invoice.
      * @throws PdoDbException
      */
-    public static function updateInvoiceItem(int $id, int $quantity, int $productId, array $taxIds,
-                                             string $description, float $unitPrice, string$attribute): void
+    public static function updateInvoiceItem(int $id, float $quantity, int $productId, array $taxIds,
+                                             string $description, float $unitPrice, ?array $attribute = null): void
     {
         global $LANG, $pdoDb;
 
@@ -924,12 +924,12 @@ class Invoice
      * @param int $invoiceItemId
      * @param array|null $lineItemTaxIds
      * @param float $unitPrice
-     * @param int $quantity
+     * @param float $quantity
      * @param bool $update
      * @throws PdoDbException
      */
     public static function chgInvoiceItemTax(int $invoiceItemId, ?array $lineItemTaxIds, float $unitPrice,
-                                             int $quantity, bool $update): void
+                                             float $quantity, bool $update): void
     {
         try {
             $requests = new Requests();

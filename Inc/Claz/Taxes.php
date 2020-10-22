@@ -189,11 +189,11 @@ class Taxes
     /**
      * Calculate the total tax for the line item
      * @param array $taxIds Tax values to apply.
-     * @param int $quantity Number of units.
+     * @param float $quantity Number of units.
      * @param float $unitPrice Price of each unit.
      * @return float Total tax
      */
-    public static function getTaxesPerLineItem(array $taxIds, int $quantity, float $unitPrice): float
+    public static function getTaxesPerLineItem(array $taxIds, float $quantity, float $unitPrice): float
     {
         $taxTotal = 0;
         if (!empty($taxIds)) {
@@ -212,10 +212,10 @@ class Taxes
      * Calculate the total tax for this line item.
      * @param array $tax Taxes for the line item.
      * @param float $unitPrice Price for each unit.
-     * @param int $quantity Number of units to tax.
+     * @param float $quantity Number of units to tax.
      * @return float Total tax for the line item.
      */
-    public static function lineItemTaxCalc(array $tax, float $unitPrice, int $quantity): float
+    public static function lineItemTaxCalc(array $tax, float $unitPrice, float $quantity): float
     {
         // Calculate tax as a percentage of unit price or dollars per unit.
         if (isset($tax['type']) && $tax['type'] == "%") {

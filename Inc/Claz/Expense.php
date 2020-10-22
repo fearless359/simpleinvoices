@@ -216,11 +216,11 @@ class Expense
      * @param int $expenseId
      * @param array $lineItemTaxId
      * @param float $unitPrice
-     * @param int $quantity
+     * @param float $quantity
      * @param string $action
      * @return bool true if processed without error; false otherwise.
      */
-    public static function expenseItemTax(int $expenseId, array $lineItemTaxId, float $unitPrice, int $quantity, string $action = ""): bool
+    public static function expenseItemTax(int $expenseId, array $lineItemTaxId, float $unitPrice, float $quantity, string $action = ""): bool
     {
         if (empty($lineItemTaxId)) {
             return false;

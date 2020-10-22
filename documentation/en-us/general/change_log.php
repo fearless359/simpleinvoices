@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-10-22 - <b>2020.0.02</b>
+            <ul>
+                <li>Fix quantity on invoice items not allowing a fraction (ie: 1.5)</li>
+            </ul>
+        </li>
         <li>2020-10-16 - <b>2020.0.01</b>
             <ul>
                 <li>Add extension check for report template path.</li>

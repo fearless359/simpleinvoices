@@ -117,7 +117,7 @@ if ($op == "create" ) {
                     $product = isset($_POST["products{$idx}"]) ? $_POST["products{$idx}"] : "";
                     $desc = isset($_POST["description{$idx}"]) ? $_POST["description{$idx}"] : "";
                     $price = isset($_POST["unit_price{$idx}"]) ? Util::dbStd($_POST["unit_price{$idx}"]) : "";
-                    $attr = isset($_POST["attribute{$idx}"]) ? $_POST["attribute{$idx}"] : "";
+                    $attr = isset($_POST["attribute{$idx}"]) ? $_POST["attribute{$idx}"] : null;
                     $taxIds = isset($_POST["tax_id"][$idx]) ? $_POST["tax_id"][$idx] : [];
 
                     if (empty($item)) {
