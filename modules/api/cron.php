@@ -1,7 +1,6 @@
 <?php
 use Inc\Claz\Cron;
 use Inc\Claz\Encode;
-use Inc\Claz\PdoDbException;
 
 /*
  * Typical Cron Job to run each day:
@@ -14,24 +13,8 @@ use Inc\Claz\PdoDbException;
 ini_set('max_execution_time', 600); // 600 seconds = 10 minutes
 
 // remove hard coding for multi-domain usage
-// $cron->domain_id=1;
-try {
-    $message = Cron::run();
-} catch (PdoDbException $pde) {
-    exit("cron.php - Unable to do Cron::run(). Error: {$pde->getMessage()}");
-} catch (Exception $exp) {
-    exit("cron.php - Unable to do Cron::run() - 2. Error: {$exp->getMessage()}");
-}
-try {
-    // json
-    // header('Content-type: application/json');
-    // echo encode::json( $message, 'pretty' );
+//$message = Cron::run();
 
-    // xml
-    ob_end_clean();
-    header('Content-type: application/xml');
-    echo Encode::xml($message);
-} catch (Exception $exp) {
-    echo $exp->getMessage();
-}
-error_log("$message");
+ob_end_clean();
+header('Content-type: application/xml');
+echo Encode::xml(Cron::run());

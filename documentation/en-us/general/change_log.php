@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-10-26 - <b>2020.0.03</b>
+            <ul>
+                <li>Fix cron api issues.</li>
+            </ul>
+        </li>
         <li>2020-10-22 - <b>2020.0.02</b>
             <ul>
                 <li>Fix quantity on invoice items not allowing a fraction (ie: 1.5)</li>

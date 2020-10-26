@@ -17,7 +17,7 @@ class Encode
     {
         $xml = '';
         if ($level == 1) {
-            $xml .= "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n" .
+            $xml .= "<?xml version='1.0' encoding='UTF-8'?>\n" .
                     "<array>\n";
         }
         foreach ($array as $key => $value) {
@@ -32,30 +32,29 @@ class Encode
                         $multiTags = true;
                     } else {
                         if (trim($value2) != '') {
+                            $xml .= str_repeat("\t", $level);
                             if (Util::htmlSafe($value2) != $value2) {
-                                $xml .= str_repeat("\t", $level) .
-                                    "<$key><![CDATA[$value2]]>" .
-                                    "</$key>\n";
+                                $xml .= "<$key><![CDATA[$value2]]></$key>\n";
                             } else {
-                                $xml .= str_repeat("\t", $level) .
-                                    "<$key>$value2</$key>\n";
+                                $xml .= "<$key>$value2</$key>\n";
                             }
                         }
                         $multiTags = true;
                     }
                 }
                 if (!$multiTags && count($value) > 0) {
-                    $xml .= str_repeat("\t", $level) . "<$key>\n";
+                    $xml .= str_repeat("\t", $level);
+                    $xml .= "<$key>\n";
                     $xml .= self::xml($value, $level + 1);
-                    $xml .= str_repeat("\t", $level) . "</$key>\n";
+                    $xml .= str_repeat("\t", $level);
+                    $xml .= "</$key>\n";
                 }
-            } elseif (trim($value) != '') {
+            } elseif (!empty($value)) {
+                $xml .= str_repeat("\t", $level);
                 if (Util::htmlSafe($value) != $value) {
-                    $xml .= str_repeat("\t", $level) . "<$key>" .
-                        "<![CDATA[$value]]></$key>\n";
+                    $xml .= "<$key><![CDATA[$value]]></$key>\n";
                 } else {
-                    $xml .= str_repeat("\t", $level) .
-                        "<$key>$value</$key>\n";
+                    $xml .= "<$key>$value</$key>\n";
                 }
             }
         }
@@ -66,21 +65,20 @@ class Encode
     }
 
     /**
-     * @param $data
+     * @param mixed $data
      * @param string $format
      * @return mixed
      */
-    public static function json($data, $format = 'plain')
+    public static function json($data, string $format = 'plain')
     {
+        $message = json_encode($data);
         if ($format == 'pretty') {
-            $message = json_encode($data);
             return self::prettyPrint($message, ["format" => "html"]);
-        } else {
-            return json_encode($data);
         }
+        return $message;
     }
 
-    public static function prettyPrint($json, $options = array())
+    public static function prettyPrint(string $json, array $options = []): string
     {
         $pattern = '|([\{\}\]\[,])|';
         $tokens = preg_split($pattern, $json, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -119,7 +117,7 @@ class Encode
             $prefix = str_repeat($ind, $indent);
             if (!$inLiteral && ($token == '{' || $token == '[')) {
                 $indent++;
-                if (($result != '') && ($result[(strlen($result)-1)] == $lineBreak)) {
+                if ($result != '' && $result[(strlen($result)-1)] == $lineBreak) {
                     $result .= $prefix;
                 }
                 $result .= $token . $lineBreak;

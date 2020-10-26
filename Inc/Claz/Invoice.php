@@ -1400,7 +1400,7 @@ class Invoice
                 'total'      => $invoiceItem['total'],
                 'attribute'  => $invoiceItem['attribute']
             ];
-error_log(print_r($invoiceItem, true));
+
             self::insertItem($list, $invoiceItem['tax_id']);
         }
         // @formatter:on

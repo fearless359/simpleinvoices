@@ -223,11 +223,11 @@ class Cron
             $cronId = $value['id'];
             $domainId = $value['domain_id'];
 
-            $checkCronLog = CronLog::check($pdoDb, $domainId, $cronId, $today);
-            Log::out("Cron::run() - cron_id[$cronId] domain_id[$domainId] checkCronLog[$checkCronLog]");
+            $cronLogExists = CronLog::check($pdoDb, $domainId, $cronId, $today);
+            Log::out("Cron::run() - cron_id[$cronId] domain_id[$domainId] cronLogExists[$cronLogExists]");
 
             $idx = 0;
-            if (!$checkCronLog) {
+            if (!$cronLogExists) {
                 // only proceed if Cron has not been run for today
                 $startDate = date('Y-m-d', strtotime($value['start_date']));
                 $endDate = $value['end_date'];
@@ -431,6 +431,7 @@ class Cron
             $result['cron_message'] = "No invoices recurred for this Cron run for domain: " . DomainId::get() . " for the date: {$today}";
             $result['email_message'] = "";
         }
+
         return $result;
     }
 
