@@ -16,6 +16,8 @@
         <li>2020-10-26 - <b>2020.0.03</b>
             <ul>
                 <li>Fix cron api issues.</li>
+                <li>Remove unused product_consulting.tpl, add_invoice_item.tpl and
+                    add_invoice_item.php.</li>
             </ul>
         </li>
         <li>2020-10-22 - <b>2020.0.02</b>
