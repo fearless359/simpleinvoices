@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-11-03 - <b>2020.0.04</b>
+            <ul>
+                <li>Set correct path for tpl images.</li>
+            </ul>
+        </li>
         <li>2020-10-26 - <b>2020.0.03</b>
             <ul>
                 <li>Fix cron api issues.</li>
