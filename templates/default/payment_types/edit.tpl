@@ -31,11 +31,11 @@
         </table>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_payment_type" value="{$LANG.save}" tabindex="30">
-                <img class="button_img" src="../../../images/tick.png" alt="{$LANG.save}"/>
+                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>
                 {$LANG.save}
             </button>
             <a href="index.php?module=payment_types&amp;view=manage" class="negative" tabindex="40">
-                <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
+                <img src="images/cross.png" alt="{$LANG.cancel}"/>
                 {$LANG.cancel}
             </a>
         </div>

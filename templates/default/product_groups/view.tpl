@@ -12,7 +12,11 @@
     </div>
     <div class="si_toolbar si_toolbar_form">
         <a href="index.php?module=product_groups&amp;view=edit&amp;name={$productGroup.name|htmlSafe}" class="positive">
-            <img src="../../../images/report_edit.png" alt=""/>
+            <img src="images/report_edit.png" alt=""/>
             {$LANG.edit}
+        </a>
+        <a href="index.php?module=product_groups&amp;view=manage" class="negative">
+            <img src="images/cross.png" alt="{$LANG.cancel}" />
+            {$LANG.cancel}
         </a>
     </div>

@@ -17,45 +17,45 @@
 <div class="si_toolbar si_toolbar_top">
     <a title="{$LANG.printPreviewTooltip} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlencode}&amp;format=print">
-        <img src='../../../images/printer.png' class='action' alt="{$LANG.printPreview}"/>&nbsp;{$LANG.printPreview}
+        <img src='images/printer.png' class='action' alt="{$LANG.printPreview}"/>&nbsp;{$LANG.printPreview}
     </a>
     {if $smarty.session.role_name != 'customer'}
         <a title="{$LANG.edit} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
            href="index.php?module=invoices&amp;view=edit&amp;id={$invoice.id|urlencode}">
-            <img src='../../../images/edit.png' class='action' alt="{$LANG.edit}"/>&nbsp;{$LANG.edit}
+            <img src='images/edit.png' class='action' alt="{$LANG.edit}"/>&nbsp;{$LANG.edit}
         </a>
         <a title="{$LANG.processPaymentFor} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
            href="index.php?module=payments&amp;view=process&amp;id={$invoice.id|urlencode}&amp;op=pay_selected_invoice">
-            <img src='../../../images/money_dollar.png' class='action' alt="{$LANG.processPayment}"/>&nbsp;{$LANG.processPayment}
+            <img src='images/money_dollar.png' class='action' alt="{$LANG.processPayment}"/>&nbsp;{$LANG.processPayment}
         </a>
     {/if}
     {if $ewayPreCheck == 'true' && $smarty.session.role_name != 'customer'}
         <a title="{$LANG.processPaymentFor} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
            href="index.php?module=payments&amp;view=eway&amp;id={$invoice.id|urlencode}">
-            <img src='../../../images/money_dollar.png' class='action' alt="{$LANG.processPaymentViaEway}"/>&nbsp;{$LANG.processPaymentViaEway}
+            <img src='images/money_dollar.png' class='action' alt="{$LANG.processPaymentViaEway}"/>&nbsp;{$LANG.processPaymentViaEway}
         </a>
     {/if}
     <!-- EXPORT TO PDF -->
     <a title="{$LANG.exportUc} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe} {$LANG.exportPdfTooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=pdf">
-        <img src='../../../images/page_white_acrobat.png' class='action' alt="{$LANG.exportPdf}"/>&nbsp;{$LANG.exportPdf}
+        <img src='images/page_white_acrobat.png' class='action' alt="{$LANG.exportPdf}"/>&nbsp;{$LANG.exportPdf}
     </a>
     <a title="{$LANG.exportUc} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe} {$LANG.exportXlsTooltip} .{$config.exportSpreadsheet|htmlSafe} {$LANG.formatTooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$spreadsheet|urlencode}">
-        <img src='../../../images/page_white_excel.png' class='action' alt="{$LANG.exportAs} {$spreadsheet|htmlSafe}"/>&nbsp;{$LANG.exportXls}
+        <img src='images/page_white_excel.png' class='action' alt="{$LANG.exportAs} {$spreadsheet|htmlSafe}"/>&nbsp;{$LANG.exportXls}
     </a>
     <a title="{$LANG.exportUc} {$preference.pref_inv_wording} {$invoice.index_id|htmlSafe} {$LANG.exportDocTooltip} .{$config.exportWordProcessor|htmlSafe} {$LANG.formatTooltip}"
        href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$wordprocessor|urlencode}">
-        <img src='../../../images/page_white_word.png' class='action' alt="{$LANG.exportAs} {$wordprocessor|htmlSafe}"/>&nbsp;{$LANG.exportDoc}
+        <img src='images/page_white_word.png' class='action' alt="{$LANG.exportAs} {$wordprocessor|htmlSafe}"/>&nbsp;{$LANG.exportDoc}
     </a>
     <a title="{$LANG.email} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
        href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice.id|urlencode}">
-        <img src='../../../images/mail-message-new.png' class='action' alt="{$LANG.email}"/>&nbsp;{$LANG.email}
+        <img src='images/mail-message-new.png' class='action' alt="{$LANG.email}"/>&nbsp;{$LANG.email}
     </a>
     {if $defaults.delete == $smarty.const.ENABLED && $smarty.session.role_name != 'biller' && $smarty.session.role_name != 'customer'}
         <a title="{$LANG.delete} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
            href="index.php?module=invoices&amp;view=delete&amp;stage=1&amp;id={$invoice.id|urlencode}">
-            <img src='../../../images/delete.png' class='action' alt="{$LANG.delete}"/>&nbsp;{$LANG.delete}
+            <img src='images/delete.png' class='action' alt="{$LANG.delete}"/>&nbsp;{$LANG.delete}
         </a>
     {/if}
 </div>
@@ -128,11 +128,11 @@
             <td class="si_switch">
                 <a href='#' class="show_notes"
                    onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
-                    <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
+                    <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
                 </a>
                 <a href='#' class="hide_notes si_hide"
                    onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
-                    <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
+                    <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
                 </a>
             </td>
         </tr>

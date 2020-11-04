@@ -56,11 +56,12 @@
         <br/>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=expense&amp;view=edit&amp;id={$expense.EID}" class="positive">
-                <img src="../../../images/add.png" alt=""/>
+                <img src="images/add.png" alt=""/>
                 {$LANG.edit}
             </a>
             <a href="index.php?module=expense&amp;view=manage"
-               class="negative"> <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
+               class="negative">
+                <img src="images/cross.png" alt="{$LANG.cancel}"/>
                 {$LANG.cancel}
             </a>
         </div>

@@ -9,7 +9,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=company_logo' tabindex="10">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaults.company_logo}</td>
@@ -24,7 +24,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=company_name_item' tabindex="20">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaults.company_name_item}</td>
@@ -39,7 +39,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=biller' tabindex="30">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaultBiller.name}</td>
@@ -54,7 +54,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=customer' tabindex="40">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaultCustomer.name}</td>
@@ -69,7 +69,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=default_invoice' tabindex="50">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaults.default_invoice}</td>
@@ -84,7 +84,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=preference_id' tabindex="60">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaultPreference.pref_description}</td>
@@ -99,7 +99,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=def_inv_template' tabindex="70">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaults.template}</td>
@@ -114,7 +114,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=line_items' tabindex="80">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaults.line_items}</td>
@@ -129,7 +129,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=def_payment_type' tabindex="90">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaultPaymentType}</td>
@@ -144,7 +144,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=tax' tabindex="100">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaultTax.tax_description}</td>
@@ -159,7 +159,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=delete' tabindex="110">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultDelete == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -174,7 +174,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=expense' tabindex="120">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultExpense == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -189,7 +189,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=inventory' tabindex="130">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultInventory == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -204,7 +204,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=language' tabindex="140">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaultLanguage}</td>
@@ -219,7 +219,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=logging' tabindex="150">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultLogging == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -234,7 +234,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_min_length' tabindex="160">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaultPasswordMinLength}</td>
@@ -249,7 +249,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=tax_per_line_item' tabindex="170">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaults.tax_per_line_item}</td>
@@ -264,7 +264,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_lower' tabindex="190">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultPasswordLower == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -279,7 +279,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_number' tabindex="200">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultPasswordNumber == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -294,7 +294,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_special' tabindex="210">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultPasswordSpecial == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -309,7 +309,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_upper' tabindex="220">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultPasswordUpper == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -324,7 +324,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_attributes' tabindex="223">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultProductAttributes == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -339,7 +339,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_groups' tabindex="226">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultProductGroups == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
@@ -354,7 +354,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=session_timeout' tabindex="230">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{$defaults.session_timeout}</td>
@@ -369,7 +369,7 @@
             </th>
             <td>
                 <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=sub_customer' tabindex="180">
-                    <img src="../../../images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
                 </a>
             </td>
             <td tabindex="-1">{if $defaultSubCustomer == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>

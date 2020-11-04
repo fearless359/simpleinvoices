@@ -15,7 +15,7 @@
       action="index.php?module=invoices&amp;view=save">
     <h3>{$LANG.invoiceUc} {$LANG.invConsulting}
         <div id="gmail_loading" class="gmailLoader" style="float:right; display: none;">
-            <img src="../../../images/gmail-loader.gif" alt="{$LANG.loading} ..."/> {$LANG.loading} ...
+            <img src="images/gmail-loader.gif" alt="{$LANG.loading} ..."/> {$LANG.loading} ...
         </div>
     </h3>
     {include file="$path/header.tpl" }
@@ -117,13 +117,13 @@
         <tr>
             <td>
                 <button type="submit" class="positive" name="submit" value="{$LANG.save}">
-                    <img class="button_img" src="../../../images/tick.png" alt=""/>
+                    <img class="button_img" src="images/tick.png" alt=""/>
                     {$LANG.save}
                 </button>
                 <input type="hidden" name="max_items" value="{$smarty.section.line.index|htmlSafe}"/>
                 <input type="hidden" name="type" value="3"/>
                 <a href="index.php?module=invoices&amp;view=manage" class="negative">
-                    <img src="../../../images/cross.png" alt=""/>
+                    <img src="images/cross.png" alt=""/>
                     {$LANG.cancel}
                 </a>
             </td>

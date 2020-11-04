@@ -29,12 +29,12 @@
                     <td>
                         <div class="si_toolbar si_toolbar_form">
                             <button type="submit" class="positive" name="submit">
-                                <img class="button_img" src="../../../images/tick.png" alt=""/>
+                                <img class="button_img" src="images/tick.png" alt=""/>
                                 {$LANG.yesUc}
                             </button>
                             <input type="hidden" name="doDelete" value="y"/>
                             <a href="index.php?module=invoices&amp;view=manage" class="negative">
-                                <img src="../../../images/cross.png" alt=""/>
+                                <img src="images/cross.png" alt=""/>
                                 {$LANG.cancel}
                             </a>
                         </div>

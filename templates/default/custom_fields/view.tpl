@@ -35,11 +35,11 @@
     </div>
     <div class="si_toolbar si_toolbar_form">
         <a href="index.php?module=custom_fields&amp;view=edit&amp;id={$cf.cf_id|urlencode}" class="positive">
-            <img src="../../../images/tick.png" alt="{$LANG.edit}"/>
+            <img src="images/tick.png" alt="{$LANG.edit}"/>
             {$LANG.edit}
         </a>
         <a href="index.php?module=custom_fields&amp;view=manage" class="negative">
-            <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
+            <img src="images/cross.png" alt="{$LANG.cancel}"/>
             {$LANG.cancel}
         </a>
     </div>

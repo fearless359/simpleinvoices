@@ -11,7 +11,7 @@
 
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=cron&amp;view=create" class="">
-        <img src="../../../images/add.png" alt=""/>
+        <img src="images/add.png" alt=""/>
         {$LANG.newRecurrence}
     </a>
 </div>
@@ -38,15 +38,15 @@
                 <td class="si_center">
                     <a class='index_table' title='{$LANG.view} {$cron['index_name']}'
                        href='index.php?module=cron&amp;view=view&amp;id={$cron['id']}'>
-                        <img src='../../../images/view.png' alt="{$LANG.view} {$cron['index_name']}"/>
+                        <img src='images/view.png' alt="{$LANG.view} {$cron['index_name']}"/>
                     </a>
                     <a class='index_table' title='{$LANG.edit} {$cron['index_name']}'
                        href='index.php?module=cron&amp;view=edit&amp;id={$cron['id']}'>
-                        <img src='../../../images/edit.png' alt="{$LANG.edit} {$cron['index_name']}"/>
+                        <img src='images/edit.png' alt="{$LANG.edit} {$cron['index_name']}"/>
                     </a>
                     <a class='index_table' title='{$LANG.delete} {$cron['index_name']}'
                        href='index.php?module=cron&amp;view=delete&amp;id={$cron['id']}&amp;stage=1&amp;err_message='>
-                        <img src='../../../images/delete.png' alt="{$LANG.delete} {$cron['index_name']}"/>
+                        <img src='images/delete.png' alt="{$LANG.delete} {$cron['index_name']}"/>
                     </a>
                 </td>
                 <td class="si_right">

@@ -96,7 +96,7 @@
     <div id="people">
         <ul class="subnav">
             <!-- SECTION:billers -->
-            <li><a {if isset($pageActive) && $pageActive== "biller"}class="active" {/if}href="index.php?module=billers&amp;view=manage">{$LANG.billers}</a></li>
+            <li><a {if isset($pageActive) && $pageActive== "biller"}class="active" {/if}href="index.php?module=billers&amp;view=manage">{$LANG.billersUc}</a></li>
             {if isset($subPageActive) && $subPageActive == "biller_add"}
                 <li><a class="active active_subpage" href="#">{$LANG.addUc}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "biller_view"}

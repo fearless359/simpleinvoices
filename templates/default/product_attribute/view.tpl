@@ -19,11 +19,11 @@
 </table>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=product_attribute&amp;view=edit&amp;id={$product_attribute.id|htmlSafe}">
-        <img src="../../../images/report_edit.png" alt=""/>
+        <img src="images/report_edit.png" alt=""/>
         {$LANG.edit}
     </a>
     <a href="index.php?module=product_attribute&amp;view=manage"
-       class="negative"> <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
+       class="negative"> <img src="images/cross.png" alt="{$LANG.cancel}"/>
         {$LANG.cancel}
     </a>
 </div>

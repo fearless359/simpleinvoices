@@ -252,12 +252,12 @@
 
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="positive" name="insert_preference" value="{$LANG.save}" tabindex="190">
-                    <img class="button_img" src="../../../images/tick.png" alt=""/>
+                    <img class="button_img" src="images/tick.png" alt=""/>
                     {$LANG.save}
                 </button>
 
                 <a href="index.php?module=preferences&amp;view=manage" class="negative" tabindex="200">
-                    <img src="../../../images/cross.png" alt=""/>
+                    <img src="images/cross.png" alt=""/>
                     {$LANG.cancel}
                 </a>
             </div>

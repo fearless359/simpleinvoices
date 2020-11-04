@@ -1,5 +1,5 @@
-<link rel="shortcut icon" href="../../../images/favicon.ico"/>
-<link rel="stylesheet" href="../../../include/jquery/css/main.css">
+<link rel="shortcut icon" href="images/favicon.ico"/>
+<link rel="stylesheet" href="include/jquery/css/main.css">
 <div class="center"><h1 class="si_center">{$LANG.statementOfInvoices}</h1></div>
 {if $menu}
     <form name="frmpost" method="POST" id="frmpost"
@@ -81,7 +81,7 @@
             </table>
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="positive" name="submit" value="statement_report">
-                    <img class="button_img" src="../../../images/tick.png" alt=""/>
+                    <img class="button_img" src="images/tick.png" alt=""/>
                     {$LANG.runReport}
                 </button>
             </div>
@@ -91,24 +91,24 @@
         <div class="si_toolbar si_toolbar_top">
             <a title="{$LANG.printPreview}" target="_blank"
                href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=print">
-                <img src='../../../images/printer.png' class='action' alt=""/>&nbsp;{$LANG.printPreview}
+                <img src='images/printer.png' class='action' alt=""/>&nbsp;{$LANG.printPreview}
             </a>
             <!-- EXPORT TO PDF -->
             <a title="{$LANG.exportPdf}"
                href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=pdf">
-                <img src='../../../images/page_white_acrobat.png' class='action' alt=""/>&nbsp;{$LANG.exportPdf}
+                <img src='images/page_white_acrobat.png' class='action' alt=""/>&nbsp;{$LANG.exportPdf}
             </a>
             <a title="{$LANG.exportUc} {$LANG.exportXlsTooltip} .{$config.exportSpreadsheet} {$LANG.formatTooltip}"
                href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=file&amp;filetype={$config.exportSpreadsheet}">
-                <img src='../../../images/page_white_excel.png' class='action' alt=""/>&nbsp;{$LANG.exportAs}.{$config.exportSpreadsheet}
+                <img src='images/page_white_excel.png' class='action' alt=""/>&nbsp;{$LANG.exportAs}.{$config.exportSpreadsheet}
             </a>
             <a title="{$LANG.exportUc} {$LANG.exportDocTooltip} .{$config.exportWordProcessor} {$LANG.formatTooltip}"
                href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=file&amp;filetype={$config.exportWordProcessor}">
-                <img src='../../../images/page_white_word.png' class='action' alt=""/>&nbsp;{$LANG.exportAs}.{$config.exportWordProcessor}
+                <img src='images/page_white_word.png' class='action' alt=""/>&nbsp;{$LANG.exportAs}.{$config.exportWordProcessor}
             </a>
             <a title="{$LANG.email}"
                href="index.php?module=statement&amp;view=email&amp;stage=1&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId|urlencode}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=file">
-                <img src='../../../images/mail-message-new.png' class='action' alt=""/>&nbsp;{$LANG.email}
+                <img src='images/mail-message-new.png' class='action' alt=""/>&nbsp;{$LANG.email}
             </a>
         </div>
     {/if}

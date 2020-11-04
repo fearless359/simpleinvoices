@@ -24,11 +24,11 @@
 </div>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=inventory&amp;view=edit&amp;id={$inventory.id|htmlSafe}" class="positive">
-        <img src="../../../images/report_edit.png" alt="{$LANG.edit}"/>
+        <img src="images/report_edit.png" alt="{$LANG.edit}"/>
         {$LANG.edit}
     </a>
-    <a href="index.php?module=inventory&amp;view=manage"
-       class="negative"> <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
+    <a href="index.php?module=inventory&amp;view=manage" class="negative">
+        <img src="images/cross.png" alt="{$LANG.cancel}"/>
         {$LANG.cancel}
     </a>
 </div>

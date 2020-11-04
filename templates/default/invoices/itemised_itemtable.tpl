@@ -21,7 +21,7 @@
                 <a class="delete_link" id="delete_link{$line|htmlSafe}" href="#" style="display: {if $line == 0}none{else}inline{/if};"
                    data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}
                    title="{$LANG.deleteRow}">
-                    <img id="delete_image{$line|htmlSafe}" src="../../../images/delete_item.png" style="height:16px;width:16px;" alt=""/>
+                    <img id="delete_image{$line|htmlSafe}" src="images/delete_item.png" style="height:16px;width:16px;" alt=""/>
                 </a>
             </td>
             <td>

@@ -22,11 +22,11 @@
                 <td class="si_center">
                     <a class="index_table" title="{$cf.vname}"
                        href="index.php?module=custom_fields&amp;view=view&amp;id={$cf['cf_id']}">
-                        <img src="../../../images/view.png" class="action" alt="{$cf.vname}"/>
+                        <img src="images/view.png" class="action" alt="{$cf.vname}"/>
                     </a>
                     <a class="index_table" title="{$cf.ename}"
                        href="index.php?module=custom_fields&amp;view=edit&amp;id={$cf['cf_id']}">
-                        <img src="../../../images/edit.png" class="action" alt="{$cf.ename}"/>
+                        <img src="images/edit.png" class="action" alt="{$cf.ename}"/>
                     </a>
                 </td>
                 <td>{$cf['field_name_nice']}</td>

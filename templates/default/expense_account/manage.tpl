@@ -13,7 +13,7 @@
  *}
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=expense_account&amp;view=create" class="positive">
-        <img src="../../../images/add.png" alt=""/>
+        <img src="images/add.png" alt=""/>
         {$LANG.addNewExpenseAccount}
     </a>
 </div>
@@ -33,10 +33,10 @@
             <tr>
                 <td class="si_center">
                     <a class='index_table' title='{$LANG.view}' href='index.php?module=expense_account&amp;view=view&amp;id={$expense_account.id}'>
-                        <img src='../../../images/view.png' style="height:16px;border:0" alt="{$LANG.view}" />
+                        <img src='images/view.png' style="height:16px;border:0" alt="{$LANG.view}" />
                     </a>
                     <a class='index_table' title='{$LANG.edit}' href='index.php?module=expense_account&amp;view=edit&amp;id={$expense_account.id}'>
-                        <img src='../../../images/edit.png' style="height:16px;border:0" alt="{$LANG.edit}" />
+                        <img src='images/edit.png' style="height:16px;border:0" alt="{$LANG.edit}" />
                     </a>
                 </td>
                 <td>{$expense_account.name}</td>

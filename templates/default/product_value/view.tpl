@@ -15,7 +15,7 @@
 </table>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=product_value&amp;view=edit&amp;id={$product_value.id|htmlSafe}">
-        <img src="../../../images/report_edit.png" alt=""/>
+        <img src="images/report_edit.png" alt=""/>
         {$LANG.edit}
     </a>
 </div>

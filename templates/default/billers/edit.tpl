@@ -225,11 +225,11 @@
         </table>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_biller" value="{$LANG.saveBiller}" tabindex="260">
-                <img class="button_img" src="../../../images/tick.png" alt=""/>
+                <img class="button_img" src="images/tick.png" alt=""/>
                 {$LANG.save}
             </button>
             <a href="index.php?module=billers&amp;view=manage" class="negative" tabindex="270">
-                <img src="../../../images/cross.png" alt=""/>
+                <img src="images/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>
         </div>

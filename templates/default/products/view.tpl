@@ -145,7 +145,7 @@
     </div>
     <div class="si_toolbar si_toolbar_form">
         <a href="index.php?module=products&amp;view=edit&amp;id={$product.id|htmlSafe}" class="positive">
-            <img src="../../../images/report_edit.png" alt=""/>
+            <img src="images/report_edit.png" alt=""/>
             {$LANG.edit}
         </a>
     </div>

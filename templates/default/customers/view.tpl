@@ -221,11 +221,11 @@
                             <tr class="index_table">
                                 <td class="first">
                                     <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
-                                        <img src='../../../images/view.png' class='action' alt=""/>
+                                        <img src='images/view.png' class='action' alt=""/>
                                     </a>
                                     <a title="{$LANG.processPaymentFor} {$invoice.preference} {$invoice.index_id}"
                                        href='index.php?module=payments&amp;view=process&amp;id={$invoice.id}&amp;op=pay_selected_invoice'>
-                                        <img src='../../../images/money_dollar.png' class='action' alt=""/>
+                                        <img src='images/money_dollar.png' class='action' alt=""/>
                                     </a>
                                 </td>
                                 <td>
@@ -248,8 +248,6 @@
             <div class="si_cust_notes">{$customer.notes|outHtml}</div>
         </div>
         {if $subCustomerEnabled}
-            <tr><td>childCustomers: {if empty($childCustomers)}empty{else}not empty{/if}</td></tr>
-            <tr><td>parentCustomer: {if empty($parentCustomer)}empty{else}not empty{/if}</td></tr>
             {* If childCustomers then display them *}
             {if !empty($childCustomers)}
                 <div id="section-6" class="fragment">
@@ -311,11 +309,11 @@
     </div>
     <div class="si_toolbar si_toolbar_form">
         <a href="index.php?module=customers&amp;view=edit&amp;id={$customer.id|urlencode}" class="positive">
-            <img src="../../../images/tick.png" alt="{$LANG.edit}"/>
+            <img src="images/tick.png" alt="{$LANG.edit}"/>
             {$LANG.edit}
         </a>
         <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
-            <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
+            <img src="images/cross.png" alt="{$LANG.cancel}"/>
             {$LANG.cancel}
         </a>
     </div>

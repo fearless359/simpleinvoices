@@ -4,12 +4,12 @@
         <a href='#' class="show_itemised"
            onclick="$('.full_itemised').show();$('.hide_itemised').show();$('.abbrev_itemised').hide();$('.show_itemised').hide();"
            title="{$LANG.showDetails}">
-            <img src="../../../images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
+            <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
         </a>
         <a href='#' class="hide_itemised si_hide"
            onclick="$('.full_itemised').hide();$('.hide_itemised').hide();$('.abbrev_itemised').show();$('.show_itemised').show();"
            title="{$LANG.hideDetails}">
-            <img src="../../../images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
+            <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
         </a>
 
     </td>

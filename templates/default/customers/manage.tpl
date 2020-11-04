@@ -21,7 +21,7 @@
                 <th>{$LANG.setupAsBiller}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=billers&amp;view=create" class="positive">
-                        <img src="../../../images/user_add.png" alt=""/>
+                        <img src="images/user_add.png" alt=""/>
                         {$LANG.addNewBiller}
                     </a>
                 </td>
@@ -32,7 +32,7 @@
                 <th>{$LANG.setupAddCustomer}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=customers&amp;view=create" class="positive">
-                        <img src="../../../images/vcard_add.png" alt=""/>
+                        <img src="images/vcard_add.png" alt=""/>
                         {$LANG.customerAdd}
                     </a>
                 </td>
@@ -43,7 +43,7 @@
                 <th>{$LANG.setupAddProducts}</th>
                 <td class="si_toolbar">
                     <a href="index.php?module=products&amp;view=create" class="positive">
-                        <img src="../../../images/cart_add.png" alt=""/>
+                        <img src="images/cart_add.png" alt=""/>
                         {$LANG.addNewProduct}
                     </a>
                 </td>
@@ -53,7 +53,7 @@
             <th>{$LANG.setupCustomization}</th>
             <td class="si_toolbar">
                 <a href="index.php?module=system_defaults&amp;view=manage" class="">
-                    <img src="../../../images/cog_edit.png" alt=""/>
+                    <img src="images/cog_edit.png" alt=""/>
                     {$LANG.siDefaults}
                 </a>
             </td>
@@ -63,7 +63,7 @@
     <div class="si_toolbar si_toolbar_top"
          {if $smarty.session.role_name == 'customer'}style="display:none"{/if}>
         <a href="index.php?module=customers&amp;view=create" class="">
-            <img src="../../../images/add.png" alt=""/>
+            <img src="images/add.png" alt=""/>
             {$LANG.customerAdd}
         </a>
     </div>

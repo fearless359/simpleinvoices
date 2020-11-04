@@ -13,7 +13,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=product_groups&amp;view=create" class="">
-        <img src="../../../images/add.png" alt=""/>
+        <img src="images/add.png" alt=""/>
         {$LANG.addUc} {$LANG.newUc} {$LANG.productGroupUc}
     </a>
 </div>
@@ -33,10 +33,10 @@
             <tr>
                 <td class="si_center">
                     <a class="index_table" title="{$productGroup.vname}" href="index.php?module=product_groups&amp;view=view&amp;name={$productGroup.name}">
-                        <img src="../../../images/view.png" class="action" alt="view"/>
+                        <img src="images/view.png" class="action" alt="view"/>
                     </a>
                     <a class="index_table" title="{$productGroup.ename}" href="index.php?module=product_groups&amp;view=edit&amp;name={$productGroup.name}">
-                        <img src="../../../images/edit.png" class="action" alt="edit"/>
+                        <img src="images/edit.png" class="action" alt="edit"/>
                     </a>
                 </td>
                 <td>{$productGroup.name}</td>

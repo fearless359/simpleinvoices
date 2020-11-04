@@ -176,10 +176,10 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <a href="index.php?module=preferences&amp;view=edit&amp;id={$preference.pref_id}" class="positive">
-                <img src="../../../images/report_edit.png" alt=""/>{$LANG.edit}</a>
+                <img src="images/report_edit.png" alt=""/>{$LANG.edit}</a>
 
             <a href="index.php?module=preferences&amp;view=manage" class="negative">
-                <img src="../../../images/cross.png" alt=""/>{$LANG.cancel}</a>
+                <img src="images/cross.png" alt=""/>{$LANG.cancel}</a>
         </div>
         <div class="si_help_div">
             <a class="cluetip" href="#" title="{$LANG.whatsAllThisInvPref}"

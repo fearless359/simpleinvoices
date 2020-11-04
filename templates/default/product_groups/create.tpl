@@ -33,11 +33,11 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_product_group" value="{$LANG.save}" tabindex="100">
-                <img class="button_img" src="../../../images/tick.png" alt=""/>
+                <img class="button_img" src="images/tick.png" alt=""/>
                 {$LANG.save}
             </button>
             <a href="index.php?module=product_groups&amp;view=manage" class="negative" tabindex="110">
-                <img src="../../../images/cross.png" alt=""/>
+                <img src="images/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>
         </div>

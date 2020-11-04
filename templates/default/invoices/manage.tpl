@@ -11,7 +11,7 @@
 {if $number_of_invoices == 0}
     <div class="si_toolbar si_toolbar_top si_toolbar_top_left">
         <a href="index.php?module=invoices&amp;view=itemised" class="">
-            <img src="../../../images/add.png" alt="" />
+            <img src="images/add.png" alt="" />
             {$LANG.newInvoice}
         </a>
     </div>
@@ -44,7 +44,7 @@
     </div>
     <div class="si_toolbar si_toolbar_top si_toolbar_top_left">
         <a href="index.php?module=invoices&amp;view=itemised" class="">
-            <img src="../../../images/add.png" alt=""/>
+            <img src="images/add.png" alt=""/>
             {$LANG.newInvoice}
         </a>
     </div>
@@ -66,11 +66,11 @@
     <div id="dialog" class="web_dialog flora" title="Export" style="display: none;">
         <div class="si_toolbar si_toolbar_dialog">
             <a title="{$LANG.exportUc} {$LANG.exportPdfTooltip}" class="export_pdf export_window">
-                <img src="../../../images/page_white_acrobat.png" alt=""/>
+                <img src="images/page_white_acrobat.png" alt=""/>
                 {$LANG.exportPdf}
             </a>
             <a title="{$LANG.exportUc} {$LANG.exportXlsTooltip} .{$config.exportSpreadsheet}" class="export_xls export_window">
-                <img src="../../../images/page_white_excel.png" alt=""/>
+                <img src="images/page_white_excel.png" alt=""/>
                 {$LANG.exportXls}
             </a>
             <a title="{$LANG.exportUc} {$LANG.exportDocTooltip} .{$config.exportWordProcessor}" class="export_doc export_window">

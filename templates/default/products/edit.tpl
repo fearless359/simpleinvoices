@@ -211,11 +211,11 @@
         </div>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_product" value="{$LANG.save}" tabindex="120">
-                <img class="button_img" src="../../../images/tick.png" alt=""/>
+                <img class="button_img" src="images/tick.png" alt=""/>
                 {$LANG.save}
             </button>
             <a href="index.php?module=products&amp;view=manage" class="negative" tabindex="130">
-                <img src="../../../images/cross.png" alt=""/>
+                <img src="images/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>
         </div>

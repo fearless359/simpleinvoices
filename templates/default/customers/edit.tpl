@@ -312,11 +312,11 @@
         </table>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_customer" value="{$LANG.saveCustomer}" tabindex="230">
-                <img class="button_img" src="../../../images/tick.png" alt="{$LANG.save}"/>
+                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>
                 {$LANG.save}
             </button>
             <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="negative">
-                <img src="../../../images/cross.png" alt="{$LANG.cancel}"/>
+                <img src="images/cross.png" alt="{$LANG.cancel}"/>
                 {$LANG.cancel}
             </a>
         </div>

@@ -14,7 +14,7 @@
 
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=tax_rates&amp;view=create" class="">
-        <img src="../../../images/add.png" alt=""/>
+        <img src="images/add.png" alt=""/>
         {$LANG.addNewTaxRate}
     </a>
 </div>
@@ -37,11 +37,11 @@
                 <td class="si_center">
                     <a class="index_table" title="{$tax['vname']}"
                        href="index.php?module=tax_rates&amp;view=view&amp;id={$tax['tax_id']}">
-                        <img src="../../../images/view.png" class="action" alt="{$tax['vname']}"/>
+                        <img src="images/view.png" class="action" alt="{$tax['vname']}"/>
                     </a>
                     <a class="index_table" title="{$tax['ename']}"
                        href="index.php?module=tax_rates&amp;view=edit&amp;id={$tax['tax_id']}">
-                        <img src="../../../images/edit.png" class="action" alt="{$tax['ename']}"/>
+                        <img src="images/edit.png" class="action" alt="{$tax['ename']}"/>
                     </a>
                 </td>
                 <td>{$tax['tax_description']}</td>

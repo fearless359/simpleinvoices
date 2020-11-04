@@ -16,7 +16,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=payment_types&amp;view=create">
-        <img src="../../../images/add.png" alt=""/>
+        <img src="images/add.png" alt=""/>
         {$LANG.addNewPaymentType}
     </a>
 </div>
@@ -37,11 +37,11 @@
                 <td class="si_center">
                     <a class="index_table" title="{$payment_type['vname']}"
                        href="index.php?module=payment_types&amp;view=view&amp;id={$payment_type['pt_id']}">
-                        <img src="../../../images/view.png" alt="view" class="action"/>
+                        <img src="images/view.png" alt="view" class="action"/>
                     </a>
                     <a class="index_table" title="{$payment_type['ename']}"
                        href="index.php?module=payment_types&amp;view=edit&amp;id={$payment_type['pt_id']}">
-                        <img src="../../../images/edit.png" alt="edit" class="action"/>
+                        <img src="images/edit.png" alt="edit" class="action"/>
                     </a>
                 </td>
                 <td>{$payment_type['pt_description']}</td>

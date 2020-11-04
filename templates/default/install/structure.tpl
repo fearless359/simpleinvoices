@@ -8,11 +8,11 @@
 </div>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=install&amp;view=essential" class="positive">
-      <img src="../../../images/tick.png" alt="" />
+      <img src="images/tick.png" alt="" />
         {$LANG.installUc} {$LANG.essentialUc} {$LANG.dataUc}
     </a>
     <a href="index.php" class="negative">
-        <img src="../../../images/cross.png" alt="" />
+        <img src="images/cross.png" alt="" />
         {$LANG.cancel}
     </a>
 </div>

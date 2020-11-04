@@ -12,7 +12,7 @@
     <h2>{$LANG.statements}<a id="statement" href=""></a></h2>
     <div class="si_toolbar">
         <a href="index.php?module=statement&amp;view=index" class="">
-            <img src="../../../images/money.png" alt=""/>
+            <img src="images/money.png" alt=""/>
             {$LANG.statementOfInvoices}
         </a>
         {if $performExtensionInsertions == true}
@@ -37,23 +37,23 @@
     <h2>{$LANG.salesUc}<a id="sales" href=""></a></h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportSalesTotal" class="">
-            <img src="../../../images/money.png" alt=""/>
+            <img src="images/money.png" alt=""/>
             {$LANG.totalSales}
         </a>
         <a href="index.php?module=reports&amp;view=reportSalesByPeriods" class="">
-            <img src="../../../images/money.png" alt=""/>
+            <img src="images/money.png" alt=""/>
             {$LANG.monthlySalesPerYear}
         </a>
         <a href="index.php?module=reports&amp;view=reportSalesCustomersTotal" class="">
-            <img src="../../../images/money.png" alt=""/>
+            <img src="images/money.png" alt=""/>
             {$LANG.salesByCustomers}
         </a>
         <a href="index.php?module=reports&amp;view=reportNetIncome" class="">
-            <img src="../../../images/money.png" alt=""/>
+            <img src="images/money.png" alt=""/>
             <span>{$LANG.netIncomeReport}</span>
         </a>
         <a href="index.php?module=reports&amp;view=reportSalesByRepresentative" class="">
-            <img src="../../../images/report_edit.png" alt=""/>
+            <img src="images/money.png" alt=""/>
             <span>{$LANG.salesByRepresentative}</span>
         </a>
 
@@ -79,7 +79,7 @@
         <h2>{$LANG.profitUc}</h2>
         <div class="si_toolbar">
             <a href="index.php?module=reports&amp;view=reportInvoiceProfit" class="">
-                <img src="../../../images/money.png" alt=""/>
+                <img src="images/money.png" alt=""/>
                 {$LANG.profitPerInvoice}
             </a>
             {if $performExtensionInsertions == true}
@@ -105,7 +105,7 @@
     <h2>{$LANG.tax}</h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportTaxTotal" class="">
-            <img src="../../../images/money_delete.png" alt=""/>
+            <img src="images/money_delete.png" alt=""/>
             {$LANG.totalTaxes}
         </a>
         {if $performExtensionInsertions == true}
@@ -130,11 +130,11 @@
     <h2>{$LANG.productsUc}</h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportProductsSoldTotal" class="">
-            <img src="../../../images/cart.png" alt=""/>
+            <img src="images/cart.png" alt=""/>
             {$LANG.productSales}
         </a>
         <a href="index.php?module=reports&amp;view=reportProductsSoldByCustomer" class="">
-            <img src="../../../images/cart.png" alt=""/>
+            <img src="images/cart.png" alt=""/>
             {$LANG.productsByCustomer}
         </a>
         {if $performExtensionInsertions == true}
@@ -159,11 +159,11 @@
     <h2>{$LANG.billerSales}</h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportBillerTotal" class="">
-            <img src="../../../images/user_suit.png" alt=""/>
+            <img src="images/user_suit.png" alt=""/>
             {$LANG.billerSales}
         </a>
         <a href="index.php?module=reports&amp;view=reportBillerByCustomer" class="">
-            <img src="../../../images/user_suit.png" alt=""/>
+            <img src="images/user_suit.png" alt=""/>
             {$LANG.billerSalesByCustomerTotals} {* TODO change this - remove total *}
         </a>
         {if $performExtensionInsertions == true}
@@ -188,23 +188,23 @@
     <h2>{$LANG.debtors}</h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportDebtorsByAmount" class="">
-            <img src="../../../images/vcard.png" alt=""/>
+            <img src="images/vcard.png" alt=""/>
             {$LANG.debtorsByAmountOwed}
         </a>
         <a href="index.php?module=reports&amp;view=reportDebtorsByAging" class="">
-            <img src="../../../images/vcard.png" alt=""/>
+            <img src="images/vcard.png" alt=""/>
             {$LANG.debtorsByAgingPeriods}
         </a>
         <a href="index.php?module=reports&amp;view=reportDebtorsOwingByCustomer" class="">
-            <img src="../../../images/vcard.png" alt=""/>
+            <img src="images/vcard.png" alt=""/>
             {$LANG.totalOwedPerCustomer}
         </a>
         <a href="index.php?module=reports&amp;view=reportDebtorsAgingTotal" class="">
-            <img src="../../../images/vcard.png" alt=""/>
+            <img src="images/vcard.png" alt=""/>
             {$LANG.totalByAgingPeriods}
         </a>
         <a href="index.php?module=reports&amp;view=reportPastDue" class="">
-            <img src="../../../images/vcard.png" alt=""/>
+            <img src="images/vcard.png" alt=""/>
             {$LANG.pastPueReport}
         </a>
         {if $performExtensionInsertions == true}
@@ -221,15 +221,15 @@
         <h2>{$LANG.expensesUc}</h2>
         <div class="si_toolbar">
             <a href="index.php?module=reports&amp;view=reportTaxVsSalesByPeriod" class="">
-                <img src="../../../images/money_delete.png" alt=""/>
+                <img src="images/money_delete.png" alt=""/>
                 {$LANG.monthlyTaxSummaryPerYear}
             </a>
             <a href="index.php?module=reports&amp;view=reportExpenseAccountByPeriod" class="">
-                <img src="../../../images/money_delete.png" alt=""/>
+                <img src="images/money_delete.png" alt=""/>
                 {$LANG.expenseUc} {$LANG.accountsUc} {$LANG.by} {$LANG.periodUc}
             </a>
             <a href="index.php?module=reports&amp;view=reportExpenseSummary" class="">
-                <img src="../../../images/money_delete.png" alt=""/>
+                <img src="images/money_delete.png" alt=""/>
                 {$LANG.expenseUc} {$LANG.accountUc} {$LANG.summaryUc}
             </a>
             {if $performExtensionInsertions == true}
@@ -255,7 +255,7 @@
     <h2>{$LANG.otherUc}</h2>
     <div class="si_toolbar">
         <a href="index.php?module=reports&amp;view=reportDatabaseLog" class="">
-            <img src="../../../images/database.png" alt=""/>
+            <img src="images/database.png" alt=""/>
             {$LANG.databaseLog}
         </a>
         {if $performExtensionInsertions == true}

@@ -23,7 +23,7 @@
 </div>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=tax_rates&amp;view=edit&amp;id={$tax.tax_id|urlencode}" class="positive">
-        <img src="../../../images/report_edit.png" alt=""/>
+        <img src="images/report_edit.png" alt=""/>
         {$LANG.edit}
     </a>
 </div>

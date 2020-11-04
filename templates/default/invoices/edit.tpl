@@ -16,7 +16,7 @@
 
 {* Still needed ?*}
 <div id="gmail_loading" class="gmailLoader" style="float:right; display: none;">
-    <img src="../../../images/gmail-loader.gif" alt="{$LANG.loading} ..."/>
+    <img src="images/gmail-loader.gif" alt="{$LANG.loading} ..."/>
     {$LANG.loading} ...
 </div>
 <form name="frmpost" method="POST" id="frmpost"
@@ -176,7 +176,7 @@
                             <a class="delete_link" id="delete_link{$line|htmlSafe}"
                                title="{$LANG.deleteLineItem}" href="#" style="display:{if $line == "0"}none{else}inline{/if};"
                                data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}>
-                                <img id="delete_image{$line|htmlSafe}" src="../../../images/delete_item.png" alt=""/>
+                                <img id="delete_image{$line|htmlSafe}" src="images/delete_item.png" alt=""/>
                             </a>
                         </td>
                         <td>
@@ -240,13 +240,13 @@
             </table>
             <div class="si_toolbar si_toolbar_inform">
                 <a href="#" class="add_line_item" data-description="{$LANG.descriptionUc}">
-                    <img src="../../../images/add.png" alt=""/>{$LANG.addNewRow}</a>
+                    <img src="images/add.png" alt=""/>{$LANG.addNewRow}</a>
                 <a href='#' class="show_details" title="{$LANG.showDetails}">
-                    <img src="../../../images/page_white_add.png" alt=""/>
+                    <img src="images/page_white_add.png" alt=""/>
                     {$LANG.showDetails}
                 </a>
                 <a href='#' class="hide_details si_hide" title="{$LANG.hideDetails}">
-                    <img src="../../../images/page_white_delete.png" alt=""/>
+                    <img src="images/page_white_delete.png" alt=""/>
                     {$LANG.hideDetails}
                 </a>
             </div>
@@ -292,10 +292,10 @@
 
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="invoice_save positive" name="submit" value="{$LANG.save}">
-                <img class="button_img" src="../../../images/tick.png" alt=""/>{$LANG.save}
+                <img class="button_img" src="images/tick.png" alt=""/>{$LANG.save}
             </button>
             <a href="index.php?module=invoices&amp;view=manage" class="negative">
-                <img src="../../../images/cross.png" alt=""/>
+                <img src="images/cross.png" alt=""/>
                 {$LANG.cancel}
             </a>
         </div>

@@ -45,11 +45,11 @@
 </table>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=cron&amp;view=edit&amp;id={$cron.id|urlencode}" class="positive">
-        <img src="../../../images/report_edit.png" alt="" />
+        <img src="images/report_edit.png" alt="" />
         {$LANG.edit}
     </a>
     <a href="index.php?module=cron&amp;view=manage" class="negative">
-        <img src="../../../images/cross.png" alt=""/>
+        <img src="images/cross.png" alt=""/>
         {$LANG.cancel}
     </a>
 </div>

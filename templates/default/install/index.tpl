@@ -59,7 +59,7 @@
 </table>
 <div class="si_toolbar si_toolbar_form">
     <a href="index.php?module=install&amp;view=structure" class="positive">
-        <img src="../../../images/tick.png" alt=""/>
+        <img src="images/tick.png" alt=""/>
         {$LANG.installUc} {$LANG.databaseUc}
     </a>
 </div>

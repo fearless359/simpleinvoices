@@ -2,7 +2,7 @@
 <head>
   <title>{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort|htmlSafe}: {$invoice.index_id|htmlSafe}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="shortcut icon" href="../../../images/favicon.ico"/>
+  <link rel="shortcut icon" href="images/favicon.ico"/>
   {if isset($css)}
     <link rel="stylesheet" type="text/css" href="{$css|urlSafe}" media="all">
   {/if}

@@ -14,7 +14,7 @@
 <!--suppress JSUnusedLocalSymbols -->
 <div class="si_toolbar si_toolbar_top">
     <a href="index.php?module=inventory&amp;view=create" class="">
-        <img src="../../../images/add.png" alt=""/>
+        <img src="images/add.png" alt=""/>
         {$LANG.newInventoryMovement}
     </a>
 </div>

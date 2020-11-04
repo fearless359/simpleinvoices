@@ -14,7 +14,7 @@
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=invoices&amp;view=save">
     <div id="gmail_loading" class="gmailLoader si_hide" style="float:right;">
-        <img src="../../../images/gmail-loader.gif" alt="{$LANG.loading} ..."/>
+        <img src="images/gmail-loader.gif" alt="{$LANG.loading} ..."/>
         {$LANG.loading} ...
     </div>
     {if $first_run_wizard == true}
@@ -28,15 +28,15 @@
             {include file="$path/itemised_itemtable.tpl" }
             <div class="si_toolbar si_toolbar_inform">
                 <a href="#" class="add_line_item" data-description="{$LANG.descriptionUc}">
-                    <img src="../../../images/add.png" alt=""/>
+                    <img src="images/add.png" alt=""/>
                     {$LANG.addNewRow}
                 </a>
                 <a href='#' class="show_details" title="{$LANG.showDetails}">
-                    <img src="../../../images/page_white_add.png" alt=""/>
+                    <img src="images/page_white_add.png" alt=""/>
                     {$LANG.showDetails}
                 </a>
                 <a href='#' class="hide_details si_hide" title="{$LANG.hideDetails}">
-                    <img src="../../../images/page_white_delete.png" alt=""/>
+                    <img src="images/page_white_delete.png" alt=""/>
                     {$LANG.hideDetails}
                 </a>
             </div>
@@ -46,10 +46,10 @@
             <input type="hidden" name="type" value="2"/>
             <div class="si_toolbar si_toolbar_form">
                 <button type="submit" class="invoice_save" name="submit" value="{$LANG.save}">
-                    <img class="button_img" src="../../../images/tick.png" alt=""/>{$LANG.save}
+                    <img class="button_img" src="images/tick.png" alt=""/>{$LANG.save}
                 </button>
                 <a href="index.php?module=invoices&amp;view=manage" class="negative">
-                    <img src="../../../images/cross.png" alt=""/>
+                    <img src="images/cross.png" alt=""/>
                     {$LANG.cancel}
                 </a>
             </div>
