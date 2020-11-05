@@ -1,7 +1,7 @@
 <?
 /*
-Script: language_list.txt
-	List of language abbreviatiosn
+Script: languageList.txt
+	List of language abbreviation
 */
 // Script Source URI: http://techpatterns.com/downloads/php_language_detection.php
 

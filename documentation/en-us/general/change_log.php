@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-11-04 - <b>2020.0.05</b>
+            <ul>
+                <li>Update formatting of Log output.</li>
+                <li>Get shell scripts in lang directory working.</li>
+            </ul>
+        </li>
         <li>2020-11-03 - <b>2020.0.04</b>
             <ul>
                 <li>Set correct path for tpl images.</li>

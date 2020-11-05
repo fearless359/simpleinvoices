@@ -23,9 +23,6 @@ global $databaseBuilt, $LANG;
 
 use Inc\Claz\SystemDefaults;
 
-$LANG["helpLanguage"] = "Specify the language that will be use by SimpleInvoices.";//1
-$LANG["processed"] = "processed";//1
-$LANG["thus"] = "thus";//1
 $LANG['401ErrorMsg'] = "Access denied for requested resource.<br/>Check with your system administrator for assistance.";
 $LANG['a'] = "a";//1
 $LANG['about'] = "about";//1
@@ -399,6 +396,7 @@ $LANG['helpInventory'] = "Select option to Enable/Disable use of the SimpleInvoi
 $LANG['helpInvoiceCreate'] = "Creating invoices is easy.  Once a biller and customer have been entered into SimpleInvoices all you need to do is select an invoice type from the 'Invoice +' menu, fill in the details and click 'Save Invoice'.";//1
 $LANG['helpInvoiceCustomFields'] = "Need more fields in the invoice screen? Want your own fields like 'Purchase Order', 'Project name' etc..<br /><br />SimpleInvoices allows you to add whatever fields you want into the invoices.  These are called 'custom fields', to edit or setup your own fields select Custom Fields from the Options menu.";//1
 $LANG['helpInvoiceTypes'] = "In SimpleInvoices there are 2 types of invoices available.<br /><br />An <b>Itemized Invoice</b> is an invoice that list many different items in the same invoice, with optional notes area for each line item - think accounting/legal firms or a grocery store invoice.<br/ ><br />A <b>Total Invoice</b> is an invoice like that from a plumber that lists the actions and then has one price and the tax associated.";//1
+$LANG["helpLanguage"] = "Specify the language that will be use by SimpleInvoices.";//1
 $LANG['helpLogging'] = "To log actions performed in SimpleInvoices enable this option. This creates a log in the database of what actions were performed.<br /><br />Note: At the moment the only way to view the log is in the database, soon we'll incorporate a nice log viewer into SimpleInvoices.";//1
 $LANG['helpMailingList'] = "Mailing List";//1
 $LANG['helpManageCustomFields'] = "Custom Fields are special fields that you can label as whatever you need.<br /><br />This page allows you to define up to 4 custom fields for each of the following: products, customers, billers, and invoices.<br /><br />Once you define a label of one of the fields, this field will become available for use.  Ie. if you edit 'Invoice :: Custom field 1' and set the label as 'Project name', the next time you create an invoice there'll be a new field in the invoice screen called 'Project name'";//1
@@ -689,6 +687,7 @@ $LANG['printPreview'] = "Print Preview";//1
 $LANG['printPreviewTooltip'] = "Print Preview of";//1
 $LANG['problems'] = "problems";//1
 $LANG['process'] = "process";//1
+$LANG["processed"] = "processed";//1
 $LANG['processPayment'] = "Process Payment";//1
 $LANG['processPaymentAutoAmount'] = "Process Payment Auto Amount";//1
 $LANG['processPaymentDetails'] = "Process Payment Details";//1
@@ -905,6 +904,7 @@ $LANG['there'] = "there";//1
 $LANG['theUc'] = "The";//1
 $LANG['this'] = "this";//1
 $LANG['thisUc'] = "This";//1
+$LANG["thus"] = "thus";//1
 $LANG['time'] = "time";//1
 $LANG['titleModuleBillers'] = "People / Billers";//1
 $LANG['titleModuleCron'] = "Money / Recurrence";//1
@@ -1000,28 +1000,29 @@ $LANG['yourReports'] = "Your reports";//1
 $LANG['zeroInvoiceAmt'] = "Zero invoice amount. No payment due.";//1
 $LANG['zip'] = "Zip Code";//1
 
-$defaults = SystemDefaults::loadValues($databaseBuilt);
-$pwdMsg =  $LANG['passwordsMust'] . ":" .
-    "<ul>" .
-    "  <li>{$LANG['beginWithAnAlphaCharacter']}</li>" .
-    "  <li>{$LANG['beAtLeast']} {$defaults['password_min_length']}-{$LANG['charactersLong']}</li>" .
-    "  <li>{$LANG['containNoBlanks']}</li>";
+if (!defined('RUNNING_IN_BASH_SHELL')) {
+    $defaults = SystemDefaults::loadValues($databaseBuilt);
+    $pwdMsg = $LANG['passwordsMust'] . ":" .
+        "<ul>" .
+        "  <li>{$LANG['beginWithAnAlphaCharacter']}</li>" .
+        "  <li>{$LANG['beAtLeast']} {$defaults['password_min_length']}-{$LANG['charactersLong']}</li>" .
+        "  <li>{$LANG['containNoBlanks']}</li>";
 
-if (isset($defaults['password_upper']) && $defaults['password_upper'] == 1) {
-    $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['upperCaseCharacter']}</li>";
+    if (isset($defaults['password_upper']) && $defaults['password_upper'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['upperCaseCharacter']}</li>";
+    }
+
+    if (isset($defaults['password_lower']) && $defaults['password_lower'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['lowerCaseCharacter']}</li>";
+    }
+
+    if (isset($defaults['password_number']) && $defaults['password_number'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['numericCharacter']}</li>";
+    }
+
+    if (isset($defaults['password_special']) && $defaults['password_special'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['specialCharacter']}</li>";
+    }
+
+    $LANG['helpNewPassword'] = $pwdMsg . "</ul>";
 }
-
-if (isset($defaults['password_lower']) && $defaults['password_lower'] == 1) {
-    $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['lowerCaseCharacter']}</li>";
-}
-
-if (isset($defaults['password_number']) && $defaults['password_number'] == 1) {
-    $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['numericCharacter']}</li>";
-}
-
-if (isset($defaults['password_special']) && $defaults['password_special'] == 1) {
-    $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['specialCharacter']}</li>";
-}
-
-$LANG['helpNewPassword'] = $pwdMsg . "</ul>";
-

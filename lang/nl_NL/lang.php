@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode */
 
 /*
 * Script: Dutch lang.php
@@ -76,7 +76,9 @@ $LANG['backupDone'] = "Uw database backup is opgeslagen naar het bestand %s, u k
 $LANG['backupHowTo'] = "Om een backup te maken van uw Simple Invoices database, klik op de link hier onder";//1
 $LANG['backupNoteToFile'] = "Dit zal uw database backuppen naar een bestand in de map database_backups";//1
 $LANG['backupYourDatabase'] = "Uw database backup aanmaken";//1
+$LANG['beAtLeast'] = "Moet tenminste";//1
 $LANG['beforeStarting'] = "Er zijn maar een paar dingen die u moet doen voordat u kunt beginnen met factureren";//1
+$LANG['beginWithAnAlphaCharacter'] = "Beginnen met een letter";//1
 $LANG['billed'] = "Gefactureerd";//1
 $LANG['billerUc'] = "Bedrijf";//1
 $LANG['billerDetails'] = "Details bedrijf";//1
@@ -94,6 +96,7 @@ $LANG['cancel'] = "Annuleer";//1
 $LANG['cannotDeleteFirstRow'] = "De eerste rij kan niet worden verwijderd";//1
 $LANG['cancelled'] = "Verzoek geannuleerd door gebruiker. Geen wijzigingen aangebracht.";//1
 $LANG['changeLog'] = "Wijzigingslog";//1
+$LANG['charactersLong'] = "karakters lang zijn";//1
 $LANG['checkNumber'] = "Controleer #";//1
 $LANG['city'] = "Plaats";//1
 $LANG['clearData'] = "Verwijder gegevens";//1
@@ -104,6 +107,8 @@ $LANG['companyNameItem'] = "Uw Bedrijfsnaam";//1
 $LANG['companyNameItemLabel'] = "Bedrijfsnaam";//1
 $LANG['confirmDelete'] = "Weet u zeker dat u het volgende wilt verwijderen";//1
 $LANG['confirmPassword'] = "Bevestig wachtwoord";//1
+$LANG['containAtLeastOne'] = "Minimaal 1";//
+$LANG['containNoBlanks'] = "en geen spaties bevatten";//1
 $LANG['consulting'] = "Informatieve";//1
 $LANG['consultingStyle'] = "Informatieve stijl";//1
 $LANG['costUc'] = "Stukprijs";//1
@@ -399,6 +404,7 @@ $LANG['logging'] = "Loggen";//1
 $LANG['login'] = "Aanmelden";//1
 $LANG['logoFile'] = "Logo bestand";//1
 $LANG['logout'] = "Afmelden";//1
+$LANG['lowerCaseCharacter'] = "kleine letter bevatten";//1
 $LANG['manage'] = "Beheren";//1
 $LANG['manageBillers'] = "Bedrijven beheren";//1
 $LANG['manageCustomFields'] = "Gebruikersvelden beheren";//1
@@ -466,6 +472,7 @@ $LANG['notes'] = "Opmerkingen";//1
 $LANG['notesOpt'] = "Opmerkingen (optioneel)";//1
 $LANG['numberOfTaxesPerLineItem'] = "Verschillende BTW tarieven per regelitem";//1
 $LANG['numberShort'] = "Nr.";//1
+$LANG['numericCharacter'] = "cijfer bevatten";//1
 $LANG['of'] = "van";//1
 $LANG['onUc'] = "Aan";//1
 $LANG['onlinePaymentId'] = "Online betalings-ID";//1
@@ -483,6 +490,7 @@ $LANG['pastDueUc'] = "Verlopen";//1
 $LANG['password'] = "Wachtwoord";//1
 $LANG['passwordLower'] = "Wachtwoord - Letter verplicht";//1
 $LANG['passwordMinLength'] = "Minimale lengte wachtwoord";//1
+$LANG['passwordsMust'] = "Wachtwoord moet";//1
 $LANG['passwordNumber'] = "Wachtwoord - Cijfer verplicht";//1
 $LANG['passwordSpecial'] = "Wachtwoord - Leesteken verplicht";//1
 $LANG['passwordUpper'] = "Wachtwoord - Hoofdletter verplicht";//1
@@ -645,6 +653,7 @@ $LANG['showDetails'] = "Bekijk details";//1
 $LANG['showOnlyUnpaidInvoices'] = "Toon alleen openstaande facturen";//1
 $LANG['simpleInvoices'] = "Simple Invoices";//1
 $LANG['signature'] = "handtekening";//1
+$LANG['specialCharacter'] = "speciaal karakter bevatten";//1
 $LANG['startDate'] = "Start Datum (yyyy-mm-dd)";//1
 $LANG['startDateShort'] = "Start Datum";//1
 $LANG['startWorkingUc'] = "Starten met Simple Invoices";//1
@@ -725,6 +734,7 @@ $LANG['unitCost'] = "Inkoopprijs p/s";//1
 $LANG['unitPrice'] = "Stukprijs";//1
 $LANG['unpaidInvoices'] = "Onbetaalde facturen";//1
 $LANG['upgradingSimpleInvoices'] = "Simple Invoices updaten";//1
+$LANG['upperCaseCharacter'] = "hoofdletter bevatten";//
 $LANG['useThisPref'] = "-gebruik deze voorkuur-";//1
 $LANG['userAdd'] = "Gebruiker toevoegen";//1
 $LANG['userId'] = "Gebruikers id";//1
@@ -749,27 +759,28 @@ $LANG['yourReports'] = "Uw rapporten";//1
 $LANG['zeroInvoiceAmt'] = "Geen factuurbedrag. Geen betaling verschuldigd";//1
 $LANG['zip'] = "Postcode";//1
 
-$defaults = SystemDefaults::loadValues($databaseBuilt);
-$pwdMsg =  "Wachtwoord moet:" .
-            "<ul>" .
-            "  <li>Beginnen met een letter</li>" .
-            "  <li>Moet tenminste " . $defaults['password_min_length'] . "-karakters lang zijn</li>" .
-            "  <li>en geen spaties bevatten</li>";//1
+if (!defined('RUNNING_IN_BASH_SHELL')) {
+    $defaults = SystemDefaults::loadValues($databaseBuilt);
+    $pwdMsg = $LANG['passwordsMust'] . ":" .
+        "<ul>" .
+        "  <li>{$LANG['beginWithAnAlphaCharacter']}</li>" .
+        "  <li>{$LANG['beAtLeast']} {$defaults['password_min_length']} -{$LANG['charactersLong']}</li>" .
+        "  <li>{$LANG['containNoBlanks']}</li>";//1
 
-if (isset($defaults['password_upper']) && $defaults['password_upper'] == 1) {
-    $pwdMsg .= "<li>Minimaal 1 hoofdletter bevatten</li>";//1
+    if (isset($defaults['password_upper']) && $defaults['password_upper'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['upperCaseCharacter']}</li>";//1
+    }
+
+    if (isset($defaults['password_lower']) && $defaults['password_lower'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['lowerCaseCharacter']}</li>";//1
+    }
+
+    if (isset($defaults['password_number']) && $defaults['password_number'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['numericCharacter']}</li>";//1
+    }
+
+    if (isset($defaults['password_special']) && $defaults['password_special'] == 1) {
+        $pwdMsg .= "<li>{$LANG['containAtLeastOne']} {$LANG['specialCharacter']}</li>";//1
+    }
+    $LANG['helpNewPassword'] = $pwdMsg . "</ul>";//1
 }
-
-if (isset($defaults['password_lower']) && $defaults['password_lower'] == 1) {
-    $pwdMsg .= "<li>Minimaal 1 kleine letter bevatten</li>";//1
-}
-
-if (isset($defaults['password_number']) && $defaults['password_number'] == 1) {
-    $pwdMsg .= "<li>Minimaal 1 cijfer bevatten</li>";//1
-}
-
-if (isset($defaults['password_special']) && $defaults['password_special'] == 1) {
-    $pwdMsg .= "<li>Minimaal 1 speciaal karakter bevatten</li>";//1
-}
-$LANG['helpNewPassword'] = $pwdMsg . "</ul>";//1
-

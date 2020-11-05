@@ -2,6 +2,7 @@
 
 namespace Inc\Claz;
 
+use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -93,8 +94,15 @@ class Log extends Logger
                 break;
         }
 
+        // the default date format is "Y-m-d\TH:i:sP"
+        $dateFormat = "Y-m-d, h:i a";
+        // the default output format is "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n"
+        $output = "%datetime% > %level_name% > %message% %context% %extra%\n";
+        $formatter = new LineFormatter($output, $dateFormat, true, true);
+        $stream = new StreamHandler(self::$path, $loggerLevel);
+        $stream->setFormatter($formatter);
         self::$logger = new Logger('siLog');
-        self::$logger->pushHandler(new StreamHandler(self::$path, $loggerLevel));
+        self::$logger->pushHandler($stream);
     }
 
     /**

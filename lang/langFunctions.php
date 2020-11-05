@@ -3,7 +3,7 @@
  * Build array of defined languages
  * @return array
  */
-function get_defined_langs()
+function getDefinedLanguages(): array
 {
     // The root path of the language files. Change if needed.
     $dir = '.';
@@ -13,21 +13,21 @@ function get_defined_langs()
         exit("($dir) is not a directory.");
     }
 
-    $langs = array();
+    $langFiles = [];
 
     //	Implementation - Forward Compatible
     try {
         foreach (new RegexIterator(new DirectoryIterator($dir), '/^[a-z]{2}(_[A-Z]{2})?$/') as $entry) {
-            $langs[] = $entry->getFilename();
+            $langFiles[] = $entry->getFilename();
         }
-    } catch (UnexpectedValueException $e) {
-        die($e->getMessage());
+    } catch (UnexpectedValueException $exp) {
+        die($exp->getMessage());
     }
 
     // Sort by lang code.
-    sort($langs);
+    sort($langFiles);
 
-    return $langs;
+    return $langFiles;
 }
 
 
@@ -35,18 +35,18 @@ function get_defined_langs()
  * Access a language folder and return array with two values:
  *  1) The total strings
  *  2) The total translated strings.
- * @param string $lang_code
+ * @param string $langCode
  * @return array
  */
-function process_lang_file($lang_code)
+function processLangFile(string $langCode): array
 {
 
-    $lang_file = file("$lang_code/lang.php");
+    $langFile = file("{$langCode}/lang.php");
 
     $count = 0;
-    $count_translated = 0;
+    $countTranslated = 0;
 
-    foreach ($lang_file as $line) {
+    foreach ($langFile as $line) {
         $line = rtrim($line);
 
         // A string line
@@ -56,12 +56,11 @@ function process_lang_file($lang_code)
         // Each LANG string in one line only,
         // Accommodate multi-line strings with strict line ending.
         if (preg_match('/^\$LANG\[.*;\s*\/\/\s*1/', $line)) {
-            $count_translated++;
+            $countTranslated++;
         }
 
     }
 
-    $ret = array($count, $count_translated);
-    return $ret;
+    return [$count, $countTranslated];
 }
 
