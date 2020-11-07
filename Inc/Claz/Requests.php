@@ -16,11 +16,12 @@ class Requests
     /**
      * Class constructor.
      * Opens database and initializes class properties.
+     * @param array $config
      * @throws PdoDbException
      */
-    public function __construct()
+    public function __construct(array $config)
     {
-        $this->pdoDb = new PdoDb(new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX));
+        $this->pdoDb = new PdoDb($config);
         $this->reset();
     }
 

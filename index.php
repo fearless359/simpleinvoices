@@ -90,8 +90,7 @@ if (!file_exists('./tmp/pdf_tmp')) {
 
 try {
     $setup = new Setup(CONFIG_SECTION, empty($module));
-    $config = $setup->getConfig();
-    $dbInfo = $setup->getDbInfo();
+    $config = $setup->getConfigIni();
     $pdoDb = $setup->getPdoDb();
     $pdoDbAdmin = $setup->getPdoDbAdmin();
 } catch (Exception $exp) {

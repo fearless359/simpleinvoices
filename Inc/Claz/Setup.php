@@ -11,7 +11,6 @@ include_once 'config/define.php';
  */
 class Setup
 {
-    private DbInfo $dbInfo;
     private PdoDb $pdoDb;
     private PdoDb $pdoDbAdmin;
     private array $configIni;
@@ -24,15 +23,15 @@ class Setup
      */
     public function __construct(?string $environment, bool $updateCustomConfig)
     {
-        $this->configIni = Config::init($updateCustomConfig, $environment);
+        $this->configIni = Config::init($environment, $updateCustomConfig);
         $loggerLevel = isset($this->configIni['loggerLevel']) ? strtoupper($this->configIni['loggerLevel']) : 'EMERGENCY';
         Log::open($loggerLevel);
         Log::out("Setup::init() - logger has been setup");
+        Log::out("Setup::init() - configIni: " . print_r($this->configIni, true));
 
         try {
-            $this->dbInfo = new DbInfo(Config::CUSTOM_CONFIG_FILE, $environment, CONFIG_DB_PREFIX);
-            $this->pdoDb = new PdoDb($this->dbInfo);
-            $this->pdoDbAdmin = new PdoDb($this->dbInfo);
+            $this->pdoDb = new PdoDb($this->configIni);
+            $this->pdoDbAdmin = new PdoDb($this->configIni);
         } catch (PdoDbException $pde) {
             if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
                 echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
@@ -67,14 +66,9 @@ class Setup
 
     }
 
-    public function getConfig(): array
+    public function getConfigIni(): array
     {
         return $this->configIni;
-    }
-
-    public function getDbInfo(): DbInfo
-    {
-        return $this->dbInfo;
     }
 
     public function getPdoDb(): PdoDb

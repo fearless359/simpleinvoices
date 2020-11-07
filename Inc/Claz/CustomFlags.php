@@ -177,6 +177,8 @@ class CustomFlags
      */
     public static function updateCustomFlags(string $associatedTable, int $flgId, string $fieldLabel, $enabled, bool $clearFlags, string $fieldHelp): bool
     {
+        global $config;
+
         if (is_bool($enabled)) {
             $enabled = $enabled ? ENABLED : DISABLED;
         } elseif (is_string($enabled)) {
@@ -187,7 +189,7 @@ class CustomFlags
             // If the reset flags option was specified, do so now. Note that this is not considered critical.
             // Therefore failure to update will report in the error log for will not otherwise affect the update.
             $products = Product::getAll(true);
-            $requests = new Requests();
+            $requests = new Requests($config);
             if ($clearFlags == ENABLED) {
                 foreach ($products as $product) {
                     if (substr($product['custom_flags'], $flgId - 1, 1) == ENABLED) {

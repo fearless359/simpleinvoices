@@ -32,14 +32,13 @@ class UtilTest extends TestCase
     protected static string $parentDir;
 
     public static function setUpBeforeClass() {
-        global $apiRequest, $config, $dbInfo;
+        global $apiRequest, $config;
 
         parent::setUpBeforeClass();
 
         $apiRequest = false;
         $setup = new Setup(CONFIG_SECTION, false);
-        $config = $setup->getConfig();
-        $dbInfo = $setup->getDbInfo();
+        $config = $setup->getConfigIni();
 
         $parts = explode('\\', dirname(__FILE__, 4));
         $ndx = count($parts) - 1;

@@ -52,22 +52,25 @@ class PdoDb
      * Establish the PDO connector to the database.
      * Note that the global values, <b>$host</b>, <b>$database</b>, <b>$admin</b> and <b>$password</b>
      * must be set prior to instantiating this class.
-     * @param DbInfo $dbInfo Object with database access information.
-     * @param bool $debug Set to <b>true</b> to have the debug information
-     *        written to the <i>error.log</i>.
+     * @param array $config
      * @throws PdoDbException if a database error occurs.
      */
-    public function __construct(DbInfo $dbInfo, bool $debug = false)
+    public function __construct(array $config)
     {
         $this->clearAll();
 
-        $this->tableSchema = $dbInfo->getDbname();
-        $this->debug = $debug;
+        $this->tableSchema = $config['databaseDbname'];
+        $this->debug = false;
         $this->transaction = false;
-        $host = $dbInfo->getHost() == "localhost" ? "127.0.0.1" : $dbInfo->getHost();
-        $dsn = "mysql:dbname={$dbInfo->getDbname()};host=$host;port={$dbInfo->getPort()}";
-        $username = $dbInfo->getUsername();
-        $password = $dbInfo->getPassword();
+        if ($config['databaseHost'] == "localhost") {
+            $host = "127.0.0.1";
+        } else {
+            $host = $config['databaseHost'];
+        }
+
+        $dsn = "mysql:dbname={$this->tableSchema};host={$host};port={$config['databasePort']}";
+        $username = $config['databaseUsername'];
+        $password = $config['databasePassword'];
         try {
             // Used for user requests.
             $this->pdoDb = new PDO($dsn, $username, $password);
@@ -78,7 +81,7 @@ class PdoDb
         } catch (PDOException $exp) {
             $str = "PdoDb - construct error: " . $exp->getMessage();
             error_log($str);
-            error_log("dbInfo - " . print_r($dbInfo, true));
+            error_log("config - " . print_r($config, true));
             error_log(print_r($exp, true));
             throw new PdoDbException($str);
         }

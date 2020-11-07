@@ -222,13 +222,15 @@ class Expense
      */
     public static function expenseItemTax(int $expenseId, array $lineItemTaxId, float $unitPrice, float $quantity, string $action = ""): bool
     {
+        global $config;
+
         if (empty($lineItemTaxId)) {
             return false;
         }
 
         // if editing invoice delete all tax info then insert updated info.
         try {
-            $requests = new Requests();
+            $requests = new Requests($config);
             if ($action == "update") {
                 $request = new Request("DELETE", "expense_item_tax");
                 $request->addSimpleWhere("expense_id", $expenseId);

@@ -15,6 +15,13 @@
     <ul>
         <li>2020-11-04 - <b>2020.0.05</b>
             <ul>
+                <li>Remove duplicate config.ini parsing logic to allow .ini file
+                    values to be enclosed within double quotes so special characters
+                    can be used.</li>
+            </ul>
+        </li>
+        <li>2020-11-04 - <b>2020.0.05</b>
+            <ul>
                 <li>Update formatting of Log output.</li>
                 <li>Get shell scripts in lang directory working.</li>
             </ul>

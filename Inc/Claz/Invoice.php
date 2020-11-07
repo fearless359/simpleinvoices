@@ -934,8 +934,10 @@ class Invoice
     public static function chgInvoiceItemTax(int $invoiceItemId, ?array $lineItemTaxIds, float $unitPrice,
                                              float $quantity, bool $update): void
     {
+        global $config;
+
         try {
-            $requests = new Requests();
+            $requests = new Requests($config);
             if ($update) {
                 $request = new Request("DELETE", "invoice_item_tax");
                 $request->addSimpleWhere("invoice_item_id", $invoiceItemId);

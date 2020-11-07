@@ -22,18 +22,24 @@ class Config
 
     /**
      * Make sure we have a custom.config.ini file that is consistent with the config.ini file.
-     * @param bool $updateCustomConfig
      * @param string $section Typically the constant CONFIG_SECTION is passed.
+     * @param bool $updateCustomConfig
+     * @param string|null $confiFle Optional to override default use of custom.config.ini file.
      * @return array
      * @throws Exception
      */
-    public static function init(bool $updateCustomConfig, string $section): array
+    public static function init(string $section, bool $updateCustomConfig, ?string $configFile = null): array
     {
+        // This parameter is used in the phpunit test.
+        if (!isset($configFile)) {
+            $configFile = self::CUSTOM_CONFIG_FILE;
+        }
+
         if ($updateCustomConfig) {
             self::makeCustomConfig();
             self::updateConfig();
         }
-        $config = parse_ini_file("./" . self::CUSTOM_CONFIG_FILE, true);
+        $config = parse_ini_file("./{$configFile}", true);
         self::$customConfig = $config[$section];
         return self::$customConfig;
     }

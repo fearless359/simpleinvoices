@@ -7,7 +7,6 @@ namespace Inc\Claz;
  */
 class BackupDb {
     private string $output;
-    private PdoDb $pdoDb;
 
     /**
      * BackupDb constructor.
@@ -16,8 +15,6 @@ class BackupDb {
     public function __construct()
     {
         $this->output = "";
-
-        $this->pdoDb = new PdoDb(new DbInfo(Config::CUSTOM_CONFIG_FILE, CONFIG_SECTION, CONFIG_DB_PREFIX));
     }
 
     /**
@@ -26,8 +23,10 @@ class BackupDb {
      */
     public function startBackup(string $filename): void
     {
+        global $pdoDb;
+
         $fileHandle = fopen($filename, "w");
-        $rows = $this->pdoDb->query("SHOW TABLES");
+        $rows = $pdoDb->query("SHOW TABLES");
         foreach ($rows as $row) {
             $this->showCreate($row[0], $fileHandle);
         }
@@ -41,12 +40,14 @@ class BackupDb {
      */
     private function showCreate(string $tableName, $fileHandle): void
     {
+        global $LANG, $pdoDb;
+
         $query = "SHOW CREATE TABLE `$tableName`";
-        $row = $this->pdoDb->query($query);
+        $row = $pdoDb->query($query);
         fwrite($fileHandle, $row[0][1] . ";\n");
         $insert = $this->retrieveData($tableName);
         fwrite($fileHandle, $insert);
-        $this->output .= "<tr><td>Table: $tableName backed up successfully</td></tr>";
+        $this->output .= "<tr><td>{$LANG['tableUc']}: $tableName {$LANG['backedUpSuccessfully']}</td></tr>";
     }
 
     /**
@@ -56,8 +57,10 @@ class BackupDb {
      */
     private function retrieveData(string $tableName): string
     {
+        global $pdoDb;
+
         $query = "SHOW COLUMNS FROM `{$tableName}`";
-        $rows = $this->pdoDb->query($query);
+        $rows = $pdoDb->query($query);
         $idx = 0;
         $columns = [];
         foreach($rows as $row) {
@@ -65,7 +68,7 @@ class BackupDb {
         }
         $colCnt = count($columns);
         $query = "";
-        $rows = $this->pdoDb->request("SELECT", $tableName);
+        $rows = $pdoDb->request("SELECT", $tableName);
         foreach($rows as $row) {
             $query .= "INSERT INTO `$tableName` VALUES(";
             for ($idx = 0; $idx < $colCnt; $idx++) {
