@@ -12,7 +12,7 @@ class EmailTest extends TestCase
 {
     protected Email $email;
     
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->email = new Email();
@@ -114,7 +114,7 @@ class EmailTest extends TestCase
             self::assertTrue(false, "testSetGetFormat setFormat for cron_invoice throws exception {$exp->getMessage()}");
         }
 
-        self::expectExceptionMessage("Invalid format. Must be 'invoice', 'statement', 'cron' or 'cron_invoice'");
+        self::expectException(Exception::class);
         $this->email->setFormat("");
     }
 

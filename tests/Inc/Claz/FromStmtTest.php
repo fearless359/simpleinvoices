@@ -20,9 +20,10 @@ if (!defined('TB_PREFIX')) {
  */
 class FromStmtTest extends TestCase
 {
-    protected $preserveGlobalState = FALSE;
-    protected $runTestInSeparateProcess = TRUE;
-
+    /**
+     * @runTestsInSeparateProcesses
+     * @preserveGlobalState  disabled
+     */
     public function testBuild()
     {
         $fr = new FromStmt();

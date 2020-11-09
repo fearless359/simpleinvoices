@@ -173,17 +173,17 @@
     <!-- SECTION:setting -->
     <div id="setting" style="float:right;">
         <ul class="subnav">
-            <!-- SECTION:custom_flags -->
-            <li><a {if isset($pageActive) && $pageActive == "custom_flags"}class="active" {/if}href="index.php?module=custom_flags&amp;view=manage">{$LANG.customFlagsUc}</a></li>
-            {if isset($subPageActive) && $subPageActive == "custom_flags_view"}
-                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-            {if isset($subPageActive) && $subPageActive == "custom_flags_edit"}
-                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:custom_fields -->
             <li><a {if isset($pageActive) && $pageActive== "custom_field"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.customFieldsUc}</a></li>
             {if isset($subPageActive) && $subPageActive == "custom_fields_view"}
                 <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
             {if isset($subPageActive) && $subPageActive == "custom_fields_edit"}
+                <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+            <!-- SECTION:custom_flags -->
+            <li><a {if isset($pageActive) && $pageActive == "custom_flags"}class="active" {/if}href="index.php?module=custom_flags&amp;view=manage">{$LANG.customFlagsUc}</a></li>
+            {if isset($subPageActive) && $subPageActive == "custom_flags_view"}
+                <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+            {if isset($subPageActive) && $subPageActive == "custom_flags_edit"}
                 <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
             <!-- SECTION:customizeSettings -->
             <li><a {if isset($pageActive) && $pageActive== "setting"}class="active" {/if}href="index.php?module=options&amp;view=index">{$LANG.customizeSettings}</a></li>

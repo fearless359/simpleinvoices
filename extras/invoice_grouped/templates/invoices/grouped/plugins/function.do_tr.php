@@ -2,7 +2,7 @@
 
 use Inc\Claz\Util;
 
-function smartyFunctionsDoTr($params, &$smarty)
+function smarty_function_do_tr($params, &$smarty)
 {
     if ($params['number'] == 2) {
         $newTr = "</tr><tr class='" . Util::htmlSafe($params['class']) . "'>";

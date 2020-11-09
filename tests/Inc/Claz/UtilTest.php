@@ -1,8 +1,10 @@
-<?php
+<?php /** @noinspection PhpMethodMayBeStaticInspection */
 
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
+
+include_once 'vendor/autoload.php';
 
 /**
  * Class UtilTest
@@ -31,7 +33,8 @@ class UtilTest extends TestCase
 
     protected static string $parentDir;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void
+    {
         global $apiRequest, $config;
 
         parent::setUpBeforeClass();
@@ -52,7 +55,7 @@ class UtilTest extends TestCase
         //******* template settings for custom/default_template directory
         self::$existingCustomDefaultTemplateFileName = 'file_exists';
         self::$existingCustomDefaultPath = 'custom/default_template/' . self::$existingCustomDefaultTemplateFileName . '.tpl';
-        if(!file_exists(self::$existingCustomDefaultPath)) {
+        if (!file_exists(self::$existingCustomDefaultPath)) {
             self::$customDefaultTemplatePathCreated = true;
             touch(self::$existingCustomDefaultPath);
         }
@@ -60,7 +63,7 @@ class UtilTest extends TestCase
         // Find a file that does not exist in custom/default_template directory and
         // make sure it does exist in templates/default directory.
         $idx = 0;
-        while(true) {
+        while (true) {
             self::$nonExistingCustomDefaultTemplateFileName = 'no_such_file_' . $idx++;
             self::$nonExistingCustomDefaultTemplatePath = 'custom/default_template/' . self::$nonExistingCustomDefaultTemplateFileName . '.tpl';
             if (!file_exists(self::$nonExistingCustomDefaultTemplatePath)) {
@@ -78,7 +81,7 @@ class UtilTest extends TestCase
         //******* modules settings for custom/modules directory
         self::$existingCustomModuleFileName = 'file_exists';
         self::$existingCustomModulePath = 'custom/modules/' . self::$existingCustomModuleFileName . '.php';
-        if(!file_exists(self::$existingCustomModulePath)) {
+        if (!file_exists(self::$existingCustomModulePath)) {
             self::$customModulePathCreated = true;
             touch(self::$existingCustomModulePath);
         }
@@ -86,7 +89,7 @@ class UtilTest extends TestCase
         // Find a file that does not exist in custom/default_template directory and
         // make sure it does exist in templates/default directory.
         $idx = 0;
-        while(true) {
+        while (true) {
             self::$nonExistingCustomModuleFileName = 'no_such_file_' . $idx++;
             self::$nonExistingCustomModulePath = 'custom/modules/' . self::$nonExistingCustomModuleFileName . '.php';
             if (!file_exists(self::$nonExistingCustomModulePath)) {
@@ -102,7 +105,7 @@ class UtilTest extends TestCase
 
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$customDefaultTemplatePathCreated) {
             unlink(self::$existingCustomDefaultPath);
@@ -135,10 +138,10 @@ class UtilTest extends TestCase
     {
         $array = [0 => 'Disabled', 1 => 'Enabled'];
         $actual = Util::dropDown($array, 0);
-        $expected =  "<select name='value'>\n" .
-                         "<option value='0' selected style='font-weight: bold''>Disabled</option>\n" .
-                         "<option value='1' '>Enabled</option>\n" .
-                     "</select>\n";
+        $expected = "<select name='value'>\n" .
+            "<option value='0' selected style='font-weight: bold''>Disabled</option>\n" .
+            "<option value='1' '>Enabled</option>\n" .
+            "</select>\n";
         self::assertEquals($expected, $actual);
     }
 
@@ -243,7 +246,7 @@ class UtilTest extends TestCase
         $actual = Util::currency("1234.5678");
         self::assertEquals("$1,234.57", $actual);
 
-        $actual = Util::currency("1234.5678","ru_RU", 'EUR');
+        $actual = Util::currency("1234.5678", "ru_RU", 'EUR');
         self::assertEquals("1 234,57 €", $actual);
     }
 
@@ -329,20 +332,20 @@ class UtilTest extends TestCase
     public function testUrlSafe()
     {
         $str = Util::urlSafe('$../(css)/validationEngine.$jquery.css');
-        self::assertEquals( "../css/validationEngine.jquery.css", $str);
+        self::assertEquals("../css/validationEngine.jquery.css", $str);
     }
 
-//    public function testOutHtml()
-//    {
-//        $actual = Util::outHtml("<b>Inline <del>context <div>No block allowed</div></del></b>");
-//        self::assertEquals("<b>Inline <del>context No block allowed</del></b>", $actual);
-//
-//        $actual = Util::outHtml("<b>Bold");
-//        self::assertEquals("<b>Bold</b>", $actual);
-//
-//        $actual = Util::outHtml("<!--suppress HtmlDeprecatedTag --><center>Centered</center>");
-//        self::assertEquals('<div style="text-align:center;">Centered</div>', $actual);
-//    }
+    //    public function testOutHtml()
+    //    {
+    //        $actual = Util::outHtml("<b>Inline <del>context <div>No block allowed</div></del></b>");
+    //        self::assertEquals("<b>Inline <del>context No block allowed</del></b>", $actual);
+    //
+    //        $actual = Util::outHtml("<b>Bold");
+    //        self::assertEquals("<b>Bold</b>", $actual);
+    //
+    //        $actual = Util::outHtml("<!--suppress HtmlDeprecatedTag --><center>Centered</center>");
+    //        self::assertEquals('<div style="text-align:center;">Centered</div>', $actual);
+    //    }
 
     public function testSqlDateWithTime()
     {

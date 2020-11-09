@@ -97,10 +97,7 @@ class DNSCheckValidation implements EmailValidation
      */
     protected function checkDns($host)
     {
-        $variant = INTL_IDNA_VARIANT_2003;
-        if (defined('INTL_IDNA_VARIANT_UTS46')) {
-            $variant = INTL_IDNA_VARIANT_UTS46;
-        }
+        $variant = INTL_IDNA_VARIANT_UTS46;
 
         $host = rtrim(idn_to_ascii($host, IDNA_DEFAULT, $variant), '.') . '.';
 
@@ -123,7 +120,7 @@ class DNSCheckValidation implements EmailValidation
 
 
         // No MX, A or AAAA DNS records
-        if (empty($dnsRecords) || !$dnsRecords) {
+        if (empty($dnsRecords)) {
             $this->error = new NoDNSRecord();
             return false;
         }

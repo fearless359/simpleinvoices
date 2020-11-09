@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @name CustInfoTest.php
  * @author Richard Rowley

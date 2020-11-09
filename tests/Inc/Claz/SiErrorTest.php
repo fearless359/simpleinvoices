@@ -16,13 +16,13 @@ use PHPUnit\Framework\TestCase;
  */
 class SiErrorTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         SiError::setReturnMessage(true);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         SiError::setReturnMessage(false);
         parent::tearDown();

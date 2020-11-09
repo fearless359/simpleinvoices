@@ -13,11 +13,15 @@
   </div>
   <div id="left">
     <ul>
-        <li>2020-11-04 - <b>2020.0.05</b>
+        <li>2020-11-09 - <b>2020.0.06</b>
             <ul>
                 <li>Remove duplicate config.ini parsing logic to allow .ini file
                     values to be enclosed within double quotes so special characters
                     can be used.</li>
+                <li>Update vendor libraries to current versions</li>
+                <li>Update phpunit tests</li>
+                <li>Fixed smarty_function_do_tr naming issue that caused product custom
+                    fields error in invoice templates.</li>
             </ul>
         </li>
         <li>2020-11-04 - <b>2020.0.05</b>

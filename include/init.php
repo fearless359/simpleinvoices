@@ -49,7 +49,7 @@ $path = pathinfo($_SERVER['REQUEST_URI']);
 
 // With the database built, a connection should be able to be made
 // if the configuration user, password, etc. are set correctly.
-$db = $databaseBuilt ? Db::getInstance() : null;
+$db = $databaseBuilt ? Db::getInstance($config) : null;
 
 $patchCount = 0;
 if ($databaseBuilt) {

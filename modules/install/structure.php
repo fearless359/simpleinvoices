@@ -2,13 +2,13 @@
 use Inc\Claz\Db;
 use Inc\Claz\Import;
 
-global $databaseBuilt;
+global $config, $databaseBuilt;
 
 $menu = false;
 
 // Check if a table that MUST exist in all versions, does exist.
 if (!$databaseBuilt) {
-    $db = Db::getInstance();
+    $db = Db::getInstance($config);
     $import = new Import();
     $import->file = "databases/mysql/structure.sql";
     $import->patternFind = ['si_', 'DOMAIN-ID', 'LOCALE', 'LANGUAGE'];

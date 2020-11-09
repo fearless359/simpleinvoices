@@ -3,7 +3,7 @@
  * @param array $params
  * @return string|void
  */
-function smartyFunctionsDoTr(array $params) {
+function smarty_function_do_tr(array $params) {
     $newTr = null;
     if ($params['number'] == 2) {
         $newTr = "</tr><tr class='$params[class]'>";

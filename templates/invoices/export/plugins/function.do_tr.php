@@ -7,7 +7,7 @@
  * @return string|void
  * @noinspection PhpUnusedParameterInspection
  */
-function smartyFunctionsDoTr(array $params, object &$smarty)
+function smarty_function_do_tr(array $params, object &$smarty)
 {
 	if ($params['number'] == 2 ) {
 		return "</tr><tr class='{$params['class']}'>";
