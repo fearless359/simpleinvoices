@@ -3,7 +3,7 @@
 use Inc\Claz\BackupDb;
 use Inc\Claz\PdoDbException;
 
-global $helpImagePath, $smarty, $LANG;
+global $helpImagePath, $pdoDb, $smarty, $LANG;
 
 $smarty->assign('pageActive', 'backup');
 $smarty->assign('activeTab', '#setting');
@@ -15,7 +15,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
     $filename = "tmp/database_backups/simple_invoices_backup_$today.sql"; // output file name
     try {
         $oBack = new BackupDb();
-        $oBack->startBackup($filename);
+        $oBack->startBackup($filename, $pdoDb, $LANG);
     } catch (PdoDbException $pde) {
         error_log("modules/options/backup_database.php - error: " . $pde->getMessage());
         $ok = false;

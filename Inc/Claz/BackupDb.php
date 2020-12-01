@@ -10,7 +10,6 @@ class BackupDb {
 
     /**
      * BackupDb constructor.
-     * @throws PdoDbException
      */
     public function __construct()
     {
@@ -19,16 +18,17 @@ class BackupDb {
 
     /**
      * @param string $filename
+     * @param PdoDb $pdoDb
+     * @param array $LANG
      * @throws PdoDbException
      */
-    public function startBackup(string $filename): void
+    public function startBackup(string $filename, PdoDb $pdoDb, array $LANG): void
     {
-        global $pdoDb;
-
+error_log("In startBackup");
         $fileHandle = fopen($filename, "w");
         $rows = $pdoDb->query("SHOW TABLES");
         foreach ($rows as $row) {
-            $this->showCreate($row[0], $fileHandle);
+            $this->showCreate($row[0], $fileHandle, $pdoDb, $LANG);
         }
         fclose($fileHandle);
     }
@@ -36,29 +36,28 @@ class BackupDb {
     /**
      * @param string $tableName
      * @param resource $fileHandle
+     * @param PdoDb $pdoDb;
+     * @param array $LANG
      * @throws PdoDbException
      */
-    private function showCreate(string $tableName, $fileHandle): void
+    private function showCreate(string $tableName, $fileHandle, PdoDb $pdoDb, array $LANG): void
     {
-        global $LANG, $pdoDb;
-
         $query = "SHOW CREATE TABLE `$tableName`";
         $row = $pdoDb->query($query);
         fwrite($fileHandle, $row[0][1] . ";\n");
-        $insert = $this->retrieveData($tableName);
+        $insert = $this->retrieveData($tableName, $pdoDb);
         fwrite($fileHandle, $insert);
         $this->output .= "<tr><td>{$LANG['tableUc']}: $tableName {$LANG['backedUpSuccessfully']}</td></tr>";
     }
 
     /**
      * @param string $tableName
+     * @param PdoDb $pdoDb
      * @return string
      * @throws PdoDbException
      */
-    private function retrieveData(string $tableName): string
+    private function retrieveData(string $tableName, PdoDb $pdoDb): string
     {
-        global $pdoDb;
-
         $query = "SHOW COLUMNS FROM `{$tableName}`";
         $rows = $pdoDb->query($query);
         $idx = 0;

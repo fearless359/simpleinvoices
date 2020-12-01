@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-12-01 - <b>2020.0.07</b>
+            <ul>
+                <li>Add updated nebraska invoice template and new cleverit template.</li>
+                <li>Add additional phpunit tests.</li>
+            </ul>
+        </li>
         <li>2020-11-09 - <b>2020.0.06</b>
             <ul>
                 <li>Remove duplicate config.ini parsing logic to allow .ini file

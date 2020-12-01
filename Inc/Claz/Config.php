@@ -24,7 +24,7 @@ class Config
      * Make sure we have a custom.config.ini file that is consistent with the config.ini file.
      * @param string $section Typically the constant CONFIG_SECTION is passed.
      * @param bool $updateCustomConfig
-     * @param string|null $confiFle Optional to override default use of custom.config.ini file.
+     * @param string|null $configFile
      * @return array
      * @throws Exception
      */

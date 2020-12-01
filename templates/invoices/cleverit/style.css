@@ -1,0 +1,340 @@
+/*  
+SimpleInvoices Template
+<http://www.simpleinvoices.org>
+
+name:       CleverIT
+type:       invoice
+author:     Cristian Sava
+date:       2020-11-18
+version:    1.2
+*/
+
+/* 
+- fixed header design when custom fields have no values
+- minor color changes
+*/
+
+/* reset */
+
+
+/* style sheet for "A4" printing */
+
+page[size="A4"] {
+	background: white;
+	width: 21cm;
+	height: 29.7cm;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 0.5cm;
+	box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+}
+
+@media print {
+	body,
+	page[size="A4"] {
+		margin: 0;
+	}
+}
+
+@media print {
+	html {
+		background: none;
+		padding: 0;
+	}
+	body {
+		box-shadow: none;
+		margin: 0;
+	}
+	span:empty {
+		display: none;
+	}
+	.add,
+	.cut {
+		display: none;
+	}
+}
+
+body {
+	margin: 0px;
+	background: #FFF;
+	font-family: Helvetica, san-serif;
+	font-size: 10pt;
+	line-height: 110%;
+	font-style: normal;
+	color: #444;
+	padding: 5px;
+}
+
+
+/* heading */
+
+h1 {
+	font-family: "Trebuchet MS", sans-serif;
+	text-transform: uppercase;
+	font-size: 1.4em;
+	font-weight: bold;
+	color: #786E69;
+	text-align: center;
+	margin: 32px 0px 32px 0px;
+}
+
+h2 {
+	font-family: "Trebuchet MS", sans-serif;
+	text-transform: uppercase;
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #786E69;
+	text-align: center;
+	margin: 28px 0px 28px 0px;
+}
+
+h3 {
+font-family: "Trebuchet MS", sans-serif;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #786E69;
+    text-align: left;
+    margin: 2px 0px 14px 0px;
+}
+
+h1 span {
+	position: relative;
+	padding-bottom: 5px;
+}
+
+h1 span:after {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	border-bottom: 2px solid;
+	border-color: #786E69;
+	content: ""
+}
+
+h2 span {
+	position: relative;
+	padding-bottom: 3px;
+}
+
+h2 span:after {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+
+.inv-heading {
+	font: bold 100% sans-serif;
+	letter-spacing: 0.6em;
+	text-transform: uppercase;
+	text-align: center;
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 1.6em;
+	border-bottom: 2px solid black;
+	margin: 0px;
+}
+
+
+/* header */
+
+header {
+	width: 100%;
+	/*margin: 0 auto;*/
+}
+
+header:after {
+	clear: both;
+	content: "";
+	display: table;
+	margin-bottom: 10px;
+}
+
+header .h1 {
+	border-bottom-style: solid;
+	border-color: #999;
+	font-size: 16px;
+	text-transform: uppercase;
+	padding-top: 75px;
+}
+
+header .h2 {
+	border: none;
+	border-width: 0 0 1px;
+	margin: 0 0 1em;
+	font: bold 150% sans-serif;
+	text-transform: uppercase;
+}
+
+header table td {
+	vertical-align: bottom;
+}
+
+header table {
+	font-size: 0.8em;
+}
+
+header table span {
+	font-weight: bold;
+	padding-left: 20px;
+}
+
+
+/* table */
+
+table {
+	font-size: 10px;
+	table-layout: fixed;
+	width: 100%;
+}
+
+table .left {
+	text-align: left;
+}
+
+table .right {
+	text-align: right;
+}
+
+table .center {
+	text-align: center;
+	vertical-align: middle;
+}
+
+table .clean {
+	border: none;
+}
+
+table .bleft {
+	border-left: 1px solid #dddddd;
+}
+
+table .bright {
+	border-right: 1px solid #dddddd;
+}
+
+table .bleft .lastCell {
+	border-right: none;
+}
+
+table .bdown {
+	border-bottom: 1px solid #dddddd;
+}
+
+table .btop {
+	border-top: 1px solid #dddddd;
+}
+
+table .bdown tr.bdown {
+	border: 1px solid #dddddd;
+}
+
+table .subtotal {
+	font-weight: bold;
+	text-align: center;
+	font-size: 1em;
+	line-height: 1.4em;
+}
+
+table .total {
+	font-weight: bold;
+	text-align: center;
+	font-size: 1.2em;
+	line-height: 1.4em;
+}
+
+table .left p {
+	font-size: 10px;
+}
+
+
+/* article */
+
+article table {
+	border-collapse: collapse;
+}
+
+article table,
+th,
+tr,
+td {
+	border: 1px solid #dddddd;
+}
+
+article table th {
+	background-color: #f3f3f3;
+}
+
+footer tr,
+td {
+	border: none;
+}
+
+footer a,
+img {
+	flex: 1;
+	/* additionally, equal width */
+	width: 140;
+	margin: 10px;
+}
+
+hr {
+	display: block;
+	border: 0;
+	border-bottom: 1px solid #dddddd;
+	margin: 1em 0;
+	padding: 0;
+}
+
+.payments {
+	padding-left: 6px;
+	border-left: 6px solid #ff9900;
+	margin-bottom: 30px;
+	font-size: 1.2em;
+}
+
+
+.emph {
+	text-transform: uppercase;
+	font-family: "Trebuchet MS", sans-serif;
+	color: #000;
+	background-color: #f3f3f3;
+	font-size: 1em;
+	border-bottom: 2px solid black;
+}
+.notices {
+	padding-left: 6px;
+	border-left: 6px solid #ff9900;
+	margin-bottom: 30px;
+    color: #381704;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 150%;
+}
+.thankyou {
+    color: #786e69;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-align: center;
+    padding-bottom: 3px;
+    display: block;
+}
+.bnotes {
+    color: #786e69;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-align: center;
+    padding-bottom: 3px;
+    display: block;
+}
+.bfooter {
+    color: #381704;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 150%;
+    padding: 0;
+    text-align: center;
+}
