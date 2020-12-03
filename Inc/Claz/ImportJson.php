@@ -8,21 +8,21 @@ namespace Inc\Claz;
 class ImportJson
 {
     private bool $debug;
-    private string $file;
+    private string $fileName;
     private array $find;
     private array $replace;
 
     /**
      * ImportJson constructor.
-     * @param string $file Json file to import.
+     * @param string $fileName Json file to import.
      * @param array $find list of fields to find for replacement.
      * @param array $replace list of value to replace corresponding field in $find list.
      * @param bool $debug true if debug info to display, false (default) if not.
      */
-    public function __construct(string $file, array $find, array $replace, bool $debug=false)
+    public function __construct(string $fileName, array $find, array $replace, bool $debug=false)
     {
         $this->debug = $debug;
-        $this->file = $file;
+        $this->fileName = $fileName;
         $this->find = $find;
         $this->replace = $replace;
     }
@@ -30,9 +30,9 @@ class ImportJson
     /**
      * @return bool|string Read data or false if failure.
      */
-    private function getFile()
+    private function getFileContents()
     {
-        return file_get_contents($this->file, true);
+        return file_get_contents($this->fileName, true);
     }
 
     /**
@@ -59,7 +59,7 @@ class ImportJson
      */
     public function collate()
     {
-        $json = $this->getFile();
+        $json = $this->getFileContents();
         $replace = $this->replace($json);
         $decode = $this->decode($replace);
         return $this->process($decode);
@@ -108,4 +108,25 @@ class ImportJson
 
         return $sql;
     }
+
+    public function getDebug(): bool
+    {
+        return $this->debug;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->fileName;
+    }
+
+    public function getFind(): array
+    {
+        return $this->find;
+    }
+
+    public function getReplace(): array
+    {
+        return $this->replace;
+    }
+
 }

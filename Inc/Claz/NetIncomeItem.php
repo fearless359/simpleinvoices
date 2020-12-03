@@ -30,4 +30,25 @@ class NetIncomeItem
             }
         }
     }
+
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
+
+    public function getCFlags(): array
+    {
+        return $this->cFlags;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getNonIncAmt(): float
+    {
+        return $this->nonIncAmt;
+    }
+
 }

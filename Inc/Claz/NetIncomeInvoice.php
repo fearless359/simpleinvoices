@@ -8,7 +8,7 @@ namespace Inc\Claz;
  */
 class NetIncomeInvoice
 {
-    public int $customerId;
+    public string $customerName;
     public string $date;
     public int $id;
     public array $items;
@@ -23,7 +23,7 @@ class NetIncomeInvoice
      * @param int $id
      * @param int $indexId
      * @param string $date
-     * @param string $customerId
+     * @param string $customerName
      */
     public function __construct(int $id, int $indexId, string $date, string $customerName)
     {
@@ -84,4 +84,50 @@ class NetIncomeInvoice
             $this->totalPeriodPayments = $this->totalPayments;
         }
     }
+
+    public function getCustomerName(): string
+    {
+        return $this->customerName;
+    }
+
+    public function getDate(): string
+    {
+        return $this->date;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function getIndexId(): int
+    {
+        return $this->indexId;
+    }
+
+    public function getPymts(): array
+    {
+        return $this->pymts;
+    }
+
+    public function getTotalAmount(): float
+    {
+        return $this->totalAmount;
+    }
+
+    public function getTotalPayments(): float
+    {
+        return $this->totalPayments;
+    }
+
+    public function getTotalPeriodPayments(): float
+    {
+        return $this->totalPeriodPayments;
+    }
+
 }

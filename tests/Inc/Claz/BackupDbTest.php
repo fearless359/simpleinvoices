@@ -10,7 +10,7 @@ namespace Inc\Claz;
 
 use Exception;
 use PHPUnit\Framework\Assert;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 include_once 'vendor/autoload.php';
 include_once 'config/define.php';
@@ -19,7 +19,7 @@ include_once 'config/define.php';
  * Class BackupDbTest
  * @package Inc\Claz
  */
-class BackupDbTest extends MockeryTestCase
+class BackupDbTest extends TestCase
 {
     public ?array $config;
 

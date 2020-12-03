@@ -28,4 +28,21 @@ class NetIncomePayment
             }
         }
     }
+
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
+
+    public function getCflags(): array
+    {
+        return $this->cflags;
+    }
+
+    public function getDate(): string
+    {
+        return $this->date;
+    }
+
+
 }

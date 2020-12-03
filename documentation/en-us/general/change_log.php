@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-12-03 - <b>2020.0.08</b>
+            <ul>
+                <li>Fix setting for system_defaults "delete" record to 0 rather than N.</li>
+                <li>Add additional phpunit tests.</li>
+            </ul>
+        </li>
         <li>2020-12-01 - <b>2020.0.07</b>
             <ul>
                 <li>Add updated nebraska invoice template and new cleverit template.</li>
