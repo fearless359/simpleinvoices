@@ -40,7 +40,7 @@ class UtilTest extends TestCase
         parent::setUpBeforeClass();
 
         $apiRequest = false;
-        $setup = new Setup(CONFIG_SECTION, false);
+        $setup = new Setup(CONFIG_SECTION, false, Config::CONFIG_FILE);
         $config = $setup->getConfigIni();
 
         $parts = explode('\\', dirname(__FILE__, 4));

@@ -6,6 +6,7 @@ custom.config.*
 *.log
 tmp/*
 .buildpath
+.phpunit.result.cache
 .project
 public/**
 .settings/**

@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-12-04 - <b>2020.0.09</b>
+            <ul>
+                <li>Fix phpunit tests to pass full run.</li>
+            </ul>
+        </li>
         <li>2020-12-03 - <b>2020.0.08</b>
             <ul>
                 <li>Fix setting for system_defaults "delete" record to 0 rather than N.</li>
