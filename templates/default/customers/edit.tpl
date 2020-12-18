@@ -232,7 +232,7 @@
                             <em>{$LANG.noCustomers}</em>
                         {else}
                             <select name="parent_customer_id" class="si_input" tabindex="168">
-                                <option value=''></option>
+                                <option value="0"></option>
                                 {foreach $parentCustomers as $pc}
                                     <option {if $pc.id == $customer.parent_customer_id}selected{/if} value="{if isset($pc.id)}{$pc.id|htmlSafe}{/if}">{$pc.name|htmlSafe}</option>
                                 {/foreach}

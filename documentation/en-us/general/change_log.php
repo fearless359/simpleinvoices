@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-12-17 - <b>2020.0.10</b>
+            <ul>
+                <li>Fix customer create template for parent id field default value.</li>
+                <li>Update libraries to current versions for datatables security issue.</li>
+            </ul>
+        </li>
         <li>2020-12-04 - <b>2020.0.09</b>
             <ul>
                 <li>Fix phpunit tests to pass full run.</li>

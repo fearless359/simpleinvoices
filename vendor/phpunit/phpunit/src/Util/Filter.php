@@ -15,7 +15,6 @@ use function in_array;
 use function is_file;
 use function realpath;
 use function sprintf;
-use function strpos;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
 use Throwable;
@@ -57,7 +56,7 @@ final class Filter
             );
         }
 
-        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
+        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : null;
         $excludeList = new ExcludeList;
 
         foreach ($eTrace as $frame) {
@@ -73,29 +72,28 @@ final class Filter
         return $filteredStacktrace;
     }
 
-    /**
-     * @param false|string $prefix
-     */
-    private static function shouldPrintFrame(array $frame, $prefix, ExcludeList $excludeList): bool
+    private static function shouldPrintFrame(array $frame, ?string $prefix, ExcludeList $excludeList): bool
     {
         if (!isset($frame['file'])) {
             return false;
         }
 
-        $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || strpos($file, $prefix) !== 0;
-
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
+        $script = '';
+
         if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
             $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
-        } else {
-            $script = '';
         }
 
-        return is_file($file) &&
+        $file = $frame['file'];
+
+        if ($file === $script) {
+            return false;
+        }
+
+        return $prefix === null &&
                self::fileIsExcluded($file, $excludeList) &&
-               $fileIsNotPrefixed &&
-               $file !== $script;
+               is_file($file);
     }
 
     private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool
