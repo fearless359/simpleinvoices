@@ -17,7 +17,7 @@
         <th class="details_screen">{$LANG.amountUc}: </th>
         <td>{$payment.ac_amount|utilNumber}</td>
         <th class="details_screen">{$LANG.dateUc}: </th>
-        <td>{$payment.date|htmlSafe}</td>
+        <td>{$payment.ac_date|date_format:"%Y-%m-%d"}</td>
       </tr>
       <tr>
         <th class="details_screen">{$LANG.billerUc}: </th>

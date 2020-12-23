@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2020-12-23 - <b>2020.0.11</b>
+            <ul>
+                <li>Standardize date display format for yyyy-mm-dd in payment & expense view
+                    and invoice quick view screens.</li>
+            </ul>
+        </li>
         <li>2020-12-17 - <b>2020.0.10</b>
             <ul>
                 <li>Fix customer create template for parent id field default value.</li>

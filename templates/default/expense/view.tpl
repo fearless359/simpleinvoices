@@ -24,7 +24,7 @@
             </tr>
             <tr>
                 <th class="details_screen">{$LANG.dateUc}:</th>
-                <td>{$expense.date|utilDate}</td>
+                <td>{$expense.date|htmlSafe}</td>
             </tr>
             <tr>
                 <th class="details_screen">{$LANG.billerUc}:</th>

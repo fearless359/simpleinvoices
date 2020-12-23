@@ -5,7 +5,7 @@
         <td>{$invoice.index_id|htmlSafe}</td>
         <td></td>
         <th>{$preference.pref_inv_wording} {$LANG.dateUc}:</th>
-        <td colspan="5">{$invoice.display_date|htmlSafe}</td>
+        <td colspan="5">{$invoice.date|htmlSafe}</td>
     </tr>
     {$customFields.1}
     {$customFields.2}
