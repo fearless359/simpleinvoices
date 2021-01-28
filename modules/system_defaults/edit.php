@@ -22,7 +22,7 @@ Util::directAccessAllowed();
  * @param object $bVal
  * @return int 1 if $aVal is greater than $bVal; otherwise -1.
  */
-function compareNameIndex($aVal, $bVal)
+function compareNameIndex(object $aVal, object $bVal): int
 {
     $aResult = $aVal->name . "";
     $bResult = $bVal->name . "";
@@ -58,7 +58,7 @@ switch ($getVal) {
 
     case "company_logo":
         $default     = $getVal;
-        $description = "{$LANG[$default]}";
+        $description = "{$LANG[Util::camelCase($default)]}";
         $attribute   = Util::htmlSafe($defaults[$default]);
         $escaped = Util::htmlSafe($defaults['template']);
         $fileList = glob('templates/invoices/logos/*');
@@ -234,7 +234,7 @@ switch ($getVal) {
 
     case 'password_min_length':
         $default     = $getVal;
-        $description = "{$LANG[$default]}";
+        $description = "{$LANG[Util::camelCase($default)]}";
         $attribute   = Util::htmlSafe($defaults[$default]);
         $value       = "<input type='text' size='2' name='value' value='$attribute' required min='6' max='16' />\n";
         $found       = true;
@@ -245,7 +245,7 @@ switch ($getVal) {
     case 'password_special':
     case 'password_upper':
         $default     = $getVal;
-        $description = "{$LANG[$default]}";
+        $description = "{$LANG[Util::camelCase($default)]}";
         $array = [
             0 => $LANG['disabled'],
             1 => $LANG['enabled']
@@ -300,7 +300,7 @@ switch ($getVal) {
         // The $description, $default, $value fields are required to set up the generic
         // edit template for this extension value.
         $default     = $getVal;
-        $description = "{$LANG[$default]}";
+        $description = "{$LANG[Util::camelCase($default)]}";
         $attribute   = Util::htmlSafe($defaults[$default]);
         $value       = "<input type='text' size='4' name='value' value='{$attribute}' min='15' max='999' />\n";
         $found       = true;

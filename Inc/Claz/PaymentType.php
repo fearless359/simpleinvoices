@@ -138,7 +138,11 @@ class PaymentType
             error_log("PaymentType::getDefaultPaymentType() - Error: " . $pde->getMessage());
         }
 
-        return empty($rows) ? '' : $rows[0]['pt_description'];
+        if (empty($rows)) {
+            return '';
+        }
+
+        return empty($rows[0]['pt_description']) ? '' : $rows[0]['pt_description'];
     }
 
     /**

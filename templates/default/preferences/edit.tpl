@@ -197,16 +197,46 @@
                     </a>
                 </th>
                 <td class="details_screen">
-                    {if !isset($preferences) }
-                        <p><em>{$LANG.noPreferences}</em></p>
-                    {else}
-                        <select name="index_group" class="si_input" tabindex="150">
-                            {foreach $preferences as $p}
-                                <option {if $p.pref_id == $preference.index_group} selected {/if} value="{$p.pref_id|htmlSafe}">{$p.pref_description|htmlSafe} ({$p.pref_id|htmlSafe})</option>
-                            {/foreach}
-                        </select>
-                    {/if}
+                    <select name="index_group" class="si_input" id="groupId" tabindex="150" onchange="checkIndexGroup()">
+                        {if $useThisPref}
+                            <option value="0">{$LANG.useThisPref}</option>
+                        {/if}
+                        {foreach $indexInfo as $ii}
+                            <option {if $ii.pref_id == $preference.index_group} selected {/if}
+                                    value="{$ii.pref_id|htmlSafe}">{$ii.pref_description|htmlSafe}
+                            </option>
+                        {/foreach}
+                    </select>
+                    <script>
+                        function checkIndexGroup() {
+                            let nextIndexIdLabelElem = document.getElementById('nextIndexIdLabel'),
+                                nextIndexIdElem = document.getElementById('nextIndexId'),
+                                startingIndexIdLabelElem = document.getElementById('startingIndexIdLabel'),
+                                startingIndexIdElem = document.getElementById('startingIndexId');
+                            if (document.getElementById('groupId').value === "0") {
+                                nextIndexIdLabelElem.style.display = "none";
+                                nextIndexIdElem.style.display = "none";
+                                startingIndexIdLabelElem.style.display = "inline";
+                                startingIndexIdElem.style.display = "inline";
+                            } else {
+                                nextIndexIdLabelElem.style.display = "inline";
+                                nextIndexIdElem.style.display = "inline";
+                                startingIndexIdLabelElem.style.display = "none";
+                                startingIndexIdElem.style.display = "none";
+                            }
+                        }
+                    </script>
+                    &nbsp;&nbsp;
+                    <label for="startingIndexId" class="bold;color:#777;" id="startingIndexIdLabel" style="display:none">{$LANG.startingNumber}:
+                        <a class="cluetip" href="#" title="{$LANG.startingNumber}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpStartingNumber">
+                            <img src="{$helpImagePath}help-small.png" alt=""/>
+                        </a>
+                    </label>
+                    <input type="text" class="si_input" name="startingIndexId" id="startingIndexId" tabindex="155" value="{$startingId}" style="display:none;">
 
+                    <span class="bold;color:#777;" id="nextIndexIdLabel" style="display:inline">{$LANG.nextNumber}: </span>
+                    <span id="nextIndexId" style="display:inline">{$nextId}</span>
                 </td>
             </tr>
             <tr>

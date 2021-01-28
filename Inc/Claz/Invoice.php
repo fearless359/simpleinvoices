@@ -123,7 +123,7 @@ class Invoice
 
         try {
             $pdoDb->setHavings(Invoice::buildHavings("money_owed"));
-            $rows = Invoice::getAll("id", "desc");
+            $rows = Invoice::getAll("id");
 
             $invoiceOwing = [];
             foreach ($rows as $row) {
@@ -210,6 +210,7 @@ class Invoice
                 'index_id' => $row['index_id'],
                 'biller' => $row['biller'],
                 'customer' => $row['customer'],
+                'preference' => $row['preference'],
                 'date' => $row['date'],
                 'total' => $row['total'],
                 'owing' => isset($row['status']) ? $row['owing'] : '',
@@ -254,12 +255,15 @@ class Invoice
             $pdoDb->addSimpleWhere("iv.domain_id", DomainId::get());
 
             if (empty($sort) || !in_array($sort, ['index_id', 'b.name', 'c.name', 'date', 'total', 'owing', 'aging'])) {
-                $sort = "index_id";
+                $orderBy = new OrderBy("date", "D");
+                $orderBy->addField("index_id", "D");
+                $pdoDb->setOrderBy($orderBy);
+            } else {
+                if (empty($dir)) {
+                    $dir = "DESC";
+                }
+                $pdoDb->setOrderBy([$sort, $dir]);
             }
-            if (empty($dir)) {
-                $dir = "DESC";
-            }
-            $pdoDb->setOrderBy([$sort, $dir]);
 
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.gross_total,0)", "gross"));
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.total,0)", "total"));
@@ -1328,17 +1332,19 @@ class Invoice
     }
 
     /**
-     * Retrieve maximum invoice number assigned.
+     * Retrieve maximum invoice number assigned for a specified preference ID.
+     * @param int $preferenceId
      * @return int Maximum invoice number assigned.
      * @throws PdoDbException
      */
-    public static function maxIndexId(): int
+    public static function maxIndexIdForPreference(int $preferenceId): int
     {
         global $pdoDb;
 
         try {
-            $pdoDb->addToFunctions(new FunctionStmt("MAX", "index_id", "maxIndexId"));
+            $pdoDb->addToFunctions(new FunctionStmt("COALESCE", "MAX(index_id),0", "maxIndexId"));
 
+            $pdoDb->addSimpleWhere('preference_id', $preferenceId, 'AND');
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
 
             $rows = $pdoDb->request("SELECT", "invoices");

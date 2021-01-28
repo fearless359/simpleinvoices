@@ -93,7 +93,7 @@ class Preferences
 
     /**
      * Get active preferences records for the current domain.
-     * @return array Rows retrieved. Test for "=== false" to check for failure.
+     * @return array Rows retrieved.
      */
     public static function getActivePreferences(): array
     {
@@ -134,6 +134,42 @@ class Preferences
         }
 
         return empty($rows) ? $rows : $rows[0];
+    }
+
+    /**
+     * Get preference records that have a numbering sequence defined in the si_index table.
+     * @param int|null $indexGroup If specified, limit selection to preferences of this index_group.
+     * @return array Rows retrieved.
+     */
+    public static function getPreferencesWithIndexDefined(?int $indexGroup = null): array
+    {
+        global $pdoDb;
+
+        $domainId = DomainId::get();
+
+        $rows = [];
+        try {
+            if (isset($indexGroup)) {
+                $pdoDb->addSimpleWhere('index_group', $indexGroup, 'AND');
+            }
+
+            $pdoDb->addSimpleWhere('i.node', 'invoice', 'AND');
+            $pdoDb->addSimpleWhere("i.domain_id", $domainId);
+
+            $jn = new Join('LEFT', 'preferences', 'p');
+            $jn->addSimpleItem('p.pref_id', new DbField('i.sub_node'), 'AND');
+            $jn->addSimpleItem('p.domain_id', new DbField('i.domain_id'));
+            $pdoDb->addToJoins($jn);
+
+            $pdoDb->setSelectList([new DbField('i.id', 'last_invoice_id'), 'p.pref_id', 'p.pref_description']);
+            $pdoDb->setOrderBy("p.pref_description");
+
+            $rows = $pdoDb->request("SELECT", "index", 'i');
+        } catch (PdoDbException $pde) {
+            error_log("Preferences::getPreferencesWithIndexDefined() - Error: " . $pde->getMessage());
+        }
+
+        return $rows;
     }
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+use Inc\Claz\Index;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
@@ -19,7 +20,11 @@ $preference = Preferences::getOne($_GET['id']);
 
 $smarty->assign('preference',$preference);
 $smarty->assign('defaults', SystemDefaults::loadValues());
-$smarty->assign('index_group', Preferences::getOne($preference['index_group']));
+
+$indexGroup = $preference['index_group'];
+$smarty->assign('indexGroup', Preferences::getOne($indexGroup));
+$smarty->assign('nextId', Index::next('invoice', $indexGroup));
+
 $smarty->assign('preferences', Preferences::getActivePreferences());
 $smarty->assign('localeList', Util::getLocaleList());
 

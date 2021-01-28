@@ -102,13 +102,13 @@ class Payment
         foreach ($rows as $row) {
             $action =
                 "<a class='index_table' title='{$LANG['view']} {$LANG['paymentUc']}' " .
-                "href='index.php?module=payments&amp;view=view&amp;id={$row['id']}'>" .
-                "<img src='images/view.png' alt='view' height='16' />" .
+                    "href='index.php?module=payments&amp;view=view&amp;id={$row['id']}'>" .
+                    "<img src='images/view.png' alt='view' height='16' />" .
                 "</a>" .
                 "&nbsp;&nbsp;" .
                 "<a class='index_table' title='{$LANG['printPreviewTooltip']} {$LANG['paymentUc']}# {$row['id']}' " .
-                "href='index.php?module=payments&amp;view=print&amp;id={$row['id']}'>" .
-                "<img src='images/printer.png' alt='print' height='16' />" .
+                    "href='index.php?module=payments&amp;view=print&amp;id={$row['id']}' target='_blank'>" .
+                    "<img src='images/printer.png' alt='print' height='16' />" .
                 "</a>";
 
             $invoiceId =

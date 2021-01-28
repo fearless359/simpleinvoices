@@ -142,7 +142,11 @@
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
                     </th>
-                    <td class="si_input">{$index_group.pref_description} ({$index_group.pref_id})</td>
+                    <td class="si_input">
+                        {$indexGroup.pref_description}&nbsp;&nbsp;
+                        (<span class="bold;color:#777">{$LANG.nextNumber}: </span>
+                        {$nextId})
+                    </td>
                 </tr>
                 <tr>
                     <th class="details_screen">{$LANG.setAging}:

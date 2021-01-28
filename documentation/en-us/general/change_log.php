@@ -13,6 +13,15 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-01-28 - <b>2020.0.12</b>
+            <ul>
+                <li>Fix default payment type empty test.</li>
+                <li>Add support to build si_index record for new si_preferences (aka Inv Prefs) records.</li>
+                <li>Fix issue of field names not displaying on system_defaults edit screens.</li>
+                <li>Alter order of invoices on the manage list screen to sort by index_id within date. This
+                    allows invoices in various numbering schemes to show up.</li>
+            </ul>
+        </li>
         <li>2020-12-23 - <b>2020.0.11</b>
             <ul>
                 <li>Standardize date display format for yyyy-mm-dd in payment & expense view

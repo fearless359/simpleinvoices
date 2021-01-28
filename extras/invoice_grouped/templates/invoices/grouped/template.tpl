@@ -10,12 +10,12 @@
     <div id="header"></div>
     <table class="center">
       <tr>
-        <th style="text-align:centered;" colspan="6">
+        <th style="text-align:center;" colspan="6">
           <span class="font1">{$biller.name|htmlSafe}</span>
         </th>
       </tr>
       <tr>
-        <th style="text-align:centered;" colspan="6">
+        <th style="text-align:center;" colspan="6">
           <span class="font1">{$preference.pref_inv_heading|htmlSafe}</span>
         </th>
       </tr>
@@ -39,7 +39,7 @@
         {/if}
       </tr>
       <tr>
-        <td colspan=4 valign="top" rowspan="4">{$invoice.note|outHtml}</td>
+        <td colspan=4 rowspan="4" style="vertical-align:top;">{$invoice.note|outHtml}</td>
         <td>Job #</td>
         <td>{$invoice.id|htmlSafe}</td>
       </tr>

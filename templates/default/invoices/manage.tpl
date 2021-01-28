@@ -55,7 +55,8 @@
                 <th>{$LANG.invoiceUc}#</th>
                 <th>{$LANG.billerUc}</th>
                 <th>{$LANG.customerUc}</th>
-                <th>{$LANG.toUc}</th>
+                <th>{$LANG.preferenceUc}</th>
+                <th>{$LANG.dateUc}</th>
                 <th>{$LANG.totalUc}</th>
                 <th>{$LANG.owingUc}</th>
                 <th>{$LANG.aging}</th>
@@ -92,8 +93,9 @@
                     { "data": "index_id" },
                     { "data": "biller" },
                     { "data": "customer" },
+                    { "data": "preference"},
                     { "data": "date" },
-                    {"data": "total",
+                    { "data": "total",
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
@@ -102,8 +104,7 @@
                             return formatter.format(data);
                         }
                     },
-                    {
-                        "data": "owing",
+                    { "data": "owing",
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
@@ -115,14 +116,11 @@
                     { "data": "aging" }
                 ],
                 "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],
-                "order": [
-                    [1, "desc"]
-                ],
                 "columnDefs": [
                     { "targets": 0, "width": "12%", "className": 'dt-body-center', "orderable": false },
-                    { "targets": [1,4,7], "className": 'dt-body-center' },
-                    { "targets": 4, "width": "10%" },
-                    { "targets": [5,6], "className": 'dt-body-right' }
+                    { "targets": [1,4,5,7], "className": 'dt-body-center' },
+                    { "targets": 5, "width": "10%" },
+                    { "targets": [6, 7], "className": 'dt-body-right' }
                 ],
                 "colReorder": true
             });

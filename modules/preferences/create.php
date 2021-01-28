@@ -13,7 +13,7 @@ Util::directAccessAllowed();
 if (!empty($_POST['p_description'])) {
 	include "modules/preferences/save.php";
 } else {
-    $smarty->assign('preferences', Preferences::getActivePreferences());
+    $smarty->assign('indexInfo', Preferences::getPreferencesWithIndexDefined());
     $smarty->assign('defaults', SystemDefaults::loadValues());
     $smarty->assign('localeList', Util::getLocaleList());
 

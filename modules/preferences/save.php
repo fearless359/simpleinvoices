@@ -1,12 +1,13 @@
 <?php
 
 use Inc\Claz\DomainId;
+use Inc\Claz\Index;
 use Inc\Claz\PdoDbException;
 
 global $LANG, $pdoDb, $smarty;
 
 // Deal with op and add some basic sanity checking
-$op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : NULL;
+$op = !empty( $_POST['op'] ) ? addslashes( $_POST['op'] ) : null;
 
 $includeOnlinePayment = '';
 if (isset($_POST['include_online_payment']) &&
@@ -42,23 +43,34 @@ if (  $op === 'create' ) {
             "pref_inv_payment_line2_value" => $_POST['p_inv_payment_line2_value'],
             "pref_enabled"                 => $_POST['pref_enabled'],
             "status"                       => $_POST['status'],
+            "language"                     => $_POST['language'],
             "locale"                       => $_POST['locale'],
-            "language"                     => $_POST['locale'],
             "index_group"                  => empty($_POST['index_group']) ? 0 : $_POST['index_group'],
             "set_aging"                    => $_POST['set_aging'],
             "include_online_payment"       => $includeOnlinePayment
         ]);
 
-        $id = $pdoDb->request("INSERT", "preferences");
-        if ($id == 0) {
+        $prefId = $pdoDb->request("INSERT", "preferences");
+        if ($prefId == 0) {
             error_log("preferences save.php insert_preference failed");
         } else {
             $displayBlock = "<div class='si_message_ok'>{$LANG['savePreferenceSuccess']}</div>";
-            // If index_group is empty, assign the pref_id assigned to it.
-            if (empty($_POST['index_group'])) {
-                $pdoDb->setFauxPost(["index_group" => $id]);
-                $pdoDb->addSimpleWhere('pref_id', $id);
+            // If index_group is empty, assign the pref_id assigned to it and create an index record for it.
+            if ($_POST['index_group'] == 0) {
+                $pdoDb->setFauxPost(["index_group" => $prefId]);
+                $pdoDb->addSimpleWhere('pref_id', $prefId);
                 $pdoDb->request("UPDATE", "preferences");
+
+                // The $nextIndexId will be the "last" value assigned. If no value specified,
+                // this will be zero. Otherwise it will one less than what the user specified
+                // as the starting ID.
+                if (empty($_POST['nextIndexId']) || $_POST['nextIndexId'] <= 0) {
+                    $nextIndexId = 0;
+                } else {
+                    $nextIndexId = $_POST['nextIndexId'] - 1;
+                }
+
+                Index::insert($nextIndexId, $prefId);
             }
         }
     } catch (PdoDbException $pde) {
@@ -69,6 +81,12 @@ if (  $op === 'create' ) {
 } elseif ($op === 'edit' ) {
     if (isset($_POST['save_preference'])) {
         try {
+            $prefId = $_GET['id'];
+            if ($_POST['index_group'] == 0) {
+                // Create a new index record for this preference. The in
+                Index::insert($_POST['startingIndexId'] - 1, $prefId);
+                $_POST['index_group'] = $prefId;
+            }
             $pdoDb->setFauxPost([
                 "pref_description"             => $_POST['pref_description'],
                 "pref_currency_sign"           => $_POST['pref_currency_sign'],
@@ -84,13 +102,13 @@ if (  $op === 'create' ) {
                 "pref_inv_payment_line2_value" => $_POST['pref_inv_payment_line2_value'],
                 "pref_enabled"                 => $_POST['pref_enabled'],
                 "status"                       => $_POST['status'],
-                "locale"                       => $_POST['locale'],
                 "language"                     => $_POST['language'],
+                "locale"                       => $_POST['locale'],
                 "index_group"                  => $_POST['index_group'],
                 "set_aging"                    => $_POST['set_aging'],
                 "include_online_payment"       => $includeOnlinePayment
             ]);
-            $pdoDb->addSimpleWhere("pref_id", $_GET['id']);
+            $pdoDb->addSimpleWhere("pref_id", $prefId);
             if ($pdoDb->request("UPDATE", "preferences") === false) {
                 error_log("preferences save.php edit_preference id[{$_GET['id']}] update failed");
             } else {

@@ -16,7 +16,7 @@
  *}
 <div class="si_toolbar si_toolbar_top">
     <a title="{$LANG.printPreviewTooltip} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
-       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlencode}&amp;format=print">
+       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlencode}&amp;format=print" target="_blank">
         <img src='images/printer.png' class='action' alt="{$LANG.printPreview}"/>&nbsp;{$LANG.printPreview}
     </a>
     {if $smarty.session.role_name != 'customer'}

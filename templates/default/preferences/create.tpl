@@ -190,17 +190,38 @@
                         </a>
                     </th>
                     <td>
-                        {if !isset($preferences) }
+                        {if !isset($indexInfo) }
                             <p class="si_input"><em>{$LANG.noPreferences}</em></p>
                         {else}
-                            <select name="index_group" class="si_input" tabindex="150">
-                                <option value="">{$LANG.useThisPref}</option>
-                                {foreach $preferences as $preference}
-                                    <option {if $preference.pref_id == $defaults.preference} selected {/if}
-                                            value="{$preference.pref_id|htmlSafe}">{$preference.pref_description|htmlSafe} ({$preference.pref_id|htmlSafe})
+                            <select name="index_group" class="si_input" id="groupId" tabindex="150" onchange="checkIndexGroup()">
+                                <option value="0">{$LANG.useThisPref}</option>
+                                {foreach $indexInfo as $ii}
+                                    <option {if $ii.pref_id == $defaults.preference} selected {/if}
+                                            value="{$ii.pref_id|htmlSafe}">{$ii.pref_description|htmlSafe}
                                     </option>
                                 {/foreach}
                             </select>
+                            <script>
+                                function checkIndexGroup() {
+                                    let nextIndexIdLabelElem = document.getElementById('nextIndexIdLabel'),
+                                        nextIndexIdElem = document.getElementById('nextIndexId');
+                                    if (document.getElementById('groupId').value === "0") {
+                                        nextIndexIdLabelElem.style.display = "inline";
+                                        nextIndexIdElem.style.display = "inline";
+                                    } else {
+                                        nextIndexIdLabelElem.style.display = "none";
+                                        nextIndexIdElem.style.display = "none";
+                                    }
+                                }
+                            </script>
+                            &nbsp;&nbsp;
+                            <label for="nextIndexId" class="bold" id="nextIndexIdLabel" style="display:none">{$LANG.startingNumber}:
+                                <a class="cluetip" href="#" title="{$LANG.startingNumber}" tabindex="-1"
+                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpStartingNumber">
+                                    <img src="{$helpImagePath}help-small.png" alt=""/>
+                                </a>
+                            </label>
+                            <input type="text" class="si_input" name="nextIndexId" id="nextIndexId" tabindex="155" style="display:none;">
                         {/if}
 
                     </td>
@@ -214,8 +235,23 @@
                     </th>
                     <td>
                         <select name="set_aging" class="si_input" tabindex="160">
-                            <option value="1">{$LANG.enabled}</option>
-                            <option value="0" selected>{$LANG.disabled}</option>
+                            <option value="{$smarty.const.DISABLED}" selected>{$LANG.disabled}</option>
+                            <option value="{$smarty.const.ENABLED}">{$LANG.enabled}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{$LANG.language}:
+                        <a class="cluetip" href="#" title="{$LANG.language}" tabindex="-1"
+                           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefLanguage">
+                            <img src="{$helpImagePath}help-small.png" alt=""/></a>
+                    </th>
+                    <td>
+                        <select name="language" class="si_input" tabindex="170">
+                            {foreach $localeList as $locale}
+                                {* There is no config default for language so set same default a local. *}
+                                <option value="{$locale|htmlSafe}" {if $locale == $config.localLocale}selected{/if}>{$locale|htmlSafe}</option>
+                            {/foreach}
                         </select>
                     </td>
                 </tr>
@@ -226,10 +262,9 @@
                             <img src="{$helpImagePath}help-small.png" alt=""/></a>
                     </th>
                     <td>
-                        <select name="locale" class="si_input" tabindex="170">
-                            {foreach $localeList as $locale => $value}
-                                <option {if $locale == $config.localLocale} selected {/if}
-                                        value="{if isset($locale)}{$locale|htmlSafe}{/if}">{$locale|htmlSafe}</option>
+                        <select name="locale" class="si_input" tabindex="175">
+                            {foreach $localeList as $locale}
+                                <option value="{$locale|htmlSafe}" {if $locale == $config.localLocale}selected{/if}>{$locale|htmlSafe}</option>
                             {/foreach}
                         </select>
                     </td>
@@ -243,8 +278,8 @@
                     </th>
                     <td>
                         <select name="pref_enabled" class="si_input" tabindex="180">
-                            <option value="1" selected>{$LANG.enabled}</option>
-                            <option value="0">{$LANG.disabled}</option>
+                            <option value="{$smarty.const.DISABLED}">{$LANG.disabled}</option>
+                            <option value="{$smarty.const.ENABLED}" selected>{$LANG.enabled}</option>
                         </select>
                     </td>
                 </tr>

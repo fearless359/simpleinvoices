@@ -54,6 +54,30 @@ class Index
     }
 
     /**
+     * Create a new si_index record.
+     * @param int $id Last assigned invoice index_id.
+     * @param int $subNode ID for the preference record of this index.
+     * @throws PdoDbException if insert fails
+     */
+    public static function insert(int $id, int $subNode) {
+        global $pdoDbAdmin;
+
+        try {
+            $pdoDbAdmin->setFauxPost([
+                "id"         => $id,
+                "node"       => "invoice",
+                "sub_node"   => $subNode,
+                "sub_node_2" => 0,
+                "domain_id"  => DomainId::get()
+            ]);
+            $pdoDbAdmin->request("INSERT", "index");
+        } catch(PdoDbException $pde) {
+            error_log("Index::insert() - Error: " . $pde->getMessage());
+            throw $pde;
+        }
+    }
+
+    /**
      * Get next value to be assigned (but don't assign it).
      * @param string $node Unique name of node to obtain value for (ex: "Invoice").
      * @param int $subNode
