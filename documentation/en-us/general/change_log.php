@@ -13,9 +13,12 @@
   </div>
   <div id="left">
     <ul>
-        <li>2020-08-06 - <b>2020.0.00</b>
+        <li>2021-02-11 - <b>2019.2.31</b>
             <ul>
-                <li>New master branch based on PHP 7.4 standard.</li>
+                <li>Fixed to handle empty tax_ids on new invoice creation.</li>
+                <li>Modified Email class setTo() method to accept only string input. Includes
+                    changed to Cron class getEmailSendAddresses() method to return a string
+                    instead of an array.</li>
             </ul>
         </li>
         <li>2020-08-05 - <b>2019.2.30</b>
