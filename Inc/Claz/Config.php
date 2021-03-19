@@ -39,7 +39,12 @@ class Config
             self::makeCustomConfig();
             self::updateConfig();
         }
+
         $config = parse_ini_file("./{$configFile}", true);
+        if ($config === false) {
+            SiError::out('generic', 'Config::init()', "Unable to parse ini file: {$configFile}");
+        }
+
         self::$customConfig = $config[$section];
         return self::$customConfig;
     }

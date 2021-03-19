@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-03-19 - <b>2020.0.13</b>
+            <ul>
+                <li>Check for error return from parse_ini_file while loading custom.config.php</li>
+            </ul>
+        </li>
         <li>2021-01-28 - <b>2020.0.12</b>
             <ul>
                 <li>Fix default payment type empty test.</li>
