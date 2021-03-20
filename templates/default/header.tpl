@@ -40,7 +40,7 @@
 
         <script src="node_modules/jquery/dist/jquery.js"></script>
         <script src="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-        <script src="node_modules/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="include/jquery/cluetip/jquery.cluetip.js"></script>
 
         <script src="include/jquery/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-en.js"></script>

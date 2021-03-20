@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-03-20 - <b>2020.0.14</b>
+            <ul>
+                <li>Update node libraries</li>
+            </ul>
+        </li>
         <li>2021-03-19 - <b>2020.0.13</b>
             <ul>
                 <li>Check for error return from parse_ini_file while loading custom.config.php</li>
