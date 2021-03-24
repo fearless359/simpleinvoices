@@ -9,6 +9,7 @@ tmp/*
 tmp/database_backups/*
 .buildpath
 .project
+.phpunit.result.cache
 public/**
 .settings/**
 library/HTMLPurifier/DefinitionCache/Serializer/HTML/*
