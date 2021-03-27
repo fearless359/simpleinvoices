@@ -148,5 +148,9 @@
             <img src="images/report_edit.png" alt=""/>
             {$LANG.edit}
         </a>
+
+        <a href="index.php?module=products&amp;view=manage" class="negative">
+            <img src="images/cross.png" alt=""/>{$LANG.cancel}
+        </a>
     </div>
 </form>

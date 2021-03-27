@@ -271,7 +271,7 @@
       {if $invoiceNumberOfTaxes > 0}
       <tr>
         <td colspan="2"></td>
-        <td colspan="3" class="si_right">{$LANG.subTotal}&nbsp;</td>
+        <td colspan="3" class="si_right">{$LANG.subtotalUc}&nbsp;</td>
         <td colspan="1" class=="si_right"
             {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
           {$preference.pref_currency_sign}{$invoice.gross|utilNumber|htmlSafe}

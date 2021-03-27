@@ -11,4 +11,4 @@ a:link, a:visited {color:darkblue;}
 a:hover {color:blue}
 h1,h2,h3 {color:black;margin:0;-webkit-margin-before:0;-webkit-margin-after:0;}
 h2 {margin-left:10px;font-size:1.3em;font-style:italic}
-dt.pre, dd.pre {font-family:"Courier New",courier;font-weight:bold;font-size:1.2em;color:black;}
+dt.pre, dd.pre {font-family:"Courier New", courier, sans-serif;font-weight:bold;font-size:1.2em;color:black;}

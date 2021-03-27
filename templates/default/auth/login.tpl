@@ -29,7 +29,7 @@
           </tr>
         </table>
         <div class="si_toolbar">
-          <button type="submit" value="login">Login</button>
+          <button type="submit" value="login">{$LANG.login}</button>
         </div>
       </div>
     </div>
@@ -43,11 +43,12 @@
 {literal}
 <script>
   $(document).ready(function(){
-    $('.si_box').hide();
-    $('.si_box').slideDown(500);
+    $('.si_box').hide()
+            .slideDown(500);
   });
   document.frmLogin.user.focus();
 </script>
 {/literal}
+{* Note that these tags have matches in header.tpl file *}
 </body>
 </html>
