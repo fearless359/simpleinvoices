@@ -225,7 +225,7 @@
                         </td>
                     </tr>
                     {$invoiceItem.html}
-                    <tr class="details si_hide">
+                    <tr class="details {if $defaults.invoice_description_open == $smarty.const.DISABLED}si_hide{/if}">
                         <td></td>
                         <td colspan="4">
                         <!--suppress HtmlFormInputWithoutLabel -->
@@ -241,11 +241,11 @@
             <div class="si_toolbar si_toolbar_inform">
                 <a href="#" class="add_line_item" data-description="{$LANG.descriptionUc}">
                     <img src="images/add.png" alt=""/>{$LANG.addNewRow}</a>
-                <a href='#' class="show_details" title="{$LANG.showDetails}">
+                <a href='#' class="show_details {if $defaults.invoice_description_open == $smarty.const.ENABLED}si_hide{/if}" title="{$LANG.showDetails}">
                     <img src="images/page_white_add.png" alt=""/>
                     {$LANG.showDetails}
                 </a>
-                <a href='#' class="hide_details si_hide" title="{$LANG.hideDetails}">
+                <a href='#' class="hide_details {if $defaults.invoice_description_open == $smarty.const.DISABLED}si_hide{/if}" title="{$LANG.hideDetails}">
                     <img src="images/page_white_delete.png" alt=""/>
                     {$LANG.hideDetails}
                 </a>

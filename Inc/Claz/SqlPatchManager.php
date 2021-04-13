@@ -539,6 +539,14 @@ class SqlPatchManager
         ];
         self::makePatch('322', $patch);
 
+        $patch = [
+            'name' => "Add invoice description open option",
+            'patch' => "INSERT INTO " . TB_PREFIX . "system_defaults (name ,value ,domain_id ,extension_id ) VALUES ('invoice_description_open', 0, $domainId, 1);",
+            'date' => "20210413",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('323', $patch);
+
         // @formatter:on
     }
 

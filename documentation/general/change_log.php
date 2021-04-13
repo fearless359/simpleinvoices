@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-04-13 - <b>2020.0.16</b>
+            <ul>
+                <li>Add system defaults option, &quot;Invoice Description Open&quot; for state when
+                    entering the new and edit invoice screens.</li>
+            </ul>
+        </li>
         <li>2021-03-26 - <b>2020.0.15</b>
             <ul>
                 <li>Remove all language specific directories under <strong>documentation</strong> leaving

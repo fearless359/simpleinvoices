@@ -22,27 +22,29 @@ foreach ($languages as $language) {
         break;
     }
 }
-$smarty->assign("defaultLanguage"         , $lang);
+$smarty->assign("defaultLanguage", $lang);
 
-$smarty->assign("defaults"                , SystemDefaults::loadValues());
-$smarty->assign("defaultDelete"           , SystemDefaults::getDelete());
-$smarty->assign("defaultExpense"          , SystemDefaults::getExpense());
-$smarty->assign("defaultInventory"        , SystemDefaults::getInventory());
-$smarty->assign("defaultLogging"          , SystemDefaults::getLogging());
-$smarty->assign("defaultPasswordLower"    , SystemDefaults::getPasswordLower());
-$smarty->assign("defaultPasswordMinLength", SystemDefaults::getPasswordMinLength());
-$smarty->assign("defaultPasswordNumber"   , SystemDefaults::getPasswordNumber());
-$smarty->assign("defaultPasswordSpecial"  , SystemDefaults::getPasswordSpecial());
-$smarty->assign("defaultPasswordUpper"    , SystemDefaults::getPasswordUpper());
-$smarty->assign("defaultProductAttributes", SystemDefaults::getProductAttributes());
-$smarty->assign("defaultProductGroups"    , SystemDefaults::getProductGroups());
-$smarty->assign("defaultSubCustomer"      , SystemDefaults::getSubCustomer());
+$smarty->assign("defaults"                     , SystemDefaults::loadValues());
+$smarty->assign("defaultDelete"                , SystemDefaults::getDelete());
+$smarty->assign("defaultExpense"               , SystemDefaults::getExpense());
+$smarty->assign("defaultInventory"             , SystemDefaults::getInventory());
+$smarty->assign("defaultInventory"             , SystemDefaults::getInventory());
+$smarty->assign("defaultInvoiceDescriptionOpen", SystemDefaults::getInvoiceDescriptionOpen());
+$smarty->assign("defaultLogging"               , SystemDefaults::getLogging());
+$smarty->assign("defaultPasswordLower"         , SystemDefaults::getPasswordLower());
+$smarty->assign("defaultPasswordMinLength"     , SystemDefaults::getPasswordMinLength());
+$smarty->assign("defaultPasswordNumber"        , SystemDefaults::getPasswordNumber());
+$smarty->assign("defaultPasswordSpecial"       , SystemDefaults::getPasswordSpecial());
+$smarty->assign("defaultPasswordUpper"         , SystemDefaults::getPasswordUpper());
+$smarty->assign("defaultProductAttributes"     , SystemDefaults::getProductAttributes());
+$smarty->assign("defaultProductGroups"         , SystemDefaults::getProductGroups());
+$smarty->assign("defaultSubCustomer"           , SystemDefaults::getSubCustomer());
 
-$smarty->assign("defaultBiller"           , Biller::getDefaultBiller());
-$smarty->assign("defaultCustomer"         , Customer::getDefaultCustomer());
-$smarty->assign("defaultPaymentType"      , PaymentType::getDefaultPaymentType());
-$smarty->assign("defaultPreference"       , Preferences::getDefaultPreference());
-$smarty->assign("defaultTax"              , Taxes::getDefaultTax());
+$smarty->assign("defaultBiller"     , Biller::getDefaultBiller());
+$smarty->assign("defaultCustomer"   , Customer::getDefaultCustomer());
+$smarty->assign("defaultPaymentType", PaymentType::getDefaultPaymentType());
+$smarty->assign("defaultPreference" , Preferences::getDefaultPreference());
+$smarty->assign("defaultTax"        , Taxes::getDefaultTax());
 
 $smarty->assign('pageActive', 'system_default');
 $smarty->assign('activeTab', '#setting');

@@ -196,6 +196,21 @@
         </tr>
 
         <tr>
+            <th class="details_screen">{$LANG.invoiceDescriptionOpen}:
+                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.invoiceDescriptionOpen} {$LANG.setting}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpInvoiceDescriptionOpen" tabindex="-1">
+                    <img src="{$helpImagePath}help-small.png" alt=""/>
+                </a>
+            </th>
+            <td>
+                <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=invoice_description_open' tabindex="135">
+                    <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                </a>
+            </td>
+            <td tabindex="-1">{if $defaultInvoiceDescriptionOpen == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</td>
+        </tr>
+
+        <tr>
             <th class="details_screen">{$LANG.language}:
                 <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.language} {$LANG.setting}"
                    rel="index.php?module=documentation&amp;view=view&amp;page=helpLanguage" tabindex="-1">

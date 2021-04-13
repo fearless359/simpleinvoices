@@ -24,7 +24,6 @@ class BackupDb {
      */
     public function startBackup(string $filename, PdoDb $pdoDb, array $LANG): void
     {
-error_log("In startBackup");
         $fileHandle = fopen($filename, "w");
         $rows = $pdoDb->query("SHOW TABLES");
         foreach ($rows as $row) {

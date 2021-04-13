@@ -70,12 +70,11 @@
                        value="{if isset($defaultInvoiceItems[$line].unit_price)}{$defaultInvoiceItems[$line].unit_price|utilNumber}{/if}"/>
             </td>
         </tr>
-        <tr class="details si_hide">
+        <tr class="details {if $defaults.invoice_description_open == $smarty.const.DISABLED}si_hide{/if}">
             <td></td>
             <td colspan="4">
                  <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" data-description="{$LANG.descriptionUc}" data-row-num="{$line|htmlSafe}"
                            rows="4" cols="60">{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlSafe}{/if}</textarea>
-                {* Note that the space immediatly prior to the closing </textarea> tag is required to allow the description to display. Why??? I don't know!!! *}
             </td>
         </tr>
         </tbody>
