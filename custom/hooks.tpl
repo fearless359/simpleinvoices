@@ -4,11 +4,10 @@
   locations in the default header.tpl, menu.tpl and footer.tpl files.
   
   Before you consider using hooks, make sure other options such as tpl file
-  content insertion be used before resorting to hooks (see Custom Flags
-  extension menu.tpl file or Past Due Report extension index.tpl file for
-  examples). The reason for this is that a hook can only be used once since
-  the Smarty {capture name="hook_name"}{/capture} function is in essence a
-  variable in which values to be inserted are saved. So if the same hook
+  content insertion be used before resorting to hooks. The reason for this
+  is that a hook can only be used once since the Smarty
+  {capture name="hook_name"}{/capture} function is in essence a variable
+  in which values to be inserted are saved. So if the same hook
   (capture name value) is defined multiple times then only the value of the
   last one set will be used.
   

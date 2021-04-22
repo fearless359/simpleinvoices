@@ -28,7 +28,6 @@ $smarty->assign("defaults"                     , SystemDefaults::loadValues());
 $smarty->assign("defaultDelete"                , SystemDefaults::getDelete());
 $smarty->assign("defaultExpense"               , SystemDefaults::getExpense());
 $smarty->assign("defaultInventory"             , SystemDefaults::getInventory());
-$smarty->assign("defaultInventory"             , SystemDefaults::getInventory());
 $smarty->assign("defaultInvoiceDescriptionOpen", SystemDefaults::getInvoiceDescriptionOpen());
 $smarty->assign("defaultLogging"               , SystemDefaults::getLogging());
 $smarty->assign("defaultPasswordLower"         , SystemDefaults::getPasswordLower());

@@ -122,6 +122,7 @@ class Preferences
 
         $rows = [];
         try {
+            $pdoDb->addSimpleWhere('name', 'preference', 'AND');
             $pdoDb->addSimpleWhere("s.domain_id", DomainId::get());
             $jn = new Join("LEFT", "preferences", "p");
             $jn->addSimpleItem("p.domain_id", new DbField("s.domain_id"), "AND");

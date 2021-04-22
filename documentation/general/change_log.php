@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-04-22 - <b>2020.0.17</b>
+            <ul>
+                <li>Fix si_system_defaults management screen to display the selected value.</li>
+            </ul>
+        </li>
         <li>2021-04-13 - <b>2020.0.16</b>
             <ul>
                 <li>Add system defaults option, &quot;Invoice Description Open&quot; for state when
