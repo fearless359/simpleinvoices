@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-04-22 - <b>2020.0.18</b>
+            <ul>
+                <li>Change the Customer::managerTableInfo() function to specify return type.</li>
+                <li>Change http references to https in lang.php files.</li>
+            </ul>
+        </li>
         <li>2021-04-22 - <b>2020.0.17</b>
             <ul>
                 <li>Fix si_system_defaults management screen to display the selected value.</li>
