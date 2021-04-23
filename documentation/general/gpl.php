@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>GNU General Public License v3.0 - GNU Project - Free Software Foundation (FSF)</title>
   <link rel="alternate" type="application/rdf+xml" href="http://www.gnu.org/licenses/gpl-3.0.rdf" />
-  <link rel="stylesheet" href="../../../include/jquery/css/main.css">
-  <link rel="stylesheet" href="../../../templates/default/css/info.css">
+  <link rel="stylesheet" href="../../include/jquery/css/main.css">
+  <link rel="stylesheet" href="../../templates/default/css/info.css">
 </head>
 <body>
   <a id="top"></a>

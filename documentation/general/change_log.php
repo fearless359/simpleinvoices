@@ -3,8 +3,8 @@
 <head>
   <title>SimpleInvoices - Changelog</title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="../../../include/jquery/css/main.css">
-  <link rel="stylesheet" href="../../../templates/default/css/info.css">
+  <link rel="stylesheet" href="../../include/jquery/css/main.css">
+  <link rel="stylesheet" href="../../templates/default/css/info.css">
 </head>
 <body>
   <h1 class="si_center">Change Log</h1>
@@ -13,6 +13,38 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-04-22 - <b>2020.0.18</b>
+            <ul>
+                <li>Change the Customer::managerTableInfo() function to specify return type.</li>
+                <li>Change http references to https in lang.php files.</li>
+            </ul>
+        </li>
+        <li>2021-04-22 - <b>2020.0.17</b>
+            <ul>
+                <li>Fix si_system_defaults management screen to display the selected value.</li>
+            </ul>
+        </li>
+        <li>2021-04-13 - <b>2020.0.16</b>
+            <ul>
+                <li>Add system defaults option, &quot;Invoice Description Open&quot; for state when
+                    entering the new and edit invoice screens.</li>
+            </ul>
+        </li>
+        <li>2021-03-26 - <b>2020.0.15</b>
+            <ul>
+                <li>Remove all language specific directories under <strong>documentation</strong> leaving
+                    only a <strong>general</strong> directory. The information in the deleted files exists
+                    in the topics in the <em>SimpleInvoices.group</em> forum.</li>
+                <li>Clean up non-HTML5 code in files in the <strong>extras</strong> directory and deleted
+                    the <strong>invoice_grouped</strong> example as out of date and example is actually
+                    incorporated as the Product Groups options in SI. Also standardized name of
+                    <strong>default_templates</strong> directory to <strong>defaultTemplates</strong>.</li>
+                <li>Change to "subTotal" and "login" langauge items to be single words, <strong>Subtotal</strong>
+                    and <strong>Login</strong>.</li>
+                <li>Added generic font-family name to css usages.</li>
+                <li>Added <strong>Cancel</strong> buttons to <em>products</em> and <em>tax_rates</em> view screens.</li>
+            </ul>
+        </li>
         <li>2021-03-20 - <b>2020.0.14</b>
             <ul>
                 <li>Update node libraries</li>

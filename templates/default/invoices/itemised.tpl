@@ -31,11 +31,13 @@
                     <img src="images/add.png" alt=""/>
                     {$LANG.addNewRow}
                 </a>
-                <a href='#' class="show_details" title="{$LANG.showDetails}">
+                <a href='#' class="show_details {if $defaults.invoice_description_open == $smarty.const.ENABLED}si_hide{/if}"
+                   title="{$LANG.showDetails}">
                     <img src="images/page_white_add.png" alt=""/>
                     {$LANG.showDetails}
                 </a>
-                <a href='#' class="hide_details si_hide" title="{$LANG.hideDetails}">
+                <a href='#' class="hide_details {if $defaults.invoice_description_open == $smarty.const.DISABLED}si_hide{/if}"
+                   title="{$LANG.hideDetails}">
                     <img src="images/page_white_delete.png" alt=""/>
                     {$LANG.hideDetails}
                 </a>

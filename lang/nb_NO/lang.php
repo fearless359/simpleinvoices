@@ -222,7 +222,7 @@ $LANG['helpEmailCc'] = "Dette feltet er ikke påkrevd. Her kan du spesifisere hv
 $LANG['helpEmailFrom'] = "Dette feltet er påkrevd og det henter standardverdien ifra operatørens e-post adresse. Du kan forandre denne e-post adressen som du selv ønsker men du kan kun ha én adresse i dette feltet.<br /><br /><i>Obs: Dette feltet kan kun inneholde én e-post adresse.</i>";//1
 $LANG['helpEmailTo'] = "Dette feltet er påkrevd og det henter standardverdien ifra kundens e-post adresse. Du kan forandre denne e-post adressen som du selv ønsker.<br /><br /><i>Obs: Du kan legge til flere e-post adresser her, separert med komma eller semikolon.</i>";//1
 $LANG['helpInsertBillerText'] = "Hvis du ikke ønsker logo så kan du velge '_default_blank_logo.png' ifra listen.<br /><br />Hvis du ønsker å bruke en egen logo i SimpleInvoices, kopier logofilen inn til logomappen i SimpleInvoices mappen.";//1
-$LANG['helpInvPrefCurrencySign'] = "Dette er valutategnet som vil bli brukt i fakturaen. <br /><br /><b>Obs:</b> Euro, Pund etc.. vennligst benytt deg av html-koden for ditt valutategn i dette feltet. Her er en referanseliste over valutategn <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dette er viktig slik at PDF skal fungere korrekt.<br /><br /> &#38;#163; er html-koden for pund,<br /> &#38;#8364; for euro, etc..";//1
+$LANG['helpInvPrefCurrencySign'] = "Dette er valutategnet som vil bli brukt i fakturaen. <br /><br /><b>Obs:</b> Euro, Pund etc.. vennligst benytt deg av html-koden for ditt valutategn i dette feltet. Her er en referanseliste over valutategn <a href='https://www.ascii.cl/htmlcodes.htm' target='_blank'>https://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dette er viktig slik at PDF skal fungere korrekt.<br /><br /> &#38;#163; er html-koden for pund,<br /> &#38;#8364; for euro, etc..";//1
 $LANG['helpInvPrefDescription'] = "Dette er navnet på preferansen - det benyttes ikke i selve fakturaen, kun i listen over hvilken fakturapreferanser du ønsker å bruke under opprettelse av ny faktura.";//1
 $LANG['helpInvPrefInvoiceDetailHeading'] = "Dette er hva som vil bli stående som tittel i bunnteksten samt seksjonen detaljer i fakturaen.";//1
 $LANG['helpInvPrefInvoiceDetailLine'] = "Dette er teksten som vil bli stående i bunnteksten under detaljer. Normalt brukt for betalingsbetingelser.";//1
@@ -535,7 +535,7 @@ $LANG['statsDebtor'] = "Største debitor";//1
 $LANG['status'] = "Status";//1
 $LANG['street'] = "Gateadresse";//1
 $LANG['street2'] = "Gateadresse 2";//1
-$LANG['subTotal'] = "Sub Total";//1
+$LANG['subtotalUc'] = "SubTotal";//1
 $LANG['subject'] = "Emne";//1
 $LANG['sum'] = "Sum";//1
 $LANG['summaryUc'] = "Oppsummering";//1

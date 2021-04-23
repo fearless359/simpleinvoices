@@ -10,6 +10,11 @@ tmp/*
 .project
 public/**
 .settings/**
+
+### Exclude non-library extensions ###
+extensions
+!extensions/eway
+
 library/HTMLPurifier/DefinitionCache/Serializer/HTML/*
 templates/invoices/ftcc
 templates/invoices/logos/

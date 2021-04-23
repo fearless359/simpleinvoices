@@ -225,7 +225,7 @@ $LANG['helpEmailCc'] = "Detta fält är inte obligatoriskt. Här kan du specific
 $LANG['helpEmailFrom'] = "Detta fält är obligatoriskt och får sitt standard värde från Fordringsägarens e-post adress. Du kan ändra denna e-post adress efter behov men kan inte lägga till mer än en (1) adress i detta fält.<br /><br /><i>Obs: Det kan endast finnas en (1) e-post adress i detta fält.</i>";//1
 $LANG['helpEmailTo'] = "Detta fält är obligatoriskt och får sitt standard värde från Kundens e-post adress. Du kan ändra denna e-post adress efter behov.<br /><br /><i>Obs: Du kan lägga till flera e-post adresser här - bara använd antingen , eller ; för att sära på adresserna</i>";//1
 $LANG['helpInsertBillerText'] = "För att inte välja någon logo välj '_default_blank_logo.png' från listan.<br /><br />För att lägga till ytterligare logon till SimpleInvoices, kopiera logo filen till logo mappen i SimpleInvoices mappen.";//1
-$LANG['helpInvPrefCurrencySign'] = "Detta är valuta tecknet som kommer användas på fakturan.<br /><br /><b>Obs:</b> Euro, Pund osv.. Vänligen använd html koden för ditt valuta tecken i detta fält. Hänvisa till listan med html koder på följande webbsida för valuta tecken <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.<br /><br />Detta krävs för att PDF kan fungera korrekt med andra valutor än $.<br /><br /> &#38;#163; är html koden för Pund,<br /> &#38;#8364; för Euro, osv..";//1
+$LANG['helpInvPrefCurrencySign'] = "Detta är valuta tecknet som kommer användas på fakturan.<br /><br /><b>Obs:</b> Euro, Pund osv.. Vänligen använd html koden för ditt valuta tecken i detta fält. Hänvisa till listan med html koder på följande webbsida för valuta tecken <a href='https://www.ascii.cl/htmlcodes.htm' target='_blank'>https://www.ascii.cl/htmlcodes.htm</a>.<br /><br />Detta krävs för att PDF kan fungera korrekt med andra valutor än $.<br /><br /> &#38;#163; är html koden för Pund,<br /> &#38;#8364; för Euro, osv..";//1
 $LANG['helpInvPrefDescription'] = "Detta är namnet för faktura mallen - det används inte på själva fakturan, bara vid skapandet av fakturor när du väljer i drop down menyn vilken Faktura Mall du vill använda.";//1
 $LANG['helpInvPrefInvoiceDetailHeading'] = "Detta är vad som kommer synas som rubrik i sidfoten/detaljerna för fakturan.";//1
 $LANG['helpInvPrefInvoiceDetailLine'] = "Detta är den text som kommer synas under detaljer/sidfots rubriken. Vanligen använt för att ange betalnings villkor osv.";//1
@@ -538,7 +538,7 @@ $LANG['statsDebtor'] = "Största skuld";//1
 $LANG['status'] = "Status";//1
 $LANG['street'] = "Gatuadress";//1
 $LANG['street2'] = "Gatuadress 2";//1
-$LANG['subTotal'] = "Totalt";//1
+$LANG['subtotalUc'] = "Totalt";//1
 $LANG['subject'] = "Ämne";//1
 $LANG['sum'] = "Summa";//1
 $LANG['summaryUc'] = "Sammandrag";//1

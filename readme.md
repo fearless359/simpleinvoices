@@ -31,7 +31,7 @@
 
 ## Schema
 * The Entity Relationship Diagram for SI is available in the **databases/mysql folder**
-* [ERD Schema with Primary and Foreign Keys](https://github.com/fearless359/simpleinvoices/blob/master_2020/documentation/en-us/general/rrowfbbw_simple_invoices.png)
+* [ERD Schema with Primary and Foreign Keys](https://github.com/fearless359/simpleinvoices/blob/master_2020/documentation/general/rrowfbbw_simple_invoices.png)
 
 ## About
 * SimpleInvoices is released under the GPL v3 license - refer license.txt for details

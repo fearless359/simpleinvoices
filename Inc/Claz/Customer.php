@@ -62,7 +62,7 @@ class Customer
      * Minimize the amount of data returned to the manage table.
      * @return array Data for the manage table rows.
      */
-    public static function manageTableInfo()
+    public static function manageTableInfo(): array
     {
         global $config, $LANG, $pdoDb;
 
@@ -145,7 +145,8 @@ class Customer
      *              <b>false</b> to order by name (default if not specified.
      * @return array Customers selected.
      */
-    private static function getCustomers(array $params): array {
+    private static function getCustomers(array $params): array
+    {
         global $LANG, $pdoDb;
 
         // @formatter::off

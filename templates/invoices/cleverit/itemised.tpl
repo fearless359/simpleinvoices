@@ -66,7 +66,7 @@
                     </tr>
                     <tr class="clean">
                         <td class="clean center" colspan="4">&nbsp;</td>
-                        <td class="clean center subtotal">{$LANG.subTotal}:</td>
+                        <td class="clean center subtotal">{$LANG.subtotalUc}:</td>
                         <td class="clean center subtotal">{$invoice.gross|utilNumber} {$preference.pref_currency_sign}</td>
                     </tr>
                     <tr class="clean">
@@ -82,7 +82,7 @@
                     </tr>
                     <tr class="clean">
                         <td class="clean center" colspan="5">&nbsp;</td>
-                        <td class="center subtotal">{$LANG.subTotal}:</td>
+                        <td class="center subtotal">{$LANG.subtotalUc}:</td>
                         <td class="center subtotal">{$invoice.gross|utilNumber} {$preference.pref_currency_sign}</td>
                     </tr>
                     <tr class="clean">

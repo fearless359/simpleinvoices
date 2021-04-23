@@ -235,6 +235,15 @@ class SystemDefaults
     }
 
     /**
+     * Get "invoice_description_open" entry from the system_defaults table.
+     * @return int 1 if enabled or 0 if not enabled
+     */
+    public static function getInvoiceDescriptionOpen(): int
+    {
+        return self::getValue('invoice_description_open');
+    }
+
+    /**
      * Get "language" entry from the system_defaults table.
      * @return string Language setting (ex: en_US)
      */

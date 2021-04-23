@@ -225,7 +225,7 @@ $LANG['helpEmailCc'] = "This field is not mandatory.  Here you can specify any e
 $LANG['helpEmailFrom'] = "This field is a mandatory field and gets the default value from the Billers email address.  You can change this email address as you require but cannot add more than 1 email address in this field<br /><br /><i>Note: There can be only 1 email address in this field</i>";//0
 $LANG['helpEmailTo'] = "This field is a mandatory field and gets the default value from the Customers email address.  You can change this email address as you require<br /><br /><i>Note: You can add multiple email addresses here - just use either , or ; to split the addresses</i>";//0
 $LANG['helpInsertBillerText'] = "To select no logo please select '_default_blank_logo.png' from the list.<br /><br />To add additional logos into SimpleInvoices, copy the logo file into the logo directory in the SimpleInvoices folder.";//0
-$LANG['helpInvPrefCurrencySign'] = "This is the curreny symbol that will be used through-out the invoice. <br /><br /><b>Note:</b> Euro, Pound etc.. please use the html code for you currency sign in this field.  Refer to the list of html codes on the following website for your non $ currency sign <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />This is required so that PDF can work correctly with non $ symbols<br /><br /> &#38;#163; is the html code for the Pound,<br /> &#38;#8364; for the Euro, etc..";//0
+$LANG['helpInvPrefCurrencySign'] = "This is the curreny symbol that will be used through-out the invoice. <br /><br /><b>Note:</b> Euro, Pound etc.. please use the html code for you currency sign in this field.  Refer to the list of html codes on the following website for your non $ currency sign <a href='https://www.ascii.cl/htmlcodes.htm' target='_blank'>https://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />This is required so that PDF can work correctly with non $ symbols<br /><br /> &#38;#163; is the html code for the Pound,<br /> &#38;#8364; for the Euro, etc..";//0
 $LANG['helpInvPrefDescription'] = "This is the name of the set of preference - it's not used on the invoice itself, just in the creation of the invoice when you select from the drop down list which Invoice Preference you wish to use.";//0
 $LANG['helpInvPrefInvoiceDetailHeading'] = "This is what will appear as the heading of the footer/details section of the invoice.";//0
 $LANG['helpInvPrefInvoiceDetailLine'] = "This is the text that appear under the details/footer heading. Normally used to define payment terms etc.";//0
@@ -314,7 +314,7 @@ $LANG['list'] = "List";//0
 $LANG['loading'] = "Loading";//0
 $LANG['locale'] = "Locale";//0
 $LANG['logging'] = "Logging";//0
-$LANG['login'] = "Log in";//0
+$LANG['login'] = "Login";//0
 $LANG['logoFile'] = "Logo file";//1
 $LANG['logout'] = "Log out";//0
 $LANG['manage'] = "Xestionar";//1
@@ -538,7 +538,7 @@ $LANG['statsDebtor'] = "O maior debedor";//1
 $LANG['status'] = "Status";//0
 $LANG['street'] = "Enderezo";//1
 $LANG['street2'] = "Enderezo 2";//1
-$LANG['subTotal'] = "Sub Total";//1
+$LANG['subtotalUc'] = "SubTotal";//1
 $LANG['subject'] = "Subject";//0
 $LANG['sum'] = "Res";//1
 $LANG['summaryUc'] = "Resumo";//1

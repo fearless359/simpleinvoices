@@ -3,13 +3,13 @@
 <head>
     <title>SimpleInvoices - About</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="../../../include/jquery/css/main.css">
-    <link rel="stylesheet" href="../../../templates/default/css/info.css">
+    <link rel="stylesheet" href="../../include/jquery/css/main.css">
+    <link rel="stylesheet" href="../../templates/default/css/info.css">
     <?php
     function printVersionInfo()
     {
-        if (($lines = file("../../../config/config.ini")) === false) {
-            echo "<i style='color:red>Version info not available.</i>";
+        if (($lines = file("../../config/config.ini")) === false) {
+            echo "<i style='color: red;'>Version info not available.</i>";
             return;
         }
         $fndSection = false;
@@ -46,7 +46,7 @@
                 }
             }
         }
-        echo "<i style='color:red;'>Unable to access version information</i>";
+        echo "<i style='color: red;'>Unable to access version information</i>";
     }
 
     ?>

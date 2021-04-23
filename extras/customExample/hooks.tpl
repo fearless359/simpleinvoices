@@ -14,7 +14,7 @@
 
 {capture name=hook_head_end}
 
-	<link rel="stylesheet" type="text/css" href="custom/my_medias/my.css" />
+	<link rel="stylesheet" type="text/css" href="/my_medias/my.css" />
 
 {/capture}
 
@@ -23,14 +23,14 @@
 
 {capture name=hook_body_start}
 
-	<div id='my_header'><div id='my_logo'></div>My Header</div>
+	<div id='myHeader'><div id='myLogo'></div>My Header</div>
 
 {/capture}
 
 
 {capture name=hook_body_end}
 
-		<div id='my_footer'>My Footer</div>
+		<div id='myFooter'>My Footer</div>
 
 {/capture}
 
@@ -39,11 +39,11 @@
 
 {capture name=hook_topmenu_start}
 
-	<div id="my_topmenu">
-		<div class="my_topmenu my_topmenu_left">
+	<div id="myTopMenu">
+		<div class="myTopMenu myTopMenuLeft">
 			<a href="http://www.linux.org">My TopMenu</a>				
 		</div>
-		<div class="my_topmenu my_topmenu_right2">
+		<div class="myTopMenu myTopMenuRight2">
 			<a href="http://www.linux.org"> And Also Here</a>				
 		</div>
 
@@ -51,7 +51,7 @@
 
 {capture name=hook_topmenu_end}
 
-		<div class="my_topmenu my_topmenu_right1">
+		<div class="myTopMenu myTopMenuRight1">
 			<a href="http://www.linux.org">Also Here</a>				
 		</div>
 	</div>

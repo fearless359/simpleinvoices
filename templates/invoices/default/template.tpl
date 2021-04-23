@@ -358,7 +358,7 @@
       {if $invoiceNumberOfTaxes > 0}
       <tr>
         <td colspan="2"></td>
-        <td class="si_right" colspan="3">{$LANG.subTotal}&nbsp;</td>
+        <td class="si_right" colspan="3">{$LANG.subtotalUc}&nbsp;</td>
         <td class="si_right  {if $invoiceNumberOfTaxes > 1}underline;{/if}" colspan="1">
           {$preference.pref_currency_sign}{$invoice.gross|utilNumber}
         </td>
@@ -409,7 +409,7 @@
       {* ***************************************************************************
       <tr>
         <td class="" colspan="2"></td>
-        <td align="right" colspan="3">{$LANG.subTotal}</td>
+        <td align="right" colspan="3">{$LANG.subtotalUc}</td>
         <td align="right" class="">{$preference.pref_currency_sign}{$invoice.gross|utilNumber}</td>
       </tr>
       {section name=line start=0 loop=$invoice.tax_grouped step=1}

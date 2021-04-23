@@ -26,5 +26,9 @@
         <img src="images/report_edit.png" alt=""/>
         {$LANG.edit}
     </a>
+
+    <a href="index.php?module=tax_rates&amp;view=manage" class="negative">
+        <img src="images/cross.png" alt=""/>{$LANG.cancel}
+    </a>
 </div>
 

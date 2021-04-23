@@ -52,20 +52,20 @@ class UtilTest extends TestCase
         $_SERVER['HTTPS'] = 'off';
 
         //***************************************************************
-        //******* template settings for custom/default_template directory
+        //******* template settings for custom/defaultTemplate directory
         self::$existingCustomDefaultTemplateFileName = 'file_exists';
-        self::$existingCustomDefaultPath = 'custom/default_template/' . self::$existingCustomDefaultTemplateFileName . '.tpl';
+        self::$existingCustomDefaultPath = 'custom/defaultTemplate/' . self::$existingCustomDefaultTemplateFileName . '.tpl';
         if (!file_exists(self::$existingCustomDefaultPath)) {
             self::$customDefaultTemplatePathCreated = true;
             touch(self::$existingCustomDefaultPath);
         }
 
-        // Find a file that does not exist in custom/default_template directory and
+        // Find a file that does not exist in custom/defaultTemplate directory and
         // make sure it does exist in templates/default directory.
         $idx = 0;
         while (true) {
             self::$nonExistingCustomDefaultTemplateFileName = 'no_such_file_' . $idx++;
-            self::$nonExistingCustomDefaultTemplatePath = 'custom/default_template/' . self::$nonExistingCustomDefaultTemplateFileName . '.tpl';
+            self::$nonExistingCustomDefaultTemplatePath = 'custom/defaultTemplate/' . self::$nonExistingCustomDefaultTemplateFileName . '.tpl';
             if (!file_exists(self::$nonExistingCustomDefaultTemplatePath)) {
                 self::$existingTemplatesDefaultPath = 'templates/default/' . self::$nonExistingCustomDefaultTemplateFileName . '.tpl';
                 if (!file_exists(self::$existingTemplatesDefaultPath)) {
@@ -86,7 +86,7 @@ class UtilTest extends TestCase
             touch(self::$existingCustomModulePath);
         }
 
-        // Find a file that does not exist in custom/default_template directory and
+        // Find a file that does not exist in custom/defaultTemplate directory and
         // make sure it does exist in templates/default directory.
         $idx = 0;
         while (true) {
@@ -177,7 +177,7 @@ class UtilTest extends TestCase
     {
         // Test template option
         $customPath = Util::getCustomPath(self::$existingCustomDefaultTemplateFileName, 'template');
-        self::assertEquals(self::$existingCustomDefaultPath, $customPath, 'Testing tpl file exists in custom/default_template path');
+        self::assertEquals(self::$existingCustomDefaultPath, $customPath, 'Testing tpl file exists in custom/defaultTemplate path');
 
         $customPath = Util::getCustomPath(self::$nonExistingCustomDefaultTemplateFileName, 'template');
         self::assertEquals(self::$existingTemplatesDefaultPath, $customPath, 'Testing tpl file exists in templates/default path');

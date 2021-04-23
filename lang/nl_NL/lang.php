@@ -290,7 +290,7 @@ $LANG['helpEmailTo'] = "Dit veld is een verplicht veld bevat het e-mailadres van
 $LANG['helpExpense'] = "Selecteer deze optie om het gebruik van de Simple Invoices module onkostendeclaraties in / uit te schakelen.";//1
 $LANG['helpExpenseAccounts'] = "Voer de naam van de onkostenvergoeding in. bijv. Kilometer declaratie, Woon - Werk verkeer";//1
 $LANG['helpInsertBillerText'] = "Wilt u geen logo selecteer dan '_default_blank_logo.png' uit de lijst.<br /><br />Om nieuwe logo's toe te voegen aan Simple Invoices, kopieert u het logobestand naar de logomap in de map Simple Invoices.";//1
-$LANG['helpInvPrefCurrencySign'] = "Dit is het valutasymbool dat tijdens de factuur zal worden gebruikt. <br /><br /><b>Opmerking:</b> Euro, Pond enz.. Geruik alleen de html code voor dit symbool.  Raadpleeg de lijst met html-codes op de volgende website als u een ander valutasymbool wilt gebruiken dan $ <a href='http://www.ascii.cl/htmlcodes.htm' target='_blank'>http://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dit is vereist voor een correcte werking van rapporten wanneer er een ander symbool gebruikt word dan $ <br /><br /> &#38;#163; Is de html code voor de Pond,<br /> &#38;#8364; voor de Euro.";//1
+$LANG['helpInvPrefCurrencySign'] = "Dit is het valutasymbool dat tijdens de factuur zal worden gebruikt. <br /><br /><b>Opmerking:</b> Euro, Pond enz.. Geruik alleen de html code voor dit symbool.  Raadpleeg de lijst met html-codes op de volgende website als u een ander valutasymbool wilt gebruiken dan $ <a href='https://www.ascii.cl/htmlcodes.htm' target='_blank'>https://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />Dit is vereist voor een correcte werking van rapporten wanneer er een ander symbool gebruikt word dan $ <br /><br /> &#38;#163; Is de html code voor de Pond,<br /> &#38;#8364; voor de Euro.";//1
 $LANG['helpInvPrefDescription'] = "Dit is de naam van de factuur voorkeur en wordt niet gebruikt op de factuur zelf, alleen bij het maken van de factuur wordt deze beschrijving weergegeven in de factuur instelling keuze lijst om een factuurvoorkeur te selecteren.";//1
 $LANG['helpInvPrefInvoiceDetailHeading'] = "Dit is wat zal worden weergegeven als de kop van de voettekst / details van de factuur.";//1
 $LANG['helpInvPrefInvoiceDetailLine'] = "Dit is de tekst die onder de kop van de details / voettekst verschijnt. Normaal gesproken wordt dit gebruikt om de betalingsvoorwaarden op te geven";//1
@@ -671,7 +671,7 @@ $LANG['status'] = "Status";//1
 $LANG['street'] = "Straat";//1
 $LANG['streetAddress'] = "Adres";//1
 $LANG['street2'] = "Straat adres 2";//1
-$LANG['subTotal'] = "Subtotaal";//1
+$LANG['subtotalUc'] = "Subtotaal";//1
 $LANG['subject'] = "Onderwerp";//1
 $LANG['sum'] = "Som";//1
 $LANG['summaryUc'] = "Samenvatting";//1

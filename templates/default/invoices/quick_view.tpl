@@ -161,7 +161,7 @@
 <table class="si_invoice_view_items">
     <tr class="tr_tax">
         <td colspan="4"></td>
-        <th class="si_right">{$LANG.subTotal}</th>
+        <th class="si_right">{$LANG.subtotalUc}</th>
         <td class="si_right {if $invoiceNumberOfTaxes > 1}underline{/if}">
             {$invoice.gross|utilCurrency:$locale:$currencyCode}
         </td>

@@ -198,6 +198,16 @@ switch ($getVal) {
         $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
+    case "invoice_description_open":
+        $array = [
+            0 => $LANG['disabled'],
+            1 => $LANG['enabled']
+        ];
+        $default     = "invoice_description_open";
+        $description = $LANG['invoiceDescriptionOpen'];
+        $value       = Util::dropDown($array, $defaults[$default]);
+        break;
+
     case "language":
         $default   = "language";
         $languages = getLanguageList();
