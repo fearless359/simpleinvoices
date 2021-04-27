@@ -1,4 +1,5 @@
 <?php
+
 use Inc\Claz\Util;
 
 /**
@@ -14,13 +15,12 @@ use Inc\Claz\Util;
  *   class2  - the css class of the second td
  *   colspan - the colspan of the last td
  **/
-function smarty_function_print_if_not_null(array $params) {
+function smarty_function_print_if_not_null(array $params): void
+{
     if (isset($params['field'])) {
-        $printIfNotNull =
-            '<tr>' .
-                '<td class="' . Util::htmlSafe($params['class1']) . '">' . Util::htmlSafe($params['label']) . ': ' . '</td>' .
-                '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '" >' . Util::htmlSafe($params['field']) . '</td>' .
+        echo '<tr>' .
+            '<td class="' . Util::htmlSafe($params['class1']) . '">' . Util::htmlSafe($params['label']) . ':</td>' .
+            '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '">' . Util::htmlSafe($params['field']) . '</td>' .
             '</tr>';
-        echo $printIfNotNull;
     }
 }

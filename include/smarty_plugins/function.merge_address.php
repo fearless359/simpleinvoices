@@ -1,4 +1,5 @@
 <?php
+
 use Inc\Claz\Util;
 
 /**
@@ -16,24 +17,25 @@ use Inc\Claz\Util;
  *  class2  - the css class for the second td
  *  colspan - the td colspan of the last td
  */
-function smarty_function_merge_address(array $params) {
+function smarty_function_merge_address(array $params): void
+{
     global $LANG;
     $skipSection = false;
     $ma = '';
     // If any among city, state or zip is present with no street at all
     if (empty($params['street1']) && empty($params['street2']) &&
-            (!empty($params['field1']) || !empty($params['field2']) || !empty($params['field3']))) {
+        (!empty($params['field1']) || !empty($params['field2']) || !empty($params['field3']))) {
         $ma .= '<tr>' .
-                   '<td class="' . Util::htmlSafe($params['class1']) . '" >' . $LANG['addressUc'] . ':</td>' .
-                   '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '" >';
+            '<td class="' . Util::htmlSafe($params['class1']) . '">' . $LANG['addressUc'] . ':</td>' .
+            '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '">';
         $skipSection = true;
     }
 
-    // If any among city, state or zip is present with atleast one street value
+    // If any among city, state or zip is present with at least one street value
     if (!$skipSection && (!empty($params['field1']) || !empty($params['field2']) || !empty($params['field3']))) {
         $ma .= '<tr>' .
-                   '<td class="' . Util::htmlSafe($params['class1']) . '"></td>' .
-                   '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '">';
+            '<td class="' . Util::htmlSafe($params['class1']) . '"></td>' .
+            '<td class="' . Util::htmlSafe($params['class2']) . '" colspan="' . Util::htmlSafe($params['colspan']) . '">';
     }
 
     if (!empty($params['field1'])) {

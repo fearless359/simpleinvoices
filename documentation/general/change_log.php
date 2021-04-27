@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-04-27 - <b>2020.0.19</b>
+            <ul>
+                <li>Remove standard library duplicate template invoice plugins.</li>
+            </ul>
+        </li>
         <li>2021-04-22 - <b>2020.0.18</b>
             <ul>
                 <li>Change the Customer::managerTableInfo() function to specify return type.</li>
