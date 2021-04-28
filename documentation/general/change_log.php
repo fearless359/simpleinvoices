@@ -13,6 +13,11 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-04-28 - <b>2020.0.21</b>
+            <ul>
+                <li>Updated smarty functions not empty vs not null to explain the difference.</li>
+            </ul>
+        </li>
         <li>2021-04-28 - <b>2020.0.20</b>
             <ul>
                 <li>Modified to stop display of menu tabs before screen is rendered.</li>
