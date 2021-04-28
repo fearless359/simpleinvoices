@@ -24,50 +24,37 @@
     <table id="si-data-table" class="display compact" >
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
+            <th>{$LANG.actions}</th>
             <th>{$LANG.username}</th>
             <th>{$LANG.email}</th>
             <th>{$LANG.role}</th>
-            <th class="si_center">{$LANG.enabled}</th>
+            <th>{$LANG.enabled}</th>
             <th>{$LANG.userId}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $users as $user}
-            <tr>
-                <td class="si_center">
-                    <a class="index_table" title="{$user['vname']}"
-                       href="index.php?module=user&amp;view=view&amp;id={$user['id']}">
-                        <img src="images/view.png" class="action" alt="" />
-                    </a>
-                    <a class="index_table" title="{$user['ename']}"
-                       href="index.php?module=user&amp;view=edit&amp;id={$user['id']}">
-                        <img src="images/edit.png" class="action" alt="" />
-                    </a>
-                </td>
-                <td>{$user['username']}</td>
-                <td>{$user['email']}</td>
-                <td>{$user['role_name']}</td>
-                <td class="si_center">
-                    <span style="display: none">{$user['enabled_text']}</span>
-                    <img src="{$user['image']}"  alt='{$user['enabled_text']}' title='{$user['enabled_text']}' />
-                </td>
-                <td>{$user['uid']}</td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function() {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "userName" },
+                    { "data": "email" },
+                    { "data": "roleName"},
+                    { "data": "enabled" },
+                    { "data": "uid"},
+                ],
                 "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],
                 "order": [
                     [4, "desc"],
                     [1, "asc"]
                 ],
                 "columnDefs": [
-                    { "targets": 0, "orderable": false }
+                    { "targets": 0, "className": 'dt-body-center', "orderable": false },
+                    { "targets": 4, "className": 'dt-body-center' }
                 ],
                 "colReorder": true
             });

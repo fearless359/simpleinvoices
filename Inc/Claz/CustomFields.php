@@ -9,10 +9,46 @@ namespace Inc\Claz;
 class CustomFields
 {
 
-    /**
-     * @return array All custom_fields records.
-     */
     public static function getAll(): array
+    {
+        return self::getCustomFields();
+    }
+
+    /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getCustomFields();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . ' ' . $LANG['customField'] . ' ' . Util::htmlSafe($row['field_name_nice']);
+            $editName = $LANG['edit'] . ' ' . $LANG['customField'] . ' ' . Util::htmlSafe($row['field_name_nice']);
+
+            $action =
+                "<a class='index_table' title='$viewName' " .
+                   "href='index.php?module=custom_fields&amp;view=view&amp;id={$row['cf_id']}'>" .
+                    "<img src='images/view.png' class='action' alt='$viewName'/>" .
+                "</a>&nbsp;&nbsp;" .
+                "<a class='index_table' title='$editName' " .
+                   "href='index.php?module=custom_fields&amp;view=edit&amp;id={$row['cf_id']}'>" .
+                    "<img src='images/edit.png' class='action' alt='$editName'/>" .
+                "</a>";
+
+            $tableRows[] = [
+                'action' => $action,
+                'fieldNameNice' => $row['field_name_nice'],
+                'cfCustomLabel' => $row['cf_custom_label']
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    private static function getCustomFields(): array
     {
         global $LANG, $pdoDb;
 
@@ -22,9 +58,8 @@ class CustomFields
             $pdoDb->setOrderBy("cf_id");
             $rows = $pdoDb->request('SELECT', 'custom_fields');
             foreach ($rows as $row) {
+                $row['cf_custom_label'] = $row['cf_custom_label'] ?? '';
                 $row['field_name_nice'] = self::getCustomFieldName($row['cf_custom_field']);
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['customField'] . ' ' . Util::htmlSafe($row['field_name_nice']);
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['customField'] . ' ' . Util::htmlSafe($row['field_name_nice']);
                 $cfs[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -43,9 +78,9 @@ class CustomFields
      * biller/product/customer)
      *
      * @param string $field - The custom field in question
-     * @return array|bool custom field name or false if undefined entry in $field.
+     * @return string custom field name or false if undefined entry in $field.
      */
-    public static function getCustomFieldName(string $field)
+    public static function getCustomFieldName(string $field): string
     {
         global $LANG;
 
@@ -69,7 +104,8 @@ class CustomFields
                 $customFieldName = $LANG['productsUc'];
                 break;
             default:
-                $customFieldName = false;
+                error_log("CustomField::getCustomFieldName(): field[$field] - Undefined field name");
+                $customFieldName = '';
         }
 
         // Append the rest of the string
@@ -190,14 +226,14 @@ class CustomFields
                     "    </a>\n" .
                     "  </th>\n" .
                     "  <td>\n" .
-                    "    <input type='text' name='custom_field{$cfn}' value='{$customFieldValue}' size='25' />\n" .
+                    "    <input type='text' name='custom_field$cfn' value='$customFieldValue' size='25' />\n" .
                     "  </td>\n" .
                     "</tr>\n";
             } else {
                 $displayBlock =
-                    "<tr class='{$cssClassTr}'>\n" .
-                    "  <th class='{$cssClassTh}'>{$customLabelValue}{$separator}</th>\n" .
-                    "  <td class='{$cssClassTd}' colspan='{$tdColSpan}'>{$customFieldValue}</td>\n" .
+                    "<tr class='$cssClassTr'>\n" .
+                    "  <th class='$cssClassTh'>{$customLabelValue}$separator</th>\n" .
+                    "  <td class='$cssClassTd' colspan='$tdColSpan'>$customFieldValue</td>\n" .
                     "</tr>\n";
             }
         }

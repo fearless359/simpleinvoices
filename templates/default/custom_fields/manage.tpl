@@ -20,13 +20,13 @@
         {foreach $cfs as $cf}
             <tr>
                 <td class="si_center">
-                    <a class="index_table" title="{$cf.vname}"
-                       href="index.php?module=custom_fields&amp;view=view&amp;id={$cf['cf_id']}">
-                        <img src="images/view.png" class="action" alt="{$cf.vname}"/>
+                    <a class='index_table' title='{$cf.vname}'
+                       href='index.php?module=custom_fields&amp;view=view&amp;id={$cf['cf_id']}'>
+                        <img src='images/view.png' class='action' alt='{$cf.vname}'/>
                     </a>
-                    <a class="index_table" title="{$cf.ename}"
-                       href="index.php?module=custom_fields&amp;view=edit&amp;id={$cf['cf_id']}">
-                        <img src="images/edit.png" class="action" alt="{$cf.ename}"/>
+                    <a class='index_table' title='{$cf.ename}'
+                       href='index.php?module=custom_fields&amp;view=edit&amp;id={$cf['cf_id']}'>
+                        <img src='images/edit.png' class='action' alt='{$cf.ename}'/>
                     </a>
                 </td>
                 <td>{$cf['field_name_nice']}</td>
@@ -39,12 +39,19 @@
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "fieldNameNice" },
+                    { "data": "cfCustomLabel"}
+                ],
                 "lengthMenu": [[-1], ["All"]],
                 "order": [
                     [1, "asc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    {"targets": 0, "className": 'dt-body-center', "orderable": false}
                 ],
                 "colReorder": true
             });

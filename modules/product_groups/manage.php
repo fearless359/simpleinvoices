@@ -12,16 +12,13 @@ Util::directAccessAllowed();
 $defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults", $defaults);
 
-$productGroups = [];
-$rows = ProductGroups::getAll();
-foreach ($rows as $row) {
-    $row['vname'] = $LANG['view'] . ' ' . Util::htmlSafe($row['name']);
-    $row['ename'] = $LANG['edit'] . ' ' . Util::htmlSafe($row['name']);
-    $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
-    $productGroups[] = $row;
+$productGroups = ProductGroups::manageTableInfo();
+
+$data = json_encode(['data' => $productGroups]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
 }
 
-$smarty->assign('productGroups', $productGroups);
 $smarty->assign("numberOfRows",count($productGroups));
 
 $smarty->assign('pageActive', 'product_groups_manage');

@@ -21,9 +21,12 @@ global $pdoDb, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$crons = Cron::getAll();
+$crons = Cron::manageTableInfo();
+$data = json_encode(['data' => $crons]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
 
-$smarty->assign('crons', $crons);
 $smarty->assign("numberOfRows", count($crons));
 
 $smarty->assign('pageActive', 'cron');

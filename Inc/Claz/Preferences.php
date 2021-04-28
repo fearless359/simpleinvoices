@@ -32,6 +32,55 @@ class Preferences
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getAll();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . " " . $LANG['preference'] . " " . $row['pref_description'];
+            $editName = $LANG['edit'] . " " . $LANG['preference'] . " " . $row['pref_description'];
+
+            $action =
+                    "<a class='index_table' title='$viewName' " .
+                       "href='index.php?module=preferences&amp;view=view&amp;id={$row['pref_id']}' >" .
+                        "<img src='images/view.png' class='action' alt='$viewName' />" .
+                    "</a>&nbsp;" .
+                    "<a class='index_table' title='$editName' " .
+                       "href='index.php?module=preferences&amp;view=edit&amp;id={$row['pref_id']}' >" .
+                        "<img src='images/edit.png' class='action' alt='$editName' />" .
+                    "</a>";
+
+            $enabled = $row['pref_enabled'] == ENABLED;
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+
+            $enabled = $row['set_aging'] == ENABLED;
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $setAgingCol = "<span style='display: none'>{$row['set_aging_text']}</span>" .
+                "<img src='$image' alt='{$row['set_aging_text']}' title='{$row['set_aging_text']}' />";
+
+            $tableRows[] = [
+                'action' => $action,
+                'prefId' => $row['pref_id'],
+                'prefDescription' => $row['pref_description'],
+                'invoiceNumberingGroup' => $row['invoice_numbering_group'],
+                'setAgingCol' => $setAgingCol,
+                'language' => $row['language'],
+                'locale' => $row['locale'],
+                'enabled' => $enabledCol
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Get preference records based on specified parameters.
      * @param int|null $id If not null, then id of records to retrieve.
      * @return array Row(s) retrieved. Empty array returned if nothing found.
@@ -68,9 +117,6 @@ class Preferences
 
             $rows = $pdoDb->request("SELECT", "preferences");
             foreach ($rows as $row) {
-                $row['vname'] = $LANG['view'] . " " . $LANG['preference'] . " " . $row['pref_description'];
-                $row['ename'] = $LANG['edit'] . " " . $LANG['preference'] . " " . $row['pref_description'];
-                $row['image'] = $row['pref_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
                 $row['invoice_numbering_group'] = "";
                 foreach ($rows as $r2) {
                     if ($row['index_group'] == $r2['pref_id']) {
@@ -78,7 +124,6 @@ class Preferences
                         break;
                     }
                 }
-                $row['set_aging_image'] = $row['set_aging'] == ENABLED ? "images/tick.png" : "images/cross.png";
                 $preferences[] = $row;
             }
         } catch (PdoDbException $pde) {

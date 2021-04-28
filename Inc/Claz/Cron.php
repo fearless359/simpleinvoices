@@ -35,6 +35,49 @@ class Cron
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getAll();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $action =
+                "<a class='index_table' title='{$LANG['view']} {$row['index_name']}' " .
+                   "href='index.php?module=cron&amp;view=view&amp;id={$row['id']}'>" .
+                    "<img src='images/view.png' alt='{$LANG['view']} {$row['index_name']}'/>" .
+                "</a> " .
+                "<a class='index_table' title='{$LANG['edit']} {$row['index_name']}' " .
+                   "href='index.php?module=cron&amp;view=edit&amp;id={$row['id']}'>" .
+                    "<img src='images/edit.png' alt='{$LANG['edit']} {$row['index_name']}'/>" .
+                "</a> " .
+                "<a class='index_table' title='{$LANG['delete']} {$row['index_name']}' " .
+                   "href='index.php?module=cron&amp;view=delete&amp;id={$row['id']}&amp;stage=1&amp;err_message='>" .
+                    "<img src='images/delete.png' alt='{$LANG['delete']} {$row['index_name']}'/>" .
+                "</a>";
+
+            $tableRows[] = [
+                'action' => $action,
+                'invoiceId' =>
+                    "<a href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['invoice_id']}'>" .
+                        $row['index_id'] .
+                    "</a>",
+                'startDate' => $row['start_date'],
+                'endDate' => $row['end_date'],
+                'recurrenceInfo' => $row['recurrence'] . ' ' . $row['recurrence_type'],
+                'emailBillerNice' => $row['email_biller'] == ENABLED ? $LANG['yesUc'] : $LANG['noUc'],
+                'emailCustomerNice' => $row['email_customer'] == ENABLED ? $LANG['yesUc'] : $LANG['noUc'],
+                'customerName' => $row['name']
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Standard getter for cron records.
      * @param int|null $id If not null, the id of the record to retrieve.
      * @return array
@@ -124,7 +167,7 @@ class Cron
 
     /**
      * Update an existing record.
-     * @param $id
+     * @param int $id
      * @return bool
      */
     public static function update(int $id): bool
@@ -233,7 +276,7 @@ class Cron
                 $endDate = $value['end_date'];
 
                 // Seconds in a day = 60 * 60 * 24 = 86400
-                $diff = number_format((strtotime($today) - strtotime($startDate)) / 86400, 0);
+                $diff = number_format((strtotime($today) - strtotime($startDate)) / 86400);
                 Log::out("Cron::run() - start_date[$startDate] end_date($endDate] diff[$diff]");
 
                 // only check if diff is positive
@@ -351,7 +394,7 @@ class Cron
                             $eway->biller = $biller;
                             $eway->customer = $customer;
                             $paymentId = $eway->payment();
-                            $paymentDone = $paymentId !== false;
+                            $paymentDone = $paymentId !== 'false';
 
                             // Appears to not be used. Commented out by Rich Rowley 20181104
                             // $pdf_file_name_receipt = 'payment' . $paymentId . '.pdf';
@@ -393,7 +436,7 @@ class Cron
 
                                 $errorMessage = "Invoice: {$invoice['index_name']}<br />Amount: {$invoice['total']}<br />";
                                 foreach ($eway->getMessage() as $key2 => $value2) {
-                                    $errorMessage .= "\n<br>\${$LANG['ewayResponseFields']}[\"{$key2}\"] = $value2";
+                                    $errorMessage .= "\n<br>\${$LANG['ewayResponseFields']}[\"$key2\"] = $value2";
                                 }
                                 $email->setBody($errorMessage);
 
@@ -406,7 +449,7 @@ class Cron
                         $cronMsg = "Cron ID: {$value['id']} - Cron for {$value['index_name']} with ";
                         $cronMsg .= (empty($value['start_date']) ? "no start date" : "start date of {$value['start_date']} ") . "and ";
                         $cronMsg .= empty($value['end_date']) ? "no end date" : "an end date of {$value['end_date']} ";
-                        $cronMsg .= " that runs each {$value['recurrence']} {$value['recurrence_type']}, did not recur today :: Info diff={$diff}";
+                        $cronMsg .= " that runs each {$value['recurrence']} {$value['recurrence_type']}, did not recur today :: Info diff=$diff";
                         $result["cron_message_{$value['id']}"] = $cronMsg;
                     }
                 } else {
@@ -414,13 +457,13 @@ class Cron
                     $cronMsg = "Cron ID: {$value['id']} - NOTE RUN: Not scheduled for today. Cron for {$value['index_name']} with ";
                     $cronMsg .= (empty($value['start_date']) ? "no start date" : "start date of {$value['start_date']} ") . "and ";
                     $cronMsg .= empty($value['end_date']) ? "no end date" : "an end date of {$value['end_date']} ";
-                    $cronMsg .= " that runs each {$value['recurrence']} {$value['recurrence_type']}, did not recur today :: Info diff={$diff}";
+                    $cronMsg .= " that runs each {$value['recurrence']} {$value['recurrence_type']}, did not recur today :: Info diff=$diff";
                     $result["cron_message_{$value['id']}"] = $cronMsg;
                 }
             } else {
                 // Cron has already been run for that id today
                 $result["cron_message_{$value['id']}"] = "Cron ID: {$value['id']} - Cron has already been run for domain: {$value['domain_id']} " .
-                    "for the date: {$today} for invoice {$value['invoice_id']}";
+                    "for the date: $today for invoice {$value['invoice_id']}";
                 $result['email_message'] = "";
             }
         }
@@ -428,7 +471,7 @@ class Cron
         // no crons scheduled for today
         if ($numberOfCronsRun == 0) {
             $result['id'] = $idx;
-            $result['cron_message'] = "No invoices recurred for this Cron run for domain: " . DomainId::get() . " for the date: {$today}";
+            $result['cron_message'] = "No invoices recurred for this Cron run for domain: " . DomainId::get() . " for the date: $today";
             $result['email_message'] = "";
         }
 

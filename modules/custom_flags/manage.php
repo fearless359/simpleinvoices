@@ -21,8 +21,13 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$cflgs = CustomFlags::getAll();
-$smarty->assign('cflgs', $cflgs);
+$cflgs = CustomFlags::manageTableInfo();
+
+$data = json_encode(['data' => $cflgs]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $smarty->assign('numberOfRows', count($cflgs));
 
 $smarty->assign('pageActive', 'custom_flags');

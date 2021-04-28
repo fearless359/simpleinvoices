@@ -18,6 +18,35 @@ class ProductGroups
         return self::getGroups();
     }
 
+    /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getGroups();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $action =
+                "<a class='index_table' title='{$LANG['view']} {$row['name']}' href='index.php?module=product_groups&amp;view=view&amp;name={$row['name']}'>" .
+                    "<img src='images/view.png' class='action' alt='view'/>" .
+                "</a>&nbsp;" .
+                "<a class='index_table' title='{$LANG['edit']} {$row['name']}' href='index.php?module=product_groups&amp;view=edit&amp;name={$row['name']}'>" .
+                    "<img src='images/edit.png' class='action' alt='edit'/>" .
+                "</a>";
+
+            $tableRows[] = [
+                'action' => $action,
+                'name' => $row['name'],
+                'markUp' => $row['markup'] . '%'
+            ];
+        }
+
+        return $tableRows;
+    }
+
     private static function getGroups(?string $name = null): array
     {
         global $pdoDb;

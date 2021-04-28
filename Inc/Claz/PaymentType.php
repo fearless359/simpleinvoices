@@ -33,6 +33,45 @@ class PaymentType
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getAll(); // use getAll() as it sets desired parameters.
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . ' ' . $LANG['paymentType'] . ' ' . $row['pt_description'];
+            $editName = $LANG['edit'] . ' ' . $LANG['paymentType'] . ' ' . $row['pt_description'];
+
+            $action =
+                "<a class='index_table' title='$viewName' " .
+                   "href='index.php?module=payment_types&amp;view=view&amp;id={$row['pt_id']}'>" .
+                    "<img src='images/view.png' alt='$viewName' class='action'/>" .
+                "</a>&nbsp;&nbsp;" .
+                "<a class='index_table' title='$editName' " .
+                   "href='index.php?module=payment_types&amp;view=edit&amp;id={$row['pt_id']}'>" .
+                    "<img src='images/edit.png' alt='$editName' class='action'/>" .
+                "</a>";
+
+            $enabled = $row['pt_enabled'] == ENABLED;
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+
+            $tableRows[] = [
+                'action' => $action,
+                'ptDescription' => $row['pt_description'],
+                'enabled' => $enabledCol
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Common data access method. Retrieve record(s) per specified parameters.
      * @param int|null $ptId If not null, the id of the record to retrieve.
      * @param bool $enabled If true, only enabled records are retrieved.
@@ -64,13 +103,7 @@ class PaymentType
 
             $pdoDb->setSelectAll(true);
 
-            $rows = $pdoDb->request("SELECT", "payment_types");
-            foreach ($rows as $row) {
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['paymentType'] . ' ' . $row['pt_description'];
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['paymentType'] . ' ' . $row['pt_description'];
-                $row['image'] = $row['pt_enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
-                $paymentTypes[] = $row;
-            }
+            $paymentTypes = $pdoDb->request("SELECT", "payment_types");
         } catch (PdoDbException $pde) {
             error_log("PaymentType::getPaymentTypes - error: " . $pde->getMessage());
         }

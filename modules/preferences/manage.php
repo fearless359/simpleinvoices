@@ -8,9 +8,13 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$preferences = Preferences::getAll();
+$preferences = Preferences::manageTableInfo();
 
-$smarty->assign("preferences", $preferences);
+$data = json_encode(['data' => $preferences]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $smarty->assign('numberOfRows', count($preferences));
 
 $smarty->assign('pageActive', 'preference');

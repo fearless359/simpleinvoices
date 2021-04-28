@@ -49,6 +49,45 @@ class User
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getAll();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $action =
+                    "<a class='index_table' title='{$LANG['view']} {$row['username']}' " .
+                       "href='index.php?module=user&amp;view=view&amp;id={$row['id']}'>" .
+                        "<img src='images/view.png' class='action' alt='View user' />" .
+                    "</a>&nbsp;" .
+                    "<a class='index_table' title='{$LANG['edit']} {$row['username']}' " .
+                       "href='index.php?module=user&amp;view=edit&amp;id={$row['id']}'>" .
+                        "<img src='images/edit.png' class='action' alt='Edit user' />" .
+                    "</a>";
+
+            $enabled = $row['enabled'] == ENABLED;
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+
+            $tableRows[] = [
+                'action' => $action,
+                'userName' => $row['username'],
+                'email' => $row['email'],
+                'roleName' => $row['role_name'],
+                'enabled' => $enabledCol,
+                'uid' => $row['uid']
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Retrieve all user records
      * @param int|null $id If no null, the id of the specific user record to retrieve.
      * @param bool Set to true if only enabled user records should be retrieved.
@@ -248,7 +287,7 @@ class User
      * Get all user role records.
      * @return array of <b>user_role</b> records.
      */
-    public static function getUserRoles()
+    public static function getUserRoles(): array
     {
         global $pdoDb;
         try {

@@ -8,9 +8,13 @@ global $smarty;
 // Stop the direct browsing to this file.
 Util::directAccessAllowed();
 
-$paymentTypes = PaymentType::getAll();
+$paymentTypes = PaymentType::manageTableInfo();
 
-$smarty->assign('payment_types', $paymentTypes);
+$data = json_encode(['data' => $paymentTypes]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $smarty->assign('numberOfRows', count($paymentTypes));
 
 $smarty->assign('pageActive'  , 'payment_type');

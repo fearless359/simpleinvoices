@@ -21,13 +21,13 @@
     <table id="si-data-table" class="display compact" >
         <thead>
             <tr>
-                <th class="si_center">{$LANG.actions}</th>
+                <th>{$LANG.actions}</th>
                 <th>{$LANG.descriptionUc}</th>
-                <th class="si_center">{$LANG.productGroupUc}</th>
-                <th class="si_center">{$LANG.unitPrice}</th>
-                <th class="si_center">{$LANG.markupUc} {$LANG.priceUc}</th>
-                <th class="si_right">{$LANG.quantity}</th>
-                <th class="si_center">{$LANG.enabled}</th>
+                <th>{$LANG.productGroupUc}</th>
+                <th>{$LANG.unitPrice}</th>
+                <th>{$LANG.markupUc} {$LANG.priceUc}</th>
+                <th>{$LANG.quantity}</th>
+                <th>{$LANG.enabled}</th>
             </tr>
         </thead>
     </table>

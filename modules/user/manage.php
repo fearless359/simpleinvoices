@@ -17,16 +17,12 @@ use Inc\Claz\User;
  */
 global $LANG, $smarty;
 
-$users = [];
-$rows = User::getAll();
-foreach ($rows as $row) {
-    $row['vname'] = $LANG['view'] . ' ' . $row['username'];
-    $row['ename'] = $LANG['edit'] . ' ' . $row['username'];
-    $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
-    $users[] = $row;
+$users = User::manageTableInfo();
+$data = json_encode(['data' => $users]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
 }
 
-$smarty->assign('users', $users);
 $smarty->assign("numberOfRows", count($users));
 
 $smarty->assign('pageActive', 'user');

@@ -33,43 +33,32 @@
             <th>{$LANG.enabled}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $billers as $biller}
-            <tr>
-                <td>
-                    <a class="index_table" title="{$biller['vname']}" href="index.php?module=billers&amp;view=view&amp;id={$biller['id']}">
-                        <img src="images/view.png" class="action" alt="view"/>
-                    </a>
-                    <a class="index_table" title="{$biller['ename']}" href="index.php?module=billers&amp;view=edit&amp;id={$biller['id']}">
-                        <img src="images/edit.png" class="action" alt="edit"/>
-                    </a>
-                </td>
-                <td>{$biller['name']}</td>
-                <td>{$biller['street_address']}</td>
-                <td>{$biller['city']}</td>
-                <td>{$biller['state']}</td>
-                <td class="si_right">{$biller['zip_code']}</td>
-                <td>{$biller['email']}</td>
-                <td class="si_center">
-                    <!-- This span is here for datatables to order on -->
-                    <span style="display: none">{$biller['enabled_text']}</span>
-                    <img src="{$biller['image']}" alt="{$biller['enabled_text']}" title="{$biller['enabled_text']}"/>
-                </td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "name" },
+                    { "data": "streetAddress" },
+                    { "data": "city"},
+                    { "data": "state" },
+                    { "data": "zipCode"},
+                    { "data": "email"},
+                    { "data": "enabled"},
+                ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
                     [7, "desc"],
                     [1, "asc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    { "targets": 0, "className": 'dt-body-center', "orderable": false},
+                    { "targets": 5, "className": 'dt-body-right' },
+                    { "targets": 7, "className": 'dt-body-center' }
                 ],
                 "colReorder": true
             });

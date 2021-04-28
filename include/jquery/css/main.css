@@ -281,6 +281,10 @@ tr.customer th {
 
 /* @group Si Header
 ------------------------------------------------------------------- */
+.si_defer_display {
+    display: none;
+}
+
 #si_header {
     margin: 0;
     padding: 0;

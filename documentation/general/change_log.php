@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-04-28 - <b>2020.0.20</b>
+            <ul>
+                <li>Modified to stop display of menu tabs before screen is rendered.</li>
+                <li>Modified remaining management lists to use ajax to get list data.</li>
+            </ul>
+        </li>
         <li>2021-04-27 - <b>2020.0.19</b>
             <ul>
                 <li>Remove standard library duplicate template invoice plugins.</li>
