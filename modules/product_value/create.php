@@ -15,6 +15,7 @@ if (!empty($_POST['value'])) {
 // Get attributes to display on add screen dropdown.
     $smarty->assign("product_attributes", ProductAttributes::getAll());
 
-    $smarty->assign('pageActive', "product_value_add");
+    $smarty->assign('pageActive', "productValue");
+    $smarty->assign('subPageActive', "productValueCreate");
     $smarty->assign('activeTab', '#product');
 }

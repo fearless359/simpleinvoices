@@ -28,7 +28,7 @@ $smarty->assign('nextId', Index::next('invoice', $indexGroup));
 $smarty->assign('preferences', Preferences::getActivePreferences());
 $smarty->assign('localeList', Util::getLocaleList());
 
-$smarty->assign('pageActive', 'preference');
-$smarty->assign('subPageActive', "preferences_view");
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'invPrefs');
+$smarty->assign('subPageActive', "invPrefsView");
+$smarty->assign('activeTab', '#settings');
 

@@ -18,69 +18,74 @@
 {if $numberOfRows == 0 }
     {$display_block}
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.dateUc}</th>
-            <th>{$LANG.amountUc}</th>
-            <th>{$LANG.tax}</th>
-            <th>{$LANG.totalUc}</th>
-            <th>{$LANG.expenseAccounts}</th>
-            <th>{$LANG.billerUc}</th>
-            <th>{$LANG.customerUc}</th>
-            <th>{$LANG.invoiceUc}</th>
-            <th>{$LANG.status}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_center">{$LANG.dateUc}</th>
+            <th class="si_right">{$LANG.amountUc}</th>
+            <th class="si_right">{$LANG.tax}</th>
+            <th class="si_right">{$LANG.totalUc}</th>
+            <th class="si_left">{$LANG.expenseAccounts}</th>
+            <th class="si_left">{$LANG.billerUc}</th>
+            <th class="si_left">{$LANG.customerUc}</th>
+            <th class="si_center">{$LANG.invoiceUc}</th>
+            <th class="si_left">{$LANG.status}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $expenses as $expense}
-            <tr>
-                <td class="si_center">
-                    <a class='index_table' title='{$expense['vname']}'
-                       href='index.php?module=expense&amp;view=view&amp;id={$expense['EID']}'>
-                        <img src='images/view.png' class='action' alt="{$expense['vname']}"/>
-                    </a>
-                    <a class='index_table' title='{$expense['ename']}'
-                        href='index.php?module=expense&amp;view=edit&amp;id={$expense['EID']}'>
-                        <img src='images/edit.png' class='action' alt="{$expense['ename']}"/>
-                    </a>
-                </td>
-                <td>{$expense['date']}</td>
-                <td class="right">{$expense['amount']|utilCurrency}</td>
-                <td class="right">
-                {if (!empty($expense['tax']))}
-                    {$expense['tax']|utilCurrency}
-                {/if}
-                </td>
-                <td class="right">
-                {if (!empty($expense['total']))}
-                    {$expense['total']|utilCurrency}
-                {/if}
-                </td>
-                <td>{$expense['ea_name']}</td>
-                <td>{$expense['b_name']}</td>
-                <td>{$expense['c_name']}</td>
-                <td class="si_right">{$expense['iv_id']}</td>
-                <td>{$expense['status_wording']}</td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "deferRender": true,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "date" },
+                    { "data": "amount",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currencyCode']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    { "data": "tax",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currencyCode']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    { "data": "total",
+                        "render": function(data, type, row) {
+                            let formatter = new Intl.NumberFormat(row['locale'], {
+                                'style': 'currency',
+                                'currency': row['currencyCode']
+                            });
+                            return formatter.format(data);
+                        }
+                    },
+                    { "data": "eaName" },
+                    { "data": "bName"},
+                    { "data": "cName" },
+                    { "data": "ivId" },
+                    { "data": "statusWording" }
+                ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
                     [1, "desc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0,"width": "10%", "className": 'dt-body-center', "orderable": false},
-                    {"targets": 1,"width": "10%", "className": 'dt-body-center'},
-                    {"targets": 2,"className": 'dt-body-right'},
-                    {"targets": 3,"className": 'dt-body-right'},
-                    {"targets": 4,"className": 'dt-body-right'}
+                    {"targets": 0, "width": "8%", "className": 'dt-body-center', "orderable": false},
+                    {"targets": 1, "width": "10%", "className": 'dt-body-center'},
+                    {"targets": [2,3,4], "width": "9%", "className": 'dt-body-right'},
+                    {"targets": [8,9], "className": 'dt-body-center'},
                 ],
                 "colReorder": true
             });

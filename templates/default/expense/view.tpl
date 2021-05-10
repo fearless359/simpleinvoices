@@ -55,7 +55,7 @@
         </table>
         <br/>
         <div class="si_toolbar si_toolbar_form">
-            <a href="index.php?module=expense&amp;view=edit&amp;id={$expense.EID}" class="positive">
+            <a href="index.php?module=expense&amp;view=edit&amp;id={$expense.eid}" class="positive">
                 <img src="images/add.png" alt=""/>
                 {$LANG.edit}
             </a>

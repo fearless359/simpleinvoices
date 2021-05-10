@@ -14,13 +14,13 @@
 {if $numberOfRows == 0}
     <p><em>{$LANG.noUc} {$LANG.extensons} {$LANG.registered}</em></p>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.nameUc}</th>
-            <th>{$LANG.descriptionUc}</th>
-            <th>{$LANG.status}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.nameUc}</th>
+            <th class="si_left">{$LANG.descriptionUc}</th>
+            <th class="si_center">{$LANG.status}</th>
         </tr>
         </thead>
     </table>

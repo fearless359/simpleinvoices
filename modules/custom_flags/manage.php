@@ -30,5 +30,5 @@ if (file_put_contents("public/data.json", $data) === false) {
 
 $smarty->assign('numberOfRows', count($cflgs));
 
-$smarty->assign('pageActive', 'custom_flags');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'customFlags');
+$smarty->assign('activeTab', '#settings');

@@ -6,7 +6,7 @@ use Inc\Claz\PdoDbException;
 global $helpImagePath, $pdoDb, $smarty, $LANG;
 
 $smarty->assign('pageActive', 'backup');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('activeTab', '#settings');
 
 if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
     $today = date("YmdGisa");

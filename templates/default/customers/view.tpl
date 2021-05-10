@@ -107,7 +107,7 @@
     </div>
 </div>
 <div class="si_form" id="si_form_cust">
-    <div id="tabs_customer">
+    <div class="si_hide" id="tabs_customer">
         <ul class="anchors">
             <li><a href="#section-1" target="_top">{$LANG.summaryOfAccounts}</a></li>
             <li><a href="#section-2" target="_top">{$LANG.creditCardDetails}</a></li>
@@ -122,7 +122,7 @@
         </ul>
         <div id="section-1" class="fragment">
             <div class="si_cust_account">
-                <table class="si_center" style="width:100%;">
+                <table class="si_center">
                     <tr>
                         <th class="details_screen">{$LANG.totalInvoices}:</th>
                         <td class="si_right">{$customer.total|utilCurrency}</td>
@@ -178,10 +178,10 @@
                     <thead>
                     <tr class="tr_head">
                         <th class="first">{$LANG.invoiceUc}</th>
-                        <th class="details_screen">{$LANG.dateCreated}</th>
-                        <th class="details_screen">{$LANG.totalUc}</th>
-                        <th class="details_screen">{$LANG.paidUc}</th>
-                        <th class="details_screen">{$LANG.owingUc}</th>
+                        <th class="details_screen si_center">{$LANG.dateCreated}</th>
+                        <th class="details_screen si_right">{$LANG.totalUc}</th>
+                        <th class="details_screen si_right">{$LANG.paidUc}</th>
+                        <th class="details_screen si_right">{$LANG.owingUc}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -193,9 +193,9 @@
                                 </a>
                             </td>
                             <td class="si_center">{$invoice.date|htmlSafe}</td>
-                            <td class="right">{$invoice.total|utilCurrency}</td>
-                            <td class="right">{$invoice.paid|utilCurrency}</td>
-                            <td class="right">{$invoice.owing|utilCurrency}</td>
+                            <td class="si_right">{$invoice.total|utilCurrency}</td>
+                            <td class="si_right">{$invoice.paid|utilCurrency}</td>
+                            <td class="si_right">{$invoice.owing|utilCurrency}</td>
                         </tr>
                     {/foreach}
                     </tbody>
@@ -307,6 +307,14 @@
            {/if}
         {/if}
     </div>
+    <script>
+        {* This causes the tabs to appear after being rendered *}
+        {literal}
+        $(document).ready(function () {
+            $("div.si_hide").removeClass("si_hide");
+        });
+        {/literal}
+    </script>
     <div class="si_toolbar si_toolbar_form">
         <a href="index.php?module=customers&amp;view=edit&amp;id={$customer.id|urlencode}" class="positive">
             <img src="images/tick.png" alt="{$LANG.edit}"/>

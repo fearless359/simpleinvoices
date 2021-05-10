@@ -30,6 +30,7 @@ if (!empty($_POST['description'])) {
 
     $smarty->assign('productGroups', ProductGroups::getAll());
 
-    $smarty->assign('pageActive', 'product_add');
+    $smarty->assign('pageActive', 'product');
+    $smarty->assign('subPageActive', 'productCreate');
     $smarty->assign('activeTab', '#product');
 }

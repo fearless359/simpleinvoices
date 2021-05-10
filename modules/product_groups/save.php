@@ -29,5 +29,5 @@ if ($op === 'create') {
 $smarty->assign('display_message', $displayMessage);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
-$smarty->assign( 'pageActive', 'product_groups_manage' );
+$smarty->assign( 'pageActive', 'productGroups' );
 $smarty->assign( 'activeTab', '#product' );

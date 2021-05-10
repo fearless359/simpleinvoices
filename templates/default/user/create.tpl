@@ -25,7 +25,7 @@
         <div class="si_form">
             <table>
                 <tr>
-                    <th class="details_screen">{$LANG.username}
+                    <th class="details_screen">{$LANG.username}:
                         <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=helpUsername"
                            title="{$LANG.username}">
@@ -39,7 +39,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.newPassword}
+                    <th class="details_screen">{$LANG.newPassword}:
                         <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=helpNewPassword"
                            title="{$LANG.newPassword}">
@@ -52,7 +52,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.confirmPassword}
+                    <th class="details_screen">{$LANG.confirmPassword}:
                         <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=helpConfirmPassword"
                            title="{$LANG.confirmPassword}">
@@ -65,7 +65,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.email}
+                    <th class="details_screen">{$LANG.email}:
                         <a class="cluetip" href="#" tabindex="-1"
                            rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailAddress"
                            title="{$LANG.requiredField}">

@@ -39,6 +39,39 @@ class ExpenseAccount
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getExpenseAccounts();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . ' ' . $row['name'];
+            $editName = $LANG['edit'] . ' ' . $row['name'];
+
+            $action =
+                "<a class='index_table' title='$viewName' " .
+                   "href='index.php?module=expense_account&amp;view=view&amp;id={$row['id']}'>" .
+                    "<img src='images/view.png' alt='$viewName' />" .
+                "</a>&nbsp;&nbsp;" .
+                "<a class='index_table' title='$editName' " .
+                   "href='index.php?module=expense_account&amp;view=edit&amp;id={$row['id']}'>" .
+                    "<img src='images/edit.png' alt='$editName' />" .
+                "</a>";
+
+            $tableRows[] = [
+                'action' => $action,
+                'name' => $row['name']
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Get all records for the current domain_id and optional id.
      * @param int|null $id ID of the record to retrieve. Omit if all records desired.
      * @return array Rows retrieved.

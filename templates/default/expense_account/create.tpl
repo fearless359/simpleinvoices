@@ -14,16 +14,15 @@
           action="index.php?module=expense_account&amp;view=create">
         <input type="hidden" name="op" value="create"/>
         <input type="hidden" name="domain_id" value="{if isset($domain_id)}{$domain_id}{/if}"/>
-        <br/>
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.nameUc}
+                <th class="details_screen">{$LANG.nameUc}:&nbsp;
                     <a class="cluetip" href="#" title="{$LANG.requiredField}"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpExpenseAccounts">
                         <img src="{$helpImagePath}required-small.png" alt=""/>
                     </a>
                     &nbsp;
-                </td>
+                </th>
                 <td>
                     <input type="text" name="name" value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}" size="50" id="name"
                            class="validate[required]"/>

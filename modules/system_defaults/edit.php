@@ -381,5 +381,7 @@ $smarty->assign('defaults', $defaults);
 $smarty->assign('value', $value);
 $smarty->assign('description', $description);
 $smarty->assign('default', $default);
-$smarty->assign('pageActive', 'system_default');
-$smarty->assign('activeTab', '#setting');
+
+$smarty->assign('pageActive', 'siDefaults');
+$smarty->assign('subPageActive', 'siDefaultsEdit');
+$smarty->assign('activeTab', '#settings');

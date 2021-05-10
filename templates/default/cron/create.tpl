@@ -16,7 +16,7 @@
           action="index.php?module=cron&amp;view=create">
         <table class="center">
             <tr>
-                <td class="details_screen">{$LANG.invoiceUc}</td>
+                <th class="details_screen">{$LANG.invoiceUc}:</th>
                 <td>
                     <select name="invoice_id" class="validate[required]">
                         <option value=''></option>
@@ -33,21 +33,21 @@
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.startDate}</td>
+                <th class="details_screen">{$LANG.startDate}:</th>
                 <td>
                     <input type="text" class="validate[required,custom[date],length[0,10]] date-picker" size="10" name="start_date" id="startdate"
                            value="{if isset($smarty.post.start_date)}{$smarty.post.start_date}{else}{'+1 days'|date_format:'%Y-%m-%d'}{/if}"/>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.endDate}</td>
+                <th class="details_screen">{$LANG.endDate}:</th>
                 <td>
                     <input type="text" class="date-picker" size="10" name="end_date" id="enddate"
                            {if isset($smarty.post.end_date)}value="{$smarty.post.end_date}"{/if}/>
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.recurEach}</td>
+                <th class="details_screen">{$LANG.recurEach}:</th>
                 <td>
                     <input name="recurrence" size="10" class="validate[required]"
                            {if isset($smarty.post.recurrence)}value="{$smarty.post.recurrence}"{/if}/>
@@ -68,7 +68,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.emailBillerAfterCron}</td>
+                <th class="details_screen">{$LANG.emailBillerAfterCron}:</th>
                 <td>
                     <select name="email_biller" class="validate[required]">
                         <option value="{$smarty.const.ENABLED}"
@@ -85,7 +85,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="details_screen">{$LANG.emailCustomerAfterCron}</td>
+                <th class="details_screen">{$LANG.emailCustomerAfterCron}:</th>
                 <td>
                     <select name="email_customer" class="validate[required]">
                         <option value="{$smarty.const.ENABLED}"

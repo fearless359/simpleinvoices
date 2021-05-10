@@ -17,5 +17,5 @@ if (file_put_contents("public/data.json", $data) === false) {
 
 $smarty->assign('numberOfRows', count($preferences));
 
-$smarty->assign('pageActive', 'preference');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'invPrefs');
+$smarty->assign('activeTab', '#settings');

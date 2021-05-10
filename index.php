@@ -476,34 +476,6 @@ Log::out("index.php - post_load...");
 // Main: Custom menu - START
 // **********************************************************
 if ($menu) {
-    // Check for menu.tpl files for extensions. The content of these files is:
-    //
-    // <!-- BEFORE:tax_rates -->
-    // <li>
-    // <a {if $pageActive == "custom_flags"} class="active"{/if} href="index.php?module=custom_flags&amp;view=manage">
-    // {$LANG.customFlagsUc}
-    // </a>
-    // </li>
-    // {if $subPageActive == "custom_flags_view"}
-    // <li>
-    // <a class="active active_subpage" href="#">
-    // {$LANG.view}
-    // </a>
-    // </li>
-    // {/if}
-    // {if $subPageActive == "custom_flags_edit"}
-    // <li>
-    // <a class="active active_subpage" href="#">
-    // {$LANG.edit}
-    // </a>
-    // </li>
-    // {/if}
-    //
-    // This means the content of the extension's menu.tpl file will be inserted before the
-    // following line in the default menu.tpl file:
-    //
-    // <!~- SECTION:tax_rates -->
-    //
     // If no matching section is found, the file will NOT be inserted.
     $myPath = Util::getCustomPath('menu');
     if (isset($myPath)) {

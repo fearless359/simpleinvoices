@@ -61,5 +61,5 @@ try {
 }
 
 $smarty->assign('pageActive', 'customer');
-$smarty->assign('subPageActive', "customer_view");
+$smarty->assign('subPageActive', "customerView");
 $smarty->assign('activeTab', '#people');

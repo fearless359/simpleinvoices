@@ -32,6 +32,6 @@ if (!empty($_POST['username'])) {
     $smarty->assign("pwd_pattern", UserSecurity::buildPwdPattern());
 
     $smarty->assign('pageActive', 'user');
-    $smarty->assign('subPageActive', 'user_add');
+    $smarty->assign('subPageActive', 'userCreate');
     $smarty->assign('activeTab', '#people');
 }

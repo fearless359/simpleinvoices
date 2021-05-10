@@ -27,5 +27,5 @@ if (file_put_contents("public/data.json", $data) === false) {
 
 $smarty->assign('numberOfRows', count($cfs));
 
-$smarty->assign('pageActive', 'custom_field');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'customFields');
+$smarty->assign('activeTab', '#settings');

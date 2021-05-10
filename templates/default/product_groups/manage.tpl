@@ -20,11 +20,11 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noUc} {$LANG.productGroupsUc}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.nameUc}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.nameUc}</th>
             <th class="si_right">{$LANG.markupUc}</th>
         </tr>
         </thead>

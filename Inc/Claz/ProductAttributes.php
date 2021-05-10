@@ -35,6 +35,51 @@ class ProductAttributes
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getProductAttributes();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . ' ' . $row['name'];
+            $editName = $LANG['edit'] . ' ' . $row['name'];
+
+            $action =
+                  "<a class='index_table' title='$viewName' " .
+                     "href='index.php?module=product_attribute&amp;view=view&amp;id={$row['id']}''>" .
+                    "<img src='images/view.png' alt='$viewName' class='action'/>" .
+                  "</a>&nbsp;&nbsp;" .
+                  "<a class='index_table' title='$editName' " .
+                     "href='index.php?module=product_attribute&amp;view=edit&amp;id={$row['id']}'>" .
+                    "<img src='images/edit.png' alt='$editName' class='action'/>" .
+                  "</a>";
+
+            $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
+            $enabled = "<span style='display:none'>{$row['enabled_text']}</span>" .
+                       "<img src='$image' alt='{$LANG['enabled']}'>";
+
+            $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
+            $visible = "<span style='display:none'>{$row['visible_text']}</span>" .
+                       "<img src='$image' alt='{$LANG['enabled']}'>";
+
+
+                $tableRows[] = [
+                'action' => $action,
+                'name' => $row['name'],
+                'typeName' => ucwords($row['type_name']),
+                'enabled' => $enabled,
+                'visible' => $visible
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Retrieve product_attributes record(s) and associated information.
      * @param int|null $id ID of record to retrieve.
      * @param bool $enabled true if only enabled records are to be retrieved;
@@ -79,14 +124,7 @@ class ProductAttributes
             $ca->addWhen("!=", ENABLED, $LANG['disabled'], true);
             $pdoDb->addToCaseStmts($ca);
 
-            $rows = $pdoDb->request("SELECT", "products_attributes", 'pa');
-            foreach ($rows as $row) {
-                $row['vname'] = $LANG['view'] . ' ' . $row['name'];
-                $row['ename'] = $LANG['edit'] . ' ' . $row['name'];
-                $row['enabled_image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
-                $row['visible_image'] = $row['visible'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
-                $productAttributes[] = $row;
-            }
+            $productAttributes = $pdoDb->request("SELECT", "products_attributes", 'pa');
         } catch (PdoDbException $pde) {
             error_log("ProductAttributes::getOne() - id[$id] error: " . $pde->getMessage());
         }

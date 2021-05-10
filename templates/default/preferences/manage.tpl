@@ -21,17 +21,17 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noPreferences}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.idUc}</th>
-            <th>{$LANG.descriptionUc}</th>
-            <th>{$LANG.invoiceNumberingGroup}</th>
-            <th>{$LANG.setAging}</th>
-            <th>{$LANG.language}</th>
-            <th>{$LANG.locale}</th>
-            <th>{$LANG.enabled}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_right">{$LANG.idUc}</th>
+            <th class="si_left">{$LANG.descriptionUc}</th>
+            <th class="si_center">{$LANG.invoiceNumberingGroup}</th>
+            <th class="si_center">{$LANG.setAging}</th>
+            <th class="si_center">{$LANG.language}</th>
+            <th class="si_center">{$LANG.locale}</th>
+            <th class="si_center">{$LANG.enabled}</th>
         </tr>
         </thead>
     </table>

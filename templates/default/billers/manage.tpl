@@ -20,17 +20,17 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noBillers}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.nameUc}</th>
-            <th>{$LANG.street}</th>
-            <th>{$LANG.city}</th>
-            <th>{$LANG.state}</th>
-            <th>{$LANG.zip}</th>
-            <th>{$LANG.email}</th>
-            <th>{$LANG.enabled}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.nameUc}</th>
+            <th class="si_left">{$LANG.street}</th>
+            <th class="si_left">{$LANG.city}</th>
+            <th class="si_center">{$LANG.state}</th>
+            <th class="si_right">{$LANG.zip}</th>
+            <th class="si_left">{$LANG.email}</th>
+            <th class="si_center">{$LANG.enabled}</th>
         </tr>
         </thead>
     </table>
@@ -57,6 +57,7 @@
                 ],
                 "columnDefs": [
                     { "targets": 0, "className": 'dt-body-center', "orderable": false},
+                    { "targets": 4, "className": 'dt-body-center' },
                     { "targets": 5, "className": 'dt-body-right' },
                     { "targets": 7, "className": 'dt-body-center' }
                 ],

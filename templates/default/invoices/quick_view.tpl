@@ -58,9 +58,9 @@
             <img src='images/delete.png' class='action' alt="{$LANG.delete}"/>&nbsp;{$LANG.delete}
         </a>
     {/if}
+    <!-- #PDF end -->
 </div>
 <!--Actions heading - start-->
-<!-- #PDF end -->
 {include file="$path/quick_view_invoice_view.tpl"}
 {if $invoice.type_id == TOTAL_INVOICE}
 <table class='si_invoice_view'>
@@ -71,27 +71,23 @@
         <td colspan="6">{$invoiceItems[0].description|outHtml}</td>
     </tr>
     <tr class="tr_head">
-        <th>{$LANG.salesRepresentative}</th>
+        <th>{$LANG.salesRepresentative}:</th>
         <td colspan="5">{$invoice.sales_representative}</td>
     </tr>
     <tr class="tr_head">
         <td colspan="6"><br/></td>
     </tr>
     <tr class="tr_head">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="align_right"><b>{$LANG.grossTotal}</b></td>
-        <td class="align_right"><b>{$LANG.tax}</b></td>
-        <td class="align_right"><b>{$LANG.totalFullUc}</b></td>
+        <th colspan="3"></th>
+        <th class="si_right">{$LANG.grossTotal}</th>
+        <th class="si_right">{$LANG.tax}</th>
+        <th class="si_right">{$LANG.totalFullUc}</th>
     </tr>
     <tr class="tr_head">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="align_right">{$invoiceItems[0].gross_total|utilCurrency:$locale:$currencyCode}</td>
-        <td class="align_right">{$invoiceItems[0].tax_amount|utilCurrency:$locale:$currencyCode}</td>
-        <td class="align_right"><u>{$invoiceItems[0].total|utilCurrency:$locale:$currencyCode}</u></td>
+        <td colspan="3"></td>
+        <td class="si_right">{$invoiceItems[0].gross_total|utilCurrency:$locale:$currencyCode}</td>
+        <td class="si_right">{$invoiceItems[0].tax_amount|utilCurrency:$locale:$currencyCode}</td>
+        <td class="si_right underline">{$invoiceItems[0].total|utilCurrency:$locale:$currencyCode}</td>
     </tr>
     <tr class="tr_head">
         <td colspan="6"><br/><br/></td>
@@ -101,67 +97,65 @@
     </tr>
 </table>
 {elseif $invoice.type_id == ITEMIZED_INVOICE || $invoice.type_id == CONSULTING_INVOICE}
-    <table class="si_invoice_view_items">
-    {if $invoice.type_id == ITEMIZED_INVOICE }
-        {include file="$path/quick_view_itemized.tpl"}
-    {elseif $invoice.type_id == CONSULTING_INVOICE}
-        {include file="$path/quick_view_consulting.tpl"}
-    {/if}
+<table class="si_invoice_view_items">
+{if $invoice.type_id == ITEMIZED_INVOICE }
+    {include file="$path/quick_view_itemized.tpl"}
+{elseif $invoice.type_id == CONSULTING_INVOICE}
+    {include file="$path/quick_view_consulting.tpl"}
+{/if}
 
-    {foreach $invoiceItems as $invoiceItem }
-        {if $invoice.type_id == ITEMIZED_INVOICE}
-            {include file="$path/quick_view_foreach_itemized.tpl"}
-        {elseif $invoice.type_id == CONSULTING_INVOICE}
-            {include file="$path/quick_view_foreach_consulting.tpl"}
-        {/if}
-    {/foreach}
-    </table>
-    {if isset($invoice.note)}
-    <table class="si_invoice_view_items">
-        <tr class="tr_head_items">
-            <th></th>
-            <td colspan="5"></td>
-        </tr>
-        <tr class="tr_head_items">
-            <th>{$LANG.notes}:</th>
-            <td colspan="4"></td>
-            <td class="si_switch">
-                <a href='#' class="show_notes"
-                   onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
-                    <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
-                </a>
-                <a href='#' class="hide_notes si_hide"
-                   onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
-                    <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
-                </a>
-            </td>
-        </tr>
-        <!-- if hide detail click - the stripped note will be displayed -->
-        <tr class="abbrev_notes tr_notes">
-            <td colspan="6">{$invoice.note|truncate:80:"...":true|outHtml}</td>
-        </tr>
-        <!-- if show detail click - the full note will be displayed -->
-        <tr class="full_notes tr_notes si_hide">
-            <td colspan="6" style="white-space:normal;">{$invoice.note|outHtml}</td>
-        </tr>
-    </table>
+{foreach $invoiceItems as $invoiceItem }
+    {if $invoice.type_id == ITEMIZED_INVOICE}
+        {include file="$path/quick_view_foreach_itemized.tpl"}
+    {elseif $invoice.type_id == CONSULTING_INVOICE}
+        {include file="$path/quick_view_foreach_consulting.tpl"}
     {/if}
-    <br/>
-    <table class="si_invoice_view_items" style="width:50%;;text-align: left;">
-        <tr>
-            <th style="width:25%;">{$LANG.salesRepresentative}:</th>
-            <td>{$invoice.sales_representative|htmlSafe}</td>
-            <td colspan="4">&nbsp;</td>
-        </tr>
-    </table>
+{/foreach}
+</table>
+{if isset($invoice.note)}
+<table class="si_invoice_view_items">
+    <tr class="tr_head">
+        <td colspan="6"></td>
+    </tr>
+    <tr class="tr_head">
+        <th>{$LANG.notes}:</th>
+        <td colspan="4"></td>
+        <td class="si_switch">
+            <a href='#' class="show_notes"
+               onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
+                <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
+            </a>
+            <a href='#' class="hide_notes si_hide"
+               onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
+                <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
+            </a>
+        </td>
+    </tr>
+    <!-- if hide detail click - the stripped note will be displayed -->
+    <tr class="abbrev_notes tr_notes">
+        <td colspan="6">{$invoice.note|truncate:80:"...":true|outHtml}</td>
+    </tr>
+    <!-- if show detail click - the full note will be displayed -->
+    <tr class="full_notes tr_notes si_hide">
+        <td colspan="6" style="white-space:normal;">{$invoice.note|outHtml}</td>
+    </tr>
+</table>
+{/if}
+<br/>
+<table class="si_invoice_view_items">
+    <tr>
+        <th>{$LANG.salesRepresentative}:</th>
+        <td>{$invoice.sales_representative|htmlSafe}</td>
+        <td colspan="4">&nbsp;</td>
+    </tr>
+</table>
 {* end itemized invoice *}
 {/if}
     {* tax section - start --------------------- *}
 {if $invoiceNumberOfTaxes > 0}
 <table class="si_invoice_view_items">
     <tr class="tr_tax">
-        <td colspan="4"></td>
-        <th class="si_right">{$LANG.subtotalUc}</th>
+        <th class="si_right" colspan="5">{$LANG.subtotalUc}:</th>
         <td class="si_right {if $invoiceNumberOfTaxes > 1}underline{/if}">
             {$invoice.gross|utilCurrency:$locale:$currencyCode}
         </td>
@@ -169,22 +163,19 @@
     {foreach $invoice.tax_grouped as $taxg}
         {if $taxg.tax_amount != 0}
             <tr class="tr_tax">
-                <td colspan="4"></td>
-                <th class="si_right">{$taxg.tax_name|htmlSafe}</th>
+                <th class="si_right" colspan="5">{$taxg.tax_name|htmlSafe}:</th>
                 <td class="si_right">{$taxg.tax_amount|utilCurrency:$locale:$currencyCode}</td>
             </tr>
         {/if}
     {/foreach}
     <tr class="tr_tax">
-        <td colspan="4"></td>
-        <th class="si_right">{$LANG.taxTotal}</th>
+        <th class="si_right" colspan="5">{$LANG.taxTotal}:</th>
         <td class="si_right underline">
             {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
         </td>
     </tr>
     <tr class="tr_total">
-        <td colspan="4"></td>
-        <th class="si_right">{$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}</th>
+        <th class="si_right" colspan="5">{$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</th>
         <td class="si_right">{$invoice.total|utilCurrency:$locale:$currencyCode}</td>
     </tr>
 </table>

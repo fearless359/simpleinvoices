@@ -4,16 +4,14 @@
     <!--suppress HtmlFormInputWithoutLabel -->
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=product_attribute&amp;view=create">
-        <h3>{$LANG.addProductAttribute}</h3>
-        <hr/>
         <table class="center">
             <tr>
-                <th class="left">{$LANG.nameUc}</th>
+                <th class="left">{$LANG.nameUc}:</th>
                 <td><input type="text" name="name" class="validate[required]" size="50"
                            value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}" /></td>
             </tr>
             <tr>
-                <th class="left">{$LANG.type}</th>
+                <th class="left">{$LANG.type}:</th>
                 <td>
                     <select name="type_id">
                         {foreach $types as $k => $v}
@@ -23,13 +21,13 @@
                 </td>
             </tr>
             <tr>
-                <th class="left">{$LANG.enabled}</th>
+                <th class="left">{$LANG.enabled}:</th>
                 <td>
                     {html_options class="edit si_input" name=enabled options=$enabled selected=1}
                 </td>
             </tr>
             <tr>
-                <th class="left">{$LANG.visible}</th>
+                <th class="left">{$LANG.visible}:</th>
                 <td>
                     {html_options class="edit si_input" name=visible options=$enabled selected=1}
                 </td>

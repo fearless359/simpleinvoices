@@ -29,5 +29,5 @@ if ($op === 'create' ) {
 $smarty->assign('display_block',$displayBlock);
 $smarty->assign('refresh_redirect',$refreshRedirect);
 
-$smarty->assign('pageActive', 'product_attribute_manage');
+$smarty->assign('pageActive', 'productAttribute');
 $smarty->assign('activeTab', '#product');

@@ -16,15 +16,15 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noCustomFlags}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.associatedTable}</th>
-            <th>{$LANG.flagNumber}</th>
-            <th>{$LANG.fieldLabelUc}</th>
-            <th>{$LANG.enabled}</th>
-            <th>{$LANG.fieldHelpUc}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.associatedTable}</th>
+            <th class="si_center">{$LANG.flagNumber}</th>
+            <th class="si_left">{$LANG.fieldLabelUc}</th>
+            <th class="si_center">{$LANG.enabled}</th>
+            <th class="si_left">{$LANG.fieldHelpUc}</th>
         </tr>
         </thead>
     </table>

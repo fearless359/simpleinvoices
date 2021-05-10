@@ -40,6 +40,57 @@ class Expense
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $config, $LANG;
+
+        $rows = self::getExpenses();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . ' ' . $row['p_desc'];
+            $editName = $LANG['edit'] . ' ' . $row['p_desc'];
+
+            $action =
+                "<a class='index_table' title='$viewName' " .
+                   "href='index.php?module=expense&amp;view=view&amp;id={$row['eid']}'>" .
+                    "<img src='images/view.png' class='action' alt='$viewName'/>" .
+                "</a>&nbsp;&nbsp;" .
+                "<a class='index_table' title='$editName' " .
+                    "href='index.php?module=expense&amp;view=edit&amp;id={$row['eid']}'>" .
+                    "<img src='images/edit.png' class='action' alt='$editName'/>" .
+                "</a>";
+
+            $quickView =
+                "<a class='index_table' title='quick view' " .
+                   "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['iv_id']}'>" .
+                    "{$row['iv_index_id']}" .
+                "</a>";
+
+            $pattern = '/^(.*)_(.*)$/';
+            $replPattern = '$1-$2';
+            $tableRows[] = [
+                'action' => $action,
+                'date' => $row['date'],
+                'amount' => $row['amount'],
+                'tax' => $row['tax'],
+                'total' => $row['total'],
+                'eaName' => $row['ea_name'],
+                'bName' => $row['b_name'],
+                'cName' => $row['c_name'],
+                'ivId' => $quickView,
+                'statusWording' => $row['status_wording'],
+                'currencyCode' => $config['localCurrencyCode'],
+                'locale' => preg_replace($pattern, $replPattern, $config['localLocale'])
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Get all expense records.
      * @param int|null $id ID of record to retrieve, Omit to get all records.
      * @return array $rows of expense records.
@@ -91,7 +142,7 @@ class Expense
             $pdoDb->addToFunctions("(SELECT tax + e.amount) AS total");
 
             $selectList = [
-                new DbField('e.id', 'EID'),
+                new DbField('e.id', 'eid'),
                 new DbField('e.domain_id', 'domain_id'),
                 new DbField('e.status', 'status'),
                 new DbField('e.amount', 'amount'),
@@ -110,13 +161,11 @@ class Expense
             ];
             $pdoDb->setSelectList($selectList);
 
-            $rows = $pdoDb->request("SELECT", "expense", 'e');
-            foreach ($rows as $row) {
-                $row['vname'] = $LANG['view'] . ' ' . $row['p_desc'];
-                $row['ename'] = $LANG['edit'] . ' ' . $row['p_desc'];
-                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paidUc'] : $LANG['notPaid'];
-                $expenses[] = $row;
-            }
+            $expenses = $pdoDb->request("SELECT", "expense", 'e');
+//            foreach ($rows as $row) {
+//                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paidUc'] : $LANG['notPaid'];
+//                $expenses[] = $row;
+//            }
         } catch (PdoDbException $pde) {
             error_log("Expense::getExpense() - error: " . $pde->getMessage());
         }

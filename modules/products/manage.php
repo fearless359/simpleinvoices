@@ -23,5 +23,5 @@ $smarty->assign("numberOfRows",count($products));
 $cflgs = CustomFlags::getCustomFlagsQualified('products', true);
 $smarty->assign("cflgs", $cflgs);
 
-$smarty->assign('pageActive', 'product_manage');
+$smarty->assign('pageActive', 'product');
 $smarty->assign('activeTab', '#product');

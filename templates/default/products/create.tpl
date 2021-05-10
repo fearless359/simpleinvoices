@@ -5,7 +5,7 @@
     <!--suppress HtmlFormInputWithoutLabel -->
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=products&amp;view=create">
         <div class="si_form">
-            <div id="tabs_customer">
+            <div class="si_hide" id="tabs_customer">
                 <ul class="anchors">
                     <li><a href="#section-1" target="_top">{$LANG.detailsUc}</a></li>
                     <li><a href="#section-2" target="_top">{$LANG.customUc}&nbsp;{$LANG.fieldsUc}&nbsp;&amp;&nbsp;{$LANG.flagsUc}</a></li>
@@ -197,6 +197,14 @@
                 </div>
             </div>
         </div>
+        <script>
+            {* This causes the tabs to appear after being rendered *}
+            {literal}
+            $(document).ready(function () {
+                $("div.si_hide").removeClass("si_hide");
+            });
+            {/literal}
+        </script>
         <div class="si_toolbar si_toolbar_form">
             <button type="submit" class="positive" name="save_product" value="{$LANG.save}" tabindex="160">
                 <img class="button_img" src="images/tick.png" alt=""/>

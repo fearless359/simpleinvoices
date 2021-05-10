@@ -12,4 +12,4 @@ Util::directAccessAllowed();
 $smarty->assign("patches", SqlPatchManager::sqlPatches());
 
 $smarty->assign('pageActive', 'sqlpatch');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('activeTab', '#settings');

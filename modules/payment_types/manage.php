@@ -17,5 +17,5 @@ if (file_put_contents("public/data.json", $data) === false) {
 
 $smarty->assign('numberOfRows', count($paymentTypes));
 
-$smarty->assign('pageActive'  , 'payment_type');
-$smarty->assign('activeTab'  , '#setting');
+$smarty->assign('pageActive'  , 'pymtTypes');
+$smarty->assign('activeTab'  , '#settings');

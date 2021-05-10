@@ -23,12 +23,12 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noPaymentTypes}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.descriptionUc}</th>
-            <th>{$LANG.enabled}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.descriptionUc}</th>
+            <th class="si_center">{$LANG.enabled}</th>
         </tr>
         </thead>
     </table>

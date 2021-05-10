@@ -8,9 +8,14 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$productAttributes = ProductAttributes::getAll();
-$smarty->assign('product_attributes', $productAttributes);
+$productAttributes = ProductAttributes::manageTableInfo();
+
+$data = json_encode(['data' => $productAttributes]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $smarty->assign("numberOfRows", count($productAttributes));
 
-$smarty->assign('pageActive', "product_attribute_manage");
+$smarty->assign('pageActive', "productAttribute");
 $smarty->assign('activeTab', '#product');

@@ -13,7 +13,14 @@ $addButtonLink = "index.php?module=expense&amp;view=create";
 $addButtonMsg = $LANG['addNewExpense'];
 $displayBlock = "<div class='si_message_error'>{$LANG['noExpenses']}</div>";
 
-$expenses = Expense::getAll();
+
+$expenses = Expense::manageTableInfo();
+
+$data = json_encode(['data' => $expenses]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $numberOfRows = count($expenses);
 if ($numberOfRows == 0) {
     if (ExpenseAccount::count() == 0) {
@@ -23,7 +30,6 @@ if ($numberOfRows == 0) {
     }
 }
 
-$smarty->assign('expenses', $expenses);
 $smarty->assign("numberOfRows", $numberOfRows );
 $smarty->assign("display_block", $displayBlock);
 $smarty->assign("add_button_link", $addButtonLink);

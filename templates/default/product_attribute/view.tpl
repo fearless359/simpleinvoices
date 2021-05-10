@@ -1,4 +1,3 @@
-<div class="si_center"><h2>{$LANG.productAttribute}</h2></div>
 <table class="center">
     <tr>
         <th class="details_screen">{$LANG.nameUc}:</th>

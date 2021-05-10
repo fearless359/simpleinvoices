@@ -12,7 +12,7 @@
             <table>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.associatedTable}
+                        {$LANG.associatedTable}:
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsAssociatedTable"
                            title="{$LANG.associatedTable}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.flagNumber}
+                        {$LANG.flagNumber}:
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsFlagNumber"
                            title="{$LANG.flagNumber}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
@@ -32,7 +32,7 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.fieldLabelUc}
+                        {$LANG.fieldLabelUc}:
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsFieldLabel"
                            title="{$LANG.fieldLabelUc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
@@ -42,7 +42,7 @@
                                value="{if isset($cflg.field_label)}{$cflg.field_label|escape}{/if}"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.customFlagsUc}
+                    <th class="details_screen">{$LANG.customFlagsUc}:
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsEnable"
                            title="{$LANG.customFlagsUc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
@@ -54,7 +54,7 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.resetCustomFlags}
+                        {$LANG.resetCustomFlags}:
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpResetCustomFlagsProducts"
                            title="{$LANG.resetCustomFlags}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
@@ -64,7 +64,7 @@
                 </tr>
                 <tr>
                     <th class="details_screen">
-                        {$LANG.fieldHelpUc}
+                        {$LANG.fieldHelpUc}:
                         <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFlagsFieldHelp"
                            title="{$LANG.fieldHelpUc}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>

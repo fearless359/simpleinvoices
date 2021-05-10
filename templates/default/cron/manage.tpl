@@ -19,17 +19,17 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noCrons} </div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.invoiceId}</th>
-            <th>{$LANG.startDateShort}</th>
-            <th>{$LANG.endDateShort}</th>
-            <th>{$LANG.recurEach}</th>
-            <th>{$LANG.emailBiller}</th>
-            <th>{$LANG.emailCustomer}</th>
-            <th>{$LANG.customerUc}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_center">{$LANG.invoiceId}</th>
+            <th class="si_center">{$LANG.startDateShort}</th>
+            <th class="si_center">{$LANG.endDateShort}</th>
+            <th class="si_left">{$LANG.recurEach}</th>
+            <th class="si_center">{$LANG.emailBiller}</th>
+            <th class="si_center">{$LANG.emailCustomer}</th>
+            <th class="si_left">{$LANG.customerUc}</th>
         </tr>
         </thead>
     </table>

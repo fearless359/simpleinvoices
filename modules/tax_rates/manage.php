@@ -17,5 +17,5 @@ if (file_put_contents("public/data.json", $data) === false) {
 
 $smarty->assign('numberOfRows', count($taxes));
 
-$smarty->assign('pageActive', 'tax_rate');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'taxRates');
+$smarty->assign('activeTab', '#settings');

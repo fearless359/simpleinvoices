@@ -55,7 +55,7 @@
     <div class="si_form">
         <table>
             <tr>
-                <th class="details_screen">{$LANG.username}
+                <th class="details_screen">{$LANG.username}:
                     <a class="cluetip" href="#" tabindex="910"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpUsername"
                        title="{$LANG.requiredField}">
@@ -70,7 +70,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.newPassword}
+                <th class="details_screen">{$LANG.newPassword}:
                     <a class="cluetip" href="#" tabindex="920"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpNewPassword"
                        title="{$LANG.newPassword}">
@@ -83,7 +83,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.confirmPassword}
+                <th class="details_screen">{$LANG.confirmPassword}:
                     <a class="cluetip" href="#" tabindex="930"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpConfirmPassword"
                        title="{$LANG.confirmPassword}">
@@ -96,7 +96,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.email}
+                <th class="details_screen">{$LANG.email}:
                     <a class="cluetip" href="#" tabindex="940"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailAddress"
                        title="{$LANG.requiredField}">
@@ -110,7 +110,7 @@
                 </td>
             </tr>
             <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
-                <th class="details_screen">{$LANG.role}
+                <th class="details_screen">{$LANG.role}:
                     <a class="cluetip" href="#" tabindex="950"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpUserRole"
                        title="{$LANG.role}">
@@ -129,7 +129,7 @@
                 </td>
             </tr>
             <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
-                <th class="details_screen">{$LANG.userId}
+                <th class="details_screen">{$LANG.userId}:
                     <a class="cluetip" href="#" tabindex="960"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpUserId"
                        title="{$LANG.userId}">
@@ -164,7 +164,7 @@
                 </td>
             </tr>
             <tr {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
-                <th class="details_screen">{$LANG.enabled}
+                <th class="details_screen">{$LANG.enabled}:
                     <a class="cluetip" href="#" tabindex="970"
                        rel="index.php?module=documentation&amp;view=view&amp;page=helpUserEnabled"
                        title="{$LANG.enabled} / {$LANG.disabled}">

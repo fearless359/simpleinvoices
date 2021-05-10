@@ -90,13 +90,13 @@ class Customer
             $action = "<a class='index_table' title='{$viewCust} {$row['name']}' " .
                          "href='index.php?module=customers&amp;view=view&amp;id={$row['id']}'>" .
                           "<img src='images/view.png' class='action' alt='{$viewCust}' />" .
-                      "</a>" .
+                      "</a>&nbsp;" .
                       "<a class='index_table' title='{$editCust} {$row['name']}' " .
                          "href='index.php?module=customers&amp;view=edit&amp;id={$row['id']}'>" .
                           "<img src='images/edit.png' class='action' alt='{$editCust}' />" .
                       "</a>";
             if ($enabled && !$customerSession) {
-                $action .= "<a class='index_table' title='{$defaultInv}' " .
+                $action .= "&nbsp;<a class='index_table' title='{$defaultInv}' " .
                               "href='index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view'>" .
                                "<img src='images/add.png' class='action' alt='add' />" .
                            "</a>";

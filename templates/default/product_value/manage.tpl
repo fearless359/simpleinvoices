@@ -17,50 +17,37 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noProductValues}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.attribute}</th>
-            <th>{$LANG.value}</th>
-            <th>{$LANG.enabled}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.attribute}</th>
+            <th class="si_left">{$LANG.value}</th>
+            <th class="si_center">{$LANG.enabled}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $product_values as $product_value}
-            <tr>
-                <td class="si_center">
-                    <a class="index_table" title="{$product_value['vname']}"
-                       href="index.php?module=product_value&amp;view=view&amp;id={$product_value['id']}">
-                        <img src="images/view.png" alt="{$product_value['vname']}" class="action" />
-                    </a>
-                    <a class="index_table" title="{$product_value['ename']}"
-                       href="index.php?module=product_value&amp;view=edit&amp;id={$product_value['id']}">
-                        <img src="images/edit.png" alt="{$product_value['ename']}" class="action"/>
-                    </a>
-                </td>
-                <td>{$product_value['name']}</td>
-                <td>{$product_value['value']}</td>
-                <td class="si_center">
-                    <!-- Span is here to allow field to be sorted -->
-                    <span style="display:none">{$product_value['enabled_text']}</span>
-                    <img src="{$product_value['image']}" alt="enabled">
-                </td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "name" },
+                    { "data": "value"},
+                    { "data": "enabled" }
+                ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
                     [3, "desc"],
-                    [1, "asc"]
+                    [1, "asc"],
+                    [2, "asc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    {"targets": 0, "className": 'dt-body-center', "orderable": false},
+                    {"targets": 3, "className": 'dt-body-center'}
                 ],
                 "colReorder": true
             });

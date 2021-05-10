@@ -1,4 +1,3 @@
-<div class="si_center"><h2>{$LANG.productValue}</h2></div>
 <table class="center">
     <tr>
         <th class="details_screen left">{$LANG.attribute}:</th>
@@ -17,5 +16,9 @@
     <a href="index.php?module=product_value&amp;view=edit&amp;id={$product_value.id|htmlSafe}">
         <img src="images/report_edit.png" alt=""/>
         {$LANG.edit}
+    </a>
+    <a href="index.php?module=product_value&amp;view=manage" class="negative">
+        <img src="images/cross.png" alt="{$LANG.cancel}" />
+        {$LANG.cancel}
     </a>
 </div>

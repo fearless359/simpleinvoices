@@ -219,7 +219,7 @@ class CustomFields
             if ($writeMode) {
                 $displayBlock =
                     "<tr>\n" .
-                    "  <th class='$cssClassTh'>$customLabelValue\n" .
+                    "  <th class='$cssClassTh'>$customLabelValue:\n" .
                     "    <a class='cluetip' href='#' title='Custom Fields' \n" .
                     "       rel='index.php?module=documentation&amp;view=view&amp;page=helpCustomFields'>\n" .
                     "      <img src='{$helpImagePath}help-small.png' alt='' />\n" .

@@ -8,32 +8,14 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noInvoices}.</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.customField}</th>
-            <th>{$LANG.customLabel}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.customField}</th>
+            <th class="si_left">{$LANG.customLabel}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $cfs as $cf}
-            <tr>
-                <td class="si_center">
-                    <a class='index_table' title='{$cf.vname}'
-                       href='index.php?module=custom_fields&amp;view=view&amp;id={$cf['cf_id']}'>
-                        <img src='images/view.png' class='action' alt='{$cf.vname}'/>
-                    </a>
-                    <a class='index_table' title='{$cf.ename}'
-                       href='index.php?module=custom_fields&amp;view=edit&amp;id={$cf['cf_id']}'>
-                        <img src='images/edit.png' class='action' alt='{$cf.ename}'/>
-                    </a>
-                </td>
-                <td>{$cf['field_name_nice']}</td>
-                <td>{$cf['cf_custom_label']}</td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}

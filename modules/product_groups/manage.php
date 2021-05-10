@@ -21,5 +21,5 @@ if (file_put_contents("public/data.json", $data) === false) {
 
 $smarty->assign("numberOfRows",count($productGroups));
 
-$smarty->assign('pageActive', 'product_groups_manage');
+$smarty->assign('pageActive', 'productGroups');
 $smarty->assign('activeTab', '#product');

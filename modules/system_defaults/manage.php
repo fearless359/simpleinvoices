@@ -45,5 +45,5 @@ $smarty->assign("defaultPaymentType", PaymentType::getDefaultPaymentType());
 $smarty->assign("defaultPreference" , Preferences::getDefaultPreference());
 $smarty->assign("defaultTax"        , Taxes::getDefaultTax());
 
-$smarty->assign('pageActive', 'system_default');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'siDefaults');
+$smarty->assign('activeTab', '#settings');

@@ -67,7 +67,7 @@
         <h2 class="align_left">{$LANG.dontIForgetTo}</h2>
         <div class="si_toolbar">
             <a href="index.php?module=options&amp;view=index" class="">
-                <img src="images/cog_edit.png" alt=""/>{$LANG.customizeSettings}
+                <img src="images/cog_edit.png" alt=""/>{$LANG.customizeUc}
             </a>
             <a href="index.php?module=options&amp;view=backup_database" class="">
                 <img src="images/database_save.png" alt=""/>{$LANG.backupYourDatabase}

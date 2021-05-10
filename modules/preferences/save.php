@@ -124,6 +124,6 @@ if (  $op === 'create' ) {
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
-$smarty->assign('pageActive', 'preference');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'invPrefs');
+$smarty->assign('activeTab', '#settings');
 

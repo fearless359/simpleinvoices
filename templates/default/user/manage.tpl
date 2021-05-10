@@ -21,15 +21,15 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noUsers}</div>
 {else}
-    <table id="si-data-table" class="display compact" >
+    <table id="si-data-table" class="display responsive compact" >
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.username}</th>
-            <th>{$LANG.email}</th>
-            <th>{$LANG.role}</th>
-            <th>{$LANG.enabled}</th>
-            <th>{$LANG.userId}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.username}</th>
+            <th class="si_left">{$LANG.email}</th>
+            <th class="si_left">{$LANG.role}</th>
+            <th class="si_center">{$LANG.enabled}</th>
+            <th class="si_left">{$LANG.userId}</th>
         </tr>
         </thead>
     </table>

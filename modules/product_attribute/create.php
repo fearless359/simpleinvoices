@@ -14,6 +14,7 @@ if (!empty($_POST['name'])) {
 } else {
     $smarty->assign("types", ProductAttributeType::getAll());
 
-    $smarty->assign('pageActive', 'product_attribute_add');
+    $smarty->assign('pageActive', 'productAttribute');
+    $smarty->assign('subPageActive', 'productAttributeCreate');
     $smarty->assign('activeTab', '#product');
 }

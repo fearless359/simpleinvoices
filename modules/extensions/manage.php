@@ -26,6 +26,6 @@ if (file_put_contents("public/data.json", $data) === false) {
 
 $smarty->assign('numberOfRows', count($extensions));
 
-$smarty->assign('pageActive', 'setting');
-$smarty->assign('activeTab', '#setting');
-$smarty->assign('subPageActive', 'setting_extensions');
+$smarty->assign('pageActive', 'settings');
+$smarty->assign('subPageActive', 'settingsExtensions');
+$smarty->assign('activeTab', '#settings');

@@ -51,5 +51,5 @@ if (!empty($_POST['op']) && $_POST['op'] === 'edit') {
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
-$smarty->assign('pageActive', 'custom_field');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'customFields');
+$smarty->assign('activeTab', '#settings');

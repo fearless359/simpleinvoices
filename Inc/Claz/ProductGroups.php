@@ -32,7 +32,7 @@ class ProductGroups
             $action =
                 "<a class='index_table' title='{$LANG['view']} {$row['name']}' href='index.php?module=product_groups&amp;view=view&amp;name={$row['name']}'>" .
                     "<img src='images/view.png' class='action' alt='view'/>" .
-                "</a>&nbsp;" .
+                "</a>&nbsp;&nbsp;" .
                 "<a class='index_table' title='{$LANG['edit']} {$row['name']}' href='index.php?module=product_groups&amp;view=edit&amp;name={$row['name']}'>" .
                     "<img src='images/edit.png' class='action' alt='edit'/>" .
                 "</a>";

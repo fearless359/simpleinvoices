@@ -64,5 +64,5 @@ try {
 $smarty->assign("defaults", SystemDefaults::loadValues());
 
 $smarty->assign('pageActive', 'customer');
-$smarty->assign('subPageActive', "customer_edit");
+$smarty->assign('subPageActive', "customerEdit");
 $smarty->assign('activeTab', '#people');

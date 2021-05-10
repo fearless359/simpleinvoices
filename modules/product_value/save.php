@@ -13,14 +13,13 @@ $op = !empty($_POST['op']) ? $_POST['op'] : null;
 
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=product_value&amp;view=manage' />";
 $displayBlock = "<div class=\"si_message_error\">{$LANG['saveProductValueFailure']}</div>";
-$pageActive = 'product_value_manager';
 
 #insert invoice_preference
 if ( $op === 'create') {
     if (ProductValues::isDuplicate($_POST['attribute_id'], $_POST['value'])) {
         $refreshRedirect = "<meta http-equiv='refresh' content='5;url=index.php?module=product_value&amp;view=create' />";
         $displayBlock = "<div class=\"si_message_error\">{$LANG['duplicateIProductValue']}</div>";
-        $pageActive = 'product_value_add';
+        $smarty->assign('subPageActive', 'create');
     } elseif (ProductValues::insert() > 0) {
         $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveProductValueSuccess']}</div>";
     }
@@ -33,5 +32,5 @@ if ( $op === 'create') {
 $smarty->assign('display_block',$displayBlock);
 $smarty->assign('refresh_redirect',$refreshRedirect);
 
-$smarty->assign('pageActive', $pageActive);
+$smarty->assign('pageActive', 'productValue');
 $smarty->assign('activeTab', '#product');

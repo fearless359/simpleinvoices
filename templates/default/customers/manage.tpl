@@ -67,17 +67,17 @@
             {$LANG.customerAdd}
         </a>
     </div>
-    <table id="si-data-table" class="display compact" >
+    <table id="si-data-table" class="display responsive compact" >
         <thead>
             <tr>
-                <th>{$LANG.actions}</th>
-                <th>{$LANG.nameUc}</th>
-                <th>{$LANG.customerDepartment}</th>
-                <th>{$LANG.lastInvoice}</th>
-                <th>{$LANG.totalUc}</th>
-                <th>{$LANG.paidUc}</th>
-                <th>{$LANG.owingUc}</th>
-                <th>{$LANG.enabled}</th>
+                <th class="si_center">{$LANG.actions}</th>
+                <th class="si_left">{$LANG.nameUc}</th>
+                <th class="si_left">{$LANG.customerDepartment}</th>
+                <th class="si_center">{$LANG.lastInvoice}</th>
+                <th class="si_right">{$LANG.totalUc}</th>
+                <th class="si_right">{$LANG.paidUc}</th>
+                <th class="si_right">{$LANG.owingUc}</th>
+                <th class="si_center">{$LANG.enabled}</th>
             </tr>
         </thead>
     </table>
@@ -124,16 +124,20 @@
                 ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "columnDefs": [
-                    {"targets": 0, "className": 'dt-body-center', "orderable": false },
+                    {"targets": 0, "className": 'dt-body-center', "width": "8%", "orderable": false },
                     {"targets": 1 },
                     {"targets": 2 },
-                    {"targets": 3, "className": 'dt-body-right' },
+                    {"targets": 3, "className": 'dt-body-center' },
                     {"targets": 4, "className": 'dt-body-right' },
                     {"targets": 5, "className": 'dt-body-right' },
                     {"targets": 6, "className": 'dt-body-right' },
                     {"targets": 7, "className": 'dt-body-center'}
                 ],
-                "colReorder": true
+                "colReorder": true,
+                "order": [
+                    [7, 'desc'],
+                    [1, 'asc']
+                ]
             });
         });
         {/literal}

@@ -12,6 +12,7 @@ Util::directAccessAllowed();
 $smarty->assign('product_attribute', ProductAttributes::getOne($_GET['id']));
 $smarty->assign("types", ProductAttributeType::getAll());
 
-$smarty->assign('pageActive', 'product_attribute_manage');
+$smarty->assign('pageActive', 'productAttribute');
+$smarty->assign('subPageActive', 'productAttributeView');
 $smarty->assign('activeTab', '#product');
 
