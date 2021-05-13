@@ -38,5 +38,5 @@ if ($op == 'create') {
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
-$smarty->assign('pageActive', 'tax_rate');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'taxRates');
+$smarty->assign('activeTab', '#settings');

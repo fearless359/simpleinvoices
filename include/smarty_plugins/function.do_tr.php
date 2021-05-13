@@ -2,16 +2,17 @@
 /**
  * @param array $params
  * @return string|void
+ * @noinspection PhpUnused
  */
-function smarty_function_do_tr(array $params) {
-    $newTr = null;
-    if ($params['number'] == 2) {
-        $newTr = "</tr><tr class='$params[class]'>";
-    } elseif ($params['number'] == 4) {
-        $newTr = "</tr><tr class='$params[class]'>";
+function smarty_function_do_tr(array $params)
+{
+    if ($params['number'] == 2 || $params['number'] == 4) {
+        if (!empty($params['class'])) {
+            $cls = " class='{$params['class']}'";
+        } else {
+            $cls = '';
+        }
+        return "</tr><tr$cls>";
     }
-
-    if (isset($newTr)) {
-        return $newTr;
-    }
+    return;
 }

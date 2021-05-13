@@ -23,7 +23,7 @@ $smarty->assign("product_attribute" , $productAttribute['name']);
 $smarty->assign("product_attributes", ProductAttributes::getAll());
 // @formatter:on
 
-$pageActive = "product_value_manage";
-$smarty->assign('pageActive', $pageActive);
+$smarty->assign('pageActive', 'productValue');
+$smarty->assign('subPageActive', 'productValueView');
 $smarty->assign('activeTab', '#product');
 

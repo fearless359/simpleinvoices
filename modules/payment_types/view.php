@@ -10,6 +10,6 @@ Util::directAccessAllowed();
 
 $smarty->assign('paymentType', PaymentType::getOne($_GET['id']));
 
-$smarty->assign('pageActive', 'payment_type');
-$smarty->assign('subPageActive', "payment_types_view");
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'pymtTypes');
+$smarty->assign('subPageActive', "pymtTypesView");
+$smarty->assign('activeTab', '#settings');

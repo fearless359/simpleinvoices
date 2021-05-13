@@ -37,6 +37,6 @@ if (!empty($_POST['op']) && $_POST['op'] == 'create' && !empty($_POST['name'])) 
     $smarty->assign('parent_customers', Customer::getAll(['enabledOnly' => true]));
     
     $smarty->assign('pageActive', 'customer');
-    $smarty->assign('subPageActive', 'customer_add');
+    $smarty->assign('subPageActive', 'customerCreate');
     $smarty->assign('activeTab', '#people');
 }

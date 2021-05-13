@@ -152,14 +152,18 @@ class Util
 
         // Not a post action so set up company logo and name to display on login screen.
         //<img src="extensions/user_security/images/{$defaults.company_logo}" alt="User Logo">
-        $image = "templates/invoices/logos/" . $defaults['company_logo'];
-        if (is_readable($image)) {
-            $imgWidth = 0;
-            $imgHeight = 0;
+        $logoImage = "templates/invoices/logos/" . $defaults['company_logo'];
+        $smarty->assign('logoImage', $logoImage);
+        $logoName = $defaults['company_name_item'];
+        $smarty->assign('logoCompanyName', $logoName);
+
+        $imgWidth = 0;
+        $imgHeight = 0;
+        if (is_readable($logoImage)) {
             $maxWidth = 100;
             $maxHeight = 100;
             /** @noinspection PhpUnusedLocalVariableInspection */
-            [$width, $height, $type, $attr] = getimagesize($image);
+            [$width, $height, $type, $attr] = getimagesize($logoImage);
 
             if ($width > $maxWidth || $height > $maxHeight) {
                 $wp = $maxWidth / $width;
@@ -168,33 +172,42 @@ class Util
                 $imgWidth = $width * $percent;
                 $imgHeight = $height * $percent;
             }
-            if ($imgWidth > 0 && $imgWidth > $imgHeight) {
-                $w1 = "20%";
-                $w2 = "78%";
-            } else {
-                $w1 = "18%";
-                $w2 = "80%";
-            }
-            $compLogoLines =
-                "<div style='display:inline-block;width:$w1;'>" .
-                "<img src='$image' alt='Company Logo' " .
-                ($imgHeight == 0 ? "" : "height='$imgHeight' ") .
-                ($imgWidth == 0 ? "" : "width='$imgWidth' ") . "/>" .
-                "</div>";
-            $smarty->assign('comp_logo_lines', $compLogoLines);
-            $txtAlign = "left";
-        } else {
-            $w2 = "100%";
-            $txtAlign = "center";
         }
-        $compNameLines =
-            "<div style='display:inline-block;width:$w2;vertical-align:middle;'>" .
-            "<h1 style='margin-left:20px;text-align:$txtAlign;'>" .
-            $defaults['company_name_item'] .
-            "</h1>" .
-            "</div>";
 
-        $smarty->assign('comp_name_lines', $compNameLines);
+        $imgWidth = $imgWidth == 0 ? 100 : $imgWidth;
+        $imgHeight = $imgHeight == 0 ? 100 : $imgHeight;
+
+        $smarty->assign('logoImageWidth', $imgWidth . "%");
+        $smarty->assign('logoImageHeight', $imgHeight . "%");
+
+//            if ($imgWidth > 0 && $imgWidth > $imgHeight) {
+//                $w1 = "20%";
+//                $w2 = "78%";
+//            } else {
+//                $w1 = "18%";
+//                $w2 = "80%";
+//            }
+//            $compLogoLines =
+//                "<div style='display:inline-block;width:$w1;'>" .
+//                "<img src='$image' alt='Company Logo' " .
+//                ($imgHeight == 0 ? "" : "height='$imgHeight' ") .
+//                ($imgWidth == 0 ? "" : "width='$imgWidth' ") . "/>" .
+//                "</div>";
+//            $smarty->assign('comp_logo_lines', $compLogoLines);
+//            $txtAlign = "left";
+//        } else {
+//            $w2 = "100%";
+//
+//            $txtAlign = "center";
+//        }
+//        $compNameLines =
+//            "<div style='display:inline-block;width:$w2;vertical-align:middle;'>" .
+//            "<h1 style='margin-left:20px;text-align:$txtAlign;'>" .
+//            $defaults['company_name_item'] .
+//            "</h1>" .
+//            "</div>";
+//
+//        $smarty->assign('comp_name_lines', $compNameLines);
     }
 
     public static function getURL(): string

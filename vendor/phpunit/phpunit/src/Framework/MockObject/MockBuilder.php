@@ -111,15 +111,15 @@ final class MockBuilder
     /**
      * Creates a mock object using a fluent interface.
      *
-     * @throws UnknownTypeException
-     * @throws InvalidMethodNameException
-     * @throws DuplicateMethodException
-     * @throws ClassIsFinalException
-     * @throws ClassAlreadyExistsException
-     * @throws OriginalConstructorInvocationRequiredException
-     * @throws RuntimeException
-     * @throws ReflectionException
      * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws ClassAlreadyExistsException
+     * @throws ClassIsFinalException
+     * @throws DuplicateMethodException
+     * @throws InvalidMethodNameException
+     * @throws OriginalConstructorInvocationRequiredException
+     * @throws ReflectionException
+     * @throws RuntimeException
+     * @throws UnknownTypeException
      *
      * @psalm-return MockObject&MockedType
      */
@@ -151,8 +151,8 @@ final class MockBuilder
      * @psalm-return MockObject&MockedType
      *
      * @throws \PHPUnit\Framework\Exception
-     * @throws RuntimeException
      * @throws ReflectionException
+     * @throws RuntimeException
      */
     public function getMockForAbstractClass(): MockObject
     {
@@ -302,6 +302,8 @@ final class MockBuilder
 
     /**
      * Specifies the subset of methods to not mock. Default is to mock all of them.
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/pull/3687
      *
      * @throws ReflectionException
      */

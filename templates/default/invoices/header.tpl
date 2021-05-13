@@ -33,12 +33,14 @@
 <table class='si_invoice_top'>
     {if isset($template)}
     <tr>
-        <th>{$LANG.copiedFrom}</th>
+        {* This is the case where the invoice content was *}
+        {* copied from the designated customer invoice. *}
+        <th>{$LANG.copiedFrom}:&nbsp;</th>
         <td>{$template|htmlSafe}</td>
     </tr>
     {/if}
     <tr>
-        <th>{$LANG.billerUc}</th>
+        <th>{$LANG.billerUc}:&nbsp;</th>
         <td>
             {if !isset($billers) }
                 <p><em>{$LANG.noBillers}</em></p>
@@ -54,7 +56,7 @@
         </td>
     </tr>
     <tr>
-        <th>{$LANG.customerUc}</th>
+        <th>{$LANG.customerUc}:&nbsp;</th>
         <td>
             {if !isset($customers) }
                 <em>{$LANG.noCustomers}</em>
@@ -71,7 +73,7 @@
     </tr>
     {* section for sub_customer *}
     <tr>
-        <th>{$LANG.subCustomer}</th>
+        <th>{$LANG.subCustomer}:&nbsp;</th>
         <td>
             {if !isset($subCustomers) || empty($subCustomers) }
                 <em>{$LANG.noSubCustomers}</em>
@@ -87,7 +89,7 @@
         </td>
     </tr>
     <tr>
-        <th>{$LANG.dateFormatted}</th>
+        <th>{$LANG.dateFormatted}:&nbsp;</th>
         <td>
             <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
                    size="10" name="date" id="date1"

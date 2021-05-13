@@ -6,9 +6,9 @@
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=expense&amp;view=create">
         <div class="si_form">
-            <table class="center" style="width:80%;">
+            <table class="center">
                 <tr>
-                    <th class="details_screen">{$LANG.expenseAccounts}</th>
+                    <th class="details_screen">{$LANG.expenseAccounts}:</th>
                     <td>
                         <select name="expense_account_id" class="si_input validate[required]" tabindex="10">
                             <option value=''></option>
@@ -19,18 +19,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.amountUc}</th>
+                    <th class="details_screen">{$LANG.amountUc}:</th>
                     <td><input name="amount" class="validate[required]" tabindex="20"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.dateFormatted}</th>
+                    <th class="details_screen">{$LANG.dateFormatted}:</th>
                     <td>
                         <input type="text" name="date" id="date" class="si_input validate[required,custom[date],length[0,10]] date-picker" size="10"
                                value='{$smarty.now|date_format:"%Y-%m-%d"}' tabindex="30"/>
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.billerUc}</th>
+                    <th class="details_screen">{$LANG.billerUc}:</th>
                     <td>
                         <select name="biller_id" class="si_input validate[required]" tabindex="40">
                             <option value=''></option>
@@ -42,7 +42,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.customerUc}</th>
+                    <th class="details_screen">{$LANG.customerUc}:</th>
                     <td>
                         <select name="customer_id" class="si_input" tabindex="50">
                             <option value=''></option>
@@ -54,7 +54,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.invoiceUc}</th>
+                    <th class="details_screen">{$LANG.invoiceUc}:</th>
                     <td>
                         <select name="invoice_id" class="si_input" tabindex="60">
                             <option value=''></option>
@@ -65,7 +65,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.productUc}</th>
+                    <th class="details_screen">{$LANG.productUc}:</th>
                     <td>
                         <select name="product_id" class="si_input" tabindex="70">
                             <option value=''></option>
@@ -78,7 +78,7 @@
                 {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
                     <tr>
                         <th class="details_screen">
-                            {$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax.index+1}{/if}
+                            {$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax.index+1}{/if}:
                         </th>
                         <td>
                             <select name="tax_id[0][{$smarty.section.tax.index}]" id="tax_id[0][{$smarty.section.tax.index}]"
@@ -92,7 +92,7 @@
                     </tr>
                 {/section}
                 <tr>
-                    <th class="details_screen">{$LANG.status}</th>
+                    <th class="details_screen">{$LANG.status}:</th>
                     <td>
                         <select name="status" class="si_input" tabindex="90">
                             <option value="1" selected>{$LANG.paidUc}</option>

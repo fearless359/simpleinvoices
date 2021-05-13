@@ -18,6 +18,6 @@
 <tr class="tr_head_items">
     <td><b>{$LANG.quantityShort}</b></td>
     <td colspan="2"><b>{$LANG.item}</b></td>
-    <td class="align_right"><b>{$LANG.unitCost}</b></td>
-    <td class="align_right"><b>{$LANG.priceUc}</b></td>
+    <td class="si_right"><b>{$LANG.unitCost}</b></td>
+    <td class="si_right"><b>{$LANG.priceUc}</b></td>
 </tr>

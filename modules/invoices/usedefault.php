@@ -48,7 +48,7 @@ if ($_GET ['action'] == 'update_template') {
         $smarty->assign("attr1_val", $invoice['id']);
 
         $smarty->assign('pageActive', 'invoice');
-        $smarty->assign('subPageActive', 'invoice_view');
+        $smarty->assign('subPageActive', 'invoiceView');
         $smarty->assign('activeTab', '#money');
     } catch (PdoDbException $pde) {
         exit("modules/invoices/usedefault.php Unexpected error {$pde->getMessage()}");

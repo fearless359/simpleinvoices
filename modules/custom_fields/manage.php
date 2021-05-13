@@ -18,9 +18,14 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$cfs = CustomFields::getAll();
-$smarty->assign("cfs",$cfs);
+$cfs = CustomFields::manageTableInfo();
+
+$data = json_encode(['data' => $cfs]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $smarty->assign('numberOfRows', count($cfs));
 
-$smarty->assign('pageActive', 'custom_field');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'customFields');
+$smarty->assign('activeTab', '#settings');

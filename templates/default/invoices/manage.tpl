@@ -48,21 +48,22 @@
             {$LANG.newInvoice}
         </a>
     </div>
-    <table id="si-data-table" class="display compact" >
+    <table id="si-data-table" class="display responsive compact" >
         <thead>
             <tr>
-                <th>{$LANG.actions}</th>
-                <th>{$LANG.invoiceUc}#</th>
-                <th>{$LANG.billerUc}</th>
-                <th>{$LANG.customerUc}</th>
-                <th>{$LANG.preferenceUc}</th>
-                <th>{$LANG.dateUc}</th>
-                <th>{$LANG.totalUc}</th>
-                <th>{$LANG.owingUc}</th>
-                <th>{$LANG.aging}</th>
+                <th class="si_center">{$LANG.actions}</th>
+                <th class="si_center">{$LANG.invoiceUc}#</th>
+                <th class="si_left">{$LANG.billerUc}</th>
+                <th class="si_left">{$LANG.customerUc}</th>
+                <th class="si_center">{$LANG.preferenceUc}</th>
+                <th class="si_center">{$LANG.dateUc}</th>
+                <th class="si_right">{$LANG.totalUc}</th>
+                <th class="si_right">{$LANG.owingUc}</th>
+                <th class="si_right">{$LANG.aging}</th>
             </tr>
         </thead>
     </table>
+    {* This is the dialog box for the document export pdf, doc and xls files *}
     <div id="overlay" class="web_dialog_overlay"></div>
     <div id="dialog" class="web_dialog flora" title="Export" style="display: none;">
         <div class="si_toolbar si_toolbar_dialog">
@@ -120,7 +121,7 @@
                     { "targets": 0, "width": "12%", "className": 'dt-body-center', "orderable": false },
                     { "targets": [1,4,5,7], "className": 'dt-body-center' },
                     { "targets": 5, "width": "10%" },
-                    { "targets": [6, 7], "className": 'dt-body-right' }
+                    { "targets": [6,7,8], "className": 'dt-body-right' }
                 ],
                 "colReorder": true
             });

@@ -33,6 +33,6 @@ try {
 $smarty->assign ( 'saved', $saved );
 
 $smarty->assign ( 'pageActive', 'payment' );
-$smarty->assign ( 'subPageActive', 'payment_eway' );
+$smarty->assign ( 'subPageActive', 'paymentEway' );
 $smarty->assign ( 'activeTab', '#money' );
 

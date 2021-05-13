@@ -23,48 +23,34 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noPaymentTypes}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.descriptionUc}</th>
-            <th>{$LANG.enabled}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.descriptionUc}</th>
+            <th class="si_center">{$LANG.enabled}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $payment_types as $payment_type}
-            <tr>
-                <td class="si_center">
-                    <a class="index_table" title="{$payment_type['vname']}"
-                       href="index.php?module=payment_types&amp;view=view&amp;id={$payment_type['pt_id']}">
-                        <img src="images/view.png" alt="view" class="action"/>
-                    </a>
-                    <a class="index_table" title="{$payment_type['ename']}"
-                       href="index.php?module=payment_types&amp;view=edit&amp;id={$payment_type['pt_id']}">
-                        <img src="images/edit.png" alt="edit" class="action"/>
-                    </a>
-                </td>
-                <td>{$payment_type['pt_description']}</td>
-                <td class="si_center">
-                    <!-- The span field is for field sorting -->
-                    <span style="display:none">{$payment_type['enabled_text']}</span>
-                    <img src="{$payment_type['image']}" alt="{$LANG.enabled}">
-                </td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "ptDescription" },
+                    { "data": "enabled"}
+                ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
                     [2, "desc"],
                     [1, "asc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    {"targets": 0, "className": 'dt-body-center', "orderable": false},
+                    {"targets": 2, "className": 'dt-body-center'}
                 ],
                 "colReorder": true
             });

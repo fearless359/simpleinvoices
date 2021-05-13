@@ -11,7 +11,7 @@
     <div id='myLogo'></div>
     My Header
 </div>
-<div class="Container">
+<div class="container">
     {if $errorMessage }
         <p class="center"><strong style="color: #990000;">{if isset($errorMessage)}{$errorMessage|outHtml}{/if}</strong><br/><br/></p>
     {/if}

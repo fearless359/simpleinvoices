@@ -13,6 +13,6 @@ if (!empty($_POST['product_id'])) {
     $smarty->assign("domain_id", DomainId::get());
 
     $smarty->assign('pageActive', 'inventory');
-    $smarty->assign('subPageActive', 'inventory_add');
+    $smarty->assign('subPageActive', 'inventoryCreate');
     $smarty->assign('activeTab', '#product');
 }

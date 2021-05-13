@@ -39,6 +39,6 @@ if (!empty($_POST['op']) && $_POST['op'] == 'create') {
     $smarty->assign('customFieldLabel', $customFieldLabel);
 
     $smarty->assign('pageActive', 'biller');
-    $smarty->assign('subPageActive', 'biller_add');
+    $smarty->assign('subPageActive', 'billerCreate');
     $smarty->assign('activeTab', '#people');
 }

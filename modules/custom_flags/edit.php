@@ -24,7 +24,7 @@ $smarty->assign('cflg', CustomFlags::getOne($associatedTable, $flgId));
 
 $smarty->assign('enable_options', [DISABLED => 'Disabled', ENABLED => 'Enabled']);
 
-$smarty->assign('pageActive', 'custom_flags');
-$smarty->assign('subPageActive', "custom_flag_edit");
+$smarty->assign('pageActive', 'customFlags');
+$smarty->assign('subPageActive', "customFlagsEdit");
 $smarty->assign('activeTab', '#settings');
 

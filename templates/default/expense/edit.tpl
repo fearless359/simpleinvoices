@@ -2,15 +2,15 @@
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     <div class="si_form" id="si_form_cust_edit">
-        <table class="center" style="width:90%;">
+        <table class="center">
             <tr>
-                <th class="details_screen">{$LANG.amountUc}</th>
+                <th class="details_screen">{$LANG.amountUc}:</th>
                 <td>
                     <input name="amount" class="si_input validate[required]" value="{$expense.amount|utilNumber}"/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.expenseAccounts}</th>
+                <th class="details_screen">{$LANG.expenseAccounts}:</th>
                 <td>
                     <select name="expense_account_id" class="si_input validate[required]">
                         <option value=''></option>
@@ -22,14 +22,14 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.dateFormatted}</th>
+                <th class="details_screen">{$LANG.dateFormatted}:</th>
                 <td>
                     <input type="text" class="si_input validate[required,custom[date],length[0,10]] date-picker"
                            size="10" name="date" id="date" value='{$expense.date}'/>
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.billerUc}</th>
+                <th class="details_screen">{$LANG.billerUc}:</th>
                 <td>
                     <select name="biller_id" class="si_input validate[required]">
                         <option value=''></option>
@@ -41,7 +41,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.customerUc}</th>
+                <th class="details_screen">{$LANG.customerUc}:</th>
                 <td>
                     <select name="customer_id" class="si_input ">
                         <option value=''></option>
@@ -53,7 +53,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.invoiceUc}</th>
+                <th class="details_screen">{$LANG.invoiceUc}:</th>
                 <td>
                     <select name="invoice_id" class="si_input ">
                         <option value=''></option>
@@ -66,7 +66,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.productUc}</th>
+                <th class="details_screen">{$LANG.productUc}:</th>
                 <td>
                     <select name="product_id" class="si_input ">
                         <option value=''></option>
@@ -79,7 +79,7 @@
             </tr>
             {if $defaults.tax_per_line_item > 0}
                 <tr>
-                    <th class="details_screen" colspan="1">{$LANG.tax}</th>
+                    <th class="details_screen" colspan="1">{$LANG.tax}:</th>
                     <td>
                         <table class="left">
                             <tr>
@@ -101,7 +101,7 @@
                 </tr>
             {/if}
             <tr>
-                <th class="details_screen">{$LANG.status}</th>
+                <th class="details_screen">{$LANG.status}:</th>
                 <td>
                     {* enabled block *}
                     <select name="status" class="si_input ">

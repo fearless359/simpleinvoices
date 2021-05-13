@@ -45,5 +45,5 @@ if (isset($_POST['cancel'])) {
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
-$smarty->assign('pageActive', 'custom_flags');
+$smarty->assign('pageActive', 'customFlags');
 $smarty->assign('activeTab', '#settings');

@@ -480,6 +480,7 @@ return array(
     'PharIo\\Version\\GreaterThanOrEqualToVersionConstraint' => $vendorDir . '/phar-io/version/src/constraints/GreaterThanOrEqualToVersionConstraint.php',
     'PharIo\\Version\\InvalidPreReleaseSuffixException' => $vendorDir . '/phar-io/version/src/exceptions/InvalidPreReleaseSuffixException.php',
     'PharIo\\Version\\InvalidVersionException' => $vendorDir . '/phar-io/version/src/exceptions/InvalidVersionException.php',
+    'PharIo\\Version\\NoPreReleaseSuffixException' => $vendorDir . '/phar-io/version/src/exceptions/NoPreReleaseSuffixException.php',
     'PharIo\\Version\\OrVersionConstraintGroup' => $vendorDir . '/phar-io/version/src/constraints/OrVersionConstraintGroup.php',
     'PharIo\\Version\\PreReleaseSuffix' => $vendorDir . '/phar-io/version/src/PreReleaseSuffix.php',
     'PharIo\\Version\\SpecificMajorAndMinorVersionConstraint' => $vendorDir . '/phar-io/version/src/constraints/SpecificMajorAndMinorVersionConstraint.php',

@@ -28,5 +28,5 @@ if ($op === 'create') {
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
 
-$smarty->assign('pageActive', 'payment_type');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'pymtTypes');
+$smarty->assign('activeTab', '#settings');

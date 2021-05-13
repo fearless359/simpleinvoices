@@ -51,6 +51,45 @@ class Biller
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getAll();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $action =
+                    "<a class='index_table' title='{$LANG['view']} {$row['name']})' href='index.php?module=billers&amp;view=view&amp;id={$row['id']}'>" .
+                        "<img src='images/view.png' class='action' alt='view'/>" .
+                    "</a>&nbsp;" .
+                    "<a class='index_table' title='{$LANG['edit']} {$row['name']}' href='index.php?module=billers&amp;view=edit&amp;id={$row['id']}'>" .
+                        "<img src='images/edit.png' class='action' alt='edit'/>" .
+                    "</a>";
+
+            $enabled = $row['enabled'] == ENABLED;
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+
+            $tableRows[] = [
+                'action' => $action,
+                'name' => $row['name'],
+                'streetAddress' => $row['street_address'],
+                'city' => $row['city'],
+                'state' => $row['state'],
+                'zipCode' => $row['zip_code'],
+                'email' => $row['email'],
+                'enabled' => $enabledCol
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Get all biller records.
      * @param int|null $id if not null, get record for that id; otherwise get all records
      *        based on $active_only setting.

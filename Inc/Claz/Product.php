@@ -59,7 +59,7 @@ class Product
             $action = "<a class='index_table' title='{$row['vname']}' " .
                          "href='index.php?module=products&amp;view=view&amp;id={$row['id']}'>" .
                           "<img src='images/view.png' class='action' alt='{$row['vname']}' />" .
-                      "</a>" .
+                      "</a>&nbsp;&nbsp;" .
                       "<a class='index_table' title='{$row['ename']}' " .
                          "href='index.php?module=products&amp;view=edit&amp;id={$row['id']}'>" .
                           "<img src='images/edit.png' class='action' alt='{$row['ename']}' />" .

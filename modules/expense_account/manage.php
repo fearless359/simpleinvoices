@@ -8,13 +8,16 @@ global $LANG, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$displayBlock = "<div class='si_message_error'>{$LANG['noExpenseAccounts']}</div>";
+$smarty->assign("display_block", "<div class='si_message_error'>{$LANG['noExpenseAccounts']}</div>");
 
-$expenseAccounts = ExpenseAccount::getAll();
+$expenseAccounts = ExpenseAccount::manageTableInfo();
 
-$smarty->assign('expense_accounts', $expenseAccounts);
+$data = json_encode(['data' => $expenseAccounts]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
+}
+
 $smarty->assign("numberOfRows", count($expenseAccounts));
-$smarty->assign("display_block", $displayBlock);
 
-$smarty->assign('pageActive', 'expense_account');
+$smarty->assign('pageActive', 'expenseAccount');
 $smarty->assign('activeTab', '#money');

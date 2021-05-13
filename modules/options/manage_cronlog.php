@@ -13,4 +13,4 @@ $cronLogs = CronLog::getAll($pdoDb, DomainId::get());
 $smarty->assign("cronLogs",$cronLogs);
 
 $smarty->assign('pageActive', 'options');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('activeTab', '#settings');

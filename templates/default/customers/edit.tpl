@@ -15,7 +15,7 @@
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}">
     <div class="si_form" id="si_form_cust_edit">
-        <table class="center" style="width:90%;">
+        <table class="center">
             <tr>
                 <th class="details_screen" tabindex="-1">{$LANG.customerName}:
                     <a class="cluetip" tabindex="-1" href="#" title="{$LANG.requiredField}"

@@ -17,7 +17,7 @@ if (!empty($_POST['p_description'])) {
     $smarty->assign('defaults', SystemDefaults::loadValues());
     $smarty->assign('localeList', Util::getLocaleList());
 
-    $smarty->assign('pageActive', 'preference');
-    $smarty->assign('subPageActive', 'preferences_add');
-    $smarty->assign('activeTab', '#setting');
+    $smarty->assign('pageActive', 'invPrefs');
+    $smarty->assign('subPageActive', 'invPrefsCreate');
+    $smarty->assign('activeTab', '#settings');
 }

@@ -98,9 +98,9 @@ try {
     $smarty->assign("customerAccount"     , $customerAccount);
     $smarty->assign("ewayPreCheck"        , $ewayPreCheck);
 
-    $smarty->assign('pageActive'   , 'invoice');
-    $smarty->assign('subPageActive', 'invoice_view');
-    $smarty->assign('activeTab'   , '#money');
+    $smarty->assign('pageActive', 'invoice');
+    $smarty->assign('subPageActive', 'invoiceView');
+    $smarty->assign('activeTab', '#money');
     // @formatter:on
 } catch (PdoDbException $pde) {
 

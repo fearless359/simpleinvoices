@@ -37,7 +37,7 @@ BODY.login {
     margin-bottom: 20px;
 }
 
-.login DIV.Container {
+.login DIV.containter {
     width: 600px;
 }
 
@@ -48,7 +48,7 @@ BODY.login {
     box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.5)
 }
 
-.login DIV.Container > A {
+.login DIV.containter > A {
     padding-top: 50px;
     display: inline-block;
     font-size: 14px;

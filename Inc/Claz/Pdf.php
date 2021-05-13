@@ -20,7 +20,7 @@ class Pdf
 
     /**
      * Generates PDF output to specified destination.
-     * @param string $htmlToPdf html path to source html file.
+     * @param string $htmlToPdf html data from template.
      * @param string $pdfname String path to file to save generated PDF to.
      * @param string $destination Setting from Mpdf\Output\Destination.
      * @param bool $landscape true if landscape mode; false if portrait mode.

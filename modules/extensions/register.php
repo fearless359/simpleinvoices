@@ -34,5 +34,6 @@ $smarty->assign('count'      , $count);
 $smarty->assign('description', $description);
 // @formatter:on
 
-$smarty->assign('pageActive', 'extensions');
+$smarty->assign('pageActive', 'settings');
+$smarty->assign('subPageActive', 'settingsExtensions');
 $smarty->assign('activeTab', '#settings');

@@ -13,6 +13,33 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-05-10 - <b>2020.1.00</b>
+            <ul>
+                <li>Css updates to move to a responsive layout. Tabs and body of screens updated.</li>
+                <li>Updates made to use responsive DataTables.</li>
+                <li>Additional changes to implement DataTables via Ajax in files using DataTabels.</li>
+                <li>Vendor and node libraries updated.</li>
+                <li>Login screen updated for new effects.</li>
+                <li>Modified smarty functions empty and null to handle array parameters.</li>
+                <li>Smarty function merge address updated to support street parameter for output.</li>
+            </ul>
+        </li>
+        <li>2021-04-28 - <b>2020.0.21</b>
+            <ul>
+                <li>Updated smarty functions not empty vs not null to explain the difference.</li>
+            </ul>
+        </li>
+        <li>2021-04-28 - <b>2020.0.20</b>
+            <ul>
+                <li>Modified to stop display of menu tabs before screen is rendered.</li>
+                <li>Modified remaining management lists to use ajax to get list data.</li>
+            </ul>
+        </li>
+        <li>2021-04-27 - <b>2020.0.19</b>
+            <ul>
+                <li>Remove standard library duplicate template invoice plugins.</li>
+            </ul>
+        </li>
         <li>2021-04-22 - <b>2020.0.18</b>
             <ul>
                 <li>Change the Customer::managerTableInfo() function to specify return type.</li>

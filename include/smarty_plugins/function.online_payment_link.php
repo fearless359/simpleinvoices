@@ -6,14 +6,15 @@ use Inc\Claz\Util;
 /**
  * Get online payment link
  * @param array $params
- * @param $smarty
  */
-function smarty_function_online_payment_link(array $params, &$smarty) {
+function smarty_function_online_payment_link(array $params): void
+{
     global $siUrl;
 
     $domainId = DomainId::get($params['domain_id']);
     $url = Util::getURL();
     if (in_array("paypal", explode(",", $params['type']))) {
+        // @formatter:off
         $link = "<a href=\"https://www.paypal.com/xclick/?business="         . urlencode($params['business']) .
                                                         "&item_name="        . urlencode($params['item_name']) .
                                                         "&invoice="          . urlencode($params['invoice']) .
@@ -24,7 +25,7 @@ function smarty_function_online_payment_link(array $params, &$smarty) {
                                                         "&no_shipping=1"     .
                                                         "&no_note=1"         .
                                                         "&custom=domain_id:" . urlencode($domainId) . "; \">";
-
+        // @formatter:on
         if ($params['include_image'] == "true") {
             $link .= "<img border='0' src='" . Util::urlSafe($url) . "/images/pay_with_paypal.gif'/>";
         } else {
@@ -42,9 +43,9 @@ function smarty_function_online_payment_link(array $params, &$smarty) {
                                                         "&amount="                     . urlencode(number_format($params['amount'], 2, '.', '')) .
                                                         "&currency_code="              . $params['currency_code']) .
                                                         "&return=http://vcsweb.com.au" .
-                                                        "&no_shipping=1" .
+                                                        "&no_shipping=1"               .
                                                         "&no_note=1\">";
-        // $formatter:on
+        // @formatter:on
         if ($params['include_image'] == "true") {
             $link .= "<img border='0' src='" . Util::urlSafe($url) . "/images/pay_with_eway.gif'/>";
         } else {

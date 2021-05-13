@@ -21,39 +21,30 @@
 {if $numberOfRows == 0 }
     {$display_block}
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.nameUc}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.nameUc}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $expense_accounts as $expense_account}
-            <tr>
-                <td class="si_center">
-                    <a class='index_table' title='{$LANG.view}' href='index.php?module=expense_account&amp;view=view&amp;id={$expense_account.id}'>
-                        <img src='images/view.png' style="height:16px;border:0" alt="{$LANG.view}" />
-                    </a>
-                    <a class='index_table' title='{$LANG.edit}' href='index.php?module=expense_account&amp;view=edit&amp;id={$expense_account.id}'>
-                        <img src='images/edit.png' style="height:16px;border:0" alt="{$LANG.edit}" />
-                    </a>
-                </td>
-                <td>{$expense_account.name}</td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "name" }
+                ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
                     [1, "asc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    {"targets": 0, "className": 'dt-body-center', "orderable": false}
                 ],
                 "colReorder": true
             });

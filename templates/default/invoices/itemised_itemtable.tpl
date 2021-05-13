@@ -3,12 +3,12 @@
     <thead>
     <tr>
         <th class=""></th>
-        <th class="">{$LANG.quantity}</th>
-        <th class="">{$LANG.item}</th>
+        <th class="si_center">{$LANG.quantity}</th>
+        <th class="si_center">{$LANG.item}</th>
         {section name=tax_header loop=$defaults.tax_per_line_item }
-            <th class="">{$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax_header.index+1|htmlSafe}{/if} </th>
+            <th class="si_center">{$LANG.tax} {if $defaults.tax_per_line_item > 1}{$smarty.section.tax_header.index+1|htmlSafe}{/if} </th>
         {/section}
-        <th class="">{$LANG.unitPrice}</th>
+        <th class="si_right">{$LANG.unitPrice}</th>
     </tr>
     </thead>
     {section name=line start=0 loop=$dynamic_line_items step=1}

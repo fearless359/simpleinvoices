@@ -10,7 +10,7 @@ Util::directAccessAllowed();
 
 $smarty->assign('productGroup', ProductGroups::getOne($_GET['name']));
 
-$smarty->assign('pageActive'      , 'product_group_manage');
-$smarty->assign('subPageActive'   , "product_group_edit");
+$smarty->assign('pageActive'      , 'productGroups');
+$smarty->assign('subPageActive'   , "productGroupsEdit");
 $smarty->assign('activeTab'       , '#product');
 // formatter:on

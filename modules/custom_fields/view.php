@@ -38,6 +38,6 @@ if (empty($rows)) {
 
 $smarty->assign("cf",$cf);
 
-$smarty->assign('pageActive'   , 'custom_field');
-$smarty->assign('subPageActive', "custom_fields_view");
-$smarty->assign('activeTab'   , '#setting');
+$smarty->assign('pageActive'   , 'customFields');
+$smarty->assign('subPageActive', "customFieldsView");
+$smarty->assign('activeTab'   , '#settings');

@@ -26,17 +26,17 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$noEntryMsg}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.paymentUc}#</th>
-            <th>{$LANG.invoiceUc}#</th>
-            <th>{$LANG.customerUc}</th>
-            <th>{$LANG.billerUc}</th>
-            <th>{$LANG.amountUc}</th>
-            <th>{$LANG.type}</th>
-            <th>{$LANG.dateUc}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_center">{$LANG.paymentUc}#</th>
+            <th class="si_center">{$LANG.invoiceUc}#</th>
+            <th class="si_left">{$LANG.customerUc}</th>
+            <th class="si_left">{$LANG.billerUc}</th>
+            <th class="si_right">{$LANG.amountUc}</th>
+            <th class="si_left">{$LANG.type}</th>
+            <th class="si_center">{$LANG.dateUc}</th>
         </tr>
         </thead>
     </table>

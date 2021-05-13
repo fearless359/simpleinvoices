@@ -94,11 +94,11 @@ class SiError
                 break;
 
             case "install":
-                $mess = "<div id='Container' class='col si_wrap'>" .
+                $mess = "<div id='containter' class='col si_wrap'>" .
                             "<div id='si_install_logo'>" .
                                 "<img src='templates/invoices/logos/simple_invoices_logo.png' alt='' class='si_install_logo' width='300'/>" .
                             "</div>" .
-                            "<table class='center' style='width:50%'>" .
+                            "<table style='width:50%'>" .
                                 "<tr>" .
                                     "<th style='font-weight: bold;text-align:center;'>===========================================</th>" .
                                 "</tr>" .

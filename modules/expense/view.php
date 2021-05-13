@@ -30,5 +30,5 @@ $smarty->assign('taxes', Taxes::getActiveTaxes());
 $smarty->assign('defaults', SystemDefaults::loadValues());
 
 $smarty->assign('pageActive', 'expense');
-$smarty->assign('subPageActive', 'view');
+$smarty->assign('subPageActive', 'expenseView');
 $smarty->assign('activeTab', '#money');

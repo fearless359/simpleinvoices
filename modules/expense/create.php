@@ -26,6 +26,6 @@ if (!empty( $_POST ['expense_account_id'] )) {
     $smarty->assign('defaults', SystemDefaults::loadValues());
 
     $smarty->assign('pageActive', 'expense');
-    $smarty->assign('subPageActive', 'add');
+    $smarty->assign('subPageActive', 'expenseCreate');
     $smarty->assign('activeTab', '#money');
 }

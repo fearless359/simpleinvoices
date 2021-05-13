@@ -171,7 +171,7 @@ class Export
     {
         global $config, $smarty, $pdoDb, $siUrl;
 
-        Log::out("Export::getData() fileName:[{$this->fileName}]");
+        Log::out("Export::getData() assigned fileName:[{$this->fileName}] module[{$this->module}");
 
         // @formatter:off
         $data = "";
@@ -187,7 +187,7 @@ class Export
                     }
 
                     $this->fileName = str_replace(" ", "_", $invoice['index_name']);
-                    Log::out("Export::getData() - file_name[$this->fileName]");
+                    Log::out("Export::getData() - fileName[$this->fileName]");
 
                     $invoiceNumberOfTaxes = Invoice::numberOfTaxesForInvoice($this->invoiceId);
                     $invoiceItems = Invoice::getInvoiceItems($this->invoiceId);

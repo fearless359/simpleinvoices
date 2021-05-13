@@ -29,6 +29,50 @@ class Taxes
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getTaxes();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . ' ' . $LANG['taxRate'] . ' ' . $row['tax_description'];
+            $editName = $LANG['edit'] . ' ' . $LANG['taxRate'] . ' ' . $row['tax_description'];
+
+            $action =
+                "<a class='index_table' title='$viewName' " .
+                   "href='index.php?module=tax_rates&amp;view=view&amp;id={$row['tax_id']}'>" .
+                    "<img src='images/view.png' class='action' alt='$viewName'/>" .
+                "</a>&nbsp;&nbsp;" .
+                "<a class='index_table' title='$editName' " .
+                   "href='index.php?module=tax_rates&amp;view=edit&amp;id={$row['tax_id']}'>" .
+                    "<img src='images/edit.png' class='action' alt='$editName'/>" .
+                "</a>";
+
+            $enabled = $row['tax_enabled'] == ENABLED;
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+
+            $percentage = round($row['tax_percentage'], 2);
+            $type = $row['type'];
+            $rate = $type == '%' ? $percentage . $type : $type . $percentage;
+
+            $tableRows[] = [
+                'action' => $action,
+                'taxDescription' => $row['tax_description'],
+                'taxPercentage' => $rate,
+                'enabled' => $enabledCol
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Get all active taxes records.
      * @return array Rows retrieved.
      */
@@ -67,19 +111,15 @@ class Taxes
 
             $pdoDb->setOrderBy("tax_description");
 
-            $rows = $pdoDb->request("SELECT", "tax");
-            foreach ($rows as $row) {
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['taxRate'] . ' ' . $row['tax_description'];
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['taxRate'] . ' ' . $row['tax_description'];
-                $row['image'] = $row['tax_enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
-                $taxes[] = $row;
-            }
+            $taxes = $pdoDb->request("SELECT", "tax");
         } catch (PdoDbException $pde) {
             error_log("Taxes::getAll() - error: " . $pde->getMessage());
         }
+
         if (empty($taxes)) {
             return [];
         }
+
         return isset($id) ? $taxes[0] : $taxes;
     }
 

@@ -3,7 +3,7 @@
   <div class='si_message_error'>{$LANG.zeroInvoiceAmt}</div>
 {else}
   {if $num_payment_recs > 1}
-    <h3>{$LANG.moreThanOnePymtRec}</h3>
+    <h3 class="si_center">{$LANG.moreThanOnePymtRec}</h3>
   {/if}
   <div class="si_form" id="si_form_pay_details">
     <table>

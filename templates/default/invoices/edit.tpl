@@ -24,11 +24,11 @@
     <div class="si_invoice_form">
         <table class='si_invoice_top'>
             <tr>
-                <th>{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}</th>
+                <th>{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}:</th>
                 <td>{if !$invoice.id}{$LANG.copiedFrom}&nbsp;{/if}{$invoice.index_id|htmlSafe}</td>
             </tr>
             <tr>
-                <th>{$LANG.dateFormatted}</th>
+                <th>{$LANG.dateFormatted}:</th>
                 {if !isset($invoice.id)}
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
@@ -44,7 +44,7 @@
                 {/if}
             </tr>
             <tr>
-                <th>{$LANG.billerUc}</th>
+                <th>{$LANG.billerUc}:</th>
                 <td>
                     {if !isset($billers) }
                         <em>{$LANG.noBillers}</em>
@@ -60,7 +60,7 @@
                 </td>
             </tr>
             <tr>
-                <th>{$LANG.customerUc}</th>
+                <th>{$LANG.customerUc}:</th>
                 <td>
                     {if !isset($customers)}
                         <em>{$LANG.noCustomers}</em>
@@ -79,7 +79,7 @@
         {if $invoice.type_id == TOTAL_INVOICE }
             <table id="itemtable" class="si_invoice_items">
                 <tr>
-                    <th class="left">{$LANG.descriptionUc}</th>
+                    <th class="left">{$LANG.descriptionUc}:</th>
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="5">
@@ -93,7 +93,7 @@
             </table>
             <table class="si_invoice_bot">
                 <tr>
-                    <th>{$LANG.grossTotal}</th>
+                    <th>{$LANG.grossTotal}:</th>
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" class="si_right" name="unit_price0"
@@ -103,7 +103,7 @@
                         <input type="hidden" name="products0" value="{$invoiceItems[0].product_id|htmlSafe}"/>
                     </td>
                     {if $defaults.tax_per_line_item > 0}
-                        <th>{$LANG.tax}</th>
+                        <th>{$LANG.tax}:</th>
                         <td>
                             <table class="si_invoice_taxes">
                                 <tr>
@@ -131,7 +131,7 @@
                 {$customFields.3}
                 {$customFields.4}
                 <tr>
-                    <th>{$LANG.invPref}</th>
+                    <th>{$LANG.invPref}:</th>
                     <td>
                         {if !isset($preferences) }
                             <em>{$LANG.noPreferences}</em>
@@ -145,7 +145,7 @@
                             </select>
                         {/if}
                     </td>
-                    <th>{$LANG.salesRepresentative}</th>
+                    <th>{$LANG.salesRepresentative}:</th>
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input id="sales_representative}" name="sales_representative" size="30"
@@ -158,12 +158,12 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>{$LANG.quantityShort}</th>
-                    <th>{$LANG.descriptionUc}</th>
+                    <th class="si_center">{$LANG.quantityShort}</th>
+                    <th class="si_center">{$LANG.descriptionUc}</th>
                     {section name=tax_header loop=$defaults.tax_per_line_item }
-                        <th>{$LANG.tax}{if $defaults.tax_per_line_item > 1} {$smarty.section.tax_header.index+1|htmlSafe}{/if}</th>
+                        <th class="si_center">{$LANG.tax}{if $defaults.tax_per_line_item > 1} {$smarty.section.tax_header.index+1|htmlSafe}{/if}</th>
                     {/section}
-                    <th>{$LANG.unitPrice}</th>
+                    <th class="si_center">{$LANG.unitPrice}</th>
                 </tr>
                 </thead>
                 {foreach $invoiceItems as $line => $invoiceItem}
@@ -226,8 +226,8 @@
                     </tr>
                     {$invoiceItem.html}
                     <tr class="details {if $defaults.invoice_description_open == $smarty.const.DISABLED}si_hide{/if}">
-                        <td></td>
-                        <td colspan="4">
+                        {* colspan intentionally greater than min and max number so always uses full size *}
+                        <td colspan="8">
                         <!--suppress HtmlFormInputWithoutLabel -->
                             <textarea name="description{$line|htmlSafe}" style="overflow:scroll;"
                                   id="description{$line|htmlSafe}" rows="3" cols="100%"
@@ -256,7 +256,7 @@
                 {$customFields.3}
                 {$customFields.4}
                 <tr>
-                    <th>{$LANG.notes}</th>
+                    <th>{$LANG.notes}:</th>
                 </tr>
                 <tr>
                     <td class='si_invoice_notes' colspan="4">
@@ -266,7 +266,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{$LANG.invPref}</th>
+                    <th>{$LANG.invPref}:</th>
                     <td>
                         {if !isset($preferences) }
                             <em>{$LANG.noPreferences}</em>
@@ -280,7 +280,7 @@
                             </select>
                         {/if}
                     </td>
-                    <th>{$LANG.salesRepresentative}</th>
+                    <th>{$LANG.salesRepresentative}:</th>
                     <td>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" id="sales_representative}" name="sales_representative" size="30"

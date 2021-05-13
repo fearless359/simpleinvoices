@@ -1,15 +1,10 @@
-<!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}">
     <br/>
-    <table class="center">
-        <tr>
-            <th class="left">{$LANG.nameUc}:</th>
-            <td>
-                <input type="text" name="name" size="50" value="{if isset($expense_account.name)}{$expense_account.name}{/if}" id="name" class="validate[required]"/>
-            </td>
-        </tr>
-    </table>
+    <div class="si_center">
+    <label for="name">{$LANG.nameUc}:</label>
+    <input type="text" name="name" size="50" value="{if isset($expense_account.name)}{$expense_account.name}{/if}" id="name" class="validate[required]"/>
+    </div>
     <br/>
     <div class="si_toolbar si_toolbar_form">
         <button type="submit" class="positive" name="submit" value="{$LANG.save}">

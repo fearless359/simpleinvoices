@@ -45,6 +45,79 @@ class Extensions
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getAllWithDirs();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $plugins = [];
+            $plugins[] = "<img src=\"images/plugin_disabled.png\" alt=\"{$LANG['pluginNotRegistered']}\" title=\"{$LANG['pluginNotRegistered']}\" />";
+            $plugins[] = "<img src=\"images/plugin.png\"          alt=\"{$LANG['pluginRegistered']}\" title=\"{$LANG['pluginRegistered']}\" />";
+            $plugins[] = "<img src=\"images/plugin_delete.png\"   alt=\"{$LANG['pluginUnregister']}\" title=\"{$LANG['pluginUnregister']}\" />";
+            $plugins[] = "<img src=\"images/plugin_add.png\"      alt=\"{$LANG['pluginRegister']}\" title=\"{$LANG['pluginRegister']}\" />";
+
+            $lights = [];
+            $lights[] = "<img src=\"images/lightbulb_off.png\"    alt=\"{$LANG['disabled']}\" title=\"{$LANG['disabled']}\" />";
+            $lights[] = "<img src=\"images/lightbulb.png\"        alt=\"{$LANG['enabled']}\" title=\"{$LANG['enabled']}\" />";
+            $lights[] = "<img src=\"images/lightswitch16x16.png\" alt=\"{$LANG['toggleStatus']}\" title=\"{$LANG['toggleStatus']}\" />";
+
+            $row['image'] = $plugins[3 - $row['registered']];
+
+            if ($row['name'] == 'core') {
+                $action = $LANG['alwaysEnabled'];
+            } elseif ($row['registered'] == ENABLED) {
+                $action =
+                    "<a class='index_table' title='{$row['plugin_unregister']}' " .
+                       "href='index.php?module=extensions&amp;view=register&amp;id={$row['id']}&amp;action=unregister'>" .
+                        "<span style='display:none'>{$row['plugin_unregister']}</span>" .
+                        $row['image'] .
+                    "</a>&nbsp;&nbsp;";
+
+                if ($row['enabled'] == ENABLED) {
+                    $action .=
+                        "<a class='index_table' title='{$row['plugin_disable']}' " .
+                            "href='index.php?module=extensions&amp;view=manage&amp;id={$row['id']}&amp;action=toggle'>" .
+                             "<span style='display:none'>{$row['.plugin_disable']}</span>" .
+                             $lights[2] .
+                        "</a>";
+                } else {
+                    $action .=
+                        "<a class='index_table' title='{$row['plugin_enable']}' " .
+                           "href='index.php?module=extensions&amp;view=manage&amp;id={$row['id']}&amp;action=toggle'>" .
+                            "<span style='display:none'>{$row['plugin_enable']}</span>" .
+                            $lights[2] .
+                        "</a>";
+                }
+            } else {
+                $action =
+                    "<a class='index_table' title='{$row['plugin_registered']}' " .
+                       "href='index.php?module=extensions&amp;view=register&amp;name={$row['name']}&amp;action=register&amp;description={$row['description']}'>" .
+                        "<span style='display:none'>{$row['plugin_registered']}</span>" .
+                        $row['image'] .
+                    "</a>";
+            }
+
+            $row['status'] =
+                "<span style='display: none;'>{$row['enabled']}{$row['registered']}</span>" .
+                "{$lights[$row['enabled']]}&nbsp;{$plugins[$row['registered']]}";
+
+            $tableRows[] = [
+                'action' => $action,
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'status' => $row['status']
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Retrieve requested records from the extensions tables.
      * @param int|null $id If not null, id of specified record to retrieve.
      * @param bool $include_all_dirs (Defaults to false). If true, the records in the
@@ -182,7 +255,7 @@ class Extensions
 
     /**
      * Set the status for a specified extension ID.
-     * @param $extensionId
+     * @param int $extensionId
      * @param int $status
      * @return bool
      */
@@ -286,7 +359,7 @@ class Extensions
      * Insert a new record in the extensions table.
      * @return int ID assigned to new record, 0 is insert failed.
      */
-    public static function insert()
+    public static function insert(): int
     {
         global $pdoDb;
 
@@ -307,10 +380,10 @@ class Extensions
 
     /**
      * Delete a specified record from the extensions table.
-     * @param $id
+     * @param int $id
      * @return bool true if delete succeeded, otherwise false.
      */
-    public static function delete($id)
+    public static function delete(int $id): bool
     {
         global $pdoDb;
 

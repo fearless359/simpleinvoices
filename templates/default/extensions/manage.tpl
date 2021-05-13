@@ -14,72 +14,36 @@
 {if $numberOfRows == 0}
     <p><em>{$LANG.noUc} {$LANG.extensons} {$LANG.registered}</em></p>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.nameUc}</th>
-            <th>{$LANG.descriptionUc}</th>
-            <th>{$LANG.status}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_left">{$LANG.nameUc}</th>
+            <th class="si_left">{$LANG.descriptionUc}</th>
+            <th class="si_center">{$LANG.status}</th>
         </tr>
         </thead>
-        <tbody>
-        {foreach $extensions as $extension}
-            <tr>
-                <td class="si_center">
-                    {if $extension.name == 'core'}
-                        {$LANG.alwaysEnabled}
-                    {else}
-                        {if $extension.registered == $smarty.const.ENABLED}
-                            <a class="index_table" title="{$extension.plugin_unregister}"
-                               href="index.php?module=extensions&amp;view=register&amp;id={$extension.id}&amp;action=unregister">
-                                <span style="display:none">{$extension.plugin_unregister}</span>
-                                {$extension.image}
-                            </a>
-                            &nbsp;
-                            {if $extension.enabled == $smarty.const.ENABLED}
-                                <a class="index_table" title="{$extension.plugin_disable}"
-                                   href="index.php?module=extensions&amp;view=manage&amp;id={$extension.id}&amp;action=toggle">
-                                    <span style="display:none">{$extension.plugin_disable}</span>
-                                    {$lights[2]}
-                                </a>
-                            {else}
-                                <a class="index_table" title="{$extension.plugin_enable}"
-                                   href="index.php?module=extensions&amp;view=manage&amp;id={$extension.id}&amp;action=toggle">
-                                    <span style="display:none">{$extension.plugin_enable}</span>
-                                    {$lights[2]}
-                                </a>
-                            {/if}
-                        {else}
-                            <a class="index_table" title="{$extension.plugin_registered}"
-                               href="index.php?module=extensions&amp;view=register&amp;name={$extension.name}&amp;action=register&amp;description={$extension['description']}">
-                                <span style="display:none">{$extension.plugin_registered}</span>
-                                {$extension.image}
-                            </a>
-                        {/if}
-                    {/if}
-                </td>
-                <td>{$extension.name}</td>
-                <td>{$extension.description}</td>
-                <td class="si_center">
-                    <span style="display: none;">{$extension.enabled}{$extension.registered}</span>
-                    {$lights[$extension.enabled]}&nbsp;{$plugins[$extension.registered]}
-                </td>
-            </tr>
-        {/foreach}
-        </tbody>
     </table>
     <script>
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({
+                "ajax": "./public/data.json",
+                "orderClasses": false,
+                "columns": [
+                    { "data": "action" },
+                    { "data": "name" },
+                    { "data": "description" },
+                    { "data": "status" }
+                ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "order": [
                     [3, "desc"],
                     [1, 'asc']
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false}
+                    {"targets": 0, "className": 'dt-body-center', "orderable": false},
+                    {"targets": 3, "className": 'dt-body-center'},
                 ],
                 "colReorder": true
             });

@@ -43,6 +43,6 @@ try {
 }
 
 $smarty->assign('pageActive'   , 'payment');
-$smarty->assign('subPageActive', "payment_process");
+$smarty->assign('subPageActive', "paymentProcess");
 $smarty->assign('activeTab'   , '#money');
 // @formatter:on

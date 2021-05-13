@@ -15,7 +15,7 @@ if (!empty($_POST['name'])) {
     $defaults = SystemDefaults::loadValues();
     $smarty->assign("defaults", $defaults);
 
-    $smarty->assign('pageActive', 'product_groups_manage');
-    $smarty->assign('subPageActive', 'product_groups_add');
+    $smarty->assign('pageActive', 'productGroups');
+    $smarty->assign('subPageActive', 'productGroupsCreate');
     $smarty->assign('activeTab', '#product');
 }

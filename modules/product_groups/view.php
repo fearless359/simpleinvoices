@@ -11,7 +11,7 @@ Util::directAccessAllowed();
 // @formatter:off
 $smarty->assign( "productGroup"   , ProductGroups::getOne($_GET['name']));
 
-$smarty->assign('pageActive'      , 'product_groups_manage');
-$smarty->assign('subPageActive'   , "product_view");
+$smarty->assign('pageActive'      , 'productGroups');
+$smarty->assign('subPageActive'   , 'productGroupsView');
 $smarty->assign('activeTab'       , '#product');
 // @formatter:on

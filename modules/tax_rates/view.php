@@ -14,6 +14,6 @@ $smarty->assign("tax",$tax);
 $smarty->assign("types", Taxes::getTaxTypes());
 $smarty->assign('orig_description', $tax['tax_description']);
 
-$smarty->assign('pageActive', 'tax_rate');
-$smarty->assign('subPageActive', "tax_rates_view");
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'taxRates');
+$smarty->assign('subPageActive', "taxRatesView");
+$smarty->assign('activeTab', '#settings');

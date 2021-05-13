@@ -25,16 +25,12 @@ global $LANG, $smarty;
 // Let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$billers = [];
-$rows = Biller::getAll();
-foreach ($rows as $row) {
-    $row['vname'] = $LANG['view'] . ' ' . Util::htmlSafe($row['name']);
-    $row['ename'] = $LANG['edit'] . ' ' . Util::htmlSafe($row['name']);
-    $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
-    $billers[] = $row;
+$billers = Biller::manageTableInfo();
+$data = json_encode(['data' => $billers]);
+if (file_put_contents("public/data.json", $data) === false) {
+    die("Unable to create public/data.json file");
 }
 
-$smarty->assign('billers', $billers);
 $smarty->assign('numberOfRows', count($billers));
 
 $smarty->assign('pageActive', 'biller');

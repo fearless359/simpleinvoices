@@ -12,12 +12,12 @@ Util::directAccessAllowed();
 if (!empty($_GET['id'])) {
     // Filter by just one invoice
     $payments      = Payment::getInvoicePayments($_GET['id'], true);
-    $subPageActive = "payment_filter_invoice";
+    $subPageActive = "paymentFilterInvoice";
     $noEntryMsg    = $LANG['noPaymentsInvoice'];
 } elseif (!empty($_GET['c_id'])) {
     // Filter by just one customer
     $payments      = Payment::getCustomerPayments($_GET['c_id'], true);
-    $subPageActive = "payment_filter_customer";
+    $subPageActive = "paymentFilterCustomer";
     $noEntryMsg    = $LANG['noPaymentsCustomer'];
 } else {
     // No filters

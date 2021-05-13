@@ -155,6 +155,6 @@ try {
 }
 
 $smarty->assign('pageActive', 'invoice');
-$smarty->assign('subPageActive', 'invoice_edit');
+$smarty->assign('subPageActive', 'invoiceEdit');
 $smarty->assign('activeTab', '#money');
 

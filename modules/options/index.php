@@ -1,5 +1,5 @@
 <?php
 global $smarty;
 
-$smarty->assign('pageActive', 'setting');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'settings');
+$smarty->assign('activeTab', '#settings');

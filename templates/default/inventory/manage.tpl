@@ -21,15 +21,15 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noInventoryMovements}</div>
 {else}
-    <table id="si-data-table" class="display compact">
+    <table id="si-data-table" class="display responsive compact">
         <thead>
         <tr>
-            <th>{$LANG.actions}</th>
-            <th>{$LANG.dateUc}</th>
-            <th>{$LANG.productUc}</th>
-            <th>{$LANG.quantity}</th>
-            <th>{$LANG.costUc}</th>
-            <th>{$LANG.totalCost}</th>
+            <th class="si_center">{$LANG.actions}</th>
+            <th class="si_center">{$LANG.dateUc}</th>
+            <th class="si_left">{$LANG.productUc}</th>
+            <th class="si_right">{$LANG.quantity}</th>
+            <th class="si_right">{$LANG.costUc}</th>
+            <th class="si_right">{$LANG.totalCost}</th>
         </tr>
         </thead>
     </table>

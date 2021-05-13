@@ -21,10 +21,7 @@ class Eway
      */
     public $message;
 
-    /**
-     * @return string
-     */
-    public function preCheck()
+    public function preCheck(): string
     {
         //set customer,biller and preference if not defined
         if (empty($this->customer)) {
@@ -80,7 +77,7 @@ class Eway
         try {
             $key = $config['encryptionDefaultKey'];
             $enc = new Encryption();
-            $credit_card_number = $enc->decrypt($key, $this->customer['credit_card_number']);
+            $creditCardNumber = $enc->decrypt($key, $this->customer['credit_card_number']);
         } catch (Exception $exp) {
             return 'false';
         }
@@ -95,7 +92,7 @@ class Eway
         $eway->setTransactionData("CustomerEmail"             , $this->customer['email']);
         $eway->setTransactionData("CustomerInvoiceRef"        , $this->invoice['index_name']);
         $eway->setTransactionData("CardHoldersName"           , $this->customer['credit_card_holder_name']); //mandatory field
-        $eway->setTransactionData("CardNumber"                , $credit_card_number); //mandatory field
+        $eway->setTransactionData("CardNumber"                , $creditCardNumber); //mandatory field
         $eway->setTransactionData("CardExpiryMonth"           , $this->customer['credit_card_expiry_month']); //mandatory field
         $eway->setTransactionData("CardExpiryYear"            , $this->customer['credit_card_expiry_year']); //mandatory field
         $eway->setTransactionData("Option1"                   , "");

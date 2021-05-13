@@ -27,7 +27,7 @@ $smarty->assign("attributes"      , ProductAttributes::getAll());
 $smarty->assign("productGroups"   , ProductGroups::getAll());
 $smarty->assign("defaults"        , SystemDefaults::loadValues());
 
-$smarty->assign('pageActive'      , 'product_manage');
-$smarty->assign('subPageActive'   , "product_edit");
+$smarty->assign('pageActive'      , 'product');
+$smarty->assign('subPageActive'   , "productEdit");
 $smarty->assign('activeTab'       , '#product');
 // formatter:on

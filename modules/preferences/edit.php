@@ -51,7 +51,7 @@ if (!empty($_POST['p_description'])) {
 
     $smarty->assign('localeList', Util::getLocaleList());
 
-    $smarty->assign('pageActive', 'preference');
-    $smarty->assign('subPageActive', "preferences_edit");
-    $smarty->assign('activeTab', '#setting');
+    $smarty->assign('pageActive', 'invPrefs');
+    $smarty->assign('subPageActive', "invPrefsEdit");
+    $smarty->assign('activeTab', '#settings');
 }

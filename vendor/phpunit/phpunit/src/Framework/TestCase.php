@@ -275,12 +275,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $output = '';
 
     /**
-     * @var string
+     * @var ?string
      */
     private $outputExpectedRegex;
 
     /**
-     * @var string
+     * @var ?string
      */
     private $outputExpectedString;
 
@@ -305,7 +305,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $outputRetrievedForAssertion = false;
 
     /**
-     * @var Snapshot
+     * @var ?Snapshot
      */
     private $snapshot;
 
@@ -724,11 +724,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      *
-     * @throws CodeCoverageException
-     * @throws UtilException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws CodeCoverageException
+     * @throws UtilException
      */
     public function run(TestResult $result = null): TestResult
     {
@@ -1434,9 +1434,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $buffer .= sprintf(' with data set "%s"', $this->dataName);
             }
 
-            $exporter = new Exporter;
-
             if ($includeData) {
+                $exporter = new Exporter;
+
                 $buffer .= sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
             }
         }
@@ -1504,10 +1504,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Override to run the test and assert its state.
      *
+     * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      * @throws AssertionFailedError
      * @throws Exception
      * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      * @throws Throwable
      */
     protected function runTest()
@@ -2008,9 +2008,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws Warning
      * @throws SkippedTestError
      * @throws SyntheticSkippedError
+     * @throws Warning
      */
     private function checkRequirements(): void
     {
@@ -2121,7 +2121,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->addError(
             $this,
             new SkippedTestError(
-                sprintf('This method has an invalid @depends annotation.')
+                'This method has an invalid @depends annotation.'
             ),
             0
         );
@@ -2227,8 +2227,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws RiskyTestError
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws RiskyTestError
      */
     private function restoreGlobalState(): void
     {
@@ -2324,8 +2324,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws RiskyTestError
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws RiskyTestError
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {

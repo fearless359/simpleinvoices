@@ -5,25 +5,25 @@
         <table>
             {if $smarty.get.op === "pay_selected_invoice"}
                 <tr>
-                    <th class="details_screen">{$invoice.preference|htmlSafe}</th>
+                    <th class="details_screen">{$invoice.preference|htmlSafe}:</th>
                     <td>{$invoice.index_id|htmlSafe}</td>
-                    <th class="details_screen">{$LANG.totalUc}</th>
+                    <th class="details_screen">{$LANG.totalUc}:</th>
                     <td>{$invoice.total|utilNumber:2}</td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.billerUc}</th>
+                    <th class="details_screen">{$LANG.billerUc}:</th>
                     <td>{$biller.name|htmlSafe}</td>
-                    <th class="details_screen">{$LANG.paidUc}</th>
+                    <th class="details_screen">{$LANG.paidUc}:</th>
                     <td>{$invoice.paid|utilNumber}</td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.customerUc}</th>
+                    <th class="details_screen">{$LANG.customerUc}:</th>
                     <td>{$customer.name|htmlSafe}</td>
-                    <th class="details_screen">{$LANG.owingUc}</th>
+                    <th class="details_screen">{$LANG.owingUc}:</th>
                     <td style="text-decoration: underline;">{$invoice.owing|utilNumber}</td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.amountUc}</th>
+                    <th class="details_screen">{$LANG.amountUc}:</th>
                     <td colspan="5">
                         <input type="text" name="ac_amount" size="25" class="validate[required,custom[number]]"
                                value="{$invoice.owing|utilNumber}"/>
@@ -35,7 +35,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.dateFormatted}</th>
+                    <th class="details_screen">{$LANG.dateFormatted}:</th>
                     <td colspan="5">
                         <input type="text" name="ac_date" id="date1"
                                class="validate[required,custom[date],length[0,10]] date-picker"
@@ -44,7 +44,7 @@
                 </tr>
             {elseif $smarty.get.op === "pay_invoice"}
                 <tr>
-                    <th class="details_screen">{$LANG.invoiceUc}</th>
+                    <th class="details_screen">{$LANG.invoiceUc}:</th>
                     <td colspan="3">
                         <select name="invoice_id" class="si_input validate[required]">
                             <option value=''></option>
@@ -63,11 +63,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.amountUc}</th>
+                    <th class="details_screen">{$LANG.amountUc}:</th>
                     <td colspan="3"><input type="text" name="ac_amount" size="25" class="si_input"/></td>
                 </tr>
                 <tr>
-                    <th class="details_screen">{$LANG.dateFormatted}</th>
+                    <th class="details_screen">{$LANG.dateFormatted}:</th>
                     <td colspan="3">
                         <input type="text" class="si_input date-picker" name="ac_date" id="date1"
                                value="{if isset($today)}{$today|htmlSafe}{/if}"/>
@@ -75,7 +75,7 @@
                 </tr>
             {/if}
             <tr>
-                <th class="details_screen">{$LANG.paymentTypeMethod}</th>
+                <th class="details_screen">{$LANG.paymentTypeMethod}:</th>
                 <td>
                     {if !$paymentTypes}
                         <p><em>{$LANG.noPaymentTypes}</em></p>
@@ -90,7 +90,7 @@
                         </select>
                     {/if}
                 </td>
-                <th class="details_screen">{$LANG.checkNumber}</th>
+                <th class="details_screen">{$LANG.checkNumber}:</th>
                 <td>
                     <input type="text" name="ac_check_number" class="si_input" id="chk_num" size="10"/>
                     {literal}
@@ -116,7 +116,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="details_screen">{$LANG.note}</th>
+                <th class="details_screen">{$LANG.note}:</th>
                 <td colspan="3">
                     <input name="ac_notes" id="ac_notes" type="hidden">
                     <trix-editor input="si_input ac_notes"></trix-editor>

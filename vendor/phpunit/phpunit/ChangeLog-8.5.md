@@ -2,11 +2,19 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [8.5.14] - 2020-MM-DD
+## [8.5.15] - 2021-03-17
+
+### Fixed
+
+* [#4591](https://github.com/sebastianbergmann/phpunit/issues/4591): TeamCity logger logs warnings as test failures
+
+## [8.5.14] - 2021-01-17
 
 ### Fixed
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
+* [#4572](https://github.com/sebastianbergmann/phpunit/issues/4572): Schema validation does not work with `%xx` sequences in path to `phpunit.xsd`
+* [#4575](https://github.com/sebastianbergmann/phpunit/issues/4575): PHPUnit 8.5 incompatibility with PHP 8.1
 
 ## [8.5.13] - 2020-12-01
 
@@ -122,7 +130,8 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
-[8.5.14]: https://github.com/sebastianbergmann/phpunit/compare/8.5.13...8.5
+[8.5.15]: https://github.com/sebastianbergmann/phpunit/compare/8.5.14...8.5.15
+[8.5.14]: https://github.com/sebastianbergmann/phpunit/compare/8.5.13...8.5.14
 [8.5.13]: https://github.com/sebastianbergmann/phpunit/compare/8.5.12...8.5.13
 [8.5.12]: https://github.com/sebastianbergmann/phpunit/compare/8.5.11...8.5.12
 [8.5.11]: https://github.com/sebastianbergmann/phpunit/compare/8.5.10...8.5.11

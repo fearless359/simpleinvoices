@@ -19,6 +19,6 @@ if (isset($_POST['op']) && $_POST['op'] == 'update_system_defaults' ) {
 $smarty->assign('display_block',$displayBlock);
 $smarty->assign('refresh_redirect',$refreshRedirect);
 
-$smarty->assign('pageActive', 'system_default');
-$smarty->assign('activeTab', '#setting');
+$smarty->assign('pageActive', 'siDefaults');
+$smarty->assign('activeTab', '#settings');
 

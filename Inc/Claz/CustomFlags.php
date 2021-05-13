@@ -80,12 +80,54 @@ class CustomFlags
     }
 
     /**
+     * Minimize the amount of data returned to the manage table.
+     * @return array Data for the manage table rows.
+     */
+    public static function manageTableInfo(): array
+    {
+        global $LANG;
+
+        $rows = self::getAll();
+        $tableRows = [];
+        foreach ($rows as $row) {
+            $viewName = $LANG['view'] . ' ' . $LANG['customFlagsUc'];
+            $editName = $LANG['edit'] . ' ' . $LANG['customFlagsUc'];
+
+            $action =
+                "<a class='index_table' title='$viewName' " .
+                   "href='index.php?module=custom_flags&amp;view=view&amp;id={$row['id']}'>" .
+                    "<img src='images/view.png' alt='$viewName'/>" .
+                "</a>&nbsp;&nbsp;" .
+                "<a class='index_table' title='$editName' " .
+                   "href='index.php?module=custom_flags&amp;view=edit&amp;id={$row['id']}'>" .
+                    "<img src='images/edit.png' alt='$editName'/>" .
+                "</a>";
+
+            $enabled = $row['enabled'] == ENABLED;
+            $image = $enabled ? "images/tick.png" : "images/cross.png";
+            $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
+                "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+
+            $tableRows[] = [
+                'action' => $action,
+                'associatedTable' => $row['associated_table'],
+                'flgId' => $row['flg_id'],
+                'fieldLabel' => $row['field_label'],
+                'enabled' => $enabledCol,
+                'fieldHelp' => $row['field_help']
+            ];
+        }
+
+        return $tableRows;
+    }
+
+    /**
      * Get custom_flag record based on the specified qualifier.
      * @param string $associatedTable If specified, the table for records to retrieve.
      * @param bool $enabledOnly - If true, only enabled records are returned.
      * @return array
      */
-    public static function getCustomFlagsQualified(string $associatedTable, bool $enabledOnly)
+    public static function getCustomFlagsQualified(string $associatedTable, bool $enabledOnly): array
     {
         return self::getCustomFlags($associatedTable, null, $enabledOnly);
     }
@@ -127,9 +169,6 @@ class CustomFlags
             $rows = $pdoDb->request("SELECT", "custom_flags");
             foreach ($rows as $row) {
                 $row['id'] = self::implodeId($row['associated_table'], $row['flg_id']);
-                $row['vname'] = $LANG['view'] . ' ' . $LANG['customFlagsUc'];
-                $row['ename'] = $LANG['edit'] . ' ' . $LANG['customFlagsUc'];
-                $row['image'] = $row['enabled'] == ENABLED ? 'images/tick.png' : 'images/cross.png';
                 $cflgs[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -157,6 +196,7 @@ class CustomFlags
      * @param string $id Imploded field to be exploded.
      * @return array Contains parts from exploded $id field. Contains the associated_table and
      *          flag id at indices 0 and 1 respectively.
+     * @noinspection PhpUnused
      */
     public static function explodeId(string $id): array
     {

@@ -10,6 +10,6 @@ Util::directAccessAllowed();
 
 $smarty->assign('expense_account', ExpenseAccount::getOne($_GET['id']));
 
-$smarty->assign('pageActive', 'expense_account');
-$smarty->assign('subPageActive', "view");
+$smarty->assign('pageActive', 'expenseAccount');
+$smarty->assign('subPageActive', "expenseAccountView");
 $smarty->assign('activeTab', '#money');
