@@ -5,7 +5,7 @@
     {$customFields.3}
     {$customFields.4}
     <tr>
-        <th class="left" colspan="2">{$LANG.notes}</th>
+        <th class="si_left" colspan="2">{$LANG.notes}</th>
     </tr>
     <tr>
         <td class='si_invoice_notes' colspan="2">

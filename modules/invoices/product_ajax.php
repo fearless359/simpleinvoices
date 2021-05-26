@@ -1,5 +1,6 @@
 <?php
 
+use Inc\Claz\DbField;
 use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Product;
@@ -33,8 +34,8 @@ if (!empty($id)) {
                         $join = new Join("INNER", "products_attribute_type", "t");
                         $join->addSimpleItem("a.type_id", "t.id");
                         $pdoDb->addToJoins($join);
-                        $pdoDb->addSimpleWhere("id", $key);
-                        $pdoDb->setSelectList(["name", "enabled", "t.name AS type"]);
+                        $pdoDb->addSimpleWhere("a.id", $key);
+                        $pdoDb->setSelectList(["name", "enabled", new DbField("t.name", "type")]);
                         $rows = $pdoDb->request("SELECT", "products_attributes", "a");
                         if (!empty($rows)) {
                             $attrName = $rows[0];
@@ -50,10 +51,10 @@ if (!empty($id)) {
                         $pdoDb->addToJoins($join);
                         $pdoDb->addSimpleWhere("a.id", $key);
                         $pdoDb->setSelectList([
-                            "a.name AS name",
-                            "v.id AS id",
-                            "v.value AS value",
-                            "v.enabled AS enabled"
+                            new DbField("a.name", "name"),
+                            new DbField("v.id", "id"),
+                            new DbField("v.value", "value"),
+                            new DbField("v.enabled", "enabled")
                         ]);
                         $rows = $pdoDb->request("SELECT", "products_attributes", "a");
                     } catch (PdoDbException $pde) {

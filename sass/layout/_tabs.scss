@@ -1,0 +1,62 @@
+#tabmenu {
+    min-height: 10rem;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+
+    & .subnav {
+        & .active {
+            font-weight: bold;
+            -moz-border-radius: 9px;
+            -webkit-border-radius: 9px;
+            border-radius: 9px;
+            background-color: $activeTab;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            padding: 7px;
+        }
+
+        & a.active {
+            color: $colorWhite;
+        }
+
+        & .active_subpage {
+            background-color: $colorGreyDark-2;
+        }
+
+        & a.active_subpage {
+            color: $colorWhite;
+            margin-left: -19px;
+        }
+    }
+}
+
+#si_tab_settings {
+    padding-right: 5px;
+    float: right;
+}
+
+.subnav {
+    padding-top: 0;
+
+    & li {
+        display: inline;
+        height: 2.5rem;
+        list-style-type: none;
+        padding-right: 2rem;
+    }
+}
+
+#tabs_customer {
+    border-bottom: 0 $colorGreyLight-5 solid;
+
+    & .anchors a {
+        background-color: $colorGreyLight-4;
+        margin-top: 2px;
+        padding-top: 6px;
+        padding-left: 0;
+    }
+}

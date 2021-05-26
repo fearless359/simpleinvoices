@@ -3,7 +3,7 @@
 <head>
     <title>SimpleInvoices - About</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="../../include/jquery/css/main.css">
+    <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../templates/default/css/info.css">
     <?php
     function printVersionInfo()

@@ -81,13 +81,13 @@ class Payment
      */
     public static function getInvoicePayments(int $id, bool $manageTable = false): array
     {
-        $rows = self::getOne($id, false);
-        if ($manageTable) {
-            $tableRows = [$rows];
+        $row = self::getOne($id, false);
+        if (!empty($row) && $manageTable) {
+            $tableRows = [$row];
             return self::manageTableInfo($tableRows);
         }
 
-        return $rows;
+        return $row;
     }
 
     /**
@@ -242,7 +242,7 @@ class Payment
             } elseif ($filter == "online_payment_id") {
                 $pdoDb->addSimpleWhere("ap.online_payment_id", $value, "AND");
             } else {
-                error_log("Payment::selectByValue() - Invalid filter[{$filter}] specified.");
+                error_log("Payment::selectByValue() - Invalid filter[$filter] specified.");
             }
 
             $pdoDb->addSimpleWhere("ap.domain_id", DomainId::get());
@@ -308,12 +308,20 @@ class Payment
                 'ap.*',
                 new DbField('c.name', 'cname'),
                 new DbField('b.name', 'bname'),
-                new DbField('pt.pt_description', 'description')
+                new DbField('pt.pt_description', 'description'),
+                new DbField("pr.locale", "locale"),
+                new DbField("pr.pref_currency_sign", "currency_sign"),
+                new DbField("pr.currency_code", "currency_code")
             ]);
 
             $jn = new Join('LEFT', 'invoices', 'iv');
             $jn->addSimpleItem("iv.customer_id", new DbField("c.id"), "AND");
             $jn->addSimpleItem("iv.domain_id", new DbField("c.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join("INNER", "preferences", "pr");
+            $jn->addSimpleItem("pr.pref_id", new DbField("iv.preference_id"), "AND");
+            $jn->addSimpleItem("pr.domain_id", new DbField("iv.domain_id"));
             $pdoDb->addToJoins($jn);
 
             $jn = new Join('LEFT', 'payment', 'ap');
@@ -346,6 +354,10 @@ class Payment
             error_log("Payment::getCustomerPayments() - id[$id] error: " . $pde->getMessage());
         }
 
+        if (empty($payments)) {
+            return [];
+        }
+
         if ($manageTable) {
             return self::manageTableInfo($payments);
         }
@@ -357,6 +369,7 @@ class Payment
      * Add payment type description to retrieved payment records.
      * @param array $payments Array of <i>Payment</i> object to update.
      * @return array <i>Payment</i> records with payment type description added.
+     * @noinspection PhpUnused
      */
     public static function progressPayments(array $payments): array
     {

@@ -13,11 +13,7 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=invoices&amp;view=save">
-    <h3>{$LANG.invoiceUc} {$LANG.invConsulting}
-        <div id="gmail_loading" class="gmailLoader" style="float:right; display: none;">
-            <img src="images/gmail-loader.gif" alt="{$LANG.loading} ..."/> {$LANG.loading} ...
-        </div>
-    </h3>
+    <h3>{$LANG.invoiceUc} {$LANG.invConsulting}</h3>
     {include file="$path/header.tpl" }
     <tr>
         <th class="details_screen">{$LANG.quantity}</th>

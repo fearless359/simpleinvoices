@@ -1,0 +1,38 @@
+
+#si_install_logo { text-align: center; }
+
+.si_wrap {
+    margin: 0 auto;
+
+    & table {
+        text-align: center;
+    }
+}
+
+// defer display of form until menu rendered.
+// It would be neat to do this for the entire form but the datatables
+// settings get messed up if you do this.
+.si_defer_display {
+    display: none;
+}
+
+#si_header {
+    margin: 0;
+    padding: 0;
+    line-height: 240%;
+    text-align: right;
+    background: $colorGreyDark-2;
+    color: $colorGreyLight-6;
+    border-bottom: 1px solid $colorGreyDark-4;
+    font-size: 1.1rem;
+
+
+    & a {
+        color: $headerLink;
+    }
+
+    & .si_wrap {
+        padding-right: 30px;
+        text-align: right;
+    }
+}

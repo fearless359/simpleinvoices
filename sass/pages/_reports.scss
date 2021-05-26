@@ -1,0 +1,65 @@
+.si_report {
+    &_title2 {
+        font-weight: bold;
+        border-bottom: 1px solid $colorGreyLight-6;
+        margin: 10px auto 15px auto;
+        padding: 5px;
+        color: $colorGreyDark-2;
+    }
+
+    &_table {
+        border: 1px solid $colorGreyLight-10;
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+
+        & td,
+        & th {
+            /*text-align: right;*/
+            padding: 2px 5px 2px 10px;
+            border-left: 1px solid $colorGreyLight-10;
+            border-top: 1px solid $colorGreyLight-1;
+            border-bottom: 1px solid $colorGreyLight-10;
+            font-size: 1.2rem;
+        }
+
+        & thead th {
+            color: $colorGreyDark-4;
+            font-weight: bold;
+            background: $colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border-top: 1px solid $colorGreyLight-10;
+            border-bottom: 0;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        & tbody th {
+            color: $colorGreyDark-4;
+            font-weight: normal;
+        }
+
+        & .tr_A {
+            background: $colorGreyLight-3;
+        }
+
+        & tfoot th,
+        & tfoot td {
+            color: black;
+            font-weight: bold;
+            background: $colorGreyLight-44 url(../images/fhbg.gif) repeat-x bottom;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            border-bottom: 0;
+        }
+
+        & .rate {
+            font-size: .9rem;
+            color: $colorGreenDark-1;
+            border-left-width: 0;
+            padding-left: 5px;
+        }
+    }
+}

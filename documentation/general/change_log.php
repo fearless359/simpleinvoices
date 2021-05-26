@@ -3,7 +3,7 @@
 <head>
   <title>SimpleInvoices - Changelog</title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="../../include/jquery/css/main.css">
+  <link rel="stylesheet" href="../../css/main.css">
   <link rel="stylesheet" href="../../templates/default/css/info.css">
 </head>
 <body>
@@ -13,6 +13,23 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-05-25 - <b>2020.2.00</b>
+            <ul>
+                <li>Converted main.css file into multiple scss files. Includes
+                    logic to build a compressed version of the main.css file
+                    for improved load times.</li>
+                <li>Updated to use grid layout for quick_view invoice. Includes
+                    display enhancements for invoice item tables.</li>
+                <li>Added Consulting type invoice to types available when adding
+                    a new invoice. Logic was always there, just wasn't an option
+                    to switch to it.</li>
+                <li>Updated npm and composer libraries for current versions.</li>
+                <li>Added responsive settings to all DataTables implemented on
+                    manage screens.</li>
+                <li>Updated reports to have standard background formatting for the
+                    run report criteria sections.</li>
+            </ul>
+        </li>
         <li>2021-05-10 - <b>2020.1.00</b>
             <ul>
                 <li>Css updates to move to a responsive layout. Tabs and body of screens updated.</li>

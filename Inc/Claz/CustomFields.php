@@ -231,10 +231,10 @@ class CustomFields
                     "</tr>\n";
             } else {
                 $displayBlock =
-                    "<tr class='$cssClassTr'>\n" .
-                    "  <th class='$cssClassTh'>{$customLabelValue}$separator</th>\n" .
-                    "  <td class='$cssClassTd' colspan='$tdColSpan'>$customFieldValue</td>\n" .
-                    "</tr>\n";
+                    "<div class='$cssClassTr'>\n" .
+                    "  <div class='$cssClassTh bold'>{$customLabelValue}$separator</div>\n" .
+                    "  <div class='$cssClassTd'>$customFieldValue</div>\n" .
+                    "</div>\n";
             }
         }
         return $displayBlock;

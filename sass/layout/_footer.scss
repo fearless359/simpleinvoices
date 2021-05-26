@@ -1,0 +1,15 @@
+
+#si_footer {
+    font-size: 1rem;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: $colorGreyDark-2;
+
+    & a {
+        color: $colorGreyDark-5;
+    }
+
+    & .si_wrap {
+        text-align: center;
+    }
+}

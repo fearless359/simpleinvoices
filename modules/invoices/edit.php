@@ -57,17 +57,18 @@ try {
                     $pdoDb->setSelectList([
                         new DbField('a.name', 'name'),
                         'enabled',
-                        'type',
-                        new DbField('t.name')
+                        'type_id',
+                        't.name'
                     ]);
 
                     $jn = new Join("LEFT", "products_attribute_type", "t");
-                    $jn->addSimpleItem("a.type_id", new DbField("a.id"));
+                    $jn->addSimpleItem("a.type_id", new DbField("t.id"));
                     $pdoDb->addToJoins($jn);
 
                     $pdoDb->addSimpleWhere('a.id', $key2);
 
                     $rows = $pdoDb->request('SELECT', 'products_attributes', 'a');
+
                     $attrName = $rows[0];
 
                     $pdoDb->setSelectList([

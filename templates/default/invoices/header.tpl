@@ -22,6 +22,11 @@
             <img class="action" src="images/page_white_edit.png" alt=""/>
             {$LANG.totalStyle}
         </a>
+        <a href="index.php?module=invoices&amp;view=consulting{if isset($template)}&amp;template={$template}{/if}{if isset($defaultCustomerID)}&amp;customer_id={$defaultCustomerID}{/if}"
+           class="{if $view=='consulting'}selected{/if}">
+            <img class="action" src="images/consulting.png" alt=""/>
+            {$LANG.consulting}
+        </a>
     </span>
     <span class="si_filters_title">
         <a class="cluetip" href="#" title="{$LANG.invoiceType}"

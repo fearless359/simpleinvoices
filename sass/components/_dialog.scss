@@ -1,0 +1,33 @@
+.web_dialog {
+    position: fixed;
+    top: 30%;
+    left: 42%;
+    background-color: white;
+    border: 2px solid $colorGreyLight-13;
+    z-index: 102;
+    font-size: 1.3rem;
+
+    &_overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: $colorBlack;
+        opacity: .15;
+        filter: alpha(opacity=15);
+        -moz-opacity: .15;
+        z-index: 101;
+        display: none;
+    }
+}
+
+.dialog {
+    font-family: arial, verdana, helvetica, sans-serif;
+    font-size: 1.2rem;
+    color: $colorGreyDark-5;
+}

@@ -152,10 +152,10 @@ global $LANG,
 
 Log::out("index.php - After init.php - module($module] view[$view]");
 foreach ($extNames as $extName) {
-    if (file_exists("extensions/{$extName}/include/init.php")) {
+    if (file_exists("extensions/$extName/include/init.php")) {
         /** @noinspection PhpIncludeInspection */
-        $extInitFile = "extensions/{$extName}/include/init.php";
-        Log::out("index.php - extInitFile[{$extInitFile}]");
+        $extInitFile = "extensions/$extName/include/init.php";
+        Log::out("index.php - extInitFile[$extInitFile]");
         require_once $extInitFile;
     }
 }
@@ -226,11 +226,8 @@ if ($module == "options" && $view == "database_sqlpatches") {
                 // If it has not been set up, allow the user to add a biller, customer, product or to
                 // modify the setting options.
                 if (!empty($module)) {
-                    if ($view == 'create' && ($module == 'billers' || $module == 'customers' || $module == 'products') ||
-                        $module == 'system_defaults' && ($view == 'manage' || $view == 'edit' || $view == 'save')) {
-                        $stillDoingSetup = false;
-                    } else {
-                        $stillDoingSetup = false;
+                    $stillDoingSetup = false;
+                    if (($view != 'create' || $module != 'billers' && $module != 'customers' && $module != 'products') && ($module != 'system_defaults' || $view != 'manage' && $view != 'edit' && $view != 'save')) {
                         try {
                             if (Invoice::count() == 0) {
                                 $stillDoingSetup = true;
@@ -293,7 +290,7 @@ $smarty->assign('menu', $menu);
 
 if (!CheckPermission::isAllowed($module, $view)) {
     $role = SiAcl::getSessionRole();
-    Log::out("index.php - CheckPermission::isAllowed('{$module}', '{$view}') returned false for role[{$role}].");
+    Log::out("index.php - CheckPermission::isAllowed('$module', '$view') returned false for role[$role].");
     $module = "errorPages";
     $view = "401";
 }
@@ -316,9 +313,9 @@ Log::out("index.php - After invoices/template");
 if ($apiRequest || strstr($view, "xml") || strstr($view, "ajax")) {
     $extensionXml = 0;
     foreach ($extNames as $extName) {
-        if (file_exists("extensions/{$extName}/modules/$module/$view.php")) {
+        if (file_exists("extensions/$extName/modules/$module/$view.php")) {
             /** @noinspection PhpIncludeInspection */
-            include "extensions/{$extName}/modules/$module/$view.php";
+            include "extensions/$extName/modules/$module/$view.php";
             $extensionXml++;
         }
     }
@@ -340,9 +337,9 @@ Log::out("index.php - After api/xml or ajax");
 
 $extensionJqueryFiles = "";
 foreach ($extNames as $extName) {
-    $path = "extensions/$extName/include/jquery/$extName.jquery.ext.js";
+    $path = "extensions/$extName/include/js/$extName.jquery.ext.js";
     if (file_exists($path)) {
-        $extensionJqueryFiles .=  "<script src='{$path}'></script>";
+        $extensionJqueryFiles .=  "<script src='$path'></script>";
     }
 }
 $smarty->assign("extension_jquery_files", $extensionJqueryFiles);
@@ -429,7 +426,7 @@ if ($module == "reports" && ($view == "export" || $view == "email")) {
         $path = 'templates/default/reports/';
     }
     $smarty->assign('path', $path);
-    Log::out("index.php - reports export/email path[{$path}]");
+    Log::out("index.php - reports export/email path[$path]");
 }
 
 if ($extensionPhpFile == 0) {
@@ -445,7 +442,7 @@ if ($extensionPhpFile == 0) {
 // Include php file for the requested page section - END
 // **********************************************************
 if ($module == "export" || $view == "export") {
-    Log::out("index.php - path[{$path}] Before export exit");
+    Log::out("index.php - path[$path] Before export exit");
     exit(0);
 }
 Log::out("index.php - After export/export exit");
@@ -456,15 +453,15 @@ Log::out("index.php - After export/export exit");
 // use script load for the .php file.
 // **********************************************************
 foreach ($extNames as $extName) {
-    if (file_exists("extensions/{$extName}/include/jquery/{$extName}.post_load.jquery.ext.js.tpl")) {
-        $smarty->$smartyOutput("extensions/{$extName}/include/jquery/{$extName}.post_load.jquery.ext.js.tpl");
+    if (file_exists("extensions/$extName/include/js/$extName.post_load.jquery.ext.js.tpl")) {
+        $smarty->$smartyOutput("extensions/$extName/include/js/$extName.post_load.jquery.ext.js.tpl");
     }
 }
 
 // NOTE: Don't load the default file if we are processing an authentication "auth" request.
 // if ($extensionPostLoadJquery == 0 && $module != 'auth') {
 if ($module != 'auth' && !($module == 'payments' && $view == 'print')) {
-    $smarty->$smartyOutput("include/jquery/post_load.jquery.ext.js.tpl");
+    $smarty->$smartyOutput("include/js/post_load.jquery.ext.js.tpl");
 }
 Log::out("index.php - post_load...");
 
@@ -504,8 +501,8 @@ Log::out("index.php - After menuTpl processed");
 if (!in_array($module . "_" . $view, $earlyExit)) {
     $extensionMain = 0;
     foreach ($extNames as $extName) {
-        if (file_exists("extensions/{$extName}/templates/default/main.tpl")) {
-            $smarty->$smartyOutput("extensions/{$extName}/templates/default/main.tpl");
+        if (file_exists("extensions/$extName/templates/default/main.tpl")) {
+            $smarty->$smartyOutput("extensions/$extName/templates/default/main.tpl");
             $extensionMain++;
         }
     }
@@ -546,14 +543,14 @@ $extensionInsertionFiles = [];
 $performExtensionInsertions =
     $module == 'reports' && $view == 'index' ||
     $module == 'system_defaults' && $view == 'manage';
-Log::out("index.php - performExtensionInsertions[{$performExtensionInsertions}]");
+Log::out("index.php - performExtensionInsertions[$performExtensionInsertions]");
 Log::out("index.php - extNames: " .print_r($extNames, true));
 foreach ($extNames as $extName) {
     if ($extName == "core") {
         continue;
     }
     $tplFile = "extensions/$extName/templates/default/$module/$view.tpl";
-    Log::out("index.php - extension tplFile[{$tplFile}]");
+    Log::out("index.php - extension tplFile[$tplFile]");
     if (file_exists($tplFile)) {
         // If $performExtensionInsertions is true, the $path and
         // $extensionTemplates are not set/incremented intentionally.
@@ -595,12 +592,12 @@ foreach ($extNames as $extName) {
             $realPath = "templates/default/$module/";
             $myTplPath = $tplFile;
             $extensionTemplates++;
-            Log::out("index.php - extension path[{$path}] realPath[{$realPath}] myTplPath[{$myTplPath}]");
+            Log::out("index.php - extension path[$path] realPath[$realPath] myTplPath[$myTplPath]");
         }
     }
 }
 
-// TODO: if more than one extension has a template for the requested file, that's trouble :(
+// TODO: if more than one extension has a template for the requested file, that's trouble :-(
 // This won't happen the standard menu.tpl and system_defaults menu.tpl given
 // changes implemented in this file for them. Similar changes should be implemented for
 // other templates as needed.
@@ -613,7 +610,7 @@ if ($extensionTemplates == 0) {
         $extensionTemplates++;
     }
 }
-Log::out("index.php - final path[{$path}] realPath[{$realPath}] myTplPath[{$myTplPath}]");
+Log::out("index.php - final path[$path] realPath[$realPath] myTplPath[$myTplPath]");
 
 $smarty->assign("extension_insertion_files", $extensionInsertionFiles);
 $smarty->assign("perform_extension_insertions", $performExtensionInsertions);

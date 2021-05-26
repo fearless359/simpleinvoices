@@ -1,10 +1,10 @@
 <link rel="shortcut icon" href="images/favicon.ico"/>
-<link rel="stylesheet" href="include/jquery/css/main.css">
+<link rel="stylesheet" href="css/main.css">
 <div class="center"><h1 class="si_center">{$LANG.statementOfInvoices}</h1></div>
 {if $menu}
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=statement&amp;view=index">
-        <div class="si_form si_form_search{if !isset($smarty.post.submit)} si_form_search_null{/if}">
+        <div class="si_form si_form_search{if !isset($smarty.post.submit)}{/if}">
             <table>
                 <tr>
                     <th>

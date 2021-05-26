@@ -1,0 +1,73 @@
+table {
+    border-collapse: collapse;
+
+    .manage { font-size: 1.2rem; }
+
+    &.center {
+        margin: 0 auto;
+    }
+
+    &.left {
+        float: left;
+        margin-left: auto;
+    }
+
+    & th.left {
+        text-align: left;
+    }
+
+    &.buttons {
+        margin: 0 auto;
+        padding: 0;
+        border: none;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+tr {
+    &.index_table {
+        background-color: $colorGreyLight-4;
+        font-style: normal;
+        font-weight: 400;
+        text-decoration: none;
+        border: 1px none white;
+    }
+
+    &.biller th,
+    &.customer th { font-weight: bold; }
+
+}
+
+th.details_screen,
+td.details_screen {
+    border-bottom: 1px dashed $colorGreyLight-105;
+    line-height: 24px;
+}
+
+td,
+div {
+    font-family: verdana, arial, helvetica, sans-serif;
+    text-align: left;
+}
+
+.si_table_toolbar {
+    & th,
+    & td {
+        padding-bottom: 10px;
+        vertical-align: middle;
+    }
+
+    & th {
+        font-weight: normal;
+        text-align: right;
+    }
+
+    & td {
+        text-align: left;
+        padding-left: 20px;
+    }
+}
+
+// DataTables setting
+#si-data-table { width: 100%; }

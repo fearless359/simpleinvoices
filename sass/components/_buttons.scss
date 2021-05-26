@@ -1,0 +1,108 @@
+.btn {
+    height: 4rem;
+    width: 8rem;
+    border: 1px solid #cccccc;
+    border-radius: 100px;
+    min-width: 30px;
+    text-align: center;
+    text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
+                 0 1px 0 rgba($colorWhite, 1);
+
+    &:link,
+    &:visited {
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem 4rem;
+        border-radius: 10rem;
+        transition: all .2s;
+        position: relative;
+        font-size: 1.6rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    &:active,
+    &:focus {
+        outline: none;
+        transform: translateY(-0.1rem);
+        box-shadow: 0 0.5rem 1rem rgba($colorBlack, 0.2);
+    }
+
+    &:hover {
+        transform: translateY(-0.3rem);
+        box-shadow: 0 1rem 2rem rgba($colorBlack, 0.2);
+
+        &::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+        }
+    }
+
+    &--grey {
+        background-color: $colorGreyLight-11;
+        color: $colorGreyDark-3;
+
+        &::after {
+            background-color: $colorWhite;
+        }
+    }
+
+    &::after {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        border-radius: 10rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: all .4s;
+    }
+
+    &--animated {
+        animation: moveInBottom .5s ease-out .75s;
+        animation-fill-mode: backwards;
+    }
+
+    &-text {
+        &__btn {
+            position: absolute;
+            float: left;
+        }
+
+        &:link,
+        &:visited {
+            font-size: 1.6rem;
+            color: $colorGreyDark-5;
+            display: inline-block;
+            text-decoration: none;
+            border-bottom: 1px solid $colorGreyDark-5;
+            padding: 3px;
+        }
+
+        &:hover {
+            background-color: $colorGreyDark-5;
+            color: white;
+            box-shadow: 0 1rem 2rem rgba($colorBlack, 0.15);
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            box-shadow: 0 0.5rem 1rem rgba($colorBlack, 0.15);
+            transform: translateY(0);
+        }
+    }
+}
+
+.si_buttons {
+    &_manage_invoices {
+        float: right;
+        margin-right: 4.5rem;
+    }
+
+    &_invoice_header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+}
