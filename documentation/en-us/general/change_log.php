@@ -13,6 +13,12 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-05-26 - <b>2019.2.32</b>
+            <ul>
+                <li>Updated to DataTables version 1.10.22. Removed npm library and
+                    updated trix libraries.</li>
+            </ul>
+        </li>
         <li>2021-02-11 - <b>2019.2.31</b>
             <ul>
                 <li>Fixed to handle empty tax_ids on new invoice creation.</li>

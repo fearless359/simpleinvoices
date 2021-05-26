@@ -2,14 +2,13 @@
   "name": "simpleinvoices",
   "version": "1.0.0",
   "dependencies": {
-    "datatables.net": "^1.10.19",
+    "datatables.net": "^1.10.22",
     "datatables.net-buttons-dt": "^1.5.6",
     "datatables.net-colreorder-dt": "^1.5.1",
     "datatables.net-dt": "^1.10.19",
     "datatables.net-fixedheader-dt": "^3.1.5",
     "datatables.net-scroller-dt": "^1.5.1",
-    "jquery": "^3.5.0",
-    "npm": "^6.14.7"
+    "jquery": "^3.5.0"
   },
   "devDependencies": {},
   "repository": {

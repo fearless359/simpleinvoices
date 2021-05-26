@@ -5,6 +5,8 @@ custom.config.*
 *.tpl.php
 zend_cache---*
 *.log
+css/
+extensions/customerList/
 tmp/*
 tmp/database_backups/*
 .buildpath
