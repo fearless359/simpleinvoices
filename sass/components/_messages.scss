@@ -1,0 +1,46 @@
+.si_message {
+    min-height: 0;
+    font-size: 1.2rem;
+    color: $colorBlueLight-3;
+    background-color: $colorBlueLight-2;
+    border-color: $colorBlueLight-1;
+
+    &,
+    &_ok,
+    &_warning,
+    &_error {
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+        border: 1px solid $colorGreyLight-11;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    &_ok {
+        background: $colorGreenLight-1 url(../images/tick.png) 47px 16px no-repeat;
+        border-color: $colorGreenLight-2;
+        color: $colorGreen;
+    }
+
+    &_error {
+        background: $colorRedLight-1 url(../images/cross.png) 47px 16px no-repeat;
+        color: $colorIndianRed;
+        border-color: $colorRedLight-2;
+    }
+
+    &_warning {
+        color: $colorGoldenDark-1;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        background-color: $colorGoldenLight-1;
+        border: 1px solid $colorGoldenLight-2;
+    }
+
+    &_install {
+        margin: 30px;
+        padding: 3px;
+        border-bottom: 1px dotted $colorGreyLight-10;
+        border-top: 1px dotted $colorGreyLight-10;
+    }
+}

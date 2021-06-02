@@ -214,7 +214,7 @@ class Invoice
                 'date' => $row['date'],
                 'total' => $row['total'],
                 'owing' => isset($row['status']) ? $row['owing'] : '',
-                'aging' => isset($row['aging']) ? $row['aging'] : '',
+                'aging' => $row['aging'] ?? '',
                 'currency_code' => $row['currency_code'],
                 'locale' => preg_replace($pattern,'$1-$2', $row['locale'])
             ];
@@ -734,11 +734,11 @@ class Invoice
                 'last_activity_date' => $lastActivityDate,
                 'owing' => '1', // force update of aging information
                 'note' => empty($_POST['note']) ? "" : trim($_POST['note']),
-                'custom_field1' => isset($_POST['custom_field1']) ? $_POST['custom_field1'] : '',
-                'custom_field2' => isset($_POST['custom_field2']) ? $_POST['custom_field2'] : '',
-                'custom_field3' => isset($_POST['custom_field3']) ? $_POST['custom_field3'] : '',
-                'custom_field4' => isset($_POST['custom_field4']) ? $_POST['custom_field4'] : '',
-                'sales_representative' => isset($_POST['sales_representative']) ? $_POST['sales_representative'] : ''
+                'custom_field1' => $_POST['custom_field1'] ?? '',
+                'custom_field2' => $_POST['custom_field2'] ?? '',
+                'custom_field3' => $_POST['custom_field3'] ?? '',
+                'custom_field4' => $_POST['custom_field4'] ?? '',
+                'sales_representative' => $_POST['sales_representative'] ?? ''
             ]);
             $pdoDb->setExcludedFields(["id", "domain_id"]);
             $result = $pdoDb->request("UPDATE", "invoices");
@@ -1050,19 +1050,19 @@ class Invoice
                                     "<td class='details_screen'>{$row['preference']}:</td>" .
                                     "<td>{$row['index_id']}</td>" .
                                     "<td class='details_screen'>Total: </td>" .
-                                    "<td>{$total}</td>" .
+                                    "<td>$total</td>" .
                                 "</tr>" .
                                 "<tr>" .
                                     "<td class='details_screen'>Biller: </td>" .
                                     "<td>{$row['biller']}</td>" .
                                     "<td class='details_screen'>Paid: </td>" .
-                                    "<td>{$paid}</td>" .
+                                    "<td>$paid</td>" .
                                 "</tr>" .
                                 "<tr>" .
                                     "<td class='details_screen'>Customer: </td>" .
                                     "<td>{$row['customer']}</td>" .
                                     "<td class='details_screen'>Owing: </td>" .
-                                    "<td><u>{$owing}</u></td>" .
+                                    "<td><u>$owing</u></td>" .
                                 "</tr>" .
                             "</table>\n";
                     // @formatter:on
@@ -1114,7 +1114,7 @@ class Invoice
                     $havings->addSimple("status", "=", ENABLED);
                     break;
                 default:
-                    error_log("Invoice::buildHavings() - Undefined option[{$option}]");
+                    error_log("Invoice::buildHavings() - Undefined option[$option]");
             }
         } catch (PdoDbException $pde) {
             error_log("Invoice::buildHavings() - Error: " . $pde->getMessage());
@@ -1254,7 +1254,8 @@ class Invoice
     }
 
     /**
-     * Generates a nice summary of total $ for tax for an invoice
+     * Generates a nice summary of total $ for tax for an invoice. Note that only
+     * non-zero tax records are returned.
      * @param int $invoiceId The <b>id</b> column for the invoice to get info for.
      * @return array Rows retrieve.
      * @throws PdoDbException
@@ -1267,6 +1268,7 @@ class Invoice
             $pdoDb->addToFunctions(new FunctionStmt("SUM", "item_tax.tax_amount", "tax_amount"));
             $pdoDb->addToFunctions(new FunctionStmt("COUNT", "*", "count"));
 
+            $pdoDb->addToWhere(new WhereItem(false, "item_tax.tax_amount", '<>', 0, false, 'AND'));
             $pdoDb->addSimpleWhere("item.invoice_id", $invoiceId, 'AND');
             $pdoDb->addSimpleWhere('item.domain_id', DomainId::get());
 

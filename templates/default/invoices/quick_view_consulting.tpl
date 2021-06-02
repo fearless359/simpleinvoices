@@ -1,5 +1,5 @@
-<tr class="tr_head">
-    <td colspan="6" class="details_screen align_right">
+<div class="grid__head-6">
+    <div class=".cols__1-span-6 si_right">
         <a href='#' class="show-consulting" onclick="$('.consulting').show();$('.show-consulting').hide();"
            title="{$LANG.showDetails}">
             <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
@@ -8,17 +8,11 @@
            title="{$LANG.hideDetails}">
             <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
         </a>
-    </td>
-</tr>
-<tr class="tr_head">
-    <td colspan="6">
-        <table class="si_invoice_view_items">
-            <tr class="tr_head_items">
-                <th>{$LANG.quantityShort}</th>
-                <th colspan="2">{$LANG.item}</th>
-                <th class="si_right">{$LANG.unitCost}</th>
-                <th class="si_right">{$LANG.priceUc}</th>
-            </tr>
-        </table>
-    </td>
-</tr>
+    </div>
+</div>
+<div class="grid__head-6">
+    <div class="bold si_right">{$LANG.quantityShort}</div>
+    <div class="cols__2-span-3 bold">{$LANG.item}</div>
+    <div class="bold si_right">{$LANG.unitCost}</div>
+    <div class="bold si_right">{$LANG.priceUc}</div>
+</div>

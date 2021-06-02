@@ -16,10 +16,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" href="../../images/favicon.ico"/>
-    <link href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <link href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
-    <link href="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
-    <link href="include/jquery/jQuery-Validation-Engine-master/css/validationEngine.jquery.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/jQuery-Validation-Engine-master/css/validationEngine.jquery.css" rel="stylesheet" type="text/css"/>
     <!--suppress CssUnusedSymbol -->
     <style>
     {literal}
@@ -35,17 +35,17 @@
    {/literal}
    </style>
    <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
-   <link href="include/jquery/trix-master/dist/trix.css" rel="stylesheet" type="text/css">
-   <link href="include/jquery/cluetip/jquery.cluetip.css" rel="stylesheet" type="text/css" />
+   <link href="include/js/trix-master/dist/trix.css" rel="stylesheet" type="text/css">
+   <link href="include/js/cluetip/jquery.cluetip.css" rel="stylesheet" type="text/css" />
 
    <script src="node_modules/jquery/dist/jquery.js"></script>
-   <script src="include/jquery/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+   <script src="include/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
    <script src="node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
    <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-   <script src="include/jquery/cluetip/jquery.cluetip.js"></script>
+   <script src="include/js/cluetip/jquery.cluetip.js"></script>
 
-   <script src="include/jquery/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-en.js"></script>
-   <script src="include/jquery/jQuery-Validation-Engine-master/js/jquery.validationEngine.js"></script>
+   <script src="include/js/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-en.js"></script>
+   <script src="include/js/jQuery-Validation-Engine-master/js/jquery.validationEngine.js"></script>
    <script>
    {literal}
    $(document).ready(function () {
@@ -62,18 +62,18 @@
     {/literal}
     </script>
 
-    <script src="include/jquery/trix-master/dist/trix.js"></script>
+    <script src="include/js/trix-master/dist/trix.js"></script>
     {$extension_jquery_files }
-    <script src="include/jquery/jquery.functions1.js"></script>
-    {include 'include/jquery/jquery.functions.js.tpl'}
-    <script src="include/jquery/jquery.conf1.js"></script>
-    {include 'include/jquery/jquery.conf.js.tpl'}
+    <script src="include/js/jquery.functions1.js"></script>
+    {include 'include/js/jquery.functions.js.tpl'}
+    <script src="include/js/jquery.conf1.js"></script>
+    {include 'include/js/jquery.conf.js.tpl'}
 {*    {if $config.debugLevel == "All"}*}
 {*        <link rel="stylesheet" type="text/css" href="library/blackbirdjs/blackbird.css"/>*}
 {*        <script src="library/blackbirdjs/blackbird.js"></script>*}
 {*    {/if}*}
-    <link rel="stylesheet" type="text/css" href="include/jquery/css/main.css"/>
-    <link rel="stylesheet" type="text/css" href="include/jquery/css/print.css" media="print"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+{*    <link rel="stylesheet" type="text/css" href="css/print.css" media="print"/>*}
     {$smarty.capture.hook_head_end}
 </head>
 {*<body class="body_si body_module_{$module} body_view_{$view}">*}

@@ -1,0 +1,92 @@
+form {
+    margin: 0;
+    padding: 0;
+}
+
+input,
+select,
+textarea {
+    background: $colorWhite url(../images/text-bg.gif) repeat-x scroll center top;
+    border: 1px solid $colorGreyLight-11;
+    margin: 1px;
+    padding: 0.2em 0.3em;
+    font-size: 1.6rem;
+}
+
+label { font-weight: bold; }
+
+/* Fix webkit 'black background on text input bug (mostly in Mac IDEs) */
+input[type=text] { -webkit-appearance: none; }
+
+.si_input { margin-left: 6px; }
+
+.si_form {
+    display: block;
+    margin: 2rem auto;
+    overflow: hidden;
+
+    & table {
+        border-top: 1px dotted $colorGreyLight-10;
+        margin: 0 auto;
+    }
+
+    & th,
+    & td {
+        padding: 3px;
+        border-bottom: 1px dotted $colorGreyLight-10;
+    }
+
+    & tbody th {
+        text-align: left;
+        white-space: nowrap;
+        font-weight: bold;
+        color: $colorGreyDark-3;
+        padding-left: .5rem;
+        padding-right: .7rem;
+        vertical-align: top;
+        line-height: 2.6rem;
+    }
+
+    & tbody th.product_attribute {
+        text-align: left;
+    }
+
+    & h4 {
+        color: $colorGreyDark-4;
+        padding: 0;
+        margin: 5px 0;
+    }
+
+    & input {
+        margin-left: 6px;
+        margin-right: 5px;
+    }
+
+    & th a.cluetip img {
+        margin-bottom: -3px;
+    }
+
+
+    &_search {
+        margin-bottom: 30px;
+        border: 1px solid $colorGreyLight-11;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+        background: $colorGreyLight-4;
+        padding: 20px 0 13px 0;
+    }
+}
+
+.si_error_line {
+    color: white;
+    margin-top: -2rem;
+    margin-bottom: 2rem;
+    padding: 2px 8px 2px 27px;
+    line-height: 3rem;
+    text-align: left;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: $colorRed url(../images/important.png) no-repeat 5px 2px;
+}

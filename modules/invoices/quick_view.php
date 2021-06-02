@@ -66,7 +66,7 @@ try {
     $customFields = [];
     for ($idx = 1; $idx <= 4; $idx++) {
         $customFields[$idx] = CustomFields::showCustomField("invoice_cf{$idx}", $invoice["custom_field{$idx}"],
-            "read", 'summary', '', '',
+            "read", 'grid__head-10 summary', 'cols__1-span-2', 'cols__3-span-8',
             5, ':');
     }
 

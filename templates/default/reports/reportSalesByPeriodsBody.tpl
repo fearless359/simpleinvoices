@@ -1,6 +1,6 @@
 {if $fileType != 'xls' && $fileType != 'doc'}
   <link rel="shortcut icon" href="{$path}../../../images/favicon.ico"/>
-  <link rel="stylesheet" href="{$path}../../../include/jquery/css/main.css">
+  <link rel="stylesheet" href="{$path}../../../css/main.css">
 {/if}
 <h1 class="si_center">{$title}</h1>
 {* Display the rate column ? *}

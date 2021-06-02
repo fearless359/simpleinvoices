@@ -1,0 +1,26 @@
+@import "abstracts/mixins";
+@import "abstracts/variables";
+
+@import "base/base";
+
+@import "pages/customers";
+@import "pages/invoices";
+@import "pages/patches";
+@import "pages/reports";
+
+@import "layout/footer";
+@import "layout/tabs";
+
+@import "components/buttons";
+@import "components/dialog";
+@import "components/filters";
+@import "components/forms";
+@import "components/headings";
+@import "components/help";
+@import "components/links";
+@import "components/lists";
+@import "components/login";
+@import "components/messages";
+@import "components/misc";
+@import "components/tables";
+@import "components/toolbars";

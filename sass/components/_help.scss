@@ -1,0 +1,36 @@
+.si_help {
+    &_div {
+        margin: 4rem auto 1rem auto;
+        text-align: center;
+        border-top: 1px solid $colorGreyLight-5;
+        padding: 6px 10px;
+        width: 50rem;
+        background-color: $colorWhite;
+
+
+        & a {
+            color: $colorGreyDark-4;
+        }
+
+        & a:hover {
+            color: $colorBlack;
+        }
+
+        & img {
+            vertical-align: bottom;
+            line-height: 2.4rem;
+            margin-right: 2px;
+        }
+    }
+}
+
+a.cluetip {
+
+    & img {
+        opacity: 0.8;
+    }
+
+    &:hover img {
+        opacity: 1;
+    }
+}

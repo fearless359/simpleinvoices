@@ -1,0 +1,49 @@
+a {
+    &:link,
+    &:visited {
+        text-decoration: none;
+    }
+
+    &.anchor {
+        &:link,
+        &:visited,
+        &:hover {
+            color: $colorWhite;
+            background: $colorWhite;
+            font-size: 0;
+            text-decoration: none;
+            padding: 0;
+        }
+    }
+
+    & img {
+        border: 0;
+    }
+
+    &.image img {
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &.image {
+        &:link,
+        &:visited,
+        &:hover {
+            border: none;
+            background: none;
+            padding: 0;
+        }
+    }
+
+    &.toggle {
+        &.active:link,
+        &.active:visited,
+        &.active:hover {
+            background: $colorGreyDark-1 !important;
+            color: $colorBlue !important;
+            text-decoration: none;
+            font-weight: 400 !important;
+        }
+    }
+}

@@ -1,0 +1,62 @@
+.si_filters {
+    padding: 0;
+    overflow: hidden;
+
+    &_invoices {
+        padding: 0;
+        overflow: hidden;
+        float: right;
+        text-align: right;
+        width: 50%;
+    }
+
+    &_links {
+        overflow: hidden;
+        @include borderBackgroundFilter;
+
+
+        & a {
+            float: left;
+            border-left: 1px solid $colorGreyLight-11;
+            display: inline-block;
+            margin: 0;
+            padding: 8px 10px;
+            min-width: 30px;
+            text-align: center;
+            color: $colorGreyDark-5;
+            text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
+            0 1px 0 rgba($colorWhite, 1);
+        }
+
+        & a:hover {
+            color: $colorGreyDark-4;
+            background: $colorGreyLight-8;
+        }
+
+        & a.first {
+            border-left: none;
+        }
+
+        & a.selected {
+            background: $colorGreyLight-4;
+            color: $colorGreyDark-4-5;
+            text-shadow: 0 -1px 1px rgba($colorWhite, 0.9),
+            0 1px 0 rgba($colorWhite, 1);
+        }
+
+        & img {
+            margin-right: 7px;
+        }
+    }
+
+    &_title {
+        color: $colorGreyLight-14;
+        line-height: 33px;
+        margin: 4px 10px 0 10px;
+        vertical-align: top;
+
+        & a.cluetip img {
+            margin-bottom: 8px;
+        }
+    }
+}

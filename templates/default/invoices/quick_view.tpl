@@ -63,176 +63,168 @@
 <!--Actions heading - start-->
 {include file="$path/quick_view_invoice_view.tpl"}
 {if $invoice.type_id == TOTAL_INVOICE}
-<table class='si_invoice_view'>
-    <tr class="tr_head">
-        <th colspan="6">{$LANG.descriptionUc}</th>
-    </tr>
-    <tr class="tr_head">
-        <td colspan="6">{$invoiceItems[0].description|outHtml}</td>
-    </tr>
-    <tr class="tr_head">
-        <th>{$LANG.salesRepresentative}:</th>
-        <td colspan="5">{$invoice.sales_representative}</td>
-    </tr>
-    <tr class="tr_head">
-        <td colspan="6"><br/></td>
-    </tr>
-    <tr class="tr_head">
-        <th colspan="3"></th>
-        <th class="si_right">{$LANG.grossTotal}</th>
-        <th class="si_right">{$LANG.tax}</th>
-        <th class="si_right">{$LANG.totalFullUc}</th>
-    </tr>
-    <tr class="tr_head">
-        <td colspan="3"></td>
-        <td class="si_right">{$invoiceItems[0].gross_total|utilCurrency:$locale:$currencyCode}</td>
-        <td class="si_right">{$invoiceItems[0].tax_amount|utilCurrency:$locale:$currencyCode}</td>
-        <td class="si_right underline">{$invoiceItems[0].total|utilCurrency:$locale:$currencyCode}</td>
-    </tr>
-    <tr class="tr_head">
-        <td colspan="6"><br/><br/></td>
-    </tr>
-    <tr class="tr_head">
-        <td colspan="6">{$preference.pref_inv_detail_heading}</td>
-    </tr>
-</table>
+<div class='grid__area'>
+    <div>&nbsp;</div>
+    <div class="grid__head-6">
+        <div class="cols__1-span-6 bold">{$LANG.descriptionUc}</div>
+    </div>
+    <div class="grid__head-6">
+        <div class="cols__1-span-6">{$invoiceItems[0].description|outHtml}</div>
+    </div>
+    <div>&nbsp;</div>
+    <div class="grid__head-6">
+        <div class="cols__1-span-2 bold">{$LANG.salesRepresentative}:</div>
+        <div class="cols__3-span-4">{$invoice.sales_representative}</div>
+    </div>
+    <div class="grid__head-6">
+        <div>&nbsp;</div>
+    </div>
+    <div class="grid__head-6">
+        <div class="cols__1-span-3"></div>
+        <div class="si_right bold">{$LANG.grossTotal}</div>
+        <div class="si_right bold">{$LANG.tax}</div>
+        <div class="si_right bold">{$LANG.totalFullUc}</div>
+    </div>
+    <div class="grid__head-6">
+        <div class="cols__1-span-3"></div>
+        <div class="si_right">{$invoiceItems[0].gross_total|utilCurrency:$locale:$currencyCode}</div>
+        <div class="si_right">{$invoiceItems[0].tax_amount|utilCurrency:$locale:$currencyCode}</div>
+        <div class="si_right underline">{$invoiceItems[0].total|utilCurrency:$locale:$currencyCode}</div>
+    </div>
+    <div class="grid__head-6">
+        <div>&nbsp;</div>
+    </div>
+    <div class="grid__head-6">
+        <div class="cols__1-span-6 bold">{$preference.pref_inv_detail_heading}</div>
+    </div>
+</div>
 {elseif $invoice.type_id == ITEMIZED_INVOICE || $invoice.type_id == CONSULTING_INVOICE}
-<table class="si_invoice_view_items">
-{if $invoice.type_id == ITEMIZED_INVOICE }
-    {include file="$path/quick_view_itemized.tpl"}
-{elseif $invoice.type_id == CONSULTING_INVOICE}
-    {include file="$path/quick_view_consulting.tpl"}
-{/if}
-
-{foreach $invoiceItems as $invoiceItem }
-    {if $invoice.type_id == ITEMIZED_INVOICE}
-        {include file="$path/quick_view_foreach_itemized.tpl"}
+    {if $invoice.type_id == ITEMIZED_INVOICE }
+        {include file="$path/quick_view_itemized.tpl"}
     {elseif $invoice.type_id == CONSULTING_INVOICE}
-        {include file="$path/quick_view_foreach_consulting.tpl"}
+        {include file="$path/quick_view_consulting.tpl"}
     {/if}
-{/foreach}
-</table>
-{if isset($invoice.note)}
-<table class="si_invoice_view_items">
-    <tr class="tr_head">
-        <td colspan="6"></td>
-    </tr>
-    <tr class="tr_head">
-        <th>{$LANG.notes}:</th>
-        <td colspan="4"></td>
-        <td class="si_switch">
-            <a href='#' class="show_notes"
-               onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
-                <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
-            </a>
-            <a href='#' class="hide_notes si_hide"
-               onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
-                <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
-            </a>
-        </td>
-    </tr>
-    <!-- if hide detail click - the stripped note will be displayed -->
-    <tr class="abbrev_notes tr_notes">
-        <td colspan="6">{$invoice.note|truncate:80:"...":true|outHtml}</td>
-    </tr>
-    <!-- if show detail click - the full note will be displayed -->
-    <tr class="full_notes tr_notes si_hide">
-        <td colspan="6" style="white-space:normal;">{$invoice.note|outHtml}</td>
-    </tr>
-</table>
-{/if}
-<br/>
-<table class="si_invoice_view_items">
-    <tr>
-        <th>{$LANG.salesRepresentative}:</th>
-        <td>{$invoice.sales_representative|htmlSafe}</td>
-        <td colspan="4">&nbsp;</td>
-    </tr>
-</table>
-{* end itemized invoice *}
+
+    {foreach $invoiceItems as $invoiceItem }
+        {* Set here because it can't be tested in included file *}
+        {$even = $invoiceItem@iteration is div by 2}
+        {if $invoice.type_id == ITEMIZED_INVOICE}
+            {include file="$path/quick_view_foreach_itemized.tpl"}
+        {elseif $invoice.type_id == CONSULTING_INVOICE}
+            {include file="$path/quick_view_foreach_consulting.tpl"}
+        {/if}
+    {/foreach}
+    {if !empty($invoice.note)}
+    <br/>
+    <div class="grid__area">
+        <div class="grid__head-10">
+            <div class="bold">{$LANG.notes}:</div>
+            <div class="cols__9-span-2 si_right">
+                <a href='#' class="show_notes"
+                   onclick="$('.full_notes').show();$('.hide_notes').show();$('.abbrev_notes').hide();$('.show_notes').hide();">
+                    <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
+                </a>
+                <a href='#' class="hide_notes si_hide"
+                   onclick="$('.full_notes').hide();$('.hide_notes').hide();$('.abbrev_notes').show();$('.show_notes').show();">
+                    <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
+                </a>
+            </div>
+            <div class="cols__1-span-10 abbrev_notes tr_notes">
+                {$invoice.note|truncate:80:"...":true|outHtml}
+            </div>
+            <div class="cols__1-span-10 full_notes tr_notes si_hide">
+                {$invoice.note|outHtml}
+            </div>
+        </div>
+    </div>
+    {/if}
+    <br/>
+    {if !empty($invoice.sales_representative)}
+        <div class="grid__area">
+            <div class="grid__area">
+                <div class="grid__head-10">
+                    <div class="cols__1-span-2 bold">{$LANG.salesRepresentative}:</div>
+                    <div class="cols__3-span-8">{$invoice.sales_representative|htmlSafe}</div>
+                </div>
+            </div>
+        </div>
+    {/if}
+    {* end itemized invoice *}
 {/if}
     {* tax section - start --------------------- *}
 {if $invoiceNumberOfTaxes > 0}
-<table class="si_invoice_view_items">
-    <tr class="tr_tax">
-        <th class="si_right" colspan="5">{$LANG.subtotalUc}:</th>
-        <td class="si_right {if $invoiceNumberOfTaxes > 1}underline{/if}">
-            {$invoice.gross|utilCurrency:$locale:$currencyCode}
-        </td>
-    </tr>
-    {foreach $invoice.tax_grouped as $taxg}
-        {if $taxg.tax_amount != 0}
-            <tr class="tr_tax">
-                <th class="si_right" colspan="5">{$taxg.tax_name|htmlSafe}:</th>
-                <td class="si_right">{$taxg.tax_amount|utilCurrency:$locale:$currencyCode}</td>
-            </tr>
-        {/if}
-    {/foreach}
-    <tr class="tr_tax">
-        <th class="si_right" colspan="5">{$LANG.taxTotal}:</th>
-        <td class="si_right underline">
-            {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
-        </td>
-    </tr>
-    <tr class="tr_total">
-        <th class="si_right" colspan="5">{$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</th>
-        <td class="si_right">{$invoice.total|utilCurrency:$locale:$currencyCode}</td>
-    </tr>
-</table>
+    <div class="grid__area">
+        <div class="grid__head-10">
+            <div class="cols__1-span-8 bold si_right">{$LANG.subtotalUc}:</div>
+            <div class="cols__9-span-2 si_right {if $invoiceNumberOfTaxes > 1}underline{/if}">
+                {$invoice.gross|utilCurrency:$locale:$currencyCode}
+            </div>
+        </div>
+        {foreach $invoice.tax_grouped as $taxg}
+            <div class="grid__head-10">
+                <div class="cols__1-span-8 bold si_right">{$taxg.tax_name|htmlSafe}:</div>
+                <div class="cols__9-span-2 si_right {if $taxg@last}underline{/if}">{$taxg.tax_amount|utilCurrency:$locale:$currencyCode}</div>
+            </div>
+        {/foreach}
+        <div class="grid__head-10">
+            <div class="cols__1-span-8 bold si_right">{$LANG.taxTotal}:</div>
+            <div class="cols__9-span-2 si_right double_underline">
+                {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
+            </div>
+        </div>
+        <div class="grid__head-10">
+            <div class="cols__1-span-8 bold si_right">{$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</div>
+            <div class="cols__9-span-2 si_right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
+        </div>
+    </div>
 {/if}
 {* tax section - end *}
 <div class="si_center">
-    <div class="si_invoice_account">
+    <div class="grid__area-totals">
         <h4>{$LANG.financialStatus}</h4>
-        <div class="si_invoice_account1">
-            <h5>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$invoice.index_id|htmlSafe}</h5>
-            <table>
-                <tr>
-                    <th>{$LANG.totalUc}</th>
-                    <th>
+        <div class="grid__area-totals--financial">
+            <div class="grid__area-totals--financial--area">
+                <h5>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$invoice.index_id|htmlSafe}</h5>
+                <div class="grid__area-totals--financial--invoice-box1">
+                    <div class="bold si_right">{$LANG.totalUc}</div>
+                    <div class="bold si_right">
                         <a href="index.php?module=payments&amp;view=manage&amp;id={$invoice.id|urlencode}">
                             {$LANG.paidUc}
                         </a>
-                    </th>
-                    <th>{$LANG.owingUc}</th>
-                    <th>{$LANG.age}
+                    </div>
+                    <div class="bold si_right">{$LANG.owingUc}</div>
+                    <div class="bold si_right">{$LANG.age}
                         <a class="cluetip" href="#"
                            rel="index.php?module=documentation&amp;view=view&amp;page=helpAge"
                            title="{$LANG.age}">
                             <img src="{$helpImagePath}help-small.png" alt=""/>
                         </a>
-                    </th>
-                </tr>
-                <tr>
-                    <td>{$invoice.total|utilCurrency:$locale:$currencyCode}</td>
-                    <td>{$invoice.paid|utilCurrency:$locale:$currencyCode}</td>
-                    <td>{$invoice.owing|utilCurrency:$locale:$currencyCode}</td>
-                    <td>{$invoiceAge|htmlSafe}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="si_invoice_account2">
-            <h5>
-                <a href="index.php?module=customers&amp;view=view&amp;id={$customer.id|urlencode}">
-                    {$LANG.customerAccount}
-                </a>
-            </h5>
-            <table>
-                <tr>
-                    <th>{$LANG.totalUc}</th>
-                    <th>
+                    </div>
+                    <div class="si_right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="si_right">{$invoice.paid|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="si_right">{$invoice.owing|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="si_right">{$invoiceAge|htmlSafe}</div>
+                </div>
+            </div>
+            <div class="grid__area-totals--financial--area">
+                <h5>
+                    <a href="index.php?module=customers&amp;view=view&amp;id={$customer.id|urlencode}">
+                        {$LANG.customerAccount}
+                    </a>
+                </h5>
+                <div class="grid__area-totals--financial--invoice-box2">
+                    <div class="bold si_right">{$LANG.totalUc}</div>
+                    <div class="bold si_right">
                         <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">
                             {$LANG.paidUc}
                         </a>
-                    </th>
-                    <th>{$LANG.owingUc}</th>
-                </tr>
-                <tr>
-                    <td>{$customerAccount.total|utilCurrency:$locale:$currencyCode}</td>
-                    <td>{$customerAccount.paid|utilCurrency:$locale:$currencyCode}</td>
-                    <td>{$customerAccount.owing|utilCurrency:$locale:$currencyCode}</td>
-                </tr>
-            </table>
+                    </div>
+                    <div class="bold si_right">{$LANG.owingUc}</div>
+                    <div class="si_right">{$customerAccount.total|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="si_right">{$customerAccount.paid|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="si_right">{$customerAccount.owing|utilCurrency:$locale:$currencyCode}</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

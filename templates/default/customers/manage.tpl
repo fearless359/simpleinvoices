@@ -88,6 +88,7 @@
                 "ajax": "./public/data.json",
                 "orderClasses": false,
                 "deferRender": true,
+                "responsive": true,
                 "columns": [
                     { "data": "action" },
                     { "data": "name" },

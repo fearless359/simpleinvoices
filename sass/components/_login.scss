@@ -1,0 +1,135 @@
+.loginForm {
+    width: 30%;
+    padding-top: 6rem;
+    padding-bottom: 1rem;
+    margin: 0 auto;
+
+    @media only screen and (max-width: 75em) {
+        & {
+            width: 65%;
+        }
+    }
+
+    @media only screen and (max-width: 56.25em) {
+        & {
+            width: 100%;
+            padding: 2rem;
+        }
+    }
+
+    &__box {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        padding: 2rem 2rem 3rem 2rem;
+        border: 10px solid $colorGreyLight-12;
+        text-align: left;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        -moz-box-shadow: 6px 6px 15px rgba($colorBlack, 0.4);
+        -webkit-box-shadow: 6px 6px 15px rgba($colorBlack, 0.4);
+        box-shadow: 6px 6px 15px rgba($colorBlack, 0.4);
+        overflow: hidden;
+        background: $colorGreyLight-2;
+        background: -moz-linear-gradient(top,
+            rgba($colorGreyLight-2, 1) 0%,
+            rgba($colorGreyLight-7, 1) 100%);
+        background: -webkit-gradient(
+                linear,
+                left top,
+                left bottom,
+                color-stop(0%, rgba($colorGreyLight-2, 1)),
+                color-stop(100%, rgba($colorGreyLight-7, 1)));
+        background: -webkit-linear-gradient(
+                top,
+                rgba($colorGreyLight-2, 1) 0%,
+                rgba($colorGreyLight-7, 1) 100%);
+        background: -o-linear-gradient(
+                top,
+                rgba($colorGreyLight-2, 1) 0%,
+                rgba($colorGreyLight-7, 1) 100%);
+        background: -ms-linear-gradient(
+                top,
+                rgba($colorGreyLight-2, 1) 0%,
+                rgba($colorGreyLight-7, 1) 100%);
+        background: linear-gradient(
+                to bottom,
+                rgba($colorGreyLight-2, 1) 0%,
+                rgba($colorGreyLight-7, 1) 100%);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        font-weight: normal;
+        padding: 6px 0;
+        color: $colorGreyDark-4;
+        margin-bottom: 2rem;
+    }
+
+    &__logo {
+        flex: 0 0 15%;
+    }
+
+    &__company {
+        flex: 0 0 85%;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-left: 1rem;
+    }
+
+    &__group:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    &__input {
+        font-size: 1.5rem;
+        font-family: inherit;
+        color: inherit;
+        padding: 1.5rem 2rem;
+        border-radius: 2px;
+        background-color: rgba($colorWhite, 0.5);
+        border: none;
+        border-bottom: 3px solid transparent;
+        width: 90%;
+        display: block;
+    }
+
+    @media only screen and (max-width: 56.25em) {
+        &__input {
+            width: 100%;
+        }
+    }
+
+    &__input:focus {
+        outline: none;
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+        border-bottom: 3px solid $colorGreyLight-11;
+    }
+
+    &__input::placeholder {
+        color: $colorGreyDark-1;
+    }
+
+    &__label {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-left: 2rem;
+        margin-top: .7rem;
+        display: block;
+        transition: all .3s;
+    }
+
+    &__input:placeholder-shown + &__label {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4rem);
+    }
+
+    &__button {
+        display: flex;
+        justify-content: center;
+    }
+}

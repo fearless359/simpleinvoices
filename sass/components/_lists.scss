@@ -1,0 +1,31 @@
+.si_list {
+    & table {
+        border: 1px solid $colorGreyLight-10;
+        border-top: none;
+        width: 100%;
+    }
+
+    & thead th {
+        color: $colorGreyDark-4;
+        font-weight: bold;
+        background: $colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
+        padding: 6px 5px;
+        border-top: 1px solid $colorGreyLight-10;
+        border-bottom: 0;
+        vertical-align: middle;
+    }
+
+    & td {
+        padding: 3px 5px;
+        border-bottom: 1px solid $colorGreyLight-10;
+    }
+
+    & tfoot th,
+    & tfoot td {
+        color: black;
+        font-weight: bold;
+        background: $colorGreyLight-44 url(../images/fhbg.gif) repeat-x bottom;
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+}

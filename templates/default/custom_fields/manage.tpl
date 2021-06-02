@@ -23,6 +23,7 @@
             $('#si-data-table').DataTable({
                 "ajax": "./public/data.json",
                 "orderClasses": false,
+                "responsive": true,
                 "columns": [
                     { "data": "action" },
                     { "data": "fieldNameNice" },
