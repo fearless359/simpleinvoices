@@ -1,0 +1,18 @@
+/* Error: Plain CSS functions don't support keyword arguments.
+ *   ,
+ * 1 | $icon-bold: svgo-data-uri('trix/images/bold.svg', $precision: 1);
+ *   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *   '
+ *   icons.scss 1:13       @import
+ *   attachments.scss 1:9  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Plain CSS functions don't support keyword arguments.\a   \2577 \a 1 \2502  $icon-bold: svgo-data-uri('trix/images/bold.svg', $precision: 1);\a   \2502              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   icons.scss 1:13       @import\a   attachments.scss 1:9  root stylesheet";
+}

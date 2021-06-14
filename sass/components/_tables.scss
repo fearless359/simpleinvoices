@@ -51,23 +51,5 @@ div {
     text-align: left;
 }
 
-.si_table_toolbar {
-    & th,
-    & td {
-        padding-bottom: 10px;
-        vertical-align: middle;
-    }
-
-    & th {
-        font-weight: normal;
-        text-align: right;
-    }
-
-    & td {
-        text-align: left;
-        padding-left: 20px;
-    }
-}
-
 // DataTables setting
 #si-data-table { width: 100%; }

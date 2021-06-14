@@ -227,7 +227,7 @@ class SiAcl
                 'save' => $adminAccess,
                 'view' => $adminAccess
             ],
-            'product_value' => [
+            'product_attribute_values' => [
                 'create' => $adminAccess,
                 'edit' => $adminAccess,
                 'manage' => $adminAccess,

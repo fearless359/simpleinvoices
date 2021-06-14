@@ -10,7 +10,6 @@ const DISABLED = 0;
 //invoice styles
 const TOTAL_INVOICE = 1;
 const ITEMIZED_INVOICE = 2;
-const CONSULTING_INVOICE = 3;
 
 ####################
 /* Environment*/

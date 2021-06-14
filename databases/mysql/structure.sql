@@ -475,10 +475,10 @@ CREATE TABLE `si_products_attribute_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `si_products_values`
+-- Table structure for table `si_products_attributes_values`
 --
 
-CREATE TABLE `si_products_values` (
+CREATE TABLE `si_products_attributes_values` (
   `id` int(11) UNSIGNED NOT NULL,
   `attribute_id` int(11) UNSIGNED DEFAULT NULL,
   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -765,9 +765,9 @@ ALTER TABLE `si_products_attribute_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `si_products_values`
+-- Indexes for table `si_products_attributes_values`
 --
-ALTER TABLE `si_products_values`
+ALTER TABLE `si_products_attributes_values`
   ADD PRIMARY KEY (`id`),
   ADD KEY `attribute_id` (`attribute_id`);
 
@@ -953,9 +953,9 @@ ALTER TABLE `si_products_attribute_type`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `si_products_values`
+-- AUTO_INCREMENT for table `si_products_attributes_values`
 --
-ALTER TABLE `si_products_values`
+ALTER TABLE `si_products_attributes_values`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -1088,10 +1088,10 @@ ALTER TABLE `si_products_attributes`
   ADD CONSTRAINT `si_products_attributes_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `si_products_attribute_type` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `si_products_values`
+-- Constraints for table `si_products_attributes_values`
 --
-ALTER TABLE `si_products_values`
-  ADD CONSTRAINT `si_products_values_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `si_products_attributes` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `si_products_attributes_values`
+  ADD CONSTRAINT `si_products_attributes_values_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `si_products_attributes` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `si_user`

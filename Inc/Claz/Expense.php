@@ -65,7 +65,7 @@ class Expense
 
             $quickView =
                 "<a class='index_table' title='quick view' " .
-                   "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['iv_id']}'>" .
+                   "href='index.php?module=invoices&amp;view=quickView&amp;id={$row['iv_id']}'>" .
                     "{$row['iv_index_id']}" .
                 "</a>";
 

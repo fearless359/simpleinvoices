@@ -185,7 +185,7 @@ class Invoice
             }
 
             $action = "<a class='index_table' title='{$LANG['quickViewTooltip']} {$row['index_id']}' " .
-                         "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['id']}'>" .
+                         "href='index.php?module=invoices&amp;view=quickView&amp;id={$row['id']}'>" .
                           "<img src='images/view.png' class='action' alt='view' />" .
                       "</a>" .
                       $invEdit .
@@ -769,12 +769,13 @@ class Invoice
         $attr = [];
         if (is_array($attribute)) {
             foreach ($attribute as $key => $val) {
-                if ($attribute[$val] !== '') {
+                if (!empty($val)) {
                     $attr[$key] = $val;
                 }
             }
         }
 
+        $attrJsonEncode = json_encode($attr);
         $taxAmount = Taxes::getTaxesPerLineItem($taxIds, $quantity, $unitPrice);
         $grossTotal = $unitPrice * $quantity;
         $total = $grossTotal + $taxAmount;
@@ -793,7 +794,7 @@ class Invoice
                 'gross_total' => $grossTotal,
                 'description' => $description,
                 'total'       => $total,
-                'attribute'   => json_encode($attr)
+                'attribute'   => $attrJsonEncode
             ]);
             $pdoDb->setExcludedFields(["id", "domain_id"]);
             $pdoDb->request("UPDATE", "invoice_items");
@@ -1143,20 +1144,25 @@ class Invoice
 
             foreach ($rows as $invoiceItem) {
                 if (isset($invoiceItem['attribute'])) {
-                    $invoiceItem['attribute_decode'] = json_decode($invoiceItem['attribute'], true);
-                    foreach ($invoiceItem['attribute_decode'] as $key => $value) {
-                        $productAttributes = ProductAttributes::getOne($key);
-                        $invoiceItem['attribute_json'][$key]['name'] = $productAttributes['name'];
-                        $invoiceItem['attribute_json'][$key]['type'] = $productAttributes['type'];
-                        $invoiceItem['attribute_json'][$key]['visible'] = $productAttributes['visible'];
-                        $invoiceItem['attribute_json'][$key]['value'] = ProductValues::getOne($key);
-                    }
+                    $invoiceItem['attributeDecode'] = json_decode($invoiceItem['attribute'], true);
                 }
 
                 $pdoDb->addSimpleWhere("id", $invoiceItem['product_id'], 'AND');
                 $pdoDb->addSimpleWhere('domain_id', DomainId::get());
                 $rows = $pdoDb->request("SELECT", "products");
                 $invoiceItem['product'] = $rows[0];
+
+                $invItemProdAttrDecode = json_decode($invoiceItem['product']['attribute']);
+                $invoiceItem['product']['attributeDecode'] = $invItemProdAttrDecode;
+
+                $invItemProdAttrs = [];
+                foreach ($invItemProdAttrDecode as $key => $val) {
+                    if ($val) {
+                        $invItemProdAttrs[] = ProductAttributes::getOne($key);
+                    }
+                }
+
+                $invoiceItem['productAttributes'] = $invItemProdAttrs;
 
                 $tax = self::taxesGroupedForInvoiceItem($invoiceItem['id']);
                 foreach ($tax as $key => $value) {
@@ -1168,7 +1174,6 @@ class Invoice
             error_log("Invoice::getInvoiceItems() - id[$id] error: " . $pde->getMessage());
             throw $pde;
         }
-
         return $invoiceItems;
     }
 

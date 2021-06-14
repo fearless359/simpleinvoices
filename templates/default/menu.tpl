@@ -1,4 +1,4 @@
-<div class="si_defer_display container">
+<div class="si_delay-display container">
     <div id="si_header">
         {$smarty.capture.hook_topmenu_start}
         {if !empty($smarty.capture.hook_topmenu_section01_replace)}
@@ -151,6 +151,16 @@
                     {if isset($subPageActive) && $subPageActive == "productAttributeView"}
                         <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
                 {/if}
+                <!-- SECTION:product_attribute_values -->
+                {if $defaults.product_attributes}
+                    <li class="bold"><a {if isset($pageActive) && $pageActive== "productAttributeValues"}class="active" {/if}href="index.php?module=product_attribute_values&amp;view=manage">{$LANG.productAttributeValues}</a></li>
+                    {if isset($subPageActive) && $subPageActive == "productAttributeValuesCreate"}
+                        <li><a class="active active_subpage" href="#">{$LANG.addUc}</a></li>{/if}
+                    {if isset($subPageActive) && $subPageActive == "productAttributeValuesEdit"}
+                        <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+                    {if isset($subPageActive) && $subPageActive == "productAttributeValuesView"}
+                        <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+                {/if}
                 <!-- SECTION:product_groups -->
                 {if $defaults.product_groups}
                     <li class="bold"><a {if isset($pageActive) && $pageActive== "productGroups"}class="active" {/if}href="index.php?module=product_groups&amp;view=manage">{$LANG.productGroupsUc}</a></li>
@@ -159,16 +169,6 @@
                     {if isset($subPageActive) && $subPageActive == "productGroupsEdit"}
                         <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
                     {if isset($subPageActive) && $subPageActive == "productGroupsView"}
-                        <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-                {/if}
-                <!-- SECTION:product_value -->
-                {if $defaults.product_attributes}
-                    <li class="bold"><a {if isset($pageActive) && $pageActive== "productValue"}class="active" {/if}href="index.php?module=product_value&amp;view=manage">{$LANG.productValues}</a></li>
-                    {if isset($subPageActive) && $subPageActive == "productValueCreate"}
-                        <li><a class="active active_subpage" href="#">{$LANG.addUc}</a></li>{/if}
-                    {if isset($subPageActive) && $subPageActive == "productValueEdit"}
-                        <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-                    {if isset($subPageActive) && $subPageActive == "productValueView"}
                         <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
                 {/if}
             </ul>
@@ -230,7 +230,7 @@
     {literal}
         <script>
             $(document).ready(function () {
-                $("div.si_defer_display").removeClass('si_defer_display');
+                $("div.si_delay-display").removeClass('si_delay-display');
             });
         </script>
     {/literal}

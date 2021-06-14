@@ -39,7 +39,7 @@
                 <td class="si_right">
                     {if ($view == "reportSalesByRepresentative")}
                         <a class="index_table" title="View Invoice {$invoice.index_id}"
-                           href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id}">{$invoice.index_id}</a>
+                           href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id}">{$invoice.index_id}</a>
                     {else}
                         {$invoice.index_id}
                     {/if}

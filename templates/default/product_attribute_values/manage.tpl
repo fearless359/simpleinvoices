@@ -1,6 +1,6 @@
 {*
  *  Script: manage.tpl
- * 	    Invoice Product Values manage template
+ * 	    Invoice Product Attribute Values manage template
  *
  *  Modified:
  *      2018-12-15 by Richard Rowley
@@ -9,13 +9,13 @@
  *	    GPL v3 or above
  *}
 <div class="si_toolbar si_toolbar_top">
-    <a href="index.php?module=product_value&amp;view=create" class="">
+    <a href="index.php?module=product_attribute_values&amp;view=create" class="">
         <img src="images/add.png" alt=""/>
-        {$LANG.addProductValue}
+        {$LANG.addProductAttributeValue}
     </a>
 </div>
 {if $numberOfRows == 0}
-    <div class="si_message">{$LANG.noProductValues}</div>
+    <div class="si_message">{$LANG.noProductAttributeValues}</div>
 {else}
     <table id="si-data-table" class="display responsive compact">
         <thead>

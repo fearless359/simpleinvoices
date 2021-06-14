@@ -547,6 +547,14 @@ class SqlPatchManager
         ];
         self::makePatch('323', $patch);
 
+        $patch = [
+            'name' => "Rename si_products_values table to si_products_attributes_values",
+            'patch' => "ALTER TABLE " . TB_PREFIX . "products_values RENAME TO " . TB_PREFIX . "products_attributes_values;",
+            'date' => "20210527",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('324', $patch);
+
         // @formatter:on
     }
 

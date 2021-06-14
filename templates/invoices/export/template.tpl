@@ -260,11 +260,7 @@
       </tr>
       {if $invoice.type_id == ITEMIZED_INVOICE }
         {include file="$template_path/itemised.tpl"}
-      {/if}
-      {if $invoice.type_id == CONSULTING_INVOICE}
-        {include file="$template_path/consulting.tpl"}
-      {/if}
-      {if $invoice.type_id == TOTAL_INVOICE}
+      {elseif $invoice.type_id == TOTAL_INVOICE}
         {include file="$template_path/total.tpl"}
       {/if}
       {* tax section - start *}

@@ -28,7 +28,7 @@
         {foreach $period.invoices as $invoice}
             <tr class="tr_{cycle values="A,B"}">
                 <td>
-                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id}">
+                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id}">
                         {$invoice.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}
                     </a>
                 </td>

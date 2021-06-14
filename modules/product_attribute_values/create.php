@@ -10,12 +10,12 @@ Util::directAccessAllowed();
 
 //if valid then do save
 if (!empty($_POST['value'])) {
-    include "modules/product_value/save.php";
+    include "modules/product_attribute_values/save.php";
 } else {
 // Get attributes to display on add screen dropdown.
     $smarty->assign("product_attributes", ProductAttributes::getAll());
 
-    $smarty->assign('pageActive', "productValue");
-    $smarty->assign('subPageActive', "productValueCreate");
+    $smarty->assign('pageActive', "productAttributeValues");
+    $smarty->assign('subPageActive', "productAttributeValuesCreate");
     $smarty->assign('activeTab', '#product');
 }

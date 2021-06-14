@@ -8,7 +8,6 @@ use Inc\Claz\Invoice;
 use Inc\Claz\Payment;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
-use Inc\Claz\ProductAttributes;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
@@ -65,12 +64,10 @@ try {
 
     $customFields = [];
     for ($idx = 1; $idx <= 4; $idx++) {
-        $customFields[$idx] = CustomFields::showCustomField("invoice_cf{$idx}", $invoice["custom_field{$idx}"],
-            "read", 'grid__head-10 summary', 'cols__1-span-2', 'cols__3-span-8',
-            5, ':');
+        $customFields[$idx] = CustomFields::showCustomField("invoice_cf$idx", $invoice["custom_field$idx"], "read");
     }
 
-    $attributes = ProductAttributes::getAll();
+//    $attributes = ProductAttributes::getAll();
 
     //Customer accounts sections
     $customerAccount = [];
@@ -79,7 +76,7 @@ try {
     $customerAccount['owing'] = $customerAccount['total'] - $customerAccount['paid'];
 
     // @formatter:off
-    $smarty->assign("attributes"          , $attributes);
+//    $smarty->assign("attributes"          , $attributes);
     $smarty->assign("customFields"        , $customFields);
     $smarty->assign("customFieldLabels"   , $customFieldLabels);
     $smarty->assign("invoiceAge"          , $invoiceAge);

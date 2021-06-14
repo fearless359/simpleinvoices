@@ -37,7 +37,7 @@
         <tr class="tr_{cycle values="A,B"}">
             <td class="si_right">
                 {if ($view == "reportNetIncome")}
-                <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice->id}">
+                <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice->id}">
                     {$invoice->indexId}
                 </a>
                 {else}

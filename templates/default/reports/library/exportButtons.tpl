@@ -1,9 +1,9 @@
 {if isset($smarty.post.submit) || (isset($showReportExportButtons) && $showReportExportButtons) ||
                                   (isset($displayExportButtonsNow) && $displayExportButtonsNow)}
     <div class="si_toolbar si_toolbar_top">
-        <a title="{$LANG.printPreview}" target="_blank"
+        <a title=" {$LANG.printUc}" target="_blank"
            href="index.php?module=reports&amp;view=export{foreach $params as $key => $val}&amp;{$key}={$val}{/foreach}&amp;format=print">
-            <img src='{$path}../../../images/printer.png' class='action'  alt=""/>&nbsp;{$LANG.printPreview}
+            <img src='{$path}../../../images/printer.png' class='action'  alt=""/>&nbsp; {$LANG.printUc}
         </a>
         <a title="{$LANG.exportPdf}"
            href="index.php?module=reports&amp;view=export{foreach $params as $key => $val}&amp;{$key}={$val}{/foreach}&amp;format=pdf">

@@ -60,7 +60,7 @@
             <td class="si_right">
             {$invoice.preference}
             {if $format != 'print' && $format != 'pdf' && $fileType != 'xls' && $fileType != 'doc'}
-                <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlencode}">
                     {$invoice.index_id|htmlSafe}
                 </a>
             {else}

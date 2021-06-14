@@ -6,57 +6,61 @@
     }
 }
 
-.si_cust_account {
-    width: 30rem;
+.si {
+    &_cust_account {
+        width: 30rem;
 
-    & table {
-        margin-top: 1rem;
-    }
-}
-
-.si_cust_card {
-    width: 30rem;
-    margin-top: 1rem;
-}
-
-.si_cust_info {
-    float: left;
-    width: 100%;
-    margin-bottom: 2rem;
-}
-
-.si_cust_notes { margin: 2rem 0; }
-
-.si_cust_invoices {
-    & table {
-        width: 100%;
-        margin-top: 1rem;
-    }
-
-    & th,
-    & td {
-        text-align: left;
-        padding-left: 3rem;
-        padding-right: .5rem;
-    }
-
-    & th {
-        color: $colorGreyDark-4;
-        font-weight: bold;
-        background: $colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
-        padding-top: 6px;
-        padding-bottom: 6px;
-        border-top: 1px solid $colorGreyLight-10;
-        border-bottom: 0;
-        text-align: left;
-        vertical-align: middle;
-
-        &.first {
-            border-left: none;
+        & table {
+            margin-top: 1rem;
         }
     }
 
-    & td {
-        border-left: 1px solid $colorGreyLight-6;
+    &_cust_card {
+        width: 30rem;
+        margin-top: 1rem;
+    }
+
+    &_cust_info {
+        float: left;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    &_cust_notes {
+        margin: 2rem 0;
+    }
+
+    &_cust_invoices {
+        & table {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        & th,
+        & td {
+            text-align: left;
+            padding-left: 3rem;
+            padding-right: .5rem;
+        }
+
+        & th {
+            color: $colorGreyDark-4;
+            font-weight: bold;
+            background: $colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border-top: 1px solid $colorGreyLight-10;
+            border-bottom: 0;
+            text-align: left;
+            vertical-align: middle;
+
+            &.first {
+                border-left: none;
+            }
+        }
+
+        & td {
+            border-left: 1px solid $colorGreyLight-6;
+        }
     }
 }

@@ -33,7 +33,7 @@
         <tr class="tr_{cycle values="A,B"}">
             <td class="si_right">
                 {if $format != 'print' && $format != 'pdf' && $fileType != 'xls' && $fileType != 'doc'}
-                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoices[invoice].id|urlencode}">
+                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoices[invoice].id|urlencode}">
                         {$invoice.index_id|htmlSafe}
                     </a>
                 {else}

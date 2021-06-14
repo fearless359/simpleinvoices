@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="grid__area">
-    <div class="grid__head-10">
+    <div class="grid__container grid__head-10">
         <div class="bold si_right pad__right_1">{$LANG.quantityShort}</div>
         <div class="cols__2-span-5 bold">{$LANG.item}</div>
         <div class="cols__7-span-2 bold si_right">{$LANG.unitCost}</div>

@@ -107,7 +107,7 @@
     </div>
 </div>
 <div class="si_form" id="si_form_cust">
-    <div class="si_hide" id="tabs_customer">
+    <div class="si_delay-display" id="tabs_customer">
         <ul class="anchors">
             <li><a href="#section-1" target="_top">{$LANG.summaryOfAccounts}</a></li>
             <li><a href="#section-2" target="_top">{$LANG.creditCardDetails}</a></li>
@@ -188,7 +188,7 @@
                     {foreach $invoices as $invoice}
                         <tr class="index_table">
                             <td class="first">
-                                <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                                <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlencode}">
                                     {$invoice.index_name|htmlSafe}
                                 </a>
                             </td>
@@ -220,7 +220,7 @@
                         {foreach $invoices_owing as $invoice}
                             <tr class="index_table">
                                 <td class="first">
-                                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlencode}">
                                         <img src='images/view.png' class='action' alt=""/>
                                     </a>
                                     <a title="{$LANG.processPaymentFor} {$invoice.preference} {$invoice.index_id}"
@@ -229,7 +229,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlencode}">
                                         {$invoice.index_name|htmlSafe}
                                     </a>
                                 </td>
@@ -311,7 +311,7 @@
         {* This causes the tabs to appear after being rendered *}
         {literal}
         $(document).ready(function () {
-            $("div.si_hide").removeClass("si_hide");
+            $("div.si_delay-display").removeClass("si_delay-display");
         });
         {/literal}
     </script>

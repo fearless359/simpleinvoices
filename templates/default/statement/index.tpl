@@ -89,9 +89,9 @@
     </form>
     {if isset($smarty.post.submit)}
         <div class="si_toolbar si_toolbar_top">
-            <a title="{$LANG.printPreview}" target="_blank"
+            <a title=" {$LANG.printUc}" target="_blank"
                href="index.php?module=statement&amp;view=export&amp;billerId={$billerId|urlencode}&amp;customerId={$customerId}&amp;startDate={$startDate|urlencode}&amp;endDate={$endDate|urlencode}&amp;showOnlyUnpaid={$showOnlyUnpaid|urlencode}&amp;filterByDateRange={$filterByDateRange|urlencode}&amp;format=print">
-                <img src='images/printer.png' class='action' alt=""/>&nbsp;{$LANG.printPreview}
+                <img src='images/printer.png' class='action' alt=""/>&nbsp; {$LANG.printUc}
             </a>
             <!-- EXPORT TO PDF -->
             <a title="{$LANG.exportPdf}"

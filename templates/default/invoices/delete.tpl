@@ -24,23 +24,21 @@
         </div>
         <form name="frmpost" method="POST" id="frmpost"
               action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}" >
-            <table class="center">
-                <tr>
-                    <td>
-                        <div class="si_toolbar si_toolbar_form">
-                            <button type="submit" class="positive" name="submit">
-                                <img class="button_img" src="images/tick.png" alt=""/>
-                                {$LANG.yesUc}
-                            </button>
-                            <input type="hidden" name="doDelete" value="y"/>
-                            <a href="index.php?module=invoices&amp;view=manage" class="negative">
-                                <img src="images/cross.png" alt=""/>
-                                {$LANG.cancel}
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <div class="grid__area">
+                <div class="grid__container grid__head-6">
+                    <div class="cols__3-span-2 si_toolbar si_toolbar_form">
+                        <button type="submit" class="positive" name="submit">
+                            <img class="button_img" src="images/tick.png" alt=""/>
+                            {$LANG.yesUc}
+                        </button>
+                        <input type="hidden" name="doDelete" value="y"/>
+                        <a href="index.php?module=invoices&amp;view=manage" class="negative">
+                            <img src="images/cross.png" alt=""/>
+                            {$LANG.cancel}
+                        </a>
+                    </div>
+                </div>
+            </div>
         </form>
     {else}
         <span class="welcome">

@@ -1,9 +1,9 @@
 {if !empty($smarty.post.value) && isset($smarty.post.submit) }
-    {include file="templates/default/product_value/save.tpl"}
+    {include file="templates/default/product_attribute_values/save.tpl"}
 {else}
     <!--suppress HtmlFormInputWithoutLabel -->
     <form name="frmpost" method="POST" id="frmpost"
-          action="index.php?module=product_value&amp;view=create">
+          action="index.php?module=product_attribute_values&amp;view=create">
         <table class="center">
             <tr>
                 <th class="left">{$LANG.attribute}:</th>
@@ -34,7 +34,7 @@
                 <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>
                 {$LANG.save}
             </button>
-            <a href="index.php?module=product_value&amp;view=manage" class="negative">
+            <a href="index.php?module=product_attribute_values&amp;view=manage" class="negative">
                 <img src="images/cross.png" alt="{$LANG.cancel}"/>
                 {$LANG.cancel}
             </a>

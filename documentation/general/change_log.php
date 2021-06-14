@@ -13,6 +13,21 @@
   </div>
   <div id="left">
     <ul>
+        <li>2021-06-14 - <b>2020.3.00</b>
+            <ul>
+                <li>Changed all invoices screens except manage, to use grid layout in place
+                    of tables.</li>
+                <li>Changed throughout to reference Product Attribute Values instead of
+                    Product Values to better reflect the content being managed.</li>
+                <li>Renamed si_products_values table to si_products_attributes_values.</li>
+                <li>Modified generation of product attributes for invoice items on the edit
+                    invoice screen and display of selected values on the quick_view screen.</li>
+                <li>Removed Consulting style invoice as upon further inspection found it was
+                    a non-functional type of the Itemized style invoice.</li>
+                <li>Modified new setup menu to use grid layout and new verbiage.</li>
+                <li>Shortened text in invoice print, payment, PDF, etc. buttons to make smaller.</li>
+            </ul>
+        </li>
         <li>2021-05-25 - <b>2020.2.00</b>
             <ul>
                 <li>Converted main.css file into multiple scss files. Includes

@@ -28,7 +28,7 @@ $(document).on("click", ".invoice_export_dialog", (function () {
 // unhide.description, unhide.note, description
 //show invoice item line details
 $(document).on("click", "a.show_details", (function () {
-    let clonedRow = $('#itemtable tbody.line_item:first').clone();
+    let clonedRow = $('#itemtable div.line_item:first').clone();
     let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
     if (rowID_old === undefined) {
         alert('Invalid invoice. No existing rows to show.');
@@ -41,7 +41,7 @@ $(document).on("click", "a.show_details", (function () {
 
 //hide invoice item line details
 $(document).on("click", "a.hide_details", (function () {
-    let clonedRow = $('#itemtable tbody.line_item:first').clone();
+    let clonedRow = $('#itemtable div.line_item:first').clone();
     let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
     if (rowID_old === undefined) {
         alert('Invalid invoice. No existing rows to show.');

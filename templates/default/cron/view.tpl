@@ -13,7 +13,7 @@
     <tr>
         <th class="details_screen left">{$LANG.invoiceUc}: </th>
         <td class="si_input">
-            <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$cron.invoice_id|htmlSafe}">
+            <a href="index.php?module=invoices&amp;view=quickView&amp;id={$cron.invoice_id|htmlSafe}">
                 {$cron.index_id|htmlSafe}
             </a>
         </td>

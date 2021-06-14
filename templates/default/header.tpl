@@ -1,7 +1,7 @@
 {include file="templates/default/headline.xml"}
 <!DOCTYPE html>
 <!--suppress HtmlRequiredLangAttribute -->
-<html>
+<html lang="en">
 <head>
     {strip}
         {assign var='tmp_lang_module' value="title_module_`$module`"}
@@ -51,7 +51,7 @@
    $(document).ready(function () {
        // binds form submission and fields to the validation engine
        $('#frmpost').validationEngine({ promptPosition:
-               "centerRight",
+               "topLeft",
                'custom_error_messages': {
                    '.creditCard': {
                        'required': { 'message': "An entry is required if associated CC field are not blank." }

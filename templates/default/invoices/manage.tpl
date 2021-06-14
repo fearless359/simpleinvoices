@@ -119,7 +119,11 @@
                 ],
                 "lengthMenu": [[15,20,25,30, -1], [15,20,25,30,"All"]],
                 "columnDefs": [
-                    { "targets": 0, "width": "12%", "className": 'dt-body-center', "orderable": false },
+                    { "targets": 0,
+                        "width": "12%",
+                        "className": 'dt-body-center',
+                        "orderable": false
+                    },
                     { "targets": [1,4,5,7], "className": 'dt-body-center' },
                     { "targets": 5, "width": "10%" },
                     { "targets": [6,7,8], "className": 'dt-body-right' }

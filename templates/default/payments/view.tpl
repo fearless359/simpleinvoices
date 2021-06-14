@@ -11,7 +11,7 @@
         <th class="details_screen">{$LANG.paymentId}: </th>
         <td>{$payment.id|htmlSafe}</td>
         <th class="details_screen">{$LANG.invoiceId}: </th>
-        <td><a href='index.php?module=invoices&amp;view=quick_view&amp;id={$payment.ac_inv_id|htmlSafe}'>{$payment.iv_index_id|htmlSafe}</a></td>
+        <td><a href='index.php?module=invoices&amp;view=quickView&amp;id={$payment.ac_inv_id|htmlSafe}'>{$payment.iv_index_id|htmlSafe}</a></td>
       </tr>
       <tr>
         <th class="details_screen">{$LANG.amountUc}: </th>

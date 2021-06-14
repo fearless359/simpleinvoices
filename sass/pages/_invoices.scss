@@ -1,138 +1,191 @@
-.grid__area {
-    width: 90%;
-    margin: 0 auto;
-}
+.grid {
+    &__area {
+        width: 90%;
+        margin: 0 auto;
 
-.grid__area-totals {
-    width: 70%;
-    grid-column-gap: 2rem;
-    margin: 0 auto;
+        &-totals {
+            width: 70%;
+            margin: 0 auto;
 
-    & h4 {
-        text-align: center;
-        padding: 0;
-        margin: 0 0 7px 0;
-        color: $colorGreyDark-2;
-        font-weight: bold;
+            & h4 {
+                text-align: center;
+                padding: 0;
+                margin: 0 0 7px 0;
+                color: $colorGreyDark-2;
+                font-weight: bold;
+            }
+
+            & h5 {
+                font-weight: bold;
+                padding: 0 0 8px 0;
+                margin: 0;
+            }
+
+            &--financial {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+
+
+                &--area {
+                    border: 1px solid $colorGreyLight-11;
+                    margin-right: 10px;
+                }
+
+                &--invoice {
+                    &-box1 {
+                        display: grid;
+                        grid-template-columns: repeat(4, 1fr);
+                    }
+
+                    &-box2 {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                    }
+                }
+            }
+        }
     }
 
-    & h5 {
-        font-weight: bold;
-        padding: 0 0 8px 0;
-        margin: 0;
-    }
-
-    &--financial {
+    &__container {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        margin: 0 auto 1rem auto;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
 
-        &--area {
-            border: 1px solid $colorGreyLight-11;
-            margin-right: 10px;
-        }
-
-        &--invoice {
-            &-box1 {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            &-box2 {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+    &__head {
+        // @formatter:off
+        &-6 { grid-template-columns: repeat(6, 1fr); }
+        &-10 { grid-template-columns: repeat(10, 1fr); }
+        // @formatter:on
     }
 }
 
-.grid__head-4 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.cols {
+    // @formatter:off
+    &__1-span {
+        &-1 { grid-column: 1 / span 1; }
+        &-2 { grid-column: 1 / span 2; }
+        &-3 { grid-column: 1 / span 3; }
+        &-4 { grid-column: 1 / span 4; }
+        &-5 { grid-column: 1 / span 5; }
+        &-6 { grid-column: 1 / span 6; }
+        &-7 { grid-column: 1 / span 7; }
+        &-8 { grid-column: 1 / span 8; }
+        &-9 { grid-column: 1 / span 9; }
+        &-10 { grid-column: 1 / span 10; }
+    }
+
+    &__2-span {
+        &-1 { grid-column: 2 / span 1; }
+        &-2 { grid-column: 2 / span 2; }
+        &-3 { grid-column: 2 / span 3; }
+        &-4 { grid-column: 2 / span 4; }
+        &-5 { grid-column: 2 / span 5; }
+        &-6 { grid-column: 2 / span 6; }
+        &-7 { grid-column: 2 / span 7; }
+        &-8 { grid-column: 2 / span 8; }
+        &-9 { grid-column: 2 / span 9; }
+    }
+
+    &__3-span {
+        &-1 { grid-column: 3 / span 1; }
+        &-2 { grid-column: 3 / span 2; }
+        &-3 { grid-column: 3 / span 3; }
+        &-4 { grid-column: 3 / span 4; }
+        &-5 { grid-column: 3 / span 5; }
+        &-6 { grid-column: 3 / span 6; }
+        &-7 { grid-column: 3 / span 7; }
+        &-8 { grid-column: 3 / span 8; }
+    }
+
+    &__4-span {
+        &-1 { grid-column: 4 / span 1; }
+        &-2 { grid-column: 4 / span 2; }
+        &-3 { grid-column: 4 / span 3; }
+        &-4 { grid-column: 4 / span 4; }
+        &-5 { grid-column: 4 / span 5; }
+        &-6 { grid-column: 4 / span 6; }
+        &-7 { grid-column: 4 / span 7; }
+    }
+
+    &__5-span {
+        &-1 { grid-column: 5 / span 1; }
+        &-2 { grid-column: 5 / span 2; }
+        &-3 { grid-column: 5 / span 3; }
+        &-4 { grid-column: 5 / span 4; }
+        &-5 { grid-column: 5 / span 5; }
+        &-6 { grid-column: 5 / span 6; }
+    }
+
+    &__6-span {
+        &-1 { grid-column: 6 / span 1; }
+        &-2 { grid-column: 6 / span 2; }
+        &-3 { grid-column: 6 / span 3; }
+        &-4 { grid-column: 6 / span 4; }
+        &-5 { grid-column: 6 / span 5; }
+    }
+
+    &__7-span {
+        &-1 { grid-column: 7 / span 1; }
+        &-2 { grid-column: 7 / span 2; }
+        &-3 { grid-column: 7 / span 3; }
+        &-4 { grid-column: 7 / span 4; }
+    }
+
+    &__8-span {
+        &-1 { grid-column: 8 / span 1; }
+        &-2 { grid-column: 8 / span 2; }
+        &-3 { grid-column: 8 / span 3; }
+    }
+
+    &__9-span {
+        &-1 { grid-column: 9 / span 1; }
+        &-2 { grid-column: 9 / span 2; }
+    }
+
+    &__10-span {
+        &-1 { grid-column: 10 / span 1; }
+    }
+    // @formatter:on
 }
 
-.grid__head-6 {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+.pad {
+    &__top_1 {
+        padding-top: 1em;
+    }
+
+    &__right_1 {
+        padding-right: 1em;
+    }
 }
 
-.grid__head-10 {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
+div {
+    &.si_product_attribute {
+        padding-right: 15px;
+        color: $colorGreyDark-4;
+        border-top: none;
+        font-size: 1.1rem;
+    }
+
+    &.even {
+        background-color: rgba($colorWhite, 1.0);
+    }
+
+    &.odd {
+        background-color: rgba($colorGreyLight-5, .8);
+    }
+
+    &.si_invoice_notes {
+        color: $colorGreyDark-4;
+        margin-bottom: 3px;
+        padding: 0 0 10px 0;
+    }
 }
-
-.cols__1-span-2 { grid-column: 1 / span 2; }
-
-.cols__1-span-3 { grid-column: 1 / span 3; }
-
-.cols__1-span-4 { grid-column: 1 / span 4; }
-
-.cols__1-span-5 { grid-column: 1 / span 5; }
-
-.cols__1-span-6 { grid-column: 1 / span 6; }
-
-.cols__1-span-8 { grid-column: 1 / span 8; }
-
-.cols__1-span-10 { grid-column: 1 / span 10; }
-
-.cols__2-span-1 { grid-column: 2 / span 1; }
-
-.cols__2-span-2 { grid-column: 2 / span 2; }
-
-.cols__2-span-3 { grid-column: 2 / span 3; }
-
-.cols__2-span-4 { grid-column: 2 / span 4; }
-
-.cols__2-span-5 { grid-column: 2 / span 5; }
-
-.cols__2-span-8 { grid-column: 2 / span 8; }
-
-.cols__2-span-9 { grid-column: 2 / span 9; }
-
-.cols__3-span-1 { grid-column: 3 / span 1; }
-
-.cols__3-span-3 { grid-column: 3 / span 3; }
-
-.cols__3-span-4 { grid-column: 3 / span 4; }
-
-.cols__3-span-7 { grid-column: 3 / span 7; }
-
-.cols__3-span-8 { grid-column: 3 / span 8; }
-
-.cols__4-span-6 { grid-column: 4 / span 6; }
-
-.cols__5-span-1 { grid-column: 5 / span 1; }
-
-.cols__6-span-2 { grid-column: 6 / span 2; }
-
-.cols__6-span-5 { grid-column: 6 / span 5; }
-
-.cols__7-span-2 { grid-column: 7 / span 2; }
-
-.cols__8-span-3 { grid-column: 8 / span 3; }
-
-.cols__9-span-1 { grid-column: 9 / span 1; }
-
-.cols__9-span-2 { grid-column: 9 / span 2; }
-
-.cols__10-span-1 { grid-column: 10 / span 1; }
-
-.pad__top_1 { padding-top: 1em;}
-
-.pad__right_1 { padding-right: 1em;}
-
-div.si_product_attribute {
-    padding-right: 15px;
-    color: $colorGreyDark-4;
-    border-top: none;
-    font-size: 1.1rem;
-}
-
-div.even { background-color: rgba($colorWhite, 1.0); }
-div.odd { background-color: rgba($colorGreyLight-5, .8); }
 
 .si_hide,
-a.si_hide{
-    display: none;
+a.si_hide {
+    display: none !important;
 }
 
 .si_invoice {
@@ -312,47 +365,6 @@ a.si_hide{
                 font-size: 1.4rem;
                 padding: 0 0 5px 0;
             }
-
-            & .tr_custom td {
-                border-top: none;
-            }
-
-            //& .si_right {
-            //    padding: 2px 0 2px 10px;
-            //}
-        }
-
-        &_custom_items {
-            width: 100%;
-            margin-bottom: 15px;
-
-            & th,
-            & td {
-                font-size: 1.1rem;
-                color: $colorGreyDark-4;
-                border-top: none;
-                padding: 1px 3px;
-            }
-
-            & th {
-                color: $colorGreyDark-2;
-                text-align: right;
-                width: auto;
-                min-width: auto;
-                padding-left: 15px;
-                padding-right: 8px;
-                white-space: nowrap;
-            }
-
-            & td {
-                width: 30%;
-            }
         }
     }
-}
-
-td.si_invoice_notes {
-    color: $colorGreyDark-4;
-    margin-bottom: 3px;
-    padding: 0 0 10px 0;
 }
