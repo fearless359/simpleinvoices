@@ -1,42 +1,51 @@
 {*
-/*
-* Script: manage_sqlpatches.tpl
-* 	 Manage sql patches template
+* 	Script: manage_sqlpatches.tpl
+* 	 	Manage sql patches template
 *
-* Authors:
-*	 Justin Kelly, Nicolas Ruflin
+* 	Authors:
+*	 	Justin Kelly, Nicolas Ruflin
 *
-* Last edited:
-* 	 2007-07-18
+* 	Last edited:
+* 	 	20210702 by Rich Rowley to use DataTables.
 *
-* License:
-*	 GPL v2 or above
+* 	License:
+*	 	GPL v3 or above
 *
-* Website:
-*	https://simpleinvoices.group
-*/
+* 	Website:
+*		https://simpleinvoices.group
 *}
-
 <h3>{$LANG.databaseUc} {$LANG.patches} {$LANG.applied} {$LANG.to} {$LANG.simpleInvoices}</h3>
 <hr />
-	<table class="manage" id="live-grid" class="center">
-	<colgroup>
-		<col style='width:20%;' />
-		<col style='width:60%;' />
-		<col style='width:20%;' />
-	</colgroup>
+<table id="data-table" class="display responsive compact cell-border">
 	<thead>
 	<tr>
-		<th class="sortable">{$LANG.patchUc} {$LANG.idUc}</th>
-		<th class="sortable">{$LANG.descriptionUc}</th>
-		<th class="sortable">{$LANG.releaseUc}</th>
+		<th class="align__text-center">{$LANG.patchUc} {$LANG.idUc}</th>
+		<th>{$LANG.descriptionUc}</th>
+		<th>{$LANG.releaseUc}</th>
 	</tr>
 	</thead>
+	<tbody>
 	{foreach $patches as $patch}
 		<tr>
-			<td class='index_table'>{$patch.sql_patch_ref|htmlSafe}</td>
-			<td class='index_table'>{$patch.sql_patch|htmlSafe|nl2br}</td>
-			<td class='index_table'>{$patch.sql_release|htmlSafe}</td>
+			<td>{$patch.sql_patch_ref|htmlSafe}</td>
+			<td>{$patch.sql_patch|htmlSafe|nl2br}</td>
+			<td>{$patch.sql_release|htmlSafe}</td>
 		</tr>
 	{/foreach}
+	</tbody>
 </table>
+<script>
+	{literal}
+	$(document).ready(function () {
+		$('#data-table').DataTable({
+			"order": [
+				[0, "asc"]
+			],
+			"columnDefs": [
+				{"targets": 0, "className": 'dt-body-center' }
+			],
+			"colReorder": true
+		});
+	});
+	{/literal}
+</script>

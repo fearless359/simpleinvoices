@@ -1,19 +1,25 @@
 {*
- * Script: manage.tpl
- * 	 Custom fields manage template
+ *  Script: manage.tpl
+ * 	    Custom fields manage template
  *
- * License:
- *	 GPL v2 or above
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
  *}
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noInvoices}.</div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_left">{$LANG.customField}</th>
-            <th class="si_left">{$LANG.customLabel}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th>{$LANG.customField}</th>
+            <th>{$LANG.customLabel}</th>
         </tr>
         </thead>
     </table>

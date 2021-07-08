@@ -27,7 +27,7 @@
 
 
                 &--area {
-                    border: 1px solid $colorGreyLight-11;
+                    border: 1px solid $colorGreyLight-13;
                     margin-right: 10px;
                 }
 
@@ -46,18 +46,55 @@
         }
     }
 
+    &__report {
+        &-menu-areas {
+            display: grid;
+            grid-template-columns: 13rem repeat(3, auto);
+            grid-template-rows: 5rem;
+            grid-template-areas:
+                "lbl one  two  three"
+                "lbl four five six";
+            grid-auto-columns: max-content 20rem;
+            margin-right: 0;
+        }
+
+        &-lbl {
+            grid-area: lbl;
+        }
+
+        &-itm {
+            &-1 { grid-area: one; }
+            &-2 { grid-area: two; }
+            &-3 { grid-area: three; }
+            &-4 { grid-area: four; }
+            &-5 { grid-area: five; }
+            &-6 { grid-area: six; }
+        }
+    }
+
     &__container {
         display: grid;
         margin: 0 auto 1rem auto;
         overflow: hidden;
-        box-sizing: border-box;
     }
 
     &__head {
         // @formatter:off
-        &-6 { grid-template-columns: repeat(6, 1fr); }
-        &-10 { grid-template-columns: repeat(10, 1fr); }
+        &-6 { grid-template-columns: repeat(6, 16.66%); }
+        &-10 { grid-template-columns: repeat(10, 10%); }
+        &-12 { grid-template-columns: repeat(12, 8.33%); }
+
+        &-checkbox { grid-template-columns: 5% 95% }
         // @formatter:on
+    }
+
+    &__justify {
+        &-content {
+            &-end {
+                display: grid;
+                justify-content: end;
+            }
+        }
     }
 }
 
@@ -74,6 +111,8 @@
         &-8 { grid-column: 1 / span 8; }
         &-9 { grid-column: 1 / span 9; }
         &-10 { grid-column: 1 / span 10; }
+        &-11 { grid-column: 1 / span 11; }
+        &-12 { grid-column: 1 / span 12; }
     }
 
     &__2-span {
@@ -86,6 +125,8 @@
         &-7 { grid-column: 2 / span 7; }
         &-8 { grid-column: 2 / span 8; }
         &-9 { grid-column: 2 / span 9; }
+        &-10 { grid-column: 2 / span 10; }
+        &-11 { grid-column: 2 / span 11; }
     }
 
     &__3-span {
@@ -97,6 +138,8 @@
         &-6 { grid-column: 3 / span 6; }
         &-7 { grid-column: 3 / span 7; }
         &-8 { grid-column: 3 / span 8; }
+        &-9 { grid-column: 3 / span 9; }
+        &-10 { grid-column: 3 / span 10; }
     }
 
     &__4-span {
@@ -107,6 +150,8 @@
         &-5 { grid-column: 4 / span 5; }
         &-6 { grid-column: 4 / span 6; }
         &-7 { grid-column: 4 / span 7; }
+        &-8 { grid-column: 4 / span 8; }
+        &-9 { grid-column: 4 / span 9; }
     }
 
     &__5-span {
@@ -116,6 +161,8 @@
         &-4 { grid-column: 5 / span 4; }
         &-5 { grid-column: 5 / span 5; }
         &-6 { grid-column: 5 / span 6; }
+        &-7 { grid-column: 5 / span 7; }
+        &-8 { grid-column: 5 / span 8; }
     }
 
     &__6-span {
@@ -124,6 +171,8 @@
         &-3 { grid-column: 6 / span 3; }
         &-4 { grid-column: 6 / span 4; }
         &-5 { grid-column: 6 / span 5; }
+        &-6 { grid-column: 6 / span 6; }
+        &-7 { grid-column: 6 / span 7; }
     }
 
     &__7-span {
@@ -131,48 +180,38 @@
         &-2 { grid-column: 7 / span 2; }
         &-3 { grid-column: 7 / span 3; }
         &-4 { grid-column: 7 / span 4; }
+        &-5 { grid-column: 7 / span 5; }
+        &-6 { grid-column: 7 / span 6; }
     }
 
     &__8-span {
         &-1 { grid-column: 8 / span 1; }
         &-2 { grid-column: 8 / span 2; }
         &-3 { grid-column: 8 / span 3; }
+        &-4 { grid-column: 8 / span 4; }
+        &-5 { grid-column: 8 / span 5; }
     }
 
     &__9-span {
         &-1 { grid-column: 9 / span 1; }
         &-2 { grid-column: 9 / span 2; }
+        &-3 { grid-column: 9 / span 3; }
+        &-4 { grid-column: 9 / span 4; }
     }
 
     &__10-span {
         &-1 { grid-column: 10 / span 1; }
+        &-2 { grid-column: 10 / span 2; }
+        &-3 { grid-column: 10 / span 3; }
+    }
+
+    &__11-span {
+        &-1 { grid-column: 11 / span 1; }
+        &-2 { grid-column: 11 / span 2; }
+    }
+
+    &__12-span {
+        &-1 { grid-column: 12 / span 1; }
     }
     // @formatter:on
-}
-
-.pad {
-    &__top-1 {
-        padding-top: 1em;
-    }
-
-    &__right-1 {
-        padding-right: 1em;
-    }
-}
-
-div {
-    //&.si_product_attribute {
-    //    padding-right: 15px;
-    //    color: $colorGreyDark-4;
-    //    border-top: none;
-    //    font-size: 1.1rem;
-    //}
-
-    &.even {
-        background-color: rgba($colorWhite, 1.0);
-    }
-
-    &.odd {
-        background-color: rgba($colorGreyLight-5, .8);
-    }
 }

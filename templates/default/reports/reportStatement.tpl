@@ -4,7 +4,7 @@
              'billerId' => $billerId|urlencode,
              'customerId' => $customerId|urlencode,
              'endDate' => $endDate|urlencode,
-             'fileName' => "reportStatements",
+             'fileName' => "reportStatement",
              'filterByDateRange' => $filterByDateRange|urlencode,
              'includePaidInvoices' => $includePaidInvoices|urlencode,
              'startDate' => $startDate|urlencode,
@@ -26,5 +26,5 @@
     </form>
 {/if}
 {if isset($smarty.post.submit) || $view == "export"}
-    {include file="templates/default/reports/reportStatementsBody.tpl"}
+    {include file="templates/default/reports/reportStatementBody.tpl"}
 {/if}

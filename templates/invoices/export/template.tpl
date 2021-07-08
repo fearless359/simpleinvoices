@@ -12,7 +12,7 @@
       <tr>
         <td colspan="5">
           <img src="{$logo|urlSafe}" style="border:0; margin: 0 0;" alt=""></td>
-        <th class="si_right"><span>{$preference.pref_inv_heading|htmlSafe}</span></th>
+        <th class="align__text-right"><span>{$preference.pref_inv_heading|htmlSafe}</span></th>
       </tr>
       <tr>
         <td colspan="6"><hr></td>
@@ -259,7 +259,7 @@
         <td colspan="6"><br /></td>
       </tr>
       {if $invoice.type_id == ITEMIZED_INVOICE }
-        {include file="$template_path/itemised.tpl"}
+        {include file="$template_path/itemized.tpl"}
       {elseif $invoice.type_id == TOTAL_INVOICE}
         {include file="$template_path/total.tpl"}
       {/if}
@@ -267,8 +267,8 @@
       {if $invoiceNumberOfTaxes > 0}
       <tr>
         <td colspan="2"></td>
-        <td colspan="3" class="si_right">{$LANG.subtotalUc}&nbsp;</td>
-        <td colspan="1" class=="si_right"
+        <td colspan="3" class="align__text-right">{$LANG.subtotalUc}&nbsp;</td>
+        <td colspan="1" class=="align__text-right"
             {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
           {$preference.pref_currency_sign}{$invoice.gross|utilNumber|htmlSafe}
         </td>
@@ -283,8 +283,8 @@
         {if ($invoice.tax_grouped[line].tax_amount != "0") }
         <tr>
           <td colspan="2"></td>
-          <td colspan="3" class="si_right">{$invoice.tax_grouped[line].tax_name|htmlSafe}&nbsp;</td>
-          <td colspan="1" class="si_right">
+          <td colspan="3" class="align__text-right">{$invoice.tax_grouped[line].tax_name|htmlSafe}&nbsp;</td>
+          <td colspan="1" class="align__text-right">
             {$preference.pref_currency_sign}{$invoice.tax_grouped[line].tax_amount|utilNumber|htmlSafe}
           </td>
         </tr>
@@ -293,8 +293,8 @@
       {if $invoiceNumberOfTaxes > 1}
       <tr>
         <td colspan="2"></td>
-        <td colspan="3" class="si_right">{$LANG.taxTotal}&nbsp;</td>
-        <td colspan="1" class="si_right" style="text-decoration:underline;">
+        <td colspan="3" class="align__text-right">{$LANG.taxTotal}&nbsp;</td>
+        <td colspan="1" class="align__text-right" style="text-decoration:underline;">
           {$preference.pref_currency_sign}{$invoice.total_tax|utilNumber}
         </td>
       </tr>
@@ -306,10 +306,10 @@
       {/if}
       <tr>
         <td colspan="2"></td>
-        <td colspan="3" class="si_right">
+        <td colspan="3" class="align__text-right">
           <b>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.amountUc}&nbsp;</b>
         </td>
-        <td colspan="1" class="si_right">
+        <td colspan="1" class="align__text-right">
           <span class="double_underline">
             {$preference.pref_currency_sign}{$invoice.total|utilNumber}
           </span>
@@ -376,7 +376,7 @@
       </tr>
       <tr>
         <td colspan="6">
-          <div style="font-size: 8pt;" class="si_center">{$biller.footer|outHtml}</div>
+          <div style="font-size: 8pt;" class="align__text-center">{$biller.footer|outHtml}</div>
         </td>
       </tr>
     </table>

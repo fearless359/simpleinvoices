@@ -1,16 +1,21 @@
 <div class="grid__area {if $even == 1}even{else}odd{/if}">
     <div class="grid__container grid__head-10">
-        <div class="si_right pad__right_1">{$invoiceItem.quantity|utilNumberTrim}</div>
+        <div class="align__text-right pad__right-1">{$invoiceItem.quantity|utilNumberTrim}</div>
         <div class="cols__2-span-5">{$invoiceItem.product.description|htmlSafe}</div>
-        <div class="cols__7-span-2 si_right">{$invoiceItem.unit_price|utilCurrency:$locale:$currencyCode}</div>
-        <div class="cols__9-span-2 si_right">{$invoiceItem.gross_total|utilCurrency:$locale:$currencyCode}</div>
+        <div class="cols__7-span-2 align__text-right">{$invoiceItem.unit_price|utilCurrency:$locale:$currencyCode}</div>
+        <div class="cols__9-span-2 align__text-right">{$invoiceItem.gross_total|utilCurrency:$locale:$currencyCode}</div>
     </div>
     {if isset($invoiceItem.attributeDecode)}
-        <div class="grid__container grid__head-10">
+        {$firstAttributeFound = false}
             {$begCol = 2}
             {foreach $invoiceItem.attributeDecode as $decodeKey => $decodeItem}
                 {foreach $invoiceItem.productAttributes as $productAttribute}
                     {if ($productAttribute.enabled == $smarty.const.ENABLED)}
+                        {if !$firstAttributeFound}
+                            {* Done this way so space before descirption minimized of no attributes. *}
+                            <div class="grid__container grid__head-10">
+                            {$firstAttributeFound = true}
+                        {/if}
                         {if $productAttribute.id == $decodeKey}
                             {if $productAttribute.type == 'list'}
                                 {foreach $productAttribute.attrVals as $attrValKey => $attrValItem}
@@ -39,20 +44,16 @@
                     {/if}
                 {/foreach}
             {/foreach}
-        </div>
+        {if $firstAttributeFound}
+            </div>
+        {/if}
     {/if}
     {if isset($invoiceItem.description)}
         <div class="grid__container grid__head-10">
-            <div>&nbsp;</div>
-            <div class="cols__2-span-9 abbrev_itemised">
-                {$invoiceItem.description|truncate:80:"...":true|htmlSafe}
-            </div>
-            <div class="cols__2-span-9 full_itemised si_hide">
-                {$invoiceItem.description|htmlSafe}
-            </div>
+            <div class="cols__2-span-9 fullItemized" style="display:none;">{$invoiceItem.description|htmlSafe}</div>
         </div>
     {/if}
-    <div class="full_itemised si_hide">
+    <div class="fullItemized" style="display:none;">
         {if !empty($customFieldLabels.product_cf1) && !empty($invoiceItem.product.custom_field1)}
             <div class="grid__container grid__head-10">
                 <div class="cols__2-span-2 bold">{$customFieldLabels.product_cf1|htmlSafe}:</div>

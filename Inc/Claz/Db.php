@@ -63,7 +63,7 @@ class Db
 
     private function genDsn(): string
     {
-        return "{$this->pdoAdapter}:host={$this->host}; port={$this->port}; dbname={$this->dbname};";
+        return "$this->pdoAdapter:host=$this->host; port=$this->port; dbname=$this->dbname;";
     }
 
     /**
@@ -103,9 +103,9 @@ class Db
 
     /**
      * @param string $sqlQuery
-     * @return bool|null|PDOStatement
+     * @return object|null|PDOStatement
      */
-    public function query(string $sqlQuery): ?bool
+    public function query(string $sqlQuery): ?object
     {
         try {
             $argc = func_num_args();

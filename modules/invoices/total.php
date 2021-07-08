@@ -3,13 +3,13 @@ use Inc\Claz\Util;
 
 /*
  * Script: total.php
- * 	total invoice page
+ * 	  Create a total invoice page
  *
  * Authors:
  *	 Justin Kelly, Nicolas Ruflin
  *
  * Last edited:
- * 	 2007-07-19
+ * 	 2021-06-17 by Rich Rowley
  *
  * License:
  *	 GPL v2 or above
@@ -20,11 +20,7 @@ use Inc\Claz\Util;
 global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-
 Util::directAccessAllowed();
-
-$pageActive = "invoices";
-$smarty->assign('pageActive', $pageActive);
 
 include './modules/invoices/invoice.php';
 

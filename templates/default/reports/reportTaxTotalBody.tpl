@@ -5,7 +5,7 @@
 {if !$menu}
 	<hr/>
 {/if}
-<h1 class="si_center">{$title}</h1>
+<h1 class="align__text-center">{$title}</h1>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
 <table class="si_report_table">
@@ -18,7 +18,7 @@
 	<tbody>
 	{foreach $invoices as $invoice}
 		<tr class="tr_{cycle values="A,B"}">
-			<td class="si_right">
+			<td class="align__text-right">
 			{if ($view == "reportTaxTotal")}
 				<a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id}">
 					{$invoice.index_id}
@@ -27,14 +27,14 @@
 				{$invoice.index_id}
 			{/if}
 			</td>
-			<td class="si_right">{$invoice.tax_amount|utilCurrency|default:'-'}</td>
+			<td class="align__text-right">{$invoice.tax_amount|utilCurrency|default:'-'}</td>
 		</tr>
 	{/foreach}
 	</tbody>
 	<tfoot>
 		<tr>
-			<td class="si_right bold">{$LANG.totalUc}:</td>
-			<td class="si_right bold">{$totalTaxes|utilCurrency|default:'-'}</td>
+			<td class="align__text-right bold">{$LANG.totalUc}:</td>
+			<td class="align__text-right bold">{$totalTaxes|utilCurrency|default:'-'}</td>
 		</tr>
 	</tfoot>
 </table>

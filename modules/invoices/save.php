@@ -10,6 +10,9 @@ use Inc\Claz\Util;
  * Script: save.php
  *     Invoice save file
  *
+ * Last edited:
+ *   2021-06-17 by Rich Rowley
+ *
  * License:
  *   GPL v3 or above
  *
@@ -27,7 +30,7 @@ $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?modul
 
 $op = $_POST['op'];
 $type = $_POST['type'];
-error_log(print_r($_POST, true));
+
 $id = null;
 if ($op == "create" ) {
     $list = [
@@ -58,7 +61,12 @@ if ($op == "create" ) {
             $productId = Product::insertProduct(DISABLED, DISABLED);
             if ($productId > 0) {
                 $unitPrice = Util::dbStd($_POST["unit_price"]);
-                $taxIds = empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0];
+                $taxIds = [];
+                foreach ($_POST['tax_id'] as $taxId) {
+                    if (!empty($taxId)) {
+                        $taxIds[] = $taxId;
+                    }
+                }
                 Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice);
             } else {
                 error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");

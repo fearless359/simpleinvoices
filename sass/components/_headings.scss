@@ -1,15 +1,22 @@
-h1 { font-size: 2.4rem; }
+h1 {
+    font-size: 2.4rem;
+    color:$colorBlueDark-1;
 
-h2 { font-size: 2rem; }
+    &.admin { margin-bottom: 2px; }
+}
 
-h3 { font-size: 1.8rem; }
+h2 {
+    font-size: 2rem;
+    color:$colorBlueDark-1;
+
+    margin: 0 0 1.5rem;
+}
+
+h3 {
+    font-size: 1.8rem;
+    color:$colorBlueDark-1;
+}
 
 h4 { font-size: 1.6rem; }
 
 h5 { font-size: 1.4rem; }
-
-h1.admin { margin-bottom: 2px; }
-
-h2 { margin: 0 0 1.5rem; }
-
-h1, h2, h3 { color:$colorBlueDark-1; }

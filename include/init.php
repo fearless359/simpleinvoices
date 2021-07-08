@@ -59,7 +59,7 @@ if ($databaseBuilt) {
         exit("You need to load Fearless359/SimpleInvoices version master_2019.2 prior to loading this version.");
     }
 
-    $databasePopulated = $patchCount > 0;
+    $databasePopulated = $patchCount > SqlPatchManager::BEGINNING_PATCH_NUMBER;
     if ($apiRequest && !$databasePopulated) {
         exit("Database must be populated to run a batch job.");
     }
@@ -117,12 +117,6 @@ if (isset($defaults['company_name_item'])) {
     $LANG['companyNameItem'] = $defaults['company_name_item'];
 } else {
     $LANG['companyNameItem'] = 'SimpleInvoices';
-}
-
-if (isset($defaults['company_name'])) {
-    $LANG['companyName'] = $defaults['company_name'];
-} else {
-    $LANG['companyName'] = 'SimpleInvoices';
 }
 
 if (!$apiRequest) {

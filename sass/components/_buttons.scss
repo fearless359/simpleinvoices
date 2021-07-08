@@ -1,12 +1,69 @@
+
+button,
+.button {
+    margin: 0 2rem 0 0;
+    padding: 1rem 2rem;
+    border: 1px solid $colorGreyLight-11;
+    border-radius: 5rem;
+    min-width: 3rem;
+    text-align: center;
+    font-size: 1.6rem;
+    color: $colorGreyDark-7;
+    background: $colorPrimary;
+    text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
+    0 1px 0 rgba($colorWhite, 1);
+
+    &.small {
+        font-size: 1rem;
+        padding: .5rem;
+        line-height: 1.5rem;
+        border-radius: .5rem;
+    }
+
+    &.square {
+        border-radius: .5rem;
+        padding: 1rem;
+    }
+
+    &.selected {
+        background: $colorGreyLight-4;
+        color: $colorGreyDark-6;
+        text-shadow: 0 -1px 1px rgba($colorWhite, 0.9),
+        0 1px 0 rgba($colorWhite, 1);
+    }
+
+    & img {
+        margin-right: 3px;
+    }
+
+    &:hover {
+        color: $colorGreyDark-4;
+        background: $colorGreyLight-11;
+    }
+
+
+    &.positive {
+        font-weight: bold;
+    }
+
+    &.negative {
+        opacity: 0.7;
+    }
+
+    &.report {
+        border: 1px solid $colorGreyLight-16;
+    }
+}
+
 .btn {
     height: 4rem;
     width: 8rem;
-    border: 1px solid #cccccc;
+    border: 1px solid $colorGreyLight-13;
     border-radius: 100px;
     min-width: 30px;
     text-align: center;
     text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
-                 0 1px 0 rgba($colorWhite, 1);
+    0 1px 0 rgba($colorWhite, 1);
 
     &:link,
     &:visited {
@@ -39,8 +96,8 @@
     }
 
     &--grey {
-        background-color: $colorGreyLight-11;
-        color: $colorGreyDark-3;
+        background-color: $colorGreyLight-13;
+        //color: $colorGreyDark-3;
 
         &::after {
             background-color: $colorWhite;
@@ -74,15 +131,15 @@
         &:link,
         &:visited {
             font-size: 1.6rem;
-            color: $colorGreyDark-5;
+            color: $colorGreyDark-7;
             display: inline-block;
             text-decoration: none;
-            border-bottom: 1px solid $colorGreyDark-5;
+            border-bottom: 1px solid $colorGreyDark-7;
             padding: 3px;
         }
 
         &:hover {
-            background-color: $colorGreyDark-5;
+            background-color: $colorGreyDark-7;
             color: white;
             box-shadow: 0 1rem 2rem rgba($colorBlack, 0.15);
             transform: translateY(-2px);
@@ -92,17 +149,5 @@
             box-shadow: 0 0.5rem 1rem rgba($colorBlack, 0.15);
             transform: translateY(0);
         }
-    }
-}
-
-.si_buttons {
-    &_manage_invoices {
-        float: right;
-        margin-right: 4.5rem;
-    }
-
-    &_invoice_header {
-        text-align: center;
-        margin-bottom: 2rem;
     }
 }

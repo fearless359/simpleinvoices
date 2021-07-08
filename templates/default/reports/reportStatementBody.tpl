@@ -8,42 +8,39 @@
 <h1 class="align__text-center">{$title}</h1>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
-    <table class="si_report_table">
-        <tr>
-            <th colspan="6"></th>
-        </tr>
-        <tr>
-            <th class="left">{$LANG.billerUc}:</th>
-            <td>{if empty($billerDetails.name)}{$LANG.allUc}{else}{$billerDetails.name|htmlSafe}{/if}</td>
-            <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <th>{$LANG.totalUc}:</th>
-            <td class="align__text-right">{$statement.total|utilCurrency}</td>
-        </tr>
-        <tr>
-            <th class="left">{$LANG.customerUc}:</th>
-            <td>{if empty($customerDetails.name)}{$LANG.allUc}{else}{$customerDetails.name|htmlSafe}{/if}</td>
-            <td colspan="2"></td>
-            <th>{$LANG.paidUc}:</th>
-            <td class="align__text-right underline">{$statement.paid|utilCurrency}</td>
-        </tr>
-        <tr>
-            <th colspan="5"></th>
-            <td class="align__text-right">{$statement.owing|utilCurrency}</td>
-        </tr>
-        <tr>
-            <th>&nbsp;</th>
-        </tr>
-        <tr>
-            {if $filterByDateRange == "yes"}
-                <th colspan="6">{$LANG.statementForThePeriod} {if isset($startDate)}{$startDate|htmlSafe}{/if} {$LANG.to} {if isset($endDate)}{$endDate|htmlSafe}{/if}</th>
-            {/if}
-        </tr>
-        <tr>
-            <th>&nbsp;</th>
-        </tr>
-    </table>
+<table class="si_report_table">
+    <tr>
+        <th class="left">{$LANG.billerUc}:</th>
+        <td>{if empty($billerDetails.name)}{$LANG.allUc}{else}{$billerDetails.name|htmlSafe}{/if}</td>
+        <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <th>{$LANG.totalUc}:</th>
+        <td class="align__text-right">{$statement.total|utilCurrency}</td>
+    </tr>
+    <tr>
+        <th class="left">{$LANG.customerUc}:</th>
+        <td>{if empty($customerDetails.name)}{$LANG.allUc}{else}{$customerDetails.name|htmlSafe}{/if}</td>
+        <td colspan="2"></td>
+        <th>{$LANG.paidUc}:</th>
+        <td class="align__text-right underline">{$statement.paid|utilCurrency}</td>
+    </tr>
+    <tr>
+        <th colspan="5"></th>
+        <td class="align__text-right">{$statement.owing|utilCurrency}</td>
+    </tr>
+    <tr>
+        <th>&nbsp;</th>
+    </tr>
+    <tr>
+        {if $filterByDateRange == "yes"}
+            <th colspan="6">{$LANG.statementForThePeriod} {if isset($startDate)}{$startDate|htmlSafe}{/if} {$LANG.to} {if isset($endDate)}{$endDate|htmlSafe}{/if}</th>
+        {/if}
+    </tr>
+    <tr>
+        <th>&nbsp;</th>
+    </tr>
+</table>
     <div class="si_list">
-        <table class="center" style="width:100%;">
+        <table class="align__center width_100">
             <thead>
             <tr>
                 <th>{$LANG.idUc}</th>
@@ -92,4 +89,3 @@
             </tfoot>
         </table>
     </div>
-{/if}

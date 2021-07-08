@@ -8,6 +8,18 @@ namespace Inc\Claz;
  */
 class CustomFields
 {
+    /**
+     * This function gets all the custom field associated with and id.
+     * This function is purposely NOT named, getOne(), as will return
+     * an array of rows for the specified ID, rather than a single row.
+     *
+     * @param int $id ID of the fields to retrieve.
+     * @return array Row associated with the $id.
+     */
+    public static function getOne(int $id): array
+    {
+        return self::getCustomFields($id);
+    }
 
     public static function getAll(): array
     {
@@ -48,12 +60,21 @@ class CustomFields
         return $tableRows;
     }
 
-    private static function getCustomFields(): array
+    /**
+     * Return custom fields for a specified ID or all of them if no
+     * $id is specified.
+     * @param int|null $id If specified, the cf_id of the rows to return.
+     * @return array Selected rows.
+     */
+    private static function getCustomFields(?int $id=null): array
     {
-        global $LANG, $pdoDb;
+        global $pdoDb;
 
         $cfs = [];
         try {
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('cf_id', $id, 'AND');
+            }
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
             $pdoDb->setOrderBy("cf_id");
             $rows = $pdoDb->request('SELECT', 'custom_fields');
@@ -70,7 +91,7 @@ class CustomFields
             return [];
         }
 
-        return $cfs;
+        return isset($id) ? $cfs[0] : $cfs;
     }
 
     /**

@@ -1,0 +1,41 @@
+.flex {
+    &__container {
+        display: flex;
+        align-items: flex-start;
+        height: 7rem;
+        padding: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        //justify-content: center;
+        //width: 90%;
+        //margin-left: 1rem;
+        align-content: space-between;
+
+        h3 {
+            margin-top: 1.5rem;
+            min-width: 13rem;
+        }
+
+        a {
+            align-self: flex-end;
+        }
+    }
+
+    &__items {
+        //flex-grow: 10;
+        //min-height: 7rem;
+        //flex-wrap: wrap;
+        //align-self: flex-start;
+    }
+    //
+    //&__title {
+    //    //flex-grow: 1;
+    //    min-width: 13rem;
+    //}
+}
+
+.wrapper {
+    width: 90%;
+    margin: 0 auto;
+}

@@ -2,11 +2,11 @@
  *  Script: manage.php
  *      Custom flags manage page
  *
- *  Authors:
- *      Richard Rowley
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
- *  Last edited:
- *      2018-12-13
+ *  Website:
+ *      https://simpleinvoices.group
  *
  *  License:
  *      GPL v3 or above
@@ -16,15 +16,15 @@
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noCustomFlags}</div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_left">{$LANG.associatedTable}</th>
-            <th class="si_center">{$LANG.flagNumber}</th>
-            <th class="si_left">{$LANG.fieldLabelUc}</th>
-            <th class="si_center">{$LANG.enabled}</th>
-            <th class="si_left">{$LANG.fieldHelpUc}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th>{$LANG.associatedTable}</th>
+            <th class="align__text-center">{$LANG.flagNumber}</th>
+            <th>{$LANG.fieldLabelUc}</th>
+            <th class="align__text-center">{$LANG.enabled}</th>
+            <th>{$LANG.fieldHelpUc}</th>
         </tr>
         </thead>
     </table>

@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <title>SimpleInvoices - Login</title>
-    <link rel="stylesheet" type="text/css" href="templates/default/css/info.css"/>
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="css/info.css"/>
     <link rel="stylesheet" type="text/css" href="extras/customExample/myMedias/my.css"/>
 </head>
 <body class="login">
@@ -17,7 +18,7 @@
     {/if}
     <div id="Dialog">
         <div class="center">
-            <h1>{$LANG.companyName}</h1>
+            <h1>{$LANG.companyNameItem}</h1>
             <form action="" method="post" id="frmLogin" name="frmLogin">
                 <input type="hidden" name="action" value="login"/>
                 <table>

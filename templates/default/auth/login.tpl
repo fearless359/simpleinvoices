@@ -20,7 +20,7 @@
                 <label for="password" class="loginForm__label">{$LANG.password}</label>
             </div>
             {if $errorMessage }
-                <div class="si_error_line">{$errorMessage|outHtml}</div>
+                <div class="error_line">{$errorMessage|outHtml}</div>
             {/if}
 
             <div class="loginForm__group">

@@ -5,7 +5,7 @@
 {if !$menu}
 	<hr/>
 {/if}
-<h1 class="si_center">{$title}</h1>
+<h1 class="align__text-center margin__bottom-2">{$title}</h1>
 <table class="si_report_table">
 	<thead>
 		<tr>
@@ -27,16 +27,16 @@
 			</td>
 			<td>{$invoice.billerName|htmlSafe}</td>
 			<td>{$invoice.customerName|htmlSafe}</td>
-			<td class="si_right">{$invoice.invTotal|utilCurrency|default:'0'}</td>
-			<td class="si_right">{$invoice.invPaid|utilCurrency|default:'0'}</td>
-			<td class="si_right">{$invoice.invOwing|utilCurrency|default:'0'}</td>
+			<td class="align__text-right">{$invoice.invTotal|utilCurrency|default:'0'}</td>
+			<td class="align__text-right">{$invoice.invPaid|utilCurrency|default:'0'}</td>
+			<td class="align__text-right">{$invoice.invOwing|utilCurrency|default:'0'}</td>
 		</tr>
 	{/foreach}
 	</tbody>
 	<tfoot>
 	<tr>
-		<td colspan="5" class="si_right">{$LANG.totalOwed}:</td>
-		<td class="si_right"><span class="bold">{$totalOwed|utilCurrency|default:'-'}</span></td>
+		<td colspan="5" class="align__text-right">{$LANG.totalOwed}:</td>
+		<td class="align__text-right"><span class="bold">{$totalOwed|utilCurrency|default:'-'}</span></td>
 	</tr>
 	</tfoot>
 </table>

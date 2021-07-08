@@ -12,17 +12,17 @@ use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
 /*
- * Script: quick_view.php
+ * Script: quickView.php
  * Quick view model
  *
  * Authors:
  *   Justin Kelly, Nicolas Ruflin, Ap.Muthu
  *
  * Last edited:
- *   2008-01-03
+ *   2021-06-17 by Rich Rowley
  *
  * License:
- *   GPL v2 or above
+ *   GPL v3 or above
  *     
  * Website:
  *   https://simpleinvoices.group */

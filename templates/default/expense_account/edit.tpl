@@ -1,18 +1,35 @@
-<form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}">
-    <br/>
-    <div class="si_center">
-    <label for="name">{$LANG.nameUc}:</label>
-    <input type="text" name="name" size="50" value="{if isset($expense_account.name)}{$expense_account.name}{/if}" id="name" class="validate[required]"/>
+{*
+ *  Script: edit.tpl
+ *      Expense Account edit template
+ *
+ *  Last edited:
+ *      20210622 by Rich Rowley to convert to grid layout.
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
+ *}
+<form name="frmpost" method="POST" id="frmpost" action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}">
+    <div class="grid__area">
+        <div class="grid__container grid__head-6">
+            <label for="name" class="cols__2-span-1">{$LANG.nameUc}:
+                <a class="cluetip" href="#" title="{$LANG.requiredField}"
+                   rel="index.php?module=documentation&amp;view=view&amp;page=helpExpenseAccounts">
+                    <img src="{$helpImagePath}required-small.png" alt=""/>
+                </a>
+            </label>
+            <input type="text" name="name" id="name" class="cols__3-span-4 validate[required]"
+                   value="{if isset($expense_account.name)}{$expense_account.name}{/if}"/>
+        </div>
     </div>
-    <br/>
-    <div class="si_toolbar si_toolbar_form">
+    <div class="align__text-center">
         <button type="submit" class="positive" name="submit" value="{$LANG.save}">
             <img class="button_img" src="images/tick.png" alt=""/>{$LANG.save}
         </button>
-        <a href="index.php?module=expense_account&amp;view=manage" class="negative">
-            <img src="images/cross.png" alt=""/>
-            {$LANG.cancel}
+        <a href="index.php?module=expense_account&amp;view=manage" class="button negative">
+            <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
         </a>
     </div>
     <input type="hidden" name="op" value="edit"/>

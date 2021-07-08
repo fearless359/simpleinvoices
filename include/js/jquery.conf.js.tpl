@@ -1,19 +1,19 @@
 {literal}
 <script>
-    $(document).on("click", ".delete_link", (function (e) {
+    $(document).on("click", ".delete_link", function (e) {
         e.preventDefault();
-        let row_num = $(this).attr("data-row-num");
-        let deleteLineItem = $(this).attr("data-delete-line-item");
+        let rowNum = $(this).attr("data-row-num");
+        let confirmDeleteLineItem = $(this).attr("data-delete-line-item");
         let delete_function = function () {
-            let item_id = $("#line_item" + row_num).val();
-            if (item_id > 0) {
-                delete_line_item(row_num); // hide on screen and flag for deletion
+            let itemId = $("#line_item" + rowNum).val();
+            if (itemId > 0) {
+                deleteLineItem(rowNum); // hide on screen and flag for deletion
             } else {
-                delete_row(row_num); // remove row.
+                deleteRow(rowNum); // remove row.
             }
         }
         // If option set in config file, then prompt before deleting.
-        if (deleteLineItem === "1") {
+        if (confirmDeleteLineItem === "1") {
             {/literal}
             $("#confirm_delete_line_item")
                 .data('delete_function', delete_function)
@@ -22,7 +22,7 @@
         } else {
             delete_function();
         }
-    }));
+    });
 
     //delete line in invoice
     $(document).on("click", "#xyztrash_link_new", (function (e) {
@@ -32,14 +32,14 @@
         {if $config.confirmDeleteLineItem}
             {literal}
             let delete_function = function () {
-                delete_line_item(id);
+                deleteLineItem(id);
             }
             {/literal}
             $("#confirm_delete_line_item")
                 .data('delete_function', delete_function)
                 .dialog('open');
         {else}
-            delete_line_item(id);
+            deleteLineItem(id);
         {/if}
         {literal}
     }));
@@ -64,7 +64,7 @@
             },
             buttons: {
                 Delete: function() {
-                    var delete_function = $("#confirm_delete_line_item").data('delete_function');
+                    let delete_function = $("#confirm_delete_line_item").data('delete_function');
                     (delete_function)();
                     $(this).dialog('close');
                 },

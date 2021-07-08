@@ -3,13 +3,13 @@ use Inc\Claz\Util;
 
 /*
  * Script: itemized.php
- *   Itemized invoice page
+ *   Create an itemized invoice page
  *
  * Authors:
  *   Justin Kelly, Nicolas Ruflin
  *
  * Last edited:
- *   2016-07-23
+ *   2021-06-17 by Rich Rowley
  *
  * License:
  *   GPL v3 or above

@@ -1,5 +1,5 @@
 {*
- * Script: quick_view.tpl
+ * Script: quickView.tpl
  *    Quick view of invoice template
  *
  * Authors:
@@ -23,22 +23,16 @@
             {$invoice.index_id|htmlSafe}
         </div>
         <form name="frmpost" method="POST" id="frmpost"
-              action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}" >
-            <div class="grid__area">
-                <div class="grid__container grid__head-6">
-                    <div class="cols__3-span-2 si_toolbar si_toolbar_form">
-                        <button type="submit" class="positive" name="submit">
-                            <img class="button_img" src="images/tick.png" alt=""/>
-                            {$LANG.yesUc}
-                        </button>
-                        <input type="hidden" name="doDelete" value="y"/>
-                        <a href="index.php?module=invoices&amp;view=manage" class="negative">
-                            <img src="images/cross.png" alt=""/>
-                            {$LANG.cancel}
-                        </a>
-                    </div>
-                </div>
+              action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}">
+            <div class="align__text-center">
+                <button type="submit" class="positive" name="submit">
+                    <img class="button_img" src="images/tick.png" alt="{$LANG.yesUc}"/>{$LANG.yesUc}
+                </button>
+                <a href="index.php?module=invoices&amp;view=manage" class="button negative">
+                    <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
+                </a>
             </div>
+            <input type="hidden" name="doDelete" value="y"/>
         </form>
     {else}
         <span class="welcome">

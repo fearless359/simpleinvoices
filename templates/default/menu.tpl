@@ -1,4 +1,17 @@
-<div class="si_delay-display container">
+{*
+ *  Script: menu.tpl
+ *      SI Menu template
+ *
+ *  Last modified:
+ *      20210618 by Richard Rowley to set font size.
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
+*}
+<div class="delay__display container">
     <div id="si_header">
         {$smarty.capture.hook_topmenu_start}
         {if !empty($smarty.capture.hook_topmenu_section01_replace)}
@@ -36,14 +49,14 @@
         </ul>
         <!-- SECTION:home -->
         <div id="home">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "dashboard"} class="active"{/if} href="index.php?module=index&amp;view=index">{$LANG.dashboard} </a></li>
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "report"} class="active"{/if} href="index.php?module=reports&amp;view=index">{$LANG.allReports} </a></li>
             </ul>
         </div>
         <!-- SECTION:money -->
         <div id="money">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:invoices -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "invoice"} class="active"{/if} href="index.php?module=invoices&amp;view=manage">{$LANG.invoicesUc}</a></li>
                 {if isset($subPageActive) && $subPageActive == "invoiceCreate" }
@@ -93,7 +106,7 @@
         </div>
         <!-- SECTION:people -->
         <div id="people">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:billers -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "biller"}class="active" {/if}href="index.php?module=billers&amp;view=manage">{$LANG.billersUc}</a></li>
                 {if isset($subPageActive) && $subPageActive == "billerCreate"}
@@ -122,7 +135,7 @@
         </div>
         <!-- SECTION:product -->
         <div id="product">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:inventory -->
                 {if $defaults.inventory}
                     <li class="bold"><a {if isset($pageActive) && $pageActive== "inventory"}class="active" {/if}href="index.php?module=inventory&amp;view=manage">{$LANG.inventory}</a></li>
@@ -175,7 +188,7 @@
         </div>
         <!-- SECTION:setting -->
         <div id="setting" style="float:right;">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:custom_fields -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "customFields"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.customFieldsUc}</a></li>
                 {if isset($subPageActive) && $subPageActive == "customFieldsEdit"}
@@ -230,7 +243,7 @@
     {literal}
         <script>
             $(document).ready(function () {
-                $("div.si_delay-display").removeClass('si_delay-display');
+                $("div.delay__display").removeClass('delay__display');
             });
         </script>
     {/literal}

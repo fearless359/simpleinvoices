@@ -172,19 +172,19 @@
             <table class="width_100">
               <tr>
                 {if !empty($customFieldLabels.product_cf1)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
                   {do_tr number=1}
                 {/if}
                 {if !empty($customFieldLabels.product_cf2)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
                   {do_tr number=2}
                 {/if}
                 {if !empty($customFieldLabels.product_cf3)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
                   {do_tr number=3}
                 {/if}
                 {if !empty($customFieldLabels.product_cf4)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
                   {do_tr number=4}
                 {/if}
               </tr>

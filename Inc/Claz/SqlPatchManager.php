@@ -32,16 +32,16 @@ class SqlPatchManager
         $last++;
 
         if ($last != $num) {
-            error_log("SqlPatchManager::makePatch - Patch #{$num} is out of sequence.");
+            error_log("SqlPatchManager::makePatch - Patch #$num is out of sequence.");
             die("SqlPatchManager::makePatch() error. See error log for more information.");
         }
 
         self::$patchLines[] = [
             'sql_patch_ref' => $num,
-            'name' => $patch['name'],
-            'patch' => $patch['patch'],
-            'date' => $patch['date'],
-            'source' => $patch['source']
+            'name'          => $patch['name'],
+            'patch'         => $patch['patch'],
+            'date'          => $patch['date'],
+            'source'        => $patch['source']
         ];
 
         self::$patchCount = $num;
@@ -51,7 +51,7 @@ class SqlPatchManager
      * Greatest sql_patch_ref value in the sql_patchmanager table.
      * @return int max patch ref value.
      */
-    public static function lastPatchApplied()
+    public static function lastPatchApplied(): int
     {
         global $pdoDbAdmin;
 
@@ -78,7 +78,7 @@ class SqlPatchManager
     /**
      * @return int Count of patches
      */
-    public static function numberOfUnappliedPatches()
+    public static function numberOfUnappliedPatches(): int
     {
         // Initialize patch data if not already done
         if (self::$patchCount == 0) {
@@ -100,18 +100,13 @@ class SqlPatchManager
             'message' => "{$LANG['theUc']} {$LANG['database']} {$LANG['patches']} {$LANG['are']} {$LANG['up']} {$LANG['to']} " .
                 "{$LANG['date']}. {$LANG['youUc']} {$LANG['can']} {$LANG['continue']} {$LANG['working']} {$LANG['with']} " .
                 "{$LANG['simpleInvoices']}",
-            'html' => "<div class='si_toolbar si_toolbar_form'><a href='index.php'>{$LANG['homeUcAll']}</a></div>",
+            'html' => "<div class='si_toolbar margin__top-3 margin__bottom-2'><a href='index.php' class='button'>{$LANG['homeUcAll']}</a></div>",
             'refresh' => 3
         ];
         $smarty->assign("page", $pageInfo);
     }
 
-    /**
-     * @param $id
-     * @param $patch
-     * @return array
-     */
-    private static function runSqlPatch($id, $patch)
+    private static function runSqlPatch(int $id, array $patch): array
     {
         global $LANG, $pdoDbAdmin;
 
@@ -153,10 +148,10 @@ class SqlPatchManager
                 // now update the ".TB_PREFIX."sql_patchmanager table
                 $pdoDbAdmin->setFauxPost([
                     'sql_patch_ref' => $id,
-                    'sql_patch' => $patch['name'],
-                    'sql_release' => $patch['date'],
+                    'sql_patch'     => $patch['name'],
+                    'sql_release'   => $patch['date'],
                     'sql_statement' => $patch['patch'],
-                    'source' => $patch['source']
+                    'source'        => $patch['source']
                 ]);
 
                 if ($pdoDbAdmin->request('INSERT', 'sql_patchmanager') == 0) {
@@ -240,7 +235,7 @@ class SqlPatchManager
                 $pageInfo['message'] = "{$LANG['theUc']} {$LANG['database']} {$LANG['patches']} {$LANG['have']} {$LANG['now']} " .
                     "{$LANG['been']} {$LANG['applied']}. {$LANG['youUc']} {$LANG['can']} {$LANG['now']} " .
                     "{$LANG['startWorking']} {$LANG['with']} {$LANG['simpleInvoices']}";
-                $pageInfo['html'] .= "<div class='si_toolbar si_toolbar_form'><a href='index.php'>{$LANG['homeUcAll']}</a></div>";
+                $pageInfo['html'] .= "<div class='si_toolbar align__text-center margin__top-3 margin__bottom-2'><a href='index.php' class='button'>{$LANG['homeUcAll']}</a></div>";
                 $pageInfo['refresh'] = 5;
             }
         }
@@ -254,7 +249,7 @@ class SqlPatchManager
                 "{$LANG['following']} {$LANG['button']} {$LANG['to']} {$LANG['return']} {$LANG['to']} {$LANG['the']} " .
                 "{$LANG['databaseUpgradeManager']} {$LANG['page']} {$LANG['to']} {$LANG['run']} {$LANG['the']} " .
                 "{$LANG['remaining']} {$LANG['patches']}." .
-                "<div class='si_toolbar si_toolbar_form'><a href='index.php?module=options&amp;view=database_sqlpatches'>{$LANG['continueUc']}</a></div>.";
+                "<div class='si_toolbar align__text-center margin__top-3 margin__bottom-2'><a href='index.php?module=options&amp;view=database_sqlpatches' class='button'>{$LANG['continueUc']}</a></div>.";
         }
 
         $smarty->assign("page", $pageInfo);
@@ -281,8 +276,8 @@ class SqlPatchManager
             "{$LANG['run']} {$LANG['the']} {$LANG['database']} {$LANG['update']} {$LANG['by']} {$LANG['clicking']} {$LANG['update']}." .
             "</div>" .
             "<div class='si_message_warning'>{$LANG['warningUcAll']}: {$LANG['pleaseUc']} {$LANG['backupYouDatabase']} {$LANG['before']} {$LANG['upgrading']}!</div>" .
-            "<div class='si_toolbar si_toolbar_form'>" .
-            "  <a href='index.php?case=run'><img src='../../images/tick.png' alt='' />{$LANG['updateUc']}</a>" .
+            "<div class='align__text-center margin__top-3 margin__bottom-2'>" .
+            "  <a href='index.php?case=run' class='button'><img src='../../images/tick.png' alt='update'/>{$LANG['updateUc']}</a>" .
             "</div>";
         $ndx = 319;
         foreach (self::$patchLines as $patch) {
@@ -300,7 +295,8 @@ class SqlPatchManager
                     $pageInfo['rows'][$ndx]['result'] = 'skip';
                 }
             } else {
-                $pageInfo['rows'][$ndx]['text'] = "{$LANG['sqlUc']} {$LANG['patch']} $ndx, $patchName <span style='color:#ff0000 !important;'><b>{$LANG['has']} {$LANG['not']}</b> {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}</span>";
+                $pageInfo['rows'][$ndx]['text'] = "{$LANG['sqlUc']} {$LANG['patch']} $ndx, $patchName " .
+                    "<span class='error'><b>{$LANG['has']} {$LANG['not']}</b> {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}</span>";
                 $pageInfo['rows'][$ndx]['result'] = 'todo';
             }
         }
@@ -311,7 +307,7 @@ class SqlPatchManager
      * Get all patches.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function sqlPatches()
+    public static function sqlPatches(): array
     {
         global $pdoDbAdmin;
 
@@ -331,10 +327,10 @@ class SqlPatchManager
 
     /**
      * Check to see if patch is in database (aka applied).
-     * @param $patchRef
+     * @param int $patchRef
      * @return bool true if applied, false if not.
      */
-    private static function checkIfSqlPatchApplied($patchRef)
+    private static function checkIfSqlPatchApplied( int $patchRef ): bool
     {
         global $pdoDbAdmin;
 
@@ -355,7 +351,7 @@ class SqlPatchManager
      * Create the sql_patchmanager table and save initial record in it.
      * @return string
      */
-    private static function initializeSqlPatchTable()
+    private static function initializeSqlPatchTable(): string
     {
         global $LANG, $pdoDbAdmin;
 
@@ -375,8 +371,8 @@ class SqlPatchManager
 
             $pdoDbAdmin->setFauxPost([
                 'sql_patch_ref' => '319',
-                'sql_patch' => 'Add set_aging field to si_preferences',
-                'sql_release' => '20200123',
+                'sql_patch'     => 'Add set_aging field to si_preferences',
+                'sql_release'   => '20200123',
                 'sql_statement' => "ALTER TABLE `si_preferences` ADD COLUMN `set_aging` BOOL NOT NULL DEFAULT  '0' AFTER `index_group`;" .
                     "UPDATE `si_preferences` SET `set_aging` = 1 WHERE pref_id = '1';"
             ]);
@@ -449,11 +445,11 @@ class SqlPatchManager
             $pdoDbAdmin->addSimpleWhere('name', 'invoice_grouped');
             $rows = $pdoDbAdmin->request('SELECT', 'extensions');
 
-            $extEnabled = empty($rows) ? false : $rows[0]['enabled'] == ENABLED;
+            $extEnabled = !empty($rows) && $rows[0]['enabled'] == ENABLED;
             if ($extEnabled) {
                 $pdoDbAdmin->addSimpleWhere('cf_custom_field', "product_cf1");
                 $rows = $pdoDbAdmin->request('SELECT', 'custom_fields');
-                $productGroupEnabled = empty($rows[0]['cf_custom_label']) ? false : true;
+                $productGroupEnabled = !empty($rows[0]['cf_custom_label']);
             } else {
                 $productGroupEnabled = false;
             }
@@ -540,20 +536,32 @@ class SqlPatchManager
         self::makePatch('322', $patch);
 
         $patch = [
-            'name' => "Add invoice description open option",
-            'patch' => "INSERT INTO " . TB_PREFIX . "system_defaults (name ,value ,domain_id ,extension_id ) VALUES ('invoice_description_open', 0, $domainId, 1);",
+            'name' => "Add invoice description open option.",
+            'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('invoice_description_open', 0, $domainId, 1);",
             'date' => "20210413",
             'source' => 'fearless359'
         ];
         self::makePatch('323', $patch);
 
         $patch = [
-            'name' => "Rename si_products_values table to si_products_attributes_values",
-            'patch' => "ALTER TABLE " . TB_PREFIX . "products_values RENAME TO " . TB_PREFIX . "products_attributes_values;",
+            'name' => "Rename si_products_values table to si_products_attributes_values.",
+            'patch' => "ALTER TABLE `" . TB_PREFIX . "products_values` RENAME TO " . TB_PREFIX . "products_attributes_values;",
             'date' => "20210527",
             'source' => 'fearless359'
         ];
         self::makePatch('324', $patch);
+
+        $patch = [
+            'name' => 'Remove unused items from the si_system_defaults table.',
+            'patch' =>
+                "DELETE IGNORE FROM `" . TB_PREFIX . "system_defaults` WHERE `name` in " .
+                        "('company_name', 'emailhost', 'emailpassword', 'emailusername', 'pdfbottommargin', 'pdfleftmargin', ".
+                        "'pdfpapersize', 'pdfrightmargin', 'pdfscreensize', 'pdftopmargin', 'spreadsheet', 'wordprocessor');" .
+                "DELETE IGNORE FROM `" . TB_PREFIX . "system_defaults` WHERE `name` LIKE 'dateformat%';",
+            'date' => "20200615",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('325', $patch);
 
         // @formatter:on
     }

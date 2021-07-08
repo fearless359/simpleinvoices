@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.4
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 24, 2020 at 01:58 PM
--- Server version: 10.3.24-MariaDB-log-cll-lve
--- PHP Version: 7.3.6
+-- Host: 127.0.0.1
+-- Generation Time: Jun 14, 2021 at 06:10 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -444,7 +443,8 @@ CREATE TABLE `si_products` (
   `attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `notes_as_description` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `show_description` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `custom_flags` char(10) COLLATE utf8_unicode_ci DEFAULT NULL
+  `custom_flags` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `product_group` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -464,6 +464,19 @@ CREATE TABLE `si_products_attributes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `si_products_attributes_values`
+--
+
+CREATE TABLE `si_products_attributes_values` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `attribute_id` int(11) UNSIGNED DEFAULT NULL,
+  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `si_products_attribute_type`
 --
 
@@ -475,15 +488,13 @@ CREATE TABLE `si_products_attribute_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `si_products_attributes_values`
+-- Table structure for table `si_product_groups`
 --
 
-CREATE TABLE `si_products_attributes_values` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `attribute_id` int(11) UNSIGNED DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `si_product_groups` (
+  `name` varchar(60) NOT NULL,
+  `markup` int(2) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -759,17 +770,23 @@ ALTER TABLE `si_products_attributes`
   ADD KEY `type_id` (`type_id`);
 
 --
+-- Indexes for table `si_products_attributes_values`
+--
+ALTER TABLE `si_products_attributes_values`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
 -- Indexes for table `si_products_attribute_type`
 --
 ALTER TABLE `si_products_attribute_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `si_products_attributes_values`
+-- Indexes for table `si_product_groups`
 --
-ALTER TABLE `si_products_attributes_values`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `attribute_id` (`attribute_id`);
+ALTER TABLE `si_product_groups`
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Indexes for table `si_sql_patchmanager`
@@ -947,15 +964,15 @@ ALTER TABLE `si_products_attributes`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `si_products_attribute_type`
---
-ALTER TABLE `si_products_attribute_type`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `si_products_attributes_values`
 --
 ALTER TABLE `si_products_attributes_values`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `si_products_attribute_type`
+--
+ALTER TABLE `si_products_attribute_type`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --

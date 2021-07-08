@@ -1,11 +1,9 @@
-<!--suppress HtmlFormInputWithoutLabel -->
-<tr style="margin: 0 auto; width: 100%;">
-    <th class="si_right nowrap" style="padding-right: 10px; width: 47%;">
-        {$LANG.includeUc} {$LANG.paid} {$LANG.invoices}:
-    </th>
-    <td>
-        <input type="checkbox"  name="filterByDateRange" id="filterByDateRangeId"
-               {if isset($smarty.post.includePaidInvoices) && $smarty.post.includePaidInvoices == "yes"} checked {/if} value="yes"/>
-    </td>
-</tr>
-<tr><td colspan="2">&nbsp;</td></tr>
+<div class="grid__container grid__head-10">
+    <div class="cols__5-span-5">
+        <div class="grid__container grid__head-checkbox">
+            <input type="checkbox" name="includePaidInvoices" id="includePaidInvoicesId" class="cols__1-span-1 margin__top-0-75"
+                    {if isset($includePaidInvoices) && $includePaidInvoices == "yes"} checked {/if} value="yes"/>
+            <label for="includePaidInvoicesId" class="cols__2-span-1">{$LANG.includeUc} {$LANG.paid} {$LANG.invoices}</label>
+        </div>
+    </div>
+</div>

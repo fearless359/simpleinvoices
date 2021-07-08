@@ -2,35 +2,37 @@
  *  Script: manage.tpl
  * 	    Products manage template
  *
- *  License:
- *	    GPL v3 or above
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  *  Website:
- *	    https://simpleinvoices.group
+ *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
  *}
-<div class="si_toolbar si_toolbar_form">
-    <a href="{$add_button_link}" class="positive">
-        <img src="images/add.png" alt=""/>
-        {$add_button_msg}
+<div class="align__text-center">
+    <a href="{$add_button_link}" class="button positive">
+        <img src="images/add.png" alt=""/>{$add_button_msg}
     </a>
 </div>
-<br />
+<br/>
 {if $numberOfRows == 0 }
     {$display_block}
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_center">{$LANG.dateUc}</th>
-            <th class="si_right">{$LANG.amountUc}</th>
-            <th class="si_right">{$LANG.tax}</th>
-            <th class="si_right">{$LANG.totalUc}</th>
-            <th class="si_left">{$LANG.expenseAccounts}</th>
-            <th class="si_left">{$LANG.billerUc}</th>
-            <th class="si_left">{$LANG.customerUc}</th>
-            <th class="si_center">{$LANG.invoiceUc}</th>
-            <th class="si_left">{$LANG.status}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th class="align__text-center">{$LANG.dateUc}</th>
+            <th class="align__text-right">{$LANG.amountUc}</th>
+            <th class="align__text-right">{$LANG.tax}</th>
+            <th class="align__text-right">{$LANG.totalUc}</th>
+            <th>{$LANG.expenseAccounts}</th>
+            <th>{$LANG.billerUc}</th>
+            <th>{$LANG.customerUc}</th>
+            <th class="align__text-center">{$LANG.invoiceUc}</th>
+            <th>{$LANG.status}</th>
         </tr>
         </thead>
     </table>

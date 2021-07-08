@@ -2,34 +2,33 @@
  *  Script: manage.tpl
  *      Manage invoices template
  *
- *  Modified:
- *      2018-12-14 by Richard Rowley
- *
- *  License:
- *      GPL v3 or above
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  *  Website:
  *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
 *}
 <!--suppress JSUnusedLocalSymbols -->
-<div class="si_toolbar si_toolbar_top">
+<div class="align__text-center margin__bottom-2">
     <a href="index.php?module=inventory&amp;view=create" class="">
-        <img src="images/add.png" alt=""/>
-        {$LANG.newInventoryMovement}
+        <button><img src="images/add.png" alt=""/>{$LANG.newInventoryMovement}</button>
     </a>
 </div>
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noInventoryMovements}</div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_center">{$LANG.dateUc}</th>
-            <th class="si_left">{$LANG.productUc}</th>
-            <th class="si_right">{$LANG.quantity}</th>
-            <th class="si_right">{$LANG.costUc}</th>
-            <th class="si_right">{$LANG.totalCost}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th class="align__text-center">{$LANG.dateUc}</th>
+            <th>{$LANG.productUc}</th>
+            <th class="align__text-right">{$LANG.quantity}</th>
+            <th class="align__text-right">{$LANG.costUc}</th>
+            <th class="align__text-right">{$LANG.totalCost}</th>
         </tr>
         </thead>
     </table>

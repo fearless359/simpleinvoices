@@ -14,4 +14,4 @@
 *	 GPL v2 or above
 *}
 <meta http-equiv="refresh"
-      content="0;URL=index.php?module=invoices&amp;view={$view}&amp;{$attr1}={$attr1_val}{if isset($attr2)}&amp;{$attr2}={$attr2_val}{/if}"/>
+      content="0;URL=index.php?module=invoices&amp;view={$view}&amp;{$attr1}={$attr1Val}{if isset($attr2)}&amp;{$attr2}={$attr2Val}{/if}"/>

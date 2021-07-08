@@ -25,17 +25,16 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
         $txt = sprintf($LANG['backupDone'], $filename);
 
         $displayBlock =
-            "<div class='si_center'>" .
+            "<div>" .
                 "<pre>" .
-                    "<table>{" . $oBack->getOutput() . "}</table>" .
+                    "<table>{$oBack->getOutput()}</table>" .
               "</pre>" .
             "</div>" .
             $txt .
             "<div class='si_help_div'>" .
                 "<a class='cluetip' href='#' title='{$LANG['fwriteError']}' " .
                    "rel='index.php?module=documentation&amp;view=view&amp;page=helpBackupDatabaseFwrite'>" .
-                    "<img src='{$helpImagePath}help-small.png' alt=''/>" .
-                    "{$LANG['fwriteError']}" .
+                    "<button><img src='{$helpImagePath}help-small.png' alt=''/>{$LANG['fwriteError']}</button>" .
                 "</a>" .
             "</div>";
     } else {
@@ -44,19 +43,17 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "<div class='si_help_div'>" .
                 "<a class='cluetip' href='#' title='{$LANG['fwriteError']}' " .
                    "rel='index.php?module=documentation&amp;view=view&amp;page=helpBackupDatabaseFwrite'>" .
-                    "<img src='{$helpImagePath}help-small.png' alt=''/>" .
-                    "{$LANG['failure']}" .
+                    "<img src='{$helpImagePath}help-small.png' alt=''/>{$LANG['failure']}" .
                 "</a>" .
             "</div>";
     }
 } else {
     $displayBlock =
-        "<div class='si_center'>" .
+        "<div class='align__text-center'>" .
             "{$LANG['backupHowTo']}" .
-            "<div class='si_toolbar si_toolbar_top'><br/>" .
+            "<div class='align__text-center margin__bottom-2'><br/>" .
                 "<a href='index.php?module=options&amp;view=backup_database&amp;op=backup_db'>" .
-        "<img src='../../images/database_save.png' alt=''/>" .
-                    "{$LANG['backupDatabaseNow']}" .
+                    "<button><img src='../../images/database_save.png' alt=''/>{$LANG['backupDatabaseNow']}</button>" .
                 "</a>" .
             "</div>" .
             "{$LANG['note']}: {$LANG['backupNoteToFile']}" .
@@ -64,8 +61,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
         "<div class='si_help_div'>" .
             "<a class='cluetip' href='#' title='{$LANG['databaseBackup']}' " .
                "rel='index.php?module=documentation&amp;view=view&amp;page=helpBackupDatabase' >" .
-        "<img src='../../images/important.png' alt='' />" .
-                "{$LANG['moreInfo']}" .
+                "<button><img src='../../images/important.png' alt='' />{$LANG['moreInfo']}</button>" .
             "</a>" .
         "</div>";
 }

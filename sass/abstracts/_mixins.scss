@@ -1,7 +1,7 @@
 
 @mixin borderBackgroundFilter {
     display: inline-block;
-    border: 1px solid $colorGreyLight-14;
+    border: 1px solid $colorGreyLight-16;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
     border-radius: 7px;
@@ -9,29 +9,29 @@
     background: -moz-linear-gradient(
             top,
             rgba($colorGreyLight-2,1) 0%,
-            rgba($colorGreyLight-9,1) 100%);
+            rgba($colorGreyLight-10,1) 100%);
     background: -webkit-gradient(
             linear,
             left top,
             left bottom,
             color-stop(0%,rgba($colorGreyLight-2,1)),
-            color-stop(100%,rgba($colorGreyLight-9,1)));
+            color-stop(100%,rgba($colorGreyLight-10,1)));
     background: -webkit-linear-gradient(
             top,
             rgba($colorGreyLight-2,1) 0%,
-            rgba($colorGreyLight-9,1) 100%);
+            rgba($colorGreyLight-10,1) 100%);
     background: -o-linear-gradient(
             top,
             rgba($colorGreyLight-2,1) 0%,
-            rgba($colorGreyLight-9,1) 100%);
+            rgba($colorGreyLight-10,1) 100%);
     background: -ms-linear-gradient(
             top,
             rgba($colorGreyLight-2,1) 0%,
-            rgba($colorGreyLight-9,1) 100%);
+            rgba($colorGreyLight-10,1) 100%);
     background: linear-gradient(
             to bottom,
             rgba($colorGreyLight-2,1) 0%,
-            rgba($colorGreyLight-9,1) 100%);
+            rgba($colorGreyLight-10,1) 100%);
     /* Note that color settings below do not work from variables */
     filter: progid:DXImageTransform.Microsoft.gradient(
             startColorstr='#f9f9f9',

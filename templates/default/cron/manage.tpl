@@ -1,35 +1,36 @@
 {*
  *  Script: manage.tpl
- *    Manage invoices template
+ *      Manage invoices template
+ *
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  *  License:
- *    GPL v3 or above
+ *      GPL v3 or above
  *
  *  Website:
- *    https://simpleinvoices.group
+ *      https://simpleinvoices.group
  *}
-
-<div class="si_toolbar si_toolbar_top">
+<div class="align__text-center margin__bottom-2">
     <a href="index.php?module=cron&amp;view=create" class="">
-        <img src="images/add.png" alt=""/>
-        {$LANG.newRecurrence}
+        <button><img src="images/add.png" alt=""/>{$LANG.newRecurrence}</button>
     </a>
 </div>
 
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noCrons} </div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_center">{$LANG.invoiceId}</th>
-            <th class="si_center">{$LANG.startDateShort}</th>
-            <th class="si_center">{$LANG.endDateShort}</th>
-            <th class="si_left">{$LANG.recurEach}</th>
-            <th class="si_center">{$LANG.emailBiller}</th>
-            <th class="si_center">{$LANG.emailCustomer}</th>
-            <th class="si_left">{$LANG.customerUc}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th class="align__text-center">{$LANG.invoiceId}</th>
+            <th class="align__text-center">{$LANG.startDateShort}</th>
+            <th class="align__text-center">{$LANG.endDateShort}</th>
+            <th>{$LANG.recurEach}</th>
+            <th class="align__text-center">{$LANG.emailBiller}</th>
+            <th class="align__text-center">{$LANG.emailCustomer}</th>
+            <th>{$LANG.customerUc}</th>
         </tr>
         </thead>
     </table>

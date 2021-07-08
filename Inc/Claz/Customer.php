@@ -118,7 +118,7 @@ class Customer
                 'action' => $action,
                 'name' => $row['name'],
                 'department' => $row['department'],
-                'quick_view' => $quickView,
+                'quickView' => $quickView,
                 'total' => $row['total'],
                 'paid' => $row['paid'],
                 'owing' => $row['owing'],

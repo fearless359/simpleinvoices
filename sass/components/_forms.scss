@@ -7,19 +7,128 @@ input,
 select,
 textarea {
     background: $colorWhite url(../images/text-bg.gif) repeat-x scroll center top;
-    border: 1px solid $colorGreyLight-11;
+    border: 1px solid $colorGreyLight-13;
     margin: 1px;
     padding: 0.2em 0.3em;
     font-size: 1.6rem;
 }
 
-label { font-weight: bold; }
+textarea { overflow: scroll; }
+
+label {
+    font-weight: bold;
+    margin-top: .5rem;
+}
 
 /* Fix webkit 'black background on text input bug (mostly in Mac IDEs) */
 input[type=text] { -webkit-appearance: none; }
 
+.margin {
+    // @formatter:off
+    &__0-5 { margin: .5rem; }
+
+    &__top {
+        &-0 { margin-top: 0; }
+        &-0-2 { margin-top: .2rem; }
+        &-0-5 { margin-top: .5rem; }
+        &-0-75 { margin-top: .75rem; }
+        &-1 { margin-top: 1rem; }
+        &-1-5 { margin-top: 1.5rem; }
+        &-2 { margin-top: 2rem; }
+        &-3 { margin-top: 3rem; }
+        &-4 { margin-top: 4rem; }
+    }
+
+    &__right {
+        &-0 { margin-right: 0; }
+        &-1 { margin-right: 1rem; }
+    }
+    &__bottom {
+        &-0 { margin-bottom: 0; }
+        &-1 { margin-bottom: 1rem; }
+        &-2 { margin-bottom: 2rem; }
+        &-3 { margin-bottom: 3rem; }
+        &-4 { margin-bottom: 4rem; }
+    }
+
+    &__left {
+        &-0 { margin-left: 0; }
+        &-0-5 { margin-left: .5rem; }
+        &-1 { margin-left: 1rem;}
+        &-2 { margin-left: 2rem;}
+        &-3 { margin-left: 3rem; }
+        &-4 { margin-left: 4rem; }
+    }
+    // @formatter:on
+}
+
+.pad {
+    // @formatter:off
+    &__0-5 { padding: .5rem; }
+
+    &__top-1 { padding-top: 1em; }
+
+    &__right-1 { padding-right: 1em; }
+
+    &__bottom-3 { padding-bottom: 3rem; }
+
+    &__left {
+        &-2 { padding-left: 2rem; }
+        &-4 { padding-left: 4rem; }
+    }
+    // @formatter:on
+}
+
+div {
+    // @formatter:off
+    &.even { background-color: rgba($colorWhite, 1.0); }
+
+    &.odd { background-color: rgba($colorGreyLight-6, .8); }
+    // @formatter:on
+}
+
+.align {
+    // @formatter:off
+    &__center {
+        margin: 0 auto;
+    }
+
+    &__right {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &__text {
+        &-left { text-align: left; }
+        &-center { text-align: center; }
+        &-right { text-align: right; }
+    }
+    // @formatter:on
+}
+
+.delay {
+    // @formatter:off
+    &__display { display: none; }
+    // @formatter:on
+}
+
+.float {
+    &__right {
+        &-top-0-5 {
+            float: right;
+            margin: .5rem auto 0 auto;
+        }
+    }
+}
+
 .si {
-    &_input { margin-left: 6px; }
+    &_wrap {
+        margin: 0 auto;
+
+        & table { text-align: center; }
+    }
+
+    //&_input { margin-left: 6px; }
 
     &_form {
         display: block;
@@ -27,14 +136,14 @@ input[type=text] { -webkit-appearance: none; }
         overflow: hidden;
 
         & table {
-            border-top: 1px dotted $colorGreyLight-10;
+            border-top: 1px dotted $colorGreyLight-11;
             margin: 0 auto;
         }
 
         & th,
         & td {
             padding: 3px;
-            border-bottom: 1px dotted $colorGreyLight-10;
+            border-bottom: 1px dotted $colorGreyLight-11;
         }
 
         & tbody th {
@@ -57,38 +166,24 @@ input[type=text] { -webkit-appearance: none; }
             padding: 0;
             margin: 5px 0;
         }
-
-        & input {
-            margin-left: 6px;
-            margin-right: 5px;
-        }
+        //
+        //& input {
+        //    margin-left: 6px;
+        //    margin-right: 5px;
+        //}
 
         & th a.cluetip img {
             margin-bottom: -3px;
         }
 
-
         &_search {
             margin-bottom: 30px;
-            border: 1px solid $colorGreyLight-11;
+            border: 1px solid $colorGreyLight-13;
             -moz-border-radius: 8px;
             -webkit-border-radius: 8px;
             border-radius: 8px;
             background: $colorGreyLight-4;
             padding: 20px 0 13px 0;
-        }
-
-        &_error_line {
-            color: white;
-            margin-top: -2rem;
-            margin-bottom: 2rem;
-            padding: 2px 8px 2px 27px;
-            line-height: 3rem;
-            text-align: left;
-            -moz-border-radius: 5px;
-            -webkit-border-radius: 5px;
-            border-radius: 5px;
-            background: $colorRed url(../images/important.png) no-repeat 5px 2px;
         }
     }
 }

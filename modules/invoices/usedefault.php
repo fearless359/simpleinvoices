@@ -8,13 +8,16 @@ use Inc\Claz\Util;
 
 /*
  *  Script: usedefault.php
- *      page which chooses an empty page or another invoice as template
+ *      From Customer create default invoice option. This page makes a copy
+ *      of the default invoice for the customer, or if none for the customer
+ *      then from the si_system_defaults setting, and if no system default
+ *      set, then an empty invoice.
  *
  *  Authors:
  *      Marcel van Dorp, Justin Kelly, Nicolas Ruflin
  *
- *  Last edited:
- *      2016-08-02
+ * Last edited:
+ *      2021-06-17 by Rich Rowley
  *
  *  License:
  *      GPL v3 or above
@@ -32,7 +35,7 @@ $customer = Customer::getOne($masterCustomerId);
 
 // NOTE: The customer record default_invoice field contains the index_id for the invoice NOT the id.
 if ($_GET ['action'] == 'update_template') {
-    // This section is executed when the refresh default_invoice button is selected on the invoice quick_view screen.
+    // This section is executed when the refresh default_invoice button is selected on the invoice quickView screen.
     // Update the default template for this customer
     try {
         $invoice = Invoice::getInvoiceByIndexId($_GET['index_id']);
@@ -42,10 +45,10 @@ if ($_GET ['action'] == 'update_template') {
             exit("Database access error(2). See error log.");
         }
 
-        // Set up to redisplay the quick_view for the invoice last accessed
-        $smarty->assign("view", "quick_view");
+        // Set up to redisplay the quickView for the invoice last accessed
+        $smarty->assign("view", "quickView");
         $smarty->assign("attr1", "id");
-        $smarty->assign("attr1_val", $invoice['id']);
+        $smarty->assign("attr1Val", $invoice['id']);
 
         $smarty->assign('pageActive', 'invoice');
         $smarty->assign('subPageActive', 'invoiceView');
@@ -74,22 +77,22 @@ if ($_GET ['action'] == 'update_template') {
         $invoice = Invoice::getInvoiceByIndexId($defaultInvoiceIndexId);
         if (empty($invoice)) {
             // No default template defined.
-            $smarty->assign("view"     , "itemised");
+            $smarty->assign("view"     , "itemized");
             $smarty->assign("attr1"    , "customer_id");
-            $smarty->assign("attr1_val", $masterCustomerId);
+            $smarty->assign("attr1Val" , $masterCustomerId);
         } else {
             // NOTE: The combination of view/spec being details/template invokes logic
             // in the main index.php file that resolves direction to the correct screen.
             // This will result via usedefault.tpl, the input to index.php:
-            // .../index.php?module=invoices&amp;view=itemised&amp;template=[invoice::index_id]&amp;customer_id=[customer_id]
-            $smarty->assign("view"     , "itemised");
+            // .../index.php?module=invoices&amp;view=itemized&amp;template=[invoice::index_id]&amp;customer_id=[customer_id]
+            $smarty->assign("view"     , "itemized");
             $smarty->assign("attr1"    , "template");
-            $smarty->assign("attr1_val", $invoice ['index_id']);
+            $smarty->assign("attr1Val" , $invoice ['index_id']);
             $smarty->assign('attr2'    , "customer_id");
-            $smarty->assign("attr2_val", $masterCustomerId);
+            $smarty->assign("attr2Val" , $masterCustomerId);
 
             $smarty->assign('pageActive', 'invoice_new');
-            $smarty->assign('subPageActive', 'invoice_new_itemised');
+            $smarty->assign('subPageActive', 'invoice_new_itemized');
             $smarty->assign('activeTab', '#money');
         }
     } catch (PdoDbException $pde) {

@@ -2,35 +2,34 @@
  *  Script: manage.tpl
  *      Biller manage template
  *
- *  License:
- *      GPL v3 or above
- *
  *  Last modified:
- *      2018-12-10 by Richard Rowley
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  *  Website:
  *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
  *}
-<div class="si_toolbar si_toolbar_top">
+<div class="align__text-center margin__bottom-2">
     <a href="index.php?module=billers&amp;view=create" class="">
-        <img src="images/add.png" alt=""/>
-        {$LANG.addNewBiller}
+        <button><img src="images/add.png" alt=""/>{$LANG.addNewBiller}</button>
     </a>
 </div>
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noBillers}</div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_left">{$LANG.nameUc}</th>
-            <th class="si_left">{$LANG.street}</th>
-            <th class="si_left">{$LANG.city}</th>
-            <th class="si_center">{$LANG.state}</th>
-            <th class="si_right">{$LANG.zip}</th>
-            <th class="si_left">{$LANG.email}</th>
-            <th class="si_center">{$LANG.enabled}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th>{$LANG.nameUc}</th>
+            <th>{$LANG.street}</th>
+            <th>{$LANG.city}</th>
+            <th class="align__text-center">{$LANG.state}</th>
+            <th class="align__text-right">{$LANG.zip}</th>
+            <th>{$LANG.email}</th>
+            <th class="align__text-center">{$LANG.enabled}</th>
         </tr>
         </thead>
     </table>

@@ -1,44 +1,45 @@
 {*
- * Script: details.tpl
- * Custom flags details template
+ *  Script: view.tpl
+ *      Custom flags view template
  *
- * License:
- *  GPL v3 or above
+ *  Last edited:
+ *      20210619 by Rich Rowley to convert to grid layout.
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
  *}
-<div class="si_form">
-    <div class="si_cust_info">
-        <table>
-            <tr>
-                <th class="details_screen">{$LANG.associatedTable}:</th>
-                <td>{$cflg.associated_table|htmlSafe}</td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.flagNumber}:</th>
-                <td>{$cflg.flg_id|htmlSafe}</td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.fieldLabelUc}:</th>
-                <td>{$cflg.field_label|htmlSafe}</td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.enabled}:</th>
-                <td>{$cflg.enabled_text|htmlSafe}</td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.fieldHelpUc}:</th>
-                <td>{$cflg.field_help|htmlSafe}</td>
-            </tr>
-        </table>
+<div class="grid__area">
+    <div class="grid__container grid__head-6">
+        <div class="cols__2-span-1 bold">{$LANG.associatedTable}:</div>
+        <div class="cols__3-span-4">{$cflg.associated_table|htmlSafe}</div>
     </div>
-    <div class="si_toolbar si_toolbar_form">
-        <a href="index.php?module=custom_flags&amp;view=edit&amp;associated_table={$cflg.associated_table|urlencode}&flg_id={$cflg.flg_id|urlencode}"
-           class="positive">
-            <img src="images/report_edit.png" alt=""/>
-            {$LANG.edit}
-        </a>
-        <a href="index.php?module=custom_flags&amp;view=manage" class="negative">
-            <img src="images/cross.png" alt=""/>
-            {$LANG.cancel}
-        </a>
+    <div class="grid__container grid__head-6">
+        <div class="cols__2-span-1 bold">{$LANG.flagNumber}:</div>
+        <div class="cols__3-span-4">{$cflg.flg_id|htmlSafe}</div>
     </div>
+    <div class="grid__container grid__head-6">
+        <div class="cols__2-span-1 bold">{$LANG.fieldLabelUc}:</div>
+        <div class="cols__3-span-4">{$cflg.field_label|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-6">
+        <div class="cols__2-span-1 bold">{$LANG.enabled}:</div>
+        <div class="cols__3-span-4">{$cflg.enabled_text|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-6">
+        <div class="cols__2-span-1 bold">{$LANG.fieldHelpUc}:</div>
+        <div class="cols__3-span-4">{$cflg.field_help|htmlSafe}</div>
+    </div>
+</div>
+<br/>
+<div class="align__text-center">
+    <a href="index.php?module=custom_flags&amp;view=edit&amp;associated_table={$cflg.associated_table|urlencode}&flg_id={$cflg.flg_id|urlencode}"
+       class="button positive">
+        <img src="images/report_edit.png" alt="{$LANG.edit}"/>{$LANG.edit}
+    </a>
+    <a href="index.php?module=custom_flags&amp;view=manage" class="button negative">
+        <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
+    </a>
 </div>

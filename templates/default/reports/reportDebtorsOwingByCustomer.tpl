@@ -13,14 +13,12 @@
 	<form name="frmpost" method="POST" id="frmpost"
 		  action="index.php?module=reports&amp;view=reportDebtorsOwingByCustomer">
 		<div class="si_form si_form_search">
-			<table class="center">
+			<div class="grid__area">
 				{include file=$path|cat:"library/dateRangePrompt.tpl"}
 				{include file=$path|cat:"library/filterByDateRange.tpl"}
 				{include file=$path|cat:"library/includeAllCustomersPrompt.tpl"}
-			</table>
-			<br/>
-			{include file=$path|cat:"library/runReportButton.tpl" value="reportDebtorsOwingByCustomer" label=$LANG.runReport}
-			<br/>
+			    {include file=$path|cat:"library/runReportButton.tpl" value="reportDebtorsOwingByCustomer" label=$LANG.runReport}
+			</div>>
 		</div>
 	</form>
 {/if}

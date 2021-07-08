@@ -245,6 +245,7 @@ class Taxes
                 $taxTotal += self::lineItemTaxCalc($tax, $unitPrice, $quantity);
             }
         }
+
         return $taxTotal;
     }
 

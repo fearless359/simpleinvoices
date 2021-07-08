@@ -1,232 +1,226 @@
-<!--suppress HtmlFormInputWithoutLabel -->
+{*
+ *  Script: edit.tpl
+ *      Products update template
+ *
+ *  Authors:
+ *      Justin Kelly, Nicolas Ruflin
+ *
+ *  Last edited:
+ *      20210701 by Rich Rowley to convert to grid layout.
+ *
+ *  License:
+ *      GPL v3 or above
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *}
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=products&amp;view=save&amp;id={$smarty.get.id|urlencode}">
-    <div class="si_form">
-        <div class="si_delay-display" id="tabs_customer">
+    <div class="delay__display" id="tabs_customer">
+        <div class="grid__area">
             <ul>
                 <li><a href="#section-1" target="_top">{$LANG.detailsUc}</a></li>
                 <li><a href="#section-2" target="_top">{$LANG.customUc}&nbsp;{$LANG.fieldsUc}&nbsp;&amp;&nbsp;{$LANG.flagsUc}</a></li>
                 <li><a href="#section-3" target="_top">{$LANG.notes}</a></li>
             </ul>
             <div id="section-1">
-                <table class="center">
-                    <tr>
-                        <th class="details_screen">{$LANG.productDescription}:</th>
-                        <td>
-                            <input type="text" name="description" id="description" class="si_input validate[required]" size="50" tabindex="10"
-                                   value="{if isset($product.description)}{$product.description|htmlSafe}{/if}"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="details_screen">{$LANG.productUnitPrice}:</th>
-                        <td>
-                            <input type="text" name="unit_price" class="si_input" size="25" tabindex="20"
-                                   value="{$product.unit_price|utilNumberTrim}"/>
-                        </td>
-                    </tr>
-                    {if $defaults.inventory == $smarty.const.ENABLED}
-                        <tr>
-                            <th class="details_screen">{$LANG.costUc}:
-                                <a class="cluetip" href="#" title="{$LANG.costUc}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCost">
-                                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                                </a>
-                            </th>
-                            <td>
-                                <input type="text" class="edit si_input" name="cost" size="25" tabindex="30"
-                                       value="{$product.cost|utilNumber}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="details_screen">{$LANG.reorderLevel}:</th>
-                            <td>
-                                <input type="text" class="edit si_input" name="reorder_level" size="25" tabindex="40"
-                                       value="{if isset($product.reorder_level)}{$product.reorder_level|htmlSafe}{/if}"/>
-                            </td>
-                        </tr>
-                    {/if}
-                    <tr>
-                        <th class="details_screen">{$LANG.defaultTax}:</th>
-                        <td>
-                            <select name="default_tax_id" class="si_input" tabindex="50">
-                                <option value=""></option>
-                                {foreach $taxes as $tax}
-                                    <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}" {if $tax.tax_id == $product.default_tax_id}selected{/if}>
-                                        {$tax.tax_description|htmlSafe}
-                                    </option>
-                                {/foreach}
-                            </select>
-                        </td>
-                    </tr>
-                    {if $defaults.product_groups == $smarty.const.ENABLED}
-                        <tr>
-                            <th class="details_screen">{$LANG.productGroupUc}:</th>
-                            <td>
-                                <select name="product_group" class="si_input">
-                                    <option value=''></option>
-                                    {foreach $productGroups as $productGroup}
-                                        <option value="{$productGroup.name|htmlSafe}"
-                                                {if isset($product.product_group) && $product.product_group == $productGroup.name}selected{/if}>{$productGroup.name|htmlSafe}{if $productGroup.markup > 0}&nbsp;({$LANG.markupUc}&nbsp;=&nbsp;{$productGroup.markup}%){/if}
-                                        </option>
-                                    {/foreach}
-                                </select>
-                            </td>
-                        </tr>
-                    {/if}
-                </table>
+                <div class="grid__container grid__head-10">
+                    <label for="description" class="cols__2-span-2">{$LANG.productDescription}:</label>
+                    <input type="text" name="description" id="description" class="cols__4-span-6 validate[required]" size="50" tabindex="10"
+                           value="{if isset($product.description)}{$product.description|htmlSafe}{/if}"/>
+                </div>
+                <div class="grid__container grid__head-10">
+                    <label for="unitPriceId" class="cols__2-span-2">{$LANG.productUnitPrice}:</label>
+                    <input type="text" name="unit_price" id="unitPriceId" class="cols__4-span-2" size="25" tabindex="20"
+                           value="{$product.unit_price|utilNumberTrim}"/>
+                </div>
+                {if $defaults.inventory == $smarty.const.ENABLED}
+                    <div class="grid__container grid__head-10">
+                        <label for="costId" class="cols__2-span-2">{$LANG.costUc}:
+                            <a class="cluetip" href="#" title="{$LANG.costUc}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCost">
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
+                            </a>
+                        </label>
+                        <input type="text" name="cost" id="costId" class="cols__4-span-2" size="25" tabindex="30"
+                               value="{$product.cost|utilNumber}"/>
+                    </div>
+                    <div class="grid__container grid__head-10">
+                        <label for="reorderLevelId" class="cols__2-span-2">{$LANG.reorderLevel}:</label>
+                        <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2" size="25" tabindex="40"
+                               value="{if isset($product.reorder_level)}{$product.reorder_level|htmlSafe}{/if}"/>
+                    </div>
+                {/if}
+                <div class="grid__container grid__head-10">
+                    <label for="defaultTaxId" class="cols__2-span-2">{$LANG.defaultTax}:</label>
+                    <select name="default_tax_id" id="defaultTaxId" class="cols__4-span-6" tabindex="50">
+                        <option value=""></option>
+                        {foreach $taxes as $tax}
+                            <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}"
+                                    {if $tax.tax_id == $product.default_tax_id}selected{/if}>{$tax.tax_description|htmlSafe}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                {if $defaults.product_groups == $smarty.const.ENABLED}
+                    <div class="grid__container grid__head-10">
+                        <label for="productGroupId" class="cols__2-span-2">{$LANG.productGroupUc}:</label>
+                        <select name="product_group" id="productGroupId" class="cols__4-span-4">
+                            <option value=''></option>
+                            {foreach $productGroups as $productGroup}
+                                <option value="{$productGroup.name|htmlSafe}"
+                                    {if isset($product.product_group) &&
+                                        $product.product_group == $productGroup.name}selected{/if}>{$productGroup.name|htmlSafe}{if $productGroup.markup > 0}&nbsp;({$LANG.markupUc}&nbsp;=&nbsp;{$productGroup.markup}%){/if}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                {/if}
+                <div class="grid__container grid__head-10">
+                    <label for="enabledId" class="cols__2-span-2">{$LANG.productEnabled}:</label>
+                    {html_options name=enabled id=enabledId class="cols__4-span-1" options=$enabled selected=$product.enabled tabindex=110}
+                </div>
             </div>
+
             <div id="section-2">
-                <table>
-                    {if !empty($customFieldLabel.product_cf1)}
-                        <tr>
-                            <th class="details_screen">{$customFieldLabel.product_cf1|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                                </a>
-                            </th>
-                            <td>
-                                <input type="text" name="custom_field1" class="si_input" size="50" tabindex="60"
-                                       value="{if isset($product.custom_field1)}{$product.custom_field1|htmlSafe}{/if}"/>
-                            </td>
-                        </tr>
-                    {/if}
-                    {if !empty($customFieldLabel.product_cf2)}
-                        <tr>
-                            <th class="details_screen">{$customFieldLabel.product_cf2|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                                </a>
-                            </th>
-                            <td>
-                                <input type="text" name="custom_field2" class="si_input" size="50" tabindex="70"
-                                       value="{if isset($product.custom_field2)}{$product.custom_field2|htmlSafe}{/if}"/>
-                            </td>
-                        </tr>
-                    {/if}
-                    {if !empty($customFieldLabel.product_cf3)}
-                        <tr>
-                            <th class="details_screen">{$customFieldLabel.product_cf3|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                                </a>
-                            </th>
-                            <td>
-                                <input type="text" name="custom_field3" class="si_input" size="50" tabindex="80"
-                                       value="{if isset($product.custom_field3)}{$product.custom_field3|htmlSafe}{/if}"/>
-                            </td>
-                        </tr>
-                    {/if}
-                    {if !empty($customFieldLabel.product_cf4)}
-                        <tr>
-                            <th class="details_screen">{$customFieldLabel.product_cf4|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                                </a>
-                            </th>
-                            <td>
-                                <input type="text" name="custom_field4" class="si_input" size="50" tabindex="90"
-                                       value="{if isset($product.custom_field4)}{$product.custom_field4|htmlSafe}{/if}"/>
-                            </td>
-                        </tr>
-                    {/if}
+                {if !empty($customFieldLabel.product_cf1)}
+                    <div class="grid__container grid__head-10">
+                        <label for="customField1" class="cols__2-span-3">{$customFieldLabel.product_cf1|htmlSafe}:
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
+                            </a>
+                        </label>
+                        <input type="text" name="custom_field1" id="customField1" class="cols__5-span-5" size="50" tabindex="60"
+                               value="{if isset($product.custom_field1)}{$product.custom_field1|htmlSafe}{/if}"/>
+                    </div>
+                {/if}
+                {if !empty($customFieldLabel.product_cf2)}
+                    <div class="grid__container grid__head-10">
+                        <label for="customField2" class="cols__2-span-3">{$customFieldLabel.product_cf2|htmlSafe}:
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
+                            </a>
+                        </label>
+                        <input type="text" name="custom_field2" id="customField2" class="cols__4-span-5" size="50" tabindex="70"
+                               value="{if isset($product.custom_field2)}{$product.custom_field2|htmlSafe}{/if}"/>
+                    </div>
+                {/if}
+                {if !empty($customFieldLabel.product_cf3)}
+                    <div class="grid__container grid__head-10">
+                        <label for="customField3" class="cols__2-span-3">{$customFieldLabel.product_cf3|htmlSafe}:
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
+                            </a>
+                        </label>
+                        <input type="text" name="custom_field3" id="customField3" class="cols__4-span-5" size="50" tabindex="80"
+                               value="{if isset($product.custom_field3)}{$product.custom_field3|htmlSafe}{/if}"/>
+                    </div>
+                {/if}
+                {if !empty($customFieldLabel.product_cf4)}
+                    <div class="grid__container grid__head-10">
+                        <label for="customField4" class="cols__2-span-3">{$customFieldLabel.product_cf4|htmlSafe}:
+                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
+                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
+                                <img src="{$helpImagePath}help-small.png" alt=""/>
+                            </a>
+                        </label>
+                        <input type="text" name="custom_field4" id="customField4" class="cols__5-span-5" size="50" tabindex="90"
+                               value="{if isset($product.custom_field4)}{$product.custom_field4|htmlSafe}{/if}"/>
+                    </div>
+                {/if}
+                {if !empty($cflgs)}
+                    <div class="grid__container grid__head-10">
+                        <div class="cols__2-span-9 bold underline">{$LANG.customFlagsUc}</div>
+                    </div>
                     {foreach $cflgs as $cflg}
                         {assign var="i" value=$cflg.flg_id-1}
-                        <tr>
-                            <th class="details_screen">
-                                {$cflg.field_label|trim|htmlSafe}:
-                                {if strlen($cflg.field_help) > 0}
-                                    <a class="cluetip" href="#" title="{$cflg.field_label}" tabindex="-1"
-                                       rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}">
-                                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                                    </a>
-                                {/if}
-                            </th>
-                            <td style="float:left;margin-left:auto;width:10px;">
-                                <input type="checkbox" name="custom_flags_{$cflg.flg_id}" class="si_input" tabindex="6{$i}"
-                                        {if substr($product.custom_flags,$i,1) == '1'} checked {/if} value="1"/>
-                            </td>
-                        </tr>
+                        <div class="grid__container grid__head-10">
+                            <div class="cols__2-span-9">
+                                <div class="grid__container grid__head-checkbox">
+                                    <input type="checkbox" name="custom_flags_{$cflg.flg_id}" id="custom_flags_{$cflg.flg_id}Id"
+                                           class="cols__1-span-1 margin__top-0-5" tabindex="6{$i}"
+                                            {if substr($product.custom_flags,$i,1) == '1'} checked {/if} value="1"/>
+                                    <label for="custom_flags_{$cflg.flg_id}Id" class="cols__2-span-1 margin__top-0">
+                                        {$cflg.field_label|trim|htmlSafe}
+                                        {if strlen($cflg.field_help) > 0}
+                                            <a class="cluetip" href="#" title="{$cflg.field_label}" tabindex="-1"
+                                               rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}">
+                                                <img src="{$helpImagePath}help-small.png" alt=""/>
+                                            </a>
+                                        {/if}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     {/foreach}
-                    {if $defaults.product_attributes}
-                        <tr>
-                            <th class="details_screen">{$LANG.productAttributes}:</th>
-                            <td></td>
-                        </tr>
-                        {foreach $attributes as $attribute}
-                            {assign var="i" value=$attribute.id}
-                            {if $attribute.enabled == $smarty.const.ENABLED ||
-                            (isset($product.attribute_decode[$i]) && $product.attribute_decode[$i] == 'true')}
-                                <tr>
-                                    <td></td>
-                                    <th class="details_screen product_attribute">
-                                        <input type="checkbox" name="attribute{$i}" class="si_input" tabindex="7{$i}"
+                {/if}
+                {if $defaults.product_attributes}
+                    <div class="grid__container grid__head-10">
+                        <div class="cols__2-span-4 bold underline">{$LANG.productAttributes}</div>
+                    </div>
+                    {foreach $attributes as $attribute}
+                        {assign var="i" value=$attribute.id}
+                        {if $attribute.enabled == $smarty.const.ENABLED ||
+                        (isset($product.attribute_decode[$i]) && $product.attribute_decode[$i] == 'true')}
+                            <div class="grid__container grid__head-10">
+                                <div class="cols__2-span-9">
+                                    <div class="grid__container grid__head-checkbox">
+                                        <input type="checkbox" name="attribute{$i}" id="attribute{$i}Id"
+                                               class="cols__1-span-1 margin__top-0-5" tabindex="7{$i}"
                                                 {if isset($product.attribute_decode[$i]) &&
                                                 $product.attribute_decode[$i] == 'true'} checked{/if} value="true"/>
-                                        {$attribute.name}
-                                    </th>
-                                </tr>
-                            {/if}
-                        {/foreach}
-                    {/if}
-                </table>
+                                        <label for="attribute{$i}Id" class="cols__2-span-1 margin__top-0">{$attribute.name}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {/if}
+                    {/foreach}
+                {/if}
             </div>
             <div id="section-3">
-                <table>
-                    <tr>
-                        <th class="details_screen">{$LANG.notes}:</th>
-                        <td>
-                            <textarea name="notes" class="si_input" rows="3" cols="80" tabindex="80">{if isset($product.notes)}{$product.notes|unescape}{/if}</textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="details_screen">{$LANG.noteAttributes}:</th>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <th class="details_screen product_attribute">
-                            <input type="checkbox" name="notes_as_description" class="si_input" tabindex="90"
+                <div class="grid__container grid__head-10">
+                    <label for="notesId" class="cols__2-span-3 underline">{$LANG.notes}:</label>
+                </div>
+                <div class="grid__container grid__head-10">
+                <textarea name="notes" id="notesId" class="cols__2-span-8" rows="3" cols="80"
+                          tabindex="80">{if isset($product.notes)}{$product.notes|unescape}{/if}</textarea>
+                </div>
+                <div class="grid__container grid__head-10">
+                    <div class="cols__2-span-3 bold underline">{$LANG.noteAttributes}</div>
+                </div>
+                <div class="grid__container grid__head-10">
+                    <div class="cols__2-span-8">
+                        <div class="grid__container grid__head-checkbox">
+                            <input type="checkbox" name="notes_as_description" id="notesAsDescId" class="cols__1-span-1" tabindex="90"
                                     {if $product.notes_as_description == 'Y'} checked {/if} value='true'/>
-                            {$LANG.noteAsDescription}
-                        </th>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <th class="details_screen product_attribute">
-                            <input type="checkbox" name="show_description" class="si_input" tabindex="100"
+                            <label for="notesAsDescId" class="cols__2-span-1 margin__top-0">{$LANG.noteAsDescription}</label>
+                        </div>
+                        <div class="grid__container grid__head-checkbox">
+                            <input type="checkbox" name="show_description" id="showDescId" class="cols__1-span-1" tabindex="100"
                                     {if $product.show_description == 'Y'} checked {/if} value="true"/>
-                            {$LANG.noteExpand}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th class="details_screen">{$LANG.productEnabled}:</th>
-                        <td>{html_options name=enabled class=si_input options=$enabled selected=$product.enabled tabindex=110}</td>
-                    </tr>
-                </table>
+                            <label for="showDescId" class="cols__2-span-1 margin__top-0">{$LANG.noteExpand}</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="align__text-center">
+            <button type="submit" class="positive" name="save_product" value="{$LANG.save}" tabindex="120">
+                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
+            </button>
+            <a href="index.php?module=products&amp;view=manage" class="button negative" tabindex="130">
+                <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
+            </a>
+        </div>
+        <input type="hidden" name="op" value="edit">
         <script>
             {* This causes the tabs to appear after being rendered *}
             {literal}
             $(document).ready(function () {
-                $("div.si_delay-display").removeClass("si_delay-display");
+                $("div.delay__display").removeClass("delay__display");
             });
             {/literal}
         </script>
-        <div class="si_toolbar si_toolbar_form">
-            <button type="submit" class="positive" name="save_product" value="{$LANG.save}" tabindex="120">
-                <img class="button_img" src="images/tick.png" alt=""/>
-                {$LANG.save}
-            </button>
-            <a href="index.php?module=products&amp;view=manage" class="negative" tabindex="130">
-                <img src="images/cross.png" alt=""/>
-                {$LANG.cancel}
-            </a>
-        </div>
     </div>
-    <input type="hidden" name="op" value="edit">
 </form>

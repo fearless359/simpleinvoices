@@ -5,7 +5,7 @@
 {if !$menu}
 	<hr/>
 {/if}
-<h1 class="si_center">{$title}</h1>
+<h1 class="align__text-center">{$title}</h1>
 {if $filterByDateRange == "yes"}
 	{include file=$path|cat:"library/dateRangeDisplay.tpl"}
 {/if}
@@ -14,9 +14,9 @@
 	<thead>
 		<tr>
 			<th>{$LANG.customerUc}</th>
-			<th class="si_right">{$LANG.totalUc}</th>
-			<th class="si_right">{$LANG.paidUc}</th>
-			<th class="si_right">{$LANG.owingUc}</th>
+			<th class="align__text-right">{$LANG.totalUc}</th>
+			<th class="align__text-right">{$LANG.paidUc}</th>
+			<th class="align__text-right">{$LANG.owingUc}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -25,21 +25,21 @@
 			<td	style="color:{if $customer.enabled == $smarty.const.ENABLED}green{else}red{/if};"}>
 				{$customer.name|htmlSafe}
 			</td>
-			<td class="si_right">{$customer.invTotal|utilCurrency|default:'-'}</td>
-			<td class="si_right">{$customer.invPaid|utilCurrency|default:'-'}</td>
-			<td class="si_right">{$customer.invOwing|utilCurrency|default:'-'}</td>
+			<td class="align__text-right">{$customer.invTotal|utilCurrency|default:'-'}</td>
+			<td class="align__text-right">{$customer.invPaid|utilCurrency|default:'-'}</td>
+			<td class="align__text-right">{$customer.invOwing|utilCurrency|default:'-'}</td>
 		</tr>
 	{/foreach}
 	</tbody>
 	<tfoot>
 	<tr>
-		<th class="si_right" colspan="3">{$LANG.totalOwing}:</th>
-		<td class="si_right">{$totalOwed|utilCurrency|default:'-'}</td>
+		<th class="align__text-right" colspan="3">{$LANG.totalOwing}:</th>
+		<td class="align__text-right">{$totalOwed|utilCurrency|default:'-'}</td>
 	</tr>
 	</tfoot>
 </table>
 {if $filterByDateRange == yes}
-	<div class="si_center" style="margin:0 auto; width:80%;">
+	<div class="align__text-center" style="margin:0 auto; width:80%;">
 		{$LANG.filterByDateRangeCaveat}
 	</div>
 {/if}

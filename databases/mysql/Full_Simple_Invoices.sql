@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.4
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 24, 2020 at 01:58 PM
--- Server version: 10.3.24-MariaDB-log-cll-lve
--- PHP Version: 7.3.6
+-- Host: 127.0.0.1
+-- Generation Time: Jun 14, 2021 at 06:10 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -444,7 +443,8 @@ CREATE TABLE `si_products` (
   `attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `notes_as_description` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `show_description` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `custom_flags` char(10) COLLATE utf8_unicode_ci DEFAULT NULL
+  `custom_flags` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `product_group` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -464,6 +464,19 @@ CREATE TABLE `si_products_attributes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `si_products_attributes_values`
+--
+
+CREATE TABLE `si_products_attributes_values` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `attribute_id` int(11) UNSIGNED DEFAULT NULL,
+  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `si_products_attribute_type`
 --
 
@@ -475,15 +488,13 @@ CREATE TABLE `si_products_attribute_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `si_products_attributes_values`
+-- Table structure for table `si_product_groups`
 --
 
-CREATE TABLE `si_products_attributes_values` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `attribute_id` int(11) UNSIGNED DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `si_product_groups` (
+  `name` varchar(60) NOT NULL,
+  `markup` int(2) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -759,17 +770,23 @@ ALTER TABLE `si_products_attributes`
   ADD KEY `type_id` (`type_id`);
 
 --
+-- Indexes for table `si_products_attributes_values`
+--
+ALTER TABLE `si_products_attributes_values`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
 -- Indexes for table `si_products_attribute_type`
 --
 ALTER TABLE `si_products_attribute_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `si_products_attributes_values`
+-- Indexes for table `si_product_groups`
 --
-ALTER TABLE `si_products_attributes_values`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `attribute_id` (`attribute_id`);
+ALTER TABLE `si_product_groups`
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Indexes for table `si_sql_patchmanager`
@@ -947,15 +964,15 @@ ALTER TABLE `si_products_attributes`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `si_products_attribute_type`
---
-ALTER TABLE `si_products_attribute_type`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `si_products_attributes_values`
 --
 ALTER TABLE `si_products_attributes_values`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `si_products_attribute_type`
+--
+ALTER TABLE `si_products_attribute_type`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -1153,7 +1170,19 @@ VALUES (1, 'products', 1, '', 0, ''),
 INSERT INTO `si_customers` (`id`, `domain_id`, `attention`, `name`, `department`, `street_address`, `street_address2`, `city`, `state`, `zip_code`, `country`, `phone`, `mobile_phone`, `fax`, `email`, `credit_card_holder_name`, `credit_card_number`,
                             `credit_card_expiry_month`, `credit_card_expiry_year`, `notes`, `custom_field1`, `custom_field2`, `custom_field3`, `custom_field4`, `enabled`)
 VALUES (1, 1, 'Moe Sivloski', 'Moes Tavern', '', '45 Main Road', '', 'Springfield', 'NY', '65891', '', '04 1234 5698', '', '04 5689 4566', 'moe@moestavern.com', '', '', '', '',
-        '<p><strong>Moe&#39;s Tavern</strong> is a fictional <a href=&#39;http://en.wikipedia.org/wiki/Bar_%28establishment%29&#39; title=&#39;Bar (establishment)&#39;>bar</a> seen on <em><a href=&#39;http://en.wikipedia.org/wiki/The_Simpsons&#39; title=&#39;The Simpsons&#39;>The Simpsons</a></em>. The owner of the bar is <a href=&#39;http://en.wikipedia.org/wiki/Moe_Szyslak&#39; title=&#39;Moe Szyslak&#39;>Moe Szyslak</a>.</p> <p>In The Simpsons world, it is located on the corner of Walnut Street, neighboring King Toot&#39;s Music Store, across the street is the Moeview Motel, and a factory formerly owned by <a href=&#39;http://en.wikipedia.org/wiki/Bart_Simpson&#39; title=&#39;Bart Simpson&#39;>Bart Simpson</a>, until it collapsed. The inside of the bar has a few pool tables and a dartboard. It is very dank and &quot;smells like <a href=&#39;http://en.wikipedia.org/wiki/Urine&#39; title=&#39;Urine&#39;>tinkle</a>.&quot; Because female customers are so rare, Moe frequently uses the women&#39;s restroom as an office. Moe claimed that there haven&#39;t been any ladies at Moe&#39;s since <a href=&#39;http://en.wikipedia.org/wiki/1979&#39; title=&#39;1979&#39;>1979</a> (though earlier episodes show otherwise). A jar of pickled eggs perpetually stands on the bar. Another recurring element is a rat problem. This can be attributed to the episode <a href=&#39;http://en.wikipedia.org/wiki/Homer%27s_Enemy&#39; title=&#39;Homer&#39;s Enemy&#39;>Homer&#39;s Enemy</a> in which Bart&#39;s factory collapses, and the rats are then shown to find a new home at Moe&#39;s. In &quot;<a href=&#39;http://en.wikipedia.org/wiki/Who_Shot_Mr._Burns&#39; title=&#39;Who Shot Mr. Burns&#39;>Who Shot Mr. Burns</a>,&quot; Moe&#39;s Tavern was forced to close down because Mr. Burns&#39; slant-drilling operation near the tavern caused unsafe pollution. It was stated in the &quot;<a href=&#39;http://en.wikipedia.org/wiki/Flaming_Moe%27s&#39; title=&#39;Flaming Moe&#39;s&#39;>Flaming Moe&#39;s</a>&quot; episode that Moe&#39;s Tavern was on Walnut Street. The phone number would be 76484377, since in &quot;<a href=&#39;http://en.wikipedia.org/wiki/Homer_the_Smithers&#39; title=&#39;Homer the Smithers&#39;>Homer the Smithers</a>,&quot; Mr. Burns tried to call Smithers but did not know his phone number. He tried the buttons marked with the letters for Smithers and called Moe&#39;s. In &quot;<a href=&#39;http://en.wikipedia.org/wiki/Principal_Charming&#39; title=&#39;Principal Charming&#39;>Principal Charming</a>&quot; Bart is asked to call Homer by Principal Skinner, the number visible on the card is WORK: KLondike 5-6832 HOME: KLondike 5-6754 MOE&#39;S TAVERN: KLondike 5-1239 , Moe answers the phone and Bart asks for Homer Sexual. The bar serves <a href=&#39;http://en.wikipedia.org/wiki/Duff_Beer&#39; title=&#39;Duff Beer&#39;>Duff Beer</a> and Red Tick Beer, a beer flavored with dogs.</p>',
+        '<p><strong>Moe&#39;s Tavern</strong> is a fictional <a href=&#39;https://en.wikipedia.org/wiki/Bar_%28establishment%29&#39; title=&#39;Bar (establishment)&#39;>bar</a> seen on <em><a href=&#39;https://en.wikipedia.org/wiki/The_Simpsons&#39;
+title=&#39;The Simpsons&#39;>The Simpsons</a></em>. The owner of the bar is <a href=&#39;https://en.wikipedia.org/wiki/Moe_Szyslak&#39; title=&#39;Moe Szyslak&#39;>Moe Szyslak</a>.</p>
+<p>In The Simpsons world, it is located on the corner of Walnut Street, neighboring King Toot&#39;s Music Store, across the street is the Moeview Motel, and a factory formerly owned by <a href=&#39;https://en.wikipedia.org/wiki/Bart_Simpson&#39;
+title=&#39;Bart Simpson&#39;>Bart Simpson</a>, until it collapsed. The inside of the bar has a few pool tables and a dartboard. It is very dank and &quot;smells like <a href=&#39;https://en.wikipedia.org/wiki/Urine&#39; title=&#39;Urine&#39;>tinkle</a>.
+&quot; Because female customers are so rare, Moe frequently uses the women&#39;s restroom as an office. Moe claimed that there haven&#39;t been any ladies at Moe&#39;s since <a href=&#39;https://en.wikipedia.org/wiki/1979&#39; title=&#39;1979&#39;>1979</a>
+(though earlier episodes show otherwise). A jar of pickled eggs perpetually stands on the bar. Another recurring element is a rat problem. This can be attributed to the episode <a href=&#39;https://en.wikipedia.org/wiki/Homer%27s_Enemy&#39;
+title=&#39;Homer&#39;s Enemy&#39;>Homer&#39;s Enemy</a> in which Bart&#39;s factory collapses, and the rats are then shown to find a new home at Moe&#39;s. In &quot;<a href=&#39;https://en.wikipedia.org/wiki/Who_Shot_Mr._Burns&#39;
+title=&#39;Who Shot Mr. Burns&#39;>Who Shot Mr. Burns</a>,&quot; Moe&#39;s Tavern was forced to close down because Mr. Burns&#39; slant-drilling operation near the tavern caused unsafe pollution.
+It was stated in the &quot;<a href=&#39;https://en.wikipedia.org/wiki/Flaming_Moe%27s&#39; title=&#39;Flaming Moe&#39;s&#39;>Flaming Moe&#39;s</a>&quot; episode that Moe&#39;s Tavern was on Walnut Street. The phone number would be 76484377,
+since in &quot;<a href=&#39;https://en.wikipedia.org/wiki/Homer_the_Smithers&#39; title=&#39;Homer the Smithers&#39;>Homer the Smithers</a>,&quot; Mr. Burns tried to call Smithers but did not know his phone number. He tried the buttons marked with the
+letters for Smithers and called Moe&#39;s. In &quot;<a href=&#39;https://en.wikipedia.org/wiki/Principal_Charming&#39; title=&#39;Principal Charming&#39;>Principal Charming</a>&quot; Bart is asked to call Homer by Principal Skinner, the number visible on
+the card is WORK: KLondike 5-6832 HOME: KLondike 5-6754 MOE&#39;S TAVERN: KLondike 5-1239 , Moe answers the phone and Bart asks for Homer Sexual. The bar serves <a href=&#39;https://en.wikipedia.org/wiki/Duff_Beer&#39;
+title=&#39;Duff Beer&#39;>Duff Beer</a> and Red Tick Beer, a beer flavored with dogs.</p>',
         '', '', '', '', '1');
 
 --
@@ -1173,8 +1202,7 @@ VALUES (1, 'invoice', '1', '', 1);
 --
 INSERT INTO `si_invoice_type` (`inv_ty_id`, `inv_ty_description`)
 VALUES (1, 'Total')
-     , (2, 'Itemized')
-     , (3, 'Consulting');
+     , (2, 'Itemized');
 
 --
 -- Test/required data for `si_payment_types` table - no constraints
@@ -1213,17 +1241,13 @@ INSERT INTO `si_sql_patchmanager` (`sql_patch_ref`, `sql_patch`, `sql_release`, 
 INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`)
 VALUES ('biller', '', '1', '1')
      , ('company_logo', 'simple_invoices_logo.png', '1', '1')
-     , ('company_name', 'SimpleInvoices', '1', '1')
      , ('company_name_item', 'SimpleInvoices', '1', '1')
      , ('customer', '', '1', '1')
-     , ('dateformat', 'Y-m-d', '1', '1')
      , ('default_invoice', '', '1', '1')
      , ('delete', '0', '1', '1')
-     , ('emailhost', 'localhost', '1', '1')
-     , ('emailpassword', '', '1', '1')
-     , ('emailusername', '', '1', '1')
      , ('expense', '0', '1', '1')
      , ('inventory', '0', '1', '1')
+     , ('invoice_description_open', '0', '1', '1')
      , ('language', 'en_US', '1', '1')
      , ('line_items', '3', '1', '1')
      , ('logging', '0', '1', '1')
@@ -1233,20 +1257,14 @@ VALUES ('biller', '', '1', '1')
      , ('password_special', '1', '1', '1')
      , ('password_upper', '1', '1', '1')
      , ('payment_type', '1', '1', '1')
-     , ('pdfbottommargin', '15', '1', '1')
-     , ('pdfleftmargin', '15', '1', '1')
-     , ('pdfpapersize', 'A4', '1', '1')
-     , ('pdfrightmargin', '15', '1', '1')
-     , ('pdfscreensize', '800', '1', '1')
-     , ('pdftopmargin', '15', '1', '1')
      , ('preference', '1', '1', '1')
      , ('product_attributes', '0', '1', '1')
+     , ('product_groups', '0', '1', '1')
      , ('session_timeout', '60', '1', '1')
-     , ('spreadsheet', 'xls', '1', '1')
+     , ('sub_customer', '0', '1', '1')
      , ('tax', '1', '1', '1')
      , ('tax_per_line_item', '1', '1', '1')
-     , ('template', 'default', '1', '1')
-     , ('wordprocessor', 'doc', '1', '1');
+     , ('template', 'default', '1', '1');
 
 --
 -- Test/required data for `si_tax` table - no constraints
@@ -1311,11 +1329,11 @@ VALUES (1, 1, 1, 1, 1, 2, 1, '2018-12-30 00:00:00', '', '', '', '', '');
 -- Test/required data for `si_products` table - must follow si_tax
 --
 INSERT INTO `si_products` (`id`, `domain_id`, `description`, `unit_price`, `default_tax_id`, `default_tax_id_2`, `cost`, `reorder_level`, `custom_field1`, `custom_field2`, `custom_field3`, `custom_field4`, `notes`, `enabled`, `visible`, `attribute`,
-                           `notes_as_description`, `show_description`, `custom_flags`)
-VALUES (1, 1, 'Hourly charge', 60.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000')
-     , (2, 1, 'Power Supply', 85.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000')
-     , (3, 1, 'Keyboard', 15.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000')
-     , (4, 1, 'Mouse', 20.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000');
+                           `notes_as_description`, `show_description`, `custom_flags`, `product_group`)
+VALUES (1, 1, 'Hourly charge', 60.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000', '')
+     , (2, 1, 'Power Supply', 85.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000', '')
+     , (3, 1, 'Keyboard', 15.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000', '')
+     , (4, 1, 'Mouse', 20.000000, 1, NULL, 0.000000, 0, '', '', '', '', '', '1', 1, '', '', '', '0000000000', '');
 
 --
 -- Test/required data for `si_invoice_items` table - must follow si_invoices and si_products

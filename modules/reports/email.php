@@ -25,18 +25,19 @@ Util::directAccessAllowed();
 $error = false;
 $message = "Unable to process email request.";
 
-$billerId          = isset($_GET['billerId'])          ? $_GET['billerId']          : null;
-$customerId        = isset($_GET['customerId'])        ? $_GET['customerId']        : null;
-$displayDetail     = isset($_GET['displayDetail'])     ? $_GET['displayDetail']     : "no";
-$endDate           = isset($_GET['endDate'])           ? $_GET['endDate']           : "";
-$fileName          = isset($_GET['fileName'])          ? $_GET['fileName']          : "";
-$fileType          = isset($_GET['fileType'])          ? $_GET['fileType']          : "";
-$filterByDateRange = isset($_GET['filterByDateRange']) ? $_GET['filterByDateRange'] : "yes";
-$format            = isset($_GET['format'])            ? $_GET['format']            : "file";
-$showOnlyUnpaid    = isset($_GET['showOnlyUnpaid'])    ? $_GET['showOnlyUnpaid']    : "no";
-$startDate         = isset($_GET['startDate'])         ? $_GET['startDate']         : "";
-$stage             = isset($_GET['stage'])             ? $_GET['stage']             : 1;
-$title             = isset($_GET['title'])             ? $_GET['title']             : "";
+$billerId            = $_GET['billerId'] ?? null;
+$customerId          = $_GET['customerId'] ?? null;
+$displayDetail       = $_GET['displayDetail'] ?? "no";
+$endDate             = $_GET['endDate'] ?? "";
+$fileName            = $_GET['fileName'] ?? "";
+$fileType            = $_GET['fileType'] ?? "";
+$filterByDateRange   = $_GET['filterByDateRange'] ?? "yes";
+$format              = $_GET['format'] ?? "file";
+$includeAllCustomers = $_GET['includeAllCustomers'] ?? 'no';
+$includePaidInvoices = $_GET['includePaidInvoices'] ?? 'no';
+$startDate           = $_GET['startDate'] ?? "";
+$stage               = $_GET['stage'] ?? 1;
+$title               = $_GET['title'] ?? "";
 
 if (empty($billerId)) {
     $biller = Biller::getDefaultBiller();
@@ -83,7 +84,6 @@ switch ($fileName) {
         break;
 
     case 'reportDebtorsByAmount':
-        $includePaidInvoices = isset($_GET['includePaidInvoices']) ? $_GET['includePaidInvoices'] : 'no';
         include "modules/reports/reportDebtorsByAmountData.php";
         $params = [
             'includePaidInvoices' => $includePaidInvoices,
@@ -93,7 +93,6 @@ switch ($fileName) {
         break;
 
     case 'reportDebtorsOwingByCustomer':
-        $includeAllCustomers = isset($_GET['includeAllCustomers']) ? $_GET['includeAllCustomers'] : 'no';
         include "modules/reports/reportDebtorsOwingByCustomerData.php";
         $params = [
             'includeAllCustomers' => $includeAllCustomers,
@@ -138,7 +137,6 @@ switch ($fileName) {
             'endDate' => $endDate,
             'fileName' => $fileName,
             'filterByDateRange' => $filterByDateRange,
-            'showOnlyUnpaid' => $showOnlyUnpaid,
             'startDate' => $startDate,
             'title' => $title
         ];
@@ -218,6 +216,20 @@ switch ($fileName) {
         ];
         break;
 
+    case 'reportStatement':
+        include "modules/reports/reportStatementData.php";
+        $params = [
+            'billerId' => $billerId,
+            'customerId' => $customerId,
+            'endDate' => $endDate,
+            'fileName' => $fileName,
+            'filterByDateRange' => $filterByDateRange,
+            'includePaidInvoices' => $includePaidInvoices,
+            'startDate' => $startDate,
+            'title' => $title
+        ];
+        break;
+
     case 'reportTaxTotal':
         include "modules/reports/reportTaxTotalData.php";
         $params = [
@@ -260,8 +272,9 @@ if ($stage == 2) {
             $export->setFileType($fileType);
             $export->setFilterByDateRange($filterByDateRange);
             $export->setFormat($format);
+            $export->setIncludeAllCustomers($includeAllCustomers);
+            $export->setIncludePaidInvoices($includePaidInvoices);
             $export->setModule($module);
-            $export->setShowOnlyUnpaid($showOnlyUnpaid);
             $export->setStartDate($startDate);
             $pdfString = $export->execute();
 
@@ -278,7 +291,7 @@ if ($stage == 2) {
 
             $results = $email->send();
         } catch (Exception $exp) {
-            exit("modules/statement/email.php Unexpected error: {$exp->getMessage()}");
+            exit("modules/reports/email.php Unexpected error: {$exp->getMessage()}");
         }
     }
     $smarty->assign('display_block', $results['display_block']);

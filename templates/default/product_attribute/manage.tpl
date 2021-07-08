@@ -1,33 +1,35 @@
 {*
  *  Script: manage.tpl
- * 	  Product attributes manage template
+ * 	    Product attributes manage template
  *
  *  Authors:
- *	  Justin Kelly, Ben Brown
+ *	    Justin Kelly, Ben Brown
  *
- *  Last edited:
- *    2018-12-15 by Richard Rowley
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
+ *
+ *  Website:
+ *      https://simpleinvoices.group
  *
  *  License:
- *	  GPL v3 or above
+ *      GPL v3 or above
  *}
-<div class="si_toolbar si_toolbar_top">
+<div class="align__text-center margin__bottom-2">
     <a href="index.php?module=product_attribute&amp;view=create" class="">
-        <img src="images/add.png" alt=""/>
-        {$LANG.addProductAttribute}
+        <button><img src="images/add.png" alt=""/>{$LANG.addProductAttribute}</button>
     </a>
 </div>
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noProductAttributes}</div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_left">{$LANG.nameUc}</th>
-            <th class="si_left">{$LANG.type}</th>
-            <th class="si_center">{$LANG.enabled}</th>
-            <th class="si_center">{$LANG.visible}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th>{$LANG.nameUc}</th>
+            <th>{$LANG.type}</th>
+            <th class="align__text-center">{$LANG.enabled}</th>
+            <th class="align__text-center">{$LANG.visible}</th>
         </tr>
         </thead>
     </table>
