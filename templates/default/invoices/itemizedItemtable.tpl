@@ -10,7 +10,7 @@
     {$line = $smarty.section.line.index}
     <input type="hidden" id="delete{$line|htmlSafe}" name="delete{$line|htmlSafe}"/>
     <input type="hidden" name="line_item{$line|htmlSafe}" id="line_item{$line|htmlSafe}"/> {* id of invoice_items record *}
-    <div class="line_item grid__container grid__head-10" id="row{$line|htmlSafe}">
+    <div class="grid__container grid__head-10 line_item" id="row{$line|htmlSafe}">
         <div class="cols__1-span-1">
             <div style="display:grid;grid-template-columns: 9% 7% 0 84%;">
                 {if $line == "0"}&nbsp;
@@ -72,12 +72,10 @@
                    value="{if isset($defaultInvoiceItems[$line].unit_price)}{$defaultInvoiceItems[$line].unit_price|utilNumber}{/if}"/>
         </div>
     </div>
-    <div class="grid__container grid__head-10 details {if $defaults.invoice_description_open != $smarty.const.ENABLED}si_hide{/if}">
-        <div class="cols__1-span-1">
-            <label for="description{$line|htmlSafe}">&nbsp;</label>
-        </div>
+    <div class="grid__container grid__head-10 details" {if $defaults.invoice_description_open != $smarty.const.ENABLED}style="display:none;"{/if}>
         <div class="cols__2-span-9">
-             <textarea name="description{$line|htmlSafe}" style="overflow:scroll;"
+             <!--suppress HtmlFormInputWithoutLabel -->
+            <textarea name="description{$line|htmlSafe}" style="overflow:scroll;"
                        id="description{$line|htmlSafe}" rows="3" cols="99"
                        data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
                        >{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlSafe}{/if}</textarea>

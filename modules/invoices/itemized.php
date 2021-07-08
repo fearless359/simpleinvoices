@@ -2,7 +2,7 @@
 use Inc\Claz\Util;
 
 /*
- * Script: itemised.php
+ * Script: itemized.php
  *   Itemized invoice page
  *
  * Authors:

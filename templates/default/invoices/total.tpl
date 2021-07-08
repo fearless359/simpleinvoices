@@ -23,8 +23,7 @@
                         {$taxNumber = $smarty.section.tax.index}
                         {$colStart = $taxNumber + 7}
                         <div class="cols__{$colStart}-span-1 si_margin__right-1">
-                            <select id="tax_id[{$smarty.section.line.index|htmlSafe}][{$taxNumber|htmlSafe}]"
-                                    name="tax_id[{$smarty.section.line.index|htmlSafe}][{$taxNumber|htmlSafe}]">
+                            <select name="tax_id[{$taxNumber|htmlSafe}]" id="tax_id[{$taxNumber|htmlSafe}]">
                                 <option value=""></option>
                                 {foreach $taxes as $tax}
                                     <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}"

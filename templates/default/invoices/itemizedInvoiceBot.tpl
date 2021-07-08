@@ -6,7 +6,7 @@
     <label for="note" class="cols__1-span-10 bold">{$LANG.notes}:</label>
 </div>
 <div class="grid__container grid__head-10">
-    <div class='cols__1-span-10 si_invoice_notes'>
+    <div class='cols__1-span-10'>
         <input name="note" id="note" {if isset($defaultInvoice.note)}value="{$defaultInvoice.note|outHtml}"{/if} type="hidden">
         <trix-editor input="note"></trix-editor>
     </div>

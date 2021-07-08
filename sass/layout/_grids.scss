@@ -151,22 +151,22 @@
 }
 
 .pad {
-    &__top_1 {
+    &__top-1 {
         padding-top: 1em;
     }
 
-    &__right_1 {
+    &__right-1 {
         padding-right: 1em;
     }
 }
 
 div {
-    &.si_product_attribute {
-        padding-right: 15px;
-        color: $colorGreyDark-4;
-        border-top: none;
-        font-size: 1.1rem;
-    }
+    //&.si_product_attribute {
+    //    padding-right: 15px;
+    //    color: $colorGreyDark-4;
+    //    border-top: none;
+    //    font-size: 1.1rem;
+    //}
 
     &.even {
         background-color: rgba($colorWhite, 1.0);
@@ -174,197 +174,5 @@ div {
 
     &.odd {
         background-color: rgba($colorGreyLight-5, .8);
-    }
-
-    &.si_invoice_notes {
-        color: $colorGreyDark-4;
-        margin-bottom: 3px;
-        padding: 0 0 10px 0;
-    }
-}
-
-.si_hide,
-a.si_hide {
-    display: none !important;
-}
-
-.si_invoice {
-
-    &_form {
-        display: block;
-        margin: 0 auto;
-        width: 90%;
-    }
-
-    &_top,
-    &_bot {
-        margin-bottom: 10px;
-    }
-
-    &_bot {
-        width: 100%;
-    }
-
-    &_top th,
-    &_bot th {
-        color: $colorGreyDark-4;
-        text-align: left;
-        font-weight: bold;
-        padding: 7px 15px 7px 0;
-    }
-
-    &_total th {
-        width: auto;
-        text-align: left;
-        padding-bottom: 2px;
-    }
-
-    &_total td {
-        padding-bottom: 10px;
-    }
-
-    &_items thead td {
-        font-size: 10px;
-        color: $colorGreyDark-2;
-        border-bottom: 1px solid $colorGreyLight-11;
-        padding-bottom: 3px;
-    }
-
-    &_items td {
-        padding: 2px 8px;
-        border-bottom: 1px dotted $colorGreyLight-10;
-    }
-
-    &_items .details textarea {
-        width: 100%;
-        font-size: 1.4rem;
-        color: $colorGreyDark-4-3;
-    }
-
-    &_notes h5 {
-        padding: 0;
-        margin: 0 0 4px 0;
-        /*font-size: 1.2rem;*/
-        font-weight: normal;
-    }
-
-    &_account {
-        overflow: hidden;
-        margin: 2rem auto 0 auto;
-
-        & h4 {
-            /*font-size: 1.3rem;*/
-            text-align: center;
-            padding: 0;
-            margin: 0 0 7px 0;
-            color: $colorGreyDark-2;
-            font-weight: bold;
-        }
-
-        & h5 {
-            /*font-size: 1.2rem;*/
-            font-weight: bold;
-            padding: 0 0 8px 0;
-            margin: 0;
-
-        }
-
-        & div {
-            float: left;
-            border: 1px solid $colorGreyLight-11;
-            height: 70px;
-            padding: 10px;
-            margin-right: 10px;
-        }
-
-        & th,
-        & td {
-            padding: 2px 15px;
-            text-align: right;
-        }
-
-        & th {
-            font-weight: bold;
-            color: $colorGreyDark-3;
-            text-align: center;
-        }
-    }
-
-    &_view {
-        margin: auto;
-        width: 85%;
-
-        & th {
-            font-weight: normal;
-            padding-right: 10px;
-            color: $colorGreyDark-3;
-        }
-
-        & th,
-        & td {
-            padding: 3px 2px;
-        }
-
-        & .tr_head th {
-            font-weight: bold;
-            color: $colorGreyDark-3;
-            width: 18rem;
-        }
-
-        & .tr_head th,
-        & .tr_head td {
-            padding-top: 10px;
-            border-bottom: 1px dashed $colorGreyLight-14;
-        }
-
-        & .tr_notes td {
-            padding-bottom: 2rem;
-        }
-
-        & .tr_total td {
-            font-weight: bold;
-        }
-
-        & .si_switch {
-            text-align: right;
-        }
-
-        &_items {
-            width: 85%;
-            margin: auto;
-            border-bottom: 1px solid $colorGreyLight-10;
-            color: $colorGreyDark-3;
-
-            & .si_switch {
-                padding-right: 0;
-            }
-
-            & td {
-                padding: 10px 0 2px 0;
-                border-top: 1px solid $colorGreyLight-10;
-                white-space: nowrap;
-                vertical-align: top;
-            }
-
-            & td.td_amount {
-                padding: 10px 10px 2px 0;
-            }
-
-            & td.td_product {
-                width: 80%;
-                white-space: normal;
-            }
-
-            & td.td_quantity {
-                padding: 10px 10px 2px 0;
-            }
-
-            & .tr_desc td {
-                border-top: none;
-                color: $colorGreyDark-4;
-                font-size: 1.4rem;
-                padding: 0 0 5px 0;
-            }
-        }
     }
 }

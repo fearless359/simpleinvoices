@@ -1,54 +1,22 @@
 <?php
 
-use Inc\Claz\Biller;
-use Inc\Claz\Customer;
-use Inc\Claz\Invoice;
-use Inc\Claz\PdoDbException;
-use Inc\Claz\Util;
+global $endDate, $LANG, $menu, $startDate, $smarty;
 
-/*
- * Script: report_sales_by_period.php
- * Sales reports by period add page
- *
- * Authors:
- * Justin Kelly
- *
- * Last edited:
- *  2017-12-20 Richard Rowley
- *
- * License:
- * GPL v3
- *
- * Website:
- * https://simpleinvoices.group
- */
-global $menu, $pdoDb, $smarty;
+use Inc\Claz\Util;
 
 Util::directAccessAllowed();
 
-/**
- * @return string first of month date.
- */
-function firstOfMonth() {
-    return date ( "Y-m-d", strtotime ( '01-01-' . date ( 'Y' ) . ' 00:00:00' ) );
-}
+include 'library/dateRangePrompt.php';
 
-/**
- * @return string end of month date.
- */
-function lastOfMonth() {
-    return date ( "Y-m-d", strtotime ( '31-12-' . date ( 'Y' ) . ' 00:00:00' ) );
-}
+include 'modules/reports/reportSalesTotalData.php';
 
-$startDate  = isset($_POST['startDate'] ) ? $_POST['startDate']: firstOfMonth();
-$endDate    = isset($_POST['endDate']   ) ? $_POST['endDate']  : lastOfMonth ();
-$billerId   = isset($_POST['biller_id']  ) ? intval($_POST['biller_id'])  : null;
-$customerId = isset($_POST['customer_id']) ? intval($_POST['customer_id']): null;
+$billerId = $_POST['billerId'] ?? null;
+$customerId = $_POST['customerId'] ?? null;
 
-$showOnlyUnpaid    = "no";
+$showOnlyUnpaid = "no";
 $filterByDateRange = "yes";
-$invoices          = [];
-$statement         = ["total" => 0, "owing" => 0, "paid" => 0];
+$invoices = [];
+$statement = ["total" => 0, "owing" => 0, "paid" => 0];
 
 if (isset($_POST['submit'])) {
     try {
@@ -75,11 +43,11 @@ if (isset($_POST['submit'])) {
         }
 
         $invoices = Invoice::getAllWithHavings($havings, "date", "desc");
-        foreach ( $invoices as $row ) {
+        foreach ($invoices as $row) {
             if ($row ['status'] > 0) {
                 $statement ['total'] += $row ['total'];
                 $statement ['owing'] += $row ['owing'];
-                $statement ['paid']  += $row ['paid'];
+                $statement ['paid'] += $row ['paid'];
             }
         }
     } catch (PdoDbException $pde) {
