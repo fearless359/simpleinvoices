@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.5.0](https://github.com/inspect-js/is-core-module/compare/v2.4.0...v2.5.0) - 2021-07-12
+
+### Commits
+
+- [Dev Deps] update `auto-changelog`, `eslint` [`6334cc9`](https://github.com/inspect-js/is-core-module/commit/6334cc94f3af7469685bd8f236740991baaf2705)
+- [New] add `stream/web` to node v16.5+ [`17ac59b`](https://github.com/inspect-js/is-core-module/commit/17ac59b662d63e220a2e5728625f005c24f177b2)
+
 ## [v2.4.0](https://github.com/inspect-js/is-core-module/compare/v2.3.0...v2.4.0) - 2021-05-09
 
 ### Commits
