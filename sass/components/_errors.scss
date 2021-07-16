@@ -1,0 +1,13 @@
+
+.error_line {
+    color: white;
+    margin-top: -2rem;
+    margin-bottom: 2rem;
+    padding: 2px 8px 2px 27px;
+    line-height: 3rem;
+    text-align: left;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: $colorRed url(../images/important.png) no-repeat 5px 2px;
+}

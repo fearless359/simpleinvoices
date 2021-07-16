@@ -166,7 +166,7 @@
          <table style="margin-left: auto; margin-right: auto; width:30%;">
             <tbody>
                                     <tr class="clean" style="font-weight: bold;height: 40px;">
-                                        <td class="clean center"  style="font-weight: bold;margin: 0px;" colspan="2" >
+                                        <td class="clean center"  style="font-weight: bold;margin: 0;" colspan="2" >
                                             <img src="{$logo|urlSafe}" alt="" style="margin-left: auto; margin-right: auto; max-width: 140px;" class="clean center" />
                                         </td>
                                     </tr>
@@ -254,8 +254,8 @@
                </tr>
             </thead>
             <tbody>
-               {* Invoice Type 2 or Type 3 - Itemized, formerly Type 2 and 3 were the same info merely displayed in slightly different order *}
-               {if ($invoice.type_id == 2) || ($invoice.type_id == 3)}
+               {* Invoice Type ITEMIZED_INVOICE - Itemized, formerly Type 2 and 3 were the same info merely displayed in slightly different order *}
+               {if $invoice.type_id == ITEMIZED_INVOICE}
                   {foreach $invoiceItems as $index => $invoiceItem}
                      <tr class="clean left bleft">
                         <td class="clean center bleft">{$invoiceItem@iteration}</td>
@@ -292,7 +292,7 @@
                </tr>
                <tr class="clean left bleft">
                   <td class="clean left bleft" style="height: 23px" colspan="2">
-                     {if $customer.attention != null } {$LANG.attentionShort}:</span> {$customer.attention|htmlSafe} {/if}<br>
+                     {if $customer.attention != null } {$LANG.attentionShort}: {$customer.attention|htmlSafe} {/if}<br>
                      {if $customer.notes != null } {$customer.notes|outHtml}{/if}
                   </td>
                </tr>

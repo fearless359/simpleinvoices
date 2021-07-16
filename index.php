@@ -2,6 +2,7 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\CheckPermission;
+use Inc\Claz\Config;
 use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
 use Inc\Claz\Funcs;
@@ -150,7 +151,7 @@ global $LANG,
        $smartyOutput;
 // formatter:on
 
-Log::out("index.php - After init.php - module($module] view[$view]");
+Log::out("index.php - After init.php - module[$module] view[$view]");
 foreach ($extNames as $extName) {
     if (file_exists("extensions/$extName/include/init.php")) {
         /** @noinspection PhpIncludeInspection */
@@ -167,6 +168,7 @@ Log::out("index.php - After processing init.php for extensions");
 
 $smarty->assign("LANG", $LANG);
 $smarty->assign("config", $config);
+$smarty->assign("configFile", Config::CUSTOM_CONFIG_FILE);
 $smarty->assign("enabled", [$LANG['disabled'], $LANG['enabled']]);
 $smarty->assign("ext_names", $extNames);
 $smarty->assign("helpImagePath", $helpImagePath);
@@ -310,7 +312,7 @@ if ($module == "invoices" && strstr($view, "template")) {
 Log::out("index.php - After invoices/template");
 
 // Check for "api" module or a "xml" or "ajax" "page request" (aka view)
-if ($apiRequest || strstr($view, "xml") || strstr($view, "ajax")) {
+if ($apiRequest || strstr($view, "xml") || preg_match("/.*[Aa]jax/", $view)) {
     $extensionXml = 0;
     foreach ($extNames as $extName) {
         if (file_exists("extensions/$extName/modules/$module/$view.php")) {

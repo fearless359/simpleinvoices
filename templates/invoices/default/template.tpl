@@ -172,19 +172,19 @@
             <table class="width_100">
               <tr>
                 {if !empty($customFieldLabels.product_cf1)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
                   {do_tr number=1}
                 {/if}
                 {if !empty($customFieldLabels.product_cf2)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
                   {do_tr number=2}
                 {/if}
                 {if !empty($customFieldLabels.product_cf3)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
                   {do_tr number=3}
                 {/if}
                 {if !empty($customFieldLabels.product_cf4)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
+                  {inv_itemized_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
                   {do_tr number=4}
                 {/if}
               </tr>
@@ -192,60 +192,7 @@
           </td>
         </tr>
       {/foreach}
-    {/if}
-    {if $invoice.type_id == CONSULTING_INVOICE}
-      <tr class="tbl1-bottom col1">
-        <th class="tbl1-bottom">{$LANG.quantityShort}</th>
-        <th class="tbl1-bottom" colspan="3">{$LANG.item}</th>
-        <th class="tbl1-bottom text_right">{$LANG.unitCost}</th>
-        <th class="tbl1-bottom text_right">{$LANG.priceUc}</th>
-      </tr>
-      {foreach $invoiceItems as $invoiceItem}
-        <tr>
-          <th>{$invoiceItem.quantity|utilNumberTrim}</th>
-          <th>{$invoiceItem.product.description|htmlSafe}</th>
-          <th colspan="4"></th>
-        </tr>
-        <tr>
-          <td>&nbsp;</td>
-          <td colspan="5">
-            <table class="width_100">
-              <tr>
-                {if !empty($customFieldLabels.product_cf1)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
-                  {do_tr number=1}
-                {/if}
-                {if !empty($customFieldLabels.product_cf2)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
-                  {do_tr number=2}
-                {/if}
-                {if !empty($customFieldLabels.product_cf3)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
-                  {do_tr number=3}
-                {/if}
-                {if !empty($customFieldLabels.product_cf4)}
-                  {inv_itemised_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
-                  {do_tr number=4}
-                {/if}
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <th>&nbsp;</th>
-          <th colspan="5"><span class="italic">{$LANG.descriptionUc}:</span> {$invoiceItem.description|htmlSafe}</th>
-        </tr>
-        <tr>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td class="text_right">{$preference.pref_currency_sign}{$invoiceItem.unit_price|utilNumber}</td>
-          <td class="text_right">{$preference.pref_currency_sign}{$invoiceItem.total|utilNumber}</td>
-        </tr>
-      {/foreach}
-    {/if}
-    {if $invoice.type_id == TOTAL_INVOICE}
+    {elseif $invoice.type_id == TOTAL_INVOICE}
       <tr>
         <td>
           <table class="left width_100">
@@ -261,8 +208,7 @@
         </td>
       </tr>
     {/if}
-    {if ($invoice.type_id == ITEMIZED_INVOICE && $invoice.note != "") ||
-    ($invoice.type_id == CONSULTING_INVOICE && $invoice.note != "" ) }
+    {if ($invoice.type_id == ITEMIZED_INVOICE && $invoice.note != "")}
       <tr>
         <td colspan="6">&nbsp;</td>
       </tr>

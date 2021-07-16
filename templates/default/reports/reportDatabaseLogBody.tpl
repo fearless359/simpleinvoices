@@ -5,7 +5,7 @@
 {if !$menu}
     <hr/>
 {/if}
-<h1 class="si_center">{$title}</h1>
+<h1 class="align__text-center margin__bottom-2">{$title}</h1>
 <table class="si_report_table">
     <thead>
     <tr>

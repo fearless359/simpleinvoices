@@ -184,9 +184,9 @@ class SiAcl
                 'delete' => $adminAccess,
                 'edit' => $adminBillerAccess,
                 'email' => $adminBillerCustomerAccess,
-                'itemised' => $adminBillerAccess,
+                'itemized' => $adminBillerAccess,
                 'manage' => $adminBillerCustomerAccess,
-                'quick_view' => $adminBillerCustomerAccess,
+                'quickView' => $adminBillerCustomerAccess,
                 'product_ajax' => $adminBillerAccess,
                 'save' => $adminBillerAccess,
                 'total' => $adminBillerAccess,
@@ -227,7 +227,7 @@ class SiAcl
                 'save' => $adminAccess,
                 'view' => $adminAccess
             ],
-            'product_value' => [
+            'product_attribute_values' => [
                 'create' => $adminAccess,
                 'edit' => $adminAccess,
                 'manage' => $adminAccess,

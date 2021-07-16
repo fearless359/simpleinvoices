@@ -80,7 +80,7 @@
                             <table style="table-layout: fixed;vertical-align: bottom;">
                                 <tbody>
                                     <tr class="clean" style="font-weight: bold;height: 40px;">
-                                        <td class="clean center"  style="font-weight: bold;margin: 0px;" colspan="2" >
+                                        <td class="clean center"  style="font-weight: bold;margin: 0;" colspan="2" >
                                             <img src="{$logo|urlSafe}" alt="" style="margin-left: auto; margin-right: auto; max-width: 140px;" class="clean center" />
                                         </td>
                                     </tr>
@@ -234,10 +234,7 @@
         <br />
         <article>
             {if $invoice.type_id == ITEMIZED_INVOICE }
-            {include file="$template_path/itemised.tpl"}
-            {/if}
-            {if $invoice.type_id == CONSULTING_INVOICE}
-            {include file="$template_path/consulting.tpl"}
+            {include file="$template_path/itemized.tpl"}
             {/if}
             {if $invoice.type_id == TOTAL_INVOICE}
             {include file="$template_path/total.tpl"}

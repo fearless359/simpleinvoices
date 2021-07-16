@@ -113,7 +113,7 @@ class Payment
 
             $invoiceId =
                 "<a class='index_table' title='{$LANG['invoice']} {$row['iv_index_id']}' " .
-                "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['ac_inv_id']}'>{$row['iv_index_id']}</a>";
+                "href='index.php?module=invoices&amp;view=quickView&amp;id={$row['ac_inv_id']}'>{$row['iv_index_id']}</a>";
 
             $pattern = '/^(.*)_(.*)$/';
             $tableRows[] = [

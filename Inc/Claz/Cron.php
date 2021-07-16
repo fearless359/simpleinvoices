@@ -62,7 +62,7 @@ class Cron
             $tableRows[] = [
                 'action' => $action,
                 'invoiceId' =>
-                    "<a href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['invoice_id']}'>" .
+                    "<a href='index.php?module=invoices&amp;view=quickView&amp;id={$row['invoice_id']}'>" .
                         $row['index_id'] .
                     "</a>",
                 'startDate' => $row['start_date'],

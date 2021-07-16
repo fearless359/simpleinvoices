@@ -17,10 +17,11 @@ if ($databaseBuilt && !$databasePopulated) {
 
     $importJson = new importJson($file, $find, $replace, $debug);
     $collated = $importJson->collate();
+
     try {
         $pdoDb->query($collated);
         $displayBlock =
-            '<div style="margin:0 auto 40px auto;width:50%;text-align:left;">' .
+            '<div>' .
                 '<p>The SimpleInvoices essential data has been imported. Using the buttons ' .
                     'below, you can choose to <strong>Start using SimpleInvoices</strong> or ' .
                     'to <strong>Install Sample Data</strong> to test SimpleInvoices further.</p>' .
@@ -30,14 +31,12 @@ if ($databaseBuilt && !$databasePopulated) {
                     '<strong>demo</strong>, and the password, <strong>demo</strong>. After which ' .
                     'you should add a new user for yourself and disable the <strong>demo</strong> user.</p>' .
             '</div>' .
-            '<div class="si_toolbar si_toolbar_form">' .
-                '<a href="index.php" class="positive">' .
-            '<img src="../../images/tick.png" alt="" />' .
-                    'Start using SimpleInvoices' .
+            '<div class="align__text-center margin__top-3 margin__bottom-2">' .
+                '<a href="index.php" class="button positive">' .
+                    '<img src="../../images/tick.png" alt="" />Start using SimpleInvoices' .
                 '</a>' .
-                '<a href="index.php?module=install&amp;view=sample_data" class="positive">' .
-            '<img src="../../images/tick.png" alt="" />' .
-                    'Install Sample Data' .
+                '<a href="index.php?module=install&amp;view=sample_data" class="button positive">' .
+                    '<img src="../../images/tick.png" alt="" />Install Sample Data' .
                 '</a>' .
             '</div>';
     } catch (PdoDbException $pde) {

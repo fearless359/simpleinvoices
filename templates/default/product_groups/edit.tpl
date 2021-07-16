@@ -1,32 +1,39 @@
-<!--suppress HtmlFormInputWithoutLabel -->
+{*
+ *  Script: edit.tpl
+ * 	    Product group update template
+ *
+ *  Authors:
+ *	    Justin Kelly, Nicolas Ruflin
+ *
+ *  Last edited:
+ * 	    20210630 by Rich Rowley to convert to grid layout
+ *
+ *  License:
+ *	    GPL v3 or above
+ *
+ *  Website:
+ *      https://simpleinvoices.group*/
+ *}
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=product_groups&amp;view=save&amp;name={$smarty.get.name|urlencode}">
-    <div class="si_form">
-        <table class="center">
-            <tr>
-                <th class="details_screen"><label for="nameId">{$LANG.nameUc}:</label></th>
-                <td>
-                    <input type="text" name="name" id="nameId" class="si_input" size="60" readonly
-                           value="{if isset($productGroup.name)}{$productGroup.name|htmlSafe}{/if}"/>
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen"><label for="markupId">{$LANG.markupUc}%:</label></th>
-                <td>
-                    <input type="text" name="markup" id="markupId" class="si_input" size="10" tabindex="10"
-                           value="{$productGroup.markup}"/>
-                </td>
-            </tr>
-        </table>
+    <div class="grid__area">
+        <div class="grid__container grid__head-10">
+            <label for="nameId" class="cols__4-span-1">{$LANG.nameUc}:</label>
+            <input type="text" name="name" id="nameId" class="cols__5-span-2" size="60" readonly
+                   value="{if isset($productGroup.name)}{$productGroup.name|htmlSafe}{/if}"/>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="markupId" class="cols__4-span-1">{$LANG.markupUc}%:</label>
+            <input type="text" name="markup" id="markupId" class="cols__5-span-2" size="10" tabindex="10"
+                   value="{$productGroup.markup}"/>
+        </div>
     </div>
-    <div class="si_toolbar si_toolbar_form">
+    <div class="align__text-center">
         <button type="submit" class="positive" name="save_product_group" value="{$LANG.save}" tabindex="100">
-            <img class="button_img" src="images/tick.png" alt=""/>
-            {$LANG.save}
+            <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
         </button>
-        <a href="index.php?module=product_groups&amp;view=manage" class="negative" tabindex="110">
-            <img src="images/cross.png" alt=""/>
-            {$LANG.cancel}
+        <a href="index.php?module=product_groups&amp;view=manage" class="button negative" tabindex="110">
+            <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
         </a>
     </div>
     <input type="hidden" name="op" value="edit">

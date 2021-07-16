@@ -6,7 +6,8 @@ global $LANG, $menu, $smarty;
 
 Util::directAccessAllowed();
 
-$includePaidInvoices = isset($_POST['includePaidInvoices']) ? $_POST['includePaidInvoices'] : 'no';
+$includePaidInvoices = $_POST['includePaidInvoices'] ?? 'no';
+$smarty->assign('includePaidInvoices', $includePaidInvoices);
 
 $smarty->assign('title', $LANG["debtorsByAmountOwed"]);
 

@@ -5,7 +5,7 @@
 {if !$menu}
 	<hr/>
 {/if}
-<h1 class="si_center">{$title}</h1>
+<h1 class="align__text-center">{$title}</h1>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
 <table class="si_report_table">
@@ -31,13 +31,13 @@
 		</tr>
 		{foreach $customer.products as $product}
 			<tr class="tr_{cycle values="A,B"}">
-				<td class="si_right">{$product.description|htmlSafe}</td>
-				<td class="si_right">{$product.sum_quantity|utilNumber:0|default:'-'}</td>
+				<td class="align__text-right">{$product.description|htmlSafe}</td>
+				<td class="align__text-right">{$product.sum_quantity|utilNumber:0|default:'-'}</td>
 			</tr>
 		{/foreach}
 		<tr class="tr_{cycle values="A,B"}">
-			<td class="si_right bold">{$LANG.totalUc}:</td>
-			<td class="si_right">{$customer.total_quantity|utilNumber:0|default:'-'}</td>
+			<td class="align__text-right bold">{$LANG.totalUc}:</td>
+			<td class="align__text-right">{$customer.total_quantity|utilNumber:0|default:'-'}</td>
 		</tr>
 	{/foreach}
 	</tbody>

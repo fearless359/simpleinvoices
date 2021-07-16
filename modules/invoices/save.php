@@ -10,6 +10,9 @@ use Inc\Claz\Util;
  * Script: save.php
  *     Invoice save file
  *
+ * Last edited:
+ *   2021-06-17 by Rich Rowley
+ *
  * License:
  *   GPL v3 or above
  *
@@ -53,12 +56,17 @@ if ($op == "create" ) {
         }
 
         $displayBlock = "<div class=\"si_message_ok\">{$LANG['saveInvoiceSuccess']}</div>";
-        $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($id) . "\" />";
+        $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quickView&amp;id=" . urlencode($id) . "\" />";
         if ($type == TOTAL_INVOICE) {
             $productId = Product::insertProduct(DISABLED, DISABLED);
             if ($productId > 0) {
                 $unitPrice = Util::dbStd($_POST["unit_price"]);
-                $taxIds = empty($_POST["tax_id"][0]) ? "" : $_POST["tax_id"][0];
+                $taxIds = [];
+                foreach ($_POST['tax_id'] as $taxId) {
+                    if (!empty($taxId)) {
+                        $taxIds[] = $taxId;
+                    }
+                }
                 Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice);
             } else {
                 error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
@@ -66,13 +74,13 @@ if ($op == "create" ) {
         } else { // itemized invoice
             $idx = 0;
             while ($idx <= $_POST['max_items']) {
-                if (!empty($_POST["quantity{$idx}"])) {
+                if (!empty($_POST["quantity$idx"])) {
                     // @formatter:off
-                    $unitPrice = Util::dbStd($_POST["unit_price{$idx}"]);
+                    $unitPrice = Util::dbStd($_POST["unit_price$idx"]);
                     $taxIds = empty($_POST["tax_id"][$idx]) ? [] : $_POST["tax_id"][$idx];
                     $attr = empty($_POST["attribute"][$idx]) ? [] : $_POST["attribute"][$idx];
-                    Invoice::insertInvoiceItem($id, $_POST["quantity{$idx}"], $_POST["products{$idx}"],
-                                               $taxIds, $_POST["description{$idx}"], $unitPrice, $attr);
+                    Invoice::insertInvoiceItem($id, $_POST["quantity$idx"], $_POST["products$idx"],
+                                               $taxIds, $_POST["description$idx"], $unitPrice, $attr);
                     // @formatter:on
                 }
                 $idx++;
@@ -90,7 +98,7 @@ if ($op == "create" ) {
 
 } elseif ( $op == "edit") {
     $id = $_POST['id'];
-    $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?module=invoices&amp;view=quick_view&amp;id=" . urlencode($_POST['id']) . "\" />";
+    $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=quickView&amp;id=$id' />";
     try {
         if (Invoice::updateInvoice($id)) {
             if ($type == TOTAL_INVOICE) {
@@ -108,17 +116,18 @@ if ($op == "create" ) {
 
             $idx = 0;
             while ($idx <= $_POST['max_items']) {
-                if (isset($_POST["delete{$idx}"]) && $_POST["delete{$idx}"] == "yes") {
-                    Invoice::delete('invoice_items', 'id', $_POST["line_item{$idx}"]);
-                } elseif (isset($_POST["quantity{$idx}"])) {
+                if (isset($_POST["delete$idx"]) && $_POST["delete$idx"] == "yes") {
+                    Invoice::delete('invoice_items', 'id', $_POST["line_item$idx"]);
+                } elseif (isset($_POST["quantity$idx"])) {
+
                     //new line item added in edit page
-                    $item = isset($_POST["line_item{$idx}"]) ? $_POST["line_item{$idx}"] : "";
-                    $qty = isset($_POST["quantity{$idx}"]) ? Util::dbStd($_POST["quantity{$idx}"]) : "";
-                    $product = isset($_POST["products{$idx}"]) ? $_POST["products{$idx}"] : "";
-                    $desc = isset($_POST["description{$idx}"]) ? $_POST["description{$idx}"] : "";
-                    $price = isset($_POST["unit_price{$idx}"]) ? Util::dbStd($_POST["unit_price{$idx}"]) : "";
-                    $attr = isset($_POST["attribute{$idx}"]) ? $_POST["attribute{$idx}"] : null;
-                    $taxIds = isset($_POST["tax_id"][$idx]) ? $_POST["tax_id"][$idx] : [];
+                    $item = $_POST["line_item$idx"] ?? "";
+                    $qty = isset($_POST["quantity$idx"]) ? Util::dbStd($_POST["quantity$idx"]) : "";
+                    $product = $_POST["products$idx"] ?? "";
+                    $desc = $_POST["description$idx"] ?? "";
+                    $price = isset($_POST["unit_price$idx"]) ? Util::dbStd($_POST["unit_price$idx"]) : "";
+                    $attr = $_POST["attribute$idx"] ?? null;
+                    $taxIds = $_POST["tax_id"][$idx] ?? [];
 
                     if (empty($item)) {
                         Invoice::insertInvoiceItem($id, $qty, $product, $taxIds, $desc, $price, $attr);

@@ -1,47 +1,49 @@
+{*
+ *  Script: create.tpl
+ *      Product Attributes add template
+ *
+ *  Last edited:
+ * 	    20210630 by Rich Rowley to convert to grid layout
+ *
+ *  License:
+ *      GPL v3 or above
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *}
 {if !empty($smarty.post.name)}
     {include file="templates/default/product_attribute/save.tpl"}
 {else}
-    <!--suppress HtmlFormInputWithoutLabel -->
-    <form name="frmpost" method="POST" id="frmpost"
-          action="index.php?module=product_attribute&amp;view=create">
-        <table class="center">
-            <tr>
-                <th class="left">{$LANG.nameUc}:</th>
-                <td><input type="text" name="name" class="validate[required]" size="50"
-                           value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}" /></td>
-            </tr>
-            <tr>
-                <th class="left">{$LANG.type}:</th>
-                <td>
-                    <select name="type_id">
-                        {foreach $types as $k => $v}
-                            <option value="{if isset($v.id)}{$v.id}{/if}">{$LANG[$v.name]}</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th class="left">{$LANG.enabled}:</th>
-                <td>
-                    {html_options class="edit si_input" name=enabled options=$enabled selected=1}
-                </td>
-            </tr>
-            <tr>
-                <th class="left">{$LANG.visible}:</th>
-                <td>
-                    {html_options class="edit si_input" name=visible options=$enabled selected=1}
-                </td>
-            </tr>
-        </table>
-        <hr/>
-        <div class="si_toolbar si_toolbar_form">
+    <form name="frmpost" method="POST" id="frmpost" action="index.php?module=product_attribute&amp;view=create">
+        <div class="grid__area">
+            <div class="grid__container grid__head-10">
+                <label for="nameId" class="cols__4-span-1">{$LANG.nameUc}:</label>
+                <input type="text" name="name" id="nameId" class="cols__5-span-5 validate[required]" size="50"
+                       value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}"/>
+            </div>
+            <div class="grid__container grid__head-10">
+                <label for="typeId" class="cols__4-span-1">{$LANG.type}:</label>
+                <select name="type_id" id="typeId" class="cols__5-span-2">
+                    {foreach $types as $k => $v}
+                        <option value="{if isset($v.id)}{$v.id}{/if}">{$LANG[$v.name]}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="grid__container grid__head-10">
+                <label for="enabledId" class="cols__4-span-1 bold">{$LANG.enabled}:</label>
+                {html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled selected=1}
+            </div>
+            <div class="grid__container grid__head-10">
+                <label for="visibleId" class="cols__4-span-1 bold">{$LANG.visible}:</label>
+                {html_options name=visible id=visibleId class="cols__5-span-1" options=$enabled selected=1}
+            </div>
+        </div>
+        <div class="align__text-center margin__top-2">
             <button type="submit" class="positive" name="submit" value="{$LANG.insertProductAttribute}">
-                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>
-                {$LANG.save}
+                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
             </button>
-            <a href="index.php?module=product_attribute&amp;view=manage" class="negative">
-                <img src="images/cross.png" alt="{$LANG.cancel}" />
-                {$LANG.cancel}
+            <a href="index.php?module=product_attribute&amp;view=manage" class="button negative">
+                <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
             </a>
         </div>
         <input type="hidden" name="op" value="create"/>

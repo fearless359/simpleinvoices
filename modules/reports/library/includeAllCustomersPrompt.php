@@ -7,6 +7,6 @@ if (isset($reverseIncludeAllCustomersDefault)) {
     $includeAllCustomersDefault = "no";
 }
 
-$includeAllCustomers = isset($_POST['includeAllCustomers']) ? $_POST['includeAllCustomers'] : $includeAllCustomersDefault;
+$includeAllCustomers = $_POST['includeAllCustomers'] ?? $includeAllCustomersDefault;
 
 $smarty->assign('includeAllCustomers', $includeAllCustomers);

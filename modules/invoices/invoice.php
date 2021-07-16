@@ -69,11 +69,7 @@ try {
     $customFields = [];
     for ($idx = 1; $idx <= 4; $idx++) {
         // Note that this is a 1 based array not a 0 based array.
-        $customFields[$idx] = CustomFields::showCustomField(
-            "invoice_cf{$idx}", '',
-            "write", '',
-            "details_screen", '',
-            '', '');
+        $customFields[$idx] = CustomFields::showCustomField("invoice_cf$idx", '', "write");
     }
     $smarty->assign("customFields", $customFields);
 } catch (PdoDbException $pde) {

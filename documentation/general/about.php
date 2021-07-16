@@ -3,13 +3,13 @@
 <head>
     <title>SimpleInvoices - About</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="../../images/favicon.ico"/>
     <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../templates/default/css/info.css">
     <?php
     function printVersionInfo()
     {
         if (($lines = file("../../config/config.ini")) === false) {
-            echo "<i style='color: red;'>Version info not available.</i>";
+            echo "<em class='error'>Version info not available.</em>";
             return;
         }
         $fndSection = false;
@@ -19,7 +19,8 @@
         foreach ($lines as $line) {
             $line = trim($line);
             // Search for pattern (sans quotes): "   [xA0_ -.]". Ex: "   [Section_A 1]"
-            $pattern = '/^ *\[[a-zA-Z0-9_ \-\.]+\]/';
+            /** @noinspection RegExpRedundantEscape */
+            $pattern = '/^ *\[[a-zA-Z0-9_: \-\.]+\]/';
             if (preg_match($pattern, $line) === 1) {
                 if ($fndSection) {
                     break; // end of selected section
@@ -46,21 +47,26 @@
                 }
             }
         }
-        echo "<i style='color: red;'>Unable to access version information</i>";
+        echo "<em class='error'>Unable to access version information</em>";
     }
 
     ?>
 </head>
 <body>
-<h1 class="si_center">About</h1>
-<div class="si_toolbar">
-    <a href="<?php echo $_SERVER['HTTP_REFERER']; ?>">Return To Previous Screen</a>
-</div>
-<br/>
-<br/>
-<div class="si_center">
-    <p><?php printVersionInfo();?></p>
-    <p>Forum homepage: <a href='https://simpleinvoices.group' target="_blank">https://simpleinvoices.group</a></p>
+<div class="container">
+    <h1 class="align__text-center margin__top-0-75">About</h1>
+    <div class="margin__top-0-75">
+        <div class="align__text-center">
+            <a href="<?php echo $_SERVER['HTTP_REFERER']; ?>">
+                <button>Return To Previous Screen</button>
+            </a>
+        </div>
+        <br/>
+        <div class="align__text-center">
+            <p><?php printVersionInfo(); ?><br/>
+                Forum homepage: <a href='https://simpleinvoices.group' target="_blank">https://simpleinvoices.group</a></p>
+        </div>
+    </div>
 </div>
 </body>
 </html>

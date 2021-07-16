@@ -1,30 +1,13 @@
-<tr>
-    <td class="si_center bold underline" colspan="2"
-        style="font-size: 1.5em;">
-        {$LANG.reportPeriod}
-    </td>
-</tr>
-<tr>
-    <td colspan="2">&nbsp;</td>
-</tr>
-<tr style="margin: 0 auto; width: 100%;">
-    <th class="si_right nowrap" style="padding-right: 10px; width: 47%;">
-        <label for="startDateId">{$LANG.activityUc} {$LANG.startDate}:</label>
-    </th>
-    <td>
-        <input type="text" name="startDate" id="startDateId" size="10"
-               class="validate[required,custom[date],length[0,10]] date-picker"
-               value='{if isset($startDate)}{$startDate}{/if}'/>
-    </td>
-</tr>
-<tr style="margin: 0 auto; width: 100%;">
-    <th class="si_right nowrap" style="padding-right: 10px; width: 47%;">
-        <label for="endDateId">{$LANG.activityUc} {$LANG.endDate}:</label>
-    </th>
-    <td>
-        <input type="text"  name="endDate" id="endDateId" size="10"
-               class="validate[required,custom[date],length[0,10]] date-picker"
-               value='{if isset($endDate)}{$endDate}{/if}'/>
-    </td>
-</tr>
-<tr><td colspan="2">&nbsp;</td></tr>
+<h3 class="align__text-center margin__bottom-2 bold underline">{$LANG.reportPeriod}</h3>
+<div class="grid__container grid__head-10">
+    <label for="startDateId" class="cols__2-span-3">{$LANG.startDate}:</label>
+    <input type="text" name="startDate" id="startDateId" size="10"
+           class="cols_5-span-2 validate[required,custom[date],length[0,10]] date-picker"
+           value='{if isset($startDate)}{$startDate}{/if}'/>
+</div>
+<div class="grid__container grid__head-10">
+    <label for="endDateId" class="cols__2-span-3">{$LANG.endDate}:</label>
+    <input type="text"  name="endDate" id="endDateId" size="10"
+           class="cols__5-span-2S validate[required,custom[date],length[0,10]] date-picker"
+           value='{if isset($endDate)}{$endDate}{/if}'/>
+</div>

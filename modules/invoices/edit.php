@@ -3,9 +3,7 @@
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
 use Inc\Claz\CustomFields;
-use Inc\Claz\DbField;
 use Inc\Claz\Invoice;
-use Inc\Claz\Join;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
 use Inc\Claz\Product;
@@ -46,95 +44,9 @@ try {
 
     $invoiceItems = Invoice::getInvoiceItems($masterInvoiceId);
 
-    foreach ($invoiceItems as $key => $val) {
-        // get list of attributes
-        $prod = Product::getOne($val['product_id']);
-        $jsonAtt = json_decode($prod['attribute']);
-        if ($jsonAtt !== null) {
-            $html = "<tr id='json_html{$key}'><td></td><td colspan='5'><table><tr>";
-            foreach ($jsonAtt as $key2 => $val2) {
-                if ($val2 == 'true') {
-                    $pdoDb->setSelectList([
-                        new DbField('a.name', 'name'),
-                        'enabled',
-                        'type_id',
-                        't.name'
-                    ]);
-
-                    $jn = new Join("LEFT", "products_attribute_type", "t");
-                    $jn->addSimpleItem("a.type_id", new DbField("t.id"));
-                    $pdoDb->addToJoins($jn);
-
-                    $pdoDb->addSimpleWhere('a.id', $key2);
-
-                    $rows = $pdoDb->request('SELECT', 'products_attributes', 'a');
-
-                    $attrName = $rows[0];
-
-                    $pdoDb->setSelectList([
-                        new DbField('a.name', 'name'),
-                        new DbField('v.id', 'v'),
-                        new DbField('v.value', 'value'),
-                        new DbField('v.enabled', 'enabled')
-                    ]);
-
-                    $jn = new Join("LEFT", "products_values", "v");
-                    $jn->addSimpleItem("a.id", new DbField("v.attribute_id"));
-                    $pdoDb->addToJoins($jn);
-
-                    $pdoDb->addSimpleWhere('a.id', $key2);
-
-                    $attrVals = $pdoDb->request('SELECT', 'products_attributes', 'a');
-
-                    if ($attrName['enabled'] == ENABLED && $attrName['type'] == 'list') {
-                        $html .= "<td>{$attrName['name']}<select name='attribute[{$key}][{$key2}]'>";
-                        $html .= "<option value=''></option>";
-                        foreach ($attrVals as $attrVal) {
-                            if ($attrVal['enabled'] == ENABLED) {
-                                $selected = "";
-                                foreach ($val['attribute_decode'] as $aKey => $aVal) {
-                                    if ($key2 == $aKey && $aVal == $attrVal['id']) {
-                                        $selected = "selected";
-                                        break;
-                                    }
-                                }
-                                $html .= "<option {$selected} value='{$attrVal['id']}'>{$attrVal['value']}</option>";
-                            }
-                        }
-                        $html .= "</select></td>";
-                    }
-                    if ($attrName['enabled'] == ENABLED && $attrName['type'] == 'free') {
-                        $attributeValue = '';
-                        foreach ($val['attribute_decode'] as $aKey => $aVal) {
-                            if ($key2 == $aKey) {
-                                $attributeValue = $aVal;
-                                break;
-                            }
-                        }
-                        $html .= "<td>{$attrName['name']}<input name='attribute[{$key}][{$key2}]'  value='{$attributeValue}' /></td>";
-                    }
-                    if ($attrName['enabled'] == ENABLED && $attrName['type'] == 'decimal') {
-                        $attributeValue = '';
-                        foreach ($val['attribute_decode'] as $aKey => $aVal) {
-                            if ($key2 == $aKey) {
-                                $attributeValue = $aVal;
-                                break;
-                            }
-                        }
-                        $html .= "<td>{$attrName['name']}<input name='attribute[{$key}][{$key2}]' size='5' value='{$attributeValue}' /></td>";
-                    }
-                }
-            }
-            $html .= "</tr></table></td></tr>";
-            $invoiceItems[$key]['html'] = $html;
-        }
-    }
-
     $customFields = [];
     for ($idx = 1; $idx <= 4; $idx++) {
-        $customFields[$idx] = CustomFields::showCustomField("invoice_cf{$idx}", $invoice["custom_field{$idx}"],
-            "write", '', "details_screen",
-            '', '', '');
+        $customFields[$idx] = CustomFields::showCustomField("invoice_cf$idx", $invoice["custom_field$idx"], "write");
     }
     // @formatter:off
     $smarty->assign ("invoice"     , $invoice);

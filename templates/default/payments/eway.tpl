@@ -56,12 +56,10 @@
             <tr>
                 <td>
                     <button type="submit" class="positive" name="submit" value="{$LANG.save}">
-                        <img class="button_img" src="images/tick.png" alt="" />
-                        {$LANG.save}
+                        <img class="button_img" src="images/tick.png" alt="{$LANG.save}" />{$LANG.save}
                     </button>
-                    <a href="index.php?module=cron&amp;view=manage" class="negative">
-                        <img src="images/cross.png" alt="" />
-                        {$LANG.cancel}
+                    <a href="index.php?module=cron&amp;view=manage" class="button negative">
+                        <img src="images/cross.png" alt="{$LANG.cancel}" />{$LANG.cancel}
                     </a>
                 </td>
             </tr>

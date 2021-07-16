@@ -8,6 +8,18 @@ namespace Inc\Claz;
  */
 class CustomFields
 {
+    /**
+     * This function gets all the custom field associated with and id.
+     * This function is purposely NOT named, getOne(), as will return
+     * an array of rows for the specified ID, rather than a single row.
+     *
+     * @param int $id ID of the fields to retrieve.
+     * @return array Row associated with the $id.
+     */
+    public static function getOne(int $id): array
+    {
+        return self::getCustomFields($id);
+    }
 
     public static function getAll(): array
     {
@@ -48,12 +60,21 @@ class CustomFields
         return $tableRows;
     }
 
-    private static function getCustomFields(): array
+    /**
+     * Return custom fields for a specified ID or all of them if no
+     * $id is specified.
+     * @param int|null $id If specified, the cf_id of the rows to return.
+     * @return array Selected rows.
+     */
+    private static function getCustomFields(?int $id=null): array
     {
-        global $LANG, $pdoDb;
+        global $pdoDb;
 
         $cfs = [];
         try {
+            if (isset($id)) {
+                $pdoDb->addSimpleWhere('cf_id', $id, 'AND');
+            }
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
             $pdoDb->setOrderBy("cf_id");
             $rows = $pdoDb->request('SELECT', 'custom_fields');
@@ -70,7 +91,7 @@ class CustomFields
             return [];
         }
 
-        return $cfs;
+        return isset($id) ? $cfs[0] : $cfs;
     }
 
     /**
@@ -180,19 +201,33 @@ class CustomFields
      * @param string $customField Name of the database field.
      * @param string|null $customFieldValue The value of this field.
      * @param string $permission Maintenance permission (read or write)
-     * @param string $cssClassTr CSS class the the table row (tr)
-     * @param string $cssClassTh CSS class of the table heading (th)
-     * @param string $cssClassTd CSS class of the table detail (td)
-     * @param string $tdColSpan COLSPAN value to table detail row.
-     * @param string $separator Value to display between two values.
+     * @param string|null $cssClassHead CSS class of the encapsulating div statement.
+     *                             Defaults to: "grid__container grid__head-10".
+     * @param string|null $cssClassLabel CSS class of the label.
+     *                              Defaults to: "cols__1-span-2 bold" with "si_label"
+     *                              added if not $permission "read"..
+     * @param string|null $cssClassField CSS class of the detail.
+     *                              Defaults to: "cols__3-span-8".
+     * @param string|null $separator Value to display between two values.
+     *                              Defaults to ": ".
      * @return string Display/input string for a custom field. For "read" permission, the field to
      *         display the data. For "write" permission, the formatted label and field.
      * @throws PdoDbException
      */
-    public static function showCustomField(string $customField, ?string $customFieldValue, string $permission, string $cssClassTr,
-                                           string $cssClassTh, string $cssClassTd, string $tdColSpan, string $separator): string
+    public static function showCustomField(string $customField, ?string $customFieldValue, string $permission,
+                                           ?string $cssClassHead = null, ?string $cssClassLabel = null,
+                                           ?string $cssClassField = null, ?string $separator = null): string
     {
         global $helpImagePath, $pdoDb;
+
+        // No si_label margin adjustment if read mode.
+        $cssLabelDefault = "cols__1-span-2 bold";
+        $cssLabelDefault .= $permission == 'read' ? '' : ' si_label';
+
+        $cssClassHead = $cssClassHead ?? "grid__container grid__head-10";
+        $cssClassLabel = $cssClassLabel ?? $cssLabelDefault;
+        $cssClassField = $cssClassField ?? "cols__3-span-8";
+        $separator = $separator ?? ": ";
 
         $writeMode = $permission == 'write'; // if false then in read mode.
 
@@ -218,22 +253,22 @@ class CustomFields
             $customLabelValue = Util::htmlSafe(self::getCustomFieldLabel($customField));
             if ($writeMode) {
                 $displayBlock =
-                    "<tr>\n" .
-                    "  <th class='$cssClassTh'>$customLabelValue:\n" .
+                    "<div class='$cssClassHead'>\n" .
+                    "  <label for='customField$cfn' class='$cssClassLabel'>{$customLabelValue}$separator\n" .
                     "    <a class='cluetip' href='#' title='Custom Fields' \n" .
                     "       rel='index.php?module=documentation&amp;view=view&amp;page=helpCustomFields'>\n" .
                     "      <img src='{$helpImagePath}help-small.png' alt='' />\n" .
                     "    </a>\n" .
-                    "  </th>\n" .
-                    "  <td>\n" .
-                    "    <input type='text' name='custom_field$cfn' value='$customFieldValue' size='25' />\n" .
-                    "  </td>\n" .
-                    "</tr>\n";
+                    "  </label>\n" .
+                    "  <div class='$cssClassField'>\n" .
+                    "    <input type='text' name='custom_field$cfn' id='customField$cfn' value='$customFieldValue' size='50'/>\n" .
+                    "  </div>\n" .
+                    "</div>\n";
             } else {
                 $displayBlock =
-                    "<div class='$cssClassTr'>\n" .
-                    "  <div class='$cssClassTh bold'>{$customLabelValue}$separator</div>\n" .
-                    "  <div class='$cssClassTd'>$customFieldValue</div>\n" .
+                    "<div class='$cssClassHead'>\n" .
+                    "  <div class='$cssClassLabel'>{$customLabelValue}$separator</div>\n" .
+                    "  <div class='$cssClassField'>$customFieldValue</div>\n" .
                     "</div>\n";
             }
         }

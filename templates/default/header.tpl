@@ -1,7 +1,7 @@
 {include file="templates/default/headline.xml"}
 <!DOCTYPE html>
 <!--suppress HtmlRequiredLangAttribute -->
-<html>
+<html lang="en">
 <head>
     {strip}
         {assign var='tmp_lang_module' value="title_module_`$module`"}
@@ -10,7 +10,7 @@
         {assign var='tmp_lang_view' value=$LANG.$tmp_lang_view|default:$LANG.$view|default:$view}
         {$smarty.capture.hook_head_start}
     {/strip}
-    <title>{$tmp_lang_module} : {$tmp_lang_view} - {$LANG.companyName} </title>
+    <title>{$tmp_lang_module} : {$tmp_lang_view} - {$LANG.companyNameItem|htmlSafe} </title>
     <meta charset="UTF-8"/>
     <meta name="robots" content="noindex, nofollow"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,7 +51,7 @@
    $(document).ready(function () {
        // binds form submission and fields to the validation engine
        $('#frmpost').validationEngine({ promptPosition:
-               "centerRight",
+               "topLeft",
                'custom_error_messages': {
                    '.creditCard': {
                        'required': { 'message': "An entry is required if associated CC field are not blank." }
@@ -68,12 +68,7 @@
     {include 'include/js/jquery.functions.js.tpl'}
     <script src="include/js/jquery.conf1.js"></script>
     {include 'include/js/jquery.conf.js.tpl'}
-{*    {if $config.debugLevel == "All"}*}
-{*        <link rel="stylesheet" type="text/css" href="library/blackbirdjs/blackbird.css"/>*}
-{*        <script src="library/blackbirdjs/blackbird.js"></script>*}
-{*    {/if}*}
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
-{*    <link rel="stylesheet" type="text/css" href="css/print.css" media="print"/>*}
     {$smarty.capture.hook_head_end}
 </head>
 {*<body class="body_si body_module_{$module} body_view_{$view}">*}

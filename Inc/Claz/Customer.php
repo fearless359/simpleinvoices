@@ -103,7 +103,7 @@ class Customer
             }
 
             $quickView = "<a class='index_table' title='quick view' " .
-                             "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['last_inv_id']}'>" .
+                             "href='index.php?module=invoices&amp;view=quickView&amp;id={$row['last_inv_id']}'>" .
                               "{$row['last_index_id']}" .
                          "</a>";
 
@@ -118,7 +118,7 @@ class Customer
                 'action' => $action,
                 'name' => $row['name'],
                 'department' => $row['department'],
-                'quick_view' => $quickView,
+                'quickView' => $quickView,
                 'total' => $row['total'],
                 'paid' => $row['paid'],
                 'owing' => $row['owing'],

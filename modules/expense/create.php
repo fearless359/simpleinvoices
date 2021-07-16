@@ -17,7 +17,7 @@ if (!empty( $_POST ['expense_account_id'] )) {
     include "modules/expense/save.php";
 } else {
     try {
-        $smarty->assign('expenseAdd', Expense::additionalInfo());
+        $smarty->assign('expenseAdd', Expense::additionalInfo(null, true));
     } catch (PdoDbException $pde) {
         exit("modules/expense/add.php Unexpected error: {$pde->getMessage()}");
     }

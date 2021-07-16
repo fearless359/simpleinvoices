@@ -10,15 +10,13 @@
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=reports&amp;view=reportPastDue">
         <div class="si_form si_form_search">
-            <table class="center">
-            {include file=$path|cat:"library/displayDetail.tpl"}
-            </table>
-            <br/>
-            {include file=$path|cat:"library/runReportButton.tpl" value="reportPastDue" label=$LANG.runReport}
-            <br/>
+            <div class="grid__area">
+                {include file=$path|cat:"library/displayDetail.tpl"}
+                {include file=$path|cat:"library/runReportButton.tpl" value="reportPastDue" label=$LANG.runReport}
+            </div>
         </div>
     </form>
 {/if}
 {if isset($smarty.post.submit) || $view == "export"}
-  {include file=$path|cat:"reportPastDueBody.tpl"}
+    {include file=$path|cat:"reportPastDueBody.tpl"}
 {/if}

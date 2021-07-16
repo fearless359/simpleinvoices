@@ -16,7 +16,7 @@ $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=t
 $op = empty($_POST['op']) ? '' : $_POST['op'];
 if ($op == 'create') {
     if (Taxes::verifyExists($_POST['tax_description'])) {
-        $displayBlock = "<div class='si_message_error'>{$LANG['duplicateITaxDescription']}</div>";
+        $displayBlock = "<div class='si_message_error'>{$LANG['duplicateTaxDescription']}</div>";
         $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=create' />";
     } else {
         $resultAdd = Taxes::insertTaxRate();
@@ -28,7 +28,7 @@ if ($op == 'create') {
 } elseif ($op == 'edit') {
     if ($_POST['orig_description'] != $_POST['tax_description'] &&
         Taxes::verifyExists($_POST['tax_description'])) {
-        $displayBlock = "<div class='si_message_error'>{$LANG['duplicateITaxDescription']}</div>";
+        $displayBlock = "<div class='si_message_error'>{$LANG['duplicateTaxDescription']}</div>";
         $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=edit&amp;id={$_GET['id']}' />";
     } elseif (Taxes::updateTaxRate()) {
         $displayBlock = "<div class='si_message_ok'>{$LANG['saveTaxRateSuccess']}</div>";

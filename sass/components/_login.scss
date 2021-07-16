@@ -1,5 +1,6 @@
 .loginForm {
-    width: 30%;
+    width: 50%;
+    max-width: 60rem;
     padding-top: 6rem;
     padding-bottom: 1rem;
     margin: 0 auto;
@@ -22,7 +23,7 @@
         flex-direction: column;
         margin: 0 auto;
         padding: 2rem 2rem 3rem 2rem;
-        border: 10px solid $colorGreyLight-12;
+        border: 10px solid $colorGreyLight-14;
         text-align: left;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
@@ -34,29 +35,29 @@
         background: $colorGreyLight-2;
         background: -moz-linear-gradient(top,
             rgba($colorGreyLight-2, 1) 0%,
-            rgba($colorGreyLight-7, 1) 100%);
+            rgba($colorGreyLight-8, 1) 100%);
         background: -webkit-gradient(
                 linear,
                 left top,
                 left bottom,
                 color-stop(0%, rgba($colorGreyLight-2, 1)),
-                color-stop(100%, rgba($colorGreyLight-7, 1)));
+                color-stop(100%, rgba($colorGreyLight-8, 1)));
         background: -webkit-linear-gradient(
                 top,
                 rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-7, 1) 100%);
+                rgba($colorGreyLight-8, 1) 100%);
         background: -o-linear-gradient(
                 top,
                 rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-7, 1) 100%);
+                rgba($colorGreyLight-8, 1) 100%);
         background: -ms-linear-gradient(
                 top,
                 rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-7, 1) 100%);
+                rgba($colorGreyLight-8, 1) 100%);
         background: linear-gradient(
                 to bottom,
                 rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-7, 1) 100%);
+                rgba($colorGreyLight-8, 1) 100%);
     }
 
     &__header {
@@ -106,7 +107,7 @@
     &__input:focus {
         outline: none;
         box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
-        border-bottom: 3px solid $colorGreyLight-11;
+        border-bottom: 3px solid $colorGreyLight-13;
     }
 
     &__input::placeholder {

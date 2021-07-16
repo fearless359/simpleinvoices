@@ -14,17 +14,9 @@ $op = !empty($_POST['op']) ? $_POST['op'] : "";
 $displayBlock = "<div class='si_message_error'>{$LANG['saveExpenseFailure']}</div>";
 $refreshRedirect = '<meta http-equiv="refresh" content="2;URL=index.php?module=expense&amp;view=manage" />';
 
-if (empty($_POST['customer_id'])) {
-    $_POST['customer_id'] = null;
-}
-
-if (empty($_POST['invoice_id'])) {
-    $_POST['invoice_id'] = null;
-}
-
-if (empty($_POST['product_id'])) {
-    $_POST['product_id'] = null;
-}
+$_POST['customer_id'] = empty($_POST['customer_id']) ? null : $_POST['customer_id'];
+$_POST['invoice_id'] = empty($_POST['invoice_id']) ? null : $_POST['invoice_id'];
+$_POST['product_id'] = empty($_POST['product_id']) ? null : $_POST['product_id'];
 
 if ($op === 'create') {
     if (Expense::insert()) {

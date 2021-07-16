@@ -1,5 +1,5 @@
-{include file="templates/default/reports/library/reportTitle.tpl" title=$title}
-{include file="templates/default/reports/library/exportButtons.tpl"
+{include file=$path|cat:"library/reportTitle.tpl" title=$title}
+{include file=$path|cat:"library/exportButtons.tpl"
          params=[
              'endDate' => $endDate|urlencode,
              'fileName' => "reportSalesTotal",
@@ -11,12 +11,10 @@
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=reports&amp;view=reportSalesTotal">
         <div class="si_form si_form_search">
-            <table class="center">
-                {include file="templates/default/reports/library/dateRangePrompt.tpl"}
-            </table>
-            <br/>
-            {include file="templates/default/reports/library/runReportButton.tpl" value="reportSalesTotal" label=$LANG.runReport}
-            <br/>
+            <div class="grid__area">
+                {include file=$path|cat:"library/dateRangePrompt.tpl"}
+                {include file=$path|cat:"library/runReportButton.tpl" value="reportSalesTotal" label=$LANG.runReport}
+            </div>
         </div>
     </form>
 {/if}

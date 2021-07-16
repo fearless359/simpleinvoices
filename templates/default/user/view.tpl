@@ -1,48 +1,47 @@
 {*
- *  Script: details.tpl
- *      User detail template
+ *  Script: view.tpl
+ *      User details template
  *
  *  Last edited:
- *      2018-09-26 by Richard Rowley
+ * 	    20210701 by Rich Rowley to convert to grid layout
  *
  *  License:
  *      GPL v3 or above
+ *
+ *  Website:
+ *      https://simpleinvoices.group
  *}
-<div class="si_form">
-    <table>
-        <tr>
-            <th class="details_screen">{$LANG.username}:</th>
-            <td>{$user.username|htmlSafe}</td>
-        </tr>
-        <tr>
-            <th class="details_screen">{$LANG.password}:</th>
-            <td>**********</td>
-        </tr>
-        <tr>
-            <th class="details_screen">{$LANG.role}:</th>
-            <td>{$user.role_name|htmlSafe}</td>
-        </tr>
-        <tr>
-            <th class="details_screen">{$LANG.email}:</th>
-            <td>{$user.email|htmlSafe}</td>
-        </tr>
-        <tr>
-            <th class="details_screen">{$LANG.enabled}:</th>
-            <td>{$user.enabled_text|htmlSafe}</td>
-        </tr>
-        <tr>
-            <th class="details_screen">{$LANG.userId}:</th>
-            <td>{$user_id_desc|htmlSafe}</td>
-        </tr>
-    </table>
+<div class="grid__area">
+    <div class="grid__container grid__head-10">
+        <div class="cols__5-span-1 bold">{$LANG.username}:</div>
+        <div class="cols__6-span-4 margin__left-1">{$user.username|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__5-span-1 bold">{$LANG.password}:</div>
+        <div class="cols__6-span-4 margin__left-1">**********</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__5-span-1 bold">{$LANG.role}:</div>
+        <div class="cols__6-span-4 margin__left-1">{$user.role_name|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__5-span-1 bold">{$LANG.email}:</div>
+        <div class="cols__6-span-4 margin__left-1">{$user.email|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__5-span-1 bold">{$LANG.enabled}:</div>
+        <div class="cols__6-span-4 margin__left-1">{$user.enabled_text|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__5-span-1 bold">{$LANG.userId}:</div>
+        <div class="cols__6-span-4 margin__left-1">{$user_id_desc|htmlSafe}</div>
+    </div>
 </div>
-<div class="si_toolbar si_toolbar_form">
-    <a href="index.php?module=user&amp;view=edit&amp;id={$user.id|urlencode}" class="positive">
-        <img src="images/report_edit.png" alt=""/>
-        {$LANG.edit}
+<div class="align__text-center margin__top-3 margin__bottom-2">
+    <a href="index.php?module=user&amp;view=edit&amp;id={$user.id|urlencode}" class="button positive">
+        <img src="images/report_edit.png" alt="{$LANG.edit}"/>{$LANG.edit}
     </a>
-    <a href="index.php?module=user&amp;view=manage" class="negative">
-        <img src="images/cross.png" alt=""/>
-        {$LANG.cancel}
+    <a href="index.php?module=user&amp;view=manage" class="button negative">
+        <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
     </a>
 </div>

@@ -1,36 +1,52 @@
-.si_help {
-    &_div {
-        margin: 4rem auto 1rem auto;
-        text-align: center;
-        border-top: 1px solid $colorGreyLight-5;
-        padding: 6px 10px;
-        width: 50rem;
-        background-color: $colorWhite;
+.si {
+    &_help {
+        &_div {
+            margin: 1.5rem auto;
+            text-align: center;
+            border-top: 1px solid $colorGreyLight-6;
+            padding: .5rem 1rem;
+            width: 50rem;
+            background-color: $colorWhite;
 
+            // @formatter:off
+            & a { color: $colorGreyDark-4; }
 
-        & a {
-            color: $colorGreyDark-4;
-        }
+            & a:hover { color: $colorBlack; }
+            // @formatter:on
 
-        & a:hover {
-            color: $colorBlack;
-        }
-
-        & img {
-            vertical-align: bottom;
-            line-height: 2.4rem;
-            margin-right: 2px;
+            & img {
+                vertical-align: bottom;
+                line-height: 2.5rem;
+                margin-right: 2px;
+            }
         }
     }
+
+    &__index {
+        //& .si_toolbar,
+        //&_reports .si_toolbar {
+        //    padding-left: 2rem;
+        //    padding-bottom: 3rem;
+        //}
+
+        &-help {
+            float: right;
+            margin: 0 auto;
+            padding: 1.5rem;
+            background: $colorGreyLight-9; // was #f5f5ff;
+            border: 3px ridge $colorGreyLight-5;
+            -moz-border-radius: .7rem;
+            -webkit-border-radius: .7rem;
+            border-radius: .7rem;
+            line-height: 150%;
+        }
+    }
+
 }
 
 a.cluetip {
-
-    & img {
-        opacity: 0.8;
-    }
-
-    &:hover img {
-        opacity: 1;
-    }
+    // @formatter:off
+    & img { opacity: 0.8; }
+    &:hover img { opacity: 1; }
+    // @formatter:on
 }

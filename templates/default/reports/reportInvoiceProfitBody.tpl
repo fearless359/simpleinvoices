@@ -5,7 +5,7 @@
 {if !$menu}
     <hr/>
 {/if}
-<h2 class="si_center">{$title}</h2>
+<h2 class="align__text-center">{$title}</h2>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
 <table class="si_report_table">
@@ -14,9 +14,9 @@
         <th>{$LANG.invoiceUc}&#35;</th>
         <th colspan="3">{$LANG.billerUc}</th>
         <th colspan="3">{$LANG.customerUc}</th>
-        <th class="si_right">{$LANG.totalUc}</th>
-        <th class="si_right">{$LANG.costUc}</th>
-        <th class="si_right">{$LANG.profitUc}</th>
+        <th class="align__text-right">{$LANG.totalUc}</th>
+        <th class="align__text-right">{$LANG.costUc}</th>
+        <th class="align__text-right">{$LANG.profitUc}</th>
     </tr>
     </thead>
     <tbody>
@@ -31,9 +31,9 @@
         {/if}
         {assign 'prevPreference' $invoice.preference}
         <tr class="tr_{cycle values="A,B"}">
-            <td class="si_right">
+            <td class="align__text-right">
                 {if $format != 'print' && $format != 'pdf' && $fileType != 'xls' && $fileType != 'doc'}
-                    <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoices[invoice].id|urlencode}">
+                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoices[invoice].id|urlencode}">
                         {$invoice.index_id|htmlSafe}
                     </a>
                 {else}
@@ -42,18 +42,18 @@
             </td>
             <td colspan="3">{$invoice.biller|htmlSafe}</td>
             <td colspan="3">{$invoice.customer|htmlSafe}</td>
-            <td class="si_right {if $invoice@last}underline{/if}">{$invoice.total|utilCurrency}</td>
-            <td class="si_right {if $invoice@last}underline{/if}">{$invoice.cost|utilCurrency}</td>
-            <td class="si_right {if $invoice@last}underline{/if}">{$invoice.profit|utilCurrency}</td>
+            <td class="align__text-right {if $invoice@last}underline{/if}">{$invoice.total|utilCurrency}</td>
+            <td class="align__text-right {if $invoice@last}underline{/if}">{$invoice.cost|utilCurrency}</td>
+            <td class="align__text-right {if $invoice@last}underline{/if}">{$invoice.profit|utilCurrency}</td>
         </tr>
     {/foreach}
     </tbody>
     <tfoot>
     <tr>
-        <td class="si_right bold" colspan="7">{$LANG.totalUc}:</td>
-        <td class="si_right bold">{$invoiceTotals.sumTotal|utilCurrency}</td>
-        <td class="si_right bold">{$invoiceTotals.sumCost|utilCurrency}</td>
-        <td class="si_right bold">{$invoiceTotals.sumProfit|utilCurrency}</td>
+        <td class="align__text-right bold" colspan="7">{$LANG.totalUc}:</td>
+        <td class="align__text-right bold">{$invoiceTotals.sumTotal|utilCurrency}</td>
+        <td class="align__text-right bold">{$invoiceTotals.sumCost|utilCurrency}</td>
+        <td class="align__text-right bold">{$invoiceTotals.sumProfit|utilCurrency}</td>
     </tr>
     </tfoot>
 </table>

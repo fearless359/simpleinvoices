@@ -65,7 +65,7 @@ class Expense
 
             $quickView =
                 "<a class='index_table' title='quick view' " .
-                   "href='index.php?module=invoices&amp;view=quick_view&amp;id={$row['iv_id']}'>" .
+                   "href='index.php?module=invoices&amp;view=quickView&amp;id={$row['iv_id']}'>" .
                     "{$row['iv_index_id']}" .
                 "</a>";
 
@@ -250,7 +250,7 @@ class Expense
             if (!$pdoDb->request("UPDATE", "expense")) {
                 return false;
             }
-
+error_log(print_r($_POST['tax_id'], true));
             $lineItemTaxId = isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "";
             self::expenseItemTax($_GET['id'], $lineItemTaxId, $_POST['amount'], "1", "update");
         } catch (PdoDbException $pde) {
@@ -272,7 +272,7 @@ class Expense
     public static function expenseItemTax(int $expenseId, array $lineItemTaxId, float $unitPrice, float $quantity, string $action = ""): bool
     {
         global $config;
-
+error_log(print_r($lineItemTaxId, true));
         if (empty($lineItemTaxId)) {
             return false;
         }
@@ -283,6 +283,7 @@ class Expense
             if ($action == "update") {
                 $request = new Request("DELETE", "expense_item_tax");
                 $request->addSimpleWhere("expense_id", $expenseId);
+                $requests->add($request);
             }
 
             foreach ($lineItemTaxId as $value) {

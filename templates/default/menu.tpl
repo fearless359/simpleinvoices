@@ -1,4 +1,17 @@
-<div class="si_defer_display container">
+{*
+ *  Script: menu.tpl
+ *      SI Menu template
+ *
+ *  Last modified:
+ *      20210618 by Richard Rowley to set font size.
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
+*}
+<div class="delay__display container">
     <div id="si_header">
         {$smarty.capture.hook_topmenu_start}
         {if !empty($smarty.capture.hook_topmenu_section01_replace)}
@@ -36,14 +49,14 @@
         </ul>
         <!-- SECTION:home -->
         <div id="home">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "dashboard"} class="active"{/if} href="index.php?module=index&amp;view=index">{$LANG.dashboard} </a></li>
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "report"} class="active"{/if} href="index.php?module=reports&amp;view=index">{$LANG.allReports} </a></li>
             </ul>
         </div>
         <!-- SECTION:money -->
         <div id="money">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:invoices -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "invoice"} class="active"{/if} href="index.php?module=invoices&amp;view=manage">{$LANG.invoicesUc}</a></li>
                 {if isset($subPageActive) && $subPageActive == "invoiceCreate" }
@@ -93,7 +106,7 @@
         </div>
         <!-- SECTION:people -->
         <div id="people">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:billers -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "biller"}class="active" {/if}href="index.php?module=billers&amp;view=manage">{$LANG.billersUc}</a></li>
                 {if isset($subPageActive) && $subPageActive == "billerCreate"}
@@ -122,7 +135,7 @@
         </div>
         <!-- SECTION:product -->
         <div id="product">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:inventory -->
                 {if $defaults.inventory}
                     <li class="bold"><a {if isset($pageActive) && $pageActive== "inventory"}class="active" {/if}href="index.php?module=inventory&amp;view=manage">{$LANG.inventory}</a></li>
@@ -151,6 +164,16 @@
                     {if isset($subPageActive) && $subPageActive == "productAttributeView"}
                         <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
                 {/if}
+                <!-- SECTION:product_attribute_values -->
+                {if $defaults.product_attributes}
+                    <li class="bold"><a {if isset($pageActive) && $pageActive== "productAttributeValues"}class="active" {/if}href="index.php?module=product_attribute_values&amp;view=manage">{$LANG.productAttributeValues}</a></li>
+                    {if isset($subPageActive) && $subPageActive == "productAttributeValuesCreate"}
+                        <li><a class="active active_subpage" href="#">{$LANG.addUc}</a></li>{/if}
+                    {if isset($subPageActive) && $subPageActive == "productAttributeValuesEdit"}
+                        <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+                    {if isset($subPageActive) && $subPageActive == "productAttributeValuesView"}
+                        <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+                {/if}
                 <!-- SECTION:product_groups -->
                 {if $defaults.product_groups}
                     <li class="bold"><a {if isset($pageActive) && $pageActive== "productGroups"}class="active" {/if}href="index.php?module=product_groups&amp;view=manage">{$LANG.productGroupsUc}</a></li>
@@ -161,21 +184,11 @@
                     {if isset($subPageActive) && $subPageActive == "productGroupsView"}
                         <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
                 {/if}
-                <!-- SECTION:product_value -->
-                {if $defaults.product_attributes}
-                    <li class="bold"><a {if isset($pageActive) && $pageActive== "productValue"}class="active" {/if}href="index.php?module=product_value&amp;view=manage">{$LANG.productValues}</a></li>
-                    {if isset($subPageActive) && $subPageActive == "productValueCreate"}
-                        <li><a class="active active_subpage" href="#">{$LANG.addUc}</a></li>{/if}
-                    {if isset($subPageActive) && $subPageActive == "productValueEdit"}
-                        <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
-                    {if isset($subPageActive) && $subPageActive == "productValueView"}
-                        <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
-                {/if}
             </ul>
         </div>
         <!-- SECTION:setting -->
         <div id="setting" style="float:right;">
-            <ul class="subnav">
+            <ul class="subnav fonts__size-1-5">
                 <!-- SECTION:custom_fields -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "customFields"}class="active" {/if}href="index.php?module=custom_fields&amp;view=manage">{$LANG.customFieldsUc}</a></li>
                 {if isset($subPageActive) && $subPageActive == "customFieldsEdit"}
@@ -230,7 +243,7 @@
     {literal}
         <script>
             $(document).ready(function () {
-                $("div.si_defer_display").removeClass('si_defer_display');
+                $("div.delay__display").removeClass('delay__display');
             });
         </script>
     {/literal}

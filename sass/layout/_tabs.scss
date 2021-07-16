@@ -44,14 +44,14 @@
 
     & li {
         display: inline;
-        height: 2.5rem;
+        height: 2rem;
         list-style-type: none;
-        padding-right: 2rem;
+        padding-right: 1rem;
     }
 }
 
 #tabs_customer {
-    border-bottom: 0 $colorGreyLight-5 solid;
+    border-bottom: 0 $colorGreyLight-6 solid;
 
     & .anchors a {
         background-color: $colorGreyLight-4;

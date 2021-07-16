@@ -1,137 +1,124 @@
-<!--suppress HtmlFormInputWithoutLabel, HtmlUnknownTag -->
+{*
+ *  Script: edit.tpl
+ *      Expense edit template
+ *
+ *  Last edited:
+ *      20210621 by Rich Rowley to convert to grid layout.
+ *
+ *  Website:
+ *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
+ *}
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id|urlencode}">
-    <div class="si_form" id="si_form_cust_edit">
-        <table class="center">
-            <tr>
-                <th class="details_screen">{$LANG.amountUc}:</th>
-                <td>
-                    <input name="amount" class="si_input validate[required]" value="{$expense.amount|utilNumber}"/>
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.expenseAccounts}:</th>
-                <td>
-                    <select name="expense_account_id" class="si_input validate[required]">
-                        <option value=''></option>
-                        {foreach $detail.expense_accounts as $expense_account}
-                            <option {if $expense_account.id == $expense.ea_id}selected{/if}
-                                    value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.dateFormatted}:</th>
-                <td>
-                    <input type="text" class="si_input validate[required,custom[date],length[0,10]] date-picker"
-                           size="10" name="date" id="date" value='{$expense.date}'/>
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.billerUc}:</th>
-                <td>
-                    <select name="biller_id" class="si_input validate[required]">
-                        <option value=''></option>
-                        {foreach $detail.billers as $biller}
-                            <option {if $biller.id == $expense.b_id} selected {/if}
-                                    value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.customerUc}:</th>
-                <td>
-                    <select name="customer_id" class="si_input ">
-                        <option value=''></option>
-                        {foreach $detail.customers as $customer}
-                            <option {if $customer.id == $expense.c_id} selected {/if}
-                                    value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.invoiceUc}:</th>
-                <td>
-                    <select name="invoice_id" class="si_input ">
-                        <option value=''></option>
-                        {foreach $detail.invoices as $invoice}
-                            <option value="{if isset($invoice.id)}{$invoice.id|htmlSafe}{/if}" {if $invoice.id ==  $expense.iv_id}selected{/if} >
-                                Inv#{$invoice.index_id}: ({$invoice.biller|htmlSafe}, {$invoice.customer|htmlSafe})
-                            </option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen">{$LANG.productUc}:</th>
-                <td>
-                    <select name="product_id" class="si_input ">
-                        <option value=''></option>
-                        {foreach $detail.products as $product}
-                            <option {if $product.id == $expense.p_id} selected {/if}
-                                    value="{if isset($product.id)}{$product.id}{/if}">{$product.description}</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            {if $defaults.tax_per_line_item > 0}
-                <tr>
-                    <th class="details_screen" colspan="1">{$LANG.tax}:</th>
-                    <td>
-                        <table class="left">
-                            <tr>
-                            {section name=tax start=0 loop=$defaults.tax_per_line_item step=1}
-                                <td>
-                                    <select id="tax_id[0][{$smarty.section.tax.index}]" name="tax_id[0][{$smarty.section.tax.index}]" class="si_input">
-                                        <option value=''></option>
-                                        {assign var="index" value=$smarty.section.tax.index}
-                                        {foreach $taxes as $tax}
-                                            <option {if !empty($detail.expense_tax) && $tax.tax_id === $detail.expense_tax.$index.tax_id}selected {/if}
-                                                    value='{$tax.tax_id}'>{$tax.tax_description}</option>
-                                        {/foreach}
-                                    </select>
-                                </td>
-                            {/section}
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            {/if}
-            <tr>
-                <th class="details_screen">{$LANG.status}:</th>
-                <td>
-                    {* enabled block *}
-                    <select name="status" class="si_input ">
-                        <option value="{$smarty.const.ENABLED }" {if isset($expense.status) && $expense.status == $smarty.const.ENABLED }selected{/if}>{$LANG.paidUc}</option>
-                        <option value="{$smarty.const.DISABLED}" {if isset($expense.status) && $expense.status == $smarty.const.DISABLED}selected{/if}>{$LANG.notPaid}</option>
-                    </select>
-                    {* /enabled block*}
-                </td>
-            </tr>
-            <tr>
-                <th class="details_screen" colspan="2">{$LANG.notes}</th>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input name="note" id="note" {if isset($expense.note)}value="{$expense.note|outHtml}"{/if} type="hidden">
-                    <trix-editor input="note" class="si_input "></trix-editor>
-                </td>
-            </tr>
-        </table>
-        <div class="si_toolbar si_toolbar_form">
-            <button type="submit" class="positive" name="save_product" value="{$LANG.save}">
-                <img class="button_img" src="images/tick.png" alt=""/>
-                {$LANG.save}
-            </button>
-            <a href="index.php?module=expense&amp;view=manage" class="negative">
-                <img src="images/cross.png" alt=""/>
-                {$LANG.cancel}
-            </a>
+    <div class="grid__area">
+        <div class="grid__container grid__head-10">
+            <label for="expenseAccountId" class="cols__2-span-2">{$LANG.expenseAccounts}:</label>
+            <select name="expense_account_id" id="expenseAccountId" class="cols__4-span-6 validate[required]"
+                    autofocus tabindex="10">
+                <option value=''></option>
+                {foreach $detail.expense_accounts as $expense_account}
+                    <option {if $expense_account.id == $expense.ea_id}selected{/if}
+                            value="{if isset($expense_account.id)}{$expense_account.id}{/if}">{$expense_account.name}</option>
+                {/foreach}
+            </select>
         </div>
-        <input type="hidden" name="op" value="edit"/>
-        <input type="hidden" name="domain_id" value="{if isset($expense.domain_id)}{$expense.domain_id}{/if}"/>
+        <div class="grid__container grid__head-10">
+            <label for="date" class="cols__2-span-2">{$LANG.dateFormatted}:</label>
+            <input type="text" name="date" id="date" class="cols__4-span-2 validate[required,custom[date],length[0,10]] date-picker"
+                   value="{$expense.date}" tabindex="20"/>
+
+            <label for="amountId" class="cols__7-span-1">{$LANG.amountUc}:</label>
+            <input name="amount" id="amountId" class="cols__8-span-2 validate[required]"
+                   value="{$expense.amount|utilNumber}" tabindex="30"/>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="billerId" class="cols__2-span-2">{$LANG.billerUc}:</label>
+            <select name="biller_id" id="billerId" class="cols__4-span-6 validate[required]" tabindex="40">
+                <option value=''></option>
+                {foreach $detail.billers as $biller}
+                    <option {if $biller.id == $expense.b_id} selected {/if}
+                            value="{if isset($biller.id)}{$biller.id}{/if}">{$biller.name}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="customerId" class="cols__2-span-2">{$LANG.customerUc}:</label>
+            <select name="customer_id" id="customerId" class="cols__4-span-6" tabindex="50">
+                <option value=''></option>
+                {foreach $detail.customers as $customer}
+                    <option {if $customer.id == $expense.c_id}selected{/if}
+                            value="{if isset($customer.id)}{$customer.id}{/if}">{$customer.name}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="invoiceId" class="cols__2-span-2">{$LANG.invoiceUc}:</label>
+            <select name="invoice_id" id="invoiceId" class="cols__4-span-2" tabindex="60">
+                <option value=''></option>
+                {foreach $detail.invoices as $invoice}
+                    <option value="{$invoice.id|htmlSafe}" {if $invoice.id ==  $expense.iv_id}selected{/if}>
+                        {$invoice.index_id}&nbsp;&dash;&nbsp;{$invoice.customer}&nbsp;&dash;&nbsp;{$invoice.date}</option>
+                {/foreach}
+            </select>
+
+            <label for="productId" class="cols__7-span-1">{$LANG.productUc}:</label>
+            <select name="product_id" id="productId" class="cols__8-span-2" tabindex="70">
+                <option value=''></option>
+                {foreach $detail.products as $product}
+                    <option {if $product.id == $expense.p_id}selected{/if}
+                            value="{$product.id}">{$product.description}</option>
+                {/foreach}
+            </select>
+        </div>
+        {if $defaults.tax_per_line_item > 0}
+            <div class="grid__container grid__head-10">
+                <div class="cols__2-span-2 bold">{$LANG.taxesUc}:</div>
+                {$begCol=4}
+                {section name=tax loop=$defaults.tax_per_line_item}
+                    <!--suppress HtmlFormInputWithoutLabel -->
+                    <select name="tax_id[0][{$smarty.section.tax.index}]" id="tax_id[0][{$smarty.section.tax.index}]"
+                            class="cols__{$begCol}-span-2 {if !$smarty.section.tax.last}margin__right-1{/if}"
+                            tabindex="8{$smarty.section.tax.index}">
+                        <option value=''></option>
+                        {$index = $smarty.section.tax.index}
+                        {foreach $taxes as $tax}
+                            <option {if !empty($detail.expense_tax) && $tax.tax_id == $detail.expense_tax.$index.tax_id}selected{/if}
+                                    value="{$tax.tax_id}">{$tax.tax_description}</option>
+                        {/foreach}
+                    </select>
+                    {$begCol=$begCol+2}
+                {/section}
+            </div>
+        {/if}
+        <div class="grid__container grid__head-10">
+            <label for="statusId" class="cols__2-span-2">{$LANG.status}:</label>
+            <select name="status" id="statusId" class="cols__4-span-2" tabindex="90">
+                <option value="{$smarty.const.ENABLED }" {if $expense.status == $smarty.const.ENABLED}selected{/if}>{$LANG.paidUc}</option>
+                <option value="{$smarty.const.DISABLED}" {if $expense.status == $smarty.const.DISABLED}selected{/if}>{$LANG.notPaid}</option>
+            </select>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="notesId" class="cols__2-span-2">{$LANG.notes}</label>
+        </div>
+        <div class="grid__container grid__head-10">
+            <div class="cols__2-span-8">
+                <input name="note" id="notesId" {if isset($expense.note)}value="{$expense.note|outHtml}"{/if} type="hidden">
+                <trix-editor input="notesId" tabIndex="100"></trix-editor>
+            </div>
+        </div>
     </div>
+    <br/>
+    <div class="align__text-center">
+        <button type="submit" class="positive" name="save_product" value="{$LANG.save}" tabindex="110">
+            <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
+        </button>
+        <a href="index.php?module=expense&amp;view=manage" class="button negative" tabindex="120">
+            <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
+        </a>
+    </div>
+    <input type="hidden" name="op" value="edit"/>
+    <input type="hidden" name="domain_id" value="{if isset($expense.domain_id)}{$expense.domain_id}{/if}"/>
 </form>

@@ -3,43 +3,43 @@
     /*
     * Product Change - updates line item with product price info
     */
-    function invoice_product_change(product, row_number, quantity, product_groups_enabled) {
+    function invoiceProductChange(product, rowNumber, quantity, productGroupsEnabled) {
 
         $('#gmail_loading').show();
         $.ajax({
             type: 'GET',
-            url: './index.php?module=invoices&view=product_ajax&id=' + product + '&row=' + row_number,
+            url: './index.php?module=invoices&view=product_ajax&id=' + product + '&row=' + rowNumber,
             data: "id: " + product,
             dataType: "json",
             success: function (data) {
                 $('#gmail_loading').hide();
 
-                $("#json_html" + row_number).remove();
+                $("#json_html" + rowNumber).remove();
 
                 if (quantity === undefined || quantity === "") {
-                    $("#quantity" + row_number).attr("value", "1");
+                    $("#quantity" + rowNumber).attr("value", "1");
                 }
 
-                if (product_groups_enabled === '1') {
-                    $("#unit_price" + row_number).attr("value", data['markup_price']);
+                if (productGroupsEnabled === '1') {
+                    $("#unit_price" + rowNumber).attr("value", data['markup_price']);
                 } else {
-                    $("#unit_price" + row_number).attr("value", data['unit_price']);
+                    $("#unit_price" + rowNumber).attr("value", data['unit_price']);
                 }
 
-                $("#tax_id\\[" + row_number + "\\]\\[0\\]").val(data['default_tax_id']);
+                $("#tax_id\\[" + rowNumber + "\\]\\[0\\]").val(data['default_tax_id']);
                 if (data['default_tax_id_2'] === null) {
-                    $("#tax_id\\[" + row_number + "\\]\\[1\\]").val('');
+                    $("#tax_id\\[" + rowNumber + "\\]\\[1\\]").val('');
                 } else {
-                    $("#tax_id\\[" + row_number + "\\]\\[1\\]").val(data['default_tax_id_2']);
+                    $("#tax_id\\[" + rowNumber + "\\]\\[1\\]").val(data['default_tax_id_2']);
                 }
 
                 if (data['show_description'] === "Y") {
-                    $("tbody#row" + row_number + " tr.details").removeClass('si_hide');
+                    $("tbody#row" + rowNumber + " tr.details").show();
                 } else {
-                    $("tbody#row" + row_number + " tr.details").addClass('si_hide');
+                    $("tbody#row" + rowNumber + " tr.details").hide();
                 }
 
-                let desc_row = $("#description" + row_number);
+                let desc_row = $("#description" + rowNumber);
                 let row_val = desc_row.val();
                 let rel_attr = desc_row.attr('rel');
                 if (!row_val || row_val === rel_attr || row_val === '{/literal}{$LANG.descriptionUc}{literal}') {
@@ -54,7 +54,7 @@
                 }
 
                 if (data['json_html'] !== "") {
-                    $("tbody#row" + row_number + " tr.details").before(data['json_html']);
+                    $("tbody#row" + rowNumber + " tr.details").before(data['json_html']);
                 }
             }
 

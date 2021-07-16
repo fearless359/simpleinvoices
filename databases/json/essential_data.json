@@ -247,10 +247,6 @@
     {
       "inv_ty_id": "2",
       "inv_ty_description": "Itemized"
-    },
-    {
-      "inv_ty_id": "3",
-      "inv_ty_description": "Consulting"
     }
   ],
   "si_payment_types": [
@@ -397,6 +393,34 @@
       "sql_release": "20200924",
       "sql_statement": "ALTER TABLE `si_customers` ADD `parent_customer_id` INT(11) NULL AFTER `notes`;DELETE IGNORE FROM `si_extensions` WHERE `name` = 'sub_customer';INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('sub_customer', $flg, $domainId, 1);",
       "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "322",
+      "sql_patch": "Add product_groups table to the database.",
+      "sql_release": "20201010",
+      "sql_statement": "CREATE TABLE `si_product_groups` (name VARCHAR(60) NOT NULL PRIMARY KEY, markup INT(2) NOT NULL DEFAULT 0) ENGINE = InnoDb; DELETE IGNORE FROM `si_extensions` WHERE `name` = 'invoice_grouped'; INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('product_groups', 0, $domainId, 1); ALTER TABLE `si_products` ADD product_group VARCHAR(60) NOT NULL DEFAULT ''; INSERT INTO `si_product_groups` (`name`, `markup`) VALUES ('Labor', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES ('Equipment', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES ('Materials', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES ('Subcontractor', 0);",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "323",
+      "sql_patch": "Add invoice description open option.",
+      "sql_release": "20210413",
+      "sql_statement": "INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('invoice_description_open', 0, $domainId, 1);",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "324",
+      "sql_patch": "Rename si_products_values table to si_products_attributes_values.",
+      "sql_release": "20210527",
+      "sql_statement": "ALTER TABLE `si_products_values` RENAME TO si_products_attributes_values;",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "325",
+      "sql_patch": "Remove unused items from the si_system_defaults table.",
+      "sql_release": "20200615",
+      "sql_statement": "DELETE IGNORE FROM `si_system_defaults` WHERE `name` in ('company_name', 'emailhost', 'emailpassword', 'emailusername', 'pdfbottommargin', 'pdfleftmargin', 'pdfpapersize', 'pdfrightmargin', 'pdfscreensize', 'pdftopmargin', 'spreadsheet', 'wordprocessor'); DELETE IGNORE FROM `si_system_defaults` WHERE `name` LIKE 'dateformat%';",
+      "source": "fearless359"
     }
   ],
   "si_system_defaults": [
@@ -413,12 +437,6 @@
       "extension_id": "1"
     },
     {
-      "name": "company_name",
-      "value": "SimpleInvoices",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
       "name": "company_name_item",
       "value": "SimpleInvoices",
       "domain_id": "DOMAIN-ID",
@@ -431,32 +449,14 @@
       "extension_id": "1"
     },
     {
-      "name": "dateformat",
-      "value": "Y-m-d",
+      "name": "default_invoice",
+      "value": "",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
       "name": "delete",
       "value": "0",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "emailhost",
-      "value": "localhost",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "emailpassword",
-      "value": "",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "emailusername",
-      "value": "",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
@@ -468,6 +468,12 @@
     },
     {
       "name": "inventory",
+      "value": "0",
+      "domain_id": "DOMAIN-ID",
+      "extension_id": "1"
+    },
+    {
+      "name": "invoice_description_open",
       "value": "0",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
@@ -527,42 +533,6 @@
       "extension_id": "1"
     },
     {
-      "name": "pdfbottommargin",
-      "value": "15",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "pdfleftmargin",
-      "value": "15",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "pdfpapersize",
-      "value": "A4",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "pdfrightmargin",
-      "value": "15",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "pdfscreensize",
-      "value": "800",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "pdftopmargin",
-      "value": "15",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
       "name": "preference",
       "value": "1",
       "domain_id": "DOMAIN-ID",
@@ -575,14 +545,14 @@
       "extension_id": "1"
     },
     {
-      "name": "session_timeout",
-      "value": "60",
+      "name": "product_groups",
+      "value": "0",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
     {
-      "name": "spreadsheet",
-      "value": "xls",
+      "name": "session_timeout",
+      "value": "60",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },
@@ -607,12 +577,6 @@
     {
       "name": "template",
       "value": "default",
-      "domain_id": "DOMAIN-ID",
-      "extension_id": "1"
-    },
-    {
-      "name": "wordprocessor",
-      "value": "doc",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     }

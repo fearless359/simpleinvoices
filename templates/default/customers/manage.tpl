@@ -2,82 +2,77 @@
  *  Script: manage.tpl
  *      Customer manage template
  *
- *  License:
- *      GPL v3 or above
- *
  *  Last modified:
- *      2018-12-10 by Richard Rowley
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  *  Website:
  *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
  *}
 {if $first_run_wizard == true}
     <div class="si_message">
         {$LANG.thankYou} {$LANG.beforeStarting}
     </div>
-    <table class="si_table_toolbar">
+    <div class="grid__area">
         {if $number_of_billers == 0}
-            <tr>
-                <th>{$LANG.setupAsBiller}</th>
-                <td class="si_toolbar">
-                    <a href="index.php?module=billers&amp;view=create" class="positive">
-                        <img src="images/user_add.png" alt=""/>
-                        {$LANG.addNewBiller}
+            <div class="grid__container grid__head-10">
+                <div class="cols__1-span-7 align__text-right margin__top-0-75 margin__right-1">{$LANG.setupAsBiller}</div>
+                <div class="cols__8-span-3">
+                    <a href="index.php?module=billers&amp;view=create" class="button positive">
+                        <img src="images/user_add.png" alt=""/>{$LANG.addNewBiller}
                     </a>
-                </td>
-            </tr>
+                </div>
+            </div>
         {/if}
         {if $number_of_customers == 0}
-            <tr>
-                <th>{$LANG.setupAddCustomer}</th>
-                <td class="si_toolbar">
-                    <a href="index.php?module=customers&amp;view=create" class="positive">
-                        <img src="images/vcard_add.png" alt=""/>
-                        {$LANG.customerAdd}
+            <div class="grid__container grid__head-10">
+                <div class="cols__1-span-7 align__text-right margin__top-0-75 margin__right-1">{$LANG.setupAddCustomer}</div>
+                <div class="cols__8-span-3">
+                    <a href="index.php?module=customers&amp;view=create" class="button positive">
+                        <img src="images/vcard_add.png" alt=""/>{$LANG.customerAdd}
                     </a>
-                </td>
-            </tr>
+                </div>
+            </div>
         {/if}
         {if $number_of_products == 0}
-            <tr>
-                <th>{$LANG.setupAddProducts}</th>
-                <td class="si_toolbar">
-                    <a href="index.php?module=products&amp;view=create" class="positive">
-                        <img src="images/cart_add.png" alt=""/>
-                        {$LANG.addNewProduct}
+            <div class="grid__container grid__head-10">
+                <div class="cols__1-span-7 align__text-right margin__top-0-75 margin__right-1">{$LANG.setupAddProducts}</div>
+                <div class="cols__8-span-3">
+                    <a href="index.php?module=products&amp;view=create" class="button positive">
+                        <img src="images/cart_add.png" alt=""/>{$LANG.addNewProduct}
                     </a>
-                </td>
-            </tr>
+                </div>
+            </div>
         {/if}
-        <tr>
-            <th>{$LANG.setupCustomization}</th>
-            <td class="si_toolbar">
+        <div class="grid__container grid__head-10">
+            <div class="cols__1-span-7 align__text-right margin__top-0-75 margin__right-1">{$LANG.setupCustomization}</div>
+            <div class="cols__8-span-3">
                 <a href="index.php?module=system_defaults&amp;view=manage" class="">
-                    <img src="images/cog_edit.png" alt=""/>
-                    {$LANG.siDefaults}
+                    <button><img src="images/cog_edit.png" alt=""/>{$LANG.siDefaults}</button>
                 </a>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+    </div>
 {else}
-    <div class="si_toolbar si_toolbar_top"
+    <div class="align__text-center margin__bottom-2"
          {if $smarty.session.role_name == 'customer'}style="display:none"{/if}>
         <a href="index.php?module=customers&amp;view=create" class="">
-            <img src="images/add.png" alt=""/>
-            {$LANG.customerAdd}
+            <button><img src="images/add.png" alt=""/>{$LANG.customerAdd}</button>
         </a>
     </div>
-    <table id="si-data-table" class="display responsive compact" >
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
             <tr>
-                <th class="si_center">{$LANG.actions}</th>
-                <th class="si_left">{$LANG.nameUc}</th>
-                <th class="si_left">{$LANG.customerDepartment}</th>
-                <th class="si_center">{$LANG.lastInvoice}</th>
-                <th class="si_right">{$LANG.totalUc}</th>
-                <th class="si_right">{$LANG.paidUc}</th>
-                <th class="si_right">{$LANG.owingUc}</th>
-                <th class="si_center">{$LANG.enabled}</th>
+                <th class="align__text-center">{$LANG.actions}</th>
+                <th>{$LANG.nameUc}</th>
+                <th>{$LANG.customerDepartment}</th>
+                <th class="align__text-center">{$LANG.lastInvoice}</th>
+                <th class="align__text-right">{$LANG.totalUc}</th>
+                <th class="align__text-right">{$LANG.paidUc}</th>
+                <th class="align__text-right">{$LANG.owingUc}</th>
+                <th class="align__text-center">{$LANG.enabled}</th>
             </tr>
         </thead>
     </table>
@@ -93,7 +88,7 @@
                     { "data": "action" },
                     { "data": "name" },
                     { "data": "department" },
-                    { "data": "quick_view" },
+                    { "data": "quickView" },
                     { "data": "total",
                         "render": function(data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {

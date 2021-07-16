@@ -21,7 +21,7 @@ error_log("collated - " . print_r($collated, true));
 try {
     $pdoDb->query($collated);
     $displayBlock =
-        '<div style="margin:0 auto 40px auto;width:50%;text-align:left;">' .
+        '<div class="align__center width_50">' .
             '<p>Sample data has been successfully imported. You are now able to begin ' .
                 'testing SimpleInvoices. When you have completed your test and want to ' .
                 'install and use SimpleInvoices live, simply delete all the tables from ' .
@@ -31,10 +31,9 @@ try {
                 'Product records after which SimpleInvoices will be ready for you to begin ' .
                 'generating new invoices.</p>' .
         '</div>' .
-        '<div class="si_toolbar si_toolbar_form">' .
-            '<a href="index.php" class="positive">' .
-        '<img src="../../images/tick.png" alt="" />' .
-                'Start Testing SimpleInvoices' .
+        '<div class="align__text-center  margin__top-3 margin__bottom-2"">' .
+            '<a href="index.php" class="button positive">' .
+                '<img src="../../images/tick.png" alt="" />Start Testing SimpleInvoices' .
             '</a>' .
         '</div>';
 

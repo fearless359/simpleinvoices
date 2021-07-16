@@ -5,7 +5,7 @@
 {if !$menu}
     <hr/>
 {/if}
-<h1 class="si_center">{$title}</h1>
+<h1 class="align__text-center">{$title}</h1>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
 <table class="si_report_table">
@@ -19,7 +19,7 @@
     {foreach $accounts as $account}
         <tr class="tr_{cycle values="A,B"}">
             <td>{$account.account}</td>
-            <td class="si_right">{$account.expense|utilCurrency}</td>
+            <td class="align__text-right">{$account.expense|utilCurrency}</td>
         </tr>
     {/foreach}
     </tbody>

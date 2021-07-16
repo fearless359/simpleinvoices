@@ -3,7 +3,7 @@
     top: 30%;
     left: 42%;
     background-color: white;
-    border: 2px solid $colorGreyLight-13;
+    border: 2px solid $colorGreyLight-15;
     z-index: 102;
     font-size: 1.3rem;
 
@@ -26,8 +26,22 @@
     }
 }
 
-.dialog {
+.toolbar_dialog {
+    display: grid;
+    grid-template-columns: 1fr;
     font-family: arial, verdana, helvetica, sans-serif;
     font-size: 1.2rem;
-    color: $colorGreyDark-5;
+    color: $colorGreyDark-7;
+
+    & a,
+    & button {
+        display: block;
+        margin: .5rem;
+        width: 20rem;
+    }
+
+    & button {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

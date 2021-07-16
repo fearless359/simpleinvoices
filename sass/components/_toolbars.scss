@@ -1,121 +1,90 @@
-.si_toolbar {
-    text-align: center;
+.si {
+    &_toolbar {
+        &_form {
+            margin: 2rem;
+            //
+            //& a,
+            //& button {
+            //    padding: .8rem 1.5rem;
+            //    margin-left: 1rem;
+            //}
+        }
 
-    &_top {
-        margin-bottom: 20px;
-
-        &_left {
+        &_inform {
             text-align: left;
-            margin-left: 39px;
+            margin: 10px 0;
+
+            & button,
+            & a {
+                font-size: 1rem;
+                padding: 2px 6px;
+                line-height: 15px;
+                background: $colorGreyLight-6;
+            }
+
+            & img {
+                height: 15px;
+            }
         }
     }
 
-    & a,
-    & button {
-        margin: 0;
-        padding: 8px 10px;
-        @include borderBackgroundFilter;
-        border-left: 1px solid $colorGreyLight-11;
-        min-width: 30px;
-        text-align: center;
-        color: $colorGreyDark-5;
-        text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
-                     0 1px 0 rgba($colorWhite, 1);
-    }
-
-    & a.selected {
-        background: #f5f5f5;
-        color: #444;
-        text-shadow: 0 -1px 1px rgba($colorWhite, 0.9),
-        0 1px 0 rgba($colorWhite, 1);
-    }
-
-    & img {
-        margin-right: 7px;
-    }
-
-    & a:hover,
-    & button:hover {
-        color: $colorGreyDark-4;
-        background: $colorGreyLight-8;
-    }
-
-    & a img,
-    & button img  {
-        vertical-align: bottom;
-        margin-right: 3px;
-    }
-
-    & .positive {
-        font-weight: bold;
-    }
-
-    & .negative {
-        opacity: 0.7;
-    }
-
-    &_form {
-        margin: 10px 0;
-
-        & a,
-        & button {
-            padding: 8px 15px;
-            margin-left: 10px;
-        }
-    }
-
-    &_inform {
-        text-align: left;
-        margin: 10px 0;
-
-
-        & button,
-        & a {
-            font-size: 1rem;
-            padding: 2px 6px;
-            line-height: 15px;
-            background: $colorGreyLight-5;
+    &_table_toolbar {
+        & th,
+        & td {
+            padding-bottom: 10px;
+            vertical-align: middle;
         }
 
-        & img {
-            height: 15px;
-        }
-    }
-
-    &_dialog {
-        display: grid;
-        grid-template-columns: 1fr;
-
-        & a,
-        & button {
-            display: block;
-            margin: 10px;
-            width: 220px;
+        & th {
+            font-weight: normal;
+            text-align: right;
         }
 
-        & button {
-            margin-left: auto;
-            margin-right: auto;
+        & td {
+            text-align: left;
+            padding-left: 20px;
         }
     }
-}
-
-.si_index {
-    & .si_toolbar,
-    &_reports .si_toolbar {
-        text-align: left;
-        padding-left: 2rem;
-        padding-bottom: 3rem;
-    }
-
-    &_help {
-        float: right;
-        padding: 1.5rem;
-        background: $colorGreyLight-4; // was #f5f5ff;
-        border: 1px solid $colorGreyLight-10;
-        -moz-border-radius: 7px;
-        -webkit-border-radius: 7px;
-        border-radius: .7rem;
-        line-height: 150%;
-    }
+    //
+    //& button {
+    //    margin: 0;
+    //    padding: 1rem 2rem;
+    //    border: 1px solid $colorGreyLight-11;
+    //    border-radius: 5rem;
+    //    min-width: 3rem;
+    //    text-align: center;
+    //    color: $colorGreyDark-7;
+    //    text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
+    //    0 1px 0 rgba($colorWhite, 1);
+    //}
+    //
+    //& a.selected,
+    //& button.selected {
+    //    background: #f5f5f5;
+    //    color: #444;
+    //    text-shadow: 0 -1px 1px rgba($colorWhite, 0.9),
+    //    0 1px 0 rgba($colorWhite, 1);
+    //}
+    //
+    //& img {
+    //    margin-right: 7px;
+    //}
+    //
+    //& button:hover {
+    //    color: $colorGreyDark-4;
+    //    background: $colorGreyLight-9;
+    //}
+    //
+    //& button img {
+    //    vertical-align: bottom;
+    //    margin-right: 3px;
+    //}
+    //
+    //& .positive {
+    //    font-weight: bold;
+    //}
+    //
+    //& .negative {
+    //    opacity: 0.7;
+    //}
 }

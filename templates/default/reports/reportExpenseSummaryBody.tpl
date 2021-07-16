@@ -5,16 +5,16 @@
 {if !$menu}
     <hr/>
 {/if}
-<h1 class="si_center">{$title}</h1>
+<h1 class="align__text-center">{$title}</h1>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
 <table class="si_report_table">
     <thead>
     <tr>
         <th>{$LANG.accountUc}</th>
-        <th class="si_right">{$LANG.amountUc}</th>
-        <th class="si_right">{$LANG.tax}</th>
-        <th class="si_right">{$LANG.totalUc}</th>
+        <th class="align__text-right">{$LANG.amountUc}</th>
+        <th class="align__text-right">{$LANG.tax}</th>
+        <th class="align__text-right">{$LANG.totalUc}</th>
         <th>{$LANG.status}</th>
     </tr>
     </thead>
@@ -22,9 +22,9 @@
     {foreach $accounts as $account}
         <tr class="tr_{cycle values="A,B"}">
             <td>{$account.account}</td>
-            <td class="si_right">{$account.expense|utilCurrency}</td>
-            <td class="si_right">{if $account.tax != ""}{$account.tax|utilCurrency}{/if}</td>
-            <td class="si_right">
+            <td class="align__text-right">{$account.expense|utilCurrency}</td>
+            <td class="align__text-right">{if $account.tax != ""}{$account.tax|utilCurrency}{/if}</td>
+            <td class="align__text-right">
                 {if empty($account.total)}
                     {$account.expense|utilCurrency}
                 {else}
@@ -37,16 +37,16 @@
     </tbody>
 </table>
 
-<h1 class="si_center">{$title2}</h1>
+<h1 class="align__text-center">{$title2}</h1>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
 <table class="si_report_table">
     <thead>
     <tr>
-        <td class="si_center">{$LANG.idUc}#</td>
+        <td class="align__text-center">{$LANG.idUc}#</td>
         <td>{$LANG.billerUc}</td>
         <td>{$LANG.customerUc}</td>
-        <td class="si_right">{$LANG.amountUc}</td>
+        <td class="align__text-right">{$LANG.amountUc}</td>
     </tr>
     </thead>
     <tbody>
@@ -57,10 +57,10 @@
             </tr>
         {/if}
         <tr class="tr_{cycle values="A,B"}">
-            <td class="si_right">
+            <td class="align__text-right">
             {$invoice.preference}
             {if $format != 'print' && $format != 'pdf' && $fileType != 'xls' && $fileType != 'doc'}
-                <a href="index.php?module=invoices&amp;view=quick_view&amp;id={$invoice.id|urlencode}">
+                <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlencode}">
                     {$invoice.index_id|htmlSafe}
                 </a>
             {else}
@@ -69,14 +69,14 @@
             </td>
             <td>{$invoice.biller}</td>
             <td>{$invoice.customer}</td>
-            <td class="si_right">{$invoice.total|utilCurrency}</td>
+            <td class="align__text-right">{$invoice.total|utilCurrency}</td>
         </tr>
     {/foreach}
     </tbody>
 </table>
 
 
-<h1 class="si_center">{$title3}</h1>
+<h1 class="align__text-center">{$title3}</h1>
 {include file=$path|cat:"library/dateRangeDisplay.tpl"}
 <br/>
 <table class="si_report_table">
@@ -86,7 +86,7 @@
         <th>{$LANG.billerUc}</th>
         <th>{$LANG.customerUc}</th>
         <th>{$LANG.type}</th>
-        <th class="si_right">{$LANG.amountUc}</th>
+        <th class="align__text-right">{$LANG.amountUc}</th>
     </tr>
     </thead>
     <tbody>
@@ -96,7 +96,7 @@
             <td>{$payment.bname}</td>
             <td>{$payment.cname}</td>
             <td>{$payment.type}</td>
-            <td class="si_right">{$payment.ac_amount|utilCurrency}</td>
+            <td class="align__text-right">{$payment.ac_amount|utilCurrency}</td>
         </tr>
     {/foreach}
     </tbody>

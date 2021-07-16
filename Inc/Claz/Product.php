@@ -67,7 +67,7 @@ class Product
 
             $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
             $enabled = "<span style='display: none'>{$row['enabled_text']}</span>" .
-                       "<img src='{$image}' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+                       "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
 
             $tableRows[] = [
                 'action' => $action,
@@ -75,7 +75,7 @@ class Product
                 'product_group' => $row['product_group'],
                 'unit_price' => $row['unit_price'],
                 'markup_price' => $row['markup_price'],
-                'quantity' => isset($row['quantity']) ? $row['quantity'] : '0',
+                'quantity' => $row['quantity'] ?? '0',
                 'enabled' => $enabled,
                 'currency_code' => $config['localCurrencyCode'],
                 'locale' => preg_replace('/^(.*)_(.*)$/','$1-$2', $config['localLocale'])
@@ -219,7 +219,7 @@ class Product
 
         $result = 0;
         try {
-            $description = isset($_POST['description']) ? $_POST['description'] : "";
+            $description = $_POST['description'] ?? "";
             $unitPrice = isset($_POST['unit_price']) ? Util::dbStd($_POST['unit_price']) : "0";
             $cost = isset($_POST['cost']) ? Util::dbStd($_POST['cost']) : "0";
             $fauxPost = [
@@ -227,18 +227,18 @@ class Product
                 'description' => $description,
                 'unit_price' => $unitPrice,
                 'cost' => $cost,
-                'reorder_level' => isset($_POST['reorder_level']) ? $_POST['reorder_level'] : "0",
-                'custom_field1' => isset($_POST['custom_field1']) ? $_POST['custom_field1'] : "",
-                'custom_field2' => isset($_POST['custom_field2']) ? $_POST['custom_field2'] : "",
-                'custom_field3' => isset($_POST['custom_field3']) ? $_POST['custom_field3'] : "",
-                'custom_field4' => isset($_POST['custom_field4']) ? $_POST['custom_field4'] : "",
-                'notes' => isset($_POST['notes']) ? $_POST['notes'] : "",
+                'reorder_level' => $_POST['reorder_level'] ?? "0",
+                'custom_field1' => $_POST['custom_field1'] ?? "",
+                'custom_field2' => $_POST['custom_field2'] ?? "",
+                'custom_field3' => $_POST['custom_field3'] ?? "",
+                'custom_field4' => $_POST['custom_field4'] ?? "",
+                'notes' => $_POST['notes'] ?? "",
                 'default_tax_id' => empty($_POST['default_tax_id']) ? null : $_POST['default_tax_id'],
                 'custom_flags' => $customFlags,
                 'enabled' => $enabled,
                 'visible' => $visible,
                 'attribute' => json_encode($attr),
-                'product_group' => isset($_POST['product_group']) ? $_POST['product_group'] : "",
+                'product_group' => $_POST['product_group'] ?? "",
                 'notes_as_description' => $notesAsDescription,
                 'show_description' => $showDescription
             ];
@@ -270,7 +270,7 @@ class Product
 
             $attr = [];
             foreach ($attributes as $val) {
-                $tmp = isset($_POST['attribute' . $val['id']]) ? $_POST['attribute' . $val['id']] : "";
+                $tmp = $_POST['attribute' . $val['id']] ?? "";
                 if ($tmp == 'true') {
                     $attr[$val['id']] = $tmp;
                 }
@@ -278,7 +278,7 @@ class Product
 
             // @formatter:off
             $notesAsDescription = isset($_POST['notes_as_description']) && $_POST['notes_as_description'] == 'true' ? 'Y' : NULL;
-            $showDescription     = isset($_POST['show_description'])     && $_POST['show_description']     == 'true' ? 'Y' : NULL;
+            $showDescription    = isset($_POST['show_description'])     && $_POST['show_description']     == 'true' ? 'Y' : NULL;
 
             $customFlags = '0000000000';
             for ($idx = 1; $idx <= 10; $idx++) {
@@ -288,22 +288,22 @@ class Product
             }
 
             $unitPrice = isset($_POST['unit_price']) ? Util::dbStd($_POST['unit_price']) : "0";
-            $cost       = isset($_POST['cost'])       ? Util::dbStd($_POST['cost'])       : "0";
-            $fauxPost = [
-                'description'          => isset($_POST['description'])     ? $_POST['description']    : "",
-                'enabled'              => isset($_POST['enabled'])         ? $_POST['enabled']        : "",
-                'notes'                => isset($_POST['notes'])           ? $_POST['notes']          : "",
+            $cost      = isset($_POST['cost'])       ? Util::dbStd($_POST['cost'])       : "0";
+            $fauxPost  = [
+                'description'          => $_POST['description'] ?? "",
+                'enabled'              => $_POST['enabled'] ?? "",
+                'notes'                => $_POST['notes'] ?? "",
                 'default_tax_id'       => !empty($_POST['default_tax_id']) ? $_POST['default_tax_id'] : null,
-                'custom_field1'        => isset($_POST['custom_field1'])   ? $_POST['custom_field1']  : "",
-                'custom_field2'        => isset($_POST['custom_field2'])   ? $_POST['custom_field2']  : "",
-                'custom_field3'        => isset($_POST['custom_field3'])   ? $_POST['custom_field3']  : "",
-                'custom_field4'        => isset($_POST['custom_field4'])   ? $_POST['custom_field4']  : "",
+                'custom_field1'        => $_POST['custom_field1'] ?? "",
+                'custom_field2'        => $_POST['custom_field2'] ?? "",
+                'custom_field3'        => $_POST['custom_field3'] ?? "",
+                'custom_field4'        => $_POST['custom_field4'] ?? "",
                 'custom_flags'         => $customFlags,
                 'unit_price'           => $unitPrice,
                 'cost'                 => $cost,
-                'reorder_level'        => isset($_POST['reorder_level'])   ? $_POST['reorder_level']  : "0",
+                'reorder_level'        => $_POST['reorder_level'] ?? "0",
                 'attribute'            => json_encode($attr),
-                'product_group'        => isset($_POST['product_group'])   ? $_POST['product_group']  : "",
+                'product_group'        => $_POST['product_group'] ?? "",
                 'notes_as_description' => $notesAsDescription,
                 'show_description'     => $showDescription
             ];

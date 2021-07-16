@@ -2,33 +2,32 @@
  *  Script: manage.tpl
  *      Manage payment types template
  *
- * Authors:
- *   Justin Kelly, Nicolas Ruflin, Ben Brown
+ *  Authors:
+ *      Justin Kelly, Nicolas Ruflin, Ben Brown
  *
- *  Last edited:
- *      2016-08-15
- *
- *  License:
- *      GPL v3 or above
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  *  Website:
  *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
  *}
-<div class="si_toolbar si_toolbar_top">
+<div class="align__text-center margin__bottom-2">
     <a href="index.php?module=payment_types&amp;view=create">
-        <img src="images/add.png" alt=""/>
-        {$LANG.addNewPaymentType}
+        <button><img src="images/add.png" alt="{$LANG.addNewPaymentType}"/>{$LANG.addNewPaymentType}</button>
     </a>
 </div>
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noPaymentTypes}</div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_left">{$LANG.descriptionUc}</th>
-            <th class="si_center">{$LANG.enabled}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th>{$LANG.descriptionUc}</th>
+            <th class="align__text-center">{$LANG.enabled}</th>
         </tr>
         </thead>
     </table>

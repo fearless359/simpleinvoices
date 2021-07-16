@@ -2,30 +2,29 @@
  *  Script: manage.tpl
  *      Products manage template
  *
- *  Last Modified:
- *      2018-10-27 by Richard Rowley
- *
- *  License:
- *      GPL v3 or above
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  *  Website:
  *      https://simpleinvoices.group
+ *
+ *  License:
+ *      GPL v3 or above
  *}
-<div class="si_toolbar si_toolbar_form">
-    <a href="index.php?module=expense_account&amp;view=create" class="positive">
-        <img src="images/add.png" alt=""/>
-        {$LANG.addNewExpenseAccount}
+<div class="align__text-center">
+    <a href="index.php?module=expense_account&amp;view=create" class="button positive">
+        <img src="images/add.png" alt=""/>{$LANG.addNewExpenseAccount}
     </a>
 </div>
 <br />
 {if $numberOfRows == 0 }
     {$display_block}
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_left">{$LANG.nameUc}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th>{$LANG.nameUc}</th>
         </tr>
         </thead>
     </table>

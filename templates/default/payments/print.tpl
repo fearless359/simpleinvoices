@@ -14,7 +14,7 @@
   <table class="center">
     <tr>
       <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" style="border:0; text-align:left;margin: 0 10px;" alt=""></td>
-      <th class="si_right">
+      <th class="align__text-right">
         <span class="font1">{$LANG.receiptUc} {$LANG.for} {$LANG.paymentId}&nbsp;{$payment.id|htmlSafe}</span>
       </th>
     </tr>
@@ -272,16 +272,16 @@
     <tr>
       <td class="tbl1-bottom col1"><b>{$LANG.paymentId}</b></td>
       <td class="tbl1-bottom col1" colspan="3"><b>{$preference.pref_description|htmlSafe}{$LANG.idUc}</b></td>
-      <td class="tbl1-bottom col1 si_right"><b>{$LANG.amountUc}</b></td>
-      <td class="tbl1-bottom col1 si_right"><b>{$LANG.dateUc}</b></td>
-      <td class="tbl1-bottom col1 si_right"><b>{$LANG.paymentType}</b></td>
+      <td class="tbl1-bottom col1 align__text-right"><b>{$LANG.amountUc}</b></td>
+      <td class="tbl1-bottom col1 align__text-right"><b>{$LANG.dateUc}</b></td>
+      <td class="tbl1-bottom col1 align__text-right"><b>{$LANG.paymentType}</b></td>
     </tr>
     <tr class="">
       <td class="">{$payment.id|htmlSafe}</td>
       <td class="" colspan="3">{$invoice.index_id|htmlSafe}</td>
-      <td class="si_right">{$preference.pref_currency_sign}{$payment.ac_amount|utilNumber}</td>
-      <td class="si_right">{$payment.date|htmlSafe}</td>
-      <td class="si_right">
+      <td class="align__text-right">{$preference.pref_currency_sign}{$payment.ac_amount|utilNumber}</td>
+      <td class="align__text-right">{$payment.date|htmlSafe}</td>
+      <td class="align__text-right">
         {$paymentType.pt_description|htmlSafe}
         {if $payment.ac_check_number != ""}&nbsp;{$payment.ac_check_number|htmlSafe}{/if}
       </td>

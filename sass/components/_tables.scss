@@ -41,7 +41,7 @@ tr {
 
 th.details_screen,
 td.details_screen {
-    border-bottom: 1px dashed $colorGreyLight-105;
+    border-bottom: 1px dashed $colorGreyLight-12;
     line-height: 24px;
 }
 
@@ -49,24 +49,6 @@ td,
 div {
     font-family: verdana, arial, helvetica, sans-serif;
     text-align: left;
-}
-
-.si_table_toolbar {
-    & th,
-    & td {
-        padding-bottom: 10px;
-        vertical-align: middle;
-    }
-
-    & th {
-        font-weight: normal;
-        text-align: right;
-    }
-
-    & td {
-        text-align: left;
-        padding-left: 20px;
-    }
 }
 
 // DataTables setting

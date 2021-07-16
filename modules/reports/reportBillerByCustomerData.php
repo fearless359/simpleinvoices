@@ -14,8 +14,7 @@ global $billerId, $endDate, $pdoDb, $smarty, $startDate;
 
 Util::directAccessAllowed();
 
-$billers = Biller::getAll(true);
-$smarty->assign('billers', $billers);
+$smarty->assign('billers', Biller::getAll(true));
 try {
     if (!empty($billerId)) {
         $pdoDb->addSimpleWhere("b.id", $billerId, "AND");

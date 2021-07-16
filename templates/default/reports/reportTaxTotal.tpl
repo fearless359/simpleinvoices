@@ -11,12 +11,10 @@
 	<form name="frmpost" method="POST" id="frmpost"
 		  action="index.php?module=reports&amp;view=reportTaxTotal">
 		<div class="si_form si_form_search">
-			<table class="center">
-				{include file="templates/default/reports/library/dateRangePrompt.tpl"}
-			</table>
-			<br/>
-			{include file="templates/default/reports/library/runReportButton.tpl" value="reportTaxTotal" label=$LANG.runReport}
-			<br/>
+			<div class="grid__area">
+				{include file=$path|cat:"library/dateRangePrompt.tpl"}
+				{include file=$path|cat:"library/runReportButton.tpl" value="reportTaxTotal" label=$LANG.runReport}
+			</div>
 		</div>
 	</form>
 {/if}

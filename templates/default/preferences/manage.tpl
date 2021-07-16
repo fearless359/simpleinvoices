@@ -2,36 +2,35 @@
  *  Script: manage.tpl
  * 	    Invoice Preferences manage template
  *
- *  Authors:
- *	    Justin Kelly, Ben Brown
+ *  Last modified:
+ *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
- *  Last edited:
- * 	    2018-12-12 by Richard Rowley
+ *  Website:
+ *      https://simpleinvoices.group
  *
  *  License:
- *	    GPL v3 or above
+ *      GPL v3 or above
  *}
-<div class="si_toolbar si_toolbar_top">
+<div class="align__text-center margin__bottom-2">
     <a href="index.php?module=preferences&amp;view=create" class="">
-        <img src="images/add.png" alt=""/>
-        {$LANG.addNewPreference}
+        <button><img src="images/add.png" alt=""/>{$LANG.addNewPreference}</button>
     </a>
 </div>
 
 {if $numberOfRows == 0}
     <div class="si_message">{$LANG.noPreferences}</div>
 {else}
-    <table id="si-data-table" class="display responsive compact">
+    <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="si_center">{$LANG.actions}</th>
-            <th class="si_right">{$LANG.idUc}</th>
-            <th class="si_left">{$LANG.descriptionUc}</th>
-            <th class="si_center">{$LANG.invoiceNumberingGroup}</th>
-            <th class="si_center">{$LANG.setAging}</th>
-            <th class="si_center">{$LANG.language}</th>
-            <th class="si_center">{$LANG.locale}</th>
-            <th class="si_center">{$LANG.enabled}</th>
+            <th class="align__text-center">{$LANG.actions}</th>
+            <th class="align__text-right">{$LANG.idUc}</th>
+            <th>{$LANG.descriptionUc}</th>
+            <th class="align__text-center">{$LANG.invoiceNumberingGroup}</th>
+            <th class="align__text-center">{$LANG.setAging}</th>
+            <th class="align__text-center">{$LANG.language}</th>
+            <th class="align__text-center">{$LANG.locale}</th>
+            <th class="align__text-center">{$LANG.enabled}</th>
         </tr>
         </thead>
     </table>
@@ -71,7 +70,6 @@
 <div class="si_help_div">
     <a class="cluetip" href="#" title="{$LANG.whatsAllThisInvPref}"
        rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefWhatThe">
-        <img src="{$helpImagePath}help-small.png" alt=""/>
-        {$LANG.whatsAllThisInvPref}
+        <button><img src="{$helpImagePath}help-small.png" alt="{$LANG.whatsAllThisInvPref}"/>{$LANG.whatsAllThisInvPref}</button>
     </a>
 </div>

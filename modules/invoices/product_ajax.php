@@ -46,7 +46,7 @@ if (!empty($id)) {
 
                     $rows = [];
                     try {
-                        $join = new Join("INNER", "products_values", "v");
+                        $join = new Join("INNER", "products_attributes_values", "v");
                         $join->addSimpleItem("a.id", "v.attribute_id");
                         $pdoDb->addToJoins($join);
                         $pdoDb->addSimpleWhere("a.id", $key);

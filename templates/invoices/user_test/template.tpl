@@ -13,7 +13,7 @@
     <table class="center" style="width:100%;">
         <tr>
             <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" style="border:0; margin:0 0;" alt=""></td>
-            <th class="si_right"><span class="font1">{$preference.pref_inv_heading|htmlSafe} #{$invoice.index_id}</span></th>
+            <th class="align__text-right"><span class="font1">{$preference.pref_inv_heading|htmlSafe} #{$invoice.index_id}</span></th>
         </tr>
         <tr>
             <td colspan="6" class="tbl1-top">&nbsp;</td>
@@ -155,52 +155,52 @@
                     </tr>
                     <tr style="text-align: left;">
                         <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.numberShort}:</td>
-                        <td class="si_right"  colspan="3">{$invoice.index_id}</td>
+                        <td class="align__text-right"  colspan="3">{$invoice.index_id}</td>
                     </tr>
                     <tr>
                         <td style="text-align: left;" class="">{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.dateUc}:</td>
-                        <td class="si_right" colspan="3">{$invoice.date|utilDate}</td>
+                        <td class="align__text-right" colspan="3">{$invoice.date|utilDate}</td>
                     </tr>
                     <!-- Show the Invoice Custom Fields if valid -->
                     {if !empty($customFieldLabels.invoice_cf1) && isset($invoice.custom_field1)}
                         <tr>
                             <td style="text-align: left;" class="">{$customFieldLabels.invoice_cf1|htmlSafe}:</td>
-                            <td style="text-align: left;" class="si_right" colspan="3">{$invoice.custom_field1|htmlSafe}</td>
+                            <td style="text-align: left;" class="align__text-right" colspan="3">{$invoice.custom_field1|htmlSafe}</td>
                         </tr>
                     {/if}
                     {if !empty($customFieldLabels.invoice_cf2) && isset($invoice.custom_field2)}
                         <tr>
                             <td style="text-align:left" class="">{$customFieldLabels.invoice_cf2|htmlSafe}:</td>
-                            <td style="text-align:left" class="si_right" colspan="3">{$invoice.custom_field2|htmlSafe}</td>
+                            <td style="text-align:left" class="align__text-right" colspan="3">{$invoice.custom_field2|htmlSafe}</td>
                         </tr>
                     {/if}
                     {if !empty($customFieldLabels.invoice_cf3) && isset($invoice.custom_field3)}
                         <tr>
                             <td nowrap class="">{$customFieldLabels.invoice_cf3|htmlSafe}:</td>
-                            <td class="si_right" colspan="3">{$invoice.custom_field3|htmlSafe}</td>
+                            <td class="align__text-right" colspan="3">{$invoice.custom_field3|htmlSafe}</td>
                         </tr>
                     {/if}
                     {if !empty($customFieldLabels.invoice_cf4) && isset($invoice.custom_field4)}
                         <tr>
                             <td nowrap class="">{$customFieldLabels.invoice_cf4|htmlSafe}:</td>
-                            <td class="si_right" colspan="3">{$invoice.custom_field4|htmlSafe}</td>
+                            <td class="align__text-right" colspan="3">{$invoice.custom_field4|htmlSafe}</td>
                         </tr>
                     {/if}
                     <tr>
                         <td class="">{$LANG.totalUc}:</td>
-                        <td class="si_right" colspan="3">
+                        <td class="align__text-right" colspan="3">
                             {$preference.pref_currency_sign}{$invoice.total|utilNumber}
                         </td>
                     </tr>
                     <tr>
                         <td class="">{$LANG.paidUc}:</td>
-                        <td class="si_right" colspan="3">
+                        <td class="align__text-right" colspan="3">
                             {$preference.pref_currency_sign}{$invoice.paid|utilNumber}
                         </td>
                     </tr>
                     <tr>
                         <td class="">{$LANG.owingUc}:</td>
-                        <td class="si_right" colspan="3">
+                        <td class="align__text-right" colspan="3">
                             {$preference.pref_currency_sign}{$invoice.owing|utilNumber}
                         </td>
                     </tr>
@@ -217,16 +217,16 @@
             <tr>
                 <td class="tbl1-bottom col1"><b>{$LANG.quantityShort}</b></td>
                 <td class="tbl1-bottom col1" colspan="3"><b>{$LANG.item}</b></td>
-                <td class="tbl1-bottom col1 si_right;"><b>{$LANG.unitCost}</b></td>
-                <td class="tbl1-bottom col1 si_right;"><b>{$LANG.priceUc}</b></td>
+                <td class="tbl1-bottom col1 align__text-right;"><b>{$LANG.unitCost}</b></td>
+                <td class="tbl1-bottom col1 align__text-right;"><b>{$LANG.priceUc}</b></td>
             </tr>
             {foreach $invoiceItems as $invoiceItem}
                 <tr class="">
                     <td class="">{$invoiceItem.quantity|utilNumberTrim}</td>
                     <td class="" colspan="3">{$invoiceItem.product.description|htmlSafe}</td>
-                    <td class="si_right;">
+                    <td class="align__text-right;">
                         {$preference.pref_currency_sign}{$invoiceItem.unit_price|utilNumber}</td>
-                    <td class="si_right;">
+                    <td class="align__text-right;">
                         {$preference.pref_currency_sign}{$invoiceItem.gross_total|utilNumber}</td>
                 </tr>
                 {if isset($invoiceItem.attribute)}
@@ -257,19 +257,19 @@
                         <table style="width:100%;;">
                             <tr>
                                 {if !empty($customFieldLabels.product_cf1)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
+                                    {inv_itemized_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
                                     {do_tr number=1 class="blank-class"}
                                 {/if}
                                 {if !empty($customFieldLabels.product_cf2)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
+                                    {inv_itemized_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
                                     {do_tr number=2 class="blank-class"}
                                 {/if}
                                 {if !empty($customFieldLabels.product_cf3)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
+                                    {inv_itemized_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
                                     {do_tr number=3 class="blank-class"}
                                 {/if}
                                 {if !empty($customFieldLabels.product_cf4)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
+                                    {inv_itemized_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
                                     {do_tr number=4 class="blank-class"}
                                 {/if}
                             </tr>
@@ -277,60 +277,7 @@
                     </td>
                 </tr>
             {/foreach}
-        {/if}
-        {if $invoice.type_id == CONSULTING_INVOICE}
-            <tr class="tbl1-bottom col1">
-                <td class="tbl1-bottom "><b>{$LANG.quantityShort}</b></td>
-                <td colspan="3" class=" tbl1-bottom"><b>{$LANG.item}</b></td>
-                <td class=" tbl1-bottom si_right"><b>{$LANG.unitCost}</b></td>
-                <td class=" tbl1-bottom si_right"><b>{$LANG.priceUc}</b></td>
-            </tr>
-            {foreach $invoiceItems as $invoiceItem}
-                <tr class=" ">
-                    <td class="">{$invoiceItem.quantity|utilNumberTrim}</td>
-                    <td>{$invoiceItem.product.description|htmlSafe}</td>
-                    <td class="" colspan="4"></td>
-                </tr>
-                <tr>
-                    <td class=""></td>
-                    <td class="" colspan="5">
-                        <table style="width:100%;;">
-                            <tr>
-                                {if !empty($customFieldLabels.product_cf1)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf1 field=$invoiceItem.product.custom_field1}
-                                    {do_tr number=1 class="blank-class"}
-                                {/if}
-                                {if !empty($customFieldLabels.product_cf2)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf2 field=$invoiceItem.product.custom_field2}
-                                    {do_tr number=2 class="blank-class"}
-                                {/if}
-                                {if !empty($customFieldLabels.product_cf3)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf3 field=$invoiceItem.product.custom_field3}
-                                    {do_tr number=3 class="blank-class"}
-                                {/if}
-                                {if !empty($customFieldLabels.product_cf4)}
-                                    {inv_itemised_cf label=$customFieldLabels.product_cf4 field=$invoiceItem.product.custom_field4}
-                                    {do_tr number=4 class="blank-class"}
-                                {/if}
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr class="">
-                    <td class=""></td>
-                    <td class="" colspan="5"><i>{$LANG.descriptionUc}: </i>{$invoiceItem.description|htmlSafe}</td>
-                </tr>
-                <tr class="">
-                    <td class=""></td>
-                    <td class=""></td>
-                    <td class=""></td>
-                    <td class=""></td>
-                    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.unit_price|utilNumber}</td>
-                    <td class="si_right">{$preference.pref_currency_sign}{$invoiceItem.total|utilNumber}</td>
-                </tr>
-            {/foreach}
-        {/if}
-        {if $invoice.type_id == TOTAL_INVOICE}
+        {elseif $invoice.type_id == TOTAL_INVOICE}
             <tr>
                 <td>
                     <table class="left" style="width:100%;;">
@@ -346,8 +293,7 @@
                 </td>
             </tr>
         {/if}
-        {if ($invoice.type_id == ITEMIZED_INVOICE   && $invoice.note != "") ||
-            ($invoice.type_id == CONSULTING_INVOICE && $invoice.note != "" ) }
+        {if ($invoice.type_id == ITEMIZED_INVOICE   && $invoice.note != "")}
             <tr>
                 <td class="" colspan="6"><br></td>
             </tr>
@@ -359,8 +305,8 @@
         {if $invoiceNumberOfTaxes > 0}
             <tr>
                 <td colspan="2"></td>
-                <td colspan="3" class="si_right">{$LANG.subtotalUc}&nbsp;</td>
-                <td colspan="1" class="si_right" {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
+                <td colspan="3" class="align__text-right">{$LANG.subtotalUc}&nbsp;</td>
+                <td colspan="1" class="align__text-right" {if $invoiceNumberOfTaxes > 1}style="text-decoration:underline;"{/if}>
                     {$preference.pref_currency_sign}{$invoice.gross|utilNumber}
                 </td>
             </tr>
@@ -374,8 +320,8 @@
             {if ($invoice.tax_grouped[line].tax_amount != "0") }
                 <tr>
                     <td colspan="2"></td>
-                    <td colspan="3" class="si_right">{$invoice.tax_grouped[line].tax_name|htmlSafe}&nbsp;</td>
-                    <td colspan="1" class="si_right">
+                    <td colspan="3" class="align__text-right">{$invoice.tax_grouped[line].tax_name|htmlSafe}&nbsp;</td>
+                    <td colspan="1" class="align__text-right">
                         {$preference.pref_currency_sign}{$invoice.tax_grouped[line].tax_amount|utilNumber}
                     </td>
                 </tr>
@@ -384,8 +330,8 @@
         {if $invoiceNumberOfTaxes > 1}
             <tr>
                 <td colspan="2"></td>
-                <td colspan="3" class="si_right">{$LANG.taxTotal}&nbsp;</td>
-                <td colspan="1" class="si_right;" style="text-decoration:underline;">
+                <td colspan="3" class="align__text-right">{$LANG.taxTotal}&nbsp;</td>
+                <td colspan="1" class="align__text-right;" style="text-decoration:underline;">
                     {$preference.pref_currency_sign}{$invoice.total_tax|utilNumber}
                 </td>
             </tr>
@@ -397,10 +343,10 @@
         {/if}
         <tr>
             <td colspan="2"></td>
-            <td colspan="3" class="si_right">
+            <td colspan="3" class="align__text-right">
                 <b>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.amountUc}</b>
             </td>
-            <td colspan="1" class="si_right">
+            <td colspan="1" class="align__text-right">
                 <span class="double_underline" style="text-decoration:underline;">
                     {$preference.pref_currency_sign}{$invoice.total|utilNumber}
                 </span>
@@ -500,7 +446,7 @@
         </tr>
         <tr>
             <td colspan="6">
-                <div style="font-size: 8pt;" class="si_center">{$biller.footer|outHtml}</div>
+                <div style="font-size: 8pt;" class="align__text-center">{$biller.footer|outHtml}</div>
             </td>
         </tr>
         <tr>

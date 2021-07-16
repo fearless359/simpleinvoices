@@ -1,6 +1,6 @@
 <?php
 global $smarty;
 
-$includePaidInvoices = empty($_POST['includePaidInvoices']) ? "no" : $_POST['includePaidInvoices'];
+$includePaidInvoices = $_POST['includePaidInvoices'] ?? "no";
 
 $smarty->assign('includePaidInvoices', $includePaidInvoices);
