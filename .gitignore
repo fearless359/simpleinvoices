@@ -10,6 +10,7 @@ tmp/*
 .project
 public/**
 .settings/**
+DefinitionCache/**
 
 ### Exclude non-library extensions ###
 extensions
