@@ -12,8 +12,8 @@ global $smarty;
 Util::directAccessAllowed();
 
 // If the invoice ID is present, access payments for it but only first.
-// TODO Handle chance of multiple payments on an invoice
 if (isset($_GET['ac_inv_id'])) {
+    // Can result in multiple payments being retrieved.
     $payment = Payment::getOne($_GET['ac_inv_id'], false);
 } else {
     $payment = Payment::getOne($_GET['id']);

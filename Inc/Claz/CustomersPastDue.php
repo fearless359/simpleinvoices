@@ -11,7 +11,7 @@ use Exception;
 class CustomersPastDue
 {
     /**
-     * Collect past dues information for each customer
+     * Collect past due information for each customer
      * @param float $grandTotalBilled
      * @param float $grandTotalPaid
      * @param float $grandTotalOwed
@@ -35,7 +35,7 @@ class CustomersPastDue
 
             $grandTotalBilled = 0;
             $grandTotalPaid = 0;
-            $grandTotalDue = 0;
+            $grandTotalOwed = 0;
             foreach ($custRows as $custRow) {
                 $cid = $custRow['cid'];
                 $name = $custRow['name'];

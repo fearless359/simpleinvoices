@@ -281,6 +281,7 @@ class SiAcl
             foreach ($permissions as $permission => $roles) {
                 $acl->addPermission($permission);
                 foreach ($roles as $role) {
+                    /** @noinspection PhpUndefinedFieldInspection */
                     $acl->{$role}->can->{$permission}($resource);
                 }
             }
@@ -318,6 +319,7 @@ class SiAcl
          */
         $acl = unserialize($_SESSION['acl']);
 
+        /** @noinspection PhpUndefinedFieldInspection */
         return $acl->can->{$role}->{$permission}($resource);
     }
 
@@ -325,6 +327,7 @@ class SiAcl
      * Add resource(s) to the current Acl object.
      * @param string|array $resource
      * @param Acl $acl
+     * @noinspection PhpUnused
      */
     public static function appendResources($resource, Acl $acl): void
     {
@@ -341,6 +344,7 @@ class SiAcl
      * Add resource(s) to the current Acl object.
      * @param string|array $resource
      * @param Acl $acl
+     * @noinspection PhpUnused
      */
     public static function appendPermission($resource, Acl $acl): void
     {

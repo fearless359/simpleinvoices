@@ -11,6 +11,9 @@
  * Website:
  *      https://simpleinvoices.group
  *}
+{if !empty($errorMsg)}
+    <h3 class="align__text-center si_message_error">{$errorMsg}</h3>
+{/if}
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}">
     <div class="grid__area">
@@ -124,7 +127,7 @@
                 </a>
             </label>
             <input type="text" name="credit_card_number" id="ccNumber" tabindex="140"
-                   class="cols__5-span-6 margin__left-0-5 creditCard validate[condRequired[ccName, ccExpMonth, ccExpYear]]"/>
+                   class="cols__5-span-6 margin__left-0-5 creditCard"/>
         </div>
         <div class="grid__container grid__head-10">
             <label for="ccExpMonth" class="cols__2-span-3">{$LANG.creditCardExpiryMonth}:</label>

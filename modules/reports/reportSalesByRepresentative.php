@@ -25,7 +25,7 @@ Util::directAccessAllowed();
 include 'library/dateRangePrompt.php';
 include 'library/filterByDateRangePrompt.php';
 
-$salesRep = isset($_POST['salesRep']) ? $_POST['salesRep'] : "";
+$salesRep = $_POST['salesRep'] ?? "";
 $smarty->assign('salesRep', $salesRep);
 
 $smarty->assign('title', "{$LANG['salesRepresentative']} {$LANG['reportUc']}");

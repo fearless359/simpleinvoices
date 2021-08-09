@@ -33,7 +33,7 @@ class ExpenseAccount
      * Get all records for the current domain_id.
      * @return array Rows retrieved.
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::getExpenseAccounts();
     }

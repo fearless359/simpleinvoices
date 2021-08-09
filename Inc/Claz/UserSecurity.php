@@ -14,7 +14,7 @@ class UserSecurity
      * in the system_defaults table.
      * @return string Password pattern.
      */
-    public static function buildPwdPattern()
+    public static function buildPwdPattern(): string
     {
         global $smarty;
         $defaults = $smarty->tpl_vars['defaults']->value;

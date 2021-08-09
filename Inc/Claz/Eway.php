@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpClassConstantAccessedViaChildClassInspection */
 
 namespace Inc\Claz;
 

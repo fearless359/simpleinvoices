@@ -4,7 +4,8 @@
  * @param array $params array with index of "logo" and value of default logo file path.
  * @return string logo file path to use
  */
-function smarty_function_holiday_logo(array $params) {
+function smarty_function_holiday_logo(array $params): string
+{
     // @formatter:off
     $holidays = [
         "_newyears."     => "1",

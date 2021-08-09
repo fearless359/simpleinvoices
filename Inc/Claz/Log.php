@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpClassNamingConventionInspection */
+<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
+
+/** @noinspection PhpClassNamingConventionInspection */
 
 namespace Inc\Claz;
 
@@ -125,6 +127,7 @@ class Log extends Logger
         if (!isset(self::$logger)) {
             global $config;
             self::open($config['loggerLevel']);
+            /** @noinspection PhpVoidFunctionResultUsedInspection */
             error_log("Log::out called before tmp/log/si.log opened. Opened automatically. Backtrace: " . print_r(debug_print_backtrace(), true));
         }
         self::$logger->log($level, $msg);

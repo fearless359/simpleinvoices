@@ -96,7 +96,7 @@ class WhereItem
      *        a value of <b>1</b>.
      * @return string Formatted <b>WHERE</b> clause component for this criterion.
      */
-    public function build(int &$tokenCnt, array &$keyPairs)
+    public function build(int &$tokenCnt, array &$keyPairs): string
     {
         $item = '';
         if ($this->openParen) {

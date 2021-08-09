@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpMethodMayBeStaticInspection */
+<?php
+/** @noinspection PhpMethodMayBeStaticInspection */
 
 namespace Inc\Claz;
 
@@ -8,6 +9,7 @@ include_once 'vendor/autoload.php';
 
 /**
  * Class UtilTest
+ * @name UtilTest.php
  * @author Richard Rowley
  * @license GPL V3 or above
  * Created: 20190315
@@ -176,9 +178,7 @@ class UtilTest extends TestCase
     public function testGetCustomPath()
     {
         // Test template option
-        $customPath = Util::getCustomPath(self::$existingCustomDefaultTemplateFileName, 'template');
-        self::assertEquals(self::$existingCustomDefaultPath, $customPath, 'Testing tpl file exists in custom/defaultTemplate path');
-
+        /** @noinspection PhpRedundantOptionalArgumentInspection */
         $customPath = Util::getCustomPath(self::$nonExistingCustomDefaultTemplateFileName, 'template');
         self::assertEquals(self::$existingTemplatesDefaultPath, $customPath, 'Testing tpl file exists in templates/default path');
 
@@ -261,6 +261,7 @@ class UtilTest extends TestCase
         $actual = Util::date('2020-05-08', 'long');
         self::assertEquals("May 08, 2020", $actual);
 
+        /** @noinspection PhpRedundantOptionalArgumentInspection */
         $actual = Util::date('2020-05-08', 'medium');
         self::assertEquals("05/08/2020", $actual);
 

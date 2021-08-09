@@ -59,6 +59,7 @@ class Funcs
             foreach ($extNames as $extName) {
                 if (file_exists("extensions/$extName/templates/default/menu.tpl")) {
                     $menuExtension = $smarty->fetch("extensions/$extName/templates/default/menu.tpl");
+                    /** @noinspection RegExpRedundantEscape */
                     $pattern = '/<!\-\- BEFORE:/';
                     $extSects = preg_split($pattern, $menuExtension, -1, PREG_SPLIT_NO_EMPTY);
                     foreach ($extSects as $sect) {
@@ -76,6 +77,7 @@ class Funcs
             error_log("Funcs::mergeMenuSections() - Error: " . $exp->getMessage());
         }
         $menutpl = "";
+        /** @noinspection PhpLoopCanBeReplacedWithImplodeInspection */
         foreach ($lines as $line) {
             $menutpl .= $line;
         }

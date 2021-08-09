@@ -2,7 +2,6 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
-use Inc\Claz\DomainId;
 use Inc\Claz\User;
 use Inc\Claz\UserSecurity;
 use Inc\Claz\Util;

@@ -33,6 +33,7 @@ class ConfigLines
     public static function lineType(string $line): string
     {
         $line = trim($line);
+        /** @noinspection RegExpRedundantEscape */
         $pattern = '/^\[.*\]$/';
         if (preg_match($pattern, $line) == 1) {
             return 'section';

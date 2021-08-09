@@ -30,6 +30,10 @@ Util::directAccessAllowed();
 
 $cid = $_GET['id'];
 
+if (!empty($_GET['errorMsg'])) {
+    $smarty->assign('errorMsg', $_GET['errorMsg']);
+}
+
 $customer = Customer::getOne($cid);
 $customer['credit_card_number_masked'] = Customer::maskCreditCardNumber($customer['credit_card_number']);
 $smarty->assign('customer', $customer);

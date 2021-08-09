@@ -30,19 +30,19 @@ try {
                     "<td class='details_screen'>{$invoice['preference']}:</td>" .
                     "<td>{$invoice['index_id']}</td>" .
                     "<td class='details_screen'>Total: </td>" .
-                    "<td>{$total}</td>" .
+                    "<td>$total</td>" .
                 "</tr>" .
                 "<tr>" .
                     "<td class='details_screen'>Biller: </td>" .
                     "<td>{$invoice['biller']} </td>" .
                     "<td class='details_screen'>Paid: </td>" .
-                    "<td>{$paid}</td>" .
+                    "<td>$paid</td>" .
                 "</tr>" .
                 "<tr>" .
                     "<td class='details_screen'>Customer: </td>" .
                     "<td>{$invoice['customer']}</td>" .
                     "<td class='details_screen'>Owing: </td>" .
-                    "<td><u>{$owing}</u></td>" .
+                    "<td><u>$owing</u></td>" .
                 "</tr>" .
             "</table>\n";
     }

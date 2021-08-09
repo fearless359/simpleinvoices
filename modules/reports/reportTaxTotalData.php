@@ -5,37 +5,44 @@ use Inc\Claz\DomainId;
 use Inc\Claz\Join;
 use Inc\Claz\OnClause;
 use Inc\Claz\PdoDb;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
 /**
  * @var PdoDb $pdoDb
+ * @noinspection PhpRedundantVariableDocTypeInspection
  */
 global $endDate, $pdoDb, $smarty, $startDate;
 
 Util::directAccessAllowed();
 
-$onClause = new Onclause();
-$onClause->addItem(new WhereItem(false, 'iv.date', 'BETWEEN', [$startDate, $endDate], false, 'AND'));
-$onClause->addSimpleItem('iv.id', new DbField('ii.invoice_id'), 'AND');
-$onClause->addSimpleItem('iv.domain_id', new DbField('ii.domain_id'));
-$jn = new Join('INNER', 'invoices', 'iv');
-$jn->setOnClause($onClause);
-$pdoDb->addToJoins($jn);
+$rows = [];
+try {
+    $onClause = new Onclause();
+    $onClause->addItem(new WhereItem(false, 'iv.date', 'BETWEEN', [$startDate, $endDate], false, 'AND'));
+    $onClause->addSimpleItem('iv.id', new DbField('ii.invoice_id'), 'AND');
+    $onClause->addSimpleItem('iv.domain_id', new DbField('ii.domain_id'));
+    $jn = new Join('INNER', 'invoices', 'iv');
+    $jn->setOnClause($onClause);
+    $pdoDb->addToJoins($jn);
 
-$jn = new Join('INNER', 'preferences', 'pr');
-$jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
-$jn->addSimpleItem('pr.status', ENABLED, 'AND');
-$jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
-$pdoDb->addToJoins($jn);
+    $jn = new Join('INNER', 'preferences', 'pr');
+    $jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
+    $jn->addSimpleItem('pr.status', ENABLED, 'AND');
+    $jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
+    $pdoDb->addToJoins($jn);
 
-$pdoDb->addToWhere(new WhereItem(false, 'ii.tax_amount', "<>", 0, false, 'AND'));
-$pdoDb->addSimpleWhere('ii.domain_id', DomainId::get());
+    $pdoDb->addToWhere(new WhereItem(false, 'ii.tax_amount', "<>", 0, false, 'AND'));
+    $pdoDb->addSimpleWhere('ii.domain_id', DomainId::get());
 
-$pdoDb->setSelectList(['iv.id', 'iv.index_id', 'ii.domain_id', 'ii.tax_amount', 'iv.date', 'pr.pref_description']);
+    $pdoDb->setSelectList(['iv.id', 'iv.index_id', 'ii.domain_id', 'ii.tax_amount', 'iv.date', 'pr.pref_description']);
 
-$rows = $pdoDb->request("SELECT", "invoice_items", "ii");
-
+    $rows = $pdoDb->request("SELECT", "invoice_items", "ii");
+} catch (PdoDbException $pde) {
+    error_log("modules/reports/reportTaxTotalData.php Exception: {$pde->getMessage()}");
+    exit("Unable to process request. See error log for details.");
+}
 $smarty->assign('taxDetail', $rows);
 
 $invoices = [];

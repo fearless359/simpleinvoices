@@ -64,9 +64,9 @@ class Select
         }
 
         $this->list = $list;
-        $this->fromStmt = isset($fromStmt) ? $fromStmt : new FromStmt();
-        $this->whereClause = isset($whereClause) ? $whereClause : new WhereClause();
-        $this->groupBy = isset($groupBy) ? $groupBy : new GroupBy();
+        $this->fromStmt = $fromStmt ?? new FromStmt();
+        $this->whereClause = $whereClause ?? new WhereClause();
+        $this->groupBy = $groupBy ?? new GroupBy();
         $this->joins = [];
         $this->alias = $alias;
         $this->tokenCnt = 0;
@@ -77,6 +77,7 @@ class Select
      * Note that the current token count value has <b>NOT</b> been used to
      * make a unique token.
      * @return int Current token count value.
+     * @noinspection PhpUnused
      */
     public function getTokenCnt(): int
     {
@@ -104,7 +105,7 @@ class Select
      * @return string <b>SELECT</b> statement created by specified values.
      * @throws PdoDbException
      */
-    public function build(?array &$keyPairs)
+    public function build(?array &$keyPairs): string
     {
         $select = "(SELECT ";
 

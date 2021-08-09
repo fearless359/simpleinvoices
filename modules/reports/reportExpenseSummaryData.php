@@ -69,5 +69,6 @@ try {
     $smarty->assign('payments'  , $payments);
     $smarty->assign('invoices'  , $invoices);
 } catch (PdoDbException $pde) {
-    die("reportSummary error: {$pde->getMessage()}");
+    error_log("modules/reports/reportExpenseSummaryData.php Exception: {$pde->getMessage()}");
+    exit("Unable to process request. See error log for details.");
 }

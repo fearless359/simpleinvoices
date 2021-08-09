@@ -1,7 +1,6 @@
 <?php
 
 use Inc\Claz\ProductAttributes;
-use Inc\Claz\ProductAttributeType;
 use Inc\Claz\Util;
 
 global $smarty;

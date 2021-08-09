@@ -1,17 +1,14 @@
 <?php
-/**
- * @name OnItemTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190314
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class OnItemTest
+ * @name OnItemTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190314
  * @package Inc\Claz
  */
 class OnItemTest extends TestCase
@@ -28,7 +25,7 @@ class OnItemTest extends TestCase
             self::assertEquals(1, $cnt, 'OnItem cnt test failed');
             self::assertEquals(10, $keyPairs[':db_field_000'], 'OnItem keyPairs test failed');
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "testOnItemCLass() Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::fail("testOnItemCLass() Unexpected error thrown. Error: {$pde->getMessage()}");
         }
     }
 }

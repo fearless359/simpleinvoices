@@ -1,12 +1,4 @@
 <?php
-
-/**
- * @name CaseStmtTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190310
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\Assert;
@@ -14,6 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class CaseStmtTest
+ * @name CaseStmtTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190310
  * @package test\Inc\Claz
  */
 class CaseStmtTest extends TestCase

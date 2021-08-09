@@ -1,11 +1,4 @@
 <?php
-/**
- * @name ConfigLinesTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20201107
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
@@ -13,6 +6,10 @@ use PHPUnit\Framework\Assert;
 
 /**
  * Class ConfigLinesTest
+ * @name ConfigLinesTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20201107
  * @package Inc\Claz
  */
 class ConfigLinesTest extends TestCase

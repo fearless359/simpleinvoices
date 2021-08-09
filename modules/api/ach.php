@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpClassConstantAccessedViaChildClassInspection */
 
 use Inc\Claz\Biller;
 use Inc\Claz\Email;

@@ -13,6 +13,7 @@ try {
     echo Encode::xml($invoice);
     print_r($invoice);
 } catch (PdoDbException $pde) {
-    exit("modules/api/invoice.php - Unexpected database error: {$pde->getMessage()}");
+    error_log("modules/api/invoice.php - Unexpected database error: {$pde->getMessage()}");
+    exit("Unable to process request. See error log for details.");
 }
 

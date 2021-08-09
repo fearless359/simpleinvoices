@@ -41,13 +41,13 @@ class OnClause extends WhereClause
 
     /**
      * Add a <b>OnItem</b> object to the <i>ON</i> clause.
-     * @param WhereClause|WhereItem|OnClause|OnItem $onItem
+     * @param WhereClause|WhereItem|OnClause|OnItem $whereItem
      * @throws PdoDbException If end of clause shows out of balance parenthesis.
      */
-    public function addItem($onItem): void
+    public function addItem($whereItem): void
     {
         try {
-            parent::addItem($onItem);
+            parent::addItem($whereItem);
         } catch (PdoDbException $pde) {
             throw new PdoDbException(preg_replace('/WhereClause/', 'OnClause', $pde->getMessage()));
         }

@@ -1,16 +1,14 @@
 <?php
-/**
- * @name PdoDbExceptionTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20181114
- */
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class PdoDbExceptionTest
+ * @name PdoDbExceptionTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20181114
  * @package Inc\Claz
  */
 class PdoDbExceptionTest extends TestCase

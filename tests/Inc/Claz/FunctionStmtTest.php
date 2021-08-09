@@ -1,17 +1,14 @@
 <?php
-/**
- * @name FunctionStmtTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190314
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class FunctionStmtTest
+ * @name FunctionStmtTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190314
  * @package Inc\Claz
  */
 class FunctionStmtTest extends TestCase

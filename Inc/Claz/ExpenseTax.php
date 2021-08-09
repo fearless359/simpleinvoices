@@ -45,7 +45,7 @@ class ExpenseTax
             $pdoDb->addSimpleWhere("expense_id", $expenseId);
             
             $rows = $pdoDb->request("SELECT", "expense_item_tax");
-            $sum = isset($rows[0]['sum']) ? $rows[0]['sum'] : 0;
+            $sum = $rows[0]['sum'] ?? 0;
         } catch (PdoDbException $pde) {
             error_log("ExpenseTax::getSum() - expense_id[$expenseId] error: " . $pde->getMessage());
         }

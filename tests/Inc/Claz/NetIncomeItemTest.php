@@ -1,16 +1,16 @@
 <?php
-/**
- * @name NetIncomeItemTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20201201
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class NetIncomeItemTest
+ * @name NetIncomeItemTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20201201
+ */
 class NetIncomeItemTest extends TestCase
 {
 

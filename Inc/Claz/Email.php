@@ -39,14 +39,14 @@ class Email
     }
 
     public function errorLog() {
-        error_log("Email::errorLog() - bcc[{$this->bcc}]");
-        error_log("Email::errorLog() - body[{$this->body}]");
-        error_log("Email::errorLog() - emailTo[{$this->emailTo}]");
-        error_log("Email::errorLog() - format[{$this->format}]");
-        error_log("Email::errorLog() - fromFriendly[{$this->fromFriendly}]");
-        error_log("Email::errorLog() - from[{$this->from}]");
-        error_log("Email::errorLog() - pdfFileName[{$this->pdfFileName}]");
-        error_log("Email::errorLog() - subject[{$this->subject}]");
+        error_log("Email::errorLog() - bcc[$this->bcc]");
+        error_log("Email::errorLog() - body[$this->body]");
+        error_log("Email::errorLog() - emailTo[$this->emailTo]");
+        error_log("Email::errorLog() - format[$this->format]");
+        error_log("Email::errorLog() - fromFriendly[$this->fromFriendly]");
+        error_log("Email::errorLog() - from[$this->from]");
+        error_log("Email::errorLog() - pdfFileName[$this->pdfFileName]");
+        error_log("Email::errorLog() - subject[$this->subject]");
 
         // NOTE: pdfString not dumped on purpose.
     }
@@ -68,7 +68,7 @@ class Email
             $message = "One or more required fields is missing";
             error_log("Email::send() - " . $message);
             $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=invoices&amp;view=manage' />";
-            $displayBlock = "<div class='si_message_error'>{$message}</div>";
+            $displayBlock = "<div class='si_message_error'>$message</div>";
             return [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -82,7 +82,7 @@ class Email
             $message = "Both pdfString and pdfFileName must be set or left empty";
             error_log("Email::send() - " . $message);
             $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=invoices&amp;view=manage' />";
-            $displayBlock = "<div class='si_message_error'>{$message}</div>";
+            $displayBlock = "<div class='si_message_error'>$message</div>";
             return [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -136,7 +136,7 @@ class Email
         Log::out("Email::send() - Before Swift_Mailer send()");
         $result = $mailer->send($message);
 
-        Log::out("Email::send() - After Swift_Mailer send() result[{$result}]");
+        Log::out("Email::send() - After Swift_Mailer send() result[$result]");
         return self::makeResults($result);
     }
 
@@ -150,7 +150,7 @@ class Email
                     $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = $this->pdfFileName . " has been sent";
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -158,10 +158,10 @@ class Email
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=reports&amp;view=index' />";
                 if ($result == 0) {
                     $message = $this->pdfFileName . ' could not be sent';
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = $this->pdfFileName . ' has been sent';
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -169,10 +169,10 @@ class Email
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=statement&amp;view=index' />";
                 if ($result == 0) {
                     $message = $this->pdfFileName . ' could not be sent';
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = $this->pdfFileName . ' has been sent';
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -180,21 +180,21 @@ class Email
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
                 if ($result == 0) {
                     $message = "Cron email for today has not been sent";
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = "Cron email for today has been sent";
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
             case "cron_invoice":
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
                 if ($result == 0) {
-                    $message = "Cron {$this->pdfFileName} has not been emailed";
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $message = "Cron $this->pdfFileName has not been emailed";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
-                    $message = "Cron {$this->pdfFileName} has been emailed";
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $message = "Cron $this->pdfFileName has been emailed";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -203,9 +203,9 @@ class Email
                     $this->format = ''; // Make sure empty is blank
                 }
                 $message = "Undefined format, \" . $this->format";
-                error_log("Email::send() - {$message}");
+                error_log("Email::send() - $message");
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
-                $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                $displayBlock = "<div class='si_message_error'>$message</div>";
         }
 
         return [
@@ -263,14 +263,14 @@ class Email
             if (is_array($emailBcc) && count($emailBcc) > 1) {
                 foreach ($emailBcc as $addr) {
                     if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
-                        error_log("Email::setBcc() - Invalid BCC address in list[{$addr}]");
+                        error_log("Email::setBcc() - Invalid BCC address in list[$addr]");
                         return false;
                     }
                 }
                 $this->bcc = $emailBcc;
             } else {
                 if (!filter_var($bcc, FILTER_VALIDATE_EMAIL)) {
-                    error_log("Email::setBcc() - Invalid BCC address[{$bcc}]");
+                    error_log("Email::setBcc() - Invalid BCC address[$bcc]");
                     return false;
                 }
                 $this->bcc = $bcc;
@@ -322,7 +322,7 @@ class Email
     public function setFrom(string $from): bool
     {
         if (empty($from) || !filter_var($from, FILTER_VALIDATE_EMAIL)) {
-            error_log("Email::setFrom() - Invalid FROM address[{$from}]");
+            error_log("Email::setFrom() - Invalid FROM address[$from]");
             return false;
         }
 
@@ -395,7 +395,7 @@ class Email
             $toAddresses = array_filter(explode(';', $emailTo));
             foreach ($toAddresses as $toAddress) {
                 if (!filter_var($toAddress, FILTER_VALIDATE_EMAIL)) {
-                    error_log("Email::setEmailTo() - Invalid emailTo address in list[{$toAddress}]");
+                    error_log("Email::setEmailTo() - Invalid emailTo address in list[$toAddress]");
                     return false;
                 }
 

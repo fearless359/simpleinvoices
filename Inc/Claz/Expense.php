@@ -162,10 +162,6 @@ class Expense
             $pdoDb->setSelectList($selectList);
 
             $expenses = $pdoDb->request("SELECT", "expense", 'e');
-//            foreach ($rows as $row) {
-//                $row['status_wording'] = $row['status'] == ENABLED ? $LANG['paidUc'] : $LANG['notPaid'];
-//                $expenses[] = $row;
-//            }
         } catch (PdoDbException $pde) {
             error_log("Expense::getExpense() - error: " . $pde->getMessage());
         }
@@ -181,7 +177,7 @@ class Expense
      * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
      * @throws PdoDbException
      */
-    public static function additionalInfo(?array $expense=null, $enabledOnly = false): array
+    public static function additionalInfo(?array $expense=null, bool $enabledOnly = false): array
     {
         // @formatter:off
         $addInfo = [];
@@ -225,7 +221,7 @@ class Expense
             $pdoDb->setExcludedFields(["id", 'tax_id']);
             $id = $pdoDb->request("INSERT", "expense");
 
-            $lineItemTaxId = isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "";
+            $lineItemTaxId = $_POST['tax_id'][0] ?? "";
             self::expenseItemTax($id, $lineItemTaxId, $_POST['amount'], "1", "insert");
         } catch (PdoDbException $pde) {
             error_log("Expense::insert() - error: " . $pde->getMessage() . " _POST info - " . print_r($_POST, true));
@@ -250,8 +246,8 @@ class Expense
             if (!$pdoDb->request("UPDATE", "expense")) {
                 return false;
             }
-error_log(print_r($_POST['tax_id'], true));
-            $lineItemTaxId = isset($_POST['tax_id'][0]) ? $_POST['tax_id'][0] : "";
+
+            $lineItemTaxId = $_POST['tax_id'][0] ?? "";
             self::expenseItemTax($_GET['id'], $lineItemTaxId, $_POST['amount'], "1", "update");
         } catch (PdoDbException $pde) {
             error_log("Expense::update() - id[{$_GET['id']}] error: " . $pde->getMessage());
@@ -272,7 +268,7 @@ error_log(print_r($_POST['tax_id'], true));
     public static function expenseItemTax(int $expenseId, array $lineItemTaxId, float $unitPrice, float $quantity, string $action = ""): bool
     {
         global $config;
-error_log(print_r($lineItemTaxId, true));
+
         if (empty($lineItemTaxId)) {
             return false;
         }

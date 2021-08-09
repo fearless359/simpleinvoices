@@ -254,7 +254,7 @@ class CustomFields
             if ($writeMode) {
                 $displayBlock =
                     "<div class='$cssClassHead'>\n" .
-                    "  <label for='customField$cfn' class='$cssClassLabel'>{$customLabelValue}$separator\n" .
+                    "  <label for='customField$cfn' class='$cssClassLabel'>$customLabelValue$separator\n" .
                     "    <a class='cluetip' href='#' title='Custom Fields' \n" .
                     "       rel='index.php?module=documentation&amp;view=view&amp;page=helpCustomFields'>\n" .
                     "      <img src='{$helpImagePath}help-small.png' alt='' />\n" .
@@ -267,7 +267,7 @@ class CustomFields
             } else {
                 $displayBlock =
                     "<div class='$cssClassHead'>\n" .
-                    "  <div class='$cssClassLabel'>{$customLabelValue}$separator</div>\n" .
+                    "  <div class='$cssClassLabel'>$customLabelValue$separator</div>\n" .
                     "  <div class='$cssClassField'>$customFieldValue</div>\n" .
                     "</div>\n";
             }

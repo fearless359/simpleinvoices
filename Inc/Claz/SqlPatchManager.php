@@ -33,7 +33,7 @@ class SqlPatchManager
 
         if ($last != $num) {
             error_log("SqlPatchManager::makePatch - Patch #$num is out of sequence.");
-            die("SqlPatchManager::makePatch() error. See error log for more information.");
+            exit("SqlPatchManager::makePatch() error. See error log for more information.");
         }
 
         self::$patchLines[] = [
@@ -168,7 +168,7 @@ class SqlPatchManager
             }
         } catch (PdoDbException $pde) {
             error_log("SqlPatchManager::runSqlPatch() - " . $pde->getMessage());
-            die("SqlPatchManager::runSqlPatch() error. See error log for more information.");
+            exit("SqlPatchManager::runSqlPatch() error. See error log for more information.");
         }
 
         return $smartyRow;
@@ -385,7 +385,7 @@ class SqlPatchManager
             $log .= "<b>{$LANG['stepUc']} 3</b> - {$LANG['theUc']} {$LANG['sqlUc']} {$LANG['patch']} {$LANG['has']} {$LANG['been']} {$LANG['inserted']} {$LANG['into']} {$LANG['the']} {$LANG['sqlUc']} {$LANG['patch']} {$LANG['table']}<br />";
         } catch (PdoDbException $pde) {
             error_log("SqlPatchManager::initializeSqlPatchTable() - Error: " . $pde->getMessage());
-            die("SqlPatchManager::initializeSqlPatchTable() error. See error log for additional information.");
+            exit("SqlPatchManager::initializeSqlPatchTable() error. See error log for additional information.");
         }
 
         return $log;

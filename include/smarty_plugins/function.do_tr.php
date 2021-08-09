@@ -14,5 +14,4 @@ function smarty_function_do_tr(array $params)
         }
         return "</tr><tr$cls>";
     }
-    return;
 }

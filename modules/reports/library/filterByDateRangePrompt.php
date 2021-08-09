@@ -7,6 +7,6 @@ if (isset($reverseFilterByDateRangeDefault)) {
     $filterByDateRangeDefault = "yes";
 }
 
-$filterByDateRange = isset($_POST['filterByDateRange']) ? $_POST['filterByDateRange'] : $filterByDateRangeDefault;
+$filterByDateRange = $_POST['filterByDateRange'] ?? $filterByDateRangeDefault;
 
 $smarty->assign('filterByDateRange', $filterByDateRange);

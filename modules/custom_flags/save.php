@@ -29,7 +29,7 @@ if (isset($_POST['cancel'])) {
 } elseif ($op === 'edit') {
     if (isset($_POST['save_custom_flag'])) {
         $flgId = intval($_POST['flg_id']);
-        $clearField = isset($_POST["clear_custom_flags_{$flgId}"]) ? $_POST["clear_custom_flags_{$flgId}"] : DISABLED;
+        $clearField = $_POST["clear_custom_flags_$flgId"] ?? DISABLED;
         if (CustomFlags::updateCustomFlags(
                 $_POST["associated_table"],
                 $flgId,

@@ -60,7 +60,7 @@ class EmailTest extends TestCase
         try {
             $this->email->setFormat("invoice");
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "Unexpected exception thrown by setFormat. Error: {$exp->getMessage()}");
+            Assert::fail("Unexpected exception thrown by setFormat. Error: {$exp->getMessage()}");
         }
         $this->email->setFrom("from@gmail.com");
         $this->email->setSubject("Email subject");
@@ -94,25 +94,25 @@ class EmailTest extends TestCase
             $this->email->setFormat("invoice");
             Assert::assertEquals("invoice", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for invoice throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for invoice throws exception {$exp->getMessage()}");
         }
         try {
             $this->email->setFormat("statement");
             Assert::assertEquals("statement", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for statement throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for statement throws exception {$exp->getMessage()}");
         }
         try {
             $this->email->setFormat("cron");
             Assert::assertEquals("cron", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for cron throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for cron throws exception {$exp->getMessage()}");
         }
         try {
             $this->email->setFormat("cron_invoice");
             Assert::assertEquals("cron_invoice", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for cron_invoice throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for cron_invoice throws exception {$exp->getMessage()}");
         }
 
         self::expectException(Exception::class);

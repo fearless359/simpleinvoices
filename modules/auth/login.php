@@ -77,7 +77,7 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
             $rows = $pdoDb->request('SELECT', 'user', 'u');
         } catch (PdoDbException $pde) {
             error_log("modules.auth.login.php: Error(3): " . $pde->getMessage());
-            die("modules.auth.login.php(3) - Database access error");
+            exit("modules.auth.login.php(3) - Database access error");
         }
 
         if (empty($rows)) {

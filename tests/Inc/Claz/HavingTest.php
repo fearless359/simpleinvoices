@@ -1,17 +1,14 @@
 <?php
-/**
- * @name HavingTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190314
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class HavingTest
+ * @name HavingTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190314
  * @package Inc\Claz
  */
 class HavingTest extends TestCase
@@ -31,7 +28,7 @@ class HavingTest extends TestCase
             $stmt = $having->build();
             self::assertEquals("(db_field <> '5' AND", $stmt);
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "Unexpected error thrown by Having instantiation. Error: {$pde->getMessage()}");
+            self::fail("Unexpected error thrown by Having instantiation. Error: {$pde->getMessage()}");
         }
     }
 }

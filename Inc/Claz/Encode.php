@@ -25,6 +25,7 @@ class Encode
             if (is_array($value)) {
                 $multiTags = false;
                 foreach ($value as $value2) {
+                    /** @noinspection PhpIfWithCommonPartsInspection */
                     if (is_array($value2)) {
                         $xml .= str_repeat("\t", $level) . "<$key>\n";
                         $xml .= self::xml($value2, $level + 1);
@@ -67,7 +68,7 @@ class Encode
     /**
      * @param mixed $data
      * @param string $format
-     * @return mixed
+     * @return false|string
      */
     public static function json($data, string $format = 'plain')
     {
@@ -80,6 +81,7 @@ class Encode
 
     public static function prettyPrint(string $json, array $options = []): string
     {
+        /** @noinspection RegExpRedundantEscape */
         $pattern = '|([\{\}\]\[,])|';
         $tokens = preg_split($pattern, $json, -1, PREG_SPLIT_DELIM_CAPTURE);
         $result = '';

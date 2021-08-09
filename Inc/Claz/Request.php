@@ -95,6 +95,7 @@ class Request
      *                          parameter field for sorting.
      * @param string $order Order <b>A</b> ascending, <b>D</b> descending. Defaults to <b>A</b>.
      * @throws PdoDbException if either parameter does not contain the form and values specified for them.
+     * @noinspection PhpUnused
      */
     public function addOrderBy($field, string $order = "A"): void
     {
@@ -201,6 +202,7 @@ class Request
     /**
      * Test to see if this is an add request.
      * @return bool $request
+     * @noinspection PhpUnused
      */
     public function isAdd(): bool
     {
@@ -221,6 +223,7 @@ class Request
      * @param PdoDb $pdoDb
      * @return mixed Result of the request.
      * @throws PdoDbException if an error is thrown when the <b>request</b> is performed.
+     * @noinspection PhpUnused
      */
     public function performRequest(PdoDb $pdoDb)
     {
@@ -246,8 +249,7 @@ class Request
             }
             // @formatter:on
 
-            $result = $pdoDb->request($this->request, $this->table);
-            return $result;
+            return $pdoDb->request($this->request, $this->table);
         } catch (PdoDbException $pde) {
             throw new PdoDbException("Request::performRequest() - Error: " . $pde->getMessage());
         }

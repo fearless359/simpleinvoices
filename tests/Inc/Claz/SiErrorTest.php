@@ -1,17 +1,14 @@
 <?php
-/**
- * @name SiErrorTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190315
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class SiErrorTest
+ * @name SiErrorTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190315
  * @package Inc\Claz
  */
 class SiErrorTest extends TestCase

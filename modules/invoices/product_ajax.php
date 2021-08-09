@@ -22,7 +22,7 @@ if (!empty($id)) {
         $html = "";
         $jsonAtt = json_decode($attr);
         if($jsonAtt !== null && $attr !== '[]') {
-            $html .= "<tr id='json_html{$rowId}>";
+            $html .= "<tr id='json_html$rowId>";
             $html .= "  <td></td>";
             $html .= "  <td colspan='5'>";
             $html .= "    <table>";
@@ -93,14 +93,14 @@ if (!empty($id)) {
         // @formatter:off
         $output['unit_price']           = Util::number($row['unit_price']);
         $output['markup_price']         = Util::number($row['markup_price']);
-        $output['default_tax_id']       = isset($row['default_tax_id']) ? $row['default_tax_id'] : "";
-        $output['default_tax_id_2']     = isset($row['default_tax_id_2']) ? $row['default_tax_id_2'] : "";
+        $output['default_tax_id']       = $row['default_tax_id'] ?? "";
+        $output['default_tax_id_2']     = $row['default_tax_id_2'] ?? "";
         $output['attribute']            = isset($row['attribute']) ? $row['default_tax_id_2'] : "";
         $output['json_attribute']       = $jsonAtt;
         $output['json_html']            = $html;
-        $output['notes']                = isset($row['notes']) ? $row['notes'] : "";
-        $output['notes_as_description'] = isset($row['notes_as_description']) ? $row['notes_as_description'] : "N";
-        $output['show_description']     = isset($row['show_description']) ? $row['show_description'] : "N";
+        $output['notes']                = $row['notes'] ?? "";
+        $output['notes_as_description'] = $row['notes_as_description'] ?? "N";
+        $output['show_description']     = $row['show_description'] ?? "N";
         // @formatter:on
     } else {
         $output .= '';

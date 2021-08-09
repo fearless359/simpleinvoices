@@ -1,11 +1,4 @@
 <?php
-/**
- * @name FromStmtTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190310
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
@@ -16,6 +9,10 @@ if (!defined('TB_PREFIX')) {
 
 /**
  * Class FromStmtTest
+ * @name FromStmtTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190310
  * @package Inc\Claz
  */
 class FromStmtTest extends TestCase

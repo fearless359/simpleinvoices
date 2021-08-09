@@ -1,17 +1,14 @@
 <?php
-/**
- * @name WhereItemTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190312
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class WhereItemTest
+ * @name WhereItemTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190312
  * @package Inc\Claz
  */
 class WhereItemTest extends TestCase

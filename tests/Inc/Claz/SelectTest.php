@@ -1,11 +1,4 @@
 <?php
-/**
- * @name SelectTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190314
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
@@ -16,6 +9,10 @@ if (!defined('TB_PREFIX')) {
 
 /**
  * Class SelectTest
+ * @name SelectTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190314
  * @package Inc\Claz
  */
 class SelectTest extends TestCase
@@ -39,14 +36,14 @@ class SelectTest extends TestCase
                 try {
                     $stmt = $se->build($keyPairs);
                 } catch (PdoDbException $pde) {
-                    self::assertTrue(false, "testOrderByClass() Unexpected error thrown for select object build. Error: {$pde->getMessage()}");
+                    self::fail("testOrderByClass() Unexpected error thrown for select object build. Error: {$pde->getMessage()}");
                 }
             } catch (PdoDbException $pde) {
-                self::assertTrue(false, "testOrderByClass() Unexpected error thrown for select object instantiation. Error: {$pde->getMessage()}");
+                self::fail("testOrderByClass() Unexpected error thrown for select object instantiation. Error: {$pde->getMessage()}");
             }
             self::assertEquals('(SELECT `ivl`.`customer_id`, `apl`.`domain_id`, (SUM(COALESCE(apl.ac_amount, 0))) AS inv_paid FROM `si_payment` `apl` WHERE `prl`.`status` = :prl_status_000  GROUP BY `ivl`.`customer_id`, `apl`.`domain_id`) AS ap', $stmt);
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "testOrderByClass() Unexpected error thrown for addSimpleItem. Error: {$pde->getMessage()}");
+            self::fail("testOrderByClass() Unexpected error thrown for addSimpleItem. Error: {$pde->getMessage()}");
         }
 
     }

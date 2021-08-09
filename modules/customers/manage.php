@@ -27,7 +27,6 @@ Util::directAccessAllowed();
  * These settings are used to force user to enter the first biller,
  * customer and product when a new installation with empty database
  * has been performed.
- * TODO: Need better way to determine if still in initialization phase.
  */
 $customers = Customer::manageTableInfo();
 $customerCount = count($customers);
@@ -46,7 +45,7 @@ $smarty->assign("first_run_wizard",$firstRunWizard);
 if (!$firstRunWizard) {
     $data = json_encode(['data' => $customers]);
     if (file_put_contents("public/data.json", $data) === false) {
-        die("Unable to create public/data.json file");
+        exit("Unable to create public/data.json file");
     }
 
     $smarty->assign('numberOfRows', $customerCount);

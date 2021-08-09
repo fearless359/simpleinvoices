@@ -69,7 +69,7 @@ try {
         if (!$email->setFrom($_POST['emailFrom'])) {
             $message = "Invalid FROM field";
             $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
-            $displayBlock = "<div class='si_message_error'>{$message}</div>";
+            $displayBlock = "<div class='si_message_error'>$message</div>";
             $results = [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -80,7 +80,7 @@ try {
         if (empty($results) && !$email->setBcc($_POST['emailBcc'])) {
             $message = "Invalid BCC field";
             $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
-            $displayBlock = "<div class='si_message_error'>{$message}</div>";
+            $displayBlock = "<div class='si_message_error'>$message</div>";
             $results = [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -92,7 +92,7 @@ try {
         if (empty($results) && !$email->setEmailTo($_POST['emailTo'])) {
             $message = "Invalid TO field";
             $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
-            $displayBlock = "<div class='si_message_error'>{$message}</div>";
+            $displayBlock = "<div class='si_message_error'>$message</div>";
             $results = [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,

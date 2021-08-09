@@ -64,7 +64,7 @@ try {
     // @formatter:on
 } catch (PdoDbException $pde) {
     error_log("modules/invoices/details.php: error " . $pde->getMessage());
-    exit('Unable to complete request');
+    exit("Unable to process request. See error log for details.");
 }
 
 $smarty->assign('pageActive', 'invoice');

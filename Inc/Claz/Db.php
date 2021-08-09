@@ -97,7 +97,7 @@ class Db
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $exception) {
             SiError::out("dbConnection", $exception->getMessage());
-            die($exception->getMessage());
+            exit($exception->getMessage());
         }
     }
 

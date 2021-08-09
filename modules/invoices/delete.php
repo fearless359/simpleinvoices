@@ -38,7 +38,7 @@ try {
     $preference   = Preferences::getOne($invoice['preference_id']);
     $defaults     = SystemDefaults::loadValues();
 
-    // If delete is disabled - dont allow people to view this page
+    // If delete is disabled - don't allow people to view this page
     if ($defaults['delete'] == 'N') {
         exit('Invoice deletion has been disabled, you are not supposed to be here');
     }
@@ -51,23 +51,21 @@ try {
     // @formatter:on
 
     if ($_GET['stage'] == 2 && $_POST['doDelete'] == 'y') {
-        $invoiceLineItems = Invoice::getInvoiceItems($id);
-
         $pdoDb->begin(); // Start transaction
         $error = false;
 
-        foreach ($invoiceLineItems as $key => $value) {
-            Invoice::delete('invoice_item_tax', 'invoice_item_id', $invoiceLineItems[$key]['id']);
+        foreach ($invoiceItems as $key => $value) {
+            Invoice::delete('invoice_item_tax', 'invoice_item_id', $value['id']);
         }
 
         // Start by deleting the line items
-        if (!$error && !Invoice::delete('invoice_items', 'invoice_id', $id)) {
+        if (!Invoice::delete('invoice_items', 'invoice_id', $id)) {
             $error = true;
         }
 
         // delete products from products table for total style
-        if (!$error && $invoice['type_id'] == TOTAL_INVOICE) {
-            if (!Invoice::delete('products', 'id', $invoiceItems['0']['product']['id'])) {
+        if (!$error && $invoice['type_id'] == TOTAL_INVOICE && isset($invoiceItems['0']['product_id'])) {
+            if (!Invoice::delete('products', 'id', $invoiceItems['0']['product_id'])) {
                 $error = true;
             }
         }
@@ -76,6 +74,7 @@ try {
         if (!$error && !Invoice::delete('invoices', 'id', $id)) {
             $error = true;
         }
+
         if ($error) {
             $pdoDb->rollback();
             $displayBlock = "<div class='si_message_error'>{$LANG['deleteFailed']}</div>";
@@ -83,7 +82,7 @@ try {
             $displayBlock = "<div class='si_message_ok'>{$LANG['deleteSuccess']}</div>";
             $pdoDb->commit();
         }
-        // TODO - what about the stuff in the products table for the total style invoices?
+
         $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
         $smarty->assign('refresh_redirect', $refreshRedirect);
         $smarty->assign('display_block', $displayBlock);

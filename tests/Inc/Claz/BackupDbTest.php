@@ -1,11 +1,4 @@
 <?php
-/**
- * @name BackupDbTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20201109
- */
-
 namespace Inc\Claz;
 
 use Exception;
@@ -17,6 +10,10 @@ include_once 'config/define.php';
 
 /**
  * Class BackupDbTest
+ * @name BackupDbTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20201109
  * @package Inc\Claz
  */
 class BackupDbTest extends TestCase

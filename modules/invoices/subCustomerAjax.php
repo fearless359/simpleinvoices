@@ -1,25 +1,28 @@
 <?php
 
 use Inc\Claz\DomainId;
-use Inc\Claz\Log;
+use Inc\Claz\PdoDbException;
 
 /**
  * Make the option section of a select statement for sub-customers.
  * @param string $parentCustomerId
- * @throws \Inc\Claz\PdoDbException
  */
 function getSubCustomer(string $parentCustomerId='') {
     global $pdoDb;
 
     session_name('SiAuth');
     session_start();
-    
-    $pdoDb->addSimpleWhere('parent_customer_id', $parentCustomerId, 'AND');
-    $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+    try {
+        $pdoDb->addSimpleWhere('parent_customer_id', $parentCustomerId, 'AND');
+        $pdoDb->addSimpleWhere('domain_id', DomainId::get());
 
-    $rows = $pdoDb->request('SELECT', 'customers');
-    if (empty($rows)) {
-        exit(1);
+        $rows = $pdoDb->request('SELECT', 'customers');
+        if (empty($rows)) {
+            exit(1);
+        }
+    } catch (PdoDbException $pde) {
+        error_log("modules/invoices/subCustomers.php pdoDb->request exception: {$pde->getMessage()}");
+        exit("Unable to process request. See error log for details.");
     }
 
     $output = "<option value=''></option>";
@@ -27,7 +30,6 @@ function getSubCustomer(string $parentCustomerId='') {
         $name = htmlspecialchars($row['name'], ENT_QUOTES);
         $output .= "<option value='" . $row['id'] . "'>" . $name . "</option>";
     }
-Log::out("subCustomerAjax() - output[$output]");
     echo json_encode($output);
     exit();
 }
