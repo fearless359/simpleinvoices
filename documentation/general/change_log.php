@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-08-13 - <strong>2020.3.03</strong>
+                <ul>
+                    <li>Fix issue with multiple, semi-colon separated email addresses.</li>
+                </ul>
+            </li>
             <li>2021-08-09 - <strong>2020.3.02</strong>
                 <ul>
                     <li>Fixed issue with TOTAL STYLE invoice delete.</li>

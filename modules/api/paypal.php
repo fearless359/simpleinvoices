@@ -74,7 +74,7 @@ if ($paypal->validate_ipn()) {
 
             $email = new Email();
             $email->setBody($body);
-            $email->setEmailTo($biller ['email']);
+            $email->setEmailTo([$biller ['email'] => $biller['name']]);
             $email->setFrom("simpleinvoices@localhost.localdomain");
             $email->setSubject('Instant Payment Notification - Received Payment');
             $email->send();

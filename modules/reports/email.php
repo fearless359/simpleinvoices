@@ -279,16 +279,18 @@ if ($stage == 2) {
             $pdfString = $export->execute();
 
             $email = new Email();
-            $email->setBcc($_POST['emailBcc']);
+            $email->setBcc(explode(';', $_POST['emailBcc']));
             $email->setBody(trim($_POST['emailNotes']));
             $email->setFormat('reports');
-            $email->setFrom($_POST['emailFrom']);
-            $email->setFromFriendly($biller['name']);
+            if ($_POST['emailFrom'] == $biller['email']) {
+                $email->setFrom([$_POST['emailFrom'] => $biller['name']]);
+            } else {
+                $email->setFrom([$_POST['emailFrom']]);
+            }
             $email->setPdfFileName($export->getFileName() . '.pdf');
             $email->setPdfString($pdfString);
             $email->setSubject($_POST['emailSubject']);
-            $email->setEmailTo($_POST['emailTo']);
-
+            $email->setEmailTo(explode(';', $_POST['emailTo']));
             $results = $email->send();
         } catch (Exception $exp) {
             exit("modules/reports/email.php Unexpected error: {$exp->getMessage()}");
