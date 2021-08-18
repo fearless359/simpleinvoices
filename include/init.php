@@ -154,7 +154,7 @@ if ($config['authenticationEnabled'] == ENABLED) {
     try {
         SiAcl::init();
     } catch (Exception $exp) {
-        die("Unable to perform SiAcl::init() - error: " . $exp->getMessage());
+        exit("Unable to perform SiAcl::init() - error: " . $exp->getMessage());
     }
 
     // For ACL (Access Control List) in an extension, simple place any of the following

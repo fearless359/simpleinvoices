@@ -14,9 +14,9 @@ use Mpdf\Output\Destination;
  *  Website:
  * 	    https://simpleinvoices.group */
 // @formatter:off
-$format   = isset($_GET['format']  ) ? $_GET['format']   : "";
-$fileType = isset($_GET['filetype']) ? $_GET['filetype'] : "";
-$id       = isset($_GET['id']      ) ? $_GET['id']       : "";
+$format   = $_GET['format'] ?? "";
+$fileType = $_GET['filetype'] ?? "";
+$id       = $_GET['id'] ?? "";
 // @formatter:on
 
 $export = new Export(Destination::DOWNLOAD);

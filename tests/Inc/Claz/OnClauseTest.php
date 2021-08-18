@@ -1,17 +1,14 @@
 <?php
-/**
- * @name OnClauseTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20201201
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class OnClauseTest
+ * @name OnClauseTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20201201
  * @package Inc\Claz
  */
 class OnClauseTest extends TestCase
@@ -30,7 +27,7 @@ class OnClauseTest extends TestCase
             self::assertEquals(10, $keyPairs[':db_field_000'], 'OnClause keyPairs test 1 failed');
             self::assertEquals("Jones", $keyPairs[':db_field2_001'], 'OnClause keyPairs test 2 failed');
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "testOnClauseCLass() Unexpected error thrown. Error: {$pde->getMessage()}");
+            self::fail("testOnClauseCLass() Unexpected error thrown. Error: {$pde->getMessage()}");
         }
     }
 }

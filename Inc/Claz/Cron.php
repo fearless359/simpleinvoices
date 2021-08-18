@@ -187,7 +187,7 @@ class Cron
 
     /**
      * Delete a specific record
-     * @param int $id of record record to delete.
+     * @param int $id of record to delete.
      * @return bool true if succeeded; otherwise false.
      */
     public static function delete(int $id): bool
@@ -220,25 +220,22 @@ class Cron
     }
 
     /**
+     * Check the src array to determine if the FROM email address is the customer or the biller or both.
      * @param array $srcArray Email send address flags. Index values are "email_customer' and 'email_biller'
      *          tested to see if ENABLED.
-     * @param string $customerEmail Customer send address. Multiple addresses are ";" separated.
-     * @param string $billerEmail Biller send address. Multiple addresses are ";" separated.
-     * @return string To email address string. Multiple email addresses are ";" separated.
+     * @param array $customer Customer send address. Multiple addresses are ";" separated.
+     * @param array $biller Biller send address. Multiple addresses are ";" separated.
+     * @return array To email address array.
      */
-    private static function getEmailSendAddresses(array $srcArray, string $customerEmail, string $billerEmail): string
+    private static function getEmailSendAddresses(array $srcArray, array $customer, array $biller): array
     {
-        $emailTo = "";
+        $emailTo = [];
         if ($srcArray['email_customer'] == ENABLED) {
-            $emailTo = $customerEmail;
+            $emailTo[$customer['email']] = $customer['name'];
         }
 
         if ($srcArray['email_biller'] == ENABLED) {
-            if (!empty($emailTo)) {
-                $emailTo .= ";";
-            }
-
-            $emailTo .= $billerEmail;
+            $emailTo[$biller['email']] = $biller['name'];
         }
 
         return $emailTo;
@@ -261,7 +258,7 @@ class Cron
         $numberOfCronsRun = 0;
         Log::out("Cron::run() - today[$today] row count[" . count($rows) . "]");
 
-        $idx = 0; // set here so accessible outside of the loop
+        $idx = 0; // set here so accessible outside of loop
         foreach ($rows as $value) {
             $cronId = $value['id'];
             $domainId = $value['domain_id'];
@@ -353,6 +350,9 @@ class Cron
                         $customer = Customer::getOne($invoice['customer_id']);
                         $preference = Preferences::getOne($invoice['preference_id']);
 
+//                        $billerEmail = [$biller['email'] => $biller['name']];
+//                        $customerEmail = [$customer['email'] => $customer['name']];
+
                         // email invoice
                         if ($value['email_biller'] == ENABLED || $value['email_customer'] == ENABLED) {
                             $export = new Export(Destination::STRING_RETURN);
@@ -369,12 +369,11 @@ class Cron
                             $email = new Email();
                             $email->setBody($emailBody->create());
                             $email->setFormat('cron_invoice');
-                            $email->setFrom($biller['email']);
-                            $email->setFromFriendly($biller['name']);
+                            $email->setFrom([$biller['email'] => $biller['name']]);
                             $email->setPdfFileName($export->getFileName() . '.pdf');
                             $email->setPdfString($pdfString);
                             $email->setSubject($email->makeSubject('invoice'));
-                            $email->setEmailTo(self::getEmailSendAddresses($value, $customer['email'], $biller['email']));
+                            $email->setEmailTo(self::getEmailSendAddresses($value, $customer, $biller));
                             $results = $email->send();
                             $result['email_message'] = $results['message'];
                         }
@@ -416,12 +415,11 @@ class Cron
                                     $emailRec = new Email();
                                     $emailRec->setBody($emailBodyRec->create());
                                     $emailRec->setFormat('cron_invoice');
-                                    $emailRec->setFrom($biller['email']);
-                                    $emailRec->setFromFriendly($biller['name']);
+                                    $emailRec->setFrom([$biller['email'] => $biller['name']]);
                                     $emailRec->setPdfFileName($exportRec->getFileName() . '.pdf');
                                     $emailRec->setPdfString($pdfString);
                                     $emailRec->setSubject($emailRec->makeSubject('invoice_eway_receipt'));
-                                    $emailRec->setEmailTo(self::getEmailSendAddresses($value, $customer['email'], $biller['email']));
+                                    $emailRec->setEmailTo(self::getEmailSendAddresses($value, $customer, $biller));
                                     $results = $emailRec->send();
                                     $result['email_message'] = $results['message'];
                                 }
@@ -429,12 +427,11 @@ class Cron
                                 // do email to biller/admin - say error
                                 $email = new Email();
                                 $email->setFormat('cron_payment');
-                                $email->setFrom($biller['email']);
-                                $email->setFromFriendly($biller['name']);
+                                $email->setFrom([$biller['email'] => $biller['name']]);
                                 $email->setSubject("Payment failed for $invoice[index_name]");
-                                $email->setEmailTo($biller['email']);
+                                $email->setEmailTo([$biller['email'] => $biller['name']]);
 
-                                $errorMessage = "Invoice: {$invoice['index_name']}<br />Amount: {$invoice['total']}<br />";
+                                $errorMessage = "{$LANG['InvoiceUc']}: {$invoice['index_name']}<br />{$LANG['amountUc']}: {$invoice['total']}<br />";
                                 foreach ($eway->getMessage() as $key2 => $value2) {
                                     $errorMessage .= "\n<br>\${$LANG['ewayResponseFields']}[\"$key2\"] = $value2";
                                 }

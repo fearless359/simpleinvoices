@@ -254,7 +254,7 @@ if ($module == "options" && $view == "database_sqlpatches") {
                             }
                         } catch (PdoDbException $pde) {
                             error_log("index.php: Unable to set install_complete flag. Error: " . $pde->getMessage());
-                            die("Unable to set install complete flag. See error log for additional information.");
+                            exit("Unable to set install complete flag. See error log for additional information.");
                         }
                     }
                 } else {
@@ -275,7 +275,7 @@ if ($module == "options" && $view == "database_sqlpatches") {
                         }
                     } catch (PdoDbException $pde) {
                         error_log("index.php: Unable to get Invoice count to set default module and view. Error: " . $pde->getMessage());
-                        die("Unable to set install complete flag. See error log for additional information.");
+                        exit("Unable to set install complete flag. See error log for additional information.");
                     }
                 }
             }
@@ -482,7 +482,7 @@ if ($menu) {
         try {
             $menuTpl = $smarty->fetch($myPath);
         } catch (Exception $exp) {
-            die("Unable to fetch menu path. Error: " . $exp->getMessage());
+            exit("Unable to fetch menu path. Error: " . $exp->getMessage());
         }
         $lines = [];
         $sections = [];

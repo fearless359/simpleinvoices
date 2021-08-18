@@ -57,7 +57,7 @@ class BackupDb {
      */
     private function retrieveData(string $tableName, PdoDb $pdoDb): string
     {
-        $query = "SHOW COLUMNS FROM `{$tableName}`";
+        $query = "SHOW COLUMNS FROM `$tableName`";
         $rows = $pdoDb->query($query);
         $idx = 0;
         $columns = [];

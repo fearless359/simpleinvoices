@@ -2,6 +2,8 @@
 
 namespace Inc\Claz;
 
+use Exception;
+
 include_once 'vendor/autoload.php';
 include_once 'config/define.php';
 
@@ -19,7 +21,9 @@ class Setup
      * Setup constructor.
      * @param string|null $environment
      * @param bool $updateCustomConfig
+     * @param string $configFile
      * @throws PdoDbException
+     * @throws Exception
      */
     public function __construct(?string $environment, bool $updateCustomConfig, string $configFile = Config::CUSTOM_CONFIG_FILE)
     {

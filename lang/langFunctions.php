@@ -21,7 +21,7 @@ function getDefinedLanguages(): array
             $langFiles[] = $entry->getFilename();
         }
     } catch (UnexpectedValueException $exp) {
-        die($exp->getMessage());
+        exit($exp->getMessage());
     }
 
     // Sort by lang code.

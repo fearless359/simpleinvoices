@@ -25,50 +25,64 @@ global $config, $LANG, $smarty;
 Util::directAccessAllowed();
 
 // Deal with op and add some basic sanity checking
-$op = !empty( $_POST['op'] ) ? $_POST['op'] : null;
+$op = $_POST['op'] ?? null;
+$id = $_GET['id'] ?? null;
+$errorMsg = '';
 
 $displayBlock = "<div class='si_message_error'>{$LANG['saveCustomerFailure']}</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=manage' />";
 
+$allDone = false;
 $error = false;
-// The field is only non-empty if the user entered a value.
-// TODO: A proper entry and confirmation new credit card value.
-$excludeCreditCardNumber = true;
+// The field is non-empty if the user entered a value.
+$excludeCreditCardNumber = false;
+
 if (empty($_POST['credit_card_number'])) {
-    // The edit screen only has and empty credit_card_number if the
-    // associated CC fields (name, expiry mon & year) are blank. So
-    // if the $_POST['credit_card_number'] is empty but the original
-    // masked value was not empty, then the credit_card_number field
-    // in the user's record needs to be cleared.
+    // Check to see if there was a credit card number before this submission.
     if (!empty($_POST['origCcMaskedValue'])) {
-        $excludeCreditCardNumber = false;
+        // The credit card number is blank but the mask indicates there is a credit card
+        // present. If the associated fields contain values, exclude the credit card number
+        // field from the update, so it isn't cleared. Otherwise, leave it and let it be
+        // cleared along with the other fields.
+        if (!empty($_POST['credit_card_holder_name']) ||
+            !empty($_POST['credit_card_expiry_month']) ||
+            !empty($_POST['credit_card_expiry_year'])) {
+            $excludeCreditCardNumber = true;
+        }
+    } elseif (!empty($_POST['credit_card_holder_name']) ||
+              !empty($_POST['credit_card_expiry_month']) ||
+              !empty($_POST['credit_card_expiry_year'])) {
+        $errorMsg = $LANG['creditCardNumberRequired'];
+        $allDone = true;
+        $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=$op&amp;id=$id&amp;errorMsg=$errorMsg' />";
     }
 } else {
     try {
         $key = $config['encryptionDefaultKey'];
         $enc = new Encryption();
         $_POST['credit_card_number'] = $enc->encrypt($key, $_POST['credit_card_number']);
-        $excludeCreditCardNumber = false;
     } catch (Exception $exp) {
         error_log("Unable to encrypt the credit card number. Error reported: " . $exp->getMessage());
         $error = true;
     }
 }
 
-if (!$error) {
-    if ($op === "create") {
-        if (Customer::insertCustomer($excludeCreditCardNumber)) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomerSuccess']}</div>";
-        }
-    } elseif ($op === 'edit') {
-        if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomerSuccess']}</div>";
+if (!$allDone) {
+    if (!$error) {
+        if ($op === "create") {
+            if (Customer::insertCustomer($excludeCreditCardNumber)) {
+                $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomerSuccess']}</div>";
+            }
+        } elseif ($op === 'edit') {
+            if (Customer::updateCustomer($_GET['id'], $excludeCreditCardNumber)) {
+                $displayBlock = "<div class='si_message_ok'>{$LANG['saveCustomerSuccess']}</div>";
+            }
         }
     }
+
+    $smarty->assign('pageActive', 'customer');
+    $smarty->assign('activeTab', '#people');
 }
 
 $smarty->assign('display_block', $displayBlock);
 $smarty->assign('refresh_redirect', $refreshRedirect);
-
-$smarty->assign('pageActive', 'customer');
-$smarty->assign('activeTab', '#people');

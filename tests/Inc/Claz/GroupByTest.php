@@ -1,17 +1,14 @@
 <?php
-/**
- * @name GroupByTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190314
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class GroupByTest
+ * @name GroupByTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190314
  * @package Inc\Claz
  */
 class GroupByTest extends TestCase

@@ -32,7 +32,7 @@ class Inventory
      * @param int $inv_id of Inventory record to retrieve.
      * @return array Row retrieved. Test for empty for no record found.
      */
-    public static function getOne(int $inv_id)
+    public static function getOne(int $inv_id): array
     {
         return self::getInventories($inv_id);
     }
@@ -41,7 +41,7 @@ class Inventory
      * Retrieve all inventory records.
      * @return array of records retrieved. Test for empty if none found.
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::getInventories();
     }
@@ -50,7 +50,7 @@ class Inventory
      * Minimize the amount of data returned to the manage table.
      * @return array Data for the manage table rows.
      */
-    public static function manageTableInfo()
+    public static function manageTableInfo(): array
     {
         global $config;
 
@@ -90,7 +90,7 @@ class Inventory
     private static function getInventories(?int $inv_id = null): array
     {
         global $LANG, $pdoDb;
-// TODO: Need to figure out where to get email address from.
+
         $inventories = [];
         try {
             if (isset($inv_id)) {
@@ -179,10 +179,13 @@ class Inventory
     }
 
     /**
+     * Send a reorder request to the biller. Note that it comes from the biller also.
      * @return array
      */
-    public static function sendReorderNotificationEmail()
+    public static function sendReorderNotificationEmail(): array
     {
+        $biller = Biller::getDefaultBiller();
+
         $rows = self::getAll();
         $result = [];
         $emailMessage = '';
@@ -202,7 +205,8 @@ class Inventory
 
         $email = new Email();
         $email->setBody($emailMessage);
-        $email->setFrom($email->getFrom());
+        $email->setFrom([$biller['email'] => $biller['name']]);
+        $email->setEmailTo([$biller['email'] => $biller['name']]);
         $email->setSubject("SimpleInvoices inventory reorder level email");
         $email->send();
 

@@ -1,17 +1,14 @@
 <?php
-/**
- * @name WhereClauseTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190313
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class WhereClauseTest
+ * @name WhereClauseTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190313
  * @package Inc\Claz
  */
 class WhereClauseTest extends TestCase
@@ -27,7 +24,7 @@ class WhereClauseTest extends TestCase
             $wc = new WhereClause(new WhereItem(true, 'db_field', '=', 10, false, 'AND'));
             self::assertEquals(1, $wc->getParenCnt(), 'getParenCnt result invalid');
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "WhereClauseTest::testConstruct() - Unexpected exception thrown. Error: {$pde->getMessage()}");
+            self::fail("WhereClauseTest::testConstruct() - Unexpected exception thrown. Error: {$pde->getMessage()}");
         }
     }
 
@@ -39,7 +36,7 @@ class WhereClauseTest extends TestCase
             $stmt = trim($wc->build($keyPairs));
             self::assertEquals('WHERE `db_field` = :db_field_000', $stmt, "Unexpected WhereClause found");
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "WhereClauseTest::testAddSimpleItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
+            self::fail("WhereClauseTest::testAddSimpleItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
         }
     }
 
@@ -52,7 +49,7 @@ class WhereClauseTest extends TestCase
             $stmt = trim($wc->build($keyPairs));
             self::assertEquals('WHERE (`db_field` = :db_field_000  AND `db_field2` = :db_field2_001  AND `db_field3` <> :db_field3_002 )', $stmt, "Unexpected WhereClause found");
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "WhereClauseTest::testAddItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
+            self::fail("WhereClauseTest::testAddItem() - Unexpected exception thrown. Error: {$pde->getMessage()}");
         }
     }
 }

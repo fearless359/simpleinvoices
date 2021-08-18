@@ -24,7 +24,7 @@ if (!empty($_REQUEST['1'])) {
     $langCmp = trim($argv[1]);
 }
 if (!preg_match('/^[a-z]{2}_[a-z]{2}$/i', $langCmp)) {
-    die("Language file to compare to not defined.");
+    exit("Language file to compare to not defined.");
 }
 
 // Ensure that the requested lang folder exists

@@ -87,16 +87,16 @@ class Customer
         foreach ($rows as $row) {
             $enabled = $row['enabled'] == ENABLED;
             // @formatter:off
-            $action = "<a class='index_table' title='{$viewCust} {$row['name']}' " .
+            $action = "<a class='index_table' title='$viewCust {$row['name']}' " .
                          "href='index.php?module=customers&amp;view=view&amp;id={$row['id']}'>" .
-                          "<img src='images/view.png' class='action' alt='{$viewCust}' />" .
+                          "<img src='images/view.png' class='action' alt='$viewCust' />" .
                       "</a>&nbsp;" .
-                      "<a class='index_table' title='{$editCust} {$row['name']}' " .
+                      "<a class='index_table' title='$editCust {$row['name']}' " .
                          "href='index.php?module=customers&amp;view=edit&amp;id={$row['id']}'>" .
-                          "<img src='images/edit.png' class='action' alt='{$editCust}' />" .
+                          "<img src='images/edit.png' class='action' alt='$editCust' />" .
                       "</a>";
             if ($enabled && !$customerSession) {
-                $action .= "&nbsp;<a class='index_table' title='{$defaultInv}' " .
+                $action .= "&nbsp;<a class='index_table' title='$defaultInv' " .
                               "href='index.php?module=invoices&amp;view=usedefault&amp;customer_id={$row['id']}&amp;action=view'>" .
                                "<img src='images/add.png' class='action' alt='add' />" .
                            "</a>";
@@ -109,7 +109,7 @@ class Customer
 
             $image = $enabled ? "images/tick.png" : "images/cross.png";
             $enabledCol = "<span style='display: none'>{$row['enabled_text']}</span>" .
-                          "<img src='{$image}' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
+                          "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
             // @formatter::on
 
             $pattern = '/^(.*)_(.*)$/';
@@ -151,8 +151,10 @@ class Customer
 
         // @formatter::off
         $id          = empty($params['id'])           ? null  : $params['id'];
+        /** @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection */
         $enabledOnly = empty($params['enabledOnly']) ? false : $params['enabledOnly'];
         $inclCustId  = empty($params['incl_cust_id']) ? null  : $params['incl_cust_id'];
+        /** @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection */
         $noTotals    = empty($params['noTotals'])    ? false : $params['noTotals'];
         $orderBySet  = empty($params['order_by_set']) ? false : $params['order_by_set'];
         // @formatter:on
@@ -312,16 +314,16 @@ class Customer
     /**
      * Find the last invoice index_id for a customer.
      * @param int $customerId ID of customer to get info for.
-     * @param int $lastIndexId Last index-id value for this customer
-     * @param int $lastId Last id value for this customer
+     * @param int|null &$lastIndexId Last index-id value for this customer
+     * @param int|null &$lastId Last id value for this customer
      */
-    public static function getLastInvoiceIds(int $customerId, &$lastIndexId, &$lastId): void
+    public static function getLastInvoiceIds(int $customerId, ?int &$lastIndexId, ?int &$lastId): void
     {
         global $pdoDb;
 
-        $lastIndexId = 0;
-        $lastId = 0;
         try {
+            $lastIndexId = 0;
+            $lastId = 0;
             $pdoDb->addSimpleWhere('customer_id', $customerId, 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
 
@@ -409,6 +411,7 @@ class Customer
     /**
      * JSON encoded echoed output for all customers with this parent ID.
      * @param int $parentId
+     * @noinspection PhpUnused
      */
     public static function getSubCustomerAjax(int $parentId): void
     {
@@ -469,7 +472,6 @@ class Customer
                 $excludedFields[] = 'credit_card_number';
             }
             $pdoDb->setExcludedFields($excludedFields);
-
             if (!empty($fauxPostList)) {
                 $pdoDb->setFauxPost($fauxPostList);
             }
@@ -511,11 +513,7 @@ class Customer
             }
 
             $maskLen = $len - $numToShow;
-            $maskedValue = "";
-            for ($ndx = 0; $ndx < $maskLen; $ndx++) {
-                $maskedValue .= $maskChr;
-            }
-
+            $maskedValue = str_repeat($maskChr, $maskLen);
             $maskedValue .= substr($decryptedValue, $maskLen);
         } catch (Exception $exp) {
             return $value;

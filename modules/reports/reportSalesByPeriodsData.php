@@ -13,12 +13,13 @@ global $pdoDb, $smarty;
 Util::directAccessAllowed();
 
 /**
+ * Calculate the current rate.
  * @param $thisYearAmount
  * @param $lastYearAmount
  * @param int $precision
  * @return float
  */
-function calcMyRate($thisYearAmount, $lastYearAmount, $precision = 2)
+function calcMyRate($thisYearAmount, $lastYearAmount, int $precision = 2): float
 {
     if (!$lastYearAmount) {
         return 0;
@@ -103,7 +104,7 @@ while ($year <= $thisYear) {
         } catch (PdoDbException $pde) {
             error_log("modules/reports/reportSalesByPeriods.php - error(2): " . $pde->getMessage());
         }
-        $data['sales']['months'][$month][$year] = isset($rows[0]['month_total']) ? $rows[0]['month_total'] : 0;
+        $data['sales']['months'][$month][$year] = $rows[0]['month_total'] ?? 0;
         $data['sales']['monthsRate'][$month][$year] = calcMyRate($data['sales']['months'][$month][$year], $data['sales']['months'][$month][$year - 1]);
 
         // Monthly Payment ----------------------------
@@ -117,7 +118,7 @@ while ($year <= $thisYear) {
         } catch (PdoDbException $pde) {
             error_log("modules/reports/reportSalesByPeriods.php - error(3): " . $pde->getMessage());
         }
-        $data['payments']['months'][$month][$year] = isset($rows[0]['month_total_payments']) ? $rows[0]['month_total_payments'] : 0;
+        $data['payments']['months'][$month][$year] = $rows[0]['month_total_payments'] ?? 0;
         $data['payments']['monthsRate'][$month][$year] = calcMyRate($data['payments']['months'][$month][$year], $data['payments']['months'][$month][$year - 1]);
 
         $month++;

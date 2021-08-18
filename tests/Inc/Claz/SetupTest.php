@@ -1,11 +1,4 @@
 <?php
-/**
- * @name SetupTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20201203
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\Assert;
@@ -15,6 +8,10 @@ include_once 'vendor/autoload.php';
 
 /**
  * Class SetupTest
+ * @name SetupTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20201203
  * @package Inc\Claz
  */
 class SetupTest extends TestCase

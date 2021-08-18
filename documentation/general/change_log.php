@@ -17,6 +17,21 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-08-13 - <strong>2020.3.03</strong>
+                <ul>
+                    <li>Fix issue with multiple, semi-colon separated email addresses.</li>
+                </ul>
+            </li>
+            <li>2021-08-09 - <strong>2020.3.02</strong>
+                <ul>
+                    <li>Fixed issue with TOTAL STYLE invoice delete.</li>
+                    <li>Changes to use new PHP features such as null coalescing operator, unhandled error THROWS,
+                        etc.
+                    </li>
+                    <li>Changes all occurrences of die to exit just to be consistent.</li>
+                    <li>Fixed customer credit card handling logic to both set and clear the field.</li>
+                </ul>
+            </li>
             <li>2021-07-08 - <strong>2020.3.01</strong>
                 <ul>
                     <li>Removed unused items, emailhost, emailpassword, emailusername, pdfbottommargin,

@@ -59,7 +59,7 @@ while($year <= $thisYear) {
     // loop for each month
     for ($mon = 1; $mon <= 12; $mon++) {
         // make month nice for mysql - accounts table doesn't like it if not 08 etc..
-        $month = $mon < 10 ? "0{$mon}" : $mon;
+        $month = $mon < 10 ? "0$mon" : $mon;
 
         // Monthly taxes on sales
         try {
@@ -81,7 +81,7 @@ while($year <= $thisYear) {
 
             $pdoDb->addSimpleWhere('i.domain_id', $domainId, 'AND');
             $pdoDb->addSimpleWhere('p.status', ENABLED, 'AND');
-            $pdoDb->addToWhere(new WhereItem(false, 'i.date', 'LIKE', "{$year}-{$month}%", false));
+            $pdoDb->addToWhere(new WhereItem(false, 'i.date', 'LIKE', "$year-$month%", false));
 
             $rows = $pdoDb->request('SELECT', 'invoice_item_tax', 'iit');
             $totalMonthSales = empty($rows) ? 0 : $rows[0]['totalMonthSales'];
@@ -101,7 +101,7 @@ while($year <= $thisYear) {
             $pdoDb->addToJoins($jn);
 
             $pdoDb->addSimpleWhere('e.domain_id', $domainId, 'AND');
-            $pdoDb->addToWhere(new WhereItem(false, 'e.date', 'LIKE', "{$year}-{$month}%", false));
+            $pdoDb->addToWhere(new WhereItem(false, 'e.date', 'LIKE', "$year-$month%", false));
 
             $rows = $pdoDb->request('SELECT', 'expense_item_tax', 'et');
             $totalMonthPayments = empty($rows) ? 0 : $rows[0]['totalMonthPayments'];
@@ -123,7 +123,7 @@ while($year <= $thisYear) {
 // heading line. So don't mess with these unless you know what you are doing. :-)
 foreach ($years as $year) {
     for ($mon = 1; $mon <= 12; $mon++) {
-        $month = $mon < 10 ? "0{$mon}" : $mon;
+        $month = $mon < 10 ? "0$mon" : $mon;
         if (!isset($totalSales[$year]['Total'])) {
             $totalSales[$year]['Total'] = 0;
         }

@@ -1,11 +1,4 @@
 <?php
-/**
- * @name JoinTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190314
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
@@ -16,6 +9,10 @@ if (!defined('TB_PREFIX')) {
 
 /**
  * Class JoinTest
+ * @name JoinTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190314
  * @package Inc\Claz
  */
 class JoinTest extends TestCase
@@ -33,7 +30,7 @@ class JoinTest extends TestCase
             try {
                 $jn->setOnClause($onClause);
             } catch (PdoDbException $pde) {
-                self::assertTrue(false, "testJoinClass() Unexpected error from setOnClause. Error: {$pde->getMessage()}");
+                self::fail("testJoinClass() Unexpected error from setOnClause. Error: {$pde->getMessage()}");
             }
 
             $jn->addGroupBy(new GroupBy(['t.tax_id', 't.domain_id']));
@@ -42,10 +39,10 @@ class JoinTest extends TestCase
 
                 self::assertEquals("LEFT JOIN `si_preferences` AS pref ON `t`.`tax_id` = :t_tax_id_000  AND `t`.`domain_id` = :t_domain_id_001  GROUP BY `t`.`tax_id`, `t`.`domain_id`", $stmt);
             } catch (PdoDbException $pde) {
-                self::assertTrue(false, "testJoinClass() Unexpected error from build. Error: {$pde->getMessage()}");
+                self::fail("testJoinClass() Unexpected error from build. Error: {$pde->getMessage()}");
             }
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "testJoinClass() Unexpected error onClause setup. Error: {$pde->getMessage()}");
+            self::fail("testJoinClass() Unexpected error onClause setup. Error: {$pde->getMessage()}");
         }
 
         $jn = new Join('LEFT', 'invoices', 'iv');
@@ -56,7 +53,7 @@ class JoinTest extends TestCase
             $stmt = $jn->build($keyPairs);
             self::assertEquals("LEFT JOIN `si_invoices` AS iv ON `iv`.`customer_id` = `c`.`id` AND `iv`.`domain_id` = `c`.`domain_id`", $stmt, 'Invalid build result');
         } catch (PdoDbException $pde) {
-            self::assertTrue(false, "testJoinClass() Unexpected error from Join build. Error: {$pde->getMessage()}");
+            self::fail("testJoinClass() Unexpected error from Join build. Error: {$pde->getMessage()}");
         }
     }
 }

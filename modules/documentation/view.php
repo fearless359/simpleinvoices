@@ -26,7 +26,7 @@ if (isset($_GET['help'])) {
 }
 else {
     $getPage = $_GET['page'];
-    $page = isset($LANG[$getPage]) ? $LANG[$getPage] : $LANG['noHelpPage'];
+    $page = $LANG[$getPage] ?? $LANG['noHelpPage'];
 }
 
 $smarty->assign("page", $page);

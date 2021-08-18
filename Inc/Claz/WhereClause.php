@@ -44,6 +44,7 @@ class WhereClause
     /**
      * Check to see if we hit the end of the clause for all items.
      * @return bool
+     * @noinspection PhpUnused
      */
     public function isEndOfClause(): bool
     {
@@ -112,6 +113,7 @@ class WhereClause
      * @param bool $firstTime true if first time in this build, false if recursive call.
      * @return string WHERE statement.
      * @throws PdoDbException if specified parenthesis have not been properly paired.
+     * @noinspection PhpConditionAlreadyCheckedInspection
      */
     public function build(?array &$keyPairs, bool $firstTime = true): string
     {

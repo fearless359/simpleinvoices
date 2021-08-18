@@ -28,7 +28,7 @@ Util::directAccessAllowed();
 $billers = Biller::manageTableInfo();
 $data = json_encode(['data' => $billers]);
 if (file_put_contents("public/data.json", $data) === false) {
-    die("Unable to create public/data.json file");
+    exit("Unable to create public/data.json file");
 }
 
 $smarty->assign('numberOfRows', count($billers));

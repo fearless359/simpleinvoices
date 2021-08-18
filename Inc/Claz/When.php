@@ -44,6 +44,6 @@ class When
      */
     public function build(): string
     {
-        return "WHEN {$this->field} {$this->operator} {$this->value} THEN '{$this->result}' ";
+        return "WHEN $this->field $this->operator $this->value THEN '$this->result' ";
     }
 }

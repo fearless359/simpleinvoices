@@ -40,9 +40,9 @@ class Config
             self::updateConfig();
         }
 
-        $config = parse_ini_file("./{$configFile}", true);
+        $config = parse_ini_file("./$configFile", true);
         if ($config === false) {
-            SiError::out('generic', 'Config::init()', "Unable to parse ini file: {$configFile}");
+            SiError::out('generic', 'Config::init()', "Unable to parse ini file: $configFile");
         }
 
         self::$customConfig = $config[$section];
@@ -99,6 +99,7 @@ class Config
         while (($line = fgets($fp)) !== false) {
             switch (ConfigLines::lineType($line)) {
                 case 'section':
+                    /** @noinspection RegExpRedundantEscape */
                     $pattern = '/^\[(.*)\]/';
                     $section = trim(preg_replace($pattern, '$1', $line));
                     break;
@@ -189,12 +190,12 @@ class Config
         $filenameNew = './' . self::CUSTOM_CONFIG_FILE . ".new";
         $fpNew = fopen($filenameNew, 'w');
         if ($fpNew === false) {
-            die("Config::updateCustomConfig() - Unable to open new './" . self::CUSTOM_CONFIG_FILE . ".new' file");
+            exit("Config::updateCustomConfig() - Unable to open new './" . self::CUSTOM_CONFIG_FILE . ".new' file");
         }
 
         $fpCur = fopen('./' . self::CUSTOM_CONFIG_FILE, 'r');
         if ($fpCur === false) {
-            die("Config::updateCustomConfig() - Unable to open './" . self::CUSTOM_CONFIG_FILE . "'");
+            exit("Config::updateCustomConfig() - Unable to open './" . self::CUSTOM_CONFIG_FILE . "'");
         }
         $section = null;
         $unmatchedFlagged = false;
@@ -206,6 +207,7 @@ class Config
             switch (ConfigLines::lineType($line)) {
                 case 'section':
                     fwrite($fpNew, $line);
+                    /** @noinspection RegExpRedundantEscape */
                     $pattern = '/^[\t ]*\[(.*)\].*$/';
                     $section = trim(preg_replace($pattern, '$1', $line));
                     // Write out all new lines for this section

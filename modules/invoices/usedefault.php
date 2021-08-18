@@ -75,9 +75,9 @@ if ($_GET ['action'] == 'update_template') {
 
     try {
         $invoice = Invoice::getInvoiceByIndexId($defaultInvoiceIndexId);
+        $smarty->assign("view", "itemized");
         if (empty($invoice)) {
             // No default template defined.
-            $smarty->assign("view"     , "itemized");
             $smarty->assign("attr1"    , "customer_id");
             $smarty->assign("attr1Val" , $masterCustomerId);
         } else {
@@ -85,7 +85,6 @@ if ($_GET ['action'] == 'update_template') {
             // in the main index.php file that resolves direction to the correct screen.
             // This will result via usedefault.tpl, the input to index.php:
             // .../index.php?module=invoices&amp;view=itemized&amp;template=[invoice::index_id]&amp;customer_id=[customer_id]
-            $smarty->assign("view"     , "itemized");
             $smarty->assign("attr1"    , "template");
             $smarty->assign("attr1Val" , $invoice ['index_id']);
             $smarty->assign('attr2'    , "customer_id");

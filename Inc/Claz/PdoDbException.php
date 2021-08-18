@@ -26,12 +26,13 @@ class PdoDbException extends Exception
      */
     public function __toString()
     {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+        return __CLASS__ . ": [$this->code]: $this->message\n";
     }
 
     /**
      *
      * @noinspection PhpMethodMayBeStaticInspection
+     * @noinspection PhpUnused
      */
     public function customFunctions()
     {

@@ -1,11 +1,4 @@
 <?php
-/**
- * @name CustInfoTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190310
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\Assert;
@@ -13,6 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class CustInfoTest
+ * @name CustInfoTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190310
  * @package test\Inc\Claz
  */
 class CustInfoTest extends TestCase

@@ -93,9 +93,9 @@ class Export
             Log::out("Export::showData() - No data to report.");
             error_log("Export::showData() - No data to report.");
             echo "<div class='si_message_error'>" .
-                     "{$LANG['exportUc']} {$LANG['process']} {$LANG['terminated']}. " .
-                     "{$LANG['noUc']} {$LANG['data']} {$LANG['to']} {$LANG['report']}." .
-                 "</div>";
+                "{$LANG['exportUc']} {$LANG['process']} {$LANG['terminated']}. " .
+                "{$LANG['noUc']} {$LANG['data']} {$LANG['to']} {$LANG['report']}." .
+                "</div>";
             echo "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
             return null;
         }
@@ -106,7 +106,6 @@ class Export
         }
 
         Log::out("Export::showData() - format[$this->format] fileType[$this->fileType]");
-        // formatter:off
         switch ($this->format) {
             case "pdf":
                 return Pdf::generate($data, $this->fileName, $this->destination, $this->landscape);
@@ -158,7 +157,6 @@ class Export
                 error_log($str);
                 exit($str);
         }
-        // formatter:on
 
         return null;
     }
@@ -171,11 +169,9 @@ class Export
     {
         global $config, $smarty, $siUrl;
 
-        Log::out("Export::getData() assigned fileName:[$this->fileName] module[$this->module");
+        Log::out("Export::getData() assigned fileName:[$this->fileName] module[$this->module]");
 
-        // @formatter:off
         $data = "";
-        /** @noinspection PhpSwitchCaseWithoutDefaultBranchInspection */
         switch ($this->module) {
             case "invoice":
                 try {
@@ -215,7 +211,7 @@ class Export
                     $customFieldLabels = CustomFields::getLabels(true);
 
                     $pastDueDate = date("Y-m-d", strtotime('-30 days')) . ' 00:00:00';
-                    $pastDueAmt  = CustomersPastDue::getCustomerPastDue($invoice['customer_id'], $pastDueDate, $this->invoiceId);
+                    $pastDueAmt = CustomersPastDue::getCustomerPastDue($invoice['customer_id'], $pastDueDate, $this->invoiceId);
 
                     // Set the template to the default
                     $template = $defaults['template'];
@@ -228,18 +224,18 @@ class Export
 
                     $origLocale = $this->assignTemplateLanguage($this->preference);
 
-                    $smarty->assign('biller'              , $biller);
-                    $smarty->assign('customer'            , $this->customer);
-                    $smarty->assign('invoice'             , $invoice);
+                    $smarty->assign('biller', $biller);
+                    $smarty->assign('customer', $this->customer);
+                    $smarty->assign('invoice', $invoice);
                     $smarty->assign('invoiceNumberOfTaxes', $invoiceNumberOfTaxes);
-                    $smarty->assign('preference'          , $preference);
-                    $smarty->assign('logo'                , $logo);
-                    $smarty->assign('template'            , $template);
-                    $smarty->assign('invoiceItems'        , $invoiceItems);
-                    $smarty->assign('template_path'       , $templateDir);
-                    $smarty->assign('css'                 , $css);
-                    $smarty->assign('customFieldLabels'   , $customFieldLabels);
-                    $smarty->assign('pastDueAmt'          , $pastDueAmt);
+                    $smarty->assign('preference', $preference);
+                    $smarty->assign('logo', $logo);
+                    $smarty->assign('template', $template);
+                    $smarty->assign('invoiceItems', $invoiceItems);
+                    $smarty->assign('template_path', $templateDir);
+                    $smarty->assign('css', $css);
+                    $smarty->assign('customFieldLabels', $customFieldLabels);
+                    $smarty->assign('pastDueAmt', $pastDueAmt);
 
                     // Plugins specifically associated with your invoice template.
                     $templatePluginsDir = "templates/invoices/$template/plugins/";
@@ -273,28 +269,28 @@ class Export
 
                     // Get Invoice preference to link from this screen back to the invoice
                     $invoice = Invoice::getOne($payment['ac_inv_id']);
-                    $biller  = Biller::getOne($payment['billerId']);
+                    $biller = Biller::getOne($payment['billerId']);
 
                     $logo = Util::getLogo($biller);
                     $logo = str_replace(" ", "%20", trim($logo));
 
-                    $customer          = Customer::getOne($payment['customerId']);
-                    $invoiceType       = Invoice::getInvoiceType($invoice['type_id']);
+                    $customer = Customer::getOne($payment['customerId']);
+                    $invoiceType = Invoice::getInvoiceType($invoice['type_id']);
                     $customFieldLabels = CustomFields::getLabels(true);
-                    $paymentType       = PaymentType::getOne($payment['ac_payment_type']);
-                    $preference        = Preferences::getOne($invoice['preference_id']);
+                    $paymentType = PaymentType::getOne($payment['ac_payment_type']);
+                    $preference = Preferences::getOne($invoice['preference_id']);
 
-                    $smarty->assign("payment"          , $payment);
-                    $smarty->assign("invoice"          , $invoice);
-                    $smarty->assign("biller"           , $biller);
-                    $smarty->assign("logo"             , $logo);
-                    $smarty->assign("customer"         , $customer);
-                    $smarty->assign("invoiceType"      , $invoiceType);
-                    $smarty->assign("paymentType"      , $paymentType);
-                    $smarty->assign("preference"       , $preference);
+                    $smarty->assign("payment", $payment);
+                    $smarty->assign("invoice", $invoice);
+                    $smarty->assign("biller", $biller);
+                    $smarty->assign("logo", $logo);
+                    $smarty->assign("customer", $customer);
+                    $smarty->assign("invoiceType", $invoiceType);
+                    $smarty->assign("paymentType", $paymentType);
+                    $smarty->assign("preference", $preference);
                     $smarty->assign("customFieldLabels", $customFieldLabels);
-                    $smarty->assign('pageActive'       , 'payment');
-                    $smarty->assign('activeTab'       , '#money');
+                    $smarty->assign('pageActive', 'payment');
+                    $smarty->assign('activeTab', '#money');
 
                     $css = $siUrl . "templates/invoices/default/style.css";
                     $smarty->assign('css', $css);
@@ -304,8 +300,11 @@ class Export
                     error_log("Export::getData() - payment - error: " . $exp->getMessage());
                 }
                 break;
+
+            default:
+                error_log("Export::getData() - Invalid module[$this->module]");
+                break;
         }
-        // @formatter:on
 
         return $data;
     }
@@ -341,7 +340,7 @@ class Export
         }
 
         Log::out("Export::getReportData() - fileName[$this->fileName] fileType[$this->fileType]");
-        foreach($_GET as $key => $value) {
+        foreach ($_GET as $key => $value) {
             Log::out("Export::getReportData() - \$_GET info: key[$key] value[$value]");
             $smarty->assign($key, $value);
         }

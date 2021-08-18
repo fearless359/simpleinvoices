@@ -125,8 +125,8 @@ switch ($fileName) {
         break;
 
     case 'reportNetIncome':
-        $customFlag = isset($_GET['customFlag']) ? $_GET['customFlag'] : '0';
-        $customFlagLabel = isset($_GET['customFlagLabel']) ? $_GET['customFlagLabel'] : '';
+        $customFlag = $_GET['customFlag'] ?? '0';
+        $customFlagLabel = $_GET['customFlagLabel'] ?? '';
         include "modules/reports/reportNetIncomeData.php";
         $params = [
             'billerId' => $billerId,
@@ -173,7 +173,7 @@ switch ($fileName) {
         break;
 
     case 'reportSalesByPeriods':
-        $showRates = isset($_GET['showRates']) ? $_GET['showRates'] : "no";
+        $showRates = $_GET['showRates'] ?? "no";
         include "modules/reports/reportSalesByPeriodsData.php";
         $params = [
             'fileName' => $fileName,
@@ -183,7 +183,7 @@ switch ($fileName) {
         break;
 
     case 'reportSalesByRepresentative':
-        $salesRep = isset($_GET['salesRep']) ? $_GET['salesRep'] : "";
+        $salesRep = $_GET['salesRep'] ?? "";
         include "modules/reports/reportSalesByRepresentativeData.php";
         $params = [
             'endDate' => $endDate,
@@ -256,7 +256,7 @@ if ($stage == 2) {
     $export->setModule('reports');
     if (empty($billerId)) {
         $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=reports&amp;view=index' />";
-        $displayBlock = "<div class='si_message_error'>{$message}</div>";
+        $displayBlock = "<div class='si_message_error'>$message</div>";
         $results = [
             "message" => $message,
             "refresh_redirect" => $refreshRedirect,
@@ -279,16 +279,18 @@ if ($stage == 2) {
             $pdfString = $export->execute();
 
             $email = new Email();
-            $email->setBcc($_POST['emailBcc']);
+            $email->setBcc(explode(';', $_POST['emailBcc']));
             $email->setBody(trim($_POST['emailNotes']));
             $email->setFormat('reports');
-            $email->setFrom($_POST['emailFrom']);
-            $email->setFromFriendly($biller['name']);
+            if ($_POST['emailFrom'] == $biller['email']) {
+                $email->setFrom([$_POST['emailFrom'] => $biller['name']]);
+            } else {
+                $email->setFrom([$_POST['emailFrom']]);
+            }
             $email->setPdfFileName($export->getFileName() . '.pdf');
             $email->setPdfString($pdfString);
             $email->setSubject($_POST['emailSubject']);
-            $email->setEmailTo($_POST['emailTo']);
-
+            $email->setEmailTo(explode(';', $_POST['emailTo']));
             $results = $email->send();
         } catch (Exception $exp) {
             exit("modules/reports/email.php Unexpected error: {$exp->getMessage()}");

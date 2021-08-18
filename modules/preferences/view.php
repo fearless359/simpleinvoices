@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Index;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
@@ -23,7 +24,12 @@ $smarty->assign('defaults', SystemDefaults::loadValues());
 
 $indexGroup = $preference['index_group'];
 $smarty->assign('indexGroup', Preferences::getOne($indexGroup));
-$smarty->assign('nextId', Index::next('invoice', $indexGroup));
+try {
+    $smarty->assign('nextId', Index::next('invoice', $indexGroup));
+} catch (PdoDbException $pde) {
+    error_log("modules/preferences/view.php - insert exception error: " . $pde->getMessage());
+    exit("Unable to process request. See error log for details.");
+}
 
 $smarty->assign('preferences', Preferences::getActivePreferences());
 $smarty->assign('localeList', Util::getLocaleList());

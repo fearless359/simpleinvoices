@@ -13,7 +13,7 @@ $action = $_GET['action'] ?? '';
 
 if ($action == 'toggle') {
     if (empty($extensionId) || !Extensions::setStatusExtension($extensionId)) {
-        die(Util::htmlSafe("Something went wrong with the status change!"));
+        exit("Something went wrong with the status change!");
     }
 }
 
@@ -21,7 +21,7 @@ $extensions = Extensions::manageTableInfo();
 
 $data = json_encode(['data' => $extensions]);
 if (file_put_contents("public/data.json", $data) === false) {
-    die("Unable to create public/data.json file");
+    exit("Unable to create public/data.json file");
 }
 
 $smarty->assign('numberOfRows', count($extensions));

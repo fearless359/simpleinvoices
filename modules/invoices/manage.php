@@ -19,7 +19,7 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$having = isset($_GET['having']) ? $_GET['having'] : "";
+$having = "" ?? $_GET['having'];
 
 // If user role is customer or biller, then restrict invoices to those they have access to.
 // Make customer access read only. Billers change work only on those invoices generated for them.
@@ -29,12 +29,14 @@ try {
     $invoices = Invoice::getAllWithHavings($having, '', '', true);
     $data = json_encode(['data' => $invoices]);
     if (file_put_contents("public/data.json", $data) === false) {
-        die("Unable to create public/data.json file");
+        error_log("modules/invoices/manage.php Unable to store json data.");
+        exit("Unable to process request. See error log for details.");
     }
 
     $smarty->assign('number_of_invoices', count($invoices));
 } catch (PdoDbException $pde) {
-    exit("modules/invoices/manager.php Unexpected error {$pde->getMessage()}");
+    error_log("modules/invoices/manage.php Unexpected error {$pde->getMessage()}");
+    exit("Unable to process request. See error log for details.");
 }
 if (!empty($having)) {
     $having = "&amp;having=" . $having;

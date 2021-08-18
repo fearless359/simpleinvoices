@@ -157,7 +157,7 @@ class Biller
         } catch (PdoDbException $pde) {
             error_log("Biller::getDefaultBiller(): error: " . $pde->getMessage());
         }
-        return empty($billers) ? ["name" => ''] : $billers[0];
+        return empty($billers) ? ["name" => '', "email" => ''] : $billers[0];
     }
 
     /**

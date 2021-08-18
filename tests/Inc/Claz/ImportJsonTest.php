@@ -1,11 +1,4 @@
 <?php
-/**
- * @name ImportJsonTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20201201
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\Assert;
@@ -16,6 +9,10 @@ include_once 'config/define.php';
 
 /**
  * Class ImportJsonTest
+ * @name ImportJsonTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20201201
  */
 class ImportJsonTest extends TestCase
 {

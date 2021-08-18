@@ -2,6 +2,8 @@
 
 namespace Inc\Claz;
 
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
 use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Message;
@@ -15,38 +17,36 @@ use Exception;
  */
 class Email
 {
-    protected string $bcc;
+    protected array $bcc;
     protected string $body;
     protected string $format;
-    protected string $from;
-    protected string $fromFriendly;
+    protected array $from;
     protected string $pdfFileName;
     protected string $pdfString;
     protected string $subject;
-    protected string $emailTo;
+    protected array $emailTo;
 
     public function __construct()
     {
-        $this->bcc = '';
+        $this->bcc = [];
         $this->body = '';
         $this->format = '';
-        $this->from = '';
-        $this->fromFriendly = '';
+        $this->from = [];
         $this->pdfFileName = '';
         $this->pdfString = '';
         $this->subject = '';
-        $this->emailTo = '';
+        $this->emailTo = [];
     }
 
-    public function errorLog() {
-        error_log("Email::errorLog() - bcc[{$this->bcc}]");
-        error_log("Email::errorLog() - body[{$this->body}]");
-        error_log("Email::errorLog() - emailTo[{$this->emailTo}]");
-        error_log("Email::errorLog() - format[{$this->format}]");
-        error_log("Email::errorLog() - fromFriendly[{$this->fromFriendly}]");
-        error_log("Email::errorLog() - from[{$this->from}]");
-        error_log("Email::errorLog() - pdfFileName[{$this->pdfFileName}]");
-        error_log("Email::errorLog() - subject[{$this->subject}]");
+    public function errorLog()
+    {
+        error_log("Email::errorLog() - bcc: " . print_r($this->bcc, true));
+        error_log("Email::errorLog() - body[$this->body]");
+        error_log("Email::errorLog() - emailTo: " . print_r($this->emailTo, true));
+        error_log("Email::errorLog() - format[$this->format]");
+        error_log("Email::errorLog() - from: " . print_r($this->from, true));
+        error_log("Email::errorLog() - pdfFileName[$this->pdfFileName]");
+        error_log("Email::errorLog() - subject[$this->subject]");
 
         // NOTE: pdfString not dumped on purpose.
     }
@@ -68,7 +68,7 @@ class Email
             $message = "One or more required fields is missing";
             error_log("Email::send() - " . $message);
             $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=invoices&amp;view=manage' />";
-            $displayBlock = "<div class='si_message_error'>{$message}</div>";
+            $displayBlock = "<div class='si_message_error'>$message</div>";
             return [
                 "message" => $message,
                 "refresh_redirect" => $refreshRedirect,
@@ -77,16 +77,16 @@ class Email
         }
         // @formatter:on
 
-        if (!empty($this->pdfString) &&  empty($this->pdfFileName) ||
-             empty($this->pdfString) && !empty($this->pdfFileName)) {
+        if (!empty($this->pdfString) && empty($this->pdfFileName) ||
+            empty($this->pdfString) && !empty($this->pdfFileName)) {
             $message = "Both pdfString and pdfFileName must be set or left empty";
             error_log("Email::send() - " . $message);
             $refreshRedirect = "<meta http-equiv='refresh' content='5;URL=index.php?module=invoices&amp;view=manage' />";
-            $displayBlock = "<div class='si_message_error'>{$message}</div>";
+            $displayBlock = "<div class='si_message_error'>$message</div>";
             return [
-                "message" => $message,
+                "message"          => $message,
                 "refresh_redirect" => $refreshRedirect,
-                "display_block" => $displayBlock
+                "display_block"    => $displayBlock
             ];
         }
 
@@ -112,31 +112,35 @@ class Email
         }
 
         if (!empty($this->bcc)) {
-            if (is_array($this->bcc)) {
-                foreach ($this->bcc as $name) {
-                    $message->addBcc($name);
-                }
-            } else {
-                $message->setBcc([$this->bcc]);
+            foreach ($this->bcc as $emailAddr) {
+                $message->addBcc($emailAddr);
             }
         }
 
         $message->setBody($this->body, 'text/html');
 
-        if (empty($this->fromFriendly)) {
-            $message->setFrom($this->from);
-        } else {
-            $message->setFrom([$this->from => $this->fromFriendly]);
+        foreach ($this->from as $key => $value) {
+            if (is_int($key)) {
+                $message->addFrom($value);
+            } else {
+                $message->addFrom($key, $value);
+            }
         }
 
         $message->setSubject($this->subject);
 
-        $message->setTo($this->emailTo);
+        foreach ($this->emailTo as $key => $value) {
+            if (is_int($key)) {
+                $message->addTo($value);
+            } else {
+                $message->addTo($key, $value);
+            }
+        }
 
         Log::out("Email::send() - Before Swift_Mailer send()");
         $result = $mailer->send($message);
 
-        Log::out("Email::send() - After Swift_Mailer send() result[{$result}]");
+        Log::out("Email::send() - After Swift_Mailer send() result[$result]");
         return self::makeResults($result);
     }
 
@@ -150,7 +154,7 @@ class Email
                     $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = $this->pdfFileName . " has been sent";
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -158,10 +162,10 @@ class Email
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=reports&amp;view=index' />";
                 if ($result == 0) {
                     $message = $this->pdfFileName . ' could not be sent';
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = $this->pdfFileName . ' has been sent';
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -169,10 +173,10 @@ class Email
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=statement&amp;view=index' />";
                 if ($result == 0) {
                     $message = $this->pdfFileName . ' could not be sent';
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = $this->pdfFileName . ' has been sent';
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -180,21 +184,21 @@ class Email
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
                 if ($result == 0) {
                     $message = "Cron email for today has not been sent";
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
                     $message = "Cron email for today has been sent";
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
             case "cron_invoice":
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
                 if ($result == 0) {
-                    $message = "Cron {$this->pdfFileName} has not been emailed";
-                    $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                    $message = "Cron $this->pdfFileName has not been emailed";
+                    $displayBlock = "<div class='si_message_error'>$message</div>";
                 } else {
-                    $message = "Cron {$this->pdfFileName} has been emailed";
-                    $displayBlock = "<div class='si_message_ok'>{$message}</div>";
+                    $message = "Cron $this->pdfFileName has been emailed";
+                    $displayBlock = "<div class='si_message_ok'>$message</div>";
                 }
                 break;
 
@@ -203,15 +207,15 @@ class Email
                     $this->format = ''; // Make sure empty is blank
                 }
                 $message = "Undefined format, \" . $this->format";
-                error_log("Email::send() - {$message}");
+                error_log("Email::send() - $message");
                 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
-                $displayBlock = "<div class='si_message_error'>{$message}</div>";
+                $displayBlock = "<div class='si_message_error'>$message</div>";
         }
 
         return [
-            "message" => $message,
+            "message"          => $message,
             "refresh_redirect" => $refreshRedirect,
-            "display_block" => $displayBlock
+            "display_block"    => $displayBlock
         ];
     }
 
@@ -237,7 +241,13 @@ class Email
 
             case "invoice":
             default:
-                $message = "$this->pdfFileName from $this->fromFriendly";
+                $key = array_key_first($this->from);
+                if (is_int($key)) {
+                    $friendly = '';
+                } else {
+                    $friendly = $this->from[$key];
+                }
+                $message = "$this->pdfFileName from $friendly";
                 break;
 
         }
@@ -245,37 +255,56 @@ class Email
         return $message;
     }
 
-    public function getBcc(): string
+    public function getBcc(): array
     {
         return $this->bcc;
     }
 
     /**
-     * @param string $bcc
+     * Validate the BCC email addresses and add them to the bcc property. This method can
+     * be called multiple times if necessary.
+     * @param array $bcc Array constructed with one or more email addresses and optional
+     *                   friendly name. If a friendly name is present then the bcc email
+     *                   address becomes the index key and the value is the friendly name.
+     *                   Otherwise, you have an int index with the value being the bcc
+     *                   email address. Example:
+     *                   ["bccEmailAddr@gmail.com" => "friendlyName", "anotherBccEmailAddr@gmail.com"]
      * @return bool true if OK, false if not.
      */
-    public function setBcc(string $bcc): bool
+    public function setBcc(array $bcc): bool
     {
         if (empty($bcc)) {
-            $this->bcc = '';
-        } else {
-            $emailBcc = array_filter(explode(';', $bcc));
-            if (is_array($emailBcc) && count($emailBcc) > 1) {
-                foreach ($emailBcc as $addr) {
-                    if (!filter_var($addr, FILTER_VALIDATE_EMAIL)) {
-                        error_log("Email::setBcc() - Invalid BCC address in list[{$addr}]");
-                        return false;
-                    }
+            error_log("Email::setEmailTo() - Empty emailTo address");
+            return false;
+        }
+
+        $validator = new EmailValidator();
+        foreach ($bcc as $key => $value) {
+            if (is_int($key)) {
+                // An "explode" of an empty string generates an array with a 0 index and blank value.
+                // So check for value here to make sure it doesn't sneak by us.
+                if (empty($value)) {
+                    continue;
                 }
-                $this->bcc = $emailBcc;
+                $bccAddr = $value;
+                $bccFriendly = '';
             } else {
-                if (!filter_var($bcc, FILTER_VALIDATE_EMAIL)) {
-                    error_log("Email::setBcc() - Invalid BCC address[{$bcc}]");
-                    return false;
-                }
-                $this->bcc = $bcc;
+                $bccAddr = $key;
+                $bccFriendly = $value;
+            }
+
+            if (!$validator->isValid($bccAddr, new RFCValidation())) {
+                error_log("Email::setBcc() - Invalid emailTo address in list[$bccAddr]");
+                return false;
+            }
+
+            if (!empty($bccFriendly)) {
+                $this->bcc[$bccAddr] = $bccFriendly;
+            } else {
+                $this->bcc[] = $bccAddr;
             }
         }
+
         return true;
     }
 
@@ -310,37 +339,56 @@ class Email
         $this->format = $format;
     }
 
-    public function getFrom(): string
+    public function getFrom(): array
     {
         return $this->from;
     }
 
     /**
-     * @param string $from Valid email address of sender
-     * @return bool true if OK, false of not.
+     * Validate the FROM email addresses and add them the FROM property. This method can
+     * be called multiple times if necessary.
+     * @param array $from Array constructed with one or more email addresses and optional an
+     *                    friendly name. If a friendly name is present then the FROM
+     *                    address becomes the index key and the value is the friendly name.
+     *                    Otherwise, you have an int index with the value being the FROM
+     *                    address. Example:
+     *                    ["fromAddr@gmail.com" => "friendlyName", "anotherFromAddr@gmail.com"]
+     * @return bool true if OK, false if not.
      */
-    public function setFrom(string $from): bool
+    public function setFrom(array $from): bool
     {
-        if (empty($from) || !filter_var($from, FILTER_VALIDATE_EMAIL)) {
-            error_log("Email::setFrom() - Invalid FROM address[{$from}]");
+        if (empty($from)) {
+            error_log("Email::setFrom() - Empty from address");
             return false;
         }
 
-        $this->from = $from;
+        $validator = new EmailValidator();
+        foreach ($from as $key => $value) {
+            if (is_int($key)) {
+                // An "explode" of an empty string generates an array with a 0 index and blank value.
+                // So check for value here to make sure it doesn't sneak by us.
+                if (empty($value)) {
+                    continue;
+                }
+                $fromAddr = $value;
+                $fromFriendly = '';
+            } else {
+                $fromAddr = $key;
+                $fromFriendly = $value;
+            }
+            if (!$validator->isValid($fromAddr, new RFCValidation())) {
+                error_log("Email::setFrom() - Invalid from address in list[$fromAddr]");
+                return false;
+            }
+
+            if (!empty($fromFriendly)) {
+                $this->from[$fromAddr] = $fromFriendly;
+            } else {
+                $this->from[] = $fromAddr;
+            }
+        }
+
         return true;
-    }
-
-    public function getFromFriendly(): string
-    {
-        return $this->fromFriendly;
-    }
-
-    /**
-     * @param string $fromFriendly Friendly name of sender
-     */
-    public function setFromFriendly(string $fromFriendly): void
-    {
-        $this->fromFriendly = $fromFriendly;
     }
 
     public function getPdfFileName(): string
@@ -376,35 +424,55 @@ class Email
         $this->subject = $subject;
     }
 
-    public function getEmailTo(): string
+    public function getEmailTo(): array
     {
         return $this->emailTo;
     }
 
     /**
-     * @param string $emailTo Email address to send message to. Multiple address should be separated by a ";".
+     * Validate the TO email addresses and add them to the emailTo property. This method can
+     * be called multiple times if necessary.
+     * @param array $emailTo Array constructed with one or more email addresses and optional
+     *                       friendly name. If a friendly name is present then the emailTo
+     *                       address becomes the index key and the value is the friendly name.
+     *                       Otherwise, you have an int index with the value being the emailTo
+     *                       address. Example:
+     *                       ["emailToAddr@gmail.com" => "friendlyName", "anotherEmailToAddr@gmail.com"]
      * @return bool true if OK, false if not.
      */
-    public function setEmailTo(string $emailTo): bool
+    public function setEmailTo(array $emailTo): bool
     {
         if (empty($emailTo)) {
             error_log("Email::setEmailTo() - Empty emailTo address");
             return false;
-        } else {
-            // Explode addresses and run them through a valid email filter.
-            $toAddresses = array_filter(explode(';', $emailTo));
-            foreach ($toAddresses as $toAddress) {
-                if (!filter_var($toAddress, FILTER_VALIDATE_EMAIL)) {
-                    error_log("Email::setEmailTo() - Invalid emailTo address in list[{$toAddress}]");
-                    return false;
-                }
+        }
 
-                if (!empty($this->emailTo)) {
-                    $this->emailTo .= ";";
+        $validator = new EmailValidator();
+        foreach ($emailTo as $key => $value) {
+            if (is_int($key)) {
+                // An "explode" of an empty string generates an array with a 0 index and blank value.
+                // So check for value here to make sure it doesn't sneak by us.
+                if (empty($value)) {
+                    continue;
                 }
-                $this->emailTo .= $toAddress;
+                $toAddr = $value;
+                $toFriendly = '';
+            } else {
+                $toAddr = $key;
+                $toFriendly = $value;
+            }
+            if (!$validator->isValid($toAddr, new RFCValidation())) {
+                error_log("Email::setEmailTo() - Invalid emailTo address in list[$toAddr]");
+                return false;
+            }
+
+            if (!empty($toFriendly)) {
+                $this->emailTo[$toAddr] = $toFriendly;
+            } else {
+                $this->emailTo[] = $toAddr;
             }
         }
+
         return true;
     }
 

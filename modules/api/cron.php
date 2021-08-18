@@ -17,4 +17,10 @@ ini_set('max_execution_time', 600); // 600 seconds = 10 minutes
 
 ob_end_clean();
 header('Content-type: application/xml');
-echo Encode::xml(Cron::run());
+try {
+    $values = Cron::run();
+} catch (Exception $exp) {
+    error_log("cron.php exception[{$exp->getMessage()}]");
+    $values = [];
+}
+echo Encode::xml($values);

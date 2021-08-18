@@ -32,11 +32,12 @@ class Requests
     {
         $this->requests = [];
         $this->addIds = [];
-        $this->pdoDb->clearAll(true);
+        $this->pdoDb->clearAll();
     }
 
     /**
      * Turn database debug on.
+     * @noinspection PhpUnused
      */
     public function debugOn(): void
     {
@@ -45,6 +46,7 @@ class Requests
 
     /**
      * Turn database debug off.
+     * @noinspection PhpUnused
      */
     public function debugOff(): void
     {

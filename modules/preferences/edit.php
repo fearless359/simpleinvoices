@@ -2,6 +2,7 @@
 
 use Inc\Claz\Index;
 use Inc\Claz\Invoice;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
@@ -42,12 +43,16 @@ if (!empty($_POST['p_description'])) {
     }
     $smarty->assign('useThisPref', $useThisPref);
 
-    // If $useThisPref is true, then check to see if invoices for this preference
-    // exist already. If they do, the starting number for this preference must be greater
-    // than the greatest number already assigned.
-    $startingId = Invoice::maxIndexIdForPreference($preference['pref_id']) + 1;
-    $smarty->assign('startingId', $startingId);
-    $smarty->assign('nextId', Index::next('invoice', $indexGroup));
+    try {
+        // If $useThisPref is true, then check to see if invoices for this preference
+        // exist already. If they do, the starting number for this preference must be greater
+        // than the greatest number already assigned.
+        $smarty->assign('startingId', Invoice::maxIndexIdForPreference($preference['pref_id']) + 1);
+        $smarty->assign('nextId', Index::next('invoice', $indexGroup));
+    } catch (PdoDbException $pde) {
+        error_log("modules/preferences/edit.php Exception: {$pde->getMessage()}");
+        exit("Unable to process request. See error log for details.");
+    }
 
     $smarty->assign('localeList', Util::getLocaleList());
 

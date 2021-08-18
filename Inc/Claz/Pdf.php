@@ -37,8 +37,6 @@ class Pdf
                 $pdfname .= '.pdf';
             }
 
-
-
             Log::out("Pdf::generate() - pdfname[$pdfname] destination[$destination] landscape[$landscape] data[$data]");
             $mpdf = new Mpdf([
                 'tempDir'           => 'tmp/pdf_tmp',

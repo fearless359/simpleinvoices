@@ -161,8 +161,8 @@ class SiError
                         "<br />The following sql statement:" .
                         "<br />$info2" .
                         "<br />" .
-                        "<br />had the following error code: {$info1}" .
-                        "<br />with the message of: \"{$info2}\"" .
+                        "<br />had the following error code: $info1" .
+                        "<br />with the message of: \"$info2\"" .
                         "<br />" .
                         "<br />===========================================" .
                         "<br />";

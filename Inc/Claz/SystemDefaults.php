@@ -142,7 +142,7 @@ class SystemDefaults
      * @param bool $ret_string true if failed flag to return as 'DISABLED' string, false returns 0.
      * @return string|int Value of system_defaults row for specified name.
      */
-    public static function getValue(string $name, $extensionId = "", bool $ret_string = true)
+    public static function getValue(string $name, string $extensionId = "", bool $ret_string = true)
     {
         global $LANG;
 
@@ -276,7 +276,7 @@ class SystemDefaults
      */
     public static function getPasswordMinLength(): int
     {
-        return self::getValue('password_min_length', null, false);
+        return self::getValue('password_min_length', "", false);
     }
 
     /**
@@ -310,6 +310,7 @@ class SystemDefaults
     /**
      * Get "preference" entry from the system_defaults table.
      * @return int 1 if enabled or 0 if not enabled
+     * @noinspection PhpUnused
      */
     public static function getPreference(): int
     {
@@ -349,7 +350,7 @@ class SystemDefaults
      */
     public static function getSessionTimeout(): int
     {
-        return self::getValue('session_timeout', null, false);
+        return self::getValue('session_timeout', "", false);
     }
 
 }

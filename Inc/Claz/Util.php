@@ -26,7 +26,7 @@ class Util
      */
     public static function directAccessAllowed(): void
     {
-        $allowDirectAccess = isset($GLOBALS['allow_direct_access']) ? $GLOBALS['allow_direct_access'] : false;
+        $allowDirectAccess = $GLOBALS['allow_direct_access'] ?? false;
         if (!$allowDirectAccess) {
             header("HTTP/1.0 404 Not Found");
             exit();
@@ -58,7 +58,7 @@ class Util
         foreach ($choiceArray as $key => $value) {
             $keyParm = self::htmlSafe($key) . "' " . ($key == $defVal ? "selected style='font-weight: bold'" : "");
             $valParm = self::htmlSafe($value);
-            $line .= "<option value='{$keyParm}'>{$valParm}</option>\n";
+            $line .= "<option value='$keyParm'>$valParm</option>\n";
         }
         $line .= "</select>\n";
         return $line;
@@ -72,6 +72,7 @@ class Util
     public static function filenameEscape(string $str): string
     {
         // Returns an escaped value.
+        /** @noinspection RegExpRedundantEscape */
         $pattern = '/[^a-z0-9\-_\.\/]/i';
         return preg_replace($pattern, '_', $str);
     }
@@ -89,19 +90,19 @@ class Util
     {
         $myCustomPath = "custom/";
         $out = null;
-        Log::out("Util::getCustomPath() - name[{$name}] mode[{$mode}]");
+        Log::out("Util::getCustomPath() - name[$name] mode[$mode]");
         if ($mode == 'template') {
-            if (file_exists("{$myCustomPath}defaultTemplate/{$name}.tpl")) {
-                $out = "{$myCustomPath}defaultTemplate/{$name}.tpl";
-            } elseif (file_exists("templates/default/{$name}.tpl")) {
-                $out = "templates/default/{$name}.tpl";
+            if (file_exists("{$myCustomPath}defaultTemplate/$name.tpl")) {
+                $out = "{$myCustomPath}defaultTemplate/$name.tpl";
+            } elseif (file_exists("templates/default/$name.tpl")) {
+                $out = "templates/default/$name.tpl";
             }
         }
         if ($mode == 'module') {
-            if (file_exists("{$myCustomPath}modules/{$name}.php")) {
-                $out = "{$myCustomPath}modules/{$name}.php";
-            } elseif (file_exists("modules/{$name}.php")) {
-                $out = "modules/{$name}.php";
+            if (file_exists("{$myCustomPath}modules/$name.php")) {
+                $out = "{$myCustomPath}modules/$name.php";
+            } elseif (file_exists("modules/$name.php")) {
+                $out = "modules/$name.php";
             }
         }
         return $out;
@@ -353,7 +354,7 @@ class Util
     public static function date(string $dateVal, string $dateFormat = "medium"): string
     {
         if (!preg_match(self::DATE_FORMAT_PARAMETER, $dateFormat)) {
-            $str = "Util::date() - Invalid date format, {$dateFormat}, specified.";
+            $str = "Util::date() - Invalid date format, $dateFormat, specified.";
             error_log($str);
             exit($str);
         }
@@ -469,18 +470,19 @@ class Util
     /**
      * Make sure URL is safe for html use.
      * @param string|array $str
-     * @return bool|null|string|string[]
+     * @return bool|string
      */
     public static function urlSafe($str)
     {
+        /** @noinspection RegExpRedundantEscape */
+        /** @noinspection RegExpDuplicateCharacterInClass */
         $pattern = '/[^a-zA-Z0-9@;:%_\+\.~#\?\/\=\&\/\-]/';
         $str = preg_replace($pattern, '', $str);
         $pattern = '/^\s*javascript/i';
         if (preg_match($pattern, $str)) {
             return false;  // no javascript urls
         }
-        $str = self::htmlSafe($str);
-        return $str;
+        return self::htmlSafe($str);
     }
 
     /**
@@ -575,13 +577,13 @@ class Util
     public static function sqlDateWithTime(string $in_date): string
     {
         $parts = explode(' ', $in_date);
-        $date = isset($parts[0]) ? $parts[0] : "";
-        $time = isset($parts[1]) ? $parts[1] : "00:00:00";
+        $date = $parts[0] ?? "";
+        $time = $parts[1] ?? "00:00:00";
         if (!$time || $time == '00:00:00') {
             $time = date('H:i:s');
         }
 
-        return "{$date} {$time}";
+        return "$date $time";
     }
 
     /**

@@ -10,6 +10,6 @@ try {
     ob_end_clean();
     header('Content-type: application/xml');
     echo Encode::xml( $message );
-} catch (Exception $e) {
-    echo $e->getMessage();
+} catch (Exception $exp) {
+    echo $exp->getMessage();
 }

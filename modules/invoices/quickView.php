@@ -100,5 +100,6 @@ try {
     $smarty->assign('activeTab', '#money');
     // @formatter:on
 } catch (PdoDbException $pde) {
-
+    error_log("modules/invoices/quickView.php Exception: {$pde->getMessage()}");
+    exit("Unable to process request. See error log for details.");
 }

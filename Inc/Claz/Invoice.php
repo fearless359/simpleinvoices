@@ -809,11 +809,11 @@ class Invoice
 
     /**
      * Attempts to delete rows from the database.
-     * Currently allows for deletion of invoices, invoice_items, and products entries.
+     * Currently, allows for deletion of invoices, invoice_items, and products entries.
      * All other $module values will fail. $idField is also checked on a per-table
      * basis, i.e. invoice_items can be either "id" or "invoice_id" while products
-     * can only be "id". Invalid $module or $idField values return false, as do
-     * calls that would fail foreign key checks.
+     * can only be "id". Invalid $module or $idField values return false, just as calls
+     * that would fail foreign key checks.
      * @param string $module Table a row
      * @param string $idField
      * @param int $id

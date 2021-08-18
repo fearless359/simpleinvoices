@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpClassConstantAccessedViaChildClassInspection */
 
 use Inc\Claz\Biller;
 use Inc\Claz\Email;
@@ -50,8 +51,8 @@ if ($_POST['pg_response_code'] == 'A01') {
 
         $email = new Email();
         $email->setBody($body);
-        $email->setEmailTo($biller['email']);
-        $email->setFrom("simpleinvoices@localhost.localdomain");
+        $email->setEmailTo([$biller['email'] => $biller['name']]);
+        $email->setFrom(["simpleinvoices@localhost.localdomain"]);
         $email->setSubject('PaymentsGateway.com -Instant Payment Notification - Received Payment');
         $email->send ();
 

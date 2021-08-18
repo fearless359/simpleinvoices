@@ -167,6 +167,7 @@ $LANG['creditCardHolderName'] = "Credit card holder name"; //1
 $LANG['creditCardNumber'] = "Credit card number"; //1
 $LANG['creditCardNumberEncrypted'] = "The credit card number has been encrypted and is not displayed in SimpleInvoices"; //1
 $LANG['creditCardNumberNew'] = "New credit card number"; //1
+$LANG['creditCardNumberRequired'] = "A credit card number must be entered if other credit card fields specified."; //0
 $LANG['credits'] = "Credits"; //1
 $LANG['cronDeleteFailure'] = "Recurrence could not be deleted, <br /> you will be redirected to the Manage Recurrences page"; //1
 $LANG['cronDeleteSuccess'] = "Recurrence successfully deleted, <br /> you will be redirected to the Manage Recurrences page"; //1

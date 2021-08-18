@@ -79,7 +79,8 @@ class eway
         if ($xmlResponse != "") {
             $responseFields = $this->parseResponse($xmlResponse);
             return $responseFields;
-        } else die("Error in XML response from eWAY: " + $xmlResponse);
+        }
+        exit("Error in XML response from eWAY: " + $xmlResponse);
     }
 
     //Send XML Transaction Data and receive XML response

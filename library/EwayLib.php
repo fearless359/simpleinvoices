@@ -99,7 +99,7 @@ class EwayLib
         if ($xmlResponse != "") {
             return $this->parseResponse($xmlResponse);
         }
-        die("Error in XML response from eWAY: " . $xmlResponse);
+        exit("Error in XML response from eWAY: " . $xmlResponse);
     }
 
     /**

@@ -18,7 +18,7 @@ $expenses = Expense::manageTableInfo();
 
 $data = json_encode(['data' => $expenses]);
 if (file_put_contents("public/data.json", $data) === false) {
-    die("Unable to create public/data.json file");
+    exit("Unable to create public/data.json file");
 }
 
 $numberOfRows = count($expenses);

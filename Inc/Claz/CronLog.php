@@ -75,6 +75,6 @@ class CronLog
         if (empty($rows)) {
             return false;
         }
-        return !empty($rows[0]) && $rows[0]['count'] > 0 ? true : false;
+        return !empty($rows[0]) && $rows[0]['count'] > 0;
     }
 }

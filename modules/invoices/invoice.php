@@ -56,9 +56,9 @@ $defaults          = $smarty->getTemplateVars('defaults');
 $matrix            = ProductAttributes::getMatrix();
 
 
-$defaults['biller']     = isset($_GET['biller']) ? $_GET['biller']     : $defaults['biller'];
-$defaults['customer']   = isset($_GET['customer']) ? $_GET['customer']   : $defaults['customer'];
-$defaults['preference'] = isset($_GET['preference']) ? $_GET['preference'] : $defaults['preference'];
+$defaults['biller']     = $_GET['biller'] ?? $defaults['biller'];
+$defaults['customer']   = $_GET['customer'] ?? $defaults['customer'];
+$defaults['preference'] = $_GET['preference'] ?? $defaults['preference'];
 if (!empty($_GET['line_items'])) {
     $dynamicLineItems = $_GET['line_items'];
 } else {
@@ -73,12 +73,12 @@ try {
     }
     $smarty->assign("customFields", $customFields);
 } catch (PdoDbException $pde) {
-    exit("modules/invoices/invoice.php Unexpected error: {$pde->getMessage()}");
+    error_log("modules/invoices/invoice.php Unexpected error: {$pde->getMessage()}");
+    exit("Unable to process request. See error log for details.");
 }
 // Check to see if this is a default_invoice (aka from a template).
 if (isset($_GET['template'])) {
     try {
-        // TODO: Need to figure out how $_GET['template'] gets set.
         $invoice = Invoice::getInvoiceByIndexId($_GET['template']);
         $invoiceItems = Invoice::getInvoiceItems ( $invoice['id'] );
         $numInvItems = count($invoiceItems);
@@ -89,7 +89,8 @@ if (isset($_GET['template'])) {
         $smarty->assign('defaultInvoiceItems', $invoiceItems);
         $dynamicLineItems = $numInvItems > $dynamicLineItems ? $numInvItems : $dynamicLineItems;
     } catch (PdoDbException $pde) {
-        exit("modules/invoices/invoice.php Unexpected error: {$pde->getMessage()}");
+        error_log("modules/invoices/invoice.php Unexpected error: {$pde->getMessage()}");
+        exit("Unable to process request. See error log for details.");
     }
 } else {
     $smarty->assign("defaultCustomerID" , empty($defaultCustomer) ? 0 : $defaultCustomer['id']);

@@ -57,9 +57,8 @@ class ProductGroups
             }
             $groups = $pdoDb->request('SELECT', 'product_groups');
         } catch (PdoDbException $pde) {
-            $str = "ProductGroups::getGroups() - Unexpected database error: {$pde->getMessage()}";
-            error_log($str);
-            exit($str);
+            error_log("ProductGroups::getGroups() - Unexpected database error: {$pde->getMessage()}");
+            exit("Unable to process request. See error log for details.");
         }
         return $groups;
     }

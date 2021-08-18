@@ -1,17 +1,14 @@
 <?php
-/**
- * @name InvInfoTest.php
- * @author Richard Rowley
- * @license GPL V3 or above
- * Created: 20190310
- */
-
 namespace Inc\Claz;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class InvInfoTest
+ * @name InvInfoTest.php
+ * @author Richard Rowley
+ * @license GPL V3 or above
+ * Created: 20190310
  * @package Inc\Claz
  */
 class InvInfoTest extends TestCase

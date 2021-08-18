@@ -12,7 +12,7 @@ $secure = true;
 
 if($secure)
 {
-    die("
+    exit("
         =============================<br/>
         SimpleInvoices security warning<br/>
         =============================<br/>

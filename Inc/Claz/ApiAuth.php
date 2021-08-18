@@ -14,8 +14,8 @@ class ApiAuth
         if ($module != 'api') {
             session_name('SiAuth');
             session_start();
-            $sessionId = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
-            $getId = isset($_GET['id']) ? $_GET['id'] : 0;
+            $sessionId = $_SESSION['id'] ?? 0;
+            $getId = 0 ?? $_GET['id'];
             Log::out("ApiAuth::authenticate() - sessionId[$sessionId] getId[$getId] module[$module] view[$view]");
             // If we don't have an active session, force login screen.
             if (!$sessionId > 0) {

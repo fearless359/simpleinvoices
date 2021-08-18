@@ -25,7 +25,6 @@ class EmailTest extends TestCase
         Assert::assertEmpty($this->email->getBody(), 'body field is not empty');
         Assert::assertEmpty($this->email->getFormat(), 'format field is not empty');
         Assert::assertEmpty($this->email->getFrom(), 'from field is not empty');
-        Assert::assertEmpty($this->email->getFromFriendly(), 'from_friendly field is not empty');
         Assert::assertEmpty($this->email->getPdfFileName(), 'pdf_file_name field is not empty');
         Assert::assertEmpty($this->email->getPdfString(), 'pdf_string field is not empty');
         Assert::assertEmpty($this->email->getSubject(), 'subject field is not empty');
@@ -35,7 +34,6 @@ class EmailTest extends TestCase
     public function testMakeSubject()
     {
         $this->email->setPdfFileName("filename.pdf");
-        $this->email->setFromFriendly("Richard Rowley");
 
         Assert::assertEquals("filename.pdf ready for automatic credit card payment",
             $this->email->makeSubject('invoice_eway'));
@@ -46,7 +44,8 @@ class EmailTest extends TestCase
         Assert::assertEquals("filename.pdf has been emailed",
             $this->email->makeSubject('invoice_receipt'));
 
-        Assert::assertEquals("filename.pdf from Richard Rowley",
+        $this->email->setFrom(["someone@gmail.com" => "John Doe"]);
+        Assert::assertEquals("filename.pdf from John Doe",
             $this->email->makeSubject('invoice'));
     }
 
@@ -60,11 +59,11 @@ class EmailTest extends TestCase
         try {
             $this->email->setFormat("invoice");
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "Unexpected exception thrown by setFormat. Error: {$exp->getMessage()}");
+            Assert::fail("Unexpected exception thrown by setFormat. Error: {$exp->getMessage()}");
         }
-        $this->email->setFrom("from@gmail.com");
+        $this->email->setFrom(["from@gmail.com" => "Friendly Name", "another@hotmail.com"]);
         $this->email->setSubject("Email subject");
-        $this->email->setEmailTo("to@gmail.com");
+        $this->email->setEmailTo(["to@gmail.com" => "To Name"]);
         $this->email->setPdfString("PDF string");
         $results = $this->email->send();
         Assert::assertEquals("Both pdfString and pdfFileName must be set or left empty", $results['message']);
@@ -80,11 +79,11 @@ class EmailTest extends TestCase
 
     public function testSetGetFrom()
     {
-        $result = $this->email->setFrom("me@gmail.com");
+        $result = $this->email->setFrom(["me@gmail.com" => "Me Name", "you@hotmail.com"]);
         Assert::assertTrue($result, "testSetGetFrom setFrom for valid email returned a false result");
-        Assert::assertEquals("me@gmail.com", $this->email->getFrom());
+        Assert::assertEquals(["me@gmail.com" => "Me Name", "you@hotmail.com"], $this->email->getFrom());
 
-        $result = $this->email->setFrom("invalid_email_address");
+        $result = $this->email->setFrom(["invalid_email_address"]);
         Assert::assertFalse($result, "testSetGetFrom setFrom for invalid email returned a true result");
     }
 
@@ -94,25 +93,25 @@ class EmailTest extends TestCase
             $this->email->setFormat("invoice");
             Assert::assertEquals("invoice", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for invoice throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for invoice throws exception {$exp->getMessage()}");
         }
         try {
             $this->email->setFormat("statement");
             Assert::assertEquals("statement", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for statement throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for statement throws exception {$exp->getMessage()}");
         }
         try {
             $this->email->setFormat("cron");
             Assert::assertEquals("cron", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for cron throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for cron throws exception {$exp->getMessage()}");
         }
         try {
             $this->email->setFormat("cron_invoice");
             Assert::assertEquals("cron_invoice", $this->email->getFormat());
         } catch (Exception $exp) {
-            Assert::assertTrue(false, "testSetGetFormat setFormat for cron_invoice throws exception {$exp->getMessage()}");
+            Assert::fail("testSetGetFormat setFormat for cron_invoice throws exception {$exp->getMessage()}");
         }
 
         self::expectException(Exception::class);
@@ -125,26 +124,42 @@ class EmailTest extends TestCase
         Assert::assertEquals("my_filename.pdf", $this->email->getPdfFileName());
     }
 
-    public function testSetGetFromFriendly()
-    {
-        $this->email->setFromFriendly("Richard Rowley");
-        Assert::assertEquals("Richard Rowley", $this->email->getFromFriendly());
-    }
-
     public function testSetGetBcc()
     {
-        $this->email->setBcc("me@gmail.com");
-        Assert::assertEquals("me@gmail.com", $this->email->getBcc());
+        $toBccAddrs = explode(';', "me@gmail.com;you@hotmail.com");
+        $this->email->setBcc($toBccAddrs);
+        Assert::assertEquals(["me@gmail.com", "you@hotmail.com"], $this->email->getBcc());
 
-        Assert::assertFalse($this->email->setBcc("invalid_email_address"), "Expected failed setBcc() call.");
+        Assert::assertFalse($this->email->setBcc(["invalid_email_address"]), "Expected failed setBcc() call.");
     }
 
     public function testSetEmailTo()
     {
-        $this->email->setEmailTo("me@gmail.com;you@gmail.com");
-        Assert::assertEquals("me@gmail.com;you@gmail.com", $this->email->getEmailTo());
+        $this->email->setEmailTo(["me@gmail.com" => "Friendly Name", "you@gmail.com"]);
+        Assert::assertEquals(["me@gmail.com" => "Friendly Name", "you@gmail.com"], $this->email->getEmailTo());
 
-        Assert::assertFalse($this->email->setEmailTo("invalid_email_address"), "Expected failed setEmailTo() call.");
-
+        Assert::assertFalse($this->email->setEmailTo(["invalid_email_address"]), "Expected failed setEmailTo() call.");
     }
+
+    public function testMultipleSetEmailTo()
+    {
+        $this->email->setEmailTo(["me@gmail.com" => "Me Name"]);
+        $this->email->setEmailTo(["you@gmail.com" => "You Name"]);
+        Assert::assertEquals(["me@gmail.com" => "Me Name", "you@gmail.com" => "You Name"], $this->email->getEmailTo());
+    }
+
+    public function testExplodeForOneEmailTo()
+    {
+        $emailTo = explode(';', "me@gmail.com");
+        $this->email->setEmailTo($emailTo);
+        Assert::assertEquals(["me@gmail.com"], $this->email->getEmailTo());
+    }
+
+    public function testExplodeForTwoEmailTo()
+    {
+        $emailTo = explode(';', "me@gmail.com;you@gmail.com");
+        $this->email->setEmailTo($emailTo);
+        Assert::assertEquals(["me@gmail.com", "you@gmail.com"], $this->email->getEmailTo());
+    }
+
 }
