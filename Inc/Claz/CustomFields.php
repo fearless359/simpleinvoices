@@ -218,7 +218,7 @@ class CustomFields
                                            ?string $cssClassHead = null, ?string $cssClassLabel = null,
                                            ?string $cssClassField = null, ?string $separator = null): string
     {
-        global $helpImagePath, $pdoDb;
+        global $helpImagePath, $LANG, $pdoDb;
 
         // No si_label margin adjustment if read mode.
         $cssLabelDefault = "cols__1-span-2 bold";
@@ -251,14 +251,12 @@ class CustomFields
         $displayBlock = "";
         if (!empty($customFieldValue) || $writeMode && !empty($cfLabel)) {
             $customLabelValue = Util::htmlSafe(self::getCustomFieldLabel($customField));
+            $helpCustomFields = Util::htmlSafe($LANG['helpCustomFields']);
             if ($writeMode) {
                 $displayBlock =
                     "<div class='$cssClassHead'>\n" .
                     "  <label for='customField$cfn' class='$cssClassLabel'>$customLabelValue$separator\n" .
-                    "    <a class='cluetip' href='#' title='Custom Fields' \n" .
-                    "       rel='index.php?module=documentation&amp;view=view&amp;page=helpCustomFields'>\n" .
-                    "      <img src='{$helpImagePath}help-small.png' alt='' />\n" .
-                    "    </a>\n" .
+                    "    <img class='tooltip' title='$helpCustomFields' src='{$helpImagePath}help-small.png' alt='' />\n" .
                     "  </label>\n" .
                     "  <div class='$cssClassField'>\n" .
                     "    <input type='text' name='custom_field$cfn' id='customField$cfn' value='$customFieldValue' size='50'/>\n" .

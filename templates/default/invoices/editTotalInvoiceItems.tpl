@@ -4,14 +4,14 @@
 <div class="grid__container grid__head-10">
     <label for="description0" class="cols__1-span-10">{$LANG.descriptionUc}:</label>
     <div class="cols__1-span-10">
-                <textarea name="description0" id="description0" style="overflow:scroll;" rows="3" cols="100%"
-                          data-row-num="0" data-description="{$LANG.descriptionUc}">{$invoiceItems[0].description|outHtml}</textarea>
+        <textarea name="description0" id="description0" style="overflow:scroll;" rows="3" cols="100%"
+                  data-row-num="0" data-description="{$LANG.descriptionUc}">{$invoiceItems[0].description|outHtml}</textarea>
     </div>
 </div>
 <div class="grid__container grid__head-10">
     <label for="unitPrice0Id" class="cols__1-span-2">{$LANG.grossTotal}:</label>
     <div class="cols__3-span-3">
-        <input type="text" class="align__text-right  validate[required]" name="unit_price0" id="unitPrice0Id"
+        <input type="text" class="align__text-right" required name="unit_price0" id="unitPrice0Id"
                value="{$invoiceItems[0].unit_price|utilNumber}" size="10"/>
     </div>
     {if $defaults.tax_per_line_item > 0}

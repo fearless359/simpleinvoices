@@ -68,8 +68,7 @@
     </script>
 {/if}
 <div class="si_help_div">
-    <a class="cluetip" href="#" title="{$LANG.whatsAllThisInvPref}"
-       rel="index.php?module=documentation&amp;view=view&amp;page=helpInvPrefWhatThe">
-        <button><img src="{$helpImagePath}help-small.png" alt="{$LANG.whatsAllThisInvPref}"/>{$LANG.whatsAllThisInvPref}</button>
+    <a class="tooltip" href="#" title="{$LANG.helpInvPrefWhatThe}">
+        <img src="{$helpImagePath}help-small.png" alt="{$LANG.whatsAllThisInvPref}"/>{$LANG.whatsAllThisInvPref}
     </a>
 </div>

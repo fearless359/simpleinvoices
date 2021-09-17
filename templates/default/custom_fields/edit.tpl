@@ -34,10 +34,7 @@
         </div>
         <div class="grid__container grid__head-10">
             <label for="clearDataId" class="cols__3-span-3">{$LANG.clearData}:
-                <a class="cluetip" title="{$LANG.resetCustomFlags}" tabindex="-1"
-                   href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpResetCustomFlagsProducts">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+                <img class="tooltip" title="{$LANG.helpResetCustomFlagsProducts}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
             <input type="checkbox" name="clear_data" id="clearDataId" value="yes" disabled class="cols__6-span-5" tabindex="20"/>
         </div>

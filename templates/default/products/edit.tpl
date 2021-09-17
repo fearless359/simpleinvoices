@@ -26,7 +26,7 @@
             <div id="section-1">
                 <div class="grid__container grid__head-10">
                     <label for="description" class="cols__2-span-2">{$LANG.productDescription}:</label>
-                    <input type="text" name="description" id="description" class="cols__4-span-6 validate[required]" size="50" tabindex="10"
+                    <input type="text" name="description" id="description" class="cols__4-span-6" required size="50" tabindex="10"
                            value="{if isset($product.description)}{$product.description|htmlSafe}{/if}"/>
                 </div>
                 <div class="grid__container grid__head-10">
@@ -37,10 +37,7 @@
                 {if $defaults.inventory == $smarty.const.ENABLED}
                     <div class="grid__container grid__head-10">
                         <label for="costId" class="cols__2-span-2">{$LANG.costUc}:
-                            <a class="cluetip" href="#" title="{$LANG.costUc}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCost">
-                                <img src="{$helpImagePath}help-small.png" alt=""/>
-                            </a>
+                            <img class="tooltip" title="{$LANG.helpCost}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
                         <input type="text" name="cost" id="costId" class="cols__4-span-2" size="25" tabindex="30"
                                value="{$product.cost|utilNumber}"/>
@@ -84,10 +81,7 @@
                 {if !empty($customFieldLabel.product_cf1)}
                     <div class="grid__container grid__head-10">
                         <label for="customField1" class="cols__2-span-3">{$customFieldLabel.product_cf1|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                <img src="{$helpImagePath}help-small.png" alt=""/>
-                            </a>
+                            <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
                         <input type="text" name="custom_field1" id="customField1" class="cols__5-span-5" size="50" tabindex="60"
                                value="{if isset($product.custom_field1)}{$product.custom_field1|htmlSafe}{/if}"/>
@@ -96,10 +90,7 @@
                 {if !empty($customFieldLabel.product_cf2)}
                     <div class="grid__container grid__head-10">
                         <label for="customField2" class="cols__2-span-3">{$customFieldLabel.product_cf2|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                <img src="{$helpImagePath}help-small.png" alt=""/>
-                            </a>
+                            <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
                         <input type="text" name="custom_field2" id="customField2" class="cols__4-span-5" size="50" tabindex="70"
                                value="{if isset($product.custom_field2)}{$product.custom_field2|htmlSafe}{/if}"/>
@@ -108,10 +99,7 @@
                 {if !empty($customFieldLabel.product_cf3)}
                     <div class="grid__container grid__head-10">
                         <label for="customField3" class="cols__2-span-3">{$customFieldLabel.product_cf3|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                <img src="{$helpImagePath}help-small.png" alt=""/>
-                            </a>
+                            <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
                         <input type="text" name="custom_field3" id="customField3" class="cols__4-span-5" size="50" tabindex="80"
                                value="{if isset($product.custom_field3)}{$product.custom_field3|htmlSafe}{/if}"/>
@@ -120,10 +108,7 @@
                 {if !empty($customFieldLabel.product_cf4)}
                     <div class="grid__container grid__head-10">
                         <label for="customField4" class="cols__2-span-3">{$customFieldLabel.product_cf4|htmlSafe}:
-                            <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                <img src="{$helpImagePath}help-small.png" alt=""/>
-                            </a>
+                            <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
                         <input type="text" name="custom_field4" id="customField4" class="cols__5-span-5" size="50" tabindex="90"
                                value="{if isset($product.custom_field4)}{$product.custom_field4|htmlSafe}{/if}"/>
@@ -144,10 +129,7 @@
                                     <label for="custom_flags_{$cflg.flg_id}Id" class="cols__2-span-1 margin__top-0">
                                         {$cflg.field_label|trim|htmlSafe}
                                         {if strlen($cflg.field_help) > 0}
-                                            <a class="cluetip" href="#" title="{$cflg.field_label}" tabindex="-1"
-                                               rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}">
-                                                <img src="{$helpImagePath}help-small.png" alt=""/>
-                                            </a>
+                                            <img class="tooltip" title="{$cflg.field_help}" src="{$helpImagePath}help-small.png" alt=""/>
                                         {/if}
                                     </label>
                                 </div>

@@ -453,7 +453,7 @@ $LANG['recurrenceType'] = "Тип повторения";//1
 $LANG['register'] = "Регистрация";//1
 $LANG['reorderLevel'] = "Уровень повторного заказа";//1
 $LANG['reports'] = "Отчеты";//1
-$LANG['requiredField'] = "Обязательное поле";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Обязательное поле</strong>";//1
 $LANG['role'] = "Права";//1
 $LANG['runReport'] = "Запустить отчет";//1
 $LANG['salesUc'] = "Продажи";//1

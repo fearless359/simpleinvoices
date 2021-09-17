@@ -60,15 +60,11 @@
         {/literal}
     </script>
     <div class="si_help_div">
-        <a class="cluetip" href="#"
-           rel="index.php?module=documentation&amp;view=view&amp;page=helpWhatAreCustomFlags"
-           title="{$LANG.whatAreCustomFlags}">{$LANG.whatAreCustomFlags}
+        <a class="tooltip" href="#" title="{$LANG.helpWhatAreCustomFlags}">{$LANG.whatAreCustomFlags}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
         ::
-        <a class="cluetip" href="#"
-           rel="index.php?module=documentation&amp;view=view&amp;page=helpManageCustomFlags"
-           title="{$LANG.whatsThisPageAbout}">{$LANG.whatsThisPageAbout}
+        <a class="tooltip" href="#" title="{$LANG.helpManageCustomFlags}">{$LANG.whatsThisPageAbout}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
     </div>

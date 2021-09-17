@@ -453,7 +453,7 @@ $LANG['recurrenceType'] = "Upprepnings_typ";//1
 $LANG['register'] = "Registrera";//1
 $LANG['reorderLevel'] = "omordnings nivå";//1
 $LANG['reports'] = "Rapporter";//1
-$LANG['requiredField'] = "Obligatoriskt fält";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Obligatoriskt fält</strong>";//1
 $LANG['role'] = "Roll";//1
 $LANG['runReport'] = "Kör rapport";//1
 $LANG['salesUc'] = "Försäljning";//1

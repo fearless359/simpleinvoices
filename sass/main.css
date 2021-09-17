@@ -906,9 +906,6 @@ button.report,
   margin: 0.5rem 1rem 0 1rem;
   vertical-align: top;
 }
-.si_filters_title a.cluetip img {
-  margin-bottom: 0.8rem;
-}
 
 .flex__container {
   display: flex;
@@ -1009,6 +1006,9 @@ input[type=text] {
 }
 .margin__right-1 {
   margin-right: 1rem;
+}
+.margin__right-2 {
+  margin-right: 2rem;
 }
 .margin__bottom-0 {
   margin-bottom: 0;
@@ -1133,9 +1133,6 @@ div.odd {
   padding: 0;
   margin: 5px 0;
 }
-.si_form th a.cluetip img {
-  margin-bottom: -3px;
-}
 .si_form_search {
   margin-bottom: 30px;
   border: 1px solid #cccccc;
@@ -1144,6 +1141,9 @@ div.odd {
   border-radius: 8px;
   background: #f5f5f5;
   padding: 20px 0 13px 0;
+}
+.si .transform__uppercase {
+  text-transform: uppercase;
 }
 
 h1 {
@@ -1202,13 +1202,6 @@ h5 {
   -webkit-border-radius: 0.7rem;
   border-radius: 0.7rem;
   line-height: 150%;
-}
-
-a.cluetip img {
-  opacity: 0.8;
-}
-a.cluetip:hover img {
-  opacity: 1;
 }
 
 a.intro {

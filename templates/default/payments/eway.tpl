@@ -34,7 +34,7 @@
             <tr>
                 <td class="details_screen">{$LANG.invoiceUc}</td>
                 <td>
-                    <select name="invoice_id" class="validate[required]">
+                    <select name="invoice_id" class="" required>
                         <option value=''></option>
                         {foreach $invoice_all as $invoice}
                         <option value="{if isset($invoice.id)}{$invoice.id|htmlSafe}{/if}" {if $smarty.get.id == $invoice.id} selected {/if} >

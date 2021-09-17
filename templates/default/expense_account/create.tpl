@@ -26,12 +26,9 @@
         <div class="grid__area">
             <div class="grid__container grid__head-6">
                 <label for="name" class="cols__2-span-1">{$LANG.nameUc}:
-                    <a class="cluetip" href="#" title="{$LANG.requiredField}"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpExpenseAccounts">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpExpenseAccounts}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="name" id="name" class="cols__3-span-4 validate[required]"
+                <input type="text" name="name" id="name" class="cols__3-span-4" required
                        value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}"/>
             </div>
         </div>

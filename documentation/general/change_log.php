@@ -17,6 +17,20 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-09-17 - <strong>2020.3.04</strong>
+                <ul>
+                    <li>Modified to use jQuery validate npm module for form validation. This
+                        replaces the jQuery Validation Engine which is no longer updated save
+                        for user submitted fixes.</li>
+                    <li>Modified to use ToolTipster npm module for display of field help.
+                        Primary advantage is that you hover help icon to view help and the
+                        disappears automatically when you move it off the icon. This replaces
+                        the cluetip library previously used.</li>
+                    <li>Added PLACEHOLDERS array to $LANG file to provide field entry hints. Values
+                        such as "country" should customized to $LANG files other than en_US. Note
+                        that these are just hints, they to not impose when the user enters.</li>
+                </ul>
+            </li>
             <li>2021-08-13 - <strong>2020.3.03</strong>
                 <ul>
                     <li>Fix issue with multiple, semi-colon separated email addresses.</li>

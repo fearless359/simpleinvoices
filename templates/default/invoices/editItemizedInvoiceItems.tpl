@@ -1,5 +1,9 @@
 <div class="grid__container grid__head-10">
-    <div class="cols__1-span-1 bold align__text-right">{$LANG.quantity}</div>
+    <div class="cols__1-span-1 bold align__text-right">
+        <label for="quantity0">{$LANG.quantity}
+            <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}" src="{$helpImagePath}required-small.png" alt=""/>
+        </label>
+    </div>
     <div class="cols__2-span-4 bold align__text-center">{$LANG.descriptionUc}</div>
     {$begCol = 6}
     {section name=tax_header loop=$defaults.tax_per_line_item }
@@ -30,9 +34,9 @@
                         </a>
                         <span>&nbsp;</span>
                         <!--suppress HtmlFormInputWithoutLabel -->
-                        <input class="align__text-right{if $line == 0} validate[required,min[.01],custom[number]]{/if}"
-                               type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" size="5"
-                               data-row-num="{$line|htmlSafe}"
+                       <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" size="7"
+                              class="align__text-right {if $line == 0}validate-minQty validate-number{/if}"
+                              {if $line == 0}required{/if} data-row-num="{$line|htmlSafe}"
                                value='{$invoiceItem.quantity|utilNumberTrim}'/>
                     </div>
                 </div>
@@ -42,7 +46,7 @@
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
-                                class="product_change width_100{if $line == 0} validate[required]{/if}"
+                                class="product_change width_100" {if $line == 0}required{/if}
                                 data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
                                 data-product-groups-enabled="{$defaults.product_groups}">
                             {foreach $products as $product}
@@ -71,7 +75,7 @@
                 {/section}
                 <div class="cols__{$begCol}-span-1">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <input type="text" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="7"
+                    <input type="text" class="align__text-right" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="7"
                            data-row-num="{$line|htmlSafe}" value="{$invoiceItem.unit_price|utilNumber}"/>
                 </div>
             </div>

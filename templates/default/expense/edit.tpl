@@ -16,7 +16,7 @@
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="expenseAccountId" class="cols__2-span-2">{$LANG.expenseAccounts}:</label>
-            <select name="expense_account_id" id="expenseAccountId" class="cols__4-span-6 validate[required]"
+            <select name="expense_account_id" id="expenseAccountId" class="cols__4-span-6" required
                     autofocus tabindex="10">
                 <option value=''></option>
                 {foreach $detail.expense_accounts as $expense_account}
@@ -27,16 +27,16 @@
         </div>
         <div class="grid__container grid__head-10">
             <label for="date" class="cols__2-span-2">{$LANG.dateFormatted}:</label>
-            <input type="text" name="date" id="date" class="cols__4-span-2 validate[required,custom[date],length[0,10]] date-picker"
+            <input type="text" name="date" id="date" required readonly class="cols__4-span-2 date-picker"
                    value="{$expense.date}" tabindex="20"/>
 
             <label for="amountId" class="cols__7-span-1">{$LANG.amountUc}:</label>
-            <input name="amount" id="amountId" class="cols__8-span-2 validate[required]"
+            <input name="amount" id="amountId" class="cols__8-span-2" required
                    value="{$expense.amount|utilNumber}" tabindex="30"/>
         </div>
         <div class="grid__container grid__head-10">
             <label for="billerId" class="cols__2-span-2">{$LANG.billerUc}:</label>
-            <select name="biller_id" id="billerId" class="cols__4-span-6 validate[required]" tabindex="40">
+            <select name="biller_id" id="billerId" class="cols__4-span-6" required tabindex="40">
                 <option value=''></option>
                 {foreach $detail.billers as $biller}
                     <option {if $biller.id == $expense.b_id} selected {/if}

@@ -24,45 +24,31 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="username" class="cols__3-span-2">{$LANG.username}:
-                    <a class="cluetip" href="#" tabindex="-1" title="{$LANG.username}"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpUsername">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpUsername}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="username" id="username" class="cols__5-span-5 validate[required]" size="35" tabindex="10"
+                <input type="text" name="username" id="username" class="cols__5-span-5" required size="35" tabindex="10"
                        pattern="{$usernamePattern}" title="See help for details." autocomplete="off" autofocus/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="passwordId" class="cols__3-span-2">{$LANG.newPassword}:
-                    <a class="cluetip" href="#" tabindex="-1" title="{$LANG.newPassword}"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpNewPassword">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpNewPassword}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="password" name="password" id="passwordId" class="cols__5-span-5 validate[required]" size="20"
+                <input type="password" name="password" id="passwordId" class="cols__5-span-5" required size="20"
                        pattern="{$pwd_pattern}" title="See help for details." tabindex="20"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="passwordConfirmId" class="cols__3-span-2">{$LANG.confirmPassword}:
-                    <a class="cluetip" href="#" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpConfirmPassword"
-                       title="{$LANG.confirmPassword}">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpConfirmPassword}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
                 <input type="password" name="confirm_password" id="passwordConfirmId" size="20" tabindex="30"
-                       class="cols__5-span-5 validate[required]" pattern="{$pwd_pattern}" title="See help for details"/>
+                       class="cols__5-span-5" required pattern="{$pwd_pattern}" title="See help for details"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="email" class="cols__3-span-2">{$LANG.email}:
-                    <a class="cluetip" href="#" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailAddress"
-                       title="{$LANG.requiredField}">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailAddress}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="email" id="email" class="cols__5-span-5 validate[required]" size="35" tabindex="40"
-                       title="See help for details"/>
+                <input type="email" name="email" id="email" class="cols__5-span-5" required size="35" tabindex="40"
+                       title="See help for details" placeholder="{$PLACEHOLDERS.email}"/>
             </div>
         </div>
         <div class="align__text-center margin__top-3 margin__bottom-2">

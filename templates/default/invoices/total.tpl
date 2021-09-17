@@ -13,7 +13,7 @@
             </div>
             <div class="grid__container grid__head-10">
                 <label for="unit_price0" class="cols__1-span-2 bold">{$LANG.grossTotal}:</label>
-                <input type="text" class="cols__3-span-2 validate[required]" name="unit_price" id="unit_price0" size="10"
+                <input type="text" class="cols__3-span-2" required name="unit_price" id="unit_price0" size="10"
                        value="{if isset($defaultInvoiceItems[0].unit_price)}{$defaultInvoiceItems[0].unit_price|utilNumber}{/if}"/>
                 {if $defaults.tax_per_line_item > 0}
                     <div class="cols__6-span-1 bold">{$LANG.tax}:&nbsp;</div>
@@ -68,10 +68,7 @@
             </div>
 
             <div class="si_help_div">
-                <a class="cluetip" href="#" title="{$LANG.wantMoreFields}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpInvoiceCustomFields">
-                    <img src="{$helpImagePath}help-small.png" alt="{$LANG.wantMoreFields}"/>{$LANG.wantMoreFields}
-                </a>
+                <img class="tooltip" title="{$LANG.helpInvoiceCustomFields}" src="{$helpImagePath}help-small.png" alt="{$LANG.wantMoreFields}"/>{$LANG.wantMoreFields}
             </div>
         </div>
         <input type="hidden" name="max_items" value="{if isset($smarty.section.line.index)}{$smarty.section.line.index|htmlSafe}{/if}"/>

@@ -17,7 +17,9 @@
     "datatables.net-fixedheader-dt": "^3.1.8",
     "datatables.net-responsive": "^2.2.7",
     "datatables.net-scroller-dt": "^1.5.1",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "jquery-validation": "^1.19.3",
+    "tooltipster": "^4.2.8"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.5",

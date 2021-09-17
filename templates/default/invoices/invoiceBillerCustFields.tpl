@@ -12,7 +12,7 @@
         {if !isset($billers) }
             <em>{$LANG.noBillers}</em>
         {else}
-            <select name="biller_id" id="billerId" class="validate[min[1],max[1000000]] text-input">
+            <select name="biller_id" id="billerId">
                 {foreach $billers as $biller}
                     <option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id|htmlSafe}{/if}">
                         {$biller.name|htmlSafe}
@@ -28,7 +28,7 @@
         {if !isset($customers) }
             <em>{$LANG.noCustomers}</em>
         {else}
-            <select name="customer_id" id="customerId" class="setSubCustomers validate[min[1],max[1000000]] text-input">
+            <select name="customer_id" id="customerId" class="setSubCustomers">
                 {foreach $customers as $customer}
                     <option {if $customer.id == $defaultCustomerID} selected {/if} value="{if isset($customer.id)}{$customer.id|htmlSafe}{/if}">
                         {$customer.name|htmlSafe}
@@ -57,9 +57,8 @@
 </div>
 <div class="grid__container grid__head-10">
     <label for="date1" class="cols__3-span-2">{$LANG.dateFormatted}:&nbsp;</label>
-    <div class="cols__5-span-3">
-        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-               size="10" name="date" id="date1"
+    <div class="cols__5-span-1">
+        <input type="text" name="date" id="date1" required readonly size="10" class="date-picker"
                value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>
     </div>
 </div>

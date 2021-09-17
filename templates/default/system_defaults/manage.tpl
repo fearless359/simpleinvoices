@@ -14,10 +14,7 @@
 <div class="grid__area">
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.companyLogo}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.companyLogo} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpCompanyLogo" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpCompanyLogo}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=company_logo' tabindex="10">
@@ -29,10 +26,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.companyNameItemLabel}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.companyNameItemLabel} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpCompanyNameItem" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpCompanyNameItem}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=company_name_item' tabindex="20">
@@ -44,10 +38,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultBiller}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultBiller} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultBiller" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultBiller}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=biller' tabindex="30">
@@ -59,10 +50,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultCustomer}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultCustomer} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultCustomer" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultCustomer}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=customer' tabindex="40">
@@ -74,10 +62,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultInvoice}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultInvoice} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultInvoice" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultInvoice}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=default_invoice' tabindex="50">
@@ -89,10 +74,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultInvoicePreference}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultInvoicePreference} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultInvoicePreference" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultInvoicePreference}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=preference_id' tabindex="60">
@@ -104,10 +86,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultInvTemplate}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultInvTemplate} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultInvoiceTemplateText" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultInvoiceTemplateText}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=def_inv_template' tabindex="70">
@@ -119,10 +98,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultNumberItems}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultNumberItems} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultNumberItems" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultNumberItems}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=line_items' tabindex="80">
@@ -134,10 +110,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultPaymentType}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultPaymentType} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultPaymentType" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultPaymentType}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=def_payment_type' tabindex="90">
@@ -149,10 +122,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.defaultTax}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultTax} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultTax" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDefaultTax}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=tax' tabindex="100">
@@ -164,10 +134,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.delete}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.delete} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpDelete" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpDelete}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=delete' tabindex="110">
@@ -179,10 +146,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.expenseUc}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.expenseUc} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpExpense" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpExpense}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=expense' tabindex="120">
@@ -194,10 +158,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.inventory}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.inventory} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpInventory" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpInventory}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=inventory' tabindex="130">
@@ -209,10 +170,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.invoiceDescriptionOpen}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.invoiceDescriptionOpen} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpInvoiceDescriptionOpen" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpInvoiceDescriptionOpen}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=invoice_description_open' tabindex="135">
@@ -224,10 +182,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.language}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.language} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpLanguage" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpLanguage}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=language' tabindex="140">
@@ -239,10 +194,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.logging}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.logging} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpLogging" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpLogging}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=logging' tabindex="150">
@@ -254,10 +206,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.passwordMinLength}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordMinLength} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordMinLength" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpPasswordMinLength}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_min_length' tabindex="160">
@@ -269,10 +218,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.numberOfTaxesPerLineItem}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.numberOfTaxesPerLineItem} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxesPerLineItem" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpTaxesPerLineItem}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=tax_per_line_item' tabindex="170">
@@ -284,10 +230,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.passwordLower}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordLower} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordLower" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpPasswordLower}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_lower' tabindex="190">
@@ -299,10 +242,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.passwordNumber}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordNumber} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordNumber" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpPasswordNumber}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_number' tabindex="200">
@@ -314,10 +254,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.passwordSpecial}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordSpecial} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordSpecial" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpPasswordSpecial}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_special' tabindex="210">
@@ -329,10 +266,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.passwordUpper}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.passwordUpper} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpPasswordUpper" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpPasswordUpper}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=password_upper' tabindex="220">
@@ -344,10 +278,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.productAttributes}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.productAttributes} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpProductAttributes" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpProductAttributes}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_attributes' tabindex="223">
@@ -359,10 +290,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.productGroupsUc}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.productGroupsUc} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpProductGroups" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpProductGroups}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_groups' tabindex="226">
@@ -374,10 +302,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.sessionTimeout}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.sessionTimeout} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpSessionTimeout" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpSessionTimeout}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=session_timeout' tabindex="230">
@@ -389,10 +314,7 @@
 
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold">{$LANG.subCustomer}:
-            <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.subCustomer} {$LANG.setting}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpSubCustomer" tabindex="-1">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpSubCustomer}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__5-span-1 align__text-center">
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=sub_customer' tabindex="180">

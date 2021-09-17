@@ -18,20 +18,14 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="nameId" class="cols__4-span-2">{$LANG.groupUc} {$LANG.nameUc}:
-                    <a class="cluetip" href="#" title="{$LANG.requiredField}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="name" id="nameId" class="cols__6-span-2 validate[required]" size="60" tabindex="10"
+                <input type="text" name="name" id="nameId" class="cols__6-span-2" required size="60" tabindex="10"
                        value="{if isset($smarty.post.name)}{$smarty.post.name|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="markupId" class="cols__4-span-2">{$LANG.markupUc}:
-                    <a class="cluetip" href="#" title="{$LANG.markupUc}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpMarkup">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                <label for="markupId" class="cols__4-span-2">{$LANG.markupUc}%:
+                    <img class="tooltip" title="{$LANG.helpMarkup}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
                 <input type="text" name="markup" id="markupId" class="cols__6-span-2" size="10" tabindex="20"
                        value="{if isset($smarty.post.markup)}{$smarty.post.markup|htmlSafe}{/if}"/>

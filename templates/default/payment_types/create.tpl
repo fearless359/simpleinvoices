@@ -21,12 +21,9 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="descriptionId" class="cols__2-span-3">{$LANG.paymentTypeDescription}:
-                    <a class="cluetip" href="#" title="{$LANG.requiredField}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="pt_description" id="descriptionId" class="cols__5-span-5 validate[required]" size="30" tabindex="10"/>
+                <input type="text" name="pt_description" id="descriptionId" class="cols__5-span-5" required size="30" tabindex="10"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="enabledId" class="cols__2-span-3">{$LANG.enabled}:</label>

@@ -18,168 +18,215 @@
       action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
-            <label for="name" class="cols__2-span-3" tabindex="-1">{$LANG.customerName}:
-                <a class="cluetip" tabindex="-1" href="#" title="{$LANG.requiredField}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
-                    <img src="{$helpImagePath}required-small.png" alt=""/>
-                </a>
+            <label for="name" class="cols__1-span-3 align__text-right">{$LANG.customerName}:
+                <img class="tooltip" title="{$LANG.requiredField}" src="{$helpImagePath}required-small.png" alt=""/>
             </label>
-            <input type="text" id="name" name="name" value="{if isset($customer.name)}{$customer.name|htmlSafe}{/if}"
-                   class="cols__5-span-6 validate[required]" autofocus tabindex="10"/>
+            <div class="cols__4-span-7">
+                <input type="text" name="name" id="name" required minlength="2" size="50" tabindex="10"
+                       class="margin__left-1" autofocus
+                       value="{if isset($customer.name)}{$customer.name|htmlSafe}{/if}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="department" class="cols__2-span-3">{$LANG.customerDepartment}:</label>
-            <input type="text" name="department" id="department" class="cols__5-span-6" tabindex="15"
-                   value="{if isset($customer.department)}{$customer.department|htmlSafe}{/if}"/>
+            <label for="department" class="cols__1-span-3 align__text-right">{$LANG.customerDepartment}:</label>
+            <div class="cols__4-span-7">
+                <input type="text" name="department" id="department" tabindex="15" size="50"
+                       class="margin__left-1"
+                       value="{if isset($customer.department)}{$customer.department|htmlSafe}{/if}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="attentionId" class="cols__2-span-3">{$LANG.attention}:
-                <a rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomerContact"
-                   href="#" class="cluetip" title="{$LANG.customerContact}" tabindex="-1">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+            <label for="attentionId" class="cols__1-span-3 align__text-right">{$LANG.customerContact}:
+                <img class="tooltip" title="{$LANG.helpCustomerContact}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="text" name="attention" id="attentionId" class="cols__5-span-6" tabindex="20"
-                   value="{if isset($customer.attention)}{$customer.attention|htmlSafe}{/if}"/>
+            <div class="cols__4-span-7">
+                <input type="text" name="attention" id="attentionId" tabindex="20" size="50"
+                       class="margin__left-1"
+                       value="{if isset($customer.attention)}{$customer.attention|htmlSafe}{/if}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="streetAddressId" class="cols__2-span-3">{$LANG.street}:</label>
-            <input type="text" name="street_address" id="streetAddressId" class="cols__5-span-6" tabindex="30"
-                   value="{if isset($customer.street_address)}{$customer.street_address|htmlSafe}{/if}"/>
+            <label for="streetAddressId" class="cols__1-span-3 align__text-right">{$LANG.street}:</label>
+            <div class="cols__4-span-7">
+                <input type="text" name="street_address" id="streetAddressId" tabindex="30" size="50"
+                       class="margin__left-1"
+                       value="{if isset($customer.street_address)}{$customer.street_address|htmlSafe}{/if}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="streetAddress2Id" class="cols__2-span-3">{$LANG.street2}:
-                <a class="cluetip" href="#" title="{$LANG.street2}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpStreet2">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+            <label for="streetAddress2Id" class="cols__1-span-3 align__text-right">{$LANG.street2}:
+                <img class="tooltip" title="{$LANG.helpStreet2}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="text" name="street_address2" id="streetAddress2Id" class="cols__5-span-6" tabindex="40"
-                   value="{if isset($customer.street_address2)}{$customer.street_address2|htmlSafe}{/if}"/>
+            <div class="cols__4-span-7">
+                <input type="text" name="street_address2" id="streetAddress2Id" tabindex="40" size="50"
+                       class="margin__left-1"
+                       value="{if isset($customer.street_address2)}{$customer.street_address2|htmlSafe}{/if}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="cityId" class="cols__2-span-3">{$LANG.city}:</label>
-            <input type="text" name="city" id="cityId" class="cols__5-span-6" tabindex="50"
-                   value="{if isset($customer.city)}{$customer.city|htmlSafe}{/if}"/>
+            <label for="cityId" class="cols__1-span-3 align__text-right">{$LANG.city}:</label>
+            <div class="cols__4-span-7">
+                <input type="text" name="city" id="cityId" tabindex="50" size="25" minlength="2"
+                       class="margin__left-1"
+                       value="{if isset($customer.city)}{$customer.city|htmlSafe}{/if}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="stateId" class="cols__2-span-3">{$LANG.state}:</label>
-            <input type="text" name="state" id="stateId" class="cols__5-span-6" tabindex="70"
-                   value="{if isset($customer.state)}{$customer.state|htmlSafe}{/if}"/>
-        </div>
-        <div class="grid__container grid__head-10">
-            <label for="zipCodeId" class="cols__2-span-3">{$LANG.zip}:</label>
-            <input type="text" name="zip_code" id="zipCodeId" class="cols__5-span-6" tabindex="60"
-                   value="{if isset($customer.zip_code)}{$customer.zip_code|htmlSafe}{/if}"/>
-        </div>
-        <div class="grid__container grid__head-10">
-            <label for="countryId" class="cols__2-span-3">{$LANG.country}:</label>
-            <input type="text" name="country" id="countryId" class="cols__5-span-6" tabindex="80"
-                   value="{if isset($customer.country)}{$customer.country|htmlSafe}{/if}"/>
-        </div>
-        <div class="grid__container grid__head-10">
-            <label for="phoneId" class="cols__2-span-3">{$LANG.phoneUc}:</label>
-            <input type="text" name="phone" id="phoneId" class="cols__5-span-6" tabindex="90"
-                   value="{if isset($customer.phone)}{$customer.phone|htmlSafe}{/if}"/>
-        </div>
-        <div class="grid__container grid__head-10">
-            <label for="mobilePhoneId" class="cols__2-span-3">{$LANG.mobilePhone}:</label>
-            <input type="text" name="mobile_phone" id="mobilePhoneId" class="cols__5-span-6" tabindex="100"
-                   value="{if isset($customer.mobile_phone)}{$customer.mobile_phone|htmlSafe}{/if}"/>
-        </div>
-        <div class="grid__container grid__head-10">
-            <label for="faxId" class="cols__2-span-3">{$LANG.fax}:</label>
-            <input type="text" name="fax" id="faxId" class="cols__5-span-6" tabindex="110"
-                   value="{if isset($customer.fax)}{$customer.fax|htmlSafe}{/if}"/>
-        </div>
-        <div class="grid__container grid__head-10">
-            <label for="emailId" class="cols__2-span-3">{$LANG.email}:
-                <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.email}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomerEmail">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+            <label for="stateId" class="cols__1-span-3 align__text-right">{$LANG.state}:
+                <img class="tooltip" title="{$LANG.helpState}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="text" name="email" id="emailId" class="cols__5-span-6 validate[required,custom[email]] text-input"
-                   value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}" tabindex="120"/>
+            <div class="cols__4-span-7">
+                <input type="text" name="state" id="stateId" tabindex="60" size="3" minlength="2" maxlength="3"
+                       class="margin__left-1 transform__uppercase"
+                       value="{if isset($customer.state)}{$customer.state|htmlSafe}{/if}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="ccName" class="cols__2-span-3">{$LANG.creditCardHolderName}:
-                <a class="cluetip" href="#" title="{$LANG.creditCardHolderName}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCreditCardHolderName">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+            <label for="zipCodeId" class="cols__1-span-3 align__text-right">{$LANG.zip}:</label>
+            <div class="cols__4-span-7">
+                <input type="text" name="zip_code" id="zipCodeId" tabindex="70" size="10" minlength="5"
+                       class="margin__left-1" placeholder="{$PLACEHOLDERS['zip_code']}"
+                       value="{if isset($customer.zip_code)}{$customer.zip_code|htmlSafe}{/if}"/>
+            </div>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="countryId" class="cols__1-span-3 align__text-right">{$LANG.country}:
+                <img class="tooltip" title="{$LANG.helpCountry}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="text" name="credit_card_holder_name" id="ccName" tabindex="130"
-                   class="cols__5-span-6 margin__left-0-5 creditCard validate[condRequired[ccNumber,ccExpMonth,ccExpYear]]"
-                   value="{if isset($customer.credit_card_holder_name)}{$customer.credit_card_holder_name|htmlSafe}{/if}"/>
+            <div class="cols__4-span-7">
+                <input type="text" name="country" id="countryId" tabindex="80" size="3" minlength="3" maxlength="3"
+                       class="margin__left-1"
+                       value="{if isset($customer.country)}{$customer.country|htmlSafe}{/if}"/>
+            </div>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="phoneId" class="cols__1-span-3 align__text-right">{$LANG.phoneUc}:
+                <img class="tooltip" title="{$LANG.helpPhoneNumber}"
+                     src="{$helpImagePath}help-small.png" alt=""/>
+            </label>
+            <div class="cols__4-span-7">
+                <input type="text" name="phone" id="phoneId" tabindex="90" size="12"
+                       class="margin__left-1" placeholder="{$PLACEHOLDERS['tel']}"
+                       value="{if isset($customer.phone)}{$customer.phone|htmlSafe}{/if}"/>
+            </div>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="mobilePhoneId" class="cols__1-span-3 align__text-right">{$LANG.mobilePhone}:
+                <img class="tooltip" title="{$LANG.helpPhoneNumber}"
+                     src="{$helpImagePath}help-small.png" alt=""/>
+            </label>
+            <div class="cols__4-span-7">
+                <input type="text" name="mobile_phone" id="mobilePhoneId" tabindex="100" size="12"
+                       class="margin__left-1" placeholder="{$PLACEHOLDERS['tel']}"
+                       value="{if isset($customer.mobile_phone)}{$customer.mobile_phone|htmlSafe}{/if}"/>
+            </div>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="faxId" class="cols__1-span-3 align__text-right">{$LANG.fax}:
+                <img class="tooltip" title="{$LANG.helpPhoneNumber}"
+                     src="{$helpImagePath}help-small.png" alt=""/>
+            </label>
+            <div class="cols__4-span-7">
+                <input type="text" name="fax" id="faxId" tabindex="110" size="12"
+                       class="margin__left-1" placeholder="{$PLACEHOLDERS['tel']}"
+                       value="{if isset($customer.fax)}{$customer.fax|htmlSafe}{/if}"/>
+            </div>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="emailId" class="cols__1-span-3 align__text-right">{$LANG.email}:
+                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailAddress}"
+                     src="{$helpImagePath}required-small.png" alt=""/>
+            </label>
+            <div class="cols__4-span-7">
+                <input type="email" name="email" id="emailId" tabindex="120" size="50" required
+                       class="margin__left-1" placeholder="{$PLACEHOLDERS['email']}"
+                       value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}"/>
+            </div>
         </div>
         {if !empty($customer.credit_card_number_masked)}
             <div class="grid__container grid__head-10">
-                <div class="cols__2-span-3 bold">{$LANG.creditCardNumber}:</div>
-                <div class="cols__5-span-6">{$customer.credit_card_number_masked}</div>
+                <div class="cols__1-span-3 bold align__text-right">{$LANG.creditCardNumber}:
+                    <img class="tooltip" title="{$LANG.helpCreditCardNumberMask}"
+                         src="{$helpImagePath}info.png" alt=""/>
+                </div>
+                <div class="margin__left-1">{$customer.credit_card_number_masked}</div>
             </div>
         {/if}
         <div class="grid__container grid__head-10">
-            <label for="ccNumber" class="cols__2-span-3">{$LANG.creditCardNumberNew}:
-                <a class="cluetip" href="#" title="{$LANG.creditCardNew}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCreditCardNumber">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+            <label for="newCreditCardNumberId" class="cols__1-span-3 align__text-right">{$LANG.creditCardNumberNew}:
+                <img class="tooltip" title="{$LANG.helpCreditCardNumberNew}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="text" name="credit_card_number" id="ccNumber" tabindex="140"
-                   class="cols__5-span-6 margin__left-0-5 creditCard"/>
+            <div class="cols__4-span-7">
+                <input type="text" name="credit_card_number" id="newCreditCardNumberId" tabindex="140" size="25"
+                       class="margin__left-1"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="ccExpMonth" class="cols__2-span-3">{$LANG.creditCardExpiryMonth}:</label>
-            <select name="credit_card_expiry_month" id="ccExpMonth" tabindex="150"
-                    class="cols__5-span-1 creditCard validate[condRequired[ccName, ccNumber, ccExpYear]]">
-                <option></option>
-                {for $mon=1 to 12}
-                    <option value="{$mon}"
-                            {if isset($customer.credit_card_expiry_month) &&
-                            $customer.credit_card_expiry_month==$mon}selected{/if}>{$mon|string_format:"%02d"}</option>
-                {/for}
-            </select>
-            <label for="ccExpYear" class="cols__7-span-3">{$LANG.creditCardExpiryYear}:</label>
-            <select name="credit_card_expiry_year" id="ccExpYear" tabindex="160"
-                    class="cols__10-span-1 creditCard validate[condRequired[ccName, ccNumber, ccExpiryMonth]]">
-                <option></option>
-                {for $yr=21 to 30}
-                    <option value="{$yr}"
-                            {if isset($customer.credit_card_expiry_year) &&
-                            $customer.credit_card_expiry_year==$yr}selected{/if}>{$yr|string_format:"20%02d"}</option>
-                {/for}
-            </select>
+            <label for="creditCardHolderNameId" class="cols__1-span-3 align__text-right">{$LANG.creditCardHolderName}:
+                <img class="tooltip" title="{$LANG.helpCreditCardHolderName}" src="{$helpImagePath}help-small.png" alt=""/>
+            </label>
+            <div class="cols__4-span-7">
+                <input type="text" name="credit_card_holder_name" id="creditCardHolderNameId" tabindex="130" size="50"
+                       class="margin__left-1"
+                       value="{if isset($customer.credit_card_holder_name)}{$customer.credit_card_holder_name|htmlSafe}{/if}"/>
+            </div>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="creditCardExpiryMonthId" class="cols__1-span-3 align__text-right">{$LANG.creditCardExpiryMonth}:
+                <img class="tooltip" title="{$LANG.helpCreditCardExpiryMonth}" src="{$helpImagePath}help-small.png" alt=""/>
+            </label>
+            <div class="cols__4-span-7">
+                <select name="credit_card_expiry_month" id="creditCardExpiryMonthId" tabindex="150" class="margin__left-1">
+                    <option></option>
+                    {for $mon=1 to 12}
+                        <option value="{$mon}"
+                                {if isset($customer.credit_card_expiry_month) &&
+                                $customer.credit_card_expiry_month==$mon}selected{/if}>{$mon|string_format:"%02d"}</option>
+                    {/for}
+                </select>
+            </div>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="creditCardExpiryYearId" class="cols__1-span-3 align__text-right">{$LANG.creditCardExpiryYear}:
+                <img class="tooltip" title="{$LANG.helpCreditCardExpiryYear}" src="{$helpImagePath}help-small.png" alt=""/>
+            </label>
+            <div class="cols__4-span-7">
+                <select name="credit_card_expiry_year" id="creditCardExpiryYearId" tabindex="160" class="margin__left-1">
+                    <option></option>
+                    {for $yr=21 to 40}
+                        <option value="{$yr}"
+                                {if isset($customer.credit_card_expiry_year) &&
+                                $customer.credit_card_expiry_year==$yr}selected{/if}>{$yr+2000|string_format:"%04d"}</option>
+                    {/for}
+                </select>
+            </div>
         </div>
 
         {if $invoiceCount > 0}
             <div class="grid__container grid__head-10">
-                <label for="defaultInvoiceId" class="cols__2-span-3">{$LANG.defaultInvoice}:
-                    <a class="cluetip" href="#" title="{$LANG.help} {$LANG.for} {$LANG.defaultInvoice}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpDefaultInvoice">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                <label for="defaultInvoiceId" class="cols__1-span-3 align__text-right">{$LANG.defaultInvoice}:
+                    <img class="tooltip" title="{$LANG.helpDefaultInvoice}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <select name="default_invoice" id="defaultInvoiceId" class="cols__5-span-6 margin__left-0-5" tabindex="165">
-                    <option value="0"></option>
-                    {foreach $invoices as $invoice}
-                        <option {if $invoice.index_id == $customer.default_invoice}selected{/if}
-                                value="{$invoice.index_id}">{$invoice.index_name} ({$invoice.total|utilCurrency})
-                        </option>
-                    {/foreach}
-                </select>
+                <div class="cols__4-span-7">
+                    <select name="default_invoice" id="defaultInvoiceId" tabindex="165"
+                            class="margin__left-1">
+                        <option value="0"></option>
+                        {foreach $invoices as $invoice}
+                            <option {if $invoice.index_id == $customer.default_invoice}selected{/if}
+                                    value="{$invoice.index_id}">{$invoice.index_name} ({$invoice.total|utilCurrency})
+                            </option>
+                        {/foreach}
+                    </select>
+                </div>
             </div>
         {/if}
         {if $subCustomerEnabled}
             {if $isParent}
                 <div class="grid__container grid__head-10">
-                    <div class="cols__2-span-3 bold">{$LANG.parentOfCustomers}:
-                        <a class="cluetip" href="#" title="{$LANG.parentOfCustomers}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=helpParentOfCustomers">
-                            <img src="{$helpImagePath}help-small.png" alt=""/>
-                        </a>
+                    <div class="cols__1-span-3 bold">{$LANG.parentOfCustomers}:
+                        <img class="tooltip" title="{$LANG.helpParentOfCustomers}" src="{$helpImagePath}help-small.png" alt=""/>
                     </div>
-                    <div class="cols__5-span-6">
+                    <div class="margin__left-1">
                         <ul>
                             {foreach $childCustomers as $cc}
                                 <li><a href="index.php?module=customers&amp;view=view&amp;id={$cc.id}">{$cc.name|htmlSafe}</a></li>
@@ -189,92 +236,94 @@
                 </div>
             {else}
                 <div class="grid__container grid__head-10">
-                    <label for="parentCustomerId" class="cols__2-span-3">{$LANG.parentCustomer}:
-                        <a class="cluetip" href="#" title="{$LANG.parentCustomer}" tabindex="-1"
-                           rel="index.php?module=documentation&amp;view=view&amp;page=helpParentCustomer">
-                            <img src="{$helpImagePath}help-small.png" alt=""/>
-                        </a>
+                    <label for="parentCustomerId" class="cols__1-span-3 align__text-right">{$LANG.parentCustomer}:
+                        <img class="tooltip" title="{$LANG.helpParentCustomer}" src="{$helpImagePath}help-small.png" alt=""/>
                     </label>
-                    {if !isset($parentCustomers) }
-                        <em>{$LANG.noCustomers}</em>
-                    {else}
-                        <select name="parent_customer_id" id="parentCustomerId" tabindex="168"
-                                class="cols__5-span-6 margin__left-0-5">
-                            <option value="0"></option>
-                            {foreach $parentCustomers as $pc}
-                                <option {if $pc.id == $customer.parent_customer_id}selected{/if}
-                                        value="{if isset($pc.id)}{$pc.id|htmlSafe}{/if}">{$pc.name|htmlSafe}</option>
-                            {/foreach}
-                        </select>
-                    {/if}
+                    <div class="cols__4-span-7">
+                        {if !isset($parentCustomers) }
+                            <em>{$LANG.noCustomers}</em>
+                        {else}
+                            <select name="parent_customer_id" id="parentCustomerId" tabindex="170" class="margin__left-1">
+                                <option value="0"></option>
+                                {foreach $parentCustomers as $pc}
+                                    <option {if $pc.id == $customer.parent_customer_id}selected{/if}
+                                            value="{if isset($pc.id)}{$pc.id|htmlSafe}{/if}">{$pc.name|htmlSafe}</option>
+                                {/foreach}
+                            </select>
+                        {/if}
+                    </div>
                 </div>
             {/if}
         {/if}
         {if !empty($customFieldLabel.customer_cf1)}
             <div class="grid__container grid__head-10">
-                <label for="customField1" class="cols__2-span-3">{$customFieldLabel.customer_cf1|htmlSafe}:
-                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                <label for="customField1" class="cols__1-span-3 align__text-right">{$customFieldLabel.customer_cf1|htmlSafe}:
+                    <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="custom_field1" id="customField1" class="cols__5-span-6 margin__left-0-5" tabindex="170"
-                       value="{if isset($customer.custom_field1)}{$customer.custom_field1|htmlSafe}{/if}"/>
+                <div class="cols__4-span-7">
+                    <input type="text" name="custom_field1" id="customField1" class="margin__left-1" tabindex="175" size="50"
+                           value="{if isset($customer.custom_field1)}{$customer.custom_field1|htmlSafe}{/if}"/>
+                </div>
             </div>
         {/if}
         {if !empty($customFieldLabel.customer_cf2)}
             <div class="grid__container grid__head-10">
-                <label for="customField2" class="cols__2-span-3">{$customFieldLabel.customer_cf2|htmlSafe}:
-                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                <label for="customField2" class="cols__1-span-3 align__text-right">{$customFieldLabel.customer_cf2|htmlSafe}:
+                    <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="custom_field2" id="customField2" class="cols__5-span-6 margin__left-0-5" tabindex="180"
-                       value="{if isset($customer.custom_field2)}{$customer.custom_field2|htmlSafe}{/if}"/>
+                <div class="cols__4-span-7">
+                    <input type="text" name="custom_field2" id="customField2" class="margin__left-1" tabindex="180" size="50"
+                           value="{if isset($customer.custom_field2)}{$customer.custom_field2|htmlSafe}{/if}"/>
+                </div>
             </div>
         {/if}
         {if !empty($customFieldLabel.customer_cf3)}
             <div class="grid__container grid__head-10">
-                <label for="customField3" class="cols__2-span-3">{$customFieldLabel.customer_cf3|htmlSafe}:
-                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                <label for="customField3" class="cols__1-span-3 align__text-right">{$customFieldLabel.customer_cf3|htmlSafe}:
+                    <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="custom_field3" id="customField3" class="cols__5-span-6 margin__left-0-5" tabindex="190"
-                       value="{if isset($customer.custom_field3)}{$customer.custom_field3|htmlSafe}{/if}"/>
+                <div class="cols__4-span-7">
+                    <input type="text" name="custom_field3" id="customField3" class="margin__left-1" tabindex="190" size="50"
+                           value="{if isset($customer.custom_field3)}{$customer.custom_field3|htmlSafe}{/if}"/>
+                </div>
             </div>
         {/if}
         {if !empty($customFieldLabel.customer_cf4)}
             <div class="grid__container grid__head-10">
-                <label for="customField4" class="cols__2-span-3">{$customFieldLabel.customer_cf4|htmlSafe}:
-                    <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                <label for="customField4" class="cols__1-span-3 align__text-right">{$customFieldLabel.customer_cf4|htmlSafe}:
+                    <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="custom_field4" id="customField4" class="cols__5-span-6 margin__left-0-5" tabindex="200"
-                       value="{if isset($customer.custom_field4)}{$customer.custom_field4|htmlSafe}{/if}"/>
+                <div class="cols__4-span-7">
+                    <input type="text" name="custom_field4" id="customField4" class="margin__left-1" tabindex="200" size="50"
+                           value="{if isset($customer.custom_field4)}{$customer.custom_field4|htmlSafe}{/if}"/>
+                </div>
             </div>
         {/if}
         <div class="grid__container grid__head-10">
-            <label for="" class="cols__2-span-3">{$LANG.notes}:</label>
-            <div class="cols__2-span-9">
-                <input name="notes" id="notes" {if isset($customer.notes)}value="{$customer.notes|outHtml}"{/if} type="hidden">
-                <trix-editor input="notes" tabindex="210"></trix-editor>
-            </div>
+            <label for="notes" class="cols__2-span-4">{$LANG.notes}:</label>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="enabledId" class="cols__2-span-3">{$LANG.enabled}:</label>
-            {html_options name=enabled id=enabledId class=cols__5-span-6 options=$enabled selected=$customer.enabled tabindex=220}
+            <div class="cols__2-span-8">
+                <input name="notes" id="notes" type="hidden"
+                       {if isset($customer.notes)}value="{$customer.notes|outHtml}"{/if}>
+                <trix-toolbar id="trix-toolbar" class="margin__left-1"></trix-toolbar>
+                <trix-editor input="notes" class="margin__left-1" toolbar="trix-toolbar" tabindex="210"></trix-editor>
+            </div>
+        </div>
+
+        <div class="grid__container grid__head-10">
+            <label for="enabledId" class="cols__1-span-3 align__text-right">{$LANG.enabled}:</label>
+            <div class="cols__4-span-7">
+                {html_options name=enabled id=enabledId class="margin__left-1"
+                options=$enabled selected=$customer.enabled tabindex=220}
+            </div>
         </div>
     </div>
     <div class="align__text-center">
         <button type="submit" class="positive" name="save_customer" value="{$LANG.saveCustomer}" tabindex="230">
             <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
         </button>
-        <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="button negative">
+        <a href="index.php?module=customers&amp;view=manage" class="button negative" tabindex="240">
             <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
         </a>
     </div>

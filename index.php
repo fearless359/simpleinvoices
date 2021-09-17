@@ -104,7 +104,7 @@ $databaseBuilt = false;
 $databasePopulated = false;
 
 // It's possible that we are in the initial install mode. If so, set
-// a flag so we won't terminate on an "Unknown database" error later.
+// a flag, so we won't terminate on an "Unknown database" error later.
 $databaseBuilt = $pdoDbAdmin->checkTableExists('biller');
 
 $timeout = 0;
@@ -141,11 +141,13 @@ $helpImagePath = "images/";
 
 // formatter:off
 include_once "include/init.php";
-global $LANG,
-       $earlyExit,
+global $earlyExit,
        $extNames,
+       $LANG,
        $menu,
        $path,
+       $PATTERNS,
+       $PLACEHOLDERS,
        $siUrl,
        $smarty,
        $smartyOutput;
@@ -167,6 +169,8 @@ Log::out("index.php - After processing init.php for extensions");
 // **********************************************************
 
 $smarty->assign("LANG", $LANG);
+$smarty->assign("PATTERNS", $PATTERNS);
+$smarty->assign("PLACEHOLDERS", $PLACEHOLDERS);
 $smarty->assign("config", $config);
 $smarty->assign("configFile", Config::CUSTOM_CONFIG_FILE);
 $smarty->assign("enabled", [$LANG['disabled'], $LANG['enabled']]);

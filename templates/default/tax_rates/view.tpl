@@ -21,10 +21,7 @@
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__5-span-1 bold">{$LANG.rateUc}:
-            <a class="cluetip" href="#" title="{$LANG.taxRate}"
-               rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxRateSign">
-                <img src="{$helpImagePath}help-small.png" alt=""/>
-            </a>
+            <img class="tooltip" title="{$LANG.helpTaxRateSign}" src="{$helpImagePath}help-small.png" alt=""/>
         </div>
         <div class="cols__6-span-2 margin__left-1">{$tax.tax_percentage|utilNumber} {$tax.type|htmlSafe}</div>
     </div>

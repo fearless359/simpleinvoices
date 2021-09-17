@@ -22,15 +22,12 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="descId" class="cols__3-span-2">{$LANG.descriptionUc}:</label>
-                <input type="text" name="tax_description" id="descId" class="cols__5-span-5 validate[required]" size="35" tabindex="10"
+                <input type="text" name="tax_description" id="descId" class="cols__5-span-5" required size="35" tabindex="10"
                        value="{if isset($smarty.post.tax_description)}{$smarty.post.tax_description|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="percentageId" class="cols__3-span-2">{$LANG.rateUc}:
-                    <a class="cluetip" href="#"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpTaxRateSign">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.helpTaxRateSign}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
                 <input type="text" name="tax_percentage" id="percentageId" class="cols__5-span-2" size="25" tabindex="20"
                        value="{if isset($smarty.post.tax_percentage)}{$smarty.post.tax_percentage|htmlSafe}{/if}"/>

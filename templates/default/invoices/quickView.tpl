@@ -70,6 +70,7 @@
     {/if}
     <!-- #PDF end -->
 </div>
+<br/>
 <!--Actions heading - start-->
 {include file="$path/quickViewInvoiceView.tpl"}
 {if $invoice.type_id == TOTAL_INVOICE}
@@ -168,11 +169,7 @@
                 </div>
                 <div class="bold align__text-right">{$LANG.owingUc}</div>
                 <div class="bold align__text-right">{$LANG.age}
-                    <a class="cluetip" href="#"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpAge"
-                       title="{$LANG.age}">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.helpAge}" src="{$helpImagePath}help-small.png" alt=""/>
                 </div>
                 <div class="align__text-right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
                 <div class="align__text-right">{$invoice.paid|utilCurrency:$locale:$currencyCode}</div>

@@ -25,47 +25,35 @@
                 <div class="grid__container grid__head-6">
                     <label for="emailFrom" class="cols__1-span-2">
                         {$LANG.emailFrom}:
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailFrom"
-                           title="{$LANG.emailFrom} {$LANG.requiredField}">
-                            <img src="{$helpImagePath}required-small.png" alt=""/>
-                        </a>
+                        <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailFrom}" src="{$helpImagePath}required-small.png" alt=""/>
                     </label>
                     <div class="cols__3-span-4">
-                        <input type="text" name="emailFrom" id="emailFrom" size="50" class="margin__left-0-5 validate[required]"
+                        <input type="text" name="emailFrom" id="emailFrom" size="50" class="margin__left-0-5" required
                                value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="10"/>
                     </div>
                 </div>
                 <div class="grid__container grid__head-6">
                     <label for="emailTo" class="cols__1-span-2">{$LANG.emailTo}:
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailTo"
-                           title="{$LANG.emailTo} {$LANG.requiredField}">
-                            <img src="{$helpImagePath}required-small.png" alt=""/>
-                        </a>
+                        <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailTo}" src="{$helpImagePath}required-small.png" alt=""/>
                     </label>
                     <div class="cols__3-span-4">
-                        <input type="text" name="emailTo" id="emailTo" size="50" class="si _input validate[required]"
+                        <input type="text" name="emailTo" id="emailTo" size="50" class="si _input" required
                                value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}" tabindex="20"/>
                     </div>
                 </div>
                 <div class="grid__container grid__head-6">
                     <label for="emailBcc" class="cols__1-span-2">{$LANG.emailBcc}:
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailBcc"
-                           title="{$LANG.emailBcc}">
-                            <img src="{$helpImagePath}help-small.png" alt=""/>
-                        </a>
+                        <img class="tooltip" title="{$LANG.helpEmailBcc}" src="{$helpImagePath}help-small.png" alt=""/>
                     </label>
                     <div class="cols__3-span-4"><input type="text" name="emailBcc" id="emailBcc" class="margin__left-0-5" size="50"
                                value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}" tabindex="30"/></div>
                 </div>
                 <div class="grid__container grid__head-6">
                     <label for="emailSubject" class="cols__1-span-2">{$LANG.subject}:
-                        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField"
-                           title="{$LANG.subject} {$LANG.requiredField}">
-                            <img src="{$helpImagePath}required-small.png" alt=""/>
-                        </a>
+                        <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpRequiredField}" src="{$helpImagePath}required-small.png" alt=""/>
                     </label>
                     <div class="cols__3-span-4">
-                        <input type="text" name="emailSubject" id="emailSubject" size="70" class="margin__left-0-5 validate[required]" tabindex="40"
+                        <input type="text" name="emailSubject" id="emailSubject" size="70" class="margin__left-0-5" required tabindex="40"
                                value="{$invoice.index_name|htmlSafe} from {$biller.name|htmlSafe} is attached"/>
                     </div>
                 </div>

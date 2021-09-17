@@ -1,21 +1,17 @@
 <?php
 /*
  * Help is specified in two ways:
- *  1) Fixed help messages from the lang.php file using the 'page' attribute in the
- *     'cluetip' link. Ex:
- *          <a class="cluetip" href="#"
- *             rel="index.php?module=documentation&amp;view=view&amp;page=helpCompanyLogo"
- *             title="{$LANG.companyLogo}">
- *            <img src="{$helpImagePath}help-small.png" alt="" />
- *          </a>
+ *  1) Fixed help messages. Ex:
+ *      <label for"fieldName" ....>
+ *          <img class="tooltip" title="{$LANG.helpCompanyLogo} src="{$helpImagePath}help-small.png" alt="" />
+ *      </label>
  *
- *  2) Custom help messages specified in on the page in the 'help' attribute in the
- *     'cluetip' link. Ex:
- *          <a class="cluetip" href="#"
- *             rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}"
- *             title="{$LANG.customFlagsUc}">
- *            <img src="{$helpImagePath}help-small.png" alt="" />
- *          </a>
+ *  2) Custom help messages. Ex:
+ *      <label for="custom_flags_{$cflg.flg_id}" class="cols__2-span-1 margin__top-0">{$cflg.field_label|trim|htmlSafe}
+ *          {if strlen($cflg.field_help) > 0}
+ *              <img class="tooltip" title="{$cflg.field_help}" src="{$helpImagePath}help-small.png" alt="help"/>
+ *          {/if}
+ *      </label>
  */
 global $LANG, $smarty;
 

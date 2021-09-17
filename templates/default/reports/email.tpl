@@ -24,42 +24,30 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="emailFromId" class="cols__2-span-3">{$LANG.emailFrom}:
-                    <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailFrom"
-                       title="{$LANG.emailFrom}">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailFrom}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="emailFrom" id="emailFromId" class="cols__5-span-5 validate[required]" size="50" tabindex="10" autofocus
+                <input type="text" name="emailFrom" id="emailFromId" class="cols__5-span-5" required size="50" tabindex="10" autofocus
                        value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="emailToId" class="cols__2-span-3">{$LANG.emailTo}:
-                    <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailTo"
-                       title="{$LANG.emailTo}">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailTo}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="emailTo" id="emailToId" class="cols__5-span-5 validate[required]" size="50" tabindex="20"
+                <input type="text" name="emailTo" id="emailToId" class="cols__5-span-5" required size="50" tabindex="20"
                        value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="emailBccId" class="cols__2-span-3">{$LANG.emailBcc}:
-                    <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpEmailBcc"
-                       title="{$LANG.emailBcc}">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.helpEmailBcc}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
                 <input type="text" name="emailBcc" id="emailBccId" class="cols__5-span-5" size="50" tabindex="30"
                        value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="emailSubjectTo" class="cols__2-span-3">{$LANG.subject}:
-                    <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField"
-                       title="{$LANG.subject} {$LANG.requiredField}">
-                        <img src="{$helpImagePath}required-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailSubject}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="emailSubject" id="emailSubjectTo" class="cols__5-span-5 validate[required]" size="70" tabindex="40"
+                <input type="text" name="emailSubject" id="emailSubjectTo" class="cols__5-span-5" required size="70" tabindex="40"
                        value="{if isset($subject)}{$subject|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">

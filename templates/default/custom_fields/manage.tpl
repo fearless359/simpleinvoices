@@ -48,12 +48,12 @@
         {/literal}
     </script>
     <div class="si_help_div">
-        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpWhatAreCustomFields" title="{$LANG.whatAreCustomFields}">
+        <a class="tooltip" href="#" title="{$LANG.helpWhatAreCustomFields}">
             {$LANG.whatAreCustomFields}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>
         ::
-        <a class="cluetip" href="#" rel="index.php?module=documentation&amp;view=view&amp;page=helpManageCustomFields" title="{$LANG.whatsThisPageAbout}">
+        <a class="tooltip" href="#" title="{$LANG.helpManageCustomFields}">
             {$LANG.whatsThisPageAbout}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>

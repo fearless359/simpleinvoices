@@ -18,13 +18,17 @@
       action="index.php?module=product_groups&amp;view=save&amp;name={$smarty.get.name|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
-            <label for="nameId" class="cols__4-span-1">{$LANG.nameUc}:</label>
-            <input type="text" name="name" id="nameId" class="cols__5-span-2" size="60" readonly
+            <label for="nameId" class="cols__4-span-2">{$LANG.groupUc} {$LANG.nameUc}:
+                <img class="tooltip" title="{$LANG.requiredField}" src="{$helpImagePath}required-small.png" alt=""/>
+            </label>
+            <input type="text" name="name" id="nameId" class="cols__6-span-2" size="60" readonly
                    value="{if isset($productGroup.name)}{$productGroup.name|htmlSafe}{/if}"/>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="markupId" class="cols__4-span-1">{$LANG.markupUc}%:</label>
-            <input type="text" name="markup" id="markupId" class="cols__5-span-2" size="10" tabindex="10"
+            <label for="markupId" class="cols__4-span-2">{$LANG.markupUc}%:
+                <img class="tooltip" title="{$LANG.helpMarkup}" src="{$helpImagePath}help-small.png" alt=""/>
+            </label>
+            <input type="text" name="markup" id="markupId" class="cols__6-span-2" size="10" tabindex="10"
                    value="{$productGroup.markup}"/>
         </div>
     </div>

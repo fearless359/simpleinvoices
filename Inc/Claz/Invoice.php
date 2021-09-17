@@ -659,7 +659,6 @@ class Invoice
     {
         global $LANG;
 
-        // do taxes
         $attr = [];
         if (!empty($attribute)) {
             foreach ($attribute as $key => $val) {

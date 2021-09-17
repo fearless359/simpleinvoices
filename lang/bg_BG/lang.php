@@ -450,7 +450,7 @@ $LANG['recurrenceType'] = "Вид повторение";//1
 $LANG['register'] = "Регистриране";//1
 $LANG['reorderLevel'] = "Ниво на реорганизация";//1
 $LANG['reports'] = "Справки";//1
-$LANG['requiredField'] = "Задължително поле";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Задължително поле</strong>";//1
 $LANG['role'] = "Роля";//1
 $LANG['runReport'] = "Отваряне на справката";//1
 $LANG['salesUc'] = "Продажби";//1

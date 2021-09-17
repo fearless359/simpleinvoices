@@ -450,7 +450,7 @@ $LANG['recurrenceType'] = "Tipo de recorr&ecirc;ncia";//1
 $LANG['register'] = "Registro";//1
 $LANG['reorderLevel'] = "Quantidade cr&iacute;tica";//1
 $LANG['reports'] = "Relat&oacute;rios";//1
-$LANG['requiredField'] = "Required Field";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Required Field!</strong>";//1
 $LANG['role'] = "Regra";//1
 $LANG['runReport'] = "Executar relat&oacute;rio";//1
 $LANG['salesUc'] = "Vendas";//1

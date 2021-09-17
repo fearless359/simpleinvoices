@@ -19,8 +19,8 @@
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=expense&amp;view=create">
         <div class="grid__area">
             <div class="grid__container grid__head-10">
-                <label for="expenseAccountId" class="cols__2-span-2">{$LANG.expenseAccounts}:</label>
-                <select name="expense_account_id" id="expenseAccountId" class="cols__4-span-6 validate[required]"
+                <label for="expenseAccountId" class="cols__2-span-2 align__text-right">{$LANG.expenseAccounts}:&nbsp;</label>
+                <select name="expense_account_id" id="expenseAccountId" class="cols__4-span-4" required
                         autofocus tabindex="10">
                     <option value=''></option>
                     {foreach $expenseAdd.expense_accounts as $expense_account}
@@ -29,16 +29,17 @@
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="date" class="cols__2-span-2">{$LANG.dateFormatted}:</label>
-                <input type="text" name="date" id="date" class="cols__4-span-2 validate[required,custom[date],length[0,10]] date-picker"
+                <label for="date" class="cols__2-span-2 align__text-right">{$LANG.dateFormatted}:&nbsp;</label>
+                <input type="text" name="date" id="date" required readonly class="cols__4-span-1 date-picker"
                        value='{$smarty.now|date_format:"%Y-%m-%d"}' tabindex="20"/>
-
-                <label for="amountId" class="cols__7-span-1">{$LANG.amountUc}:</label>
-                <input name="amount" id="amountId" class="cols__8-span-2 validate[required]" tabindex="30"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="billerId" class="cols__2-span-2">{$LANG.billerUc}:</label>
-                <select name="biller_id" id="billerId" class="cols__4-span-6 validate[required]" tabindex="40">
+                <label for="amountId" class="cols__2-span-2 align__text-right">{$LANG.amountUc}:&nbsp;</label>
+                <input name="amount" id="amountId" class="cols__4-span-2" required tabindex="30"/>
+            </div>
+            <div class="grid__container grid__head-10">
+                <label for="billerId" class="cols__2-span-2 align__text-right">{$LANG.billerUc}:&nbsp;</label>
+                <select name="biller_id" id="billerId" class="cols__4-span-4" required tabindex="40">
                     <option value=''></option>
                     {foreach $expenseAdd.billers as $biller}
                         <option {if isset($biller.id) && $biller.id == $defaults.biller} selected {/if}
@@ -47,8 +48,8 @@
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="customerId" class="cols__2-span-2">{$LANG.customerUc}:</label>
-                <select name="customer_id" id="customerId" class="cols__4-span-6" tabindex="50">
+                <label for="customerId" class="cols__2-span-2 align__text-right">{$LANG.customerUc}:&nbsp;</label>
+                <select name="customer_id" id="customerId" class="cols__4-span-4" tabindex="50">
                     <option value=''></option>
                     {foreach $expenseAdd.customers as $customer}
                         <option {if isset($customer.id) && $customer.id == $defaults.customer}selected{/if}
@@ -59,16 +60,17 @@
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="invoiceId" class="cols__2-span-2">{$LANG.invoiceUc}:</label>
-                <select name="invoice_id" id="invoiceId" class="cols__4-span-2" tabindex="60">
+                <label for="invoiceId" class="cols__2-span-2 align__text-right">{$LANG.invoiceUc}:&nbsp;</label>
+                <select name="invoice_id" id="invoiceId" class="cols__4-span-4" tabindex="60">
                     <option value=''></option>
                     {foreach $expenseAdd.invoices as $invoice}
                         <option value="{$invoice.id}">{$invoice.index_id}&nbsp;&dash;&nbsp;{$invoice.customer}&nbsp;&dash;&nbsp;{$invoice.date}</option>
                     {/foreach}
                 </select>
-
-                <label for="productId" class="cols__7-span-1">{$LANG.productUc}:</label>
-                <select name="product_id" id="productId" class="cols__8-span-2" tabindex="70">
+            </div>
+            <div class="grid__container grid__head-10">
+                <label for="productId" class="cols__2-span-2 align__text-right">{$LANG.productUc}:&nbsp;</label>
+                <select name="product_id" id="productId" class="cols__4-span-4" tabindex="70">
                     <option value=''></option>
                     {foreach $expenseAdd.products as $product}
                         <option value="{$product.id}">{$product.description}</option>
@@ -77,7 +79,7 @@
             </div>
             {if $defaults.tax_per_line_item > 0}
                 <div class="grid__container grid__head-10">
-                    <div class="cols__2-span-2 bold">{$LANG.taxesUc}:</div>
+                    <div class="cols__2-span-2 bold align__text-right">{$LANG.taxesUc}:&nbsp;</div>
                     {$begCol = 4}
                     {section name=tax loop=$defaults.tax_per_line_item}
                         <!--suppress HtmlFormInputWithoutLabel -->
@@ -94,8 +96,8 @@
                 </div>
             {/if}
             <div class="grid__container grid__head-10">
-                <label for="statusId" class="cols__2-span-2">{$LANG.status}:</label>
-                <select name="status" id="statusId" class="cols__4-span-2" tabindex="90">
+                <label for="statusId" class="cols__2-span-2 align__text-right">{$LANG.status}:&nbsp;</label>
+                <select name="status" id="statusId" class="cols__4-span-1" tabindex="90">
                     <option value="{$smarty.const.ENABLED }" selected>{$LANG.paidUc}</option>
                     <option value="{$smarty.const.DISABLED}">{$LANG.notPaid}</option>
                 </select>

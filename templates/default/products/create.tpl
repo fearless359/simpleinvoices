@@ -25,12 +25,9 @@
                 <div id="section-1" class="fragment">
                     <div class="grid__container grid__head-10">
                         <label for="description" class="cols__2-span-2">{$LANG.descriptionUc}:
-                            <a class="cluetip" href="#" title="{$LANG.requiredField}" tabindex="-1"
-                               rel="index.php?module=documentation&amp;view=view&amp;page=helpRequiredField">
-                                <img src="{$helpImagePath}required-small.png" alt=""/>
-                            </a>
+                            <img class="tooltip" title="{$LANG.requiredField}" src="{$helpImagePath}required-small.png" alt=""/>
                         </label>
-                        <input type="text" name="description" id="description" class="cols__4-span-5 validate[required]" size="50" tabindex="10"
+                        <input type="text" name="description" id="description" class="cols__4-span-5" required size="50" tabindex="10"
                                value="{if isset($smarty.post.description)}{$smarty.post.description|htmlSafe}{/if}"/>
                     </div>
                     <div class="grid__container grid__head-10">
@@ -41,10 +38,7 @@
                     {if $defaults.inventory == $smarty.const.ENABLED}
                         <div class="grid__container grid__head-10">
                             <label for="costId" class="cols__2-span-2">{$LANG.costUc}:
-                                <a class="cluetip" href="#" title="{$LANG.costUc}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCost">
-                                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                                </a>
+                                <img class="tooltip" title="{$LANG.helpCost}" src="{$helpImagePath}help-small.png" alt=""/>
                             </label>
                             <input type="text" name="cost" id="costId" class="cols__4-span-2" size="25" tabindex="30"
                                    value="{if isset($smarty.post.cost)}{$smarty.post.cost|htmlSafe}{/if}"/>
@@ -87,10 +81,7 @@
                     {if !empty($customFieldLabel.product_cf1)}
                         <div class="grid__container grid__head-10">
                             <label for="customField1" class="cols__2-span-4">{$customFieldLabel.product_cf1|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt="help"/>
-                                </a>
+                                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt="help"/>
                             </label>
                             <input type="text" name="custom_field1" id="customField1" class=cols__5-span-6" size="50" tabindex="70"
                                    value="{if isset($smarty.post.custom_field1)}{$smarty.post.custom_field1|htmlSafe}{/if}"/>
@@ -99,10 +90,7 @@
                     {if !empty($customFieldLabel.product_cf2)}
                         <div class="grid__container grid__head-10">
                             <label for="customField2" class="cols__2-span-4">{$customFieldLabel.product_cf2|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt="help"/>
-                                </a>
+                                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt="help"/>
                             </label>
                             <input type="text" name="custom_field2" id="customField2" class="cols__6-span-5" size="50" tabindex="80"
                                    value="{if isset($smarty.post.custom_field2)}{$smarty.post.custom_field2|htmlSafe}{/if}"/>
@@ -111,10 +99,7 @@
                     {if !empty($customFieldLabel.product_cf3)}
                         <div class="grid__container grid__head-10">
                             <label for="customField3" class="cols__2-span-4">{$customFieldLabel.product_cf3|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt="help"/>
-                                </a>
+                                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt="help"/>
                             </label>
                             <input type="text" name="custom_field3" id="customField3" class="cols__6-span-5" size="50" tabindex="90"
                                    value="{if isset($smarty.post.custom_field3)}{$smarty.post.custom_field3|htmlSafe}{/if}"/>
@@ -123,10 +108,7 @@
                     {if !empty($customFieldLabel.product_cf4)}
                         <div class="grid__container grid__head-10">
                             <label for="customField4" class="cols__2-span-4">{$customFieldLabel.product_cf4|htmlSafe}:
-                                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                                    <img src="{$helpImagePath}help-small.png" alt="help"/>
-                                </a>
+                                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt="help"/>
                             </label>
                             <input type="text" name="custom_field4" id="customField4" class="cols__6-span-5" size="50" tabindex="100"
                                    value="{if isset($smarty.post.custom_field4)}{$smarty.post.custom_field4|htmlSafe}{/if}"/>
@@ -142,12 +124,9 @@
                                     <div class="grid__container grid__head-checkbox">
                                         <input type="checkbox" name="custom_flags_{$cflg.flg_id}" id="custom_flags_{$cflg.flg_id}"
                                                class="cols__1-span-1 margin__top-0-5" value="1" tabindex="11{$cflg@index}"/>
-                                        <label for="custom_flags_{$cflg.flg_id}" class="cols__2-span-1 margin__top-0">{$cflg.field_label|trim|htmlSafe}:
+                                        <label for="custom_flags_{$cflg.flg_id}" class="cols__2-span-1 margin__top-0">{$cflg.field_label|trim|htmlSafe}
                                             {if strlen($cflg.field_help) > 0}
-                                                <a class="cluetip" href="#" title="{$cflg.field_label}" tabindex="-1"
-                                                   rel="index.php?module=documentation&amp;view=view&amp;help={$cflg.field_help}">
-                                                    <img src="{$helpImagePath}help-small.png" alt="help"/>
-                                                </a>
+                                                <img class="tooltip" title="{$cflg.field_help}" src="{$helpImagePath}help-small.png" alt="help"/>
                                             {/if}
                                         </label>
                                     </div>

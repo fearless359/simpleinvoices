@@ -19,8 +19,8 @@
           action="index.php?module=inventory&amp;view=create">
         <div class="grid__area">
             <div class="grid__container grid__head-10">
-                <label for="productId" class="cols__3-span-1">{$LANG.productUc}:</label>
-                <select name="product_id" id="productId" class="cols__4-span-6 validate[required] product_inventory_change" tabindex="10">
+                <label for="productId" class="cols__2-span-1 align__text-right">{$LANG.productUc}:&nbsp;</label>
+                <select name="product_id" id="productId" class="cols__3-span-4 product_inventory_change" required tabindex="10">
                     <option value=''></option>
                     {foreach $product_all as $product}
                         <option value="{$product.id|htmlSafe}"
@@ -29,23 +29,25 @@
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="quantityId" class="cols__3-span-1">{$LANG.quantity}:</label>
-                <input name="quantity" id="quantityId" class="cols__4-span-6 validate[required]" size="10" tabindex="20"
+                <label for="quantityId" class="cols__2-span-1 align__text-right">{$LANG.quantity}:&nbsp;</label>
+                <input name="quantity" id="quantityId" class="cols__3-span-1" required size="10" tabindex="20"
                        {if !empty($smarty.post.quantity)}value="{$smarty.post.quantity|utilNumberTrim:0}"{/if}>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="date" class="cols__3-span-1">{$LANG.dateUc}:</label>
-                <input type="text" name="date" id="date" class="cols__4-span-6 validate[required,custom[date],length[0,10]] date-picker" size="10" tabindex="30"
+                <label for="date" class="cols__2-span-1 align__text-right">{$LANG.dateUc}:&nbsp;</label>
+                <input type="text" name="date" id="date" required readonly class="cols__3-span-1 date-picker" size="10" tabindex="30"
                        value="{if !empty($smarty.post.date)}{$smarty.post.date}{else}{'now'|date_format:'%Y-%m-%d'}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="cost" class="cols__3-span-1">{$LANG.costUc}:</label>
-                <input name="cost" id="cost" class="cols__4-span-6 validate[required]" size="10" tabindex="40"
+                <label for="cost" class="cols__2-span-1 align__text-right">{$LANG.costUc}:&nbsp;</label>
+                <input name="cost" id="cost" class="cols__3-span-2" required size="10" tabindex="40"
                        {if !empty($smarty.post.cost)}value="{$smarty.post.cost}"{/if}>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="note" class="cols__3-span-1">{$LANG.notes}:</label>
-                <div class="cols__4-span-6">
+                <label for="note" class="cols__2-span-1">{$LANG.notes}:&nbsp;</label>
+            </div>
+            <div class="grid__container grid__head-10">
+                <div class="cols__2-span-8">
                     <input name="note" id="note" type="hidden" {if isset($smarty.post.note)}value="{$smarty.post.note|outHtml}"{/if}>
                     <trix-editor input="note" tabindex="50"></trix-editor>
                 </div>

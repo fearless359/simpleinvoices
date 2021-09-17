@@ -18,7 +18,7 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="nameId" class="cols__4-span-1">{$LANG.nameUc}:</label>
-                <input type="text" name="name" id="nameId" class="cols__5-span-5 validate[required]" size="50"
+                <input type="text" name="name" id="nameId" class="cols__5-span-5" required size="50"
                        value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">

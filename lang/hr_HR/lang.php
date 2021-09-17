@@ -203,7 +203,7 @@ $LANG['hello'] = "Hello";//1
 $LANG['help'] = "Help";//1
 $LANG['helpAge'] = "\"Doba 'polje pokazuje koliko je račun bio neplaćen. Ako je račun nastao 1. u mjesecu, 21. tog mjeseca, ako je račun još uvijek nije izrađen u punom računu 'doba' će biti 21 dana. <br /> <br /> Ako je faktura uplaćena u cijelosti onda 'Doba' polje će biti prazano.";//1
 $LANG['helpBackupDatabase'] = "Za backup da raditi na web poslužitelju korisnik (nadam se da koristite Apache) mora imati čitanje / pisanje dopuštenja na database_backups imeniku u \"SimpleInvoices \" mapi <br /> <br /> Također, ako ste paranoični extra (poput mene :) ) o vašim podacima preporučujem koristite phpMyAdmin. Ovaj backup script bi trebao raditi, ali ako je potrebno \"poslovne klase\" backup pouzdanost phpMyAdmin  <br /> <br />. NAPOMENA: Ako koristite jednostavne račune u demo okruženju na SourceForge, kopija neće raditi zbog postavki  poslužiteljima.";//1
-$LANG['helpBackupDatabaseFwrite'] = "<b>Got fwrite() errors?</b><br />If you received fwrite() errors when atempting to backup your SimpleInvoices database this means that the webserver user(hopefully you're running Apache) doesn't have read/write permissions to the tmp/database_backups directory in the SimpleInvoices folder<br /><br />Please change the permissions on this directory and attempt the backup again. To change the permissions of the tmp/database_backups directory in Unix/Linix/OSX cd to the Simple Invoice directory (<i>cd /var/www/html/simpleinvoices</i>) and then issue the chmod command to give the webserver user read/write permissions (<i>chmod -Rv 777 tmp/database_backups</i>)";//1
+$LANG['helpBackupDatabaseFwrite'] = "<b>Got fwrite() errors?</b><br />If you received fwrite() errors when atempting to backup your SimpleInvoices database this means that the webserver user (hopefully you're running Apache) doesn't have read/write permissions to the tmp/database_backups directory in the SimpleInvoices folder<br /><br />Please change the permissions on this directory and attempt the backup again. To change the permissions of the tmp/database_backups directory in Unix/Linix/OSX cd to the Simple Invoice directory (<i>cd /var/www/html/simpleinvoices</i>) and then issue the chmod command to give the webserver user read/write permissions (<i>chmod -Rv 777 tmp/database_backups</i>)";//1
 $LANG['helpBlog'] = "SimpleInvoices Blog";//1
 $LANG['helpCommunityForums'] = "SimpleInvoices Group";//1
 $LANG['helpCost'] = "\"Troškovi\" odnosi se na troškove koje je ovaj proizvod košta vas - to se koristi za popis i dobit potrebe izračuna";//1
@@ -451,7 +451,7 @@ $LANG['recurrenceType'] = "Recurrence_type";//1
 $LANG['register'] = "Register";//1
 $LANG['reorderLevel'] = "Reorder level";//1
 $LANG['reports'] = "Reports";//1
-$LANG['requiredField'] = "Required Field";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Required Field!</strong>";//1
 $LANG['role'] = "Role";//1
 $LANG['runReport'] = "Run report";//1
 $LANG['salesUc'] = "Sales";//1

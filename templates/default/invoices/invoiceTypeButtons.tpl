@@ -10,9 +10,6 @@
         </a>
     </span>
     <span class="si_filters_title">
-        <a class="cluetip" href="#" title="{$LANG.invoiceType}"
-           rel="index.php?module=documentation&amp;view=view&amp;page=helpInvoiceTypes">
-            <img src="{$helpImagePath}help-small.png" alt=""/>
-        </a>
+        <img class="tooltip" title="{$LANG.helpInvoiceTypes}" src="{$helpImagePath}help-small.png" alt=""/>
     </span>
 </div>

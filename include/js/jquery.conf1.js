@@ -69,24 +69,6 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
-    /* Load the cluetip - only if cluetip plugin has been loaded */
-    if (jQuery.cluetip) {
-        $('a.cluetip').cluetip(
-            {
-                activation: 'click',
-                sticky: true,
-                cluetipClass: 'notice',
-                fx: {
-                    open: 'fadeIn', // can be 'show' or 'slideDown' or 'fadeIn'
-                    openSpeed: '70'
-                },
-                arrows: true,
-                closePosition: 'title',
-                closeText: '<img src="../../images/cross.png" alt="" />'
-            }
-        );
-    }
-
     $('#tabs_customer').tabs();
 
     $(".date-picker").datepicker({

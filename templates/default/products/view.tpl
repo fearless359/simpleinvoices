@@ -41,10 +41,7 @@
     {if !empty($customFieldLabel.product_cf1)}
         <div class="grid__container grid__head-10">
             <div class="cols__2-span-3 bold">{$customFieldLabel.product_cf1|htmlSafe}:
-                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
             </div>
             <div class="cols__5-span-5">{$product.custom_field1|htmlSafe}</div>
         </div>
@@ -52,10 +49,7 @@
     {if !empty($customFieldLabel.product_cf2)}
         <div class="grid__container grid__head-10">
             <div class="cols__2-span-3 bold">{$customFieldLabel.product_cf2|htmlSafe}:
-                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
             </div>
             <div class="cols__5-span-5">{$product.custom_field2|htmlSafe}</div>
         </div>
@@ -63,10 +57,7 @@
     {if !empty($customFieldLabel.product_cf3)}
         <div class="grid__container grid__head-10">
             <div class="cols__2-span-3 bold">{$customFieldLabel.product_cf3|htmlSafe}:
-                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                    <img src="{$helpImagePath}help-small.png" alt="">
-                </a>
+                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt="">
             </div>
             <div class="cols__5-span-5">{$product.custom_field3|htmlSafe}</div>
         </div>
@@ -74,10 +65,7 @@
     {if !empty($customFieldLabel.product_cf4)}
         <div class="grid__container grid__head-10">
             <div class="cols__2-span-3 bold">{$customFieldLabel.product_cf4|htmlSafe}:
-                <a class="cluetip" href="#" title="{$LANG.customFields}" tabindex="-1"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCustomFields">
-                    <img src="{$helpImagePath}help-small.png" alt=""/>
-                </a>
+                <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
             </div>
             <div class="cols__5-span-5">{$product.custom_field4|htmlSafe}</div>
         </div>

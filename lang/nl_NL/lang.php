@@ -265,7 +265,6 @@ $LANG['helpCustomFlagsFieldLabel'] = "Voer de naam in dat voor deze optie op het
 $LANG['helpCustomFlagsFlagNumber'] = "Dit is het nummer van deze gebruikersvlag. De nummers lopen van 1 tot 10, en kunnen een functie krijgen die u wenst.";//1
 $LANG['helpCustomFieldCleanup'] = "Als de inhoud van het gebruikersveld is gewist, vinkt u dit vakje aan om ook gegevens uit het bijbehorende veld in de database te verwijderen.";//1
 $LANG['helpCustomerContact'] = "In het veld Klantcontact 't.a.v.' kunt u binnen het bedrijf een contactpersoon  van uw klant specificeren.<br /><br />Dit is handig als uw klant veel werknemers heeft en u op de factuur rechtstreeks moet aangeven voor wie deze factuur bestemd is.<br /><br /> d.w.z. Binnen de 'Springfield Power Plant' wilt u misschien Dhr. Burns (of Smithers) specificeren als het klantcontact, aangezien zij de persoon zijn die de factuur krijgt.<br /><br />De factuur zier er dan zo uit: <br /><br />Klant: Springfield Power Plant <br /> T.a.v. dhr Burns<br />";//1
-$LANG['helpCustomerEmail'] = "Vul hier het e-mail adres in voor deze klant. Het moet voldoen aan de opmaaknormen voor e-mail adressen en wordt gebruikt om facturen via e-mail naar de klant te sturen.";//1
 $LANG['helpDatabasePatches'] = "<b>Database-patches moeten worden toegepast</b><br />Er zijn databasepatches die moeten worden toegepast, selecteer 'Database upgrade beheer' in het menu Instellingen en volg de instructies.<br /><br />'Door middel van 'Database upgrade beheer' worden er wijziging in de structuur van de Simple Invoices database beheert. Bij elke nieuwe release kunnen er 'Database-patches' zijn die moeten worden toegepast. Database upgrade beheer zorgt voor deze database-patches.<br /><br />Databasepatches zijn individuele aanpassingen aan de SimpleInvoices-database. Bij een nieuwe release zijn er mogelijk meerdere patches die moeten worden toegepast.";//1
 $LANG['helpDefaultBiller'] = "Selecteer het bedrijf dat als standaard wordt gebruikt voor nieuwe facturen.";//1
 $LANG['helpDefaultCustomer'] = "Selecteer een klant die als standaard wordt gebruikt voor nieuwe facturen.";//1
@@ -564,7 +563,7 @@ $LANG['register'] = "Registreer";//1
 $LANG['reorderLevel'] = "Herbestellings niveau";//1
 $LANG['reportUc'] = "Rapport";//1
 $LANG['reports'] = "Rapporten";//1
-$LANG['requiredField'] = "Verplicht veld";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Verplicht veld</strong>";//1
 $LANG['resetCustomFlags'] = "Gebruikersvlag resetten";//1
 $LANG['role'] = "Gebruikersrechten";//1
 $LANG['runReport'] = "Draai rapport";//1
