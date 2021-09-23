@@ -17,24 +17,24 @@
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=product_attribute&amp;view=create">
         <div class="grid__area">
             <div class="grid__container grid__head-10">
-                <label for="nameId" class="cols__4-span-1">{$LANG.nameUc}:</label>
-                <input type="text" name="name" id="nameId" class="cols__5-span-5" required size="50"
+                <label for="nameId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.nameUc}:</label>
+                <input type="text" name="name" id="nameId" class="cols__5-span-2" required size="50"
                        value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="typeId" class="cols__4-span-1">{$LANG.type}:</label>
-                <select name="type_id" id="typeId" class="cols__5-span-2">
+                <label for="typeId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.type}:</label>
+                <select name="type_id" id="typeId" class="cols__5-span-1">
                     {foreach $types as $k => $v}
                         <option value="{if isset($v.id)}{$v.id}{/if}">{$LANG[$v.name]}</option>
                     {/foreach}
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="enabledId" class="cols__4-span-1 bold">{$LANG.enabled}:</label>
+                <label for="enabledId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.enabled}:</label>
                 {html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled selected=1}
             </div>
             <div class="grid__container grid__head-10">
-                <label for="visibleId" class="cols__4-span-1 bold">{$LANG.visible}:</label>
+                <label for="visibleId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.visible}:</label>
                 {html_options name=visible id=visibleId class="cols__5-span-1" options=$enabled selected=1}
             </div>
         </div>

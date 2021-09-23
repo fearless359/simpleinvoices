@@ -223,10 +223,10 @@
         {if $subCustomerEnabled}
             {if $isParent}
                 <div class="grid__container grid__head-10">
-                    <div class="cols__1-span-3 bold">{$LANG.parentOfCustomers}:
+                    <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.parentOfCustomers}:
                         <img class="tooltip" title="{$LANG.helpParentOfCustomers}" src="{$helpImagePath}help-small.png" alt=""/>
                     </div>
-                    <div class="margin__left-1">
+                    <div class="margin__left-1 cols__4-span-5">
                         <ul>
                             {foreach $childCustomers as $cc}
                                 <li><a href="index.php?module=customers&amp;view=view&amp;id={$cc.id}">{$cc.name|htmlSafe}</a></li>

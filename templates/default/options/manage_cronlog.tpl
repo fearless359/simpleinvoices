@@ -15,7 +15,7 @@
  *      https://simpleinvoices.group
  *}
 <h3 class="align__text-center">{$LANG.cronUc} {$LANG.logUc} - {$LANG.recurrent} {$LANG.invoicesUc} {$LANG.inserted}</h3>
-<table id="data-table" class="display responsive compact cell-border" style="width: 40%;">
+<table id="data-table" class="display responsive compact cell-border">
     <thead>
     <tr>
         <th class="align__text-right">{$LANG.idUc}</th>
@@ -37,6 +37,7 @@
     {literal}
     $(document).ready(function () {
         $('#data-table').DataTable({
+            "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
             "order": [
                 [1, "desc"]
             ],

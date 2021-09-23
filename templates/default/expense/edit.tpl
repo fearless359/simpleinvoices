@@ -15,8 +15,8 @@
       action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
-            <label for="expenseAccountId" class="cols__2-span-2">{$LANG.expenseAccounts}:</label>
-            <select name="expense_account_id" id="expenseAccountId" class="cols__4-span-6" required
+            <label for="expenseAccountId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.expenseAccounts}:</label>
+            <select name="expense_account_id" id="expenseAccountId" class="cols__4-span-5" required
                     autofocus tabindex="10">
                 <option value=''></option>
                 {foreach $detail.expense_accounts as $expense_account}
@@ -26,17 +26,18 @@
             </select>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="date" class="cols__2-span-2">{$LANG.dateFormatted}:</label>
+            <label for="date" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
             <input type="text" name="date" id="date" required readonly class="cols__4-span-2 date-picker"
                    value="{$expense.date}" tabindex="20"/>
-
-            <label for="amountId" class="cols__7-span-1">{$LANG.amountUc}:</label>
-            <input name="amount" id="amountId" class="cols__8-span-2" required
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="amountId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.amountUc}:</label>
+            <input name="amount" id="amountId" class="cols__4-span-2" required
                    value="{$expense.amount|utilNumber}" tabindex="30"/>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="billerId" class="cols__2-span-2">{$LANG.billerUc}:</label>
-            <select name="biller_id" id="billerId" class="cols__4-span-6" required tabindex="40">
+            <label for="billerId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.billerUc}:</label>
+            <select name="biller_id" id="billerId" class="cols__4-span-5" required tabindex="40">
                 <option value=''></option>
                 {foreach $detail.billers as $biller}
                     <option {if $biller.id == $expense.b_id} selected {/if}
@@ -45,8 +46,8 @@
             </select>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="customerId" class="cols__2-span-2">{$LANG.customerUc}:</label>
-            <select name="customer_id" id="customerId" class="cols__4-span-6" tabindex="50">
+            <label for="customerId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.customerUc}:</label>
+            <select name="customer_id" id="customerId" class="cols__4-span-5" tabindex="50">
                 <option value=''></option>
                 {foreach $detail.customers as $customer}
                     <option {if $customer.id == $expense.c_id}selected{/if}
@@ -55,7 +56,7 @@
             </select>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="invoiceId" class="cols__2-span-2">{$LANG.invoiceUc}:</label>
+            <label for="invoiceId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.invoiceUc}:</label>
             <select name="invoice_id" id="invoiceId" class="cols__4-span-2" tabindex="60">
                 <option value=''></option>
                 {foreach $detail.invoices as $invoice}
@@ -63,9 +64,10 @@
                         {$invoice.index_id}&nbsp;&dash;&nbsp;{$invoice.customer}&nbsp;&dash;&nbsp;{$invoice.date}</option>
                 {/foreach}
             </select>
-
-            <label for="productId" class="cols__7-span-1">{$LANG.productUc}:</label>
-            <select name="product_id" id="productId" class="cols__8-span-2" tabindex="70">
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="productId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.productUc}:</label>
+            <select name="product_id" id="productId" class="cols__4-span-2" tabindex="70">
                 <option value=''></option>
                 {foreach $detail.products as $product}
                     <option {if $product.id == $expense.p_id}selected{/if}
@@ -75,12 +77,12 @@
         </div>
         {if $defaults.tax_per_line_item > 0}
             <div class="grid__container grid__head-10">
-                <div class="cols__2-span-2 bold">{$LANG.taxesUc}:</div>
+                <label for id="tax_id[0][0]" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.taxesUc}:</label>
                 {$begCol=4}
                 {section name=tax loop=$defaults.tax_per_line_item}
                     <!--suppress HtmlFormInputWithoutLabel -->
                     <select name="tax_id[0][{$smarty.section.tax.index}]" id="tax_id[0][{$smarty.section.tax.index}]"
-                            class="cols__{$begCol}-span-2 {if !$smarty.section.tax.last}margin__right-1{/if}"
+                            class="cols__{$begCol}-span-1 {if !$smarty.section.tax.last}margin__right-1{/if}"
                             tabindex="8{$smarty.section.tax.index}">
                         <option value=''></option>
                         {$index = $smarty.section.tax.index}
@@ -89,12 +91,12 @@
                                     value="{$tax.tax_id}">{$tax.tax_description}</option>
                         {/foreach}
                     </select>
-                    {$begCol=$begCol+2}
+                    {$begCol=$begCol+1}
                 {/section}
             </div>
         {/if}
         <div class="grid__container grid__head-10">
-            <label for="statusId" class="cols__2-span-2">{$LANG.status}:</label>
+            <label for="statusId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.status}:</label>
             <select name="status" id="statusId" class="cols__4-span-2" tabindex="90">
                 <option value="{$smarty.const.ENABLED }" {if $expense.status == $smarty.const.ENABLED}selected{/if}>{$LANG.paidUc}</option>
                 <option value="{$smarty.const.DISABLED}" {if $expense.status == $smarty.const.DISABLED}selected{/if}>{$LANG.notPaid}</option>

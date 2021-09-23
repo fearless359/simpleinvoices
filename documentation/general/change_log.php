@@ -17,6 +17,12 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-09-23 - <strong>2020.3.05</strong>
+                <ul>
+                    <li>Update field label alignment in forms. Right justify for better appearance
+                        and understandability.</li>
+                </ul>
+            </li>
             <li>2021-09-17 - <strong>2020.3.04</strong>
                 <ul>
                     <li>Modified to use jQuery validate npm module for form validation. This

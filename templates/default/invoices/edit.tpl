@@ -18,25 +18,18 @@
 <form name="frmpost" method="POST" id="frmpost" action="index.php?module=invoices&amp;view=save">
     <div class='grid__area'>
         <div class="grid__container grid__head-10">
-            <div class="cols__1-span-2 bold">{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}:</div>
+            <div class="cols__1-span-2 bold align__text-right margin__right-1">{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}:</div>
             <div class="cols__3-span-8">{if !$invoice.id}{$LANG.copiedFrom}&nbsp;{/if}{$invoice.index_id|htmlSafe}</div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="date1" class="cols__1-span-2">{$LANG.dateFormatted}:</label>
-            {if !isset($invoice.id)}
-                <div class="cols__3-span-8">
-                    <input type="text" size="10" class="date-picker" name="date" id="date1"
-                           value="{$smarty.now|date_format:'%Y-%m-%d'}"/>
-                </div>
-            {else}
-                <div class="cols__3-span-8">
-                    <input type="text" size="10" class="date-picker" name="date" id="date1"
-                           value="{if isset($invoice.calc_date)}{$invoice.calc_date|htmlSafe}{/if}"/>
-                </div>
-            {/if}
+            <label for="dateId" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
+            <div class="cols__3-span-8">
+                <input type="text" size="10" class="date-picker" name="date" id="dateId" required readonly
+                       value="{$invoice.date|htmlSafe}"/>
+            </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="billerId" class="cols__1-span-2">{$LANG.billerUc}:</label>
+            <label for="billerId" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.billerUc}:</label>
             <div class="cols__3-span-8">
                 {if !isset($billers) }
                     <em>{$LANG.noBillers}</em>
@@ -51,7 +44,7 @@
             </div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="customerId" class="cols__1-span-2">{$LANG.customerUc}:</label>
+            <label for="customerId" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.customerUc}:</label>
             <div class="cols__3-span-8">
                 {if !isset($customers)}
                     <em>{$LANG.noCustomers}</em>
@@ -82,8 +75,10 @@
         <input type="hidden" name="id" value="{$invoice.id|htmlSafe}"/>
         <input type="hidden" name="op" value="edit"/>
         {if $invoice.type_id == TOTAL_INVOICE }
-            <input id="quantity0" type="hidden" size="10" value="1.00" name="quantity0"/>
-            <input id="line_item0" type="hidden" value="{$invoiceItems[0].id|htmlSafe}" name="line_item0"/>
+            <input type="hidden" id="quantity0" size="10" value="1.00" name="quantity0"/>
+            <input type="hidden" id="line_item0" value="{$invoiceItems[0].id|htmlSafe}" name="line_item0"/>
+            <input type="hidden" name="id0" value="{$invoiceItems[0].id|htmlSafe}"/>
+            <input type="hidden" name="products0" value="{$invoiceItems[0].product_id|htmlSafe}"/>
         {/if}
         <input type="hidden" name="type" value="{if isset($invoice.type_id)}{$invoice.type_id|htmlSafe}{/if}"/>
         <input type="hidden" id="max_items" name="max_items" value="{if isset($lines)}{$lines|htmlSafe}{/if}"/>

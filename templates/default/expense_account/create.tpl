@@ -24,15 +24,15 @@
     {/if}
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=expense_account&amp;view=create">
         <div class="grid__area">
-            <div class="grid__container grid__head-6">
-                <label for="name" class="cols__2-span-1">{$LANG.nameUc}:
+            <div class="grid__container grid__head-10">
+                <label for="name" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.nameUc}:
                     <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpExpenseAccounts}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="name" id="name" class="cols__3-span-4" required
+                <input type="text" name="name" id="name" class="cols__4-span-5" required
                        value="{if isset($smarty.post.name)}{$smarty.post.name}{/if}"/>
             </div>
         </div>
-        <div class="align__text-center">
+        <div class="align__text-center margin__top-2">
             <button type="submit" class="positive" name="submit" value="{$LANG.save}">
                 <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
             </button>

@@ -16,80 +16,80 @@
  *}
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=products&amp;view=save&amp;id={$smarty.get.id|urlencode}">
+    <div class="grid__area">
+        <div class="grid__container grid__head-10">
+            <label for="description" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.productDescription}:</label>
+            <input type="text" name="description" id="description" class="cols__4-span-5" required size="50" tabindex="10"
+                   value="{if isset($product.description)}{$product.description|htmlSafe}{/if}"/>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="unitPriceId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.productUnitPrice}:</label>
+            <input type="text" name="unit_price" id="unitPriceId" class="cols__4-span-2" size="25" tabindex="20"
+                   value="{$product.unit_price|utilNumberTrim}"/>
+        </div>
+        {if $defaults.inventory == $smarty.const.ENABLED}
+            <div class="grid__container grid__head-10">
+                <label for="costId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.costUc}:
+                    <img class="tooltip" title="{$LANG.helpCost}" src="{$helpImagePath}help-small.png" alt=""/>
+                </label>
+                <input type="text" name="cost" id="costId" class="cols__4-span-2" size="25" tabindex="30"
+                       value="{$product.cost|utilNumber}"/>
+            </div>
+            <div class="grid__container grid__head-10">
+                <label for="reorderLevelId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.reorderLevel}:</label>
+                <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2" size="25" tabindex="40"
+                       value="{if isset($product.reorder_level)}{$product.reorder_level|htmlSafe}{/if}"/>
+            </div>
+        {/if}
+        <div class="grid__container grid__head-10">
+            <label for="defaultTaxId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.defaultTax}:</label>
+            <select name="default_tax_id" id="defaultTaxId" class="cols__4-span-1" tabindex="50">
+                <option value=""></option>
+                {foreach $taxes as $tax}
+                    <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}"
+                            {if $tax.tax_id == $product.default_tax_id}selected{/if}>{$tax.tax_description|htmlSafe}</option>
+                {/foreach}
+            </select>
+        </div>
+        {if $defaults.product_groups == $smarty.const.ENABLED}
+            <div class="grid__container grid__head-10">
+                <label for="productGroupId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.productGroupUc}:</label>
+                <select name="product_group" id="productGroupId" class="cols__4-span-2">
+                    <option value=''></option>
+                    {foreach $productGroups as $productGroup}
+                        <option value="{$productGroup.name|htmlSafe}"
+                                {if isset($product.product_group) &&
+                                $product.product_group == $productGroup.name}selected{/if}>{$productGroup.name|htmlSafe}{if $productGroup.markup > 0}&nbsp;({$LANG.markupUc}&nbsp;=&nbsp;{$productGroup.markup}%){/if}</option>
+                    {/foreach}
+                </select>
+            </div>
+        {/if}
+        <div class="grid__container grid__head-10">
+            <label for="enabledId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.productEnabled}:</label>
+            {html_options name=enabled id=enabledId class="cols__4-span-1" options=$enabled selected=$product.enabled tabindex=110}
+        </div>
+    </div>
+
     <div class="delay__display" id="tabs_customer">
         <div class="grid__area">
             <ul>
-                <li><a href="#section-1" target="_top">{$LANG.detailsUc}</a></li>
+{*                <li><a href="#section-1" target="_top">{$LANG.detailsUc}</a></li>*}
                 <li><a href="#section-2" target="_top">{$LANG.customUc}&nbsp;{$LANG.fieldsUc}&nbsp;&amp;&nbsp;{$LANG.flagsUc}</a></li>
                 <li><a href="#section-3" target="_top">{$LANG.notes}</a></li>
             </ul>
-            <div id="section-1">
-                <div class="grid__container grid__head-10">
-                    <label for="description" class="cols__2-span-2">{$LANG.productDescription}:</label>
-                    <input type="text" name="description" id="description" class="cols__4-span-6" required size="50" tabindex="10"
-                           value="{if isset($product.description)}{$product.description|htmlSafe}{/if}"/>
-                </div>
-                <div class="grid__container grid__head-10">
-                    <label for="unitPriceId" class="cols__2-span-2">{$LANG.productUnitPrice}:</label>
-                    <input type="text" name="unit_price" id="unitPriceId" class="cols__4-span-2" size="25" tabindex="20"
-                           value="{$product.unit_price|utilNumberTrim}"/>
-                </div>
-                {if $defaults.inventory == $smarty.const.ENABLED}
-                    <div class="grid__container grid__head-10">
-                        <label for="costId" class="cols__2-span-2">{$LANG.costUc}:
-                            <img class="tooltip" title="{$LANG.helpCost}" src="{$helpImagePath}help-small.png" alt=""/>
-                        </label>
-                        <input type="text" name="cost" id="costId" class="cols__4-span-2" size="25" tabindex="30"
-                               value="{$product.cost|utilNumber}"/>
-                    </div>
-                    <div class="grid__container grid__head-10">
-                        <label for="reorderLevelId" class="cols__2-span-2">{$LANG.reorderLevel}:</label>
-                        <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2" size="25" tabindex="40"
-                               value="{if isset($product.reorder_level)}{$product.reorder_level|htmlSafe}{/if}"/>
-                    </div>
-                {/if}
-                <div class="grid__container grid__head-10">
-                    <label for="defaultTaxId" class="cols__2-span-2">{$LANG.defaultTax}:</label>
-                    <select name="default_tax_id" id="defaultTaxId" class="cols__4-span-6" tabindex="50">
-                        <option value=""></option>
-                        {foreach $taxes as $tax}
-                            <option value="{if isset($tax.tax_id)}{$tax.tax_id|htmlSafe}{/if}"
-                                    {if $tax.tax_id == $product.default_tax_id}selected{/if}>{$tax.tax_description|htmlSafe}</option>
-                        {/foreach}
-                    </select>
-                </div>
-                {if $defaults.product_groups == $smarty.const.ENABLED}
-                    <div class="grid__container grid__head-10">
-                        <label for="productGroupId" class="cols__2-span-2">{$LANG.productGroupUc}:</label>
-                        <select name="product_group" id="productGroupId" class="cols__4-span-4">
-                            <option value=''></option>
-                            {foreach $productGroups as $productGroup}
-                                <option value="{$productGroup.name|htmlSafe}"
-                                    {if isset($product.product_group) &&
-                                        $product.product_group == $productGroup.name}selected{/if}>{$productGroup.name|htmlSafe}{if $productGroup.markup > 0}&nbsp;({$LANG.markupUc}&nbsp;=&nbsp;{$productGroup.markup}%){/if}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                {/if}
-                <div class="grid__container grid__head-10">
-                    <label for="enabledId" class="cols__2-span-2">{$LANG.productEnabled}:</label>
-                    {html_options name=enabled id=enabledId class="cols__4-span-1" options=$enabled selected=$product.enabled tabindex=110}
-                </div>
-            </div>
-
             <div id="section-2">
                 {if !empty($customFieldLabel.product_cf1)}
                     <div class="grid__container grid__head-10">
-                        <label for="customField1" class="cols__2-span-3">{$customFieldLabel.product_cf1|htmlSafe}:
+                        <label for="customField1" class="cols__1-span-3 align__text-right margin__right-1">{$customFieldLabel.product_cf1|htmlSafe}:
                             <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
-                        <input type="text" name="custom_field1" id="customField1" class="cols__5-span-5" size="50" tabindex="60"
+                        <input type="text" name="custom_field1" id="customField1" class="cols__4-span-5" size="50" tabindex="60"
                                value="{if isset($product.custom_field1)}{$product.custom_field1|htmlSafe}{/if}"/>
                     </div>
                 {/if}
                 {if !empty($customFieldLabel.product_cf2)}
                     <div class="grid__container grid__head-10">
-                        <label for="customField2" class="cols__2-span-3">{$customFieldLabel.product_cf2|htmlSafe}:
+                        <label for="customField2" class="cols__1-span-3 align__text-right margin__right-1">{$customFieldLabel.product_cf2|htmlSafe}:
                             <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
                         <input type="text" name="custom_field2" id="customField2" class="cols__4-span-5" size="50" tabindex="70"
@@ -98,7 +98,7 @@
                 {/if}
                 {if !empty($customFieldLabel.product_cf3)}
                     <div class="grid__container grid__head-10">
-                        <label for="customField3" class="cols__2-span-3">{$customFieldLabel.product_cf3|htmlSafe}:
+                        <label for="customField3" class="cols__1-span-3 align__text-right margin__right-1">{$customFieldLabel.product_cf3|htmlSafe}:
                             <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
                         <input type="text" name="custom_field3" id="customField3" class="cols__4-span-5" size="50" tabindex="80"
@@ -107,10 +107,10 @@
                 {/if}
                 {if !empty($customFieldLabel.product_cf4)}
                     <div class="grid__container grid__head-10">
-                        <label for="customField4" class="cols__2-span-3">{$customFieldLabel.product_cf4|htmlSafe}:
+                        <label for="customField4" class="cols__1-span-3 align__text-right margin__right-1">{$customFieldLabel.product_cf4|htmlSafe}:
                             <img class="tooltip" title="{$LANG.helpCustomFields}" src="{$helpImagePath}help-small.png" alt=""/>
                         </label>
-                        <input type="text" name="custom_field4" id="customField4" class="cols__5-span-5" size="50" tabindex="90"
+                        <input type="text" name="custom_field4" id="customField4" class="cols__4-span-5" size="50" tabindex="90"
                                value="{if isset($product.custom_field4)}{$product.custom_field4|htmlSafe}{/if}"/>
                     </div>
                 {/if}
@@ -162,14 +162,14 @@
             </div>
             <div id="section-3">
                 <div class="grid__container grid__head-10">
-                    <label for="notesId" class="cols__2-span-3 underline">{$LANG.notes}:</label>
+                    <label for="notesId" class="cols__2-span-2 underline">{$LANG.notes}:</label>
                 </div>
                 <div class="grid__container grid__head-10">
                 <textarea name="notes" id="notesId" class="cols__2-span-8" rows="3" cols="80"
                           tabindex="80">{if isset($product.notes)}{$product.notes|unescape}{/if}</textarea>
                 </div>
                 <div class="grid__container grid__head-10">
-                    <div class="cols__2-span-3 bold underline">{$LANG.noteAttributes}</div>
+                    <div class="cols__2-span-2 bold underline">{$LANG.noteAttributes}</div>
                 </div>
                 <div class="grid__container grid__head-10">
                     <div class="cols__2-span-8">

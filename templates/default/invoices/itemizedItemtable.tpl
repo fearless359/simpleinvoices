@@ -1,6 +1,6 @@
 <div class="grid__container grid__head-10">
     <div class="cols__1-span-1 bold align__text-right">
-        <label for="quantity0">{$LANG.quantity}
+        <label for="quantity0 align__text-right margin__right-1">{$LANG.quantityShort}
             <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}" src="{$helpImagePath}required-small.png" alt=""/>
         </label>
     </div>
@@ -35,8 +35,8 @@
                         </a>
                         <span>&nbsp;</span>
                         <!--suppress HtmlFormInputWithoutLabel -->
-                        <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" size="7" {if $line == 0}required{/if}
-                               class="align__text-right {if $line == 0}validate-minQty validate-number{/if}" data-row-num="{$line|htmlSafe}"
+                        <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" {if $line == 0}required{/if}
+                               class="align__text-right {if $line == 0}validate-quantity{/if}" data-row-num="{$line|htmlSafe}"
                                value="{if isset($defaultInvoiceItems[$line].quantity)}{$defaultInvoiceItems[$line].quantity|utilNumberTrim}{/if}">
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
-                                class="margin__left-0-5 product_change width_95" {if $line == 0}required{/if}
+                                class="product_change width_100 margin__left-0-5" {if $line == 0}required{/if}
                                 data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
                                 data-product-groups-enabled="{$defaults.product_groups}">
                             <option value=""></option>
@@ -65,7 +65,7 @@
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select id="tax_id[{$line|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
                                 name="tax_id[{$line|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
-                                data-row-num="{$line|htmlSafe}">
+                                data-row-num="{$line|htmlSafe}" class="margin__left-1">
                             <option value=""></option>
                             {foreach $taxes as $tax}
                                 <option {if isset($defaultInvoiceItems[$line].tax[$taxNumber]) &&
@@ -78,7 +78,7 @@
                 {/section}
                 <div class="cols__{$begCol}-span-1">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <input class="align__text-right" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="9"
+                    <input class="align__text-right margin__left-1" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="9"
                            {if $line == "0"}required{/if} data-row-num="{$line|htmlSafe}"
                            value="{if isset($defaultInvoiceItems[$line].unit_price)}{$defaultInvoiceItems[$line].unit_price|utilNumber}{/if}"/>
                 </div>
@@ -86,9 +86,9 @@
             <div class="grid__container grid__head-10 details" {if $defaults.invoice_description_open != $smarty.const.ENABLED}style="display:none;"{/if}>
                 <div class="cols__2-span-9">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <textarea id="description{$line|htmlSafe}" name="description{$line|htmlSafe}" rows="3" cols="99"
-                              data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
-                    >{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlSafe}{/if}</textarea>
+                    <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" rows="3" cols="99"
+                              class="margin__left-0-5" data-row-num="{$line|htmlSafe}"
+                              data-description="{$LANG.descriptionUc}">{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlSafe}{/if}</textarea>
                 </div>
             </div>
         </div>

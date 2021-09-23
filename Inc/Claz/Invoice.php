@@ -360,7 +360,6 @@ class Invoice
                 // The merge will update fields that exist and append those that don't.
                 self::updateAgingValues($row, $ageInfo);
                 $row['tax_grouped']  = self::taxesGroupedForInvoice($row['id']);
-                $row['calc_date']    = date('Y-m-d', strtotime($row['date']));
                 $row['display_date'] = Util::date($row['date']);
                 $invoices[] = $row;
             }
@@ -1021,7 +1020,6 @@ class Invoice
         if (empty($que)) {
             $rows = self::getAll();
             foreach ($rows as $row) {
-                $row['calc_date'] = date('Y-m-d', strtotime($row['date']));
                 $row['date'] = Util::date($row['date']);
                 $row['total'] = self::getInvoiceTotal($row['id']);
                 $row['paid'] = Payment::calcInvoicePaid($row['id']);

@@ -47,10 +47,10 @@ class Util
     }
 
     /**
-     * Create a drop down list for the specified array.
+     * Create a drop-down list for the specified array.
      * @param array $choiceArray Array of string values to stored in drop down list.
      * @param string $defVal Default value to selected option in list for.
-     * @return String containing the HTML code for the drop down list.
+     * @return String containing the HTML code for the drop-down list.
      */
     public static function dropDown(array $choiceArray, string $defVal): string
     {

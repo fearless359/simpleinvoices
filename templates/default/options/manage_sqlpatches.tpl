@@ -38,8 +38,9 @@
 	{literal}
 	$(document).ready(function () {
 		$('#data-table').DataTable({
+			"lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
 			"order": [
-				[0, "asc"]
+				[0, "desc"]
 			],
 			"columnDefs": [
 				{"targets": 0, "className": 'dt-body-center' }

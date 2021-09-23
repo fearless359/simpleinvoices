@@ -17,17 +17,17 @@
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=product_groups&amp;view=create">
         <div class="grid__area">
             <div class="grid__container grid__head-10">
-                <label for="nameId" class="cols__4-span-2">{$LANG.groupUc} {$LANG.nameUc}:
+                <label for="nameId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.groupUc} {$LANG.nameUc}:
                     <img class="tooltip" title="{$LANG.requiredField}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="name" id="nameId" class="cols__6-span-2" required size="60" tabindex="10"
+                <input type="text" name="name" id="nameId" class="cols__5-span-2" required size="60" tabindex="10"
                        value="{if isset($smarty.post.name)}{$smarty.post.name|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="markupId" class="cols__4-span-2">{$LANG.markupUc}%:
+                <label for="markupId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.markupUc}%:
                     <img class="tooltip" title="{$LANG.helpMarkup}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="markup" id="markupId" class="cols__6-span-2" size="10" tabindex="20"
+                <input type="text" name="markup" id="markupId" class="cols__5-span-2" size="10" tabindex="20"
                        value="{if isset($smarty.post.markup)}{$smarty.post.markup|htmlSafe}{/if}"/>
             </div>
         </div>

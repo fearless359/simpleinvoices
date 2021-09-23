@@ -29,10 +29,13 @@
             number: true
         });
 
-        jQuery.validator.addClassRules("validate-minQty", {
-            min: .01
-        });
+        jQuery.validator.addMethod("quantity", function(value) {
+            return /^\d*$|^\d*\.\d$|^\d*\.\d\d$|^-\d*$|^-\d*\.\d$|^-\d*\.\d\d$/.test(value);
+        }, "Enter a number with no more than two decimal places. Negative numbers are allowed.");
 
+        jQuery.validator.addClassRules("validate-quantity", {
+            quantity: true
+        });
     });
 </script>
 </body>

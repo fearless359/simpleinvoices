@@ -6,17 +6,15 @@
             {include file="$path/invoiceBillerCustFields.tpl" }
             <div class="grid__container grid__head-10">
                 <label for="description" class="cols__1-span-10">{$LANG.descriptionUc}:</label>
-                <div class="cols__1-span-10 bold">
-                    <textarea name="description" id="description" style="overflow:scroll;"
-                              rows="3" cols="100%">{$defaultInvoice.note|outHtml}</textarea>
-                </div>
+                <textarea name="description" id="description" class="cols__1-span-10"
+                          rows="3" cols="100%">{$defaultInvoice.note|outHtml}</textarea>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="unit_price0" class="cols__1-span-2 bold">{$LANG.grossTotal}:</label>
+                <label for="unit_price0" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.grossTotal}:</label>
                 <input type="text" class="cols__3-span-2" required name="unit_price" id="unit_price0" size="10"
                        value="{if isset($defaultInvoiceItems[0].unit_price)}{$defaultInvoiceItems[0].unit_price|utilNumber}{/if}"/>
                 {if $defaults.tax_per_line_item > 0}
-                    <div class="cols__6-span-1 bold">{$LANG.tax}:&nbsp;</div>
+                    <div class="cols__6-span-1 bold align__text-right margin__right-1 margin__top-0-5">{$LANG.tax}:</div>
                     {section name=tax loop=$defaults.tax_per_line_item}
                         {$taxNumber = $smarty.section.tax.index}
                         {$colStart = $taxNumber + 7}
@@ -38,7 +36,7 @@
             {$customFields.3}
             {$customFields.4}
             <div class="grid__container grid__head-10">
-                <div class="cols__1-span-2 bold">{$LANG.invPref}:&nbsp;</div>
+                <div class="cols__1-span-2 bold align__text-right margin__right-1 margin__top-0-5">{$LANG.invPref}:&nbsp;</div>
                 <div class="cols__3-span-3">
                     {if !isset($preferences) }
                         <em>{$LANG.noPreferences}</em>
@@ -51,7 +49,7 @@
                         </select>
                     {/if}
                 </div>
-                <div class="cols__6-span-2 bold">{$LANG.salesRepresentative}:&nbsp;</div>
+                <div class="cols__6-span-2 bold align__text-right margin__right-1 margin__top-0-5">{$LANG.salesRepresentative}:&nbsp;</div>
                 <div class="cols__8-span-3">
                     <input id="sales_representative}" name="sales_representative" size="30"
                            value="{if isset($defaultInvoice.sales_representative)}{$defaultInvoice.sales_representative|htmlSafe}{/if}"/>

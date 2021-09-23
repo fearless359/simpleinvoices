@@ -23,28 +23,28 @@
           action="index.php?module=reports&amp;view=email&amp;stage=2{foreach $params as $key=>$val}&amp;{$key}={$val}{/foreach}&amp;format=pdf">
         <div class="grid__area">
             <div class="grid__container grid__head-10">
-                <label for="emailFromId" class="cols__2-span-3">{$LANG.emailFrom}:
+                <label for="emailFromId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.emailFrom}:
                     <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailFrom}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
                 <input type="text" name="emailFrom" id="emailFromId" class="cols__5-span-5" required size="50" tabindex="10" autofocus
                        value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="emailToId" class="cols__2-span-3">{$LANG.emailTo}:
+                <label for="emailToId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.emailTo}:
                     <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailTo}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
                 <input type="text" name="emailTo" id="emailToId" class="cols__5-span-5" required size="50" tabindex="20"
                        value="{if isset($customer.email)}{$customer.email|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="emailBccId" class="cols__2-span-3">{$LANG.emailBcc}:
+                <label for="emailBccId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.emailBcc}:
                     <img class="tooltip" title="{$LANG.helpEmailBcc}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
                 <input type="text" name="emailBcc" id="emailBccId" class="cols__5-span-5" size="50" tabindex="30"
                        value="{if isset($biller.email)}{$biller.email|htmlSafe}{/if}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="emailSubjectTo" class="cols__2-span-3">{$LANG.subject}:
+                <label for="emailSubjectTo" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.subject}:
                     <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailSubject}" src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
                 <input type="text" name="emailSubject" id="emailSubjectTo" class="cols__5-span-5" required size="70" tabindex="40"

@@ -28,7 +28,7 @@
                 </label>
                 <div class="cols__4-span-7">
                     <input type="text" name="name" id="name" required tabindex="10" size="50"
-                           class="margin__left-1" autofocus
+                           class="margin__left-1" autofocus placeholder="{$PLACEHOLDERS["name"]}"
                            value="{if isset($smarty.post.name)}{$smarty.post.name|htmlSafe}{/if}"/>
                 </div>
             </div>

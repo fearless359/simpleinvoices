@@ -2,12 +2,12 @@
     <div class="grid__container grid__head-10">
         {* This is the case where the invoice content was *}
         {* copied from the designated customer invoice. *}
-        <div class="cols__3-span-2 bold">{$LANG.copiedFrom}:&nbsp;</div>
+        <div class="cols__3-span-2 bold">{$LANG.copiedFrom}:</div>
         <div class="cols__5-span-3">{$template|htmlSafe}</div>
     </div>
 {/if}
 <div class="grid__container grid__head-10">
-    <label for="billerId" class="cols__3-span-2">{$LANG.billerUc}:&nbsp;</label>
+    <label for="billerId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.billerUc}:</label>
     <div class="cols__5-span-3">
         {if !isset($billers) }
             <em>{$LANG.noBillers}</em>
@@ -23,7 +23,7 @@
     </div>
 </div>
 <div class="grid__container grid__head-10">
-    <label for="customerId" class="cols__3-span-2">{$LANG.customerUc}:&nbsp;</label>
+    <label for="customerId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.customerUc}:</label>
     <div class="cols__5-span-3">
         {if !isset($customers) }
             <em>{$LANG.noCustomers}</em>
@@ -40,7 +40,7 @@
 </div>
 {* section for sub_customer *}
 <div class="grid__container grid__head-10">
-    <label for="subCustId" class="cols__3-span-2">{$LANG.subCustomer}:&nbsp;</label>
+    <label for="subCustId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.subCustomer}:</label>
     <div class="cols__5-span-3">
         {$displayNone = false}
         {if empty($subCustomers)}
@@ -56,7 +56,7 @@
     </div>
 </div>
 <div class="grid__container grid__head-10">
-    <label for="date1" class="cols__3-span-2">{$LANG.dateFormatted}:&nbsp;</label>
+    <label for="date1" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
     <div class="cols__5-span-1">
         <input type="text" name="date" id="date1" required readonly size="10" class="date-picker"
                value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>

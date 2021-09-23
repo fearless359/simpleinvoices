@@ -16,27 +16,24 @@
       action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
-            <div class="cols__3-span-3 bold">{$LANG.idUc}:</div>
-            <div class="cols__6-span-5">{$cf.cf_id|htmlSafe}</div>
-        </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-3 bold">{$LANG.customFieldDbFieldName}:</div>
+            <div class="cols__3-span-3 bold align__text-right margin__right-1">{$LANG.customFieldDbFieldName}:</div>
             <div class="cols__6-span-5">{$cf.cf_custom_field|htmlSafe}</div>
         </div>
         <div class="grid__container grid__head-10">
-            <div class="cols__3-span-3 bold">{$LANG.customField}:</div>
+            <div class="cols__3-span-3 bold align__text-right margin__right-1">{$LANG.customField}:</div>
             <div class="cols__6-span-5">{$cf.name|htmlSafe}</div>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="cfCustomLabelId" class="cols__3-span-3">{$LANG.customLabel}:</label>
-            <input type="text" name="cfLabel" id="cfCustomLabelId" class="cols__6-span-5" autofocus tabindex="10"
+            <label for="cfCustomLabelId" class="cols__3-span-3 align__text-right margin__right-1">{$LANG.customLabel}:</label>
+            <input type="text" name="cfLabel" id="cfCustomLabelId" class="cols__6-span-3" autofocus tabindex="10"
                    value="{if isset($cf.cf_custom_label)}{$cf.cf_custom_label|htmlSafe}{/if}"/>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="clearDataId" class="cols__3-span-3">{$LANG.clearData}:
+            <label for="clearDataId" class="cols__3-span-3 align__text-right margin__right-1">{$LANG.clearData}:
                 <img class="tooltip" title="{$LANG.helpResetCustomFlagsProducts}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="checkbox" name="clear_data" id="clearDataId" value="yes" disabled class="cols__6-span-5" tabindex="20"/>
+            <input type="checkbox" name="clear_data" id="clearDataId" value="yes" disabled
+                   class="cols__6-span-5 margin__top-0-75" tabindex="20"/>
         </div>
     </div>
     <br/>
