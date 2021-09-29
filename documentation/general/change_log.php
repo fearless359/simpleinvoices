@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-09-29 - <strong>2020.3.06</strong>
+                <ul>
+                    <li>Update node modules in particular DataTables to install a security update.</li>
+                </ul>
+            </li>
             <li>2021-09-23 - <strong>2020.3.05</strong>
                 <ul>
                     <li>Update field label alignment in forms. Right justify for better appearance
