@@ -1233,7 +1233,14 @@ VALUES ('1', 'list')
 --
 
 INSERT INTO `si_sql_patchmanager` (`sql_patch_ref`, `sql_patch`, `sql_release`, `sql_statement`, `source`) VALUES
-(319, 'Add set_aging field to si_preferences', '20200123', 'ALTER TABLE `si_preferences` ADD COLUMN `set_aging` BOOL NOT NULL DEFAULT 0 AFTER `index_group`;UPDATE `si_preferences` SET `set_aging` = 1 WHERE pref_id = 1;', 'fearless359');
+(319, 'Add set_aging field to si_preferences', '20200123', 'ALTER TABLE `si_preferences` ADD COLUMN `set_aging` BOOL NOT NULL DEFAULT 0 AFTER `index_group`;UPDATE `si_preferences` SET `set_aging` = 1 WHERE pref_id = 1;', 'fearless359'),
+(320, 'Remove deleted extensions mini and measurement', '20200822', 'DELETE IGNORE FROM `si_extensions` WHERE `name` = \'mini\' OR `name` = \'measurement\';', 'fearless359'),
+(321, 'Add parent_customer_id field to the database', '20200924' 'ALTER TABLE `si_customers` ADD `parent_customer_id` INT(11) NULL AFTER `notes`;DELETE IGNORE FROM `si_extensions` WHERE `name` = \'sub_customer\';INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES (\'sub_customer\', 0, 1, 1);', 'fearless359'),
+(322, 'Add product_groups table to the database.', '20201010','CREATE TABLE `si_product_groups` (name VARCHAR(60) NOT NULL PRIMARY KEY, markup INT(2) NOT NULL DEFAULT 0) ENGINE = InnoDb; DELETE IGNORE FROM `si_extensions` WHERE `name` = \'invoice_grouped\'; INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES (\'product_groups\', 0, 1, 1); ALTER TABLE `si_products` ADD product_group VARCHAR(60) NOT NULL DEFAULT \'\'; INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Labor\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Equipment\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Materials\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Subcontractor\', 0);', 'fearless359'),
+(323, 'Add invoice description open option.', '20210413', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'invoice_description_open\', 0, $domainId, 1);', 'fearless359'),
+(324, 'Rename si_products_values table to si_products_attributes_values.', '20210527', 'ALTER TABLE `si_products_values` RENAME TO si_products_attributes_values;', 'fearless359'),
+(325, 'Remove unused items from the si_system_defaults table.', '20200615', 'DELETE IGNORE FROM `si_system_defaults` WHERE `name` in (\'company_name\', \'emailhost, \'emailpassword\', \'emailusername\', \'pdfbottommargin\', \'pdfleftmargin\', \'pdfpapersize\', \'pdfrightmargin\', \'pdfscreensize\', \'pdftopmargin\', \'spreadsheet\', \'wordprocessor\'); DELETE IGNORE FROM `si_system_defaults` WHERE `name` LIKE \'dateformat%\';', 'fearless359'),
+(326, 'Add display department option.', '20210930', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'display_department\', 1, 1, 1);', 'fearless359');
 
 --
 -- Test/required data for `si_system_defaults` table - no constraints
@@ -1245,6 +1252,7 @@ VALUES ('biller', '', '1', '1')
      , ('customer', '', '1', '1')
      , ('default_invoice', '', '1', '1')
      , ('delete', '0', '1', '1')
+     , ('display_department', '1', '1', '1')
      , ('expense', '0', '1', '1')
      , ('inventory', '0', '1', '1')
      , ('invoice_description_open', '0', '1', '1')

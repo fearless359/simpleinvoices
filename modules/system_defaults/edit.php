@@ -179,6 +179,16 @@ switch ($getVal) {
         $value       = Util::dropDown($array, $defaults['delete']);
         break;
 
+    case "display_department":
+        $array = [
+            0 => $LANG['disabled'],
+            1 => $LANG['enabled']
+        ];
+        $default     = "display_department";
+        $description = $LANG['displayDepartment'];
+        $value       = Util::dropDown($array, $defaults[$default]);
+        break;
+
     case "expense":
         $array = [
             0 => $LANG['disabled'],

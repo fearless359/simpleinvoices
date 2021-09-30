@@ -127,10 +127,21 @@
             <img class="tooltip" title="{$LANG.helpDelete}" src="{$helpImagePath}help-small.png" alt=""/>
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=delete' tabindex="110"
                class="margin__left-1">
-                <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+                <img src="images/edit.png" title="{$LANG.helpDelete}" alt="{$LANG.delete}"/>
             </a>
         </div>
         <div class="cols__5-span-6 margin__left-0-5">{if $defaultDelete == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</div>
+    </div>
+
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-4 bold align__text-right margin__right-1">{$LANG.displayDepartment}:
+            <img class="tooltip" title="{$LANG.helpDisplayDepartment}" src="{$helpImagePath}help-small.png" alt=""/>
+            <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=display_department' tabindex="115"
+               class="margin__left-1">
+                <img src="images/edit.png" title="{$LANG.helpDisplayDepartment}" alt="{$LANG.displayDepartment}"/>
+            </a>
+        </div>
+        <div class="cols__5-span-6 margin__left-0-5">{if $defaultDisplayDepartment == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</div>
     </div>
 
     <div class="grid__container grid__head-10">

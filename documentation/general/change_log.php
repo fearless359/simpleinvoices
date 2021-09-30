@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-09-30 - <strong>2020.3.07</strong>
+                <ul>
+                    <li>Add option to display department field on customer manage screen. If not set,
+                        the customer's mobile phone will be displayed unless empty in which case the
+                        phone field will be displayed.</li>
+                </ul>
+            </li>
             <li>2021-09-29 - <strong>2020.3.06</strong>
                 <ul>
                     <li>Update node modules in particular DataTables to install a security update.</li>

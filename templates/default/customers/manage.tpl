@@ -67,7 +67,7 @@
             <tr>
                 <th class="align__text-center">{$LANG.actions}</th>
                 <th>{$LANG.nameUc}</th>
-                <th>{$LANG.customerDepartment}</th>
+                <th>{$deptOrPhoneFieldLabel}</th>
                 <th class="align__text-center">{$LANG.lastInvoice}</th>
                 <th class="align__text-right">{$LANG.totalUc}</th>
                 <th class="align__text-right">{$LANG.paidUc}</th>
@@ -87,7 +87,7 @@
                 "columns": [
                     { "data": "action" },
                     { "data": "name" },
-                    { "data": "department" },
+                    { "data": "departmentOrPhone" },
                     { "data": "quickView" },
                     { "data": "total",
                         "render": function(data, type, row) {
