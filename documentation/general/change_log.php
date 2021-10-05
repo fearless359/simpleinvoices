@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-10-05 - <strong>2020.3.08</strong>
+                <ul>
+                    <li>Fix issue with "Filters" not working on invoice management page.</li>
+                </ul>
+            </li>
             <li>2021-09-30 - <strong>2020.3.07</strong>
                 <ul>
                     <li>Add option to display department field on customer manage screen. If not set,

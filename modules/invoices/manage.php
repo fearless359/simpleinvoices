@@ -19,7 +19,7 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$having = "" ?? $_GET['having'];
+$having = $_GET['having'] ?? "";
 
 // If user role is customer or biller, then restrict invoices to those they have access to.
 // Make customer access read only. Billers change work only on those invoices generated for them.

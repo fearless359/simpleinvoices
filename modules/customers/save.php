@@ -74,20 +74,17 @@ if (!empty($origCcMaskedValue)) {
         $allDone = true;
         $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=$op&amp;id=$id&amp;errorMsg=$errorMsg' />";
     }
-} else {
-    error_log("No orig masked value");
-    if (!$allSpecified && !$noneSpecified) {
-        // If an edit and there is no $origCCMaskedValue, then verify the same as create.
-        $errorMsg = "Credit card error - Verify all fields set or all cleared!";
-        $allDone = true;
-        if ($op == 'create') {
-            $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=$op&amp;errorMsg=$errorMsg' />";
-        } else {
-            $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=$op&amp;id=$id&amp;errorMsg=$errorMsg' />";
-        }
+} elseif (!$allSpecified && !$noneSpecified) {
+    // If an edit and there is no $origCCMaskedValue, then verify the same as create.
+    $errorMsg = "Credit card error - Verify all fields set or all cleared!";
+    $allDone = true;
+    if ($op == 'create') {
+        $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=$op&amp;errorMsg=$errorMsg' />";
+    } else {
+        $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=customers&amp;view=$op&amp;id=$id&amp;errorMsg=$errorMsg' />";
     }
 }
-error_log("allDone[$allDone]");
+
 if (!$allDone) {
     if (empty($_POST['credit_card_number'])) {
         // Check to see if there was a credit card number before this submission.
