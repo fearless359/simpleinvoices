@@ -17,6 +17,12 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-10-11 - <strong>2020.3.09</strong>
+                <ul>
+                    <li>Fix issue with null parent id in customer record not processing on view screen.</li>
+                    <li>Move about version information to the "About SimpleInvoices" screen.</li>
+                </ul>
+            </li>
             <li>2021-10-05 - <strong>2020.3.08</strong>
                 <ul>
                     <li>Fix issue with "Filters" not working on invoice management page.</li>

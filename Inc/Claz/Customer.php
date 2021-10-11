@@ -373,13 +373,20 @@ class Customer
         return $rows;
     }
 
-    public static function getMyParent(int $parentId): array
+    /**
+     * Get the list of customers that can be a parent.
+     * @param int|null $parentId
+     * @return array
+     */
+    public static function getMyParent(?int $parentId): array
     {
         global $pdoDb;
 
+        $id = isset($parentId) ?? 0;
+
         $rows = [];
         try {
-            $pdoDb->addSimpleWhere("id", $parentId, "AND");
+            $pdoDb->addSimpleWhere("id", $id, "AND");
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
             $pdoDb->setSelectList(['id', 'name']);
             $rows = $pdoDb->request("SELECT", "customers");
