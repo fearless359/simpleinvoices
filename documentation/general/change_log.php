@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-10-14 - <strong>2020.3.10</strong>
+                <ul>
+                    <li>Updated composer and node library files.</li>
+                </ul>
+            </li>
             <li>2021-10-11 - <strong>2020.3.09</strong>
                 <ul>
                     <li>Fix issue with null parent id in customer record not processing on view screen.</li>

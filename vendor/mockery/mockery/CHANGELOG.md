@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.4.4 (2021-09-13)
+* Fixes auto-generated return values #1144
+* Adds support for tentative types #1130
+* Fixes for PHP 8.1 Support (#1130 and #1140)
+* Add method that allows defining a set of arguments the mock should yield #1133
+* Added option to configure default matchers for objects `\Mockery::getConfiguration()->setDefaultMatcher($class, $matcherClass)` #1120
+
 ## 1.4.3 (2021-02-24)
 * Fixes calls to fetchMock before initialisation #1113
 * Allow shouldIgnoreMissing() to behave in a recursive fashion #1097
