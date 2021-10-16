@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-10-16 - <strong>2020.3.11</strong>
+                <ul>
+                    <li>Fixed logic the adds new items to the invoice edit item list.</li>
+                </ul>
+            </li>
             <li>2021-10-14 - <strong>2020.3.10</strong>
                 <ul>
                     <li>Updated composer and node library files.</li>

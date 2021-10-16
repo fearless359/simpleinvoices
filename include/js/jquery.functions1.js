@@ -63,7 +63,7 @@ function product_inventory_change(product, existing_cost) {
  * Purpose: find the last line item and update max_items so /modules/invoice/save.php can access it
  */
 function count_invoice_line_items() {
-    let lastRow = $('#itemtable tbody.lineItem:last');
+    let lastRow = $('#itemtable div#qtyColumn:last');
     let lastRowId = $("input[id^='quantity']", lastRow).attr("id");
     lastRowId = parseInt(lastRowId.slice(8)); //using 8 as 'quantity' has eight letters and want to get the number that is after that
     $("#max_items").attr('value', lastRowId);
