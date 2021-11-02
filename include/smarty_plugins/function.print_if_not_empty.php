@@ -6,19 +6,19 @@ use Inc\Claz\Util;
  * Function: print_if_not_empty
  *
  * Used in the print preview to determine if a row/field gets printed.
- * Basically if the field is empty dont print it. Note that the empty()
+ * Basically if the field is empty don't print it. Note that the empty()
  * function differs from the isset() function as a non-null but blank, 0,
- * etc. type fields are consider empty.
+ * etc. type fields are considered empty.
  *
  * @param array $params associative array with the following key/value pairs:
- *   label   - The name of the field, ie. Custom Field 1, Email, etc.
+ *   label   - The name of the field, i.e. Custom Field 1, Email, etc.
  *             This can be a string or an array of strings. Elements of an
  *             array of strings will be concatenated to make the label.
  *             Don't pass or pass empty string to suppress.
- *   field   - The actual value to be printed, ie. total, paid, owing, etc.
+ *   field   - The actual value to be printed, i.e. total, paid, owing, etc.
  *             This can be a string or an array of strings. Elements of an
  *             array of strings will be concatenated to make the field.
- *   class1  - the css class of the the <th> heading
+ *   class1  - the css class of the <th> heading
  *   class2  - the css class of the second <td> detail
  *   colspan - the colspan of the last td
  *   printIfEmpty - Set true if empty lines should be printed if no field present.
@@ -53,7 +53,7 @@ function smarty_function_print_if_not_empty(array $params): void
         $str = "<tr>" .
                "<th class='$class1'>";
         if (!empty($label)) {
-            $str .= $label . ': ';
+            $str .= $label . ':&nbsp;';
         }
         $str .= "</th>";
 

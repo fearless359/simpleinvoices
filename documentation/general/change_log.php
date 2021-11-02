@@ -17,6 +17,14 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-11-02 - <strong>2020.3.12</strong>
+                <ul>
+                    <li>Modified default template to render foreign currency sign correctly
+                        on all fields.</li>
+                    <li>Add non-blank space to print_if_not_empty function following colon
+                        on label field. This preserves space if right justifying the text.</li>
+                </ul>
+            </li>
             <li>2021-10-16 - <strong>2020.3.11</strong>
                 <ul>
                     <li>Fixed logic the adds new items to the invoice edit item list.</li>

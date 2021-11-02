@@ -3,6 +3,8 @@
  *      SI Info Index template
  *
  *  Last modified:
+ *      20211102 by Richard Rowley to remove load of header.tpl and remove
+ *          the return to previous screen button as both were extraneous.
  *      20210618 by Richard Rowley convert to grid layout and add
  *          delay__display logic.
  *
@@ -12,13 +14,9 @@
  *  License:
  *      GPL v3 or above
 *}
-{include file='templates/default/header.tpl'}
 <div class="delay__display">
     <h1 class="align__text-center margin__top-0-75">{$LANG.aboutUc} {$LANG.simpleInvoices}</h1>
     <div class="align__text-center margin__top-1">{$aboutInfo}</div>
-    <div class="align__text-center margin__top-3">
-        <a class="button" href="index.php?module=invoices&amp;view=manage">{$LANG.returnToPreviousScreen}</a>
-    </div>
     <div class="container fonts__size-2 bold">
         <ul class="li__type-none">
             <li><a href="{$siUrl}/documentation/general/change_log.php">{$LANG.changeLog}</a><br/></li>
