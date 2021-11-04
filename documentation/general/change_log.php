@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2021-11-04 - <strong>2020.3.13</strong>
+                <ul>
+                    <li>Composer vendor libraries update.</li>
+                </ul>
+            </li>
             <li>2021-11-02 - <strong>2020.3.12</strong>
                 <ul>
                     <li>Modified default template to render foreign currency sign correctly
