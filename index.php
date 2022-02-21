@@ -145,6 +145,7 @@ global $earlyExit,
        $extNames,
        $LANG,
        $menu,
+       $patchCount,
        $path,
        $PATTERNS,
        $PLACEHOLDERS,
@@ -153,7 +154,7 @@ global $earlyExit,
        $smartyOutput;
 // formatter:on
 
-Log::out("index.php - After init.php - module[$module] view[$view]");
+Log::out("index.php - After init.php - module[$module] view[$view] patchCount[$patchCount]");
 foreach ($extNames as $extName) {
     if (file_exists("extensions/$extName/include/init.php")) {
         /** @noinspection PhpIncludeInspection */
@@ -199,9 +200,11 @@ if ($module == "options" && $view == "database_sqlpatches") {
         $view == "structure" ? $view = "structure" : $view = "index";
         $applyDbPatches = false; // do installer
     } elseif (!$databasePopulated) {
-        $module = "install";
-        $view == "essential" ? $view = "essential" : $view = "structure";
-        $applyDbPatches = false; // do installer
+        if ($patchCount != SqlPatchManager::BEGINNING_PATCH_NUMBER) {
+            $module = "install";
+            $view == "essential" ? $view = "essential" : $view = "structure";
+            $applyDbPatches = false; // do installer
+        }
     } elseif ($module == 'install' && $view == 'sample_data') {
         $applyDbPatches = false;
     }
@@ -533,7 +536,7 @@ $myTplPath = '';
 $path = '';
 $realPath = '';
 // For extensions with a report, this logic allows them to be inserted into the
-// the report menu (index.tpl) without having to replicate the content of that
+// report menu (index.tpl) without having to replicate the content of that
 // file. There two ways to insert content; either as a new menu section or as
 // an appendage to an existing section. There are examples of each of these.
 // Refer to the "expense" extension report index.tpl file for insertion of
