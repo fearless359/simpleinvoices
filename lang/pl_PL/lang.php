@@ -450,7 +450,7 @@ $LANG['recurrenceType'] = "Typ faktury cyklicznej";//1
 $LANG['register'] = "Rejestracja";//1
 $LANG['reorderLevel'] = "Zmiana kolejności poziom";//1
 $LANG['reports'] = "Raporty";//1
-$LANG['requiredField'] = "Pole wymagane";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Pole wymagane</strong>";//1
 $LANG['role'] = "Rola";//1
 $LANG['runReport'] = "Uruchom raport";//1
 $LANG['salesUc'] = "Sprzedaż";//1

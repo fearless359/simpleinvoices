@@ -2,17 +2,17 @@
     <div class="grid__container grid__head-10">
         {* This is the case where the invoice content was *}
         {* copied from the designated customer invoice. *}
-        <div class="cols__3-span-2 bold">{$LANG.copiedFrom}:&nbsp;</div>
+        <div class="cols__3-span-2 bold">{$LANG.copiedFrom}:</div>
         <div class="cols__5-span-3">{$template|htmlSafe}</div>
     </div>
 {/if}
 <div class="grid__container grid__head-10">
-    <label for="billerId" class="cols__3-span-2">{$LANG.billerUc}:&nbsp;</label>
+    <label for="billerId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.billerUc}:</label>
     <div class="cols__5-span-3">
         {if !isset($billers) }
             <em>{$LANG.noBillers}</em>
         {else}
-            <select name="biller_id" id="billerId" class="validate[min[1],max[1000000]] text-input">
+            <select name="biller_id" id="billerId">
                 {foreach $billers as $biller}
                     <option {if $biller.id == $defaults.biller} selected {/if} value="{if isset($biller.id)}{$biller.id|htmlSafe}{/if}">
                         {$biller.name|htmlSafe}
@@ -23,12 +23,12 @@
     </div>
 </div>
 <div class="grid__container grid__head-10">
-    <label for="customerId" class="cols__3-span-2">{$LANG.customerUc}:&nbsp;</label>
+    <label for="customerId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.customerUc}:</label>
     <div class="cols__5-span-3">
         {if !isset($customers) }
             <em>{$LANG.noCustomers}</em>
         {else}
-            <select name="customer_id" id="customerId" class="setSubCustomers validate[min[1],max[1000000]] text-input">
+            <select name="customer_id" id="customerId" class="setSubCustomers">
                 {foreach $customers as $customer}
                     <option {if $customer.id == $defaultCustomerID} selected {/if} value="{if isset($customer.id)}{$customer.id|htmlSafe}{/if}">
                         {$customer.name|htmlSafe}
@@ -40,7 +40,7 @@
 </div>
 {* section for sub_customer *}
 <div class="grid__container grid__head-10">
-    <label for="subCustId" class="cols__3-span-2">{$LANG.subCustomer}:&nbsp;</label>
+    <label for="subCustId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.subCustomer}:</label>
     <div class="cols__5-span-3">
         {$displayNone = false}
         {if empty($subCustomers)}
@@ -56,10 +56,9 @@
     </div>
 </div>
 <div class="grid__container grid__head-10">
-    <label for="date1" class="cols__3-span-2">{$LANG.dateFormatted}:&nbsp;</label>
-    <div class="cols__5-span-3">
-        <input type="text" class="validate[required,custom[date],length[0,10]] date-picker"
-               size="10" name="date" id="date1"
+    <label for="date1" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
+    <div class="cols__5-span-1">
+        <input type="text" name="date" id="date1" required readonly size="10" class="date-picker"
                value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>
     </div>
 </div>

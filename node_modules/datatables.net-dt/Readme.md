@@ -1,5 +1,4 @@
-
-            # DataTables for jQuery with styling for [DataTables](https://datatables.net/)
+# DataTables for jQuery with styling for [DataTables](https://datatables.net/)
 
 This package contains distribution files required to style [DataTables library](https://datatables.net) for [jQuery](http://jquery.com/) with styling for [DataTables](https://datatables.net/).
 

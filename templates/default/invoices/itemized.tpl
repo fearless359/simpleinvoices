@@ -24,8 +24,7 @@
                     </a>
                 </div>
                 <div class="si_help_div">
-                    <a class="cluetip" href="#" title="{$LANG.wantMoreFields}"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpInvoiceCustomFields">
+                    <a class="tooltip" title="{$LANG.helpInvoiceCustomFields}">
                         <img src="{$helpImagePath}help-small.png" alt="{$LANG.wantMoreFields}"/>{$LANG.wantMoreFields}
                     </a>
                 </div>

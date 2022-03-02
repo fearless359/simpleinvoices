@@ -26,6 +26,7 @@ $smarty->assign("defaultLanguage", $lang);
 
 $smarty->assign("defaults"                     , SystemDefaults::loadValues());
 $smarty->assign("defaultDelete"                , SystemDefaults::getDelete());
+$smarty->assign("defaultDisplayDepartment"     , SystemDefaults::getDisplayDepartment());
 $smarty->assign("defaultExpense"               , SystemDefaults::getExpense());
 $smarty->assign("defaultInventory"             , SystemDefaults::getInventory());
 $smarty->assign("defaultInvoiceDescriptionOpen", SystemDefaults::getInvoiceDescriptionOpen());

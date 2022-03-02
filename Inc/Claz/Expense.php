@@ -221,7 +221,7 @@ class Expense
             $pdoDb->setExcludedFields(["id", 'tax_id']);
             $id = $pdoDb->request("INSERT", "expense");
 
-            $lineItemTaxId = $_POST['tax_id'][0] ?? "";
+            $lineItemTaxId = $_POST['tax_id'][0] ?? [];
             self::expenseItemTax($id, $lineItemTaxId, $_POST['amount'], "1", "insert");
         } catch (PdoDbException $pde) {
             error_log("Expense::insert() - error: " . $pde->getMessage() . " _POST info - " . print_r($_POST, true));

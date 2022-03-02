@@ -26,6 +26,7 @@ body {
     text-decoration: underline;
 
     &_double {
+        text-decoration-line: underline;
         text-decoration-style: double;
     }
 }

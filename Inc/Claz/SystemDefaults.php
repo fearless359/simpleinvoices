@@ -217,6 +217,15 @@ class SystemDefaults
     }
 
     /**
+     * Get "display_department" entry from the system_defaults table.
+     * @return int 1 if enabled or 0 if not enabled
+     */
+    public static function getDisplayDepartment(): int
+    {
+        return self::getValue('display_department');
+    }
+
+    /**
      * Get "expense" entry from the system_defaults table.
      * @return int 1 if enabled or 0 if not enabled
      */

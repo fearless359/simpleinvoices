@@ -17,6 +17,79 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-02-20 - <strong>2020.3.14</strong>
+                <ul>
+                    <li>Fixed issue with upgrade from master_2019.2 to master_2020 not working correctly.
+                        It was not detecting that updates from the 319 patch were needed and kept trying
+                        to install the essential data.</li>
+                </ul>
+            </li>
+            <li>2021-11-04 - <strong>2020.3.13</strong>
+                <ul>
+                    <li>Composer vendor libraries update.</li>
+                </ul>
+            </li>
+            <li>2021-11-02 - <strong>2020.3.12</strong>
+                <ul>
+                    <li>Modified default template to render foreign currency sign correctly
+                        on all fields.</li>
+                    <li>Add non-blank space to print_if_not_empty function following colon
+                        on label field. This preserves space if right justifying the text.</li>
+                </ul>
+            </li>
+            <li>2021-10-16 - <strong>2020.3.11</strong>
+                <ul>
+                    <li>Fixed logic the adds new items to the invoice edit item list.</li>
+                </ul>
+            </li>
+            <li>2021-10-14 - <strong>2020.3.10</strong>
+                <ul>
+                    <li>Updated composer and node library files.</li>
+                </ul>
+            </li>
+            <li>2021-10-11 - <strong>2020.3.09</strong>
+                <ul>
+                    <li>Fix issue with null parent id in customer record not processing on view screen.</li>
+                    <li>Move about version information to the "About SimpleInvoices" screen.</li>
+                </ul>
+            </li>
+            <li>2021-10-05 - <strong>2020.3.08</strong>
+                <ul>
+                    <li>Fix issue with "Filters" not working on invoice management page.</li>
+                </ul>
+            </li>
+            <li>2021-09-30 - <strong>2020.3.07</strong>
+                <ul>
+                    <li>Add option to display department field on customer manage screen. If not set,
+                        the customer's mobile phone will be displayed unless empty in which case the
+                        phone field will be displayed.</li>
+                </ul>
+            </li>
+            <li>2021-09-29 - <strong>2020.3.06</strong>
+                <ul>
+                    <li>Update node modules in particular DataTables to install a security update.</li>
+                </ul>
+            </li>
+            <li>2021-09-23 - <strong>2020.3.05</strong>
+                <ul>
+                    <li>Update field label alignment in forms. Right justify for better appearance
+                        and understandability.</li>
+                </ul>
+            </li>
+            <li>2021-09-17 - <strong>2020.3.04</strong>
+                <ul>
+                    <li>Modified to use jQuery validate npm module for form validation. This
+                        replaces the jQuery Validation Engine which is no longer updated save
+                        for user submitted fixes.</li>
+                    <li>Modified to use ToolTipster npm module for display of field help.
+                        Primary advantage is that you hover help icon to view help and the
+                        disappears automatically when you move it off the icon. This replaces
+                        the cluetip library previously used.</li>
+                    <li>Added PLACEHOLDERS array to $LANG file to provide field entry hints. Values
+                        such as "country" should customized to $LANG files other than en_US. Note
+                        that these are just hints, they to not impose when the user enters.</li>
+                </ul>
+            </li>
             <li>2021-08-13 - <strong>2020.3.03</strong>
                 <ul>
                     <li>Fix issue with multiple, semi-colon separated email addresses.</li>

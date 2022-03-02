@@ -13,19 +13,19 @@
  *}
 <div class="grid__area">
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.nameUc}:</div>
+        <div class="cols__4-span-2 bold align__text-right margin__right-1">{$LANG.nameUc}:</div>
         <div class="cols__6-span-4">{$product_attribute.name}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.type}:</div>
+        <div class="cols__4-span-2 bold align__text-right margin__right-1">{$LANG.type}:</div>
         <div class="cols__6-span-2">{$product_attribute.type|capitalize|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.enabled}:</div>
+        <div class="cols__4-span-2 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
         <div class="cols__6-span-2">{$product_attribute.enabledText|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.visible}:</div>
+        <div class="cols__4-span-2 bold align__text-right margin__right-1">{$LANG.visible}:</div>
         <div class="cols__6-span-2">{$product_attribute.visibleText|htmlSafe}</div>
     </div>
 </div>

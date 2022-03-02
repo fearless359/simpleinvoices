@@ -454,7 +454,7 @@ $LANG['recurrenceType'] = "Art der Wiederholung";//1
 $LANG['register'] = "Anmelden";//1
 $LANG['reorderLevel'] = "Meldebestand";//1
 $LANG['reports'] = "Berichte";//1
-$LANG['requiredField'] = "Benötigtes Feld";//1
+$LANG['requiredField'] = "<strong style='color:red;'>Benötigtes Feld</strong>";//1
 $LANG['role'] = "Rolle";//1
 $LANG['runReport'] = "Bericht erstellen";//1
 $LANG['salesUc'] = "Verkäufe";//1

@@ -563,6 +563,14 @@ class SqlPatchManager
         ];
         self::makePatch('325', $patch);
 
+        $patch = [
+            'name' => "Add display department option.",
+            'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('display_department', 1, $domainId, 1);",
+            'date' => "20210930",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('326', $patch);
+
         // @formatter:on
     }
 

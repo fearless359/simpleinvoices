@@ -13,24 +13,24 @@
  *}
 <div class="grid__area">
     <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold">{$LANG.associatedTable}:</div>
+        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.associatedTable}:</div>
         <div class="cols__3-span-4">{$cflg.associated_table|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold">{$LANG.flagNumber}:</div>
+        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.flagNumber}:</div>
         <div class="cols__3-span-4">{$cflg.flg_id|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold">{$LANG.fieldLabelUc}:</div>
+        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.fieldLabelUc}:</div>
         <div class="cols__3-span-4">{$cflg.field_label|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold">{$LANG.enabled}:</div>
+        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
         <div class="cols__3-span-4">{$cflg.enabled_text|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold">{$LANG.fieldHelpUc}:</div>
-        <div class="cols__3-span-4">{$cflg.field_help|htmlSafe}</div>
+        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.fieldHelpUc}:</div>
+        <div class="cols__3-span-4">{$cflg.field_help|outHtml}</div>
     </div>
 </div>
 <br/>

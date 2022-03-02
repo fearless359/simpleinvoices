@@ -13,28 +13,28 @@
  *}
 <div class="grid__area">
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.username}:</div>
-        <div class="cols__6-span-4 margin__left-1">{$user.username|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.username}:</div>
+        <div class="cols__4-span-5">{$user.username|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.password}:</div>
-        <div class="cols__6-span-4 margin__left-1">**********</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.password}:</div>
+        <div class="cols__4-span-5">**********</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.role}:</div>
-        <div class="cols__6-span-4 margin__left-1">{$user.role_name|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.role}:</div>
+        <div class="cols__4-span-5">{$user.role_name|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.email}:</div>
-        <div class="cols__6-span-4 margin__left-1">{$user.email|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.email}:</div>
+        <div class="cols__4-span-5">{$user.email|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.enabled}:</div>
-        <div class="cols__6-span-4 margin__left-1">{$user.enabled_text|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
+        <div class="cols__4-span-5">{$user.enabled_text|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.userId}:</div>
-        <div class="cols__6-span-4 margin__left-1">{$user_id_desc|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.userId}:</div>
+        <div class="cols__4-span-5">{$user_id_desc|htmlSafe}</div>
     </div>
 </div>
 <div class="align__text-center margin__top-3 margin__bottom-2">

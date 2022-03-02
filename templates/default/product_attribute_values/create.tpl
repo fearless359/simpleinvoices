@@ -17,7 +17,7 @@
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=product_attribute_values&amp;view=create">
         <div class="grid__area">
             <div class="grid__container grid__head-10">
-                <label for="attributeId" class="cols__4-span-1">{$LANG.attribute}:</label>
+                <label for="attributeId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.attribute}:</label>
                 <select name="attribute_id" id="attributeId" class="cols__5-span-2">
                     {foreach $product_attributes as $product_attribute}
                         <option value="{$product_attribute.id}">{$product_attribute.name}</option>
@@ -25,12 +25,12 @@
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="nameId" class="cols__4-span-1">{$LANG.value}:</label>
-                <input type="text" name="value" id="nameId" class="cols__5-span-2 validate[required]"
+                <label for="nameId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.value}:</label>
+                <input type="text" name="value" id="nameId" class="cols__5-span-2" required
                        {if isset($smarty.post.value)}value="{$smarty.post.value}"{/if} size="25"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="enabledId" class="cols__4-span-1">{$LANG.enabled}:</label>
+                <label for="enabledId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.enabled}:</label>
                 {html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled selected=1}
             </div>
         </div>

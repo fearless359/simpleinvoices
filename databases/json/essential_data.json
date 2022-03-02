@@ -421,8 +421,14 @@
       "sql_release": "20200615",
       "sql_statement": "DELETE IGNORE FROM `si_system_defaults` WHERE `name` in ('company_name', 'emailhost', 'emailpassword', 'emailusername', 'pdfbottommargin', 'pdfleftmargin', 'pdfpapersize', 'pdfrightmargin', 'pdfscreensize', 'pdftopmargin', 'spreadsheet', 'wordprocessor'); DELETE IGNORE FROM `si_system_defaults` WHERE `name` LIKE 'dateformat%';",
       "source": "fearless359"
-    }
-  ],
+    },
+    {
+      "sql_patch_ref": "326",
+      "sql_patch": "Add display department option.",
+      "sql_release": "20210930",
+      "sql_statement": "INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('display_department', 1, $domainId, 1);",
+      "source": "fearless359"
+    }  ],
   "si_system_defaults": [
     {
       "name": "biller",
@@ -457,6 +463,12 @@
     {
       "name": "delete",
       "value": "0",
+      "domain_id": "DOMAIN-ID",
+      "extension_id": "1"
+    },
+    {
+      "name": "display_department",
+      "value": "1",
       "domain_id": "DOMAIN-ID",
       "extension_id": "1"
     },

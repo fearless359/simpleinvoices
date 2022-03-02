@@ -13,11 +13,11 @@
  *}
 <div class="grid__area">
     <div class="grid__container grid__head-10">
-        <div class="cols__4-span-1 bold">{$LANG.nameUc}:</div>
+        <div class="cols__4-span-1 bold align__text-right margin__right-1">{$LANG.nameUc}:</div>
         <div class="cols__5-span-5">{$productGroup.name|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__4-span-1 bold">{$LANG.markupUc}%:</div>
+        <div class="cols__4-span-1 bold align__text-right margin__right-1">{$LANG.markupUc}%:</div>
         <div class="cols__5-span-1">{$productGroup.markup}%</div>
     </div>
 </div>

@@ -199,8 +199,8 @@ final class DocBlock
             '__FILE' => realpath($this->fileName),
         ];
 
-        // Split docblock into lines and rewind offset to start of docblock
-        $lines = preg_split('/\r\n|\r|\n/', $this->docComment);
+        // Trim docblock markers, split it into lines and rewind offset to start of docblock
+        $lines = preg_replace(['#^/\*{2}#', '#\*/$#'], '', preg_split('/\r\n|\r|\n/', $this->docComment));
         $offset -= count($lines);
 
         foreach ($lines as $line) {
@@ -534,7 +534,8 @@ final class DocBlock
             $annotations = array_merge(
                 $annotations,
                 ...array_map(
-                    static function (ReflectionClass $trait): array {
+                    static function (ReflectionClass $trait): array
+                    {
                         return self::parseDocBlock((string) $trait->getDocComment());
                     },
                     array_values($reflector->getTraits())

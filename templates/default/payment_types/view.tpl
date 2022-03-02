@@ -13,15 +13,15 @@
  *}
 <div class="grid__area">
     <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold">{$LANG.descriptionUc}:</div>
-        <div class="cols__5-span-5">{$paymentType.pt_description|htmlSafe}</div>
+        <div class="cols__4-span-2 bold align__text-right margin__right-1">{$LANG.descriptionUc}:</div>
+        <div class="cols__6-span-5">{$paymentType.pt_description|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold">{$LANG.status}:</div>
-        <div class="cols__5-span-1">{$paymentType.enabled_text|htmlSafe}</div>
+        <div class="cols__4-span-2 bold align__text-right margin__right-1">{$LANG.status}:</div>
+        <div class="cols__6-span-1">{$paymentType.enabled_text|htmlSafe}</div>
     </div>
 </div>
-<div class="align__text-center margin__top-2">
+<div class="align__text-center margin__top-3 margin__bottom-2">
     <a href="index.php?module=payment_types&amp;view=edit&amp;id={$paymentType.pt_id}" class="button positive">
         <img src="images/report_edit.png" alt="{$LANG.edit}"/>{$LANG.edit}
     </a>

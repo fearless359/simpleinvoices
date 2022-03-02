@@ -70,6 +70,7 @@
     {/if}
     <!-- #PDF end -->
 </div>
+<br/>
 <!--Actions heading - start-->
 {include file="$path/quickViewInvoiceView.tpl"}
 {if $invoice.type_id == TOTAL_INVOICE}
@@ -107,11 +108,9 @@
     <br/>
     {if !empty($invoice.sales_representative)}
         <div class="grid__area">
-            <div class="grid__area">
-                <div class="grid__container grid__head-10">
-                    <div class="cols__1-span-2 bold">{$LANG.salesRepresentative}:</div>
-                    <div class="cols__3-span-8">{$invoice.sales_representative|htmlSafe}</div>
-                </div>
+            <div class="grid__container grid__head-10">
+                <div class="cols__1-span-2 bold align__text-right margin__right-1">{$LANG.salesRepresentative}:</div>
+                <div class="cols__3-span-8">{$invoice.sales_representative|htmlSafe}</div>
             </div>
         </div>
     {/if}
@@ -129,26 +128,26 @@
 {if $invoiceNumberOfTaxes > 0}
     <div class="grid__area">
         <div class="grid__container grid__head-10">
-            <div class="cols__1-span-8 bold align__text-right">{$LANG.subtotalUc}:</div>
-            <div class="cols__9-span-2 align__text-right {if $invoiceNumberOfTaxes > 1}underline{/if}">
+            <div class="cols__1-span-9 bold align__text-right">{$LANG.subtotalUc}:</div>
+            <div class="cols__10-span-1 align__text-right {if $invoiceNumberOfTaxes > 1}underline{/if}">
                 {$invoice.gross|utilCurrency:$locale:$currencyCode}
             </div>
         </div>
         {foreach $invoice.tax_grouped as $taxg}
             <div class="grid__container grid__head-10">
-                <div class="cols__1-span-8 bold align__text-right">{$taxg.tax_name|htmlSafe}:</div>
-                <div class="cols__9-span-2 align__text-right {if $taxg@last}underline{/if}">{$taxg.tax_amount|utilCurrency:$locale:$currencyCode}</div>
+                <div class="cols__1-span-9 bold align__text-right">{$taxg.tax_name|htmlSafe}:</div>
+                <div class="cols__10-span-1 align__text-right {if $taxg@last}underline{/if}">{$taxg.tax_amount|utilCurrency:$locale:$currencyCode}</div>
             </div>
         {/foreach}
         <div class="grid__container grid__head-10">
-            <div class="cols__1-span-8 bold align__text-right">{$LANG.taxTotal}:</div>
-            <div class="cols__9-span-2 align__text-right underline_double">
+            <div class="cols__1-span-9 bold align__text-right">{$LANG.taxTotal}:</div>
+            <div class="cols__10-span-1 align__text-right underline_double">
                 {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
             </div>
         </div>
         <div class="grid__container grid__head-10">
-            <div class="cols__1-span-8 bold align__text-right">{$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</div>
-            <div class="cols__9-span-2 align__text-right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
+            <div class="cols__1-span-9 bold align__text-right">{$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</div>
+            <div class="cols__10-span-1 align__text-right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
         </div>
     </div>
 {/if}
@@ -168,11 +167,7 @@
                 </div>
                 <div class="bold align__text-right">{$LANG.owingUc}</div>
                 <div class="bold align__text-right">{$LANG.age}
-                    <a class="cluetip" href="#"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpAge"
-                       title="{$LANG.age}">
-                        <img src="{$helpImagePath}help-small.png" alt=""/>
-                    </a>
+                    <img class="tooltip" title="{$LANG.helpAge}" src="{$helpImagePath}help-small.png" alt=""/>
                 </div>
                 <div class="align__text-right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
                 <div class="align__text-right">{$invoice.paid|utilCurrency:$locale:$currencyCode}</div>

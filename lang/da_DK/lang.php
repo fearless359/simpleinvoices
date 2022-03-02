@@ -458,7 +458,7 @@ $LANG['recurrenceType'] = "Gentagelses_type";//1
 $LANG['register'] = "Registrer";//1
 $LANG['reorderLevel'] = "Sorterings Niveau";//1
 $LANG['reports'] = "Rapporter";//1
-$LANG['requiredField'] = "P&#229;kr&#230;vet felt";//1
+$LANG['requiredField'] = "<strong style='color:red;'>P&#229;kr&#230;vet felt</strong>";//1
 $LANG['role'] = "Rolle";//1
 $LANG['runReport'] = "K&#248;r rapport";//1
 $LANG['salesUc'] = "Salg";//1

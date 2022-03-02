@@ -19,10 +19,12 @@
     <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
     <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
-    <link href="include/js/jQuery-Validation-Engine-master/css/validationEngine.jquery.css" rel="stylesheet" type="text/css"/>
+
+    <link href="node_modules/tooltipster/dist/css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css"/>
+    <link href="node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" type="text/css"/>
     <!--suppress CssUnusedSymbol -->
     <style>
-    {literal}
+        {literal}
         /* Settings for the validationEngine */
         .formError {
             position: relative !important;
@@ -32,35 +34,21 @@
             top: 0 !important;
             width: 40% !important;
         }
-   {/literal}
-   </style>
-   <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
-   <link href="include/js/trix-master/dist/trix.css" rel="stylesheet" type="text/css">
-   <link href="include/js/cluetip/jquery.cluetip.css" rel="stylesheet" type="text/css" />
 
-   <script src="node_modules/jquery/dist/jquery.js"></script>
-   <script src="include/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-   <script src="node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
-   <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-   <script src="include/js/cluetip/jquery.cluetip.js"></script>
+        {/literal}
+    </style>
+    <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/trix-master/dist/trix.css" rel="stylesheet" type="text/css">
 
-   <script src="include/js/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-en.js"></script>
-   <script src="include/js/jQuery-Validation-Engine-master/js/jquery.validationEngine.js"></script>
-   <script>
-   {literal}
-   $(document).ready(function () {
-       // binds form submission and fields to the validation engine
-       $('#frmpost').validationEngine({ promptPosition:
-               "topLeft",
-               'custom_error_messages': {
-                   '.creditCard': {
-                       'required': { 'message': "An entry is required if associated CC field are not blank." }
-                   }
-               }
-       });
-   });
-    {/literal}
-    </script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="include/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+
+    <script src="node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="node_modules/jquery-validation/dist/additional-methods.min.js"></script>
+
+    <script src="node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
 
     <script src="include/js/trix-master/dist/trix.js"></script>
     {$extension_jquery_files }

@@ -11,10 +11,10 @@
  *  License:
  *      GPL v3 or above
  *}
-<div class="grid__area">
-    <div class="grid__container grid__head-6">
-        <div class="cols__3-span-1 bold">{$LANG.nameUc}:</div>
-        <div class="cols__4-span-7">{$expense_account.name}</div>
+<div class="grid__area margin__bottom-3">
+    <div class="grid__container grid__head-10">
+        <div class="cols__3-span-1 bold align__text-right margin__right-1">{$LANG.nameUc}:</div>
+        <div class="cols__4-span-6">{$expense_account.name}</div>
     </div>
 </div>
 <div class="align__text-center margin__top-2 margin__bottom-2">

@@ -30,6 +30,10 @@ Util::directAccessAllowed();
 if (!empty($_POST['op']) && $_POST['op'] == 'create' && !empty($_POST['name'])) {
     include "modules/customers/save.php";
 } else {
+    if (!empty($_GET['errorMsg'])) {
+        $smarty->assign('errorMsg', $_GET['errorMsg']);
+    }
+
     $customFieldLabel = CustomFields::getLabels(true);
     $smarty->assign('customFieldLabel', $customFieldLabel);
     $smarty->assign('domain_id', DomainId::get());

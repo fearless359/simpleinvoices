@@ -1,21 +1,18 @@
-<input type="hidden" name="quantity0" value="1"/>
-<input type="hidden" name="id0" value="{$invoiceItems[0].id|htmlSafe}"/>
-<input type="hidden" name="products0" value="{$invoiceItems[0].product_id|htmlSafe}"/>
 <div class="grid__container grid__head-10">
-    <label for="description0" class="cols__1-span-10">{$LANG.descriptionUc}:</label>
-    <div class="cols__1-span-10">
-                <textarea name="description0" id="description0" style="overflow:scroll;" rows="3" cols="100%"
-                          data-row-num="0" data-description="{$LANG.descriptionUc}">{$invoiceItems[0].description|outHtml}</textarea>
+    <label for="description0" class="cols__2-span-9 margin__bottom-1">{$LANG.descriptionUc}:</label>
+    <div class="cols__2-span-9">
+        <textarea name="description0" id="description0" style="overflow:scroll;" rows="3" cols="100%"
+                  data-row-num="0" data-description="{$LANG.descriptionUc}">{$invoiceItems[0].description|outHtml}</textarea>
     </div>
 </div>
 <div class="grid__container grid__head-10">
-    <label for="unitPrice0Id" class="cols__1-span-2">{$LANG.grossTotal}:</label>
+    <label for="unitPrice0Id" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.grossTotal}:</label>
     <div class="cols__3-span-3">
-        <input type="text" class="align__text-right  validate[required]" name="unit_price0" id="unitPrice0Id"
+        <input type="text" class="align__text-right" required name="unit_price0" id="unitPrice0Id"
                value="{$invoiceItems[0].unit_price|utilNumber}" size="10"/>
     </div>
     {if $defaults.tax_per_line_item > 0}
-        <div class="cols__6-span-1 bold align__text-right">{$LANG.tax}:&nbsp;</div>
+        <div class="cols__6-span-1 bold align__text-right margin__right-1 margin__top-0-5">{$LANG.tax}:&nbsp;</div>
         {section name=tax loop=$defaults.tax_per_line_item}
             {$index = $smarty.section.tax.index}
             {$taxNumber = $invoiceItems[0].tax.$index}
@@ -35,13 +32,12 @@
         {/section}
     {/if}
 </div>
-<br/>
 {$customFields.1}
 {$customFields.2}
 {$customFields.3}
 {$customFields.4}
 <div class="grid__container grid__head-10">
-    <label for="preferenceId" class="cols__1-span-2">{$LANG.invPref}:</label>
+    <label for="preferenceId" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.invPref}:</label>
     <div class="cols__3-span-3">
         {if !isset($preferences) }
             <em>{$LANG.noPreferences}</em>
@@ -54,7 +50,7 @@
             </select>
         {/if}
     </div>
-    <label for="salesRepresentativeId" class="cols__6-span-2">{$LANG.salesRepresentative}:</label>
+    <label for="salesRepresentativeId" class="cols__6-span-2 align__text-right margin__right-1">{$LANG.salesRepresentative}:</label>
     <div class="cols__8-span-3">
         <input name="sales_representative" id="salesRepresentativeId" size="30"
                value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlSafe}{/if}"/>

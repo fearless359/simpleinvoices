@@ -450,7 +450,7 @@ $LANG['recurrenceType'] = "復發類型";//1
 $LANG['register'] = "註冊";//1
 $LANG['reorderLevel'] = "重新訂購級別";//0
 $LANG['reports'] = "報告";//1
-$LANG['requiredField'] = "必填項目";//0
+$LANG['requiredField'] = "<strong style='color:red;'>必填項目</strong>";//0
 $LANG['role'] = "角色";//1
 $LANG['runReport'] = "執行報告";//1
 $LANG['salesUc'] = "銷售";//1

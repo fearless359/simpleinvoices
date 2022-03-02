@@ -13,73 +13,89 @@
  *}
 <div class="grid__area delay__display">
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.customerName}:</div>
-        <div class="cols__3-span-3">{$customer.name}</div>
-        <div class="cols__6-span-2 bold">{$LANG.customerDepartment}:</div>
-        <div class="cols__8-span-3">{$customer.department|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.customerName}:</div>
+        <div class="cols__4-span-6">{$customer.name}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.attentionShort}:</div>
-        <div class="cols__3-span-3">{$customer.attention|htmlSafe}</div>
-        <div class="cols__6-span-2 bold">{$LANG.phoneUc}:</div>
-        <div class="cols__8-span-3">{$customer.phone|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.customerDepartment}:</div>
+        <div class="cols__4-span-6">{$customer.department|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.street}:</div>
-        <div class="cols__3-span-3">{$customer.street_address|htmlSafe}</div>
-        <div class="cols__6-span-2 bold">{$LANG.mobilePhone}:</div>
-        <div class="cols__8-span-3">{$customer.mobile_phone|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.attentionShort}:</div>
+        <div class="cols__4-span-6">{$customer.attention|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.street2}:</div>
-        <div class="cols__3-span-3">{$customer.street_address2|htmlSafe}</div>
-        <div class="cols__6-span-2 bold">{$LANG.fax}:</div>
-        <div class="cols__8-span-3">{$customer.fax|htmlSafe}</div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.street}:</div>
+        <div class="cols__4-span-6">{$customer.street_address|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.city}:</div>
-        <div class="cols__3-span-3">{$customer.city|htmlSafe}</div>
-        <div class="cols__6-span-2 bold">{$LANG.email}:</div>
-        <div class="cols__8-span-3"><a href="mailto:{$customer.email|htmlSafe}">{$customer.email|htmlSafe}</a></div>
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.street2}:</div>
+        <div class="cols__4-span-6">{$customer.street_address2|htmlSafe}</div>
     </div>
-    {if $customer.default_invoice != 0}
-        <div class="grid__container grid__head-10">
-            <div class="cols__1-span-2 bold">{$LANG.zip}:</div>
-            <div class="cols__3-span-3">{$customer.zip_code|htmlSafe}</div>
-            <div class="cols__6-span-2 bold">{$LANG.defaultInvoice}:</div>
-            <div class="cols__8-span-3">{$customer.default_invoice}</div>
-        </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.city}:</div>
+        <div class="cols__4-span-6">{$customer.city|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.state}:</div>
+        <div class="cols__4-span-6">{$customer.state|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.zip}:</div>
+        <div class="cols__4-span-6">{$customer.zip_code|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.country}:</div>
+        <div class="cols__4-span-6">{$customer.country|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.phoneUc}:</div>
+        <div class="cols__4-span-6">{$customer.phone|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.mobilePhone}:</div>
+        <div class="cols__4-span-6">{$customer.mobile_phone|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.fax}:</div>
+        <div class="cols__4-span-6">{$customer.fax|htmlSafe}</div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.email}:</div>
+        <div class="cols__4-span-6"><a href="mailto:{$customer.email|htmlSafe}">{$customer.email|htmlSafe}</a></div>
+    </div>
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.defaultInvoice}:</div>
+        <div class="cols__4-span-6">{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</div>
+    </div>
+    {if !empty($customFieldLabel.customer_cf1)}
+    <div class="grid__container grid__head-10">
+            <div class="cols__1-span-3 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf1}:</div>
+            <div class="cols__4-span-6">{$customer.custom_field1|htmlSafe}</div>
+    </div>
+    {/if}
+    {if !empty($customFieldLabel.customer_cf2)}
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf2}:</div>
+        <div class="cols__4-span-6">{$customer.custom_field2|htmlSafe}</div>
+    </div>
     {/if}
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.state}:</div>
-        <div class="cols__3-span-3">{$customer.state|htmlSafe}</div>
-        {if !empty($customFieldLabel.customer_cf1)}
-            <div class="cols__6-span-2 bold">{$customFieldLabel.customer_cf1}:</div>
-            <div class="cols__8-span-3">{$customer.custom_field1|htmlSafe}</div>
-        {/if}
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
+        <div class="cols__4-span-6">{$customer.enabled_text|htmlSafe}</div>
     </div>
+    {if !empty($customFieldLabel.customer_cf3)}
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.country}:</div>
-        <div class="cols__3-span-3">{$customer.country|htmlSafe}</div>
-        {if !empty($customFieldLabel.customer_cf2)}
-            <div class="cols__6-span-2 bold">{$customFieldLabel.customer_cf2}:</div>
-            <div class="cols__8-span-3">{$customer.custom_field2|htmlSafe}</div>
-        {/if}
+        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf3}:</div>
+        <div class="cols__4-span-6">{$customer.custom_field3|htmlSafe}</div>
     </div>
+    {/if}
+    {if !empty($customFieldLabel.customer_cf4)}
     <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold">{$LANG.enabled}:</div>
-        <div class="cols__3-span-3">{$customer.enabled_text|htmlSafe}</div>
-        {if !empty($customFieldLabel.customer_cf3)}
-            <div class="cols__6-span-2 bold">{$customFieldLabel.customer_cf3}:</div>
-            <div class="cols__8-span-3">{$customer.custom_field3|htmlSafe}</div>
-        {/if}
+        <div class="cols__1-span-2 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf4}:</div>
+        <div class="cols__3-span-3">{$customer.custom_field4|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        {if !empty($customFieldLabel.customer_cf4)}
-            <div class="cols__1-span-2 bold">{$customFieldLabel.customer_cf4}:</div>
-            <div class="cols__3-span-3">{$customer.custom_field4|htmlSafe}</div>
-        {/if}
-    </div>
+    {/if}
     <div class="si_form" id="si_form_cust">
         <div id="tabs_customer">
             <ul class="anchors">
@@ -100,32 +116,32 @@
 
             <div id="section-1" class="fragment">
                 <div class="grid__container grid__head-6">
-                    <div class="cols__1-span-1 bold">{$LANG.totalInvoices}:</div>
+                    <div class="cols__1-span-1 bold align__text-right margin__right-1">{$LANG.totalInvoices}:</div>
                     <div class="cols__2-span-1 align__text-right">{$customer.total|utilCurrency}</div>
                 </div>
                 <div class="grid__container grid__head-6">
-                    <div class="cols__1-span-1 bold">
+                    <div class="cols__1-span-1 bold align__text-right margin__right-1">
                         <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">{$LANG.totalPaid}</a>:
                     </div>
                     <div class="cols__2-span-1 align__text-right underline">{$customer.paid|utilCurrency}</div>
                 </div>
                 <div class="grid__container grid__head-6">
-                    <div class="cols__1-span-1 bold">{$LANG.totalOwing}:</div>
+                    <div class="cols__1-span-1 bold align__text-right margin__right-1">{$LANG.totalOwing}:</div>
                     <div class="cols__2-span-1 align__text-right">{$customer.owing|utilCurrency}</div>
                 </div>
             </div>
 
             <div id="section-2" class="fragment">
                 <div class="grid__container grid__head-6">
-                    <div class="cols__1-span-2 bold">{$LANG.creditCardHolderName}:</div>
+                    <div class="cols__1-span-2 bold align__text-right margin__right-1">{$LANG.creditCardHolderName}:</div>
                     <div class="cols__3-span-4">{$customer.credit_card_holder_name|htmlSafe}</div>
                 </div>
                 <div class="grid__container grid__head-6">
-                    <div class="cols__1-span-2 bold">{$LANG.creditCardNumber}:</div>
+                    <div class="cols__1-span-2 bold align__text-right margin__right-1">{$LANG.creditCardNumber}:</div>
                     <div class="cols__3-span-4">{$customer.credit_card_number_masked|htmlSafe}</div>
                 </div>
                 <div class="grid__container grid__head-6">
-                    <div class="cols__1-span-2 bold">{$LANG.creditCardExpiryMonth}:</div>
+                    <div class="cols__1-span-2 bold align__text-right margin__right-1">{$LANG.creditCardExpiryMonth}:</div>
                     <div class="cols__3-span-4">
                         {if $customer.credit_card_expiry_month > 0 &&
                         $customer.credit_card_expiry_month < 10}
@@ -136,7 +152,7 @@
                     </div>
                 </div>
                 <div class="grid__container grid__head-6">
-                    <div class="cols__1-span-2 bold">{$LANG.creditCardExpiryYear}:</div>
+                    <div class="cols__1-span-2 bold align__text-right margin__right-1">{$LANG.creditCardExpiryYear}:</div>
                     <div class="cols__3-span-4">{$customer.credit_card_expiry_year|htmlSafe}</div>
                 </div>
             </div>

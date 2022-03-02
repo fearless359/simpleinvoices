@@ -14,20 +14,16 @@
  *}
 <div class="grid__area">
     <div class="grid__container grid__head-10">
-        <div class="cols__4-span-3 bold">{$LANG.idUc}:</div>
-        <div class="cols__7-span-3">{$cf.cf_id|htmlSafe}</div>
+        <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.customFieldDbFieldName}:</div>
+        <div class="cols__6-span-3">{$cf.cf_custom_field|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__4-span-3 bold">{$LANG.customFieldDbFieldName}:</div>
-        <div class="cols__7-span-3">{$cf.cf_custom_field|htmlSafe}</div>
+        <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.customField}:</div>
+        <div class="cols__6-span-3">{$cf.name|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__4-span-3 bold">{$LANG.customField}:</div>
-        <div class="cols__7-span-3">{$cf.name|htmlSafe}</div>
-    </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__4-span-3 bold">{$LANG.customLabel}:</div>
-        <div class="cols__7-span-3">{$cf.cf_custom_label|htmlSafe}</div>
+        <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.customLabel}:</div>
+        <div class="cols__6-span-3">{$cf.cf_custom_label|htmlSafe}</div>
     </div>
     <br/>
     <div class="align__text-center">

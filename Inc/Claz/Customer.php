@@ -60,9 +60,10 @@ class Customer
 
     /**
      * Minimize the amount of data returned to the manage table.
+     * @param bool defaultDisplayDepartment User option of what to display in the department/phone field.
      * @return array Data for the manage table rows.
      */
-    public static function manageTableInfo(): array
+    public static function manageTableInfo(string $defaultDisplayDepartment): array
     {
         global $config, $LANG, $pdoDb;
 
@@ -112,12 +113,18 @@ class Customer
                           "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
             // @formatter::on
 
+            if ($defaultDisplayDepartment) {
+                $deptOrPhoneFieldValue = $row['department'];
+            } else {
+                $deptOrPhoneFieldValue = empty($row['mobile_phone']) ? $row['phone'] : $row['mobile_phone'];
+            }
+
             $pattern = '/^(.*)_(.*)$/';
             $replPattern = '$1-$2';
             $tableRows[] = [
                 'action' => $action,
                 'name' => $row['name'],
-                'department' => $row['department'],
+                'departmentOrPhone' => $deptOrPhoneFieldValue,
                 'quickView' => $quickView,
                 'total' => $row['total'],
                 'paid' => $row['paid'],
@@ -366,13 +373,20 @@ class Customer
         return $rows;
     }
 
-    public static function getMyParent(int $parentId): array
+    /**
+     * Get the list of customers that can be a parent.
+     * @param int|null $parentId
+     * @return array
+     */
+    public static function getMyParent(?int $parentId): array
     {
         global $pdoDb;
 
+        $id = isset($parentId) ?? 0;
+
         $rows = [];
         try {
-            $pdoDb->addSimpleWhere("id", $parentId, "AND");
+            $pdoDb->addSimpleWhere("id", $id, "AND");
             $pdoDb->addSimpleWhere("domain_id", DomainId::get());
             $pdoDb->setSelectList(['id', 'name']);
             $rows = $pdoDb->request("SELECT", "customers");

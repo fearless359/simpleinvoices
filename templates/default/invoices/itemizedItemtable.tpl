@@ -1,5 +1,9 @@
 <div class="grid__container grid__head-10">
-    <div class="cols__1-span-1 bold align__text-right">{$LANG.quantity}</div>
+    <div class="cols__1-span-1 bold align__text-right">
+        <label for="quantity0 align__text-right margin__right-1">{$LANG.quantityShort}
+            <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}" src="{$helpImagePath}required-small.png" alt=""/>
+        </label>
+    </div>
     <div class="cols__2-span-4 bold align__text-center">{$LANG.item}</div>
     {$begCol = 6}
     {section name=taxHeader loop=$defaults.tax_per_line_item }
@@ -24,16 +28,15 @@
                     {/if}
                     <div id="qtyColumn" style="display:grid;grid-template-columns: {$cols};">
                         <a class="delete_link" id="delete_link{$line|htmlSafe}" href="#" title="{$LANG.deleteLineItem}"
-                           {if $line == "0"}style="display:none;"{/if}
+                           {if $line == 0}style="display:none;"{/if}
                            data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}>
                             <img id="delete_image{$line|htmlSafe}" class="margin__top-0-5"
                                  src="images/delete_item.png" alt="{$LANG.deleteLineItem}"/>
                         </a>
                         <span>&nbsp;</span>
                         <!--suppress HtmlFormInputWithoutLabel -->
-                        <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" size="5"
-                               class="align__text-right{if $line == 0} validate[required,min[.01],custom[number]]{/if}"
-                               data-row-num="{$line|htmlSafe}"
+                        <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" {if $line == 0}required{/if}
+                               class="align__text-right {if $line == 0}validate-quantity{/if}" data-row-num="{$line|htmlSafe}"
                                value="{if isset($defaultInvoiceItems[$line].quantity)}{$defaultInvoiceItems[$line].quantity|utilNumberTrim}{/if}">
                     </div>
                 </div>
@@ -43,7 +46,7 @@
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
-                                class="margin__left-0-5 product_change width_95{if $line == 0} validate[required]{/if}"
+                                class="product_change width_100 margin__left-0-5" {if $line == 0}required{/if}
                                 data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
                                 data-product-groups-enabled="{$defaults.product_groups}">
                             <option value=""></option>
@@ -62,7 +65,7 @@
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select id="tax_id[{$line|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
                                 name="tax_id[{$line|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
-                                data-row-num="{$line|htmlSafe}">
+                                data-row-num="{$line|htmlSafe}" class="margin__left-1">
                             <option value=""></option>
                             {foreach $taxes as $tax}
                                 <option {if isset($defaultInvoiceItems[$line].tax[$taxNumber]) &&
@@ -75,17 +78,17 @@
                 {/section}
                 <div class="cols__{$begCol}-span-1">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <input id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="9"
-                           class="{if $line == "0"}validate[required]{/if}" data-row-num="{$line|htmlSafe}"
+                    <input class="align__text-right margin__left-1" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="9"
+                           {if $line == "0"}required{/if} data-row-num="{$line|htmlSafe}"
                            value="{if isset($defaultInvoiceItems[$line].unit_price)}{$defaultInvoiceItems[$line].unit_price|utilNumber}{/if}"/>
                 </div>
             </div>
             <div class="grid__container grid__head-10 details" {if $defaults.invoice_description_open != $smarty.const.ENABLED}style="display:none;"{/if}>
                 <div class="cols__2-span-9">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <textarea id="description{$line|htmlSafe}" name="description{$line|htmlSafe}" rows="3" cols="99"
-                              data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
-                    >{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlSafe}{/if}</textarea>
+                    <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" rows="3" cols="99"
+                              class="margin__left-0-5" data-row-num="{$line|htmlSafe}"
+                              data-description="{$LANG.descriptionUc}">{if isset($defaultInvoiceItems[$line].description)}{$defaultInvoiceItems[$line].description|htmlSafe}{/if}</textarea>
                 </div>
             </div>
         </div>

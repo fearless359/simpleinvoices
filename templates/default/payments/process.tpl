@@ -18,44 +18,39 @@
     <div class="grid__area">
         {if $smarty.get.op === "pay_selected_invoice"}
             <div class="grid__container grid__head-10">
-                <div class="cols__2-span-1 bold">{$invoice.preference|htmlSafe}:</div>
-                <div class="cols__3-span-4">{$invoice.index_id|htmlSafe}</div>
-                <div class="cols__7-span-1 bold">{$LANG.totalUc}:</div>
-                <div class="cols__8-span-1 align__text-right">{$invoice.total|utilNumber:2}</div>
+                <div class="cols__1-span-3 bold align__text-right margin__right-1">{$invoice.preference|htmlSafe}:</div>
+                <div class="cols__4-span-1">{$invoice.index_id|htmlSafe}</div>
+                <div class="cols__8-span-1 bold align__text-right">{$LANG.totalUc}:</div>
+                <div class="cols__9-span-1 align__text-right">{$invoice.total|utilNumber:2}</div>
             </div>
             <div class="grid__container grid__head-10">
-                <div class="cols__2-span-1 bold">{$LANG.billerUc}:</div>
-                <div class="cols__3-span-4">{$biller.name|htmlSafe}</div>
-                <div class="cols__7-span-1 bold">{$LANG.paidUc}:</div>
-                <div class="cols__8-span-1 align__text-right">{$invoice.paid|utilNumber}</div>
+                <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.billerUc}:</div>
+                <div class="cols__4-span-4">{$biller.name|htmlSafe}</div>
+                <div class="cols__8-span-1 bold align__text-right">{$LANG.paidUc}:</div>
+                <div class="cols__9-span-1 align__text-right">{$invoice.paid|utilNumber}</div>
             </div>
             <div class="grid__container grid__head-10">
-                <div class="cols__2-span-1 bold">{$LANG.customerUc}:</div>
-                <div class="cols__3-span-4">{$customer.name|htmlSafe}</div>
-                <div class="cols__7-span-1 bold">{$LANG.owingUc}:</div>
-                <div class="cols__8-span-1 align__text-right underline">{$invoice.owing|utilNumber}</div>
+                <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.customerUc}:</div>
+                <div class="cols__4-span-4">{$customer.name|htmlSafe}</div>
+                <div class="cols__8-span-1 bold align__text-right">{$LANG.owingUc}:</div>
+                <div class="cols__9-span-1 align__text-right underline">{$invoice.owing|utilNumber}</div>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="amountId" class="cols__2-span-2">{$LANG.amountUc}:
-                    <a class="cluetip" href="#"
-                       rel="index.php?module=documentation&amp;view=view&amp;page=helpProcessPaymentAutoAmount"
-                       title="{$LANG.processPaymentAutoAmount}">
-                        <img src="{$helpImagePath}help-small.png" alt="help"/>
-                    </a>
+                <label for="amountId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.amountUc}:
+                    <img class="tooltip" title="{$LANG.helpProcessPaymentAutoAmount}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="ac_amount" id="amountId" size="25"
-                       class="cols__4-span-3 validate[required,custom[number]]" value="{$invoice.owing|utilNumber}"/>
+                <input type="text" name="ac_amount" id="amountId" size="25" required
+                       class="cols__4-span-2 validate-number" value="{$invoice.owing|utilNumber}"/>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="date1" class="cols__2-span-2">{$LANG.dateFormatted}:</label>
-                <input type="text" name="ac_date" id="date1"
-                       class="cols__4-span-3 validate[required,custom[date],length[0,10]] date-picker"
-                       value="{if isset($today)}{$today|htmlSafe}{/if}"/>
+                <label for="date1" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
+                <input type="text" name="ac_date" id="date1" required readonly
+                       class="cols__4-span-1 date-picker" value="{if isset($today)}{$today|htmlSafe}{/if}"/>
             </div>
         {elseif $smarty.get.op === "pay_invoice"}
             <div class="grid__container grid__head-10">
-                <label for="invoiceId" class="cols__2-span-1">{$LANG.invoiceUc}:</label>
-                <select name="invoice_id" id="invoiceId" class="cols__3-span-8 validate[required]">
+                <label for="invoiceId" class="cols__2-span-1 align__text-right margin__right-1">{$LANG.invoiceUc}:</label>
+                <select name="invoice_id" id="invoiceId" class="cols__3-span-7" required>
                     <option value=''></option>
                     {foreach $invoice_all as $invoice}
                         <option value="{if isset($invoice.id)}{$invoice.id|htmlSafe}{/if}">
@@ -71,15 +66,20 @@
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="amountId" class="cols__2-span-2">{$LANG.amountUc}:</label>
-                <input type="text" name="ac_amount" id="amountId" size="25" class="cols__4-span-2"/>
-                <label for="date1" class="cols__7-span-2">{$LANG.dateFormatted}:</label>
-                <input type="text" name="ac_date" id="date1" class="cols__9-span-2 date-picker"
+                <label for="amountId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.amountUc}:
+                    <img class="tooltip" title="{$LANG.helpProcessPaymentAutoAmount}" src="{$helpImagePath}help-small.png" alt=""/>
+                </label>
+                <input type="text" name="ac_amount" id="amountId" size="25" required
+                       class="cols__4-span-2 validate-number"/>
+            </div>
+            <div class="grid__container grid__head-10">
+                <label for="date1" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
+                <input type="text" name="ac_date" id="date1" class="cols__4-span-2 date-picker"
                        value="{if isset($today)}{$today|htmlSafe}{/if}"/>
             </div>
         {/if}
         <div class="grid__container grid__head-10">
-            <label for="pymt_type" class="cols__2-span-2">{$LANG.paymentTypeMethod}:</label>
+            <label for="pymt_type" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.paymentTypeMethod}:</label>
             {if !$paymentTypes}
                 <p><em>{$LANG.noPaymentTypes}</em></p>
             {else}
@@ -92,13 +92,12 @@
                     {/foreach}
                 </select>
             {/if}
-            <label for="chk_num" class="cols__7-span-1">{$LANG.checkNumber}:
-                <a class="cluetip" href="#" title="{$LANG.checkNumber}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpCheckNumber">
-                    <img src="{$helpImagePath}help-small.png" alt="help"/>
-                </a>
+        </div>
+        <div class="grid__container grid__head-10">
+            <label for="chk_num" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.checkNumber}:
+                <img class="tooltip" title="{$LANG.helpCheckNumber}" src="{$helpImagePath}help-small.png" alt="help"/>
             </label>
-            <input type="text" name="ac_check_number" id="chk_num" class="cols__8-span-2" size="10"/>
+            <input type="text" name="ac_check_number" id="chk_num" class="cols__4-span-2" size="10"/>
             {literal}
                 <script>
                     $(function () {
@@ -121,8 +120,8 @@
             {/literal}
         </div>
         <div class="grid__container grid__head-10">
-            <label for="ac_notes" class="cols__2-span-2">{$LANG.note}:</label>
-            <div class="cols__2-span-9">
+            <label for="ac_notes" class="cols__2-span-2 margin__bottom-1">{$LANG.note}:</label>
+            <div class="cols__2-span-8">
                 <input name="ac_notes" id="ac_notes" type="hidden">
                 <trix-editor input="ac_notes"></trix-editor>
             </div>

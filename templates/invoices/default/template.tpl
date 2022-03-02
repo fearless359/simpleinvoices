@@ -39,9 +39,18 @@
     {if !empty($customFieldLabels.invoice_cf4)}
       {print_if_not_empty label=$customFieldLabels.invoice_cf4 field=$invoice.custom_field4 class1='text_left' class2='right' colspan="3"}
     {/if}
-    {print_if_not_empty label=$LANG.totalUc field=[$preference.pref_currency_sign, $invoice.total|utilNumber] class1='text_left' class2='right' colspan="3"}
-    {print_if_not_empty label=$LANG.paidUc field=[$preference.pref_currency_sign, $invoice.paid|utilNumber] class1='text_left' class2='right' colspan="3"}
-    {print_if_not_empty label=$LANG.owingUc field=[$preference.pref_currency_sign, $invoice.owing|utilNumber] class1='text_left' class2='right' colspan="3"}
+    <tr>
+      <th class="text_left">{$LANG.totalUc}:&nbsp;</th>
+      <td class="right" colspan="3">{$preference.pref_currency_sign}{$invoice.total|utilNumber}</td>
+    </tr>
+    <tr>
+      <th class="text_left">{$LANG.paidUc}:&nbsp;</th>
+      <td class="right" colspan="3">{$preference.pref_currency_sign}{$invoice.paid|utilNumber}</td>
+    </tr>
+    <tr>
+      <th class="text_left">{$LANG.owingUc}:&nbsp;</th>
+      <td class="right" colspan="3">{$preference.pref_currency_sign}{$invoice.owing|utilNumber}</td>
+    </tr>
     <tr>
       <td colspan="4">&nbsp;</td>
     </tr>

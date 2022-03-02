@@ -12,15 +12,12 @@
  *      GPL v3 or above
  *}
 <form name="frmpost" method="POST" id="frmpost" action="index.php?module=expense_account&amp;view=save&amp;id={$smarty.get.id}">
-    <div class="grid__area">
-        <div class="grid__container grid__head-6">
-            <label for="name" class="cols__2-span-1">{$LANG.nameUc}:
-                <a class="cluetip" href="#" title="{$LANG.requiredField}"
-                   rel="index.php?module=documentation&amp;view=view&amp;page=helpExpenseAccounts">
-                    <img src="{$helpImagePath}required-small.png" alt=""/>
-                </a>
+    <div class="grid__area margin__bottom-2">
+        <div class="grid__container grid__head-10">
+            <label for="name" class="cols__3-span-1 align__text-right margin__right-1">{$LANG.nameUc}:
+                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpExpenseAccounts}" src="{$helpImagePath}required-small.png" alt=""/>
             </label>
-            <input type="text" name="name" id="name" class="cols__3-span-4 validate[required]"
+            <input type="text" name="name" id="name" class="cols__4-span-5" required
                    value="{if isset($expense_account.name)}{$expense_account.name}{/if}"/>
         </div>
     </div>

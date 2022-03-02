@@ -201,35 +201,23 @@ class CustomFields
      * @param string $customField Name of the database field.
      * @param string|null $customFieldValue The value of this field.
      * @param string $permission Maintenance permission (read or write)
-     * @param string|null $cssClassHead CSS class of the encapsulating div statement.
-     *                             Defaults to: "grid__container grid__head-10".
-     * @param string|null $cssClassLabel CSS class of the label.
-     *                              Defaults to: "cols__1-span-2 bold" with "si_label"
-     *                              added if not $permission "read"..
-     * @param string|null $cssClassField CSS class of the detail.
-     *                              Defaults to: "cols__3-span-8".
-     * @param string|null $separator Value to display between two values.
-     *                              Defaults to ": ".
      * @return string Display/input string for a custom field. For "read" permission, the field to
      *         display the data. For "write" permission, the formatted label and field.
      * @throws PdoDbException
      */
-    public static function showCustomField(string $customField, ?string $customFieldValue, string $permission,
-                                           ?string $cssClassHead = null, ?string $cssClassLabel = null,
-                                           ?string $cssClassField = null, ?string $separator = null): string
+    public static function showCustomField(string $customField, ?string $customFieldValue, string $permission): string
     {
-        global $helpImagePath, $pdoDb;
-
-        // No si_label margin adjustment if read mode.
-        $cssLabelDefault = "cols__1-span-2 bold";
-        $cssLabelDefault .= $permission == 'read' ? '' : ' si_label';
-
-        $cssClassHead = $cssClassHead ?? "grid__container grid__head-10";
-        $cssClassLabel = $cssClassLabel ?? $cssLabelDefault;
-        $cssClassField = $cssClassField ?? "cols__3-span-8";
-        $separator = $separator ?? ": ";
+        global $helpImagePath, $LANG, $pdoDb;
 
         $writeMode = $permission == 'write'; // if false then in read mode.
+
+        $cssClassHead = "grid__container grid__head-10";
+        $cssClassLabel = "cols__1-span-2 align__text-right margin__right-1";
+        if (!$writeMode) {
+            $cssClassLabel .= " bold";
+        }
+        $cssClassField = "cols__3-span-8";
+        $separator = ":";
 
         // Get the custom field number (last character of the name).
         $cfn = substr($customField, -1, 1);
@@ -251,14 +239,12 @@ class CustomFields
         $displayBlock = "";
         if (!empty($customFieldValue) || $writeMode && !empty($cfLabel)) {
             $customLabelValue = Util::htmlSafe(self::getCustomFieldLabel($customField));
+            $helpCustomFields = Util::htmlSafe($LANG['helpCustomFields']);
             if ($writeMode) {
                 $displayBlock =
                     "<div class='$cssClassHead'>\n" .
                     "  <label for='customField$cfn' class='$cssClassLabel'>$customLabelValue$separator\n" .
-                    "    <a class='cluetip' href='#' title='Custom Fields' \n" .
-                    "       rel='index.php?module=documentation&amp;view=view&amp;page=helpCustomFields'>\n" .
-                    "      <img src='{$helpImagePath}help-small.png' alt='' />\n" .
-                    "    </a>\n" .
+                    "    <img class='tooltip' title='$helpCustomFields' src='{$helpImagePath}help-small.png' alt='' />\n" .
                     "  </label>\n" .
                     "  <div class='$cssClassField'>\n" .
                     "    <input type='text' name='custom_field$cfn' id='customField$cfn' value='$customFieldValue' size='50'/>\n" .
