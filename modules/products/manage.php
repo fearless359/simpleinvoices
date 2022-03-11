@@ -16,6 +16,8 @@ $smarty->assign("defaults", $defaults);
 $products = Product::manageTableInfo();
 $data = json_encode(['data' => $products]);
 
+var_dump(file_put_contents(__DIR__ . "/../../public/data.json", $data);
+
 die(__DIR__ . "/../../public/data.json");
 
 if (file_put_contents(__DIR__ . "/../../public/data.json", $data) === false) {
