@@ -15,10 +15,7 @@ $smarty->assign("defaults", $defaults);
 
 $products = Product::manageTableInfo();
 $data = json_encode(['data' => $products]);
-
-var_dump($data); die();
-
-if (file_put_contents(__DIR__ . "/../../public/data.json", $data) === false) {
+if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }
 $smarty->assign("numberOfRows",count($products));
