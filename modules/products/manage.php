@@ -14,7 +14,11 @@ $defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults", $defaults);
 
 $products = Product::manageTableInfo();
-$data = json_encode(['data' => $products]);
+try {
+    $data = json_encode(['data' => $products], JSON_THROW_ON_ERROR);
+} catch (\Exception $e) {
+    var_dump($e);
+}
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }
