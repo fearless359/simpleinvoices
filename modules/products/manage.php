@@ -13,9 +13,17 @@ Util::directAccessAllowed();
 $defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults", $defaults);
 
-$products = mb_convert_encoding(Product::manageTableInfo(), 'UTF-8');
+$products = Product::manageTableInfo();
 
-var_dump($products);
+foreach ($products as $key => $p) {
+    foreach ($p as $k1 => $v) {
+        echo 'products[' . $key. '][' . $k1. ']: ';
+        var_dump(mb_detect_encoding($v, ['UTF-8'], true));
+        echo '<br>';
+    }
+}
+
+$products = mb_convert_encoding(Product::manageTableInfo(), 'UTF-8');
 
 $data = json_encode(['data' => $products], JSON_THROW_ON_ERROR);
 
