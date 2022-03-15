@@ -21,6 +21,7 @@ foreach ($products as $key => $p) {
         $res = mb_detect_encoding($v, ['UTF-8'], true);
         if ($res === false) {
             echo 'products[' . $key. '][' . $k1. ']: FALSE';
+            echo $v;
             echo '<br>';
         }
     }
