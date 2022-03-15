@@ -17,9 +17,12 @@ $products = Product::manageTableInfo();
 
 foreach ($products as $key => $p) {
     foreach ($p as $k1 => $v) {
-        echo 'products[' . $key. '][' . $k1. ']: ';
-        var_dump(mb_detect_encoding($v, ['UTF-8'], true));
-        echo '<br>';
+
+        $res = mb_detect_encoding($v, ['UTF-8'], true);
+        if ($res === false) {
+            echo 'products[' . $key. '][' . $k1. ']: FALSE';
+            echo '<br>';
+        }
     }
 }
 
