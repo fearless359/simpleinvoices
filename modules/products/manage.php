@@ -14,11 +14,11 @@ $defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults", $defaults);
 
 $products = mb_convert_encoding(Product::manageTableInfo(), 'UTF-8');
-try {
-    $data = json_encode(['data' => $products], JSON_THROW_ON_ERROR);
-} catch (\Exception $e) {
-    error_log($e->getMessage());
-}
+
+var_dump($products);
+
+$data = json_encode(['data' => $products], JSON_THROW_ON_ERROR);
+
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }
