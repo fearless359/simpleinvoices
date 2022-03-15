@@ -23,7 +23,7 @@ Util::directAccessAllowed();
 
 $cflgs = CustomFlags::manageTableInfo();
 
-$data = json_encode(['data' => $cflgs]);
+$data = json_encode(['data' => mb_convert_encoding($cflgs, 'UTF-8')]);
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }

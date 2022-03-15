@@ -14,22 +14,11 @@ $defaults = SystemDefaults::loadValues();
 $smarty->assign("defaults", $defaults);
 
 $products = Product::manageTableInfo();
+$data = json_encode(['data' => mb_convert_encoding($products, 'UTF-8')]);
 
-foreach ($products as $key => $p) {
-    foreach ($p as $k1 => $v) {
-
-        $res = mb_detect_encoding($v, ['UTF-8'], true);
-        if ($res === false) {
-            echo 'products[' . $key. '][' . $k1. ']: FALSE';
-            echo $v;
-            echo '<br>';
-        }
-    }
+if (json_last_error() !== JSON_ERROR_NONE) {
+    exit(json_last_error_msg());
 }
-
-$products = mb_convert_encoding(Product::manageTableInfo(), 'UTF-8');
-
-$data = json_encode(['data' => $products], JSON_THROW_ON_ERROR);
 
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");

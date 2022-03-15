@@ -10,7 +10,7 @@ Util::directAccessAllowed();
 
 $productAttributeValues = ProductAttributeValues::manageTableInfo();
 
-$data = json_encode(['data' => $productAttributeValues]);
+$data = json_encode(['data' => mb_convert_encoding($productAttributeValues, 'UTF-8')]);
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }

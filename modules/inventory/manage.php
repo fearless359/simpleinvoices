@@ -19,7 +19,7 @@ global $smarty;
 Util::directAccessAllowed();
 
 $inventories = Inventory::manageTableInfo();
-$data = json_encode(['data' => $inventories]);
+$data = json_encode(['data' => mb_convert_encoding($inventories, 'UTF-8')]);
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }

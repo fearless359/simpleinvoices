@@ -27,7 +27,7 @@ $readOnly = $_SESSION['role_name'] == 'customer';
 
 try {
     $invoices = Invoice::getAllWithHavings($having, '', '', true);
-    $data = json_encode(['data' => $invoices]);
+    $data = json_encode(['data' => mb_convert_encoding($invoices, 'UTF-8')]);
     if (file_put_contents("public/data.json", $data) === false) {
         error_log("modules/invoices/manage.php Unable to store json data.");
         exit("Unable to process request. See error log for details.");
