@@ -219,6 +219,13 @@ class Export
                     $templateDir = "templates/invoices/$template";
                     $css = $siUrl . "templates/invoices/$template/style.css";
 
+                    if(!$template || !\file_exists($smarty->getTemplateDir()[0] . $templateDir )){
+                        Log::out('Template specified in SI Settings does not exist. Falling back to default template.');
+                        $template = 'default';
+                        $templateDir = "templates/invoices/$template";
+                        $css = $siUrl . "templates/invoices/$template/style.css";
+                    }
+
                     $pageActive = "invoices";
                     $smarty->assign('pageActive', $pageActive);
 
@@ -249,6 +256,8 @@ class Export
                     }
 
                     $data = $smarty->fetch("templates/invoices/$template/template.tpl");
+
+
 
                     // Restore configured locale
                     if (!empty($origLocale)) {
