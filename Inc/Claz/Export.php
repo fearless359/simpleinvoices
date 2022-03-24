@@ -221,8 +221,9 @@ class Export
 
                     if(!$template || !\file_exists($smarty->getTemplateDir()[0] . $templateDir )){
                         Log::out('Template specified in SI Settings does not exist. Falling back to default template.');
-                        $templateDir = "templates/invoices/default";
-                        $css = $siUrl . "templates/invoices/default/style.css";
+                        $template = 'default';
+                        $templateDir = "templates/invoices/$template";
+                        $css = $siUrl . "templates/invoices/$template/style.css";
                     }
 
                     $pageActive = "invoices";
