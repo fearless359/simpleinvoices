@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-03-24 - <strong>2020.3.15</strong>
+                <ul>
+                    <li>Changes from redcullin were added to the master branch. They address conversion of
+                        data in the json tables for DataTables to properly handle UTF-8 data from the
+                        database.</li>
+                </ul>
+            </li>
             <li>2022-02-20 - <strong>2020.3.14</strong>
                 <ul>
                     <li>Fixed issue with upgrade from master_2019.2 to master_2020 not working correctly.
