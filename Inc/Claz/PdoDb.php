@@ -809,7 +809,7 @@ class PdoDb
                                     if (!empty($columns[$nam])) {
                                         $columns[$nam] .= ":";
                                     }
-                                    $columns[$nam] .= strtoupper($row2['constraint_name']);
+                                    $columns[$nam] .= isset($row2['constraint_name']) ? strtoupper($row2['constraint_name']) : '';
                                 }
                             }
                         }

@@ -26,7 +26,7 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 $billers = Biller::manageTableInfo();
-$data = json_encode(['data' => $billers]);
+$data = json_encode(['data' => mb_convert_encoding($billers, 'UTF-8')]);
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }

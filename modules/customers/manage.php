@@ -53,7 +53,7 @@ $smarty->assign("first_run_wizard",$firstRunWizard);
 
 // No need to do all this if first_run_wizard specified
 if (!$firstRunWizard) {
-    $data = json_encode(['data' => $customers]);
+    $data = json_encode(['data' => mb_convert_encoding($customers, 'UTF-8')]);
     if (file_put_contents("public/data.json", $data) === false) {
         exit("Unable to create public/data.json file");
     }

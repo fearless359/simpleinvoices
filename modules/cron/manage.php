@@ -22,7 +22,7 @@ global $pdoDb, $smarty;
 Util::directAccessAllowed();
 
 $crons = Cron::manageTableInfo();
-$data = json_encode(['data' => $crons]);
+$data = json_encode(['data' => mb_convert_encoding($crons, 'UTF-8')]);
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }

@@ -12,8 +12,10 @@ class ApiAuth
     {
         // API calls don't use the auth module
         if ($module != 'api') {
-            session_name('SiAuth');
-            session_start();
+            if (PHP_SESSION_ACTIVE !== session_status()){
+                session_name('SiAuth');
+                session_start();
+            }
             $sessionId = $_SESSION['id'] ?? 0;
             $getId = 0 ?? $_GET['id'];
             Log::out("ApiAuth::authenticate() - sessionId[$sessionId] getId[$getId] module[$module] view[$view]");

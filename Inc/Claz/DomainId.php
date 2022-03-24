@@ -16,8 +16,10 @@ class DomainId
      */
     public static function get(?int $domainId = null): int
     {
-        session_name('SiAuth');
-        session_start();
+        if (PHP_SESSION_ACTIVE !== session_status()){
+            session_name('SiAuth');
+            session_start();
+        }
         // default when session value absent - fake auth, whether auth needed or not
         $domId = 1;
 

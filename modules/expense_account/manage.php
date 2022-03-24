@@ -12,7 +12,7 @@ $smarty->assign("display_block", "<div class='si_message_error'>{$LANG['noExpens
 
 $expenseAccounts = ExpenseAccount::manageTableInfo();
 
-$data = json_encode(['data' => $expenseAccounts]);
+$data = json_encode(['data' => mb_convert_encoding($expenseAccounts, 'UTF-8')]);
 if (file_put_contents("public/data.json", $data) === false) {
     exit("Unable to create public/data.json file");
 }
