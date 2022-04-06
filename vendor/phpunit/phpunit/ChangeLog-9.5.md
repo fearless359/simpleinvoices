@@ -2,6 +2,72 @@
 
 All notable changes of the PHPUnit 9.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.5.20] - 2022-04-01
+
+### Fixed
+
+* [#4938](https://github.com/sebastianbergmann/phpunit/issues/4938): Test Double code generator does not handle `void` return type declaration on `__clone()` methods
+* [#4947](https://github.com/sebastianbergmann/phpunit/issues/4947): Test annotated with `@coversNothing` may lead to files missing from code coverage report
+
+## [9.5.19] - 2022-03-15
+
+### Fixed
+
+* [#4929](https://github.com/sebastianbergmann/phpunit/issues/4929): Test Double code generator does not handle new expressions inside parameter default values
+* [#4932](https://github.com/sebastianbergmann/phpunit/issues/4932): Backport support for intersection types from PHPUnit 10 to PHPUnit 9.5
+* [#4933](https://github.com/sebastianbergmann/phpunit/issues/4933): Backport support for `never` type from PHPUnit 10 to PHPUnit 9.5
+
+## [9.5.18] - 2022-03-08
+
+### Fixed
+
+* [#4877](https://github.com/sebastianbergmann/phpunit/issues/4877): No stack trace shown when an error occurs during bootstrap
+
+## [9.5.17] - 2022-03-05 - #StandWithUkraine
+
+## [9.5.16] - 2022-02-23
+
+### Changed
+
+* Reverted sync with API change in (now yanked) phpunit/php-code-coverage 9.2.12
+
+## [9.5.15] - 2022-02-23 [YANKED]
+
+### Fixed
+
+* When the HTML code coverage report's configured low upper bound is larger than the high lower bound then the default values are used instead
+
+## [9.5.14] - 2022-02-18
+
+### Changed
+
+* [#4874](https://github.com/sebastianbergmann/phpunit/pull/4874): `PHP_FLOAT_EPSILON` is now used instead of hardcoded `0.0000000001` in `PHPUnit\Framework\Constraint\IsIdentical`
+
+## [9.5.13] - 2022-01-24
+
+### Fixed
+
+* [#4871](https://github.com/sebastianbergmann/phpunit/issues/4871): Class `SebastianBergmann\CodeCoverage\Filter` is not found during PHPT tests when PHPUnit is used from PHAR
+
+## [9.5.12] - 2022-01-21
+
+### Fixed
+
+* [#4799](https://github.com/sebastianbergmann/phpunit/pull/4799): Memory leaks in `PHPUnit\Framework\TestSuite` class
+* [#4857](https://github.com/sebastianbergmann/phpunit/pull/4857): Result of `debug_backtrace()` is not used correctly
+
+## [9.5.11] - 2021-12-25
+
+### Changed
+
+* [#4812](https://github.com/sebastianbergmann/phpunit/issues/4812): Do not enforce time limits when a debugging session through DBGp is active
+* [#4835](https://github.com/sebastianbergmann/phpunit/issues/4835): Support for `$GLOBALS['_composer_autoload_path']` introduced in Composer 2.2
+
+### Fixed
+
+* [#4840](https://github.com/sebastianbergmann/phpunit/pull/4840): TestDox prettifying for class names does not correctly handle diacritics
+* [#4846](https://github.com/sebastianbergmann/phpunit/pull/4846): Composer proxy script is not ignored
+
 ## [9.5.10] - 2021-09-25
 
 ### Changed
@@ -91,6 +157,16 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
 
+[9.5.20]: https://github.com/sebastianbergmann/phpunit/compare/9.5.19...9.5.20
+[9.5.19]: https://github.com/sebastianbergmann/phpunit/compare/9.5.18...9.5.19
+[9.5.18]: https://github.com/sebastianbergmann/phpunit/compare/9.5.17...9.5.18
+[9.5.17]: https://github.com/sebastianbergmann/phpunit/compare/9.5.16...9.5.17
+[9.5.16]: https://github.com/sebastianbergmann/phpunit/compare/dc738383c519243b0a967f63943a848d3fd861aa...9.5.16
+[9.5.15]: https://github.com/sebastianbergmann/phpunit/compare/9.5.14...dc738383c519243b0a967f63943a848d3fd861aa
+[9.5.14]: https://github.com/sebastianbergmann/phpunit/compare/9.5.13...9.5.14
+[9.5.13]: https://github.com/sebastianbergmann/phpunit/compare/9.5.12...9.5.13
+[9.5.12]: https://github.com/sebastianbergmann/phpunit/compare/9.5.11...9.5.12
+[9.5.11]: https://github.com/sebastianbergmann/phpunit/compare/9.5.10...9.5.11
 [9.5.10]: https://github.com/sebastianbergmann/phpunit/compare/9.5.9...9.5.10
 [9.5.9]: https://github.com/sebastianbergmann/phpunit/compare/9.5.8...9.5.9
 [9.5.8]: https://github.com/sebastianbergmann/phpunit/compare/9.5.7...9.5.8

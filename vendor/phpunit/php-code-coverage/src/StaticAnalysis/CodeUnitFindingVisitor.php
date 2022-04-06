@@ -49,7 +49,7 @@ final class CodeUnitFindingVisitor extends NodeVisitorAbstract
      */
     private $functions = [];
 
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): void
     {
         if ($node instanceof Class_) {
             if ($node->isAnonymous()) {
@@ -64,7 +64,7 @@ final class CodeUnitFindingVisitor extends NodeVisitorAbstract
         }
 
         if (!$node instanceof ClassMethod && !$node instanceof Function_) {
-            return null;
+            return;
         }
 
         if ($node instanceof ClassMethod) {
@@ -206,7 +206,7 @@ final class CodeUnitFindingVisitor extends NodeVisitorAbstract
 
         $this->classes[$namespacedName] = [
             'name'           => $name,
-            'namespacedName' => (string) $namespacedName,
+            'namespacedName' => $namespacedName,
             'namespace'      => $this->namespace($namespacedName, $name),
             'startLine'      => $node->getStartLine(),
             'endLine'        => $node->getEndLine(),
@@ -221,7 +221,7 @@ final class CodeUnitFindingVisitor extends NodeVisitorAbstract
 
         $this->traits[$namespacedName] = [
             'name'           => $name,
-            'namespacedName' => (string) $namespacedName,
+            'namespacedName' => $namespacedName,
             'namespace'      => $this->namespace($namespacedName, $name),
             'startLine'      => $node->getStartLine(),
             'endLine'        => $node->getEndLine(),

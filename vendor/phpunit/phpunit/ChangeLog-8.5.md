@@ -2,6 +2,47 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [8.5.26] - 2022-04-01
+
+### Fixed
+
+* [#4938](https://github.com/sebastianbergmann/phpunit/issues/4938): Test Double code generator does not handle `void` return type declaration on `__clone()` methods
+
+## [8.5.25] - 2022-03-16
+
+### Fixed
+
+* [#4934](https://github.com/sebastianbergmann/phpunit/issues/4934): Code Coverage does not work with PHPUnit 8.5.24 PHAR on PHP 7
+
+## [8.5.24] - 2022-03-05 - #StandWithUkraine
+
+### Changed
+
+* [#4874](https://github.com/sebastianbergmann/phpunit/pull/4874): `PHP_FLOAT_EPSILON` is now used instead of hardcoded `0.0000000001` in `PHPUnit\Framework\Constraint\IsIdentical`
+
+### Fixed
+
+* When the HTML code coverage report's configured low upper bound is larger than the high lower bound then the default values are used instead
+
+## [8.5.23] - 2022-01-21
+
+### Fixed
+
+* [#4799](https://github.com/sebastianbergmann/phpunit/pull/4799): Memory leaks in `PHPUnit\Framework\TestSuite` class
+* [#4857](https://github.com/sebastianbergmann/phpunit/pull/4857): Result of `debug_backtrace()` is not used correctly
+
+## [8.5.22] - 2021-12-25
+
+### Changed
+
+* [#4812](https://github.com/sebastianbergmann/phpunit/issues/4812): Do not enforce time limits when a debugging session through DBGp is active
+* [#4835](https://github.com/sebastianbergmann/phpunit/issues/4835): Support for `$GLOBALS['_composer_autoload_path']` introduced in Composer 2.2
+
+### Fixed
+
+* [#4840](https://github.com/sebastianbergmann/phpunit/pull/4840): TestDox prettifying for class names does not correctly handle diacritics
+* [#4846](https://github.com/sebastianbergmann/phpunit/pull/4846): Composer proxy script is not ignored
+
 ## [8.5.21] - 2021-09-25
 
 ### Changed
@@ -178,6 +219,11 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
+[8.5.26]: https://github.com/sebastianbergmann/phpunit/compare/8.5.25...8.5.26
+[8.5.25]: https://github.com/sebastianbergmann/phpunit/compare/8.5.24...8.5.25
+[8.5.24]: https://github.com/sebastianbergmann/phpunit/compare/8.5.23...8.5.24
+[8.5.23]: https://github.com/sebastianbergmann/phpunit/compare/8.5.22...8.5.23
+[8.5.22]: https://github.com/sebastianbergmann/phpunit/compare/8.5.21...8.5.22
 [8.5.21]: https://github.com/sebastianbergmann/phpunit/compare/8.5.20...8.5.21
 [8.5.20]: https://github.com/sebastianbergmann/phpunit/compare/8.5.19...8.5.20
 [8.5.19]: https://github.com/sebastianbergmann/phpunit/compare/8.5.18...8.5.19

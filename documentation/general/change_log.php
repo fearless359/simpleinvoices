@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-04-06 - <strong>2020.3.16</strong>
+                <ul>
+                    <li>Update npm and composer libraries.</li>
+                </ul>
+            </li>
             <li>2022-03-24 - <strong>2020.3.15</strong>
                 <ul>
                     <li>Changes from redcullin were added to the master branch. They address conversion of
