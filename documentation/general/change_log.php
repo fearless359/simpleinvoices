@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-04-07 - <strong>2020.3.17</strong>
+                <ul>
+                    <li>Logic to detect multiple payments to the same invoice fixed.</li>
+                </ul>
+            </li>
             <li>2022-04-06 - <strong>2020.3.16</strong>
                 <ul>
                     <li>Update npm and composer libraries.</li>

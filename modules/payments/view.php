@@ -18,7 +18,7 @@ if (isset($_GET['ac_inv_id'])) {
 } else {
     $payment = Payment::getOne($_GET['id']);
 }
-$numPymtRecs = count($payment);
+$numPymtRecs = empty($payment) ? 0 : $payment['num_payment_recs'];
 $smarty->assign('num_payment_recs', $numPymtRecs);
 $smarty->assign("payment", $payment);
 

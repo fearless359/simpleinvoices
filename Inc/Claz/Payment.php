@@ -102,7 +102,7 @@ class Payment
         foreach ($rows as $row) {
             $action =
                 "<a class='index_table' title='{$LANG['view']} {$LANG['paymentUc']}' " .
-                    "href='index.php?module=payments&amp;view=view&amp;id={$row['id']}'>" .
+                    "href='index.php?module=payments&amp;view=view&amp;ac_inv_id={$row['ac_inv_id']}'>" .
                     "<img src='images/view.png' alt='view' height='16' />" .
                 "</a>" .
                 "&nbsp;&nbsp;" .
