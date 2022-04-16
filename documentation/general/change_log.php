@@ -17,6 +17,14 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-04-16 - <strong>2020.3.18</strong>
+                <ul>
+                    <li>Fix test for template directory existing to use the relative path.</li>
+                    <li>Add <strong>dueAmount</strong> to variables available for use on the template.
+                        This is the amount due for the client whose invoice is being generated, less
+                        the amount due for the actual invoice being reported.</li>
+                </ul>
+            </li>
             <li>2022-04-07 - <strong>2020.3.17</strong>
                 <ul>
                     <li>Logic to detect multiple payments to the same invoice fixed.</li>

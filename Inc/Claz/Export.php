@@ -213,14 +213,20 @@ class Export
                     $pastDueDate = date("Y-m-d", strtotime('-30 days')) . ' 00:00:00';
                     $pastDueAmt = CustomersPastDue::getCustomerPastDue($invoice['customer_id'], $pastDueDate, $this->invoiceId);
 
+                    // Add $dueAmt to get total due for all invoices for this client, sans the one being printed.
+                    $currDate = date("Y-m-d", strtotime('now')) . ' 00:00:00';
+                    $dueAmount = CustomersPastDue::getCustomerPastDue($invoice['customer_id'], $currDate, $this->invoiceId);
+
                     // Set the template to the default
                     $template = $defaults['template'];
 
                     $templateDir = "templates/invoices/$template";
                     $css = $siUrl . "templates/invoices/$template/style.css";
 
-                    if(!$template || !\file_exists($smarty->getTemplateDir()[0] . $templateDir )){
-                        Log::out('Template specified in SI Settings does not exist. Falling back to default template.');
+                    // Verify that a template directory has been specified and that it exists.
+                    // If not, use the default directory after generating a message to the error log.
+                    if(!$template || !is_dir($templateDir)){
+                        error_log('Template specified in SI Settings does not exist. Falling back to default template.');
                         $template = 'default';
                         $templateDir = "templates/invoices/$template";
                         $css = $siUrl . "templates/invoices/$template/style.css";
@@ -243,6 +249,7 @@ class Export
                     $smarty->assign('css', $css);
                     $smarty->assign('customFieldLabels', $customFieldLabels);
                     $smarty->assign('pastDueAmt', $pastDueAmt);
+                    $smarty->assign('dueAmount', $dueAmount);
 
                     // Plugins specifically associated with your invoice template.
                     $templatePluginsDir = "templates/invoices/$template/plugins/";

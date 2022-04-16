@@ -125,7 +125,7 @@ class CustomersPastDue
     /**
      * Get the past dues amount for an invoice
      * @param int $cid Customer ID value.
-     * @param string $pastDueDate Date before which invoices must have been issues.
+     * @param string $pastDueDate Date before which invoices must have been issued.
      *                              Format is "yyyy-mm-dd hh:mm:ss".
      * @param int|null $invoice_id ID of invoice NOT to include.
      *                              Defaults to null (all invoices included).
