@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-04-20 - <strong>2020.3.19</strong>
+                <ul>
+                    <li>Update to version 1.13.1 of jquery-ui with Smoothness theme.</li>
+                </ul>
+            </li>
             <li>2022-04-16 - <strong>2020.3.18</strong>
                 <ul>
                     <li>Fix test for template directory existing to use the relative path.</li>

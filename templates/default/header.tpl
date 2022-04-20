@@ -16,9 +16,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" href="../../images/favicon.ico"/>
-    <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
-    <link href="include/js/jquery-ui-1.12.1.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/jquery-ui-1.13.1.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/jquery-ui-1.13.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
+    <link href="include/js/jquery-ui-1.13.1.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
 
     <link href="node_modules/tooltipster/dist/css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css"/>
     <link href="node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" type="text/css"/>
@@ -41,7 +41,7 @@
     <link href="include/js/trix-master/dist/trix.css" rel="stylesheet" type="text/css">
 
     <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="include/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="include/js/jquery-ui-1.13.1.custom/jquery-ui.js"></script>
     <script src="node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 
