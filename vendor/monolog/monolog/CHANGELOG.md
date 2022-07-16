@@ -1,6 +1,28 @@
+### 2.7.0 (2022-06-09)
+
+  * Added `$datetime` parameter to `Logger::addRecord` as low level API to allow logging into the past or future (#1682)
+  * Added `Logger::useLoggingLoopDetection` to allow disabling cyclic logging detection in concurrent frameworks (#1681)
+  * Fixed handling of fatal errors if callPrevious is disabled in ErrorHandler (#1670)
+  * Marked the reusable `Monolog\Test\TestCase` class as `@internal` to make sure PHPStorm does not show it above PHPUnit, you may still use it to test your own handlers/etc though (#1677)
+  * Fixed RotatingFileHandler issue when the date format contained slashes (#1671)
+
+### 2.6.0 (2022-05-10)
+
+  * Deprecated `SwiftMailerHandler`, use `SymfonyMailerHandler` instead
+  * Added `SymfonyMailerHandler` (#1663)
+  * Added ElasticSearch 8.x support to the ElasticsearchHandler (#1662)
+  * Added a way to filter/modify stack traces in LineFormatter (#1665)
+  * Fixed UdpSocket not being able to reopen/reconnect after close()
+  * Fixed infinite loops if a Handler is triggering logging while handling log records
+
+### 2.5.0 (2022-04-08)
+
+  * Added `callType` to IntrospectionProcessor (#1612)
+  * Fixed AsMonologProcessor syntax to be compatible with PHP 7.2 (#1651)
+
 ### 2.4.0 (2022-03-14)
 
-  * Added `[Monolog\LogRecord](src/Monolog/LogRecord.php)` interface that can be used to type-hint records like `array|\Monolog\LogRecord $record` to be forward compatible with the upcoming Monolog 3 changes
+  * Added [`Monolog\LogRecord`](src/Monolog/LogRecord.php) interface that can be used to type-hint records like `array|\Monolog\LogRecord $record` to be forward compatible with the upcoming Monolog 3 changes
   * Added `includeStacktraces` constructor params to LineFormatter & JsonFormatter (#1603)
   * Added `persistent`, `timeout`, `writingTimeout`, `connectionTimeout`, `chunkSize` constructor params to SocketHandler and derivatives (#1600)
   * Added `AsMonologProcessor` PHP attribute which can help autowiring / autoconfiguration of processors if frameworks / integrations decide to make use of it. This is useless when used purely with Monolog (#1637)

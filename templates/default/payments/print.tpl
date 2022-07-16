@@ -13,7 +13,7 @@
   <div id="header"></div>
   <table class="center">
     <tr>
-      <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" style="border:0; text-align:left;margin: 0 10px;" alt=""></td>
+      <td colspan="5"><img src="{$logo|urlSafe}" style="border:0; text-align:left;margin: 0 10px;" alt="{$logo|urlSafe}"></td>
       <th class="align__text-right">
         <span class="font1">{$LANG.receiptUc} {$LANG.for} {$LANG.paymentId}&nbsp;{$payment.id|htmlSafe}</span>
       </th>

@@ -165,65 +165,65 @@
          <!-- Logo -->
          <table style="margin-left: auto; margin-right: auto; width:30%;">
             <tbody>
-                                    <tr class="clean" style="font-weight: bold;height: 40px;">
-                                        <td class="clean center"  style="font-weight: bold;margin: 0;" colspan="2" >
-                                            <img src="{$logo|urlSafe}" alt="" style="margin-left: auto; margin-right: auto; max-width: 140px;" class="clean center" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="clean left">&nbsp;</td>
-                                        <td class="clean left"></td>
-                                    </tr>
-                                    <tr class="clean center">
-                                        <td class="clean center" style="font-weight: bold;" colspan="2">
-                                            <h2 class="inv-heading">{$preference.pref_inv_heading|htmlSafe}</h2>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="clean left">&nbsp;</td>
-                                        <td class="clean left"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="clean left emph" style="font-weight: bold;">{$LANG.numberShort}: {$invoice.index_id}</td>
-                                        <td class="clean left emph" style="font-weight: bold;">{$LANG.dateUc}: {$invoice.date|date_format:"%d.%m.%Y"}</td>
-                                    </tr>
-                                    <!-- Invoice custom fields -->
-                                    <tr>
-                                        {if $invoice.custom_field1 != null}
-                                        <td class="clean left">{$customFieldLabels.invoice_cf1|htmlSafe}:</td>
-                                        <td class="clean left">{$invoice.custom_field1|htmlSafe}</td>
-                                        {else}
-                                        <td class="clean left">&nbsp;</td>
-                                        <td class="clean left">&nbsp;</td>
-                                        {/if}
-                                    </tr>
-                                    <tr>
-                                        {if $invoice.custom_field2 != null}
-                                        <td class="clean left">{$customFieldLabels.invoice_cf2|htmlSafe}:</td>
-                                        <td class="clean left">{$invoice.custom_field2|htmlSafe}</td>
-                                        {else}
-                                        <td class="clean left">&nbsp;</td>
-                                        <td class="clean left">&nbsp;</td>
-                                        {/if}
-                                    </tr>
-                                    <tr>
-                                        {if $invoice.custom_field3 != null}
-                                        <td class="clean left">{$customFieldLabels.invoice_cf3|htmlSafe}:</td>
-                                        <td class="clean left">{$invoice.custom_field3|htmlSafe}</td>
-                                        {else}
-                                        <td class="clean left">&nbsp;</td>
-                                        <td class="clean left">&nbsp;</td>
-                                        {/if}
-                                    </tr>
-                                    <tr>
-                                        {if $invoice.custom_field4 != null}
-                                        <td class="clean left">{$customFieldLabels.invoice_cf4|htmlSafe}:</td>
-                                        <td class="clean left">{$invoice.custom_field4|htmlSafe}</td>
-                                        {else}
-                                        <td class="clean left">&nbsp;</td>
-                                        <td class="clean left">&nbsp;</td>
-                                        {/if}
-                                    </tr>
+                <tr class="clean" style="font-weight: bold;height: 40px;">
+                    <td class="clean center"  style="font-weight: bold;margin: 0;" colspan="2" >
+                        <img src="{$logo|urlSafe}" alt="" style="margin-left: auto; margin-right: auto; max-width: 140px;" class="clean center" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="clean left">&nbsp;</td>
+                    <td class="clean left"></td>
+                </tr>
+                <tr class="clean center">
+                    <td class="clean center" style="font-weight: bold;" colspan="2">
+                        <h2 class="inv-heading">{$preference.pref_inv_heading|htmlSafe}</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="clean left">&nbsp;</td>
+                    <td class="clean left"></td>
+                </tr>
+                <tr>
+                    <td class="clean left emph" style="font-weight: bold;">{$LANG.numberShort}: {$invoice.index_id}</td>
+                    <td class="clean left emph" style="font-weight: bold;">{$LANG.dateUc}: {$invoice.date|date_format:"%d.%m.%Y"}</td>
+                </tr>
+                <!-- Invoice custom fields -->
+                <tr>
+                    {if $invoice.custom_field1 != null}
+                    <td class="clean left">{$customFieldLabels.invoice_cf1|htmlSafe}:</td>
+                    <td class="clean left">{$invoice.custom_field1|htmlSafe}</td>
+                    {else}
+                    <td class="clean left">&nbsp;</td>
+                    <td class="clean left">&nbsp;</td>
+                    {/if}
+                </tr>
+                <tr>
+                    {if $invoice.custom_field2 != null}
+                    <td class="clean left">{$customFieldLabels.invoice_cf2|htmlSafe}:</td>
+                    <td class="clean left">{$invoice.custom_field2|htmlSafe}</td>
+                    {else}
+                    <td class="clean left">&nbsp;</td>
+                    <td class="clean left">&nbsp;</td>
+                    {/if}
+                </tr>
+                <tr>
+                    {if $invoice.custom_field3 != null}
+                    <td class="clean left">{$customFieldLabels.invoice_cf3|htmlSafe}:</td>
+                    <td class="clean left">{$invoice.custom_field3|htmlSafe}</td>
+                    {else}
+                    <td class="clean left">&nbsp;</td>
+                    <td class="clean left">&nbsp;</td>
+                    {/if}
+                </tr>
+                <tr>
+                    {if $invoice.custom_field4 != null}
+                    <td class="clean left">{$customFieldLabels.invoice_cf4|htmlSafe}:</td>
+                    <td class="clean left">{$invoice.custom_field4|htmlSafe}</td>
+                    {else}
+                    <td class="clean left">&nbsp;</td>
+                    <td class="clean left">&nbsp;</td>
+                    {/if}
+                </tr>
             </tbody>
          </table>
       </header>

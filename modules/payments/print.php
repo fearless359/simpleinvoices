@@ -184,7 +184,7 @@ $smarty->assign("invoice"          , $invoice);
 $smarty->assign("biller"           , $biller);
 $smarty->assign("biller_info"      , $billerInfo);
 $smarty->assign("biller_info_count", count($billerInfo));
-$smarty->assign("logo"             , str_replace(" ", "%20", Util::getLogo($biller)));
+$smarty->assign("logo"             , Util::holidayLogo(Util::getLogo($biller)));
 $smarty->assign("customer"         , $customer);
 $smarty->assign("cust_info"        , $custInfo);
 $smarty->assign("cust_info_count"  , count($custInfo));

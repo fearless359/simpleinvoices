@@ -38,7 +38,7 @@ class Pdf
             }
 
             Log::out("Pdf::generate() - pdfname[$pdfname] destination[$destination] landscape[$landscape] data[$data]");
-            $mpdf = new Mpdf([
+            $pdfConfig = [
                 'tempDir'           => 'tmp/pdf_tmp',
                 'format'            => $config['exportPdfPaperSize'],
                 'default_font_size' => $config['exportPdfDefaultFontSize'],
@@ -47,7 +47,9 @@ class Pdf
                 'margin_top'        => $config['exportPdfTopMargin'],
                 'margin_bottom'     => $config['exportPdfBottomMargin'],
                 'orientation'       => $landscape ? 'L' : 'P'
-            ]);
+            ];
+            Log::out("Pdf::generate() - pdfConfig[" . json_encode($pdfConfig) . "]");
+            $mpdf = new Mpdf($pdfConfig);
 
             Log::out("Pdf::generate() - Before WriteHTML");
             $mpdf->WriteHTML($data);

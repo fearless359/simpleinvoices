@@ -17,6 +17,20 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-07-16 - <strong>2020.3.20</strong>
+                <ul>
+                    <li>Fix issue with PDF invoice export not showing logo by:
+                        <ol>
+                            <li>Make logo a relative path rather than absolute.</li>
+                            <li>Make holiday_logo function a UTIL function and set export logo via it.</li>
+                            <li>Update mPDF version to most current.</li>
+                            <li>Modify all invoice templates to use logo url directly from export.</li>
+                            <li>Modify payment print logic to generate holiday logo for template.</li>
+                            <li>Make smarty plugin, function.holiday_logo.php deprecated and made to do nothing.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </li>
             <li>2022-04-20 - <strong>2020.3.19</strong>
                 <ul>
                     <li>Update to version 1.13.1 of jquery-ui with Smoothness theme.</li>

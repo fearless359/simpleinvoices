@@ -110,16 +110,14 @@ class Util
 
     /**
      * @param array $biller
-     * @return string path to biller logo if present, else default SI logo.
+     * @return string relative path to biller logo if present, else default SI logo.
      */
     public static function getLogo(array $biller): string
     {
-        $url = self::getURL();
-
         if (empty($biller['logo'])) {
-            return $url . "templates/invoices/logos/_default_blank_logo.png";
+            return "templates/invoices/logos/_default_blank_logo.png";
         }
-        return $url . "templates/invoices/logos/$biller[logo]";
+        return "templates/invoices/logos/$biller[logo]";
     }
 
     /**
@@ -578,4 +576,35 @@ class Util
         return substr_replace($string, $rep, $leave);
     }
 
+
+    public static function holidayLogo(string $logo): string
+    {
+        // @formatter:off
+        $holidays = [
+            "_newyears."     => "1",
+            "_valentines."   => "2",
+            "_easter."       => "4",
+            "_independence." => "7",
+            "_thanksgiving." => "11",
+            "_christmas."    => "12"
+        ];
+        // @formatter:on
+
+        $parts = explode('.', $logo);
+        if (count($parts) == 2) {
+            $now = new DateTime();
+            $currMonth = $now->format('m');
+            foreach ($holidays as $holiday => $month) {
+                if ($currMonth == $month) {
+                    $tmpLogo = $parts[0] . $holiday . $parts[1];
+                    if (file_exists($tmpLogo)) {
+                        $logo = $tmpLogo;
+                    }
+                    break;
+                }
+            }
+        }
+
+        return $logo;
+    }
 }

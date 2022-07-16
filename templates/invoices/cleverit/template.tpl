@@ -81,7 +81,7 @@
                                 <tbody>
                                     <tr class="clean" style="font-weight: bold;height: 40px;">
                                         <td class="clean center"  style="font-weight: bold;margin: 0;" colspan="2" >
-                                            <img src="{$logo|urlSafe}" alt="" style="margin-left: auto; margin-right: auto; max-width: 140px;" class="clean center" />
+                                            <img src="{$logo|urlSafe}" style="margin-left: auto; margin-right: auto; max-width: 140px;" alt="{$logo|urlSafe}" class="clean center" />
                                         </td>
                                     </tr>
                                     <tr>

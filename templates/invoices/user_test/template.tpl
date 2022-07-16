@@ -12,7 +12,7 @@
     <div id="header"></div>
     <table class="center" style="width:100%;">
         <tr>
-            <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" style="border:0; margin:0 0;" alt=""></td>
+            <td colspan="5"><img src="{$logo|urlSafe}" style="border:0; margin:0 0;" alt="{$logo|urlSafe}"></td>
             <th class="align__text-right"><span class="font1">{$preference.pref_inv_heading|htmlSafe} #{$invoice.index_id}</span></th>
         </tr>
         <tr>

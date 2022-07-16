@@ -11,8 +11,8 @@
     <div id="header"></div>
     <table width="100%" class="center">
         <tr>
-            <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" border="0" hspace="0" align="left"></td>
-            <th align="right"><span class="font1">{$preference.pref_inv_heading|htmlSafe} #{$invoice.index_id}</span></th>
+            <td colspan="5"><img src="{$logo|urlSafe}" style="border:0; text-align:left;margin: 0 10px;" alt="{$logo|urlSafe}"></td>
+            <th class="align__text-right"><span class="font1">{$preference.pref_inv_heading|htmlSafe} #{$invoice.index_id}</span></th>
         </tr>
         <tr>
             <td colspan="6" class="tbl1-top">&nbsp;</td>

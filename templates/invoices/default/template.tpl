@@ -12,7 +12,7 @@
   <div class="header"></div>
   <table class="center width_100">
     <tr>
-      <td colspan="5"><img src="{holiday_logo logo=$logo|urlSafe}" class="logo" alt="logo"></td>
+      <td colspan="5"><img src="{$logo|urlSafe}" class="logo" alt="{$logo|urlSafe}"></td>
       <th class="text_right font1">&nbsp;{$preference.pref_inv_heading|htmlSafe}</th>
     </tr>
     <tr>

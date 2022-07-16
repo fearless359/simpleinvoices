@@ -204,8 +204,7 @@ class Export
 
                     $defaults = SystemDefaults::loadValues();
 
-                    $logo = Util::getLogo($biller);
-                    $logo = str_replace(" ", "%20", trim($logo));
+                    $logo = Util::holidayLogo(Util::getLogo($biller));
                     Log::out("Export::getData() - logo[$logo]");
 
                     $customFieldLabels = CustomFields::getLabels(true);
@@ -286,7 +285,8 @@ class Export
                     $biller = Biller::getOne($payment['billerId']);
 
                     $logo = Util::getLogo($biller);
-                    $logo = str_replace(" ", "%20", trim($logo));
+
+                    Log::out("Export::getData() - logo[$logo]");
 
                     $customer = Customer::getOne($payment['customerId']);
                     $invoiceType = Invoice::getInvoiceType($invoice['type_id']);
@@ -388,7 +388,7 @@ class Export
         $prefLanguage = $preference['language'];
         if (!empty($prefLanguage)) {
             $LANG = getLanguageArray($prefLanguage);
-            if (isset($LANG) && is_array($LANG) && count($LANG) > 0) {
+            if (count($LANG) > 0) {
                 global $smarty;
                 $smarty->assign('LANG', $LANG);
             }

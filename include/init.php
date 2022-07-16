@@ -103,6 +103,7 @@ foreach ($extNames as $extName) {
         $pluginDirs[] = $dirTmp;
     }
 }
+Log::out("init.php - pluginDir: " . json_encode($pluginDirs));
 if (!empty($pluginDirs)) {
     $smarty->addPluginsDir($pluginDirs);
 }

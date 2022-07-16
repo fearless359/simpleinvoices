@@ -528,7 +528,7 @@ class Invoice
                 $lastActivityDate = $row['last_activity_date'];
                 $owing            = $row['owing'];
                 $agingDate        = $row['aging_date'];
-                $setAging         = $row['set_aging'];
+                $setAging         = $row['set_aging'] == ENABLED;
                 // @formatter:on
                 $ageInfo = self::calculateAgeDays(
                     $id,
@@ -622,11 +622,6 @@ class Invoice
     private static function insertItem(array $list, ?array $taxIds): int
     {
         global $pdoDb;
-
-        $lclList = $list;
-        if (empty($lclList['domain_id'])) {
-            $lclList['domain_id'] = DomainId::get();
-        }
 
         try {
             $pdoDb->setFauxPost($list);
