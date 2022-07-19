@@ -581,12 +581,19 @@ class Util
     {
         // @formatter:off
         $holidays = [
-            "_newyears."     => "1",
-            "_valentines."   => "2",
-            "_easter."       => "4",
-            "_independence." => "7",
-            "_thanksgiving." => "11",
-            "_christmas."    => "12"
+            "_newyears."      => "1",
+            "_valentines."    => "2",
+            "_easter."        => "4",
+            "_independence."  => "7",
+            "_thanksgiving."  => "11",
+            "_christmas."     => "12",
+            "_shevat."        => "2",
+            "_purim."         => "3",
+            "_passover."      => "4",
+            "_shavuot."       => "5",
+            "_rosh_hashanah." => "9",
+            "_yom_kippur."    => "10",
+            "_chanukah."      => "12"
         ];
         // @formatter:on
 
@@ -599,8 +606,8 @@ class Util
                     $tmpLogo = $parts[0] . $holiday . $parts[1];
                     if (file_exists($tmpLogo)) {
                         $logo = $tmpLogo;
+                        break;
                     }
-                    break;
                 }
             }
         }

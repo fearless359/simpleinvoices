@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-07-19 - <strong>2020.3.21</strong>
+                <ul>
+                    <li>Add Jewish holidays to holiday logos. See <strong>How To ...</strong> topic for use.</li>
+                </ul>
+            </li>
             <li>2022-07-16 - <strong>2020.3.20</strong>
                 <ul>
                     <li>Fix issue with PDF invoice export not showing logo by:
