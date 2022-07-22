@@ -1,0 +1,124 @@
+$quote-border-width: 0.3em;
+$quote-margin-start: 0.3em;
+$quote-padding-start: 0.6em;
+
+.trix-content {
+  line-height: 1.5;
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 1.2em;
+    line-height: 1.2;
+  }
+
+  blockquote {
+    border: 0 solid #ccc;
+    border-left-width: $quote-border-width;
+    margin-left: $quote-margin-start;
+    padding-left: $quote-padding-start;
+  }
+
+  [dir=rtl] blockquote,
+  blockquote[dir=rtl] {
+    border-width: 0;
+    border-right-width: $quote-border-width;
+    margin-right: $quote-margin-start;
+    padding-right: $quote-padding-start;
+  }
+
+  li {
+    margin-left: 1em;
+  }
+
+  [dir=rtl] li {
+    margin-right: 1em;
+  }
+
+  pre {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    font-family: monospace;
+    font-size: 0.9em;
+    padding: 0.5em;
+    white-space: pre;
+    background-color: #eee;
+    overflow-x: auto;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .attachment {
+    display: inline-block;
+    position: relative;
+    max-width: 100%;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover,
+      &:visited:hover {
+        color: inherit;
+      }
+    }
+  }
+
+  .attachment__caption {
+    text-align: center;
+
+    .attachment__name + .attachment__size {
+      &::before {
+        content: ' \2022 ';
+      }
+    }
+  }
+
+  .attachment--preview {
+    width: 100%;
+    text-align: center;
+
+    .attachment__caption {
+      color: #666;
+      font-size: 0.9em;
+      line-height: 1.2;
+    }
+  }
+
+  .attachment--file {
+    color: #333;
+    line-height: 1;
+    margin: 0 2px 2px 2px;
+    padding: 0.4em 1em;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+  }
+
+  .attachment-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+
+    .attachment {
+      flex: 1 0 33%;
+      padding: 0 0.5em;
+      max-width: 33%;
+    }
+
+    &.attachment-gallery--2,
+    &.attachment-gallery--4 {
+      .attachment {
+        flex-basis: 50%;
+        max-width: 50%;
+      }
+    }
+  }
+}

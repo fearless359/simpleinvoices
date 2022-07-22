@@ -38,7 +38,7 @@
         {/literal}
     </style>
     <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="include/js/trix-master/dist/trix.css" rel="stylesheet" type="text/css">
+    <link href="include/js/trix-main/dist/trix.css" rel="stylesheet" type="text/css">
 
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="include/js/jquery-ui-1.13.1.custom/jquery-ui.js"></script>
@@ -50,7 +50,7 @@
 
     <script src="node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
 
-    <script src="include/js/trix-master/dist/trix.js"></script>
+    <script src="include/js/trix-main/dist/trix.js"></script>
     {$extension_jquery_files }
     <script src="include/js/jquery.functions1.js"></script>
     {include 'include/js/jquery.functions.js.tpl'}

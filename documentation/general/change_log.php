@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-07-22 - <strong>2020.3.22</strong>
+                <ul>
+                    <li>Update trix library to resolve security issues.</li>
+                </ul>
+            </li>
             <li>2022-07-19 - <strong>2020.3.21</strong>
                 <ul>
                     <li>Add Jewish holidays to holiday logos. See <strong>How To ...</strong> topic for use.</li>
@@ -135,13 +140,13 @@
                         disappears automatically when you move it off the icon. This replaces
                         the cluetip library previously used.</li>
                     <li>Added PLACEHOLDERS array to $LANG file to provide field entry hints. Values
-                        such as "country" should customized to $LANG files other than en_US. Note
+                        such as "country", should be customized to $LANG files other than en_US. Note
                         that these are just hints, they to not impose when the user enters.</li>
                 </ul>
             </li>
             <li>2021-08-13 - <strong>2020.3.03</strong>
                 <ul>
-                    <li>Fix issue with multiple, semi-colon separated email addresses.</li>
+                    <li>Fix issue with multiple, semicolon separated email addresses.</li>
                 </ul>
             </li>
             <li>2021-08-09 - <strong>2020.3.02</strong>
@@ -177,7 +182,7 @@
                     <li>Modified customers view screen to use DataTables in the <strong>Customer Invoice Listing</strong>
                         tab and changed tab heading to <strong>Customer Invoices</strong>. Also removed the
                         <strong>Unpaid Invoices</strong> tab as the <strong>Customer Invoices</strong> table
-                        contains them and they can be sorted to the top.
+                        contains them, and they can be sorted to the top.
                     </li>
                     <li>Fixed issue of expense edit duplicating si_expense_item_tax records.</li>
                     <li>All reports converted to use grid layout in selection criteria form.</li>
@@ -212,7 +217,7 @@
                     <li>Updated to use grid layout for quick_view invoice. Includes
                         display enhancements for invoice item tables.
                     </li>
-                    <li>Added Consulting type invoice to types available when adding
+                    <li>Added Consulting type invoice to the types available when adding
                         a new invoice. Logic was always there, just wasn't an option
                         to switch to it.
                     </li>
@@ -229,7 +234,7 @@
                 <ul>
                     <li>Css updates to move to a responsive layout. Tabs and body of screens updated.</li>
                     <li>Updates made to use responsive DataTables.</li>
-                    <li>Additional changes to implement DataTables via Ajax in files using DataTabels.</li>
+                    <li>Additional changes to implement DataTables via Ajax in files using DataTables.</li>
                     <li>Vendor and node libraries updated.</li>
                     <li>Login screen updated for new effects.</li>
                     <li>Modified smarty functions empty and null to handle array parameters.</li>
@@ -390,12 +395,12 @@
                     <li>Incorporated the sub-customer and invoice-grouped (aka product-groups) into
                         the standard program. See options in SI Defaults.
                     </li>
-                    <li>Removed flexigrid images and moved used images to images directory.</li>
+                    <li>Removed flexigrid images and moved used images to the images directory.</li>
                     <li>Converted config.php and custom.config.php file to config.ini and custom.config.ini
                         files respectively.
                     </li>
                     <li>Added program to perform one time conversion of the custom.config.php file on
-                        existing installs into the new custom.config.ini format file.
+                        existing installations into the new custom.config.ini format file.
                     </li>
                     <li>Updated all reports to use new framework that provides print, export and
                         email options.
@@ -451,7 +456,7 @@
                     <li>Modified the table lists for all screens to use formatting in javascript
                         rather than php code to enhance performance.
                     </li>
-                    <li>Added local.currency code field to the config file to support properly
+                    <li>Added "local.currency" code field to the config file to support properly
                         formatting currency fields for non-invoice items such as costs for
                         customers, and unit price for products. Note that invoice and payment
                         tables get currency formatting information from the "Inv Prefs" link
@@ -606,7 +611,7 @@
             </li>
             <li>2019-06-15 - <strong>2019.2.1</strong>
                 <ul>
-                    <li>Modified english email filter to allow multiple emails separated by a semi-colon.</li>
+                    <li>Modified english email filter to allow multiple emails separated by a semicolon.</li>
                 </ul>
             </li>
             <li>2019-06-13 - <strong>2019.2.1</strong>
@@ -673,13 +678,13 @@
                 <ul>
                     <li>Changed submit button name in tpl files to NOT be 'id'. They are now
                         named 'submit'. The name 'id' should be reserved across the board for
-                        an actual field name of 'id' (typically not present or hidden). Otherwise
+                        an actual field name of 'id' (typically not present or hidden). Otherwise,
                         it can trip PdoDb logic that by default builds commands from screen fields.
                         In the case of add templates, this means the value of the submit button
                         was being used for the auto-increment 'id' field.
                     </li>
                     <li>Fixed user maintenance logic to use correct domain that was preventing updates.</li>
-                    <li>Change all occurrences of redirect_redirect to refersh_redirect for consistency.</li>
+                    <li>Change all occurrences of redirect_redirect to refresh_redirect for consistency.</li>
                 </ul>
             </li>
             <li>2019-01-25 - <strong>2018.3.4</strong>
@@ -735,7 +740,7 @@
                     <li>Cleaned up all PDF and SI errors and warnings issued when E_ALL error
                         mode is set. There is an exceptions for Smarty OPTIONS and CYCLE commands
                         (and possibly others) that attempt to find these functions in the compiled
-                        (sysplugins) directory but they are not compiled and are in the plugins
+                        (sysplugins) directory, but they are not compiled and are in the plugins
                         directory. This warning is issued when the template using them is first
                         accessed and compiled. Subsequent access does not report an error. Issue
                         reported to Smarty team for hopeful cleanup in a future version.
@@ -785,14 +790,14 @@
             </li>
             <li>2018-10-17 - <strong>2018.2.2</strong>
                 <ul>
-                    <li>Added owing to invoices table to fix aging issue.</li>
+                    <li>Added owing to "invoices" table to fix aging issue.</li>
                     <li>Fix inventory sales profit report selection logic.</li>
                 </ul>
             </li>
             <li>2018-10-16 - <strong>2018.2.1</strong>
                 <ul>
                     <li>Modified templates using obsolete number_formatted function to use the
-                        updated siLocal_number function. This fixes display of numbers formatted
+                        updated siLocal_number function. This change fixes display of numbers formatted
                         for the locale set in the custom.config.ini file.
                     </li>
                 </ul>
@@ -819,7 +824,7 @@
                         it does exist, it will be updated as follows:
                         <ol>
                             <li>If line is in config.ini but not custom.config.ini, it will be added
-                                added to custom.config.ini.
+                                to custom.config.ini.
                             </li>
                             <li>If line is in custom.config.ini but not in config.ini, it will be
                                 enclosed in a "Possibly deprecated" comment lines.
@@ -833,7 +838,7 @@
             </li>
             <li>2018-10-04 - <strong>2018.1.2</strong>
                 <ul>
-                    <li>2018-10-06 - Minor fix. Modified new install to go to Start Working screen after
+                    <li>2018-10-06 - Minor fix. Modified new installations to go to Start Working screen after
                         required biller, customer and product have been set up. Previously went to the
                         list screen of the last of the required items set up (typically Products).
                     </li>
@@ -931,8 +936,8 @@
                 <ul>
                     <li><strong>Update to Smarty v3.1.30:</strong> Modifed numerous files to work with updated Smarty version.
                     <li><strong>Smarty Plugins in extensions.</strong> Added ability to specify plugins for extensions in the
-                        <em>extensions/<strong>EXTNAME</strong>/include/smarty_plugins</em> directory. Plugin name must be unique
-                                                                       so it is recommened that the <em><strong>EXTNAME</strong></em> be part of the name.
+                        <em>extensions/<strong>EXTNAME</strong>/include/smarty_plugins</em> directory. Plugin name must be unique,
+                        so it is recommended that the <em><strong>EXTNAME</strong></em> be part of the name.
                     </li>
                 </ul>
             </li>
@@ -968,7 +973,7 @@
                         <ul class="li__type-none">
                             <li>Removed old library from project. This included removing it as a <strong>sub-module</strong>
                                 and adding it as directly supported files. This was necessary as there is no
-                                ongoing maintenance for <strong>Zend Framework 1</strong> on Github.
+                                ongoing maintenance for <strong>Zend Framework 1</strong> on GitHub.
                             </li>
                         </ul>
                     </li>
@@ -977,7 +982,7 @@
                             <li>These changes implement a process that allows files that might be updated by multiple
                                 extensions to specify only the section that needs to be changed rather than having to
                                 replicate the entire file. This means there won't be competition between extensions
-                                having to consider whether or not another extension has been enabled and uses the same
+                                having to consider whether another extension has been enabled and uses the same
                                 file. The following files were specifically enhanced to accommodate the likely use in
                                 multiple extensions:
                             </li>
@@ -1061,7 +1066,7 @@
                                     <li>Addition of a <strong>username</strong> field to the database that will contain the unique ID
                                         that will be used to log into <strong>SimpleInvoices</strong>. Initially this is set to
                                         the <strong>email</strong> currently used. It can and should be changed by each user when
-                                        they first logon the system. Their <strong>email</strong> information is retained for
+                                        they first log on to the system. Their <strong>email</strong> information is retained for
                                         informational purposes.
                                     </li>
                                     <li>Addition of password constraint options maintained in the <strong>si_system_defaults</strong>
@@ -1091,7 +1096,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li>Enhanced the set up and maintenance of user records for customers and billers.
+                                    <li>Enhanced the setup and maintenance of user records for customers and billers.
                                         This feature already exists and is enhanced by this change to display a dropdown
                                         list of available settings for the <strong>user_id</strong> and field help information to
                                         explain this feature.
@@ -1243,7 +1248,7 @@
                             <li>Alphabetically arranged lang/en-gb/lang.php and removed unused and duplicated system_prefs element</li>
                             <li>Uploaded missing header_bg.gif and g_close.gif files in /modules/include/js - this was causing GET errors in the Apache Log files</li>
                             <li>PDF cache is the main smarty cache folder itself - no more symlinks - hence removed the /include/pdf/temp and /include/pdf/out symlinks - the /include/pdf/cache symlink was removed earlier</li>
-                            <li>Fixed typo temlates to templates in /templates/default/header.tpl on line 57</li>
+                            <li>Fixed typo templates to templates in /templates/default/header.tpl on line 57</li>
                             <li>Fixed correct location of iehacks.css in the code in include/functions.php line 323</li>
                             <li>PHPReports DARWIN OS - $ipsep extended</li>
                             <li>PHPReports PHP5 deprecated use of array_push issue fixed</li>
@@ -1275,7 +1280,7 @@
                     <li>2007-10-02 aka AFL Grand Final celebration release
                         <ul>
                             <li>PHP5 and above only - SimpleInvoices will no longer work on PHP4 servers</li>
-                            <li>Invoices now can be deleted- This is can be enabled via the System Preferences page</li>
+                            <li>Invoices now can be deleted - This is can be enabled via the System Preferences page</li>
                             <li>Adding more items to an existing invoice via the edit page it now possible</li>
                             <li>New javascript menu included - now works in IEs,FF and Opera</li>
                             <li>New language select system - system language can now be changed via the System Preferences page</li>
@@ -1353,7 +1358,7 @@
                         <ul>
                             <li>New live grid ajax (Live Grid Plus + OpenRico) used to manage the display of all the table info in the 'manage' pages. The old tablesorter and filtering has been removed.</li>
                             <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=79">Issue 79</a>Custom field extended to support be in invoices</li>
-                            <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=78">Issue 78</a>The ajax info page/alert boxes moved from jQuery thickbox to ibox so as to work with the new open rico live grid</li>
+                            <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=78">Issue 78</a>The ajax info page/alert boxes moved from jQuery thickbox to ibox to work with the new open rico live grid</li>
                             <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=81">Issue 81</a>New info page for Custom Fields in voices</li>
                             <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=80">Issue 80</a>New info detailing what custom fields are</li>
                             <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=74">Issue 74</a>Standardised on using English Number system throughout (ie, 2,400.00 instead of 2400)</li>
@@ -1371,10 +1376,10 @@
                             <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=58">Issue 58</a>Date format woes fixed</li>
                             <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=65">Issue 65</a>Invoice date: make editable</li>
                             <li><a href="https://code.google.com/p/simpleinvoices/issues/detail?id=72">Issue 72</a>Sort not working correctly - fixed</li>
-                            <li>Note: If your using authentication please read: <a href="https://simpleinvoices.group/howto" target="_blank">SimpleInvoices Knowledge Base HowTo Page</a> as there have been changes</li>
+                            <li>Note: If you're using authentication please read: <a href="https://simpleinvoices.group/howto" target="_blank">SimpleInvoices Knowledge Base HowTo Page</a> as there have been changes</li>
                             <li>SQL Patches
                                 <ul>
-                                    <li>Adding data to the custom fields table for invoice</li>
+                                    <li>Adding data to the "custom fields" table for invoice</li>
                                     <li>Adding custom fields to the invoices table</li>
                                 </ul>
                             </li>
@@ -1439,7 +1444,7 @@
                             <li>Known issues with this release:
                                 <ul>
                                     <li>PDF Print Preview: The border for the customer and biller details in print_preview.php doesn't show for the telephone fields</li>
-                                    <li>Konqueror: Some of the javascript features don't work in Konqueror</li>
+                                    <li>Konqueror: Some javascript features don't work in Konqueror</li>
                                 </ul>
                             </li>
                         </ul>
@@ -1467,13 +1472,13 @@
                 <ul>
                     <li>2006-10-14
                         <ul>
-                            <li>Index.php - home page renovated - green buttons removed - jQuery accordian menu added</li>
+                            <li>Index.php - home page renovated - green buttons removed - jQuery accordion menu added</li>
                             <li>Issue 25: IE print_preview.ph borders fixed</li>
                             <li>Exporting to xls and doc fixed</li>
                             <li>German translation added</li>
                             <li>Menu text made more easily translatable</li>
                             <li>Documentation upgraded to include FAQs</li>
-                            <li>Creation of a new cache directory to make it easier to setup SimpleInvoices</li>
+                            <li>Creation of a new cache directory to make it easier to set up SimpleInvoices</li>
                         </ul>
                     </li>
                 </ul>
@@ -1655,7 +1660,7 @@
                 <ul>
                     <li>2006-05-31
                         <ul>
-                            <li>Database Backup - this now works, so the user can backup the SimpleInvoices database at will
+                            <li>Database Backup - this now works, so the user can back up the SimpleInvoices database at will
                                 through SimpleInvoices
                             </li>
                             <li>Invoice - Consulting: new invoice type added, this is a cross between and total and an itemized
@@ -1673,8 +1678,8 @@
                 <ul>
                     <li>2006-05-27
                         <ul>
-                            <li>Biller logo now a drop down list</li>
-                            <li>Default invoice template now a drop down list</li>
+                            <li>Biller logo now a drop-down list</li>
+                            <li>Default invoice template now a drop-down list</li>
                             <li>System defaults page all option have been enabled</li>
                             <li>System defaults actually work :)
                                 <ul>
@@ -1789,7 +1794,7 @@
                 <ul>
                     <li>2006-04-29
                         <ul>
-                            <li>Invoice Itemized - fix - the unit price was reporting the current unit price when it should of been showing the value of the unit at the time of sale</li>
+                            <li>Invoice Itemized - fix - the unit price was reporting the current unit price when it should have been showing the value of the unit at the time of sale</li>
                             <li>Remove unnecessary files</li>
                         </ul>
                     </li>
@@ -1798,7 +1803,7 @@
                     <li>2006-04-28
                         <ul>
                             <li>Bug fix release
-                            <li>Tax calculation - fix tax calculation issue as per Jestered email</li>
+                            <li>Tax calculation - fix tax calculation issue as per Jestered's email</li>
                         </ul>
                     </li>
                 </ul>
