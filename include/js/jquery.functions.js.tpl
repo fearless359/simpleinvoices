@@ -21,9 +21,9 @@
                 }
 
                 if (productGroupsEnabled === '1') {
-                    $("#unit_price" + rowNumber).attr("value", data['markup_price']);
+                    $("#unit_price" + rowNumber).val(data['markup_price']);
                 } else {
-                    $("#unit_price" + rowNumber).attr("value", data['unit_price']);
+                    $("#unit_price" + rowNumber).val(data['unit_price']);
                 }
 
                 $("#tax_id\\[" + rowNumber + "\\]\\[0\\]").val(data['default_tax_id']);

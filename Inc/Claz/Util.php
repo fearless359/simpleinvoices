@@ -415,7 +415,7 @@ class Util
 
     /**
      * This will take any dash or underscore turn it into a space, run ucwords against
-     * it so it capitalizes the first letter in all words separated by a space then it
+     * it, so it capitalizes the first letter in all words separated by a space then it
      * turns and deletes all spaces.
      * @param string $str String to convert
      * @param array $dontStrip If specified, an array of non-alphanumeric characters not to strip.

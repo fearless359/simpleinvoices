@@ -17,6 +17,12 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-08-10 - <strong>2020.4.0</strong>
+                <ul>
+                    <li>Updated to latest version of Smarty template engine.</li>
+                    <li>Correct logic that set invoice unity price when product changes.</li>
+                </ul>
+            </li>
             <li>2022-07-22 - <strong>2020.3.22</strong>
                 <ul>
                     <li>Update trix library to resolve security issues.</li>

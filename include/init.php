@@ -12,7 +12,6 @@ use Inc\Claz\Util;
 
 global $apiRequest, $config, $databaseBuilt, $databasePopulated, $extNames, $module, $pdoDbAdmin, $view;
 
-require_once "library/smarty/libs/Smarty.class.php";
 require_once 'library/paypal/paypal.class.php';
 require_once 'library/HTMLPurifier/HTMLPurifier.standalone.php';
 
@@ -24,7 +23,7 @@ $smarty->setConfigDir("config")
        ->setTemplateDir("templates")
        ->setCompileDir("tmp/template_c")
        ->setCacheDir("tmp/cache")
-       ->setPluginsDir(["library/smarty/libs/plugins", "include/smarty_plugins"]);
+       ->setPluginsDir(["vendor/smarty/smarty/libs/plugins", "include/smarty_plugins"]);
 
 Util::getLocaleList();
 
@@ -79,6 +78,7 @@ try {
     $smarty->registerPlugin('modifier', "utilNumber"         , ["Inc\Claz\Util", "number"]);
     $smarty->registerPlugin('modifier', "utilNumberTrim"     , ["Inc\Claz\Util", "numberTrim"]);
     $smarty->registerPlugin('modifier', "utilCurrency"       , ["Inc\Claz\Util", "currency"]);
+    $smarty->registerPlugin('modifier', "utilCamelCase"      , ["Inc\Claz\Util", "camelCase"]);
     $smarty->registerPlugin('modifier', "utilDate"           , ["Inc\Claz\Util", "date"]);
     $smarty->registerPlugin('modifier', "utilTruncateStr"    , ["Inc\Claz\Util", "truncateStr"]);
     $smarty->registerPlugin('modifier', "utilSqlDataWithTime", ["Inc\Claz\Util", "sqlDateWithTime"]);

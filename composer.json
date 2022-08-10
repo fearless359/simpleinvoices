@@ -19,6 +19,7 @@
     "monolog/monolog": "^2.1",
     "ext-pdo": "*",
     "ext-intl": "*",
-    "sebastian/global-state": "^5.0"
+    "sebastian/global-state": "^5.0",
+    "smarty/smarty": "^4.2"
   }
 }
