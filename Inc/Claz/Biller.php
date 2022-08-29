@@ -203,7 +203,7 @@ class Biller
 
         $result = false;
         try {
-            // The fields to be update must be in the $_POST array indexed by their
+            // The fields to be updated must be in the $_POST array indexed by their
             // actual field name.
             $pdoDb->setExcludedFields(["id", "domain_id"]);
 

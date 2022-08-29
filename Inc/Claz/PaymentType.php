@@ -135,7 +135,7 @@ class PaymentType
 
             $rows = $pdoDb->request("SELECT", "payment_types");
             if (empty($rows)) {
-                //add new payment type if no Paypal type
+                //add new payment type if no PayPal type
                 self::insert();
                 return self::selectOrInsertWhere($description);
             }
@@ -214,7 +214,7 @@ class PaymentType
 
             $result = $pdoDb->request("UPDATE", "payment_types");
         } catch (PdoDbException $pde) {
-            error_log("PaymentType::update() - pt_id[{$ptId}] error: " . $pde->getMessage());
+            error_log("PaymentType::update() - pt_id[$ptId] error: " . $pde->getMessage());
         }
         return $result;
     }

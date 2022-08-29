@@ -227,7 +227,7 @@ class CustomFlags
 
         try {
             // If the reset flags option was specified, do so now. Note that this is not considered critical.
-            // Therefore failure to update will report in the error log for will not otherwise affect the update.
+            // Therefore, failure to update will report in the error log for will not otherwise affect the update.
             $products = Product::getAll(true);
             $requests = new Requests($config);
             if ($clearFlags == ENABLED) {

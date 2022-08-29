@@ -49,6 +49,7 @@
                                 class="product_change width_100 margin__left-0-5" {if $line == 0}required{/if}
                                 data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
                                 data-product-groups-enabled="{$defaults.product_groups}">
+{var_dump($products)}
                             {foreach $products as $product}
                                 <option {if $product.id == $invoiceItem.product_id} selected {/if}
                                         value="{if isset($product.id)}{$product.id|htmlSafe}{/if}">{$product.description|htmlSafe}</option>

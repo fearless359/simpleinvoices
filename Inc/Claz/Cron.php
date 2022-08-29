@@ -450,7 +450,7 @@ class Cron
                         $result["cron_message_{$value['id']}"] = $cronMsg;
                     }
                 } else {
-                    // days diff is negative - whats going on
+                    // Days diff is negative. See what's going on.
                     $cronMsg = "Cron ID: {$value['id']} - NOTE RUN: Not scheduled for today. Cron for {$value['index_name']} with ";
                     $cronMsg .= (empty($value['start_date']) ? "no start date" : "start date of {$value['start_date']} ") . "and ";
                     $cronMsg .= empty($value['end_date']) ? "no end date" : "an end date of {$value['end_date']} ";

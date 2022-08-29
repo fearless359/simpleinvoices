@@ -17,16 +17,17 @@
 {literal}
     <script>
         function setUserIdList() {
-            let role = document.getElementById("role_id1");
+            let role = document.getElementById("roleId1");
             let roleIdx = role.selectedIndex;
             let roleText = role.options[roleIdx].text;
             let origRoleVal = document.getElementById("origRole1").value;
-            if (roleText === origRoleVal) return;
 
             let currRoleElem = document.getElementById("currRole1");
+            let currRoleVal = currRoleElem.value;
+            if (roleText === currRoleVal) return;
             currRoleElem.value = roleText;
 
-            let list = document.getElementById("user_id1");
+            let list = document.getElementById("userId1");
             let newList = "";
             if (roleText === "customer") {
                 let cust = document.getElementById("cust1");
@@ -87,10 +88,10 @@
                    value="{if isset($user.email)}{$user.email|htmlSafe}{/if}"/>
         </div>
         <div class="grid__container grid__head-10" {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
-            <label for="role_id1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.role}:
+            <label for="roleId1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.role}:
                 <img class="tooltip" title="{$LANG.helpUserRole}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <select name="role_id" id="role_id1" class="cols__5-span-2" tabindex="50"
+            <select name="role_id" id="roleId1" class="cols__5-span-2" tabindex="50"
                     onchange="setUserIdList();" title="See help for details">
                 {foreach $roles as $role}
                     <option {if $role.id == $user.role_id}selected{/if} value="{if isset($role.id)}{$role.id|htmlSafe}{/if}">
@@ -100,10 +101,10 @@
             </select>
         </div>
         <div class="grid__container grid__head-10" {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
-            <label for="user_id1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.userId}:
+            <label for="userId1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.userId}:
                 <img class="tooltip" title="{$LANG.helpUserId}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <select name="user_id" id="user_id1" class="cols__5-span-2" tabindex="60"
+            <select name="user_id" id="userId1" class="cols__5-span-2" tabindex="60"
                     title="See help for details"
                     {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}disabled{/if}>
                 {if $user.role_name == "customer"}

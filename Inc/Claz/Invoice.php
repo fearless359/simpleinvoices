@@ -377,7 +377,7 @@ class Invoice
 
     /**
      * Update values in invoice with just calculated values from calculateAgeDays().
-     * Note: Previously used array_merge but it doesn't update numeric values which
+     * Note: Previously used array_merge, but it doesn't update numeric values which
      *       $ageInfo array contains.
      * @param array $invoice Reference to the array with invoice values.
      * @param array $ageInfo Updated aging information.
@@ -454,7 +454,7 @@ class Invoice
     {
 
         // Don't recalculate $owing unless you have to because it involves DB reads.
-        // Note that there is a time value in the dates so they are typically equal only when
+        // Note that there is a time value in the dates, so they are typically equal only when
         // an account is created.
         if ($setAging && ($lastActivityDate >= $agingDate || $owing > 0)) {
             $total = self::getInvoiceTotal($id);
@@ -462,7 +462,7 @@ class Invoice
             $owing = $total - $paid;
         }
 
-        // We don't want create values here.
+        // We don't want to create values here.
         if ($owing < 0 || !$setAging) {
             $owing = 0;
         }
@@ -567,7 +567,7 @@ class Invoice
 
     /**
      * Insert a new invoice record
-     * @param array Associative array of items to insert into invoice record.
+     * @param array $list Associative array of items to insert into invoice record.
      * @return int Unique ID of the new invoice record. 0 if insert failed.
      * @throws PdoDbException
      */
@@ -614,7 +614,7 @@ class Invoice
 
     /**
      * Insert a new invoice_item and the invoice_item_tax records.
-     * @param array Associative array keyed by field name with its assigned value.
+     * @param array $list Associative array keyed by field name with its assigned value.
      * @param array|null $taxIds
      * @return int Unique ID of the new invoice_item record.
      * @throws PdoDbException
@@ -921,7 +921,7 @@ class Invoice
     }
 
     /**
-     * Insert/update the multiple taxes for a invoice line item.
+     * Insert/update the multiple taxes for an invoice line item.
      * @param int $invoiceItemId
      * @param array|null $lineItemTaxIds
      * @param float $unitPrice
@@ -1299,7 +1299,7 @@ class Invoice
      * Function: taxesGroupedForInvoiceItem
      * Purpose: to show a nice summary of total $ for tax for an invoice item.
      * Used for invoice editing
-     * @param int Invoice item ID
+     * @param int $invoiceItemId Invoice item ID
      * @return array Items found
      * @throws PdoDbException
      */

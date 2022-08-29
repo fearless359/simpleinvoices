@@ -57,7 +57,7 @@ class Requests
      * Add a <b>Request</b> to be processed.
      * @param Request $request
      * @return int Number of request. Keep for retrieval of the record ID automatically assigned
-     *             to new records assuming the table the record was added to has an auto assign field.
+     *             to new records assuming the table the record was added to, has an auto assign field.
      */
     public function add(Request $request): int
     {
@@ -97,6 +97,7 @@ class Requests
      * Get the ID value assigned to a new record.
      * @param int $idx Number of the request to get the ID associated with it.
      * @return int ID assigned or 0 if no ID exists.
+     * @noinspection PhpUnused
      */
     public function getAddId(int $idx): int
     {

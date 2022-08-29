@@ -161,11 +161,11 @@ class UtilTest extends TestCase
 
         $biller['logo'] = '';
         $logo = Util::getLogo($biller);
-        self::assertEquals($url . 'templates/invoices/logos/_default_blank_logo.png', $logo, 'Test for default logo');
+        self::assertEquals('templates/invoices/logos/_default_blank_logo.png', $logo, 'Test for default logo');
 
         $biller['logo'] = 'simple_invoices_logo.png';
         $logo = Util::getLogo($biller);
-        self::assertEquals($url . 'templates/invoices/logos/simple_invoices_logo.png', $logo, 'Test for biller logo');
+        self::assertEquals('templates/invoices/logos/simple_invoices_logo.png', $logo, 'Test for biller logo');
     }
 
     /** @noinspection PhpMethodMayBeStaticInspection */

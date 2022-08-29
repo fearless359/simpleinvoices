@@ -6,7 +6,7 @@ namespace Inc\Claz;
  * Class: Index
  * Replacement for primary keys as the ID field in various tables - ie. si_invoices
  * $node = this is the module in question - ie 'invoice', 'products' etc..
- * $subNode = the sub set of the node - ie. this is the 'invoice preference' if node = 'invoice'
+ * $subNode = the sub set of the node - i.e. this is the 'invoice preference' if node = 'invoice'
  * $subNode2 = 2nd sub set of the node - ir. this is the 'biller' if node = 'invoice'
  */
 class Index

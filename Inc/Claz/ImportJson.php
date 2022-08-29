@@ -37,7 +37,7 @@ class ImportJson
 
     /**
      * @param string $str
-     * @return mixed
+     * @return string|array
      */
     private function replace(string $str)
     {
@@ -54,10 +54,7 @@ class ImportJson
         return json_decode($json, true);
     }
 
-    /**
-     * @return string
-     */
-    public function collate()
+    public function collate(): string
     {
         $json = $this->getFileContents();
         $replace = $this->replace($json);
@@ -73,21 +70,18 @@ class ImportJson
 
             if ($this->debug) {
                 echo "<br>";
-            }
-            if ($this->debug) {
                 echo "<b>Table: " . $table . "</b>";
             }
 
             $columns = "";
             $values = "";
-            foreach ($aList[$key] as $val2) {
+            foreach ($val as $val2) {
                 if ($this->debug) {
                     echo "<br>";
                 }
                 $idx = "1";
                 foreach ($val2 as $key3 => $val3) {
                     $val3 = addslashes($val3); // Fix issue of single quotes used in input value.
-                    // TODO: IF null don't ''
                     $idx == "1" ? $columns .= $key3 : $columns .= ", " . $key3;
                     $idx == "1" ? $values .= "'" . $val3 . "'" : $values .= ", '" . $val3 . "'";
                     $idx++;

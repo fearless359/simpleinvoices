@@ -60,10 +60,10 @@ class Customer
 
     /**
      * Minimize the amount of data returned to the manage table.
-     * @param bool defaultDisplayDepartment User option of what to display in the department/phone field.
+     * @param bool $defaultDisplayDepartment User option of what to display in the department/phone field.
      * @return array Data for the manage table rows.
      */
-    public static function manageTableInfo(string $defaultDisplayDepartment): array
+    public static function manageTableInfo(bool $defaultDisplayDepartment): array
     {
         global $config, $LANG, $pdoDb;
 
@@ -149,7 +149,7 @@ class Customer
      *          noTotals - Set to <b>true</b> if only customer record fields to be returned.
      *              Set to <b>false</b> to add calculated totals field (Default if not specified).
      *          order_by_set - Set to <b>true</b> if caller set the ORDER BY option. Set to
-     *              <b>false</b> to order by name (default if not specified.
+     *              <b>false</b> to order by name (default if not specified).
      * @return array Customers selected.
      */
     private static function getCustomers(array $params): array
@@ -355,7 +355,7 @@ class Customer
 
     /**
      * Check to see if this customer is a parent of other customers.
-     * @param int $cId Id of customer to check for having children.
+     * @param int $cId of customer to check for having children.
      * @return array Contains the list of sub-customers for the specified $cid.
      */
     public static function getMyChildren(int $cId): array

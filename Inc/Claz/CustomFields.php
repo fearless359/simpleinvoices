@@ -137,8 +137,8 @@ class CustomFields
     /**
      * Get custom field labels.
      * @param bool $noUndefinedLabels Defaults to <b>false</b>. When set to
-     *        <b>true</b> custom fields that do not have a label defined will
-     *        not a be assigned a default label so the undefined custom fields
+     *        <b>true</b>, custom fields that do not have a label defined will
+     *        not be assigned a default label so the undefined custom fields
      *        won't be displayed.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */

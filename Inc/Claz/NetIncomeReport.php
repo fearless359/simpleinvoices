@@ -7,14 +7,8 @@ namespace Inc\Claz;
  */
 class NetIncomeReport
 {
-    /**
-     * @param string $startDate
-     * @param string $stopDate
-     * @param int $customerId
-     * @param int $excludeCustomFlagItems
-     * @return array
-     */
-    public static function selectRptItems(string $startDate, string $stopDate, int $customerId, int $excludeCustomFlagItems)
+
+    public static function selectRptItems(string $startDate, string $stopDate, int $customerId, ?int $excludeCustomFlagItems): array
     {
         global $pdoDb;
 
@@ -24,10 +18,7 @@ class NetIncomeReport
             // Make a regex string that Tests for "0" in the specified position
             $cFlags = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'];
             $cFlags[$excludeCustomFlagItems - 1] = '0';
-            $pattern = '^';
-            foreach ($cFlags as $cFlag) {
-                $pattern .= $cFlag;
-            }
+            $pattern = '^' . implode('', $cFlags);
         } else {
             $pattern = '.*'; // Basically ignores custom flag setting
         }
@@ -86,11 +77,11 @@ class NetIncomeReport
                 // Create an invoice object for the report. This object holds the payments and
                 // invoice items for the invoice. We know that a payment to this invoice was
                 // made in this reporting period. However, it is possible that not all payments
-                // were made in this reporting period. So we will keep the payment info so we can
+                // were made in this reporting period. So we will keep the payment info, so we can
                 // report only the payment that were made in this period.
                 $netIncInv = new NetIncomeInvoice($id, $ivNumber, $iv['iv_date'], $ivCustomer);
 
-                // Get all the payments made for this invoice. We do this so we can calculate what
+                // Get all the payments made for this invoice. We do this, so we can calculate what
                 // if any payments are left for the invoice, as well as have payment detail to
                 // include in the report.
                 $pyRecs = [];
@@ -109,8 +100,8 @@ class NetIncomeReport
                     $netIncInv->addPayment($py['ac_amount'], $py['ac_date'], $inPeriod);
                 }
 
-                // Now get all the invoice items with the exception of those flagged
-                // as non-income items provided the option to exclude them was specified.
+                // Now get all the invoice items except those flagged as non-income items
+                // provided the option to exclude them was specified.
                 $iiRecs = [];
                 try {
                     $pdoDb->setOrderBy("ii.invoice_id");

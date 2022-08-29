@@ -7,8 +7,8 @@ table {
         border-collapse: collapse;
 }
 
-td {margin: 0px;      padding: 0px;}
-tr {margin: 0px;      padding: 0px;}
+td {margin: 0;      padding: 0;}
+tr {margin: 0;      padding: 0;}
 
 .col1 { background-color: #EFEFEF; }
 

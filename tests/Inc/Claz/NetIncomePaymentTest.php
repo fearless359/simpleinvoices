@@ -22,6 +22,6 @@ class NetIncomePaymentTest extends TestCase
         $nip = new NetIncomePayment($amt, $dt, $cFlags);
         Assert::assertEquals($amt, $nip->getAmount());
         Assert::assertEquals($dt, $nip->getDate());
-        Assert::assertEquals(['0','0','1','0','0','0','0','0','0','0',], $nip->getCFlags());
+        Assert::assertEquals(['0','0','1','0','0','0','0','0','0','0',], $nip->getCflags());
     }
 }

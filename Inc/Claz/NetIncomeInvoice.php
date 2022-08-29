@@ -65,7 +65,7 @@ class NetIncomeInvoice
      * the client so the cost is straight pass through. The only income
      * on these items will be in the shipping and handling changes assessed.
      * Example: Invoice was for $527.50. Of this, $500 was cost of computer,
-     * and $27.50 was shipping and handling. The client paid $505 up front in
+     * and $27.50 was shipping and handling. The client paid $505 up front
      * in the month prior to the beginning of the report selection period.
      * The TV was delivered and the final $22.50 was paid during the report
      * period. To the <b>total_payments<b> is $527.50, the <b>total_amount</b>

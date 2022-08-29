@@ -17,9 +17,17 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-08-29 - <strong>2020.4.1</strong>
+                <ul>
+                    <li>Updated node library files.</li>
+                    <li>Fixed logic for user screen change of user role to properly set list.</li>
+                    <li>Miscellaneous clean up of function parameter declarations and comment syntax.
+                        No functional change.</li>
+                </ul>
+            </li>
             <li>2022-08-10 - <strong>2020.4.0</strong>
                 <ul>
-                    <li>Updated to latest version of Smarty template engine.</li>
+                    <li>Updated to the latest version of Smarty template engine.</li>
                     <li>Correct logic that set invoice unity price when product changes.</li>
                 </ul>
             </li>
@@ -449,7 +457,7 @@
             <li>2020-06-16 - <strong>2019.2.26</strong>
                 <ul>
                     <li>Modified code to handle multiple TO and BCC email addresses using a
-                        semi-colon, ";", to separate each address.
+                        semicolon, ";", to separate each address.
                     </li>
                     <li>Added logic to report invalid email addresses in the FROM, TO and BCC
                         fields as errors to the user rather than throwing an error that never

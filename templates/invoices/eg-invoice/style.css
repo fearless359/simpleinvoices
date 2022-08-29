@@ -13,8 +13,8 @@ table td, table td * {
 vertical-align: top;
 }
 
-td {margin: 0px;      padding: 0px 1px 0px 1px; text-align: left;}
-tr {margin: 0px;      padding: 1px; text-align: left;}
+td {margin: 0;      padding: 0 1px; text-align: left;}
+tr {margin: 0;      padding: 1px; text-align: left;}
 .col1 { background-color: #EFEFEF; }
 
 .font1 { font-family: Arial; font-size: 12pt; }
@@ -31,7 +31,7 @@ tr {margin: 0px;      padding: 1px; text-align: left;}
 
 .top-table {
 width: 100%;
-margin: 20px 0px 46px 0px;
+margin: 20px 0 46px 0;
 }
 
 .top-left {
@@ -58,13 +58,13 @@ margin-left: 60px;}
 }
 
 .items {
-margin-top: 0px;
+margin-top: 0;
 }
 .description {
-margin-top: 0px;
+margin-top: 0;
 }
 .details {
-margin-top: 0px;
+margin-top: 0;
 }
 
 

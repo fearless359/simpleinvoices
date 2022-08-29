@@ -76,7 +76,7 @@ class OrderBy
                     } else {
                         $str = "OrderBy - addField(): Invalid array content. ";
                         if (count($item) == 2) {
-                            $str .= "field name: {$item[0]}, order: {$item[1]}";
+                            $str .= "field name: $item[0], order: $item[1]";
                         } elseif (count($item) == 1) {
                             $str .= "field name: $item[0]";
                         } else {
@@ -93,7 +93,7 @@ class OrderBy
             $item = [$field, $lclOrder];
             $this->orderByFields[] = $item;
         } else {
-            $str = "OrderBy - addField(): Invalid <b>\$field</b> type. Field value is {$field}.";
+            $str = "OrderBy - addField(): Invalid <b>\$field</b> type.";
             error_log($str);
             throw new PdoDbException($str);
         }

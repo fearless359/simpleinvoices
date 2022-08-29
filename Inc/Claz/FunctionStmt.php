@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection RegExpSingleCharAlternation */
 
 namespace Inc\Claz;
 
@@ -8,12 +8,10 @@ namespace Inc\Claz;
  */
 class FunctionStmt
 {
-    private const OPERATORS = '/^(\-|\+|\*|\/)$/';
+    private const OPERATORS = '/^(-|\+|\*|\/)$/';
 
-    /**
-     * @var string|null
-     */
-    private $function;
+    private ?string $function;
+
     /**
      * @var DbField|string
      */

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
 
 namespace Inc\Claz;
 
@@ -68,14 +68,14 @@ class PdoDb
             $host = $config['databaseHost'];
         }
 
-        $dsn = "mysql:dbname={$this->tableSchema};host={$host};port={$config['databasePort']}";
+        $dsn = "mysql:dbname=$this->tableSchema;host=$host;port={$config['databasePort']}";
         $username = $config['databaseUsername'];
         $password = $config['databasePassword'];
         try {
             // Used for user requests.
             $this->pdoDb = new PDO($dsn, $username, $password);
 
-            // Used internally to perform table structure look ups, etc. so these
+            // Used internally to perform table structure look-ups, etc. so these
             // queries will not impact in process activity for the user's requests.
             $this->pdoDb2 = new PDO($dsn, $username, $password);
         } catch (PDOException $exp) {
@@ -101,8 +101,7 @@ class PdoDb
     }
 
     /**
-     * Reset class properties with the exception of the database object,
-     * to their default (unset) state.
+     * Reset class properties except the database object, to their default (unset) state.
      * @param bool $clearTran
      */
     public function clearAll(bool $clearTran = true): void
@@ -177,6 +176,7 @@ class PdoDb
     /**
      * Sets flag to save the last command.
      * Note: Flag reset automatically after each command.
+     * @noinspection PhpUnused
      */
     public function saveLastCommand(): void
     {
@@ -187,6 +187,7 @@ class PdoDb
      * Returns the last command saved.
      * Note that this is reset when the next request is performed.
      * @return string Last command saved.
+     * @noinspection PhpUnused
      */
     public function getLastCommand(): string
     {
@@ -211,6 +212,7 @@ class PdoDb
      * Set the <b>DISTINCT</b> attribute for selection
      * Note: If the request performed is not a <b>SELECT</b>, this
      * setting will be ignored.
+     * @noinspection PhpUnused
      */
     public function setDistinct(): void
     {
@@ -259,6 +261,7 @@ class PdoDb
      *        the <b>$column</b> will be appended to the end of the <b>$constraint</b>
      *        unless there is a <i>tilde</i>, <b>~</b>, character in it. If present,
      *        the <b>$column</b> will be added in place of the <i>tilde</i>.
+     * @noinspection PhpUnused
      */
     public function addTableConstraints(string $column, string $constraint): void
     {
@@ -395,6 +398,7 @@ class PdoDb
 
     /**
      * @param string $statement to perform update on duplicate key.
+     * @noinspection PhpUnused
      */
     public function setOnDuplicateKey(string $statement): void
     {
@@ -572,8 +576,9 @@ class PdoDb
      *        of "t2" is used for table 2 fields. This means the "name" attribute for
      *        these fields will contain t2_name, t2_address, t2_city, t2_state and t2_zip.
      *        When a <i>PdoDb request</i> is submitted for table 1 fields, no prefix will
-     *        be set. Then when the <i>PdoDb request</i> is submitted for table 2, this
+     *        be set. Then, when the <i>PdoDb request</i> is submitted for table 2, this
      *        field prefix of <b>"t2"</b> will be set.
+     * @noinspection PhpUnused
      */
     public function setFieldPrefix(string $fieldPrefix): void
     {
@@ -653,7 +658,7 @@ class PdoDb
                     $keys[] = '/[?]/';
                 }
 
-                // If the value for this is is an array, make it a character separated string.
+                // If the value for this is an array, make it a character separated string.
                 if (is_array($value)) {
                     $values[$key] = implode(',', $value);
                 }
@@ -664,7 +669,6 @@ class PdoDb
             }
 
             // Walk the array to see if we can add single-quotes to strings
-            $count = null;
             array_walk($values,
                 function (&$val) {
                     if ($val != "null" && !is_numeric($val) && !is_array($val) && !is_object($val)) {
@@ -672,7 +676,7 @@ class PdoDb
                     }
                 }
             );
-            $sql = preg_replace($keys, $values, $sql, 1, $count);
+            $sql = preg_replace($keys, $values, $sql, 1);
 
             // Compact query to be logged
             $sql = preg_replace('/  +/', ' ', str_replace(PHP_EOL, '', $sql));
@@ -719,7 +723,7 @@ class PdoDb
             $sql = "SELECT 1" .
                 " FROM `information_schema`.`tables`" .
                 " WHERE `table_name` = '$table'" .
-                " AND `table_schema` = '{$this->tableSchema}';";
+                " AND `table_schema` = '$this->tableSchema';";
             if ($sth = $this->pdoDb2->prepare($sql)) {
                 if ($sth->execute() !== false) {
                     $tmpResult = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -750,7 +754,7 @@ class PdoDb
                 " FROM `information_schema`.`columns`" .
                 " WHERE `column_name`= '$column'" .
                 " AND `table_name` = '$table'" .
-                " AND `table_schema` = '{$this->tableSchema}';";
+                " AND `table_schema` = '$this->tableSchema';";
             if (($sth = $this->pdoDb2->prepare($sql)) !== false) {
                 if ($sth->execute() !== false) {
                     $tmpResult = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -791,7 +795,7 @@ class PdoDb
             if ($sth = $this->pdoDb2->prepare($sql)) {
                 if ($sth->execute($tokenPairs)) {
                     while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-                        $nam = isset($row['column_name']) ? $row['column_name'] : $row['COLUMN_NAME'];
+                        $nam = $row['column_name'] ?? $row['COLUMN_NAME'];
                         $columns[$nam] = "";
                         $sql = "SELECT `constraint_name`" .
                                " FROM `information_schema`.`key_column_usage`" .
@@ -964,7 +968,7 @@ class PdoDb
      * Set no output to error_log condition for errors that are thrown.
      * Set only for the current request. If debug option is set, the error
      * will be reported in the error_log.
-     */
+     * @noinspection PhpUnused*/
     public function setNoErrorLog(): void {
         $this->noErrorLog = true;
     }
@@ -977,7 +981,7 @@ class PdoDb
      * @param string $table Database table name.
      * @param string $alias (Optional) Alias for table name. Note that the alias need
      *         be in the select list. If not present, it will be added to selected fields.
-     * @return mixed Result varies with the request type.
+     * @return int|array|bool Result varies with the request type.
      *         <b>INSERT</b> returns the auto increment unique ID (or 0 if no such field),
      *         <b>SELECT</b> returns the associative array for selected rows or an empty array if no rows are found,
      *         <b>SHOW TABLES</b> returns the associative array for tables <i>LIKE</i> the specified table or empty array,
@@ -985,7 +989,8 @@ class PdoDb
      *         otherwise <b>true</b> on success or <b>false</b> on failure.
      * @throws PdoDbException if any unexpected setting or missing information is encountered.
      */
-    public function request(string $request, string $table, string $alias = "") {
+    public function request(string $request, string $table, string $alias = "")
+    {
 
         if ($this->debug) {
             $this->debugMicroTime = microtime(true);
@@ -1014,7 +1019,7 @@ class PdoDb
                         $constraint = preg_replace('/~/', $column, $constraint);
                     }
 
-                    $sql .= "ALTER TABLE `$table` {$constraint};";
+                    $sql .= "ALTER TABLE `$table` $constraint;";
                 }
             } elseif ($request == "CREATE TABLE") {
                 foreach ($this->tableColumns as $column => $structure) {
@@ -1037,7 +1042,7 @@ class PdoDb
 
                 $sql .= ") ENGINE = " . $this->tableEngine . ";";
             } elseif ($request == "SHOW TABLES") {
-                $sql = $request . " LIKE '{$table}'";
+                $sql = $request . " LIKE '$table'";
             } else {
                 if (!($columns = $this->getTableFields($table))) {
                     $this->clearAll();
@@ -1063,7 +1068,7 @@ class PdoDb
                 $havings = $this->havings->build();
 
                 // Build LIMIT
-                $limit = $this->limit == 0 ? '' : " LIMIT {$this->limit}";
+                $limit = $this->limit == 0 ? '' : " LIMIT $this->limit";
                 // Make an array of paired column name and values. The column name is the
                 // index and the value is the content at that column.
                 foreach ($columns as $column => $values) {
@@ -1089,11 +1094,11 @@ class PdoDb
                 break;
 
             case "CREATE TABLE":
-                $sql = "CREATE TABLE `{$table}` $sql";
+                $sql = "CREATE TABLE `$table` $sql";
                 break;
 
             case "DROP":
-                $sql = "DROP TABLE IF EXISTS `{$table}` $sql";
+                $sql = "DROP TABLE IF EXISTS `$table` $sql";
                 break;
 
             case "SELECT":
@@ -1108,7 +1113,7 @@ class PdoDb
 
                 if (!empty($this->selectList)) {
                     foreach($this->selectList as $column) {
-                        $isADbf = is_a($column, "Inc\Claz\DbField") ? true : false;
+                        $isADbf = is_a($column, "Inc\Claz\DbField");
                         if (!empty($list)) {
                             $list .= ', ';
                         }
@@ -1153,7 +1158,7 @@ class PdoDb
                 }
 
                 $sql  = "SELECT " . ($this->distinct ? "DISTINCT " : "") . "$list FROM `$table` " .
-                        (!empty($alias) ? "`{$alias}` " : "") . "\n";
+                        (!empty($alias) ? "`$alias` " : "") . "\n";
 
                 if (!empty($this->joinStmts)) {
                     foreach($this->joinStmts as $join) {
@@ -1164,15 +1169,15 @@ class PdoDb
                 break;
 
             case "INSERT":
-                $sql /** @lang TEXT */ = "INSERT INTO `{$table}` \n";
+                $sql /** @lang TEXT */ = "INSERT INTO `$table` \n";
                 break;
 
             case "UPDATE":
-                $sql /** @lang TEXT */ = "UPDATE `{$table}` SET \n";
+                $sql /** @lang TEXT */ = "UPDATE `$table` SET \n";
                 break;
 
             case "DELETE":
-                $sql /** @lang TEXT */  = "DELETE FROM `{$table}` \n";
+                $sql /** @lang TEXT */  = "DELETE FROM `$table` \n";
                 break;
 
             default:

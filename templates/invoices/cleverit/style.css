@@ -24,8 +24,7 @@ page[size="A4"] {
 	width: 21cm;
 	height: 29.7cm;
 	display: block;
-	margin: 0 auto;
-	margin-bottom: 0.5cm;
+	margin: 0 auto 0.5cm auto;
 	box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
 }
 
@@ -55,9 +54,9 @@ page[size="A4"] {
 }
 
 body {
-	margin: 0px;
+	margin: 0;
 	background: #FFF;
-	font-family: Helvetica, san-serif;
+	font-family: Helvetica, san-serif, serif;
 	font-size: 10pt;
 	line-height: 110%;
 	font-style: normal;
@@ -75,7 +74,7 @@ h1 {
 	font-weight: bold;
 	color: #786E69;
 	text-align: center;
-	margin: 32px 0px 32px 0px;
+	margin: 32px 0;
 }
 
 h2 {
@@ -85,7 +84,7 @@ h2 {
 	font-weight: bold;
 	color: #786E69;
 	text-align: center;
-	margin: 28px 0px 28px 0px;
+	margin: 28px 0;
 }
 
 h3 {
@@ -95,7 +94,7 @@ font-family: "Trebuchet MS", sans-serif;
     font-weight: bold;
     color: #786E69;
     text-align: left;
-    margin: 2px 0px 14px 0px;
+    margin: 2px 0 14px 0;
 }
 
 h1 span {
@@ -133,7 +132,7 @@ h2 span:after {
 	font-family: "Trebuchet MS", sans-serif;
 	font-size: 1.6em;
 	border-bottom: 2px solid black;
-	margin: 0px;
+	margin: 0;
 }
 
 
@@ -275,7 +274,7 @@ footer a,
 img {
 	flex: 1;
 	/* additionally, equal width */
-	width: 140;
+	width: 140px;
 	margin: 10px;
 }
 

@@ -124,8 +124,8 @@ class Extensions
      *          table plus pseudo columns for extension directories not in the table
      *          (aka not registered), will be returned.
      * @return array row(s) selected from the extensions table. Note that rows in the
-     *          table will have the registered field set to ENABLED whereas pseudo
-     *          entries will have the registered field set to DISABLED.
+     *          table will have the registered field set to "ENABLED" whereas pseudo
+     *          entries will have the registered field set to "DISABLED".
      */
     private static function getExtensions(?int $id = null, bool $include_all_dirs = false): array
     {

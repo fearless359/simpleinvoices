@@ -15,7 +15,7 @@ class Havings
      * @param string $field
      * @param string $operator
      * @param mixed $value Can be a string, DbField object or an array.
-     * @param string (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
+     * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
      *        not specified, it will be set automatically to <b>AND</b> if a subsequent
      *        criterion is added.
      * @throws PdoDbException
@@ -34,9 +34,9 @@ class Havings
      * @param bool $leftParen <b>true</b> if left parenthesis should be included; <b>false</b> if not.
      * @param string $field Field name to use.
      * @param string $operator
-     * @param DbField|array|number $value Can be a any data type needed by the specified <b>$operator</b>.
+     * @param DbField|array|number $value Can be any data type needed by the specified <b>$operator</b>.
      * @param bool $rightParen <b>true</b> if right parenthesis should be included; </b>false</b> if not.
-     * @param string (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
+     * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
      *        not specified, it will be set automatically to <b>AND</b> if a subsequent
      *        criterion is added.
      * @throws PdoDbException
@@ -53,7 +53,7 @@ class Havings
      * @param string $field
      * @param string $operator
      * @param DbField|array|number|string $value Can be a string, DbField object or an array.
-     * @param string (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
+     * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
      *        not specified, it will be set automatically to <b>AND</b> if a subsequent
      *        criterion is added.
      * @throws PdoDbException
@@ -74,7 +74,7 @@ class Havings
     {
         $this->addDefaultConnector();
         if (is_a($havings, "Inc\Claz\Having")) {
-            $this->add(false, $havings->getField(), $havings->getOperator(), $havings->getValue(), false);
+            $this->add(false, $havings->getField(), $havings->getOperator(), $havings->getValue());
         } elseif (is_a($havings, "Inc\Claz\Havings")) {
             $this->havings = array_merge($this->havings, $havings->getHavings());
         } else {
@@ -120,7 +120,7 @@ class Havings
 
     /**
      * getter for class property.
-     * @return array Array of <b>Having</b> objects assigned to this this object.
+     * @return array Array of <b>Having</b> objects assigned to this object.
      */
     protected function getHavings(): array
     {

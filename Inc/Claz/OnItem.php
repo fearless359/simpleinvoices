@@ -43,8 +43,4 @@ class OnItem extends WhereItem
         }
     }
 
-    public function parenCount(): int
-    {
-        return parent::parenCount();
-    }
 }

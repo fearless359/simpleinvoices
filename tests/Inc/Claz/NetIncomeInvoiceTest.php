@@ -48,6 +48,7 @@ class NetIncomeInvoiceTest extends TestCase
         $nii->addItem($amt1, 'Amt1', $cflags);
         $nii->addItem($amt2, 'Amt2', $cflags);
         Assert::assertEquals($amt1 + $amt2, $nii->getTotalAmount());
+        Assert::assertCount(2, $nii->getItems());
     }
 
     public function testAdjustPymtsForNonIncome()
@@ -61,6 +62,7 @@ class NetIncomeInvoiceTest extends TestCase
         $nii->addPayment($pymt1, $this->dt, false);
         $nii->addPayment($pymt2, $this->dt, true);
         $nii->adjustPymtsForNonIncome();
+        Assert::assertCount(2, $nii->getPymts());
         Assert::assertEquals($amt, $nii->getTotalAmount());
         Assert::assertEquals($amt, $nii->getTotalPayments());
         Assert::assertEquals($pymt2, $nii->getTotalPeriodPayments());

@@ -97,7 +97,7 @@ class Join
      * @return string <b>JOIN</b> statement.
      * @throws PdoDbException
      */
-    public function build(&$keypairs)
+    public function build(&$keypairs): string
     {
         $join = $this->type . " JOIN ";
         if (is_a($this->table, "Inc\Claz\Select")) {

@@ -18,8 +18,8 @@ class SiError
     private static bool $returnMessage = false;
 
     /**
-     * Set class property to determine whether or not message generated in the
-     * out() function should be returned to the caller or sent to an exit() call.
+     * Set class property to determine whether message generated in the out() function
+     * should be returned to the caller or sent to an exit() call.
      * @param bool $returnMessage
      */
     public static function setReturnMessage(bool $returnMessage): void
@@ -77,8 +77,8 @@ class SiError
                         "<br />" .
                         "<br /><b>Note:</b> If you are installing SimpleInvoices please follow the below steps:" .
                         "<ol>" .
-                            "<li>Create a blank MySQL database (cPanel or myPHPAdmin). Defined a DB Admin user " .
-                                "name with full access to this database. Assign a password to this DB Admin user.</li>" .
+                            "<li>Create a blank MySQL database (cPanel or myPHPAdmin). Defined a DB Admin username " .
+                                "with full access to this database. Assign a password to this DB Admin user.</li>" .
                             "<li>Enter the correct database connection details in the config/custom.config.ini file.</li>" .
                             "<li>Refresh this page</li>" .
                         "</ol>" .
@@ -111,7 +111,7 @@ class SiError
                                 "<tr>" .
                                     "<th style='font-weight:normal;'>" .
                                         "You&#39;ve reached this page because the name of the database in your " .
-                                        "configuration file has not been created. Please follow the the following " .
+                                        "configuration file has not been created. Please follow the following " .
                                         "instructions before leaving this page." .
                                         "<ol>" .
                                             "<li>Using your database admin program, phpMyAdmin for MySQL, create a database " .

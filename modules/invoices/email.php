@@ -75,6 +75,7 @@ try {
             }
         }
         if (!$email->setFrom($fromAddrs)) {
+            $email->errorLog();
             $message = "Invalid FROM field";
             $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
             $displayBlock = "<div class='si_message_error'>$message</div>";
@@ -87,6 +88,7 @@ try {
 
         $toBccAddrs = explode(';', $_POST['emailBcc']);
         if (empty($results) && !$email->setBcc($toBccAddrs)) {
+            $email->errorLog();
             $message = "Invalid BCC field";
             $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
             $displayBlock = "<div class='si_message_error'>$message</div>";
@@ -99,6 +101,7 @@ try {
 
         $emailTo = explode(';', $_POST['emailTo']);
         if (empty($results) && !$email->setEmailTo($emailTo)) {
+            $email->errorLog();
             $message = "Invalid TO field";
             $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=invoices&amp;view=manage' />";
             $displayBlock = "<div class='si_message_error'>$message</div>";

@@ -68,7 +68,7 @@ class Db
 
     /**
      * Instantiate the class object if it isn't already instantiated.
-     * Otherwise return the existing instance.
+     * Otherwise, return the existing instance.
      * @param array $config config.ini / custom.config.ini values
      * @return Db
      */

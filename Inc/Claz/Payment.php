@@ -11,7 +11,7 @@ class Payment
     /**
      * Count of optionally filtered payments
      * @param int|null $onlinePmtId Set to null if all payments to be counted. Otherwise
-     *          set to Online Payment ID of the record to accessed. Online payments
+     *          set to Online Payment ID of the record to access. Online payments
      *          are made through portals such as PayPal, eWAY, etc.
      * @return int Count of records for specified payment ID if specified. Otherwise
      *          count of all payment records.
@@ -59,8 +59,8 @@ class Payment
     }
 
     /**
-     * Get a all payment records.
-     * @param bool $manageTable true if selection if for the manage table; false (default) if not.
+     * Get all payment records.
+     * @param bool $manageTable true if selection is for the manage table; false (default) if not.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
     public static function getAll(bool $manageTable = false): array
@@ -76,7 +76,7 @@ class Payment
     /**
      * Get a specific payment type record.
      * @param int $id Unique ID of invoice to retrieve payments for.
-     * @param bool $manageTable true if selection if for the manage table; false (default) if not.
+     * @param bool $manageTable true if selection is for the manage table; false (default) if not.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
     public static function getInvoicePayments(int $id, bool $manageTable = false): array
@@ -225,7 +225,7 @@ class Payment
      *          to select by the online_payment_id. Online payments are made through portals
      *          such as PayPal, eWAY, etc.
      * @param array|int $value For $filter of date, an array containing the start and end date
-     *          range to select by. Otherwise set to "online_payment_id" and value contains the
+     *          range to select by. Otherwise, set to "online_payment_id" and value contains the
      *          online_payment_id value to select payments for.
      * @return array
      */
@@ -295,7 +295,7 @@ class Payment
     /**
      * Get a specific payment type record.
      * @param int $id Unique ID of customer to retrieve payments for.
-     * @param bool $manageTable true if selection if for the manage table; false (default) if not.
+     * @param bool $manageTable true if selection is for the manage table; false (default) if not.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
     public static function getCustomerPayments(int $id, bool $manageTable = false): array

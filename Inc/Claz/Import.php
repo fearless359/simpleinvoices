@@ -28,7 +28,7 @@ class Import
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return string|array
      */
     public function replace(string $string)

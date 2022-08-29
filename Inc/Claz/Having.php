@@ -25,7 +25,7 @@ class Having
      * Class constructor
      * @param bool $leftParen (Optional) <b>true</b> if a left parenthesis should be placed before this
      *        statement; else <b>false</b> (default) if no left parenthesis is to be added.
-     * @param string $field
+     * @param string|DbField|FunctionStmt $field
      * @param string $operator
      * @param DbField|number|array|string $value Can be a string, number or an array as needed by the specified <b>$operator</b>.
      * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
@@ -35,7 +35,7 @@ class Having
      *        <i>$value</i> parameter; else <b>false</b> (default) if no right parenthesis is to be added.
      * @throws PdoDbException
      */
-    public function __construct(bool $leftParen, string $field, string $operator, $value, bool $rightParen=false, string $connector="")
+    public function __construct(bool $leftParen, $field, string $operator, $value, bool $rightParen=false, string $connector="")
     {
         $this->leftParen = $leftParen;
         $this->rightParen = $rightParen;
@@ -151,7 +151,7 @@ class Having
      * @param string $connector Valid connector, <b>OR</b>, or <b>AND</b>.
      * @throws PdoDbException
      */
-    public function setConnector($connector)
+    public function setConnector(string $connector)
     {
         $this->connector = $connector;
         if (!empty($connector)) {

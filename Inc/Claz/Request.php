@@ -110,6 +110,7 @@ class Request
      *           Ex: "street_address".
      *        2) An array of field names to select from the table.
      *           Ex: array("name", "street_address", "city", "state", "zip").
+     * @noinspection PhpUnused
      */
     public function addSelectList($selectList): void
     {
@@ -193,6 +194,7 @@ class Request
      * Set a limit on records accessed
      * @param int $limit Value to specify in the <i>LIMIT</i> parameter.
      * @param int $offset Number of records to skip before reading the next $limit amount.
+     * @noinspection PhpUnused
      */
     public function setLimit(int $limit, int $offset = 0): void
     {
@@ -212,6 +214,7 @@ class Request
     /**
      * getter for class property
      * @return string $table Table processed by this request.
+     * @noinspection PhpUnused
      */
     public function getTable(): string
     {
@@ -221,7 +224,7 @@ class Request
     /**
      * Perform this request.
      * @param PdoDb $pdoDb
-     * @return mixed Result of the request.
+     * @return int|array|bool Result of the request.
      * @throws PdoDbException if an error is thrown when the <b>request</b> is performed.
      * @noinspection PhpUnused
      */

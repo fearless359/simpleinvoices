@@ -112,7 +112,7 @@ class Log extends Logger
      * @param int|null $level one of the following. The level used to open the logger sets the level for which messages
      *      send to Log::out() will be generated. This setting must be greater than or equal to the open level
      *      for a message to print. Ex: Log::open called with level Log::ERROR. Log::out called with level
-     *      Log::WARNING. Log::WARNING less than Log::ERROR so it does not print.
+     *      Log::WARNING. Log::WARNING less than Log::ERROR, so it does not print.
      *    DEBUG     (100): Detailed debug information. (Default if not specified)
      *    INFO      (200): Interesting events. Examples: User logs in, SQL logs.
      *    NOTICE    (250): Normal but significant events.
