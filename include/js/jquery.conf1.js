@@ -9,7 +9,7 @@ $(document).on("change", ".product_change", (function () {
     let product = $(this).val();
     let rowNumber = $(this).attr("data-row-num");
     let productGroupsEnabled = $(this).attr("data-product-groups-enabled");
-    let quantity = $("#quantity" + rowNumber).attr("value");
+    let quantity = $("#quantity" + rowNumber).val();
     // This function is in the jquery_functions.js.tpl file and will resolve at runtime.
     // noinspection JSUnresolvedFunction
     invoiceProductChange(product, rowNumber, quantity, productGroupsEnabled);

@@ -87,7 +87,7 @@ if (isset($_GET['template'])) {
         $smarty->assign("defaultCustomerID", $_GET['customer_id']);
         $smarty->assign('defaultInvoice', $invoice);
         $smarty->assign('defaultInvoiceItems', $invoiceItems);
-        $dynamicLineItems = $numInvItems > $dynamicLineItems ? $numInvItems : $dynamicLineItems;
+        $dynamicLineItems = max($numInvItems, $dynamicLineItems);
     } catch (PdoDbException $pde) {
         error_log("modules/invoices/invoice.php Unexpected error: {$pde->getMessage()}");
         exit("Unable to process request. See error log for details.");

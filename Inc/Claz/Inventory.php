@@ -175,7 +175,7 @@ class Inventory
      */
     public static function delete()
     {
-        throw new Exception("inventory.php delete(): delete not supported.");
+        throw new Exception("inventory::delete(): delete not supported.");
     }
 
     /**

@@ -16,14 +16,21 @@
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="invoiceId" class="cols__1-span-1 align__text-right margin__right-1">{$LANG.invoiceUc}:</label>
-            <select name="invoice_id" id="invoiceId" class="cols__2-span-9" required autofocus tabindex="10">
+            <select name="invoice_id" id="invoiceId" class="cols__2-span-8" {if $cronInvoiceItemsCount > 0}disabled{/if} required autofocus tabindex="10"
+                    onchange="$('#renderButtons').css('display','none')">
                 <option value=''></option>
                 {foreach $invoice_all as $invoice}
-                    <option value="{if isset($invoice.id)}{$invoice.id}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if}>
+                    <option value="{if isset($invoice.id)}{$invoice.id}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if}
+                            data-inv-type="{if $invoice.type_id == ITEMIZED_INVOICE}ITEMIZED{else}TOTAL{/if}"">
                         {$LANG.invUc}#{$invoice.index_id}: ({$invoice.biller|htmlSafe}, {$invoice.customer|htmlSafe}, {$invoice.total|utilNumber})
                     </option>
                 {/foreach}
             </select>
+            {if $cronInvoiceItemsCount > 0}
+            <span class="si_filters_title cols__10-span-1">
+                <img class="tooltip" title="{$LANG.helpCronInvoice}" src="{$helpImagePath}help-small.png" alt=""/>
+            </span>
+            {/if}
         </div>
         <div class="grid__container grid__head-10">
             <label for="start_date" class="cols__1-span-4 align__text-right margin__right-1">{$LANG.startDate}:</label>
@@ -72,3 +79,21 @@
     </div>
     <input type="hidden" name="op" value="edit"/>
 </form>
+{if $invoiceType == ITEMIZED_INVOICE}
+    <br/>
+    <br/>
+    <div class="si_filters align__text-center margin__bottom-2" id="renderButtons">
+        <div class="align__text-center margin__top-3 margin__bottom-3">
+            <a title=" {$LANG.printUc}" class="button square" id="renderQuickViewId"
+               href="index.php?module=cron&amp;view=renderQuickView&amp;cronId={$cron.id|urlencode}">
+                <img src='{$path}../../../images/printer.png' class='action'  alt=""/>&nbsp; {$LANG.renderInvoice}
+            </a>
+            <a class="button square" id="editItemizedId"
+               href="index.php?module=cron&amp;view=editItemized&amp;cronId={$cron.id}" >
+                <img class="action" src="images/edit.png" alt="{$LANG.addUc}{if $cronInvoiceItemsCount > 0}&#47;{$LANG.edit}{/if} {$LANG.invoiceItems}"/>
+                {$LANG.addUc}{if $cronInvoiceItemsCount > 0}&#47;{$LANG.edit}{/if} {$LANG.invoiceItems}
+            </a>
+            <img class="tooltip" title="{$LANG.helpCronInvoiceItems}" src="{$helpImagePath}help-small.png" alt=""/>
+        </div>
+    </div>
+{/if}

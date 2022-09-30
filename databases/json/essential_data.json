@@ -428,7 +428,36 @@
       "sql_release": "20210930",
       "sql_statement": "INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('display_department', 1, $domainId, 1);",
       "source": "fearless359"
-    }  ],
+    },
+    {
+      "sql_patch_ref": "327",
+      "sql_patch": "Make invoice_item_id a key field in the invoice_item_tax table.",
+      "sql_release": "20220909",
+      "sql_statement": "ALTER TABLE `si_invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`);",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "328",
+      "sql_patch": "Add cron_invoice_items table to the database.",
+      "sql_release": "20220909",
+      "sql_statement": "CREATE TABLE `si_cron_invoice_items` (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `cron_id` int(11) UNSIGNED NOT NULL, `quantity` decimal(25,6) NOT NULL DEFAULT 0.000000, `product_id` int(11) UNSIGNED NOT NULL, `unit_price` decimal(25,6) DEFAULT 0.000000, `tax_amount` decimal(25,6) DEFAULT 0.000000, `gross_total` decimal(25,6) DEFAULT 0.000000, `description` text COLLATE utf8_unicode_ci DEFAULT NULL, `total` decimal(25,6) DEFAULT 0.000000, `attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;ALTER TABLE `si_cron_invoice_items` ADD KEY `cron_id` (`cron_id`), ADD KEY `product_id` (`product_id`);ALTER TABLE `si_cron_invoice_items` ADD CONSTRAINT `si_cron_invoice_items_ibfk_1` FOREIGN KEY (`cron_id`) REFERENCES `si_cron` (`id`) ON UPDATE CASCADE, ADD CONSTRAINT `si_cron_invoice_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE;",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "329",
+      "sql_patch": "Add cron_invoice_item_tax table to the database.",
+      "sql_release": "20220909",
+      "sql_statement": "CREATE TABLE `si_cron_invoice_item_tax` (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `cron_invoice_item_id` int(11) UNSIGNED NOT NULL, `tax_id` int(11) UNSIGNED NOT NULL, `tax_type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL, `tax_rate` decimal(25,6) NOT NULL, `tax_amount` decimal(25,6) NOT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;ALTER TABLE `si_cron_invoice_item_tax` ADD KEY `cron_invoice_item_id` (`cron_invoice_item_id`), ADD KEY `tax_id` (`tax_id`);ALTER TABLE `si_cron_invoice_item_tax` ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `si_cron_invoice_items` (`id`) ON UPDATE CASCADE;",
+      "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "330",
+      "sql_patch": "Add foreign key for invoice_item_id to invoice_item_tax table.",
+      "sql_release": "20220926",
+      "sql_statement": "ALTER TABLE `si_invoice_item_tax` MODIFY `invoice_item_id` INT(11) UNSIGNED NOT NULL; ALTER TABLE `si_invoice_item_tax` MODIFY `tax_id` INT(11) UNSIGNED NOT NULL; ALTER TABLE `si_invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`); ALTER TABLE `si_invoice_item_tax` ADD CONSTRAINT `si_invoice_item_tax_ibfk_2` FOREIGN KEY (`invoice_item_id`) REFERENCES `si_invoice_items` (`id`) ON UPDATE CASCADE;",
+      "source": "fearless359"
+    }
+  ],
   "si_system_defaults": [
     {
       "name": "biller",

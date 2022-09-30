@@ -342,7 +342,7 @@ class Cron
                         $idx++;
 
                         // $domainId gets propagated from invoice to be copied from
-                        $newInvoiceId = Invoice::recur($value['invoice_id']);
+                        $newInvoiceId = Invoice::recur($value['invoice_id'], $cronId);
 
                         CronLog::insert($pdoDb, $domainId, $cronId, $today);
                         $invoice = Invoice::getOne($newInvoiceId);
@@ -528,6 +528,498 @@ class Cron
             error_log("Cron::get_crons_to_run() - Error: " . $exp->getMessage());
         }
         return $rows;
+    }
+
+    /**
+     * Get cron invoice. Mimics Invoice::getInvoices() for a specific invoice; in
+     * this case, the invoice that the cron is for.
+     * @param int $cronId - ID of cron record to get invoice for.
+     * @return array Invoice record.
+     * @throws PdoDbException
+     */
+    public static function getCronInvoice(int $cronId): array
+    {
+        global $pdoDb;
+
+        try {
+            $cronRec = self::getOne($cronId);
+            if (empty($cronRec)) {
+                return [];
+            }
+
+            $invoiceId = $cronRec['invoice_id'];
+            $invoice = Invoice::getOne($invoiceId);
+
+            $pdoDb->addSimpleWhere('iv.id', $invoiceId);
+
+            $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.gross_total,0)", "gross"));
+            $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.total,0)", "total"));
+            $pdoDb->addToFunctions(new FunctionStmt("SUM", "COALESCE(ii.tax_amount,0)", "total_tax"));
+
+            $jn = new Join("LEFT", "cron_invoice_items", "ii");
+            $jn->addSimpleItem("ii.cron_id", $cronId);
+            $pdoDb->addToJoins($jn);
+
+            $pdoDb->setSelectList("iv.id");
+
+            $rows = $pdoDb->request("SELECT", "invoices", "iv");
+
+            if (empty($rows)) {
+                return [];
+            }
+
+            $row = $rows[0];
+            $invoice['gross'] += $row['gross'];
+            $invoice['total'] += $row['total'];
+            $invoice['total_tax'] += $row['total_tax'];
+
+            $invoiceTaxesGrouped = $invoice['tax_grouped'];
+            $cronTaxesGrouped = self::taxesGroupedForInvoice($cronId);
+
+            $items = [];
+            foreach ($invoiceTaxesGrouped as $invItem) {
+                $items[$invItem['tax_name']] = $invItem;
+            }
+
+            foreach ($cronTaxesGrouped as $cronItem) {
+                if (empty($items[$cronItem['tax_name']])) {
+                    $items[$cronItem['tax_name']] = $cronItem;
+                } else {
+                    $items[$cronItem['tax_name']]['tax_amount'] += $cronItem['tax_amount'];
+                    $items[$cronItem['tax_name']]['count'] += $cronItem['count'];
+                }
+            }
+
+            ksort($items);
+
+            $grouped = [];
+            foreach ($items as $item) {
+                $grouped[] = $item;
+            }
+            $invoice['tax_grouped'] = $grouped;
+
+        } catch (PdoDbException $pde) {
+            error_log("Cron::getCronInvoice() - Error: " . $pde->getMessage());
+            throw $pde;
+        }
+
+        return $invoice;
+    }
+
+    /**
+     * Get the cron_invoice_items associated with a specific cron record.
+     * @param int $cronId ID of cron record.
+     * @param int $domainId Value from invoice referenced by cron.
+     * @return array
+     * @throws PdoDbException
+     */
+    public static function getCronInvoiceItems(int $cronId, int $domainId): array
+    {
+        global $pdoDb;
+
+        $cronInvoiceItems = [];
+        try {
+            $pdoDb->addSimpleWhere("cron_id", $cronId);
+            $pdoDb->setOrderBy("id");
+            $rows = $pdoDb->request("SELECT", "cron_invoice_items");
+
+            foreach ($rows as $cronInvoiceItem) {
+                $cronInvoiceItem['domain_id'] = $domainId;
+
+                if (isset($cronInvoiceItem['attribute'])) {
+                    $cronInvoiceItem['attributeDecode'] = json_decode($cronInvoiceItem['attribute'], true);
+                }
+
+                $pdoDb->addSimpleWhere("id", $cronInvoiceItem['product_id'], 'AND');
+                $pdoDb->addSimpleWhere('domain_id', DomainId::get());
+                $rows = $pdoDb->request("SELECT", "products");
+                $cronInvoiceItem['product'] = $rows[0];
+
+                $cronInvItemProdAttrDecode = json_decode($cronInvoiceItem['product']['attribute']);
+                $cronInvoiceItem['product']['attributeDecode'] = $cronInvItemProdAttrDecode;
+
+                $cronInvItemProdAttrs = [];
+                foreach ($cronInvItemProdAttrDecode as $key => $val) {
+                    if ($val) {
+                        $cronInvItemProdAttrs[] = ProductAttributes::getOne($key);
+                    }
+                }
+
+                $cronInvoiceItem['productAttributes'] = $cronInvItemProdAttrs;
+
+                $tax = self::taxesGroupedForInvoiceItem($cronInvoiceItem['id']);
+                foreach ($tax as $key => $value) {
+                    $cronInvoiceItem['tax'][$key] = $value['tax_id'];
+                }
+
+                $cronInvoiceItems[] = $cronInvoiceItem;
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Cron::getInvoiceItems() - cronId[$cronId] error: " . $pde->getMessage());
+            throw $pde;
+        }
+
+        return $cronInvoiceItems;
+    }
+
+    /**
+     * Remove invoice items for specific cron ID.
+     * In cron_invoice_items and cron_invoice_item_tax tables associated with a $cronId.
+     * @param int $cronId to remove cron information for.
+     * @throws PdoDbException thrown if issue arises.
+     */
+    public static function deleteCronInvoiceItems(int $cronId)
+    {
+        global $config, $pdoDb;
+
+        try {
+            $pdoDb->addSimpleWhere('cron_id', $cronId);
+            $pdoDb->setSelectList('id');
+            $rows = $pdoDb->request("SELECT", "cron_invoice_items");
+
+            $requests = new Requests($config);
+
+            foreach ($rows as $row) {
+                $request = new Request("DELETE", "cron_invoice_item_tax");
+                $request->addSimpleWhere("cron_invoice_item_id", $row['id']);
+                $requests->add($request);
+            }
+
+            $request = new Request("DELETE", "cron_invoice_items");
+            $request->addSimpleWhere("cron_id", $cronId);
+            $requests->add($request);
+            $requests->process();
+        } catch (PdoDbException $pde) {
+            error_log("Cron::deleteCronInvoiceItems() - Failed delete. Error: " . $pde->getMessage());
+            throw $pde;
+        }
+    }
+
+    /**
+     * Generates a nice summary of total $ for tax for an invoice. Note that only
+     * non-zero tax records are returned.
+     * @param int $cronId id of cron to get all tax info for.
+     * @return array Rows retrieve.
+     * @throws PdoDbException
+     */
+    private static function taxesGroupedForInvoice(int $cronId): array
+    {
+        global $pdoDb;
+
+        try {
+            $pdoDb->addToFunctions(new FunctionStmt("SUM", "item_tax.tax_amount", "tax_amount"));
+            $pdoDb->addToFunctions(new FunctionStmt("COUNT", "*", "count"));
+
+            $pdoDb->addToWhere(new WhereItem(false, "item_tax.tax_amount", '<>', 0, false, 'AND'));
+            $pdoDb->addSimpleWhere("item.cron_id", $cronId);
+
+            $jn = new Join("INNER", "cron_invoice_item_tax", "item_tax");
+            $jn->addSimpleItem("item_tax.cron_invoice_item_id", new DbField("item.id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join("INNER", "tax", "tax");
+            $jn->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
+            $pdoDb->addToJoins($jn);
+
+            $exprList = [
+                new DbField("tax.tax_id", "tax_id"),
+                new DbField("tax.tax_description", "tax_name"),
+                new DbField("item_tax.tax_rate", "tax_rate")
+            ];
+
+            $pdoDb->setSelectList($exprList);
+            $pdoDb->setGroupBy($exprList);
+
+            $rows = $pdoDb->request("SELECT", "cron_invoice_items", "item");
+        } catch (PdoDbException $pde) {
+            error_log("Cron::taxesGroupedForInvoice() - cron_id[$cronId] - error: " . $pde->getMessage());
+            throw $pde;
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Function: taxesGroupedForInvoiceItem
+     * Purpose: to show a nice summary of total $ for tax for an invoice item.
+     * @param int $cronInvoiceItemId Invoice item ID
+     * @return array Items found
+     * @throws PdoDbException
+     */
+    private static function taxesGroupedForInvoiceItem(int $cronInvoiceItemId): array
+    {
+        global $pdoDb;
+
+        try {
+            $pdoDb->setSelectList([
+                "item_tax.id AS row_id",
+                "tax.tax_description AS tax_name",
+                "tax.tax_id AS tax_id"
+            ]);
+
+            $pdoDb->addSimpleWhere("item_tax.cron_invoice_item_id", $cronInvoiceItemId);
+
+            $jn = new Join("LEFT", "tax", "tax");
+            $jn->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
+            $pdoDb->addToJoins($jn);
+
+            $pdoDb->setOrderBy("row_id");
+
+            $rows = $pdoDb->request("SELECT", "cron_invoice_item_tax", "item_tax");
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::taxesGroupedForInvoiceItem() - cron_invoice_item_id[$cronInvoiceItemId] - error: " . $pde->getMessage());
+            throw $pde;
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Purpose: to show a nice summary of total $ for tax for an invoice
+     * @param int $cronId
+     * @return int Count of records found.
+     * @throws PdoDbException
+     */
+    public static function numberOfTaxesForInvoice(int $cronId): int
+    {
+        global $pdoDb;
+
+        try {
+            $pdoDb->addSimpleWhere("item.cron_id", $cronId);
+
+            $pdoDb->addToFunctions(new FunctionStmt("DISTINCT", new DbField("tax.tax_id")));
+
+            $jn = new Join("INNER", "cron_invoice_item_tax", "item_tax");
+            $jn->addSimpleItem("item_tax.cron_invoice_item_id", new DbField("item.id"));
+            $pdoDb->addToJoins($jn);
+
+            $jn = new Join("INNER", "tax", "tax");
+            $jn->addSimpleItem("tax.tax_id", new DbField("item_tax.tax_id"));
+            $pdoDb->addToJoins($jn);
+
+            $pdoDb->setGroupBy("tax.tax_id");
+
+            $rows = $pdoDb->request("SELECT", "cron_invoice_items", "item");
+            $count = count($rows);
+        } catch (PdoDbException $pde) {
+            error_log("Cron::numberOfTaxesForInvoice() - cron_id[$cronId] - error: " . $pde->getMessage());
+            throw $pde;
+        }
+
+        return $count;
+    }
+
+    /**
+     * Insert a new <b>cron_invoice_items</b> record.
+     * @param int $cronId
+     * @param float $quantity
+     * @param int $productId
+     * @param array $taxIds
+     * @param string $description
+     * @param float $unitPrice
+     * @param array|null $attribute
+     * @return int <b>id</b> of new <i>cron_invoice_items</i> record. 0 if insert failed.
+     * @throws PdoDbException
+     */
+    public static function insertCronInvoiceItem(int $cronId, float $quantity, int $productId,
+                                                 array $taxIds, string $description = "",
+                                                 float $unitPrice = 0, ?array $attribute = null): int
+    {
+        global $LANG;
+
+        $attr = [];
+        if (!empty($attribute)) {
+            foreach ($attribute as $key => $val) {
+                if ($attribute[$val] !== '') {
+                    $attr[$key] = $val;
+                }
+            }
+        }
+
+        $taxAmount = Taxes::getTaxesPerLineItem($taxIds, $quantity, $unitPrice);
+        $grossTotal = $unitPrice * $quantity;
+        $total = $grossTotal + $taxAmount;
+
+        // Remove jquery auto-fill description - refer jquery.conf.js.tpl autofill section
+        if ($description == $LANG['descriptionUc']) {
+            $description = "";
+        }
+        $list = ['cron_id' => $cronId,
+                 'quantity' => $quantity,
+                 'product_id' => $productId,
+                 'unit_price' => $unitPrice,
+                 'tax_amount' => $taxAmount,
+                 'gross_total' => $grossTotal,
+                 'description' => $description,
+                 'total' => $total,
+                 'attribute' => json_encode($attr)
+        ];
+        return self::insertItem($list, $taxIds);
+    }
+
+    /**
+     * Insert a new invoice_item and the invoice_item_tax records.
+     * @param array $list Associative array keyed by field name with its assigned value.
+     * @param array|null $taxIds
+     * @return int Unique ID of the new invoice_item record.
+     * @throws PdoDbException
+     */
+    private static function insertItem(array $list, ?array $taxIds): int
+    {
+        global $pdoDb;
+
+        try {
+            $pdoDb->setFauxPost($list);
+            $pdoDb->setExcludedFields("id");
+            $id = $pdoDb->request("INSERT", "cron_invoice_items");
+
+            self::chgCronInvoiceItemTax($id, $taxIds, $list['unit_price'], $list['quantity'], false);
+        } catch (PdoDbException $pde) {
+            error_log("Invoice::insertItem() - Error: " . $pde->getMessage());
+            throw $pde;
+        }
+        return $id;
+    }
+
+    /**
+     * Update cron_invoice_items table for a specific entry.
+     * @param int $id Unique id for the record to be updated.
+     * @param float $quantity Number of items
+     * @param int $productId Unique id of the si_products record for this item.
+     * @param array  $taxIds Unique id for the taxes to apply to this line item.
+     * @param string $description Extended description for this line item.
+     * @param float $unitPrice Price of each unit of this item.
+     * @param array|null $attribute Attributes for invoice.
+     * @throws PdoDbException
+     */
+    public static function updateCronInvoiceItem(int $id, float $quantity, int $productId, array $taxIds,
+                                             string $description, float $unitPrice, ?array $attribute = null): void
+    {
+        global $LANG, $pdoDb;
+
+        $attr = [];
+        if (is_array($attribute)) {
+            foreach ($attribute as $key => $val) {
+                if (!empty($val)) {
+                    $attr[$key] = $val;
+                }
+            }
+        }
+
+        $attrJsonEncode = json_encode($attr);
+        $taxAmount = Taxes::getTaxesPerLineItem($taxIds, $quantity, $unitPrice);
+        $grossTotal = $unitPrice * $quantity;
+        $total = $grossTotal + $taxAmount;
+        if ($description == $LANG['descriptionUc']) {
+            $description = "";
+        }
+
+        try {
+            // @formatter:off
+            $pdoDb->addSimpleWhere("id", $id);
+            $pdoDb->setFauxPost([
+                'quantity'    => $quantity,
+                'product_id'  => $productId,
+                'unit_price'  => $unitPrice,
+                'tax_amount'  => $taxAmount,
+                'gross_total' => $grossTotal,
+                'description' => $description,
+                'total'       => $total,
+                'attribute'   => $attrJsonEncode
+            ]);
+            $pdoDb->setExcludedFields(["id", "cron_id"]);
+            $pdoDb->request("UPDATE", "cron_invoice_items");
+            // @formatter:on
+
+            self::chgCronInvoiceItemTax($id, $taxIds, $unitPrice, $quantity, true);
+        } catch (PdoDbException $pde) {
+            error_log("Cron::updateCronInvoiceItem() - Error: " . $pde->getMessage());
+            throw $pde;
+        }
+    }
+
+    /**
+     * Insert/update the multiple taxes for an invoice line item.
+     * @param int $cronInvoiceItemId
+     * @param array|null $lineItemTaxIds
+     * @param float $unitPrice
+     * @param float $quantity
+     * @param bool $update
+     * @throws PdoDbException
+     */
+    public static function chgCronInvoiceItemTax(int $cronInvoiceItemId, ?array $lineItemTaxIds, float $unitPrice,
+                                             float $quantity, bool $update): void
+    {
+        global $config;
+
+        try {
+            $requests = new Requests($config);
+            if ($update) {
+                $request = new Request("DELETE", "cron_invoice_item_tax");
+                $request->addSimpleWhere("cron_invoice_item_id", $cronInvoiceItemId);
+                $requests->add($request);
+            }
+
+            if (!empty($lineItemTaxIds)) {
+                foreach ($lineItemTaxIds as $value) {
+                    if (!empty($value)) {
+                        // @formatter:off
+                        $tax = Taxes::getOne($value);
+                        $taxAmount = Taxes::lineItemTaxCalc($tax, $unitPrice, $quantity);
+                        $request = new Request("INSERT", "cron_invoice_item_tax");
+                        $request->setFauxPost([
+                            'cron_invoice_item_id' => $cronInvoiceItemId,
+                            'tax_id'               => $tax['tax_id'],
+                            'tax_rate'             => $tax['tax_percentage'],
+                            'tax_type'             => $tax['type'],
+                            'tax_amount'           => $taxAmount
+                        ]);
+                        // @formatter:on
+                        $requests->add($request);
+                    }
+                }
+            }
+
+            $requests->process();
+        } catch (PdoDbException $pde) {
+            error_log("Cron::chgCronInvoiceItemTax(): Unable to process requests. Error: " . $pde->getMessage());
+            throw $pde;
+        }
+    }
+
+    /**
+     * Deletes a specific cron_invoice_items record and its tax info from the database.
+     * @param int $id of cron_invoice_items record to delete.
+     * @return bool true if delete processed, false if not.
+     */
+    public static function deleteCronInvoiceItem(int $id): bool
+    {
+        global $pdoDb;
+
+        try {
+            $pdoDb->begin();
+
+            $pdoDb->addSimpleWhere("cron_invoice_item_id", $id);
+            $result = $pdoDb->request("DELETE", "cron_invoice_item_tax");
+            if ($result) {
+                $pdoDb->addSimpleWhere("id", $id);
+                $result = $pdoDb->request("DELETE", "cron_invoice_items");
+                if ($result) {
+                    $pdoDb->commit();
+                    return true;
+                }
+            }
+        } catch (PdoDbException $pde) {
+            error_log("Cron::deleteCronInvoiceItem() - error: " . $pde->getMessage());
+        }
+
+        try {
+            $pdoDb->rollback();
+        } catch (PdoDbException $pde) {
+            error_log("Cron::deleteCronInvoiceItem() - error2: " . $pde->getMessage());
+        }
+
+        return false;
     }
 
 }

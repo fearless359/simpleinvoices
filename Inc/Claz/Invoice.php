@@ -627,7 +627,6 @@ class Invoice
             $pdoDb->setFauxPost($list);
             $pdoDb->setExcludedFields("id");
             $id = $pdoDb->request("INSERT", "invoice_items");
-
             self::chgInvoiceItemTax($id, $taxIds, $list['unit_price'], $list['quantity'], false);
         } catch (PdoDbException $pde) {
             error_log("Invoice::insertItem() - Error: " . $pde->getMessage());
@@ -812,6 +811,7 @@ class Invoice
      * @param int $id
      * @return bool true if delete processed, false if not.
      * @throws PdoDbException
+     * @todo Add logic to check for invoice use by cron items.
      */
     public static function delete(string $module, string $idField, int $id): bool
     {
@@ -1160,6 +1160,7 @@ class Invoice
                 foreach ($tax as $key => $value) {
                     $invoiceItem['tax'][$key] = $value['tax_id'];
                 }
+
                 $invoiceItems[] = $invoiceItem;
             }
         } catch (PdoDbException $pde) {
@@ -1359,10 +1360,11 @@ class Invoice
     /**
      * Process a recurring item
      * @param int $invoiceId
+     * @param int $cronId
      * @return int
      * @throws PdoDbException
      */
-    public static function recur(int $invoiceId): int
+    public static function recur(int $invoiceId, int $cronId): int
     {
         global $config;
 
@@ -1376,7 +1378,9 @@ class Invoice
         }
 
         $invoice = self::getOne($invoiceId);
-        $invoiceItems = self::getInvoiceItems($invoiceId);
+        $domainId = $invoice['domain_id'];
+        $invoiceItems = array_merge(self::getInvoiceItems($invoiceId), Cron::getCronInvoiceItems($cronId, $domainId));
+
         // @formatter:off
         $list = [
             'biller_id'     => $invoice['biller_id'],
@@ -1408,9 +1412,10 @@ class Invoice
                 'attribute'  => $invoiceItem['attribute']
             ];
 
-            self::insertItem($list, $invoiceItem['tax_id']);
+            self::insertItem($list, $invoiceItem['tax']);
         }
         // @formatter:on
+        Cron::deleteCronInvoiceItems($cronId);
 
         return $newId;
     }

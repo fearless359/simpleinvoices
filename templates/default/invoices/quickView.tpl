@@ -145,13 +145,15 @@
                 {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
             </div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__1-span-9 bold align__text-right">{$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</div>
-            <div class="cols__10-span-1 align__text-right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
-        </div>
     </div>
 {/if}
 {* tax section - end *}
+<div class="grid__area">
+    <div class="grid__container grid__head-10">
+        <div class="cols__1-span-9 bold align__text-right">{$LANG.totalUc} {$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</div>
+        <div class="cols__10-span-1 align__text-right bold">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
+    </div>
+</div>
 <br/>
 <div class="grid__area-totals">
     <h4>{$LANG.financialStatus}</h4>

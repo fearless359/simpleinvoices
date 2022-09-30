@@ -137,6 +137,8 @@ class SqlPatchManager
                     self::prePatch321();
                 } elseif ($id == 322) {
                     self::prePatch322();
+                } elseif ($id == 330) {
+                    self::prePatch330();
                 }
 
                 // patch hasn't been run, so run it
@@ -482,6 +484,63 @@ class SqlPatchManager
         }
     }
 
+    /**
+     * Set foreign key constraint invoice_item_tax table for invoice_item_id field.
+     * @throws PdoDbException If undefined foreign key values found.
+     * @noinspection PhpVariableNamingConventionInspection
+     */
+    private static function prePatch330() {
+        global $pdoDbAdmin;
+
+        // @formatter::off
+        $undefined_values = [];
+        set_time_limit(240);
+
+        $table = 'invoice_item_tax';
+        $foreign_keys = ['invoice_items' => 'invoice_item_id', 'tax' => 'tax_id'];
+        $columns = ['invoice_items' => 'id', 'tax' => 'tax_id'];
+
+        // Check for existing records and verify that fields of concern are not null
+        // and that records exist for what they point to.
+        $pdoDbAdmin->addToWhere(new WhereItem(false, "id", '<>', '0', false));
+        $pdoDbAdmin->setSelectAll(true);
+        $rows = $pdoDbAdmin->request("SELECT", $table);
+        foreach ($rows as $row) {
+            foreach ($foreign_keys as $fkKey => $fkItem) {
+                // Verify the field we want to make a foreign key is not null
+                if (isset($row[$fkItem])) {
+                    // Verify the field references and existing value in the reference table.
+                    $value = $row[$fkItem];
+                    $column = $columns[$fkKey];
+                    $pdoDbAdmin->addSimpleWhere($column, $value);
+                    $recs = $pdoDbAdmin->request("SELECT", $fkKey);
+                    if (empty($recs)) {
+                        $undefined_values[$table . ':' . $fkItem . ':' . $fkKey . ':' . $column . ':' . $value] = $value;
+                    }
+                } else {
+                    $undefined_values[$table . ':' . $fkItem . ':' . '' . ':' . '' . ':' . ''] = "NULL";
+                }
+            }
+        }
+
+        if (!empty($undefined_values)) {
+            $msg = "\nUnable to apply patch 330. Found foreign key table columns with NULL values or\n" .
+                "values not in the reference table column. The following list shows what values in foreign\n" .
+                "key columns are missing from reference columns.\n\n";
+
+            $msg .= "The records in the FOREIGN KEY TABLE are most likely invalid and should be deleted.\n\n";
+
+            $msg .= "FOREIGN KEY TABLE         COLUMN              REFERENCE TABLE          COLUMN     INVALID VALUE\n" .
+                "------------------------  ------------------  -----------------------  ---------  -------------\n";
+            foreach ($undefined_values as $key => $value) {
+                $parts = explode(':', $key);
+                $line = sprintf('%-24s  %-18s  %-23s  %-9s  %s', $parts[0], $parts[1], $parts[2], $parts[3], $value);
+                $msg .= $line . "\n";
+            }
+            error_log($msg);
+            throw new PdoDbException("SqlPatchManager::prePatch330() = Unable to set Foreign Keys.");
+        }
+    }
 
     /**
      * Load all patches to be processed.
@@ -570,6 +629,72 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('326', $patch);
+
+        $patch = [
+            'name' => "Make invoice_item_id a key field in the invoice_item_tax table.",
+            'patch' => "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`);",
+            'date' => "20220909",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('327', $patch);
+
+        $tblExists = $pdoDbAdmin->checkTableExists( 'cron_invoice_items');
+        $patch = [
+            'name' => 'Add cron_invoice_items table to the database.',
+            'patch' => $tblExists ? "SELECT * FROM " . TB_PREFIX . "cron_invoice_items;" :
+                "CREATE TABLE `" . TB_PREFIX . "cron_invoice_items` (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, " .
+                                                                   "`cron_id` int(11) UNSIGNED NOT NULL, " .
+                                                                   "`quantity` decimal(25,6) NOT NULL DEFAULT 0.000000, " .
+                                                                   "`product_id` int(11) UNSIGNED NOT NULL, " .
+                                                                   "`unit_price` decimal(25,6) DEFAULT 0.000000, " .
+                                                                   "`tax_amount` decimal(25,6) DEFAULT 0.000000, " .
+                                                                   "`gross_total` decimal(25,6) DEFAULT 0.000000, " .
+                                                                   "`description` text COLLATE utf8_unicode_ci DEFAULT NULL, " .
+                                                                   "`total` decimal(25,6) DEFAULT 0.000000, " .
+                                                                   "`attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_invoice_items` " .
+                    "ADD KEY `cron_id` (`cron_id`), " .
+                    "ADD KEY `product_id` (`product_id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_invoice_items` " .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_items_ibfk_1` FOREIGN KEY (`cron_id`) REFERENCES `" . TB_PREFIX . "cron` (`id`) ON UPDATE CASCADE, " .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `" . TB_PREFIX . "products` (`id`) ON UPDATE CASCADE;",
+            'date' => "20220909",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('328', $patch);
+
+        $tblExists = $pdoDbAdmin->checkTableExists( 'cron_invoice_item_tax');
+        $patch = [
+            'name' => 'Add cron_invoice_item_tax table to the database.',
+            'patch' => $tblExists ? "SELECT * FROM " . TB_PREFIX . "cron_invoice_item_tax;" :
+                "CREATE TABLE `" . TB_PREFIX . "cron_invoice_item_tax` (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, " .
+                                                                      "`cron_invoice_item_id` int(11) UNSIGNED NOT NULL, " .
+                                                                      "`tax_id` int(11) UNSIGNED NOT NULL, " .
+                                                                      "`tax_type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL, " .
+                                                                      "`tax_rate` decimal(25,6) NOT NULL, " .
+                                                                      "`tax_amount` decimal(25,6) NOT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_invoice_item_tax` " .
+                "ADD KEY `cron_invoice_item_id` (`cron_invoice_item_id`), " .
+                "ADD KEY `tax_id` (`tax_id`);" .
+                "ALTER TABLE `" . TB_PREFIX . "cron_invoice_item_tax` " .
+                "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE;" .
+                "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `" . TB_PREFIX . "cron_invoice_items` (`id`) ON UPDATE CASCADE;",
+            'date' => "20220909",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('329', $patch);
+
+        $patch = [
+            'name' => 'Add foreign key for invoice_item_id to invoice_item_tax table.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `invoice_item_id` INT(11) UNSIGNED NOT NULL; " .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `tax_id` INT(11) UNSIGNED NOT NULL; " .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`); " .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD CONSTRAINT `" . TB_PREFIX . "invoice_item_tax_ibfk_2` FOREIGN KEY (`invoice_item_id`) REFERENCES `" . TB_PREFIX . "invoice_items` (`id`) ON UPDATE CASCADE;",
+            'date' => "20220926",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('330', $patch);
 
         // @formatter:on
     }

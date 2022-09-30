@@ -100,8 +100,12 @@
                     <li><a class="active active_subpage" href="#">{$LANG.addUc}</a></li>{/if}
                 {if isset($subPageActive) && $subPageActive == "cronEdit"}
                     <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>{/if}
+                {if isset($subPageActive) && $subPageActive == "cronInvoiceItems"}
+                    <li><a class="active active_subpage" href="#">{$LANG.invoiceUc}&nbsp;{$LANG.itemsUc}</a></li>{/if}
                 {if isset($subPageActive) && $subPageActive == "cronView"}
                     <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>{/if}
+                {if isset($subPageActive) && $subPageActive == "cronRenderInvoice"}
+                    <li><a class="active active_subpage" href="#">{$LANG.renderInvoice}</a></li>{/if}
             </ul>
         </div>
         <!-- SECTION:people -->

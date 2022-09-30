@@ -5,9 +5,7 @@ use Inc\Claz\PdoDbException;
 global $databaseBuilt, $databasePopulated, $pdoDb, $smarty;
 
 $menu = false;
-
 if ($databaseBuilt && !$databasePopulated) {
-    $debug = false;
     $file = "databases/json/essential_data.json";
     // Note that the "si_" in the find list is replaced by TB_PREFIX which by
     // default is "si_". However, it could be another value and the replacement
@@ -15,7 +13,7 @@ if ($databaseBuilt && !$databasePopulated) {
     $find = ['si_','DOMAIN-ID','LOCALE','LANGUAGE'];
     $replace = [TB_PREFIX,'1','en_US','en_US'];
 
-    $importJson = new importJson($file, $find, $replace, $debug);
+    $importJson = new importJson($file, $find, $replace);
     $collated = $importJson->collate();
 
     try {

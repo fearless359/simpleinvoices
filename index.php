@@ -200,7 +200,7 @@ if ($module == "options" && $view == "database_sqlpatches") {
         $view == "structure" ? $view = "structure" : $view = "index";
         $applyDbPatches = false; // do installer
     } elseif (!$databasePopulated) {
-        if ($patchCount != SqlPatchManager::BEGINNING_PATCH_NUMBER) {
+        if ($patchCount == SqlPatchManager::BEGINNING_PATCH_NUMBER) {
             $module = "install";
             $view == "essential" ? $view = "essential" : $view = "structure";
             $applyDbPatches = false; // do installer
@@ -245,7 +245,7 @@ if ($module == "options" && $view == "database_sqlpatches") {
 
                                     // Biller, Customer and Product set up but no invoices. Check to
                                     // see if this is the first time we've encountered this. If so,
-                                    // flag $stillDoingSetup but set install completed status in
+                                    // flag $stillDoingSetup but set install_completed status in
                                     // database so subsequent requests will go to the specified screen.
                                     $rows = $pdoDb->request('SELECT', 'install_complete');
                                     if (empty($rows) || $rows[0]['completed'] != ENABLED) {
@@ -307,7 +307,7 @@ if (!CheckPermission::isAllowed($module, $view)) {
 // This logic is for the default_invoice where the invoice "template" (aka record)
 // is used to make the new invoice.
 if ($module == "invoices" && strstr($view, "template")) {
-    // Get the default module path php if their aren't any for enabled extensions.
+    // Get the default module path php if there aren't any for enabled extensions.
     $myPath = Util::getCustomPath("invoices/template", 'module');
     Log::out("index.php - default invoice template path[$myPath]");
     if (!empty($myPath)) {
@@ -580,7 +580,6 @@ foreach ($extNames as $extName) {
                     $type = "BEFORE ";
                 } else {
                     $pos += 7;
-                    $type = "";
                 }
                 $end = strpos($content, '}', $pos);
                 $len = $end - $pos;

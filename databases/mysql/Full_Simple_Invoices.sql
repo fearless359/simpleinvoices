@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2021 at 06:10 PM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- Generation Time: Sep 27, 2022 at 04:46 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 7.4.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -73,6 +74,40 @@ CREATE TABLE `si_cron` (
   `recurrence_type` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
   `email_biller` tinyint(1) NOT NULL DEFAULT 0,
   `email_customer` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `si_cron_invoice_items`
+--
+
+CREATE TABLE `si_cron_invoice_items` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `cron_id` int(11) UNSIGNED NOT NULL,
+  `quantity` decimal(25,6) NOT NULL DEFAULT 0.000000,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `unit_price` decimal(25,6) DEFAULT 0.000000,
+  `tax_amount` decimal(25,6) DEFAULT 0.000000,
+  `gross_total` decimal(25,6) DEFAULT 0.000000,
+  `description` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `total` decimal(25,6) DEFAULT 0.000000,
+  `attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `si_cron_invoice_item_tax`
+--
+
+CREATE TABLE `si_cron_invoice_item_tax` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `cron_invoice_item_id` int(11) UNSIGNED NOT NULL,
+  `tax_id` int(11) UNSIGNED NOT NULL,
+  `tax_type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tax_rate` decimal(25,6) NOT NULL,
+  `tax_amount` decimal(25,6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -323,8 +358,8 @@ CREATE TABLE `si_invoice_item_attachments` (
 
 CREATE TABLE `si_invoice_item_tax` (
   `id` int(11) UNSIGNED NOT NULL,
-  `invoice_item_id` int(11) UNSIGNED DEFAULT NULL,
-  `tax_id` int(11) UNSIGNED DEFAULT NULL,
+  `invoice_item_id` int(11) UNSIGNED NOT NULL,
+  `tax_id` int(11) UNSIGNED NOT NULL,
   `tax_type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tax_rate` decimal(25,6) NOT NULL,
   `tax_amount` decimal(25,6) NOT NULL
@@ -599,6 +634,22 @@ ALTER TABLE `si_cron`
   ADD KEY `invoice_id` (`invoice_id`);
 
 --
+-- Indexes for table `si_cron_invoice_items`
+--
+ALTER TABLE `si_cron_invoice_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cron_id` (`cron_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `si_cron_invoice_item_tax`
+--
+ALTER TABLE `si_cron_invoice_item_tax`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cron_invoice_item_id` (`cron_invoice_item_id`),
+  ADD KEY `tax_id` (`tax_id`);
+
+--
 -- Indexes for table `si_cron_log`
 --
 ALTER TABLE `si_cron_log`
@@ -712,7 +763,8 @@ ALTER TABLE `si_invoice_item_attachments`
 --
 ALTER TABLE `si_invoice_item_tax`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `tax_id` (`tax_id`);
+  ADD KEY `tax_id` (`tax_id`),
+  ADD KEY `invoice_item_id` (`invoice_item_id`);
 
 --
 -- Indexes for table `si_invoice_type`
@@ -847,6 +899,18 @@ ALTER TABLE `si_biller`
 -- AUTO_INCREMENT for table `si_cron`
 --
 ALTER TABLE `si_cron`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `si_cron_invoice_items`
+--
+ALTER TABLE `si_cron_invoice_items`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `si_cron_invoice_item_tax`
+--
+ALTER TABLE `si_cron_invoice_item_tax`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -1022,6 +1086,19 @@ ALTER TABLE `si_cron`
   ADD CONSTRAINT `si_cron_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE;
 
 --
+-- Constraints for table `si_cron_invoice_items`
+--
+ALTER TABLE `si_cron_invoice_items`
+  ADD CONSTRAINT `si_cron_invoice_items_ibfk_1` FOREIGN KEY (`cron_id`) REFERENCES `si_cron` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_cron_invoice_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `si_cron_invoice_item_tax`
+--
+ALTER TABLE `si_cron_invoice_item_tax`
+  ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `si_cron_log`
 --
 ALTER TABLE `si_cron_log`
@@ -1076,7 +1153,8 @@ ALTER TABLE `si_invoice_item_attachments`
 -- Constraints for table `si_invoice_item_tax`
 --
 ALTER TABLE `si_invoice_item_tax`
-  ADD CONSTRAINT `si_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `si_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_invoice_item_tax_ibfk_2` FOREIGN KEY (`invoice_item_id`) REFERENCES `si_invoice_items` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `si_log`

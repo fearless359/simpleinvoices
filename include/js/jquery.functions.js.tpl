@@ -41,15 +41,12 @@
 
                 let desc_row = $("#description" + rowNumber);
                 let row_val = desc_row.val();
-                let rel_attr = desc_row.attr('rel');
-                if (!row_val || row_val === rel_attr || row_val === '{/literal}{$LANG.descriptionUc}{literal}') {
+                if (!row_val || row_val === '') {
                     if (data['notes_as_description'] === "Y") {
                         desc_row.val(data['notes']);
-                        desc_row.attr('rel', data['notes']);
                     } else {
-                        desc_row.val('{/literal}{$LANG.descriptionUc}{literal}');
-                        desc_row.attr('rel', '{/literal}{$LANG.descriptionUc}{literal}');
-
+                        desc_row.val('');
+                        desc_row.attr('placeholder', '{/literal}{$LANG.descriptionUc}{literal}')
                     }
                 }
 

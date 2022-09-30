@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-09-30 - <strong>2020.4.2</strong>
+                <ul>
+                    <li>Make invoice_item_id a key field in the si_invoice_item_tax table.</li>
+                    <li>Add logic to support new invoice items for next new, cron generated,
+                        itemized invoice.</li>
+                </ul>
+            </li>
             <li>2022-08-29 - <strong>2020.4.1</strong>
                 <ul>
                     <li>Updated node library files.</li>

@@ -1,23 +1,21 @@
 <?php
 
 use Inc\Claz\ImportJson;
+use Inc\Claz\Log;
 use Inc\Claz\PdoDbException;
 
 global $pdoDb, $smarty;
 
 $menu = false;
-$debug = false;
 $file = "databases/json/sample_data.json";
 // Note that the "si_" in the find list is replaced by TB_PREFIX which by default is "si_".
 // However, it could be another value and the replacement supports this option.
 $find = ['si_','DOMAIN-ID','LOCALE','LANGUAGE'];
 $replace = [TB_PREFIX,'1','en_US','en_US'];
 
-$sampleJson = new ImportJson($file, $find, $replace, $debug);
-error_log("sample_json - " . print_r($sampleJson, true));
+$sampleJson = new ImportJson($file, $find, $replace);
 $collated = $sampleJson->collate();
-error_log("================================================");
-error_log("collated - " . print_r($collated, true));
+Log::out("sample_data.php: collated[$collated]");
 try {
     $pdoDb->query($collated);
     $displayBlock =
