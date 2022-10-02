@@ -677,7 +677,7 @@ class SqlPatchManager
                 "ADD KEY `cron_invoice_item_id` (`cron_invoice_item_id`), " .
                 "ADD KEY `tax_id` (`tax_id`);" .
                 "ALTER TABLE `" . TB_PREFIX . "cron_invoice_item_tax` " .
-                "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE;" .
+                "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE," .
                 "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `" . TB_PREFIX . "cron_invoice_items` (`id`) ON UPDATE CASCADE;",
             'date' => "20220909",
             'source' => 'fearless359'
