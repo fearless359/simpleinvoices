@@ -86,14 +86,32 @@
                 {/if}
                 <!-- SECTION:payments -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "payment"}class="active" {/if}href="index.php?module=payments&amp;view=manage">{$LANG.payments}</a></li>
-                {if isset($subPageActive) && $subPageActive == "paymentProcess"}
-                    <li><a class="active active_subpage" href="#">{$LANG.processUc}</a></li>{/if}
-                {if isset($subPageActive) && $subPageActive == "paymentEway"}
-                    <li><a class="active active_subpage" href="#">{$LANG.eway}</a></li>{/if}
-                {if isset($subPageActive) && $subPageActive == "paymentFilterInvoice"}
-                    <li><a class="active active_subpage" href="#">{$LANG.paymentsFiltered} {$preference.pref_inv_wording|htmlSafe} {$smarty.get.id|htmlSafe}</a></li>{/if}
-                {if isset($subPageActive) && $subPageActive == "paymentFilterCustomer"}
-                    <li><a class="active active_subpage" href="#">{$LANG.paymentsFilteredCustomer} '{$customer.name}'</a></li>{/if}
+                {if isset($subPageActive)}
+                    {if $subPageActive == "paymentProcess"}
+                        <li><a class="active active_subpage" href="#">{$LANG.processUc}</a></li>
+                    {elseif $subPageActive == "paymentEway"}
+                        <li><a class="active active_subpage" href="#">{$LANG.eway}</a></li>
+                    {elseif $subPageActive == "paymentFilterInvoice"}
+                        <li><a class="active active_subpage" href="#">{$LANG.paymentsFiltered} {$preference.pref_inv_wording|htmlSafe} {$smarty.get.id|htmlSafe}</a></li>
+                    {elseif $subPageActive == "paymentFilterCustomer"}
+                        <li><a class="active active_subpage" href="#">{$LANG.paymentsFilteredCustomer} '{$customer.name}'</a></li>
+                    {elseif $subPageActive == "paymentDelete"}
+                        <li><a class="active active_subpage" href="#">{$LANG.delete}</a></li>
+                    {/if}
+                {/if}
+                <!-- SECTION:payment_warehouse -->
+                <li class="bold"><a {if isset($pageActive) && $pageActive== "paymentWarehouse"}class="active" {/if}href="index.php?module=payment_warehouse&amp;view=manage">{$LANG.paymentWarehouseUc}</a></li>
+                {if isset($subPageActive)}
+                    {if $subPageActive == "create"}
+                        <li><a class="active active_subpage" href="#">{$LANG.addUc}</a></li>
+                    {elseif $subPageActive == "edit"}
+                        <li><a class="active active_subpage" href="#">{$LANG.edit}</a></li>
+                    {elseif $subPageActive == "view"}
+                        <li><a class="active active_subpage" href="#">{$LANG.view}</a></li>
+                    {elseif $subPageActive == "delete"}
+                        <li><a class="active active_subpage" href="#">{$LANG.delete}</a></li>
+                    {/if}
+                {/if}
                 <!-- SECTION:recurrence -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive== "cron"} class="active"{/if} href="index.php?module=cron&amp;view=manage">{$LANG.recurrence}</a></li>
                 {if isset($subPageActive) && $subPageActive == "cronCreate"}

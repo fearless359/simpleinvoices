@@ -88,7 +88,7 @@
                     <!--suppress HtmlFormInputWithoutLabel -->
                     <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" rows="3" cols="99"
                               class="margin__left-0-5" data-row-num="{$line|htmlSafe}"
-                              placeholder="{$LANG.descriptionUc}"
+                              placeholder="{$PLACEHOLDERS['desc']}"
                               tabindex="{$line}50">{if isset($cronInvoiceItems[$line].description)}{$cronInvoiceItems[$line].description|htmlSafe}{/if}</textarea>
                 </div>
             </div>

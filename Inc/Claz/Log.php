@@ -34,77 +34,79 @@ class Log extends Logger
      */
     public static function open(string $level = "EMERGENCY", string $folder = "tmp/log/", string $file = "si.log")
     {
-        // Create log file if it doesn't exist
-        if (preg_match('/^.*\/$/', $folder) == 1) {
-            self::$folder = $folder;
-        } else {
-            self::$folder = $folder . '/';
-        }
-        self::$path = self::$folder . $file;
-        self::$file = $file;
-
-        // Create file if it doesn't exist.
-        if (!is_file(self::$path)) {
-            /**
-             * @var resource|bool $fp
-             */
-            $fp = fopen(self::$path, 'w');
-            if ($fp === false) {
-                SiError::out('notWritable', 'folder', self::$folder);
+        if (!self::isOpen()) {
+            // Create log file if it doesn't exist
+            if (preg_match('/^.*\/$/', $folder) == 1) {
+                self::$folder = $folder;
             } else {
-                fclose($fp);
+                self::$folder = $folder . '/';
             }
+            self::$path = self::$folder . $file;
+            self::$file = $file;
+
+            // Create file if it doesn't exist.
+            if (!is_file(self::$path)) {
+                /**
+                 * @var resource|bool $fp
+                 */
+                $fp = fopen(self::$path, 'w');
+                if ($fp === false) {
+                    SiError::out('notWritable', 'folder', self::$folder);
+                } else {
+                    fclose($fp);
+                }
+            }
+
+            // Assure file is writable
+            if (!is_writable(self::$path)) {
+                SiError::out('notWritable', 'file', self::$path);
+            }
+
+            switch ($level) {
+                case 'DEBUG':
+                    $loggerLevel = Logger::DEBUG;
+                    break;
+
+                case 'INFO':
+                    $loggerLevel = Logger::INFO;
+                    break;
+
+                case 'NOTICE':
+                    $loggerLevel = Logger::NOTICE;
+                    break;
+
+                case 'WARNING':
+                    $loggerLevel = Logger::WARNING;
+                    break;
+
+                case 'ERROR':
+                    $loggerLevel = Logger::ERROR;
+                    break;
+
+                case 'CRITICAL':
+                    $loggerLevel = Logger::CRITICAL;
+                    break;
+
+                case 'ALERT':
+                    $loggerLevel = Logger::ALERT;
+                    break;
+
+                case 'EMERGENCY':
+                default:
+                    $loggerLevel = Logger::EMERGENCY;
+                    break;
+            }
+
+            // the default date format is "Y-m-d\TH:i:sP"
+            $dateFormat = "Y-m-d, h:i a";
+            // the default output format is "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n"
+            $output = "%datetime% > %level_name% > %message% %context% %extra%\n";
+            $formatter = new LineFormatter($output, $dateFormat, true, true);
+            $stream = new StreamHandler(self::$path, $loggerLevel);
+            $stream->setFormatter($formatter);
+            self::$logger = new Logger('siLog');
+            self::$logger->pushHandler($stream);
         }
-
-        // Assure file is writable
-        if (!is_writable(self::$path)) {
-            SiError::out('notWritable', 'file', self::$path);
-        }
-
-        switch ($level) {
-            case 'DEBUG':
-                $loggerLevel = Logger::DEBUG;
-                break;
-
-            case 'INFO':
-                $loggerLevel = Logger::INFO;
-                break;
-
-            case 'NOTICE':
-                $loggerLevel = Logger::NOTICE;
-                break;
-
-            case 'WARNING':
-                $loggerLevel = Logger::WARNING;
-                break;
-
-            case 'ERROR':
-                $loggerLevel = Logger::ERROR;
-                break;
-
-            case 'CRITICAL':
-                $loggerLevel = Logger::CRITICAL;
-                break;
-
-            case 'ALERT':
-                $loggerLevel = Logger::ALERT;
-                break;
-
-            case 'EMERGENCY':
-            default:
-                $loggerLevel = Logger::EMERGENCY;
-                break;
-        }
-
-        // the default date format is "Y-m-d\TH:i:sP"
-        $dateFormat = "Y-m-d, h:i a";
-        // the default output format is "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n"
-        $output = "%datetime% > %level_name% > %message% %context% %extra%\n";
-        $formatter = new LineFormatter($output, $dateFormat, true, true);
-        $stream = new StreamHandler(self::$path, $loggerLevel);
-        $stream->setFormatter($formatter);
-        self::$logger = new Logger('siLog');
-        self::$logger->pushHandler($stream);
     }
 
     /**
@@ -124,13 +126,20 @@ class Log extends Logger
      */
     public static function out(string $msg, ?int $level = Logger::DEBUG)
     {
-        if (!isset(self::$logger)) {
+        if (!self::isOpen()) {
             global $config;
             self::open($config['loggerLevel']);
-            /** @noinspection PhpVoidFunctionResultUsedInspection */
-            error_log("Log::out called before tmp/log/si.log opened. Opened automatically. Backtrace: " . print_r(debug_print_backtrace(), true));
         }
         self::$logger->log($level, $msg);
+    }
+
+    /**
+     * Check to see if logger session already open.
+     * @return bool true is already open else false.
+     */
+    private static function isOpen(): bool
+    {
+        return isset(self::$logger);
     }
 
 }

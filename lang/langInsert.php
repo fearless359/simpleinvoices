@@ -11,10 +11,12 @@
 */
 global $argv, $LANG;
 
-define('RUNNING_IN_BASH_SHELL', true);
+const RUNNING_IN_BASH_SHELL = true;
+
+$path = dirname(__FILE__);
 
 include_once "langFunctions.php";
-$definedLanguages = getDefinedLanguages();
+$definedLanguages = getDefinedLanguages($path);
 
 // Ensure that the lang folder name is of correct format and get it
 $langCmp = '';
@@ -60,16 +62,16 @@ while ($line = fgets($fh)) {
 }
 
 foreach ($langEn AS $key => $val) {
-    if (! isset($LANG[$key])) {
-        // Untranslated String
-        $LANG[$key][0] = $val;
-        $LANG[$key][1] = 0;
-    } else {
+    if (isset($LANG[$key])) {
         // Translated String
         $val = $LANG[$key];
         unset($LANG[$key]);
         $LANG[$key][0] = $val;
         $LANG[$key][1] = 1;
+    } else {
+        // Untranslated String
+        $LANG[$key][0] = $val;
+        $LANG[$key][1] = 0;
     }
 }
 

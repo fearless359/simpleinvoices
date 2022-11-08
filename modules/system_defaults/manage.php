@@ -36,6 +36,7 @@ $smarty->assign("defaultPasswordMinLength"     , SystemDefaults::getPasswordMinL
 $smarty->assign("defaultPasswordNumber"        , SystemDefaults::getPasswordNumber());
 $smarty->assign("defaultPasswordSpecial"       , SystemDefaults::getPasswordSpecial());
 $smarty->assign("defaultPasswordUpper"         , SystemDefaults::getPasswordUpper());
+$smarty->assign("defaultPaymentDeleteDays"     , SystemDefaults::getPaymentDeleteDays());
 $smarty->assign("defaultProductAttributes"     , SystemDefaults::getProductAttributes());
 $smarty->assign("defaultProductGroups"         , SystemDefaults::getProductGroups());
 $smarty->assign("defaultSubCustomer"           , SystemDefaults::getSubCustomer());

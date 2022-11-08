@@ -65,7 +65,7 @@ class SqlPatchManager
         }
         // Returns number of patches applied
         if (empty($rows)) {
-            $lastPatchApplied = self::$numberToBeginPatchListAt;
+            $lastPatchApplied = 0;
             self::$numberToBeginPatchListAt = self::BEGINNING_PATCH_NUMBER;
         } else {
             $lastPatchApplied = $rows[0]['sql_patch_ref'];
@@ -137,8 +137,8 @@ class SqlPatchManager
                     self::prePatch321();
                 } elseif ($id == 322) {
                     self::prePatch322();
-                } elseif ($id == 330) {
-                    self::prePatch330();
+                } elseif ($id == 331) {
+                    self::prePatch331();
                 }
 
                 // patch hasn't been run, so run it
@@ -209,7 +209,6 @@ class SqlPatchManager
             }
 
             $ndx = 0;
-            $error = false;
             $pageInfo['html'] = '';
             foreach (self::$patchLines as $patch) {
                 $ndx++;
@@ -219,27 +218,19 @@ class SqlPatchManager
                 }
             }
 
-            if ($error) {
-                try {
-                    $pdoDbAdmin->rollback();
-                } catch (PdoDbException $pde) {
-                    error_log("SqlPatchManager::runPatches() - Rollback failed - Error: " . $pde->getMessage());
-                    exit("SqlPatchManager::runPatches() error. See error log for additional details.");
-                }
-            } else {
-                $initPatchTable = false;
-                try {
-                    $pdoDbAdmin->commit();
-                } catch (PdoDbException $pde) {
-                    error_log("SqlPatchManager::runPatches() - Commit failed - Error: " . $pde->getMessage());
-                    exit("SqlPatchManager::runPatches() error. See error log for additional details.");
-                }
-                $pageInfo['message'] = "{$LANG['theUc']} {$LANG['database']} {$LANG['patches']} {$LANG['have']} {$LANG['now']} " .
-                    "{$LANG['been']} {$LANG['applied']}. {$LANG['youUc']} {$LANG['can']} {$LANG['now']} " .
-                    "{$LANG['startWorking']} {$LANG['with']} {$LANG['simpleInvoices']}";
-                $pageInfo['html'] .= "<div class='si_toolbar align__text-center margin__top-3 margin__bottom-2'><a href='index.php' class='button'>{$LANG['homeUcAll']}</a></div>";
-                $pageInfo['refresh'] = 5;
+            $initPatchTable = false;
+            try {
+                $pdoDbAdmin->commit();
+            } catch (PdoDbException $pde) {
+                error_log("SqlPatchManager::runPatches() - Commit failed - Error: " . $pde->getMessage());
+                exit("SqlPatchManager::runPatches() error. See error log for additional details.");
             }
+
+            $pageInfo['message'] = "{$LANG['theUc']} {$LANG['database']} {$LANG['patches']} {$LANG['have']} {$LANG['now']} " .
+                "{$LANG['been']} {$LANG['applied']}. {$LANG['youUc']} {$LANG['can']} {$LANG['now']} " .
+                "{$LANG['startWorking']} {$LANG['with']} {$LANG['simpleInvoices']}";
+            $pageInfo['html'] .= "<div class='si_toolbar align__text-center margin__top-3 margin__bottom-2'><a href='index.php' class='button'>{$LANG['homeUcAll']}</a></div>";
+            $pageInfo['refresh'] = 5;
         }
 
         if ($initPatchTable) {
@@ -302,6 +293,7 @@ class SqlPatchManager
                 $pageInfo['rows'][$ndx]['result'] = 'todo';
             }
         }
+
         $smarty->assign("page", $pageInfo);
     }
 
@@ -489,13 +481,44 @@ class SqlPatchManager
      * @throws PdoDbException If undefined foreign key values found.
      * @noinspection PhpVariableNamingConventionInspection
      */
-    private static function prePatch330() {
+    private static function prePatch331() {
         global $pdoDbAdmin;
 
         // @formatter::off
         $undefined_values = [];
         set_time_limit(240);
+/*
+             [
+                'table'       => 'invoice_item_tax',
+                'constraint'  => 'fk_role',
+                'foreign_key' => 'role_id',
+                'references'  => 'user_role',
+                'column'      => 'id'
+            ]
+        ];
 
+        $undefined_values = array();
+        set_time_limit(240);
+            $table = 'invoice_item_tax';
+            $foreign_key = 'role_id';
+            $references = 'user_role;
+            $column = 'id;
+
+            $pdoDb_admin->addToWhere(new WhereItem(false, $foreign_key, 'IS NOT NULL', '', false));
+            $pdoDb_admin->setSelectList($foreign_key);
+            $rows = $pdoDb_admin->request('SELECT', $table);
+            foreach ($rows as $row) {
+                $value = $row[$foreign_key];
+                $pdoDb_admin->addSimpleWhere($column, $value);
+                $pdoDb_admin->setSelectList($column);
+                $recs = $pdoDb_admin->request('SELECT', $references);
+                if (empty($recs)) {
+                    // Key construction so it can be exploded in error message and to make sure only one
+                    // occurrence of the missing value is displayed in the error message.
+                    $undefined_values[$table . ':' . $foreign_key . ':' . $references . ':' . $column . ':' . $value] = $value;
+                }
+            }
+ */
         $table = 'invoice_item_tax';
         $foreign_keys = ['invoice_items' => 'invoice_item_id', 'tax' => 'tax_id'];
         $columns = ['invoice_items' => 'id', 'tax' => 'tax_id'];
@@ -518,13 +541,13 @@ class SqlPatchManager
                         $undefined_values[$table . ':' . $fkItem . ':' . $fkKey . ':' . $column . ':' . $value] = $value;
                     }
                 } else {
-                    $undefined_values[$table . ':' . $fkItem . ':' . '' . ':' . '' . ':' . ''] = "NULL";
+                    $undefined_values[$table . ':' . $fkItem . ':' . ':' . ':'] = "NULL";
                 }
             }
         }
 
         if (!empty($undefined_values)) {
-            $msg = "\nUnable to apply patch 330. Found foreign key table columns with NULL values or\n" .
+            $msg = "\nUnable to apply patch 331. Found foreign key table columns with NULL values or\n" .
                 "values not in the reference table column. The following list shows what values in foreign\n" .
                 "key columns are missing from reference columns.\n\n";
 
@@ -538,7 +561,7 @@ class SqlPatchManager
                 $msg .= $line . "\n";
             }
             error_log($msg);
-            throw new PdoDbException("SqlPatchManager::prePatch330() = Unable to set Foreign Keys.");
+            throw new PdoDbException("SqlPatchManager::prePatch331() = Unable to set Foreign Keys.");
         }
     }
 
@@ -566,8 +589,8 @@ class SqlPatchManager
             'patch' => $fldExists ?
                 "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'sub_customer';" .
                 "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('sub_customer', 0, $domainId, 1);" :
-                "ALTER TABLE `" . TB_PREFIX . "customers` ADD `parent_customer_id` INT(11) NULL AFTER `notes`;" .
-                "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'sub_customer';" .
+                "ALTER TABLE `" . TB_PREFIX . "customers` ADD `parent_customer_id` INT(11) NULL AFTER `notes`; " .
+                "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'sub_customer'; " .
                 "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('sub_customer', 0, $domainId, 1);",
             'date' => "20200924",
             'source' => 'fearless359'
@@ -581,13 +604,13 @@ class SqlPatchManager
             'name' => 'Add product_groups table to the database.',
             'patch' => $tblExists ? "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'invoice_grouped';" :
                 "CREATE TABLE `" . TB_PREFIX . "product_groups` (name VARCHAR(60) NOT NULL PRIMARY KEY, " .
-                                                                "markup INT(2) NOT NULL DEFAULT 0) ENGINE = InnoDb;" .
-                "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'invoice_grouped';" .
-                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('product_groups', 0, $domainId, 1);" .
-                "ALTER TABLE `" . TB_PREFIX . "products` ADD product_group VARCHAR(60) NOT NULL DEFAULT '';" .
-                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Labor', 0);" .
-                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Equipment', 0);" .
-                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Materials', 0);" .
+                                                                "markup INT(2) NOT NULL DEFAULT 0) ENGINE = InnoDb; " .
+                "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'invoice_grouped'; " .
+                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES ('product_groups', 0, $domainId, 1); " .
+                "ALTER TABLE `" . TB_PREFIX . "products` ADD product_group VARCHAR(60) NOT NULL DEFAULT ''; " .
+                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Labor', 0); " .
+                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Equipment', 0); " .
+                "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Materials', 0); " .
                 "INSERT INTO `" . TB_PREFIX . "product_groups` (`name`, `markup`) VALUES ('Subcontractor', 0);",
             'date' => "20201010",
             'source' => 'fearless359'
@@ -615,7 +638,7 @@ class SqlPatchManager
             'patch' =>
                 "DELETE IGNORE FROM `" . TB_PREFIX . "system_defaults` WHERE `name` in " .
                         "('company_name', 'emailhost', 'emailpassword', 'emailusername', 'pdfbottommargin', 'pdfleftmargin', ".
-                        "'pdfpapersize', 'pdfrightmargin', 'pdfscreensize', 'pdftopmargin', 'spreadsheet', 'wordprocessor');" .
+                        "'pdfpapersize', 'pdfrightmargin', 'pdfscreensize', 'pdftopmargin', 'spreadsheet', 'wordprocessor'); " .
                 "DELETE IGNORE FROM `" . TB_PREFIX . "system_defaults` WHERE `name` LIKE 'dateformat%';",
             'date' => "20200615",
             'source' => 'fearless359'
@@ -667,34 +690,93 @@ class SqlPatchManager
         $patch = [
             'name' => 'Add cron_invoice_item_tax table to the database.',
             'patch' => $tblExists ? "SELECT * FROM " . TB_PREFIX . "cron_invoice_item_tax;" :
-                "CREATE TABLE `" . TB_PREFIX . "cron_invoice_item_tax` (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, " .
-                                                                      "`cron_invoice_item_id` int(11) UNSIGNED NOT NULL, " .
-                                                                      "`tax_id` int(11) UNSIGNED NOT NULL, " .
-                                                                      "`tax_type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL, " .
-                                                                      "`tax_rate` decimal(25,6) NOT NULL, " .
-                                                                      "`tax_amount` decimal(25,6) NOT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "CREATE TABLE `" . TB_PREFIX . "cron_invoice_item_tax` (" .
+                    "`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, " .
+                    "`cron_invoice_item_id` int(11) UNSIGNED NOT NULL, " .
+                    "`tax_id` int(11) UNSIGNED NOT NULL, " .
+                    "`tax_type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL, " .
+                    "`tax_rate` decimal(25,6) NOT NULL, " .
+                    "`tax_amount` decimal(25,6) NOT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; " .
                 "ALTER TABLE `" . TB_PREFIX . "cron_invoice_item_tax` " .
-                "ADD KEY `cron_invoice_item_id` (`cron_invoice_item_id`), " .
-                "ADD KEY `tax_id` (`tax_id`);" .
+                    "ADD KEY `cron_invoice_item_id` (`cron_invoice_item_id`), " .
+                    "ADD KEY `tax_id` (`tax_id`); " .
                 "ALTER TABLE `" . TB_PREFIX . "cron_invoice_item_tax` " .
-                "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE," .
-                "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `" . TB_PREFIX . "cron_invoice_items` (`id`) ON UPDATE CASCADE;",
+                    "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `" . TB_PREFIX . "tax` (`tax_id`) ON UPDATE CASCADE, " .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `" . TB_PREFIX . "cron_invoice_items` (`id`) ON UPDATE CASCADE;",
             'date' => "20220909",
             'source' => 'fearless359'
         ];
         self::makePatch('329', $patch);
 
         $patch = [
-            'name' => 'Add foreign key for invoice_item_id to invoice_item_tax table.',
+            'name' => 'Add invoice_item_id as a key for the invoice_item_tax table.',
             'patch' =>
-                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `invoice_item_id` INT(11) UNSIGNED NOT NULL; " .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` MODIFY `tax_id` INT(11) UNSIGNED NOT NULL; " .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`); " .
-                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD CONSTRAINT `" . TB_PREFIX . "invoice_item_tax_ibfk_2` FOREIGN KEY (`invoice_item_id`) REFERENCES `" . TB_PREFIX . "invoice_items` (`id`) ON UPDATE CASCADE;",
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` " .
+                    "MODIFY `invoice_item_id` INT(11) UNSIGNED NOT NULL, " .
+                    "MODIFY `tax_id` INT(11) UNSIGNED NOT NULL; " .
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`);",
             'date' => "20220926",
             'source' => 'fearless359'
         ];
         self::makePatch('330', $patch);
+
+        $foreignKeyExists = $pdoDbAdmin->checkForeignKeyExists("invoice_item_tax_ibfk_2", "invoice_item_tax", "invoice_items");
+        $patch = [
+            'name' => 'Add foreign key for invoice_item_id to invoice_item_tax table.',
+            'patch' => $foreignKeyExists ? "SELECT * FROM " . TB_PREFIX . "invoice_item_tax;" :
+                "ALTER TABLE `" . TB_PREFIX . "invoice_item_tax` " .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "invoice_item_tax_ibfk_2` FOREIGN KEY (`invoice_item_id`) REFERENCES `" . TB_PREFIX . "invoice_items` (`id`) ON UPDATE CASCADE;",
+            'date' => "20221013",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('331', $patch);
+
+        $tblExists = $pdoDbAdmin->checkTableExists( 'payment_warehouse');
+        $patch = [
+            'name' => 'Add payment_warehouse table to the database.',
+            'patch' => $tblExists ? "SELECT * FROM " . TB_PREFIX . "payment_warehouse;" :
+                "CREATE TABLE `" . TB_PREFIX . "payment_warehouse` (" .
+                    "`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, " .
+                    "`customer_id` int(11) UNSIGNED NOT NULL, " .
+                    "`last_payment_id` int(11) UNSIGNED, " .
+                    "`balance` decimal(25,6) NOT NULL, " .
+                    "`payment_type` int(11) UNSIGNED NOT NULL, " .
+                    "`check_number` varchar(10) DEFAULT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_warehouse` " .
+                    "ADD KEY `customer_id` (`customer_id`), " .
+                    "ADD KEY `last_payment_id` (`last_payment_id`), " .
+                    "ADD KEY `payment_type` (`payment_type`);" .
+                "ALTER TABLE `" . TB_PREFIX . "payment_warehouse` " .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "payment_warehouse_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE CASCADE," .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "payment_warehouse_ibfk_2` FOREIGN KEY (`last_payment_id`) REFERENCES `" . TB_PREFIX . "payment` (`id`) ON UPDATE SET NULL ON DELETE SET NULL," .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "payment_warehouse_ibfk_3` FOREIGN KEY (`payment_type`) REFERENCES `" . TB_PREFIX . "payment_types` (`pt_id`) ON UPDATE CASCADE;",
+            'date' => "20221013",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('332', $patch);
+
+        $patch = [
+            'name' => "Add warehouse_amount field to payment table.",
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "payment` " .
+                    "ADD `customer_id` int(11) UNSIGNED AFTER `ac_inv_id`, " .
+                    "ADD `warehouse_amount` decimal(25,6) NOT NULL DEFAULT 0 AFTER `ac_check_number`; " .
+                "ALTER TABLE `" . TB_PREFIX . "payment` " .
+                    "ADD KEY `customer_id` (`customer_id`); " .
+                "ALTER TABLE `" . TB_PREFIX . "payment` " .
+                    "ADD CONSTRAINT `" . TB_PREFIX . "payment_ibfk_3` FOREIGN KEY (`customer_id`) REFERENCES `" . TB_PREFIX . "customers` (`id`) ON UPDATE SET NULL ON DELETE SET NULL;",
+            'date' => "20221019",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('333', $patch);
+
+        $patch = [
+            'name' => "Add payment delete days option.",
+            'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('payment_delete_days', 0, $domainId, 1);",
+            'date' => "20221022",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('334', $patch);
 
         // @formatter:on
     }

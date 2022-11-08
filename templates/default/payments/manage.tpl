@@ -2,8 +2,8 @@
  *	Script: manage.tpl
  * 		Payments manage template
  *
- *  Last modified:
- *      20210618 by Richard Rowley to add cell-border class to table tag.
+ *  Authors:
+ *	    Richard Rowley
  *
  *  Website:
  *      https://simpleinvoices.group
@@ -47,6 +47,7 @@
                 "orderClasses": false,
                 "deferRender": true,
                 "responsive": true,
+                "order": [[1, 'desc']],
                 "columns": [
                     {"data": "action"},
                     {"data": "paymentId"},
@@ -60,7 +61,11 @@
                                 'style': 'currency',
                                 'currency': row['currency_code']
                             });
-                            return formatter.format(data);
+                            let fmtdAmt = formatter.format(data);
+                            if (row['warehousePaymentType'] === 'T' || row['warehousePaymentType'] === 'F') {
+                                fmtdAmt += "*";
+                            }
+                            return fmtdAmt;
                         }
                     },
                     {"data": "type"},

@@ -277,6 +277,17 @@
     </div>
 
     <div class="grid__container grid__head-10">
+        <div class="cols__1-span-4 bold align__text-right margin__right-1">{$LANG.paymentDeleteDays}:
+            <img class="tooltip" title="{$LANG.helpPaymentDeleteDays}" src="{$helpImagePath}help-small.png" alt=""/>
+            <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=payment_delete_days' tabindex="224"
+               class="margin__left-1">
+                <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+            </a>
+        </div>
+        <div class="cols__5-span-6 margin__left-0-5">{$defaults.payment_delete_days}</div>
+    </div>
+
+    <div class="grid__container grid__head-10">
         <div class="cols__1-span-4 bold align__text-right margin__right-1">{$LANG.productGroupsUc}:
             <img class="tooltip" title="{$LANG.helpProductGroups}" src="{$helpImagePath}help-small.png" alt=""/>
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=product_groups' tabindex="226"

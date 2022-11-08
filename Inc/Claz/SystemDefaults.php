@@ -315,6 +315,16 @@ class SystemDefaults
         return self::getValue('password_upper');
     }
 
+    /**
+     * Get "payment_delete_days" entry from the system_defaults table.
+     * @return int Number of days in the past that a payment record can be deleted.
+     *      If 0, payments cannot be deleted.
+     */
+    public static function getPaymentDeleteDays(): int
+    {
+        return self::getValue('payment_delete_days');
+    }
+
 
     /**
      * Get "preference" entry from the system_defaults table.

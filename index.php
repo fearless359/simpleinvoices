@@ -4,6 +4,7 @@ use Inc\Claz\Biller;
 use Inc\Claz\CheckPermission;
 use Inc\Claz\Config;
 use Inc\Claz\Customer;
+use Inc\Claz\Install;
 use Inc\Claz\Invoice;
 use Inc\Claz\Funcs;
 use Inc\Claz\Log;
@@ -21,7 +22,6 @@ use Inc\Claz\Util;
  * License:
  * GPL v3 or above
  */
-
 // **********************************************************
 // The include configs and requirements stuff section - START
 // **********************************************************
@@ -43,6 +43,9 @@ $action = isset($_GET['case']) ? Util::filenameEscape($_GET['case']) : "";
 $apiRequest = $module == 'api';
 
 require_once 'config/define.php';
+
+session_name(SESSION_NAME);
+session_start();
 
 /***********************************************************************
  * Make sure the public and tmp directories exist and are writeable.
@@ -132,8 +135,6 @@ if ($apiRequest || $timeout <= 0) {
 }
 
 Util::sessionTimeout($timeout);
-session_name('SiAuth');
-session_start();
 
 // Will be set in the following init.php call to extensions that are enabled.
 $extNames = [];
@@ -141,10 +142,10 @@ $helpImagePath = "images/";
 
 // formatter:off
 include_once "include/init.php";
-global $earlyExit,
+global $unappliedPatches,
+       $earlyExit,
        $extNames,
        $LANG,
-       $menu,
        $patchCount,
        $path,
        $PATTERNS,
@@ -154,7 +155,8 @@ global $earlyExit,
        $smartyOutput;
 // formatter:on
 
-Log::out("index.php - After init.php - module[$module] view[$view] patchCount[$patchCount]");
+Log::out("index.php - After init.php - module[$module] view[$view] " .
+    "patchCount[$patchCount] unappliedPatches[$unappliedPatches]");
 foreach ($extNames as $extName) {
     if (file_exists("extensions/$extName/include/init.php")) {
         /** @noinspection PhpIncludeInspection */
@@ -200,7 +202,8 @@ if ($module == "options" && $view == "database_sqlpatches") {
         $view == "structure" ? $view = "structure" : $view = "index";
         $applyDbPatches = false; // do installer
     } elseif (!$databasePopulated) {
-        if ($patchCount == SqlPatchManager::BEGINNING_PATCH_NUMBER) {
+        // If no patches have been applied, then assume loading database content from scratch.
+        if ($patchCount == 0) {
             $module = "install";
             $view == "essential" ? $view = "essential" : $view = "structure";
             $applyDbPatches = false; // do installer
@@ -209,19 +212,19 @@ if ($module == "options" && $view == "database_sqlpatches") {
         $applyDbPatches = false;
     }
 
-    Log::out("index.php - apply_db_patches[$applyDbPatches]");
+    Log::out("index.php - applyDbPatches[$applyDbPatches]");
 
     // See if we need to verify patches have been loaded.
     if ($applyDbPatches) {
-        Log::out("index.php - config->authentication->enabled[{$config['authenticationEnabled']}] " .
-                                  "_SESSION['id']: " . print_r($_SESSION['id'], true));
+        Log::out("index.php - authenticationEnabled[{$config['authenticationEnabled']}] ".
+            "\$_SESSION['id'][{$_SESSION['id']}]");
         // If default user or an active session exists, proceed with check.
         if ($config['authenticationEnabled'] == DISABLED || isset($_SESSION['id'])) {
             // Check if there are patches to process
-            if (SqlPatchManager::numberOfUnappliedPatches() > 0) {
+            if ($unappliedPatches > 0 ) {
                 $module = "options";
                 $view = "database_sqlpatches";
-                Log::out("index.php - module[$module] view[$view] action[$action] Unapplied patches found");
+                Log::out("index.php - Unapplied patches found - action[$action]");
                 if ($action == "run") {
                     SqlPatchManager::runPatches();
                 } else {
@@ -234,34 +237,19 @@ if ($module == "options" && $view == "database_sqlpatches") {
                 // It is considered setup when there is at least one biller, one customer and one product.
                 // If it has not been set up, allow the user to add a biller, customer, product or to
                 // modify the setting options.
+                $noInvoices = Invoice::count() == 0;
                 if (!empty($module)) {
                     $stillDoingSetup = false;
-                    if (($view != 'create' || $module != 'billers' && $module != 'customers' && $module != 'products') && ($module != 'system_defaults' || $view != 'manage' && $view != 'edit' && $view != 'save')) {
-                        try {
-                            if (Invoice::count() == 0) {
-                                $stillDoingSetup = true;
-                                if (Biller::count() > 0 && Customer::count() > 0 && Product::count() > 0) {
-                                    $stillDoingSetup = false;
-
-                                    // Biller, Customer and Product set up but no invoices. Check to
-                                    // see if this is the first time we've encountered this. If so,
-                                    // flag $stillDoingSetup but set install_completed status in
-                                    // database so subsequent requests will go to the specified screen.
-                                    $rows = $pdoDb->request('SELECT', 'install_complete');
-                                    if (empty($rows) || $rows[0]['completed'] != ENABLED) {
-                                        $pdoDb->setFauxPost(['completed' => ENABLED]);
-                                        if (empty($rows)) {
-                                            $pdoDb->request('INSERT', 'install_complete');
-                                        } else {
-                                            $pdoDb->request('UPDATE', 'install_complete');
-                                        }
-                                        $stillDoingSetup = true;
-                                    }
-                                }
+                    if (($view != 'create' || $module != 'billers' && $module != 'customers' && $module != 'products') &&
+                        ($module != 'system_defaults' || $view != 'manage' && $view != 'edit' && $view != 'save')) {
+                        if ($noInvoices) {
+                            $stillDoingSetup = true;
+                            if (Biller::count() > 0 && Customer::count() > 0 && Product::count() > 0) {
+                                // Biller, Customer and Product set up but no invoices. Check to
+                                // see if this is the first time we've encountered this. If it is
+                                // the first time, then set $stillDoingSetup to true.
+                                $stillDoingSetup = Install::setComplete();
                             }
-                        } catch (PdoDbException $pde) {
-                            error_log("index.php: Unable to set install_complete flag. Error: " . $pde->getMessage());
-                            exit("Unable to set install complete flag. See error log for additional information.");
                         }
                     }
                 } else {
@@ -272,13 +260,13 @@ if ($module == "options" && $view == "database_sqlpatches") {
 
                 if ($stillDoingSetup) {
                     try {
-                        if (Invoice::count() > 0) {
+                        if ($noInvoices) {
+                            $module = "index";
+                            $view = "index";
+                        } else {
                             Invoice::updateAging();
                             $module = "invoices";
                             $view = "manage";
-                        } else {
-                            $module = "index";
-                            $view = "index";
                         }
                     } catch (PdoDbException $pde) {
                         error_log("index.php: Unable to get Invoice count to set default module and view. Error: " . $pde->getMessage());
@@ -290,11 +278,8 @@ if ($module == "options" && $view == "database_sqlpatches") {
     }
 }
 
-Log::out("index.php - module[" . (empty($module) ? "" : $module) .
-    "] view[" . (empty($view) ? "" : $view) .
-    "] action[" . (empty($action) ? "" : $action) .
-    "] id[" . (empty($_GET['id']) ? "" : $_GET['id']) .
-    "] menu[$menu]");
+Log::out("index.php - module[" . ($module ?? "") . "] view[" . ($view ?? "") . "] action[" . ($action ?? "") .
+                            "] id[" . ($_GET['id'] ?? "") . "] menu[$menu]");
 $smarty->assign('menu', $menu);
 
 if (!CheckPermission::isAllowed($module, $view)) {
@@ -360,10 +345,11 @@ foreach ($extNames as $extName) {
         $smarty->$smartyOutput("extensions/$extName/templates/default/hooks.tpl");
     }
 }
+
 // Load standard hooks file. Note that any module hooks loaded will not be
 // impacted by loading this file.
 $smarty->$smartyOutput("custom/hooks.tpl");
-Log::out("index.php - after custom/hooks.tpl");
+Log::out("index.php - After custom/hooks.tpl");
 
 if (!in_array($module . "_" . $view, $earlyExit)) {
     $extensionHeader = 0;
@@ -382,7 +368,7 @@ if (!in_array($module . "_" . $view, $earlyExit)) {
         }
     }
 }
-Log::out("index.php - after header.tpl");
+Log::out("index.php - After header.tpl");
 
 // **********************************************************
 // Prep the page - load the header stuff - END
@@ -472,7 +458,7 @@ foreach ($extNames as $extName) {
 if ($module != 'auth' && !($module == 'payments' && $view == 'print')) {
     $smarty->$smartyOutput("include/js/post_load.jquery.ext.js.tpl");
 }
-Log::out("index.php - post_load...");
+Log::out("index.php - post_load. menu[$menu]");
 
 // **********************************************************
 // Post load javascript files - END
@@ -524,6 +510,7 @@ if (!in_array($module . "_" . $view, $earlyExit)) {
     }
 }
 Log::out("index.php - After main.tpl");
+
 // **********************************************************
 // Main: Custom layout - END
 // **********************************************************
@@ -606,11 +593,10 @@ foreach ($extNames as $extName) {
 }
 
 // TODO: if more than one extension has a template for the requested file, that's trouble :-(
-// This won't happen the standard menu.tpl and system_defaults menu.tpl given
+// This won't happen to the standard menu.tpl and system_defaults menu.tpl given
 // changes implemented in this file for them. Similar changes should be implemented for
 // other templates as needed.
 if ($extensionTemplates == 0) {
-    /** @var string $myTplPath */
     $myTplPath = Util::getCustomPath("$module/$view");
     if (isset($myTplPath)) {
         $path = dirname($myTplPath) . '/';
@@ -629,8 +615,9 @@ $smarty->assign("path", $path);
 $smarty->assign("realPath", $realPath);
 
 Log::out("index.php - path[$path] my_tpl_path[$myTplPath] realPath[$realPath]");
-$smarty->$smartyOutput($myTplPath);
-Log::out("index.php - After output my_tpl_path[$myTplPath]");
+if (!empty($myTplPath)) {
+    $smarty->$smartyOutput($myTplPath);
+}
 
 // If no smarty template - add message
 if ($extensionTemplates == 0) {

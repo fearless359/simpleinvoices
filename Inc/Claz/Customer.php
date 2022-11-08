@@ -14,7 +14,8 @@ class Customer
 
     /**
      * Calculate count of customer records.
-     * @return int
+     * @return int Count of customer records in the database. Note that if an exception is thrown,
+     *      it will be reported in the error log but a count of 0 will be returned.
      */
     public static function count(): int
     {
@@ -44,14 +45,21 @@ class Customer
     /**
      * Retrieve all <b>customers</b> records per specified option.
      * @param array $params Array of options for processing the request. Settings are:
-     *          enabledOnly - Set to <b>true</b> if only Customers that are <i>Enabled</i>
-     *              will be selected. Set to <b>false</b> to select all <b>customers</b> records.
-     *          incl_cust_id - If set, makes sure this customer is included regardless of the
-     *              <b>enabledOnly</b> option setting.
-     *          noTotals - Set to <b>true</b> if only customer record fields to be returned.
-     *              Set to <b>false</b> to add calculated totals field (Default if not specified).
-     *          An empty array if none of these parameters needed.
+     * @param array $params Array of options for processing the request. Settings are:<br/>
+     *          <i>id</i> - If set, id of customer to retrieve. Defaults to all customers to be considered.<br/>
+     *          <i>includeCustId</i> - If set, contains ID of customer that should be included regardless of the
+     *                      <b>enabledOnly</b> option setting.<br/>
+     *          <i>enabledOnly</i> - Set to <b>true</b> if only Customers that are <i>Enabled</i>
+     *                      will be selected. Set to <b>false</b> to select all <b>customers</b> records.<br/>
+     *          <i>noTotals</i> - Set to <b>true</b> if only customer record fields to be returned.
+     *                      Set to <b>false</b> to add calculated totals field (Default if not specified).<br/>
+     *          <i>orderBySet</i> - Set to <b>true</b> if caller set the ORDER BY option. Set to
+     *                      <b>false</b> to order by name (default if not specified).<br/>
+     *          <i>notInWarehouse</i> - If set to <b>true</b> when only customer records that have no entry in
+     *                      the payment_warehouse table should be included. If not set or is set to <b>false</b>
+     *                      if payment_warehouse should not be checked.
      * @return array Customers selected.
+     * @noinspection PhpDocSignatureInspection
      */
     public static function getAll(array $params = []): array
     {
@@ -82,7 +90,7 @@ class Customer
             error_log("Customer::manageTableInfo(): Unable to set OrderBy - " . $pde->getMessage());
         }
 
-        $rows = self::getCustomers(['order_by_set' => true]);
+        $rows = self::getCustomers(['orderBySet' => true]);
 
         $tableRows = [];
         foreach ($rows as $row) {
@@ -139,32 +147,34 @@ class Customer
     }
 
     /**
-     * Retrieve all <b>customers</b> records per specified option.
+     * Private accessor for all <b>customers</b> records per specified option.
      * @param array $params Array of options for processing the request. Settings are:
-     *          id - id of customer to retrieve. Defaults to all customers to be considered.
+     *          id - If set, id of customer to retrieve. Defaults to all customers to be considered.
+     *          includeCustId - If set, contains ID of customer that should be included regardless of the
+     *                      <b>enabledOnly</b> option setting.
      *          enabledOnly - Set to <b>true</b> if only Customers that are <i>Enabled</i>
-     *              will be selected. Set to <b>false</b> to select all <b>customers</b> records.
-     *          incl_cust_id - If set, makes sure this customer is included regardless of the
-     *              <b>enabledOnly</b> option setting.
+     *                      will be selected. Set to <b>false</b> to select all <b>customers</b> records.
      *          noTotals - Set to <b>true</b> if only customer record fields to be returned.
-     *              Set to <b>false</b> to add calculated totals field (Default if not specified).
-     *          order_by_set - Set to <b>true</b> if caller set the ORDER BY option. Set to
-     *              <b>false</b> to order by name (default if not specified).
+     *                      Set to <b>false</b> to add calculated totals field (Default if not specified).
+     *          orderBySet - Set to <b>true</b> if caller set the ORDER BY option. Set to
+     *                      <b>false</b> to order by name (default if not specified).
+     *          notInWarehouse - If set to <b>true</b> when only customer records that have no entry in
+     *                      the payment_warehouse table should be included. If not set or is set to <b>false</b>
+     *                      if payment_warehouse should not be checked.
      * @return array Customers selected.
-     */
+     * @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection*/
     private static function getCustomers(array $params): array
     {
         global $LANG, $pdoDb;
 
-        // @formatter::off
-        $id          = empty($params['id'])           ? null  : $params['id'];
-        /** @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection */
-        $enabledOnly = empty($params['enabledOnly']) ? false : $params['enabledOnly'];
-        $inclCustId  = empty($params['incl_cust_id']) ? null  : $params['incl_cust_id'];
-        /** @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection */
-        $noTotals    = empty($params['noTotals'])    ? false : $params['noTotals'];
-        $orderBySet  = empty($params['order_by_set']) ? false : $params['order_by_set'];
-        // @formatter:on
+        // formatter:off
+        $id             = $params['id']            ?? null;
+        $inclCustId     = $params['includeCustId'] ?? null;
+        $enabledOnly    = empty($params['enabledOnly'])    ? false : $params['enabledOnly'];
+        $noTotals       = empty($params['noTotals'])       ? false : $params['noTotals'];
+        $orderBySet     = empty($params['orderBySet'])     ? false : $params['orderBySet'];
+        $notInWarehouse = empty($params['notInWarehouse']) ? false : $params['notInWarehouse'];
+        // formatter:on
 
         $customers = [];
         try {
@@ -202,10 +212,16 @@ class Customer
             $pdoDb->setSelectAll(true);
 
             $rows = $pdoDb->request("SELECT", "customers");
-            if ($noTotals) {
-                $customers = $rows;
-            } else {
-                foreach ($rows as $row) {
+            foreach ($rows as $row) {
+                if ($notInWarehouse) {
+                    $pw = PaymentWarehouse::getOne($row['id'], 1);
+                    if (!empty($pw)) {
+                        // Skip customer that is in the payment_warehouse.
+                        continue;
+                    }
+                }
+
+                if (!$noTotals) {
                     self::getLastInvoiceIds($row['id'], $lastIndexId, $lastId);
                     $row['last_index_id'] = $lastIndexId;
                     $row['last_inv_id'] = $lastId;
@@ -213,8 +229,8 @@ class Customer
                     $row['total'] = self::calcCustomerTotal($row['id']);
                     $row['paid'] = Payment::calcCustomerPaid($row['id']);
                     $row['owing'] = $row['total'] - $row['paid'];
-                    $customers[] = $row;
                 }
+                $customers[] = $row;
             }
         } catch (PdoDbException $pde) {
             error_log("Customer::getAll() - PdoDbException thrown: " . $pde->getMessage());

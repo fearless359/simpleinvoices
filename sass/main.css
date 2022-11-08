@@ -1,3 +1,8 @@
+/* blue-7 */
+/* blue-5 */
+/* blue-4 */
+/* blue-3 */
+/* blue-rich */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -1014,6 +1019,15 @@ input[type=text] {
 .margin__bottom-0 {
   margin-bottom: 0;
 }
+.margin__bottom-0-2 {
+  margin-top: 0.2rem;
+}
+.margin__bottom-0-5 {
+  margin-top: 0.5rem;
+}
+.margin__bottom-0-75 {
+  margin-top: 0.75rem;
+}
 .margin__bottom-1 {
   margin-bottom: 1rem;
 }
@@ -1049,10 +1063,13 @@ input[type=text] {
   padding: 0.5rem;
 }
 .pad__top-1 {
-  padding-top: 1em;
+  padding-top: 1rem;
 }
 .pad__right-1 {
-  padding-right: 1em;
+  padding-right: 1rem;
+}
+.pad__right-2 {
+  padding-right: 2rem;
 }
 .pad__bottom-3 {
   padding-bottom: 3rem;

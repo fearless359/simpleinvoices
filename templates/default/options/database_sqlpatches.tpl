@@ -27,7 +27,7 @@
         </ul>
     {/if}
     {* Refresh ######################## *}
-    {if $page.refresh}
-        <meta http-equiv="refresh" content="{$page.refresh}0;url=index.php">
-    {/if}
+{*    {if $page.refresh}*}
+{*        <meta http-equiv="refresh" content="{$page.refresh}0;url=index.php">*}
+{*    {/if}*}
 </div>

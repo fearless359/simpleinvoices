@@ -9,7 +9,9 @@ namespace Inc\Claz;
 class Product
 {
     /**
-     * @return int count of product rows
+     * Calculate the number of product records in the database.
+     * @return int Count of product record. Note that if an exception is thrown,
+     *      it will be reported in the error log but a count of 0 will be returned.
      */
     public static function count(): int
     {

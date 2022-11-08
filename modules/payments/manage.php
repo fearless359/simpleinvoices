@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\Payment;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 
 global $LANG, $smarty;
@@ -9,21 +10,27 @@ global $LANG, $smarty;
 Util::directAccessAllowed();
 
 // @formatter:off
-if (!empty($_GET['id'])) {
-    // Filter by just one invoice
-    $payments      = Payment::getInvoicePayments($_GET['id'], true);
-    $subPageActive = "paymentFilterInvoice";
-    $noEntryMsg    = $LANG['noPaymentsInvoice'];
-} elseif (!empty($_GET['c_id'])) {
-    // Filter by just one customer
-    $payments      = Payment::getCustomerPayments($_GET['c_id'], true);
-    $subPageActive = "paymentFilterCustomer";
-    $noEntryMsg    = $LANG['noPaymentsCustomer'];
-} else {
-    // No filters
-    $payments      = Payment::getAll(true);
-    $subPageActive = "payment_manage";
-    $noEntryMsg    = $LANG['noPayments'];
+try {
+    if (!empty($_GET['id'])) {
+        // Filter by just one invoice
+        $payments      = Payment::getOne($_GET['id']);
+        $payments      = Payment::getInvoicePayments($_GET['id'], true);
+        $subPageActive = "paymentFilterInvoice";
+        $noEntryMsg    = $LANG['noPaymentsInvoice'];
+    } elseif (!empty($_GET['c_id'])) {
+        // Filter by just one customer
+        $payments      = Payment::getCustomerPayments($_GET['c_id'], true);
+        $subPageActive = "paymentFilterCustomer";
+        $noEntryMsg    = $LANG['noPaymentsCustomer'];
+    } else {
+        // No filters
+        $payments      = Payment::getAll(true);
+        $subPageActive = "payment_manage";
+        $noEntryMsg    = $LANG['noPayments'];
+    }
+} catch (PdoDbException $pde) {
+    error_log("payments/manage.php - error: " . $pde->getMessage());
+    exit("Unable to access payments. Check error log for additional information.");
 }
 // @formatter:on
 

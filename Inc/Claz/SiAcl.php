@@ -287,7 +287,7 @@ class SiAcl
             }
         }
 
-        session_name('SiAuth');
+        session_name(SESSION_NAME);
         session_start();
         $_SESSION['acl'] = serialize($acl);
     }
@@ -297,7 +297,7 @@ class SiAcl
      * @return mixed|string
      */
     public static function getSessionRole() {
-        session_name('SiAuth');
+        session_name(SESSION_NAME);
         session_start();
         return empty($_SESSION['role_name']) ? 'all' : $_SESSION['role_name'];
     }

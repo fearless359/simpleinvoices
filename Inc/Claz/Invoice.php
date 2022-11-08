@@ -14,9 +14,9 @@ class Invoice
 {
 
     /**
-     * Calculate the number of invoices in the database
-     * @return int Count of invoices in the database
-     * @throws PdoDbException
+     * Calculate the number of invoices in the database.
+     * @return int Count of invoices in the database. Note that if an exception is thrown,
+     *     it will be reported in the error log but a count of 0 will be returned.
      */
     public static function count(): int
     {
@@ -28,7 +28,7 @@ class Invoice
             $rows = $pdoDb->request("SELECT", "invoices");
         } catch (PdoDbException $pde) {
             error_log("Invoice::count() - Error: " . $pde->getMessage());
-            throw $pde;
+            return 0;
         }
 
         return count($rows);
@@ -72,10 +72,12 @@ class Invoice
      * @param string $sort field to order by (optional).
      * @param string $dir order by direction, "asc" or "desc" - (optional).
      * @param bool $manageTable true if select for manage.tpl table; false (default) if not.
+     * @param bool $includeWarehouse true if should include warehouse info with all selected, false if not.
      * @return array Invoices retrieved.
      * @throws PdoDbException
      */
-    public static function getAllWithHavings($having, string $sort = "", string $dir = "", bool $manageTable = false): array
+    public static function getAllWithHavings($having, string $sort = "", string $dir = "", bool $manageTable = false,
+                                             bool $includeWarehouse = false): array
     {
         global $pdoDb;
 
@@ -107,7 +109,7 @@ class Invoice
             return self::manageTableInfo();
         }
 
-        return self::getInvoices(null, $sort, $dir);
+        return self::getInvoices(null, $sort, $dir, $includeWarehouse);
     }
 
     /**
@@ -149,7 +151,7 @@ class Invoice
     {
         global $config, $LANG;
 
-        session_name('SiAuth');
+        session_name(SESSION_NAME);
         session_start();
         $readOnly = $_SESSION['role_name'] == 'customer';
         $rows = self::getInvoices();
@@ -229,10 +231,11 @@ class Invoice
      * @param int|null $id If not null, the ID of the invoices to retrieve.
      * @param string $sort field to order by, defaults to index_name.
      * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
+     * @param bool $includeWarehouse true if warehouse info include, false if not.
      * @return array Selected rows.
      * @throws PdoDbException
      */
-    private static function getInvoices(?int $id = null, string $sort = "", string $dir = ""): array
+    private static function getInvoices(?int $id = null, string $sort = "", string $dir = "", bool $includeWarehouse = false): array
     {
         global $pdoDb;
 
@@ -241,7 +244,7 @@ class Invoice
                 $pdoDb->addSimpleWhere('iv.id', $id, 'AND');
             }
 
-            session_name('SiAuth');
+            session_name(SESSION_NAME);
             session_start();
 
             // If user role is customer or biller, then restrict invoices to those they have access to.
@@ -342,25 +345,58 @@ class Invoice
             $invoices = [];
             foreach ($rows as $row) {
                 $owing = $row['total'] - $row['paid'];
-                // Check to case where owing on invoice differs from calculated owing.
-                // Also ignore contrived owing value of 1.
-                if (Util::numberTrim($row['owing']) != 1 && $owing > 0 &&
-                    Util::numberTrim($row['owing']) != Util::numberTrim($owing) && $row['preference_id'] == 1) {
-                    error_log("Invoice::getInvoices() - Owing discrepancy on invoice id[{$row['id']}] - index_id[{$row['index_id']}]. " .
-                        "Calculated owing[$owing] not equal to invoices table owning[{$row['owing']}]");
+                // Check for case where owing on invoice differs from calculated owing
+                // FYI: Preference ID 1 is Invoice.
+                if ($owing > 0 && Util::numberTrim($row['owing']) != Util::numberTrim($owing) &&
+                    $row['preference_id'] == 1) {
+                    $forceUpdate = true;
+                    $row['owing'] = $owing;
+                } else {
+                    $forceUpdate = false;
                 }
+
                 $ageInfo = self::calculateAgeDays(
                     $row['id'],
                     $row['date'],
                     $row['owing'],
                     $row['last_activity_date'],
                     $row['aging_date'],
-                    $row['set_aging']);
+                    $row['set_aging']
+                );
 
                 // The merge will update fields that exist and append those that don't.
                 self::updateAgingValues($row, $ageInfo);
                 $row['tax_grouped']  = self::taxesGroupedForInvoice($row['id']);
                 $row['display_date'] = Util::date($row['date']);
+
+                // Only present warehouse information if this is a specific record request.
+                // This avoids reporting multiple invoices for the same client with each
+                // showing warehouse information that is not adjusted for potential payments.
+                if ((isset($id) || $includeWarehouse) && $row['owing'] > 0) {
+                    $warehousedPayment = PaymentWarehouse::getOne($row['customer_id'], 1);
+                    if (empty($warehousedPayment)) {
+                        $whPymtAmt = '0';
+                        $whPymtType = '';
+                        $whPymtChkNo = '';
+                        $whPymtTypeDesc = '';
+                    } else {
+                        $whPymtAmt= Util::number(min($row['owing'], $warehousedPayment['balance']));
+                        $whPymtType = $warehousedPayment['payment_type'];
+                        $whPymtChkNo = $warehousedPayment['check_number'];
+
+                        $pmtType = PaymentType::getOne($whPymtType);
+                        $whPymtTypeDesc = $pmtType['pt_description'];
+                    }
+
+                    $row['warehousedPayment'] = $whPymtAmt;
+                    $row['warehousedPaymentType'] = $whPymtType;
+                    $row['warehousedCheckNumber'] = $whPymtChkNo;
+                    $row['warehousedPaymentTypeDesc'] = $whPymtTypeDesc;
+                }
+
+                if ($forceUpdate) {
+                    self::updateAging($row['id']);
+                }
                 $invoices[] = $row;
             }
         } catch (PdoDbException $pde) {
@@ -404,6 +440,7 @@ class Invoice
             $invoice['aging'] = $ageInfo['aging'];
         }
     }
+
     /**
      * Create the aging wording to show on the invoice list.
      * @param int $age_days to get string for.
@@ -980,7 +1017,7 @@ class Invoice
         global $pdoDb;
 
         try {
-            session_name('SiAuth');
+            session_name(SESSION_NAME);
             session_start();
 
             // If user role is customer or biller, then restrict invoices to those they have access to.

@@ -51,20 +51,23 @@ if ($paypal->validate_ipn()) {
         Log::out($xmlMessage, Log::INFO);
         $error = true;
     } else {
-        $pmtType = PaymentType::selectOrInsertWhere("Paypal");
-        Payment::insert([
-            "ac_inv_id"         => $paypal->ipn_data ['invoice'],
-            "ac_amount"         => $paypal->ipn_data['mc_gross'],
-            "ac_notes"          => $paypalData,
-            "ac_date"           => date('Y-m-d', strtotime($paypal->ipn_data['payment_date'])),
-            "online_payment_id" => $paypal->ipn_data['txn_id'],
-            "ac_payment_type"   => $pmtType
-        ]);
-        Log::out('Paypal - payment_type=' . $pmtType, Log::INFO);
-
         try {
             $invoice = Invoice::getOne($paypal->ipn_data ['invoice']);
             $biller = Biller::getOne($invoice ['biller_id']);
+
+            $customerId = $invoice['customer_id'];
+
+            $pmtType = PaymentType::selectOrInsertWhere("Paypal");
+            Payment::insert([
+                "ac_inv_id"         => $paypal->ipn_data ['invoice'],
+                "customer_id"       => $customerId,
+                "ac_amount"         => $paypal->ipn_data['mc_gross'],
+                "ac_notes"          => $paypalData,
+                "ac_date"           => date('Y-m-d', strtotime($paypal->ipn_data['payment_date'])),
+                "online_payment_id" => $paypal->ipn_data['txn_id'],
+                "ac_payment_type"   => $pmtType
+            ], $customerId);
+            Log::out('Paypal - payment_type=' . $pmtType, Log::INFO);
 
             // send email
             $body = "A Paypal instant payment notification was successfully received\n";

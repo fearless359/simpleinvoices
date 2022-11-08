@@ -41,7 +41,7 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
     $username = $_POST['user'];
     $password = $_POST['pass'];
     if (User::verifyPassword($username, $password)) {
-        session_name('SiAuth');
+        session_name(SESSION_NAME);
         session_start();
 
         Log::out("login.php - Valid username and password");

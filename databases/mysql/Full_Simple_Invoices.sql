@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2022 at 04:46 PM
+-- Generation Time: Oct 27, 2022 at 03:32 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.28
 
@@ -400,13 +400,15 @@ CREATE TABLE `si_log` (
 CREATE TABLE `si_payment` (
   `id` int(11) UNSIGNED NOT NULL,
   `ac_inv_id` int(11) UNSIGNED DEFAULT NULL,
+  `customer_id` int(11) UNSIGNED DEFAULT NULL,
   `ac_amount` decimal(25,6) NOT NULL,
   `ac_notes` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `ac_date` datetime NOT NULL,
   `ac_payment_type` int(11) UNSIGNED DEFAULT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
   `online_payment_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ac_check_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL
+  `ac_check_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `warehouse_amount` decimal(25,6) NOT NULL DEFAULT 0.000000
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -420,6 +422,21 @@ CREATE TABLE `si_payment_types` (
   `domain_id` int(11) UNSIGNED NOT NULL,
   `pt_description` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pt_enabled` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `si_payment_warehouse`
+--
+
+CREATE TABLE `si_payment_warehouse` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `customer_id` int(11) UNSIGNED NOT NULL,
+  `last_payment_id` int(11) UNSIGNED DEFAULT NULL,
+  `balance` decimal(25,6) NOT NULL,
+  `payment_type` int(11) UNSIGNED NOT NULL,
+  `check_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -789,7 +806,8 @@ ALTER TABLE `si_payment`
   ADD KEY `domain_id` (`domain_id`),
   ADD KEY `ac_inv_id` (`ac_inv_id`),
   ADD KEY `ac_amount` (`ac_amount`),
-  ADD KEY `ac_payment_type` (`ac_payment_type`);
+  ADD KEY `ac_payment_type` (`ac_payment_type`),
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `si_payment_types`
@@ -797,6 +815,15 @@ ALTER TABLE `si_payment`
 ALTER TABLE `si_payment_types`
   ADD PRIMARY KEY (`domain_id`,`pt_id`),
   ADD UNIQUE KEY `pt_id` (`pt_id`);
+
+--
+-- Indexes for table `si_payment_warehouse`
+--
+ALTER TABLE `si_payment_warehouse`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `last_payment_id` (`last_payment_id`),
+  ADD KEY `payment_type` (`payment_type`);
 
 --
 -- Indexes for table `si_preferences`
@@ -1010,6 +1037,12 @@ ALTER TABLE `si_payment_types`
   MODIFY `pt_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `si_payment_warehouse`
+--
+ALTER TABLE `si_payment_warehouse`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `si_preferences`
 --
 ALTER TABLE `si_preferences`
@@ -1096,7 +1129,8 @@ ALTER TABLE `si_cron_invoice_items`
 -- Constraints for table `si_cron_invoice_item_tax`
 --
 ALTER TABLE `si_cron_invoice_item_tax`
-  ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `si_cron_invoice_items` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `si_cron_log`
@@ -1167,7 +1201,16 @@ ALTER TABLE `si_log`
 --
 ALTER TABLE `si_payment`
   ADD CONSTRAINT `si_payment_ibfk_1` FOREIGN KEY (`ac_inv_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `si_payment_ibfk_2` FOREIGN KEY (`ac_payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `si_payment_ibfk_2` FOREIGN KEY (`ac_payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_payment_ibfk_3` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Constraints for table `si_payment_warehouse`
+--
+ALTER TABLE `si_payment_warehouse`
+  ADD CONSTRAINT `si_payment_warehouse_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_payment_warehouse_ibfk_2` FOREIGN KEY (`last_payment_id`) REFERENCES `si_payment` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `si_payment_warehouse_ibfk_3` FOREIGN KEY (`payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `si_products`
@@ -1313,16 +1356,25 @@ VALUES ('1', 'list')
 INSERT INTO `si_sql_patchmanager` (`sql_patch_ref`, `sql_patch`, `sql_release`, `sql_statement`, `source`) VALUES
 (319, 'Add set_aging field to si_preferences', '20200123', 'ALTER TABLE `si_preferences` ADD COLUMN `set_aging` BOOL NOT NULL DEFAULT 0 AFTER `index_group`;UPDATE `si_preferences` SET `set_aging` = 1 WHERE pref_id = 1;', 'fearless359'),
 (320, 'Remove deleted extensions mini and measurement', '20200822', 'DELETE IGNORE FROM `si_extensions` WHERE `name` = \'mini\' OR `name` = \'measurement\';', 'fearless359'),
-(321, 'Add parent_customer_id field to the database', '20200924' 'ALTER TABLE `si_customers` ADD `parent_customer_id` INT(11) NULL AFTER `notes`;DELETE IGNORE FROM `si_extensions` WHERE `name` = \'sub_customer\';INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES (\'sub_customer\', 0, 1, 1);', 'fearless359'),
-(322, 'Add product_groups table to the database.', '20201010','CREATE TABLE `si_product_groups` (name VARCHAR(60) NOT NULL PRIMARY KEY, markup INT(2) NOT NULL DEFAULT 0) ENGINE = InnoDb; DELETE IGNORE FROM `si_extensions` WHERE `name` = \'invoice_grouped\'; INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES (\'product_groups\', 0, 1, 1); ALTER TABLE `si_products` ADD product_group VARCHAR(60) NOT NULL DEFAULT \'\'; INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Labor\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Equipment\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Materials\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Subcontractor\', 0);', 'fearless359'),
+(321, 'Add parent_customer_id field to the database', '20200924', 'ALTER TABLE `si_customers` ADD `parent_customer_id` INT(11) NULL AFTER `notes`;DELETE IGNORE FROM `si_extensions` WHERE `name` = \'sub_customer\';INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES (\'sub_customer\', 0, 1, 1);', 'fearless359'),
+(322, 'Add product_groups table to the database.', '20201010', 'CREATE TABLE `si_product_groups` (name VARCHAR(60) NOT NULL PRIMARY KEY, markup INT(2) NOT NULL DEFAULT 0) ENGINE = InnoDb; DELETE IGNORE FROM `si_extensions` WHERE `name` = \'invoice_grouped\'; INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`) VALUES (\'product_groups\', 0, $domainId, 1); ALTER TABLE `si_products` ADD product_group VARCHAR(60) NOT NULL DEFAULT \'\'; INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Labor\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Equipment\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Materials\', 0); INSERT INTO `si_product_groups` (`name`, `markup`) VALUES (\'Subcontractor\', 0);', 'fearless359'),
 (323, 'Add invoice description open option.', '20210413', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'invoice_description_open\', 0, $domainId, 1);', 'fearless359'),
 (324, 'Rename si_products_values table to si_products_attributes_values.', '20210527', 'ALTER TABLE `si_products_values` RENAME TO si_products_attributes_values;', 'fearless359'),
-(325, 'Remove unused items from the si_system_defaults table.', '20200615', 'DELETE IGNORE FROM `si_system_defaults` WHERE `name` in (\'company_name\', \'emailhost, \'emailpassword\', \'emailusername\', \'pdfbottommargin\', \'pdfleftmargin\', \'pdfpapersize\', \'pdfrightmargin\', \'pdfscreensize\', \'pdftopmargin\', \'spreadsheet\', \'wordprocessor\'); DELETE IGNORE FROM `si_system_defaults` WHERE `name` LIKE \'dateformat%\';', 'fearless359'),
-(326, 'Add display department option.', '20210930', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'display_department\', 1, 1, 1);', 'fearless359');
+(325, 'Remove unused items from the si_system_defaults table.', '20200615', 'DELETE IGNORE FROM `si_system_defaults` WHERE `name` in (\'company_name\', \'emailhost\', \'emailpassword\', \'emailusername\', \'pdfbottommargin\', \'pdfleftmargin\', \'pdfpapersize\', \'pdfrightmargin\', \'pdfscreensize\', \'pdftopmargin\', \'spreadsheet\', \'wordprocessor\'); DELETE IGNORE FROM `si_system_defaults` WHERE `name` LIKE \'dateformat%\';', 'fearless359'),
+(326, 'Add display department option.', '20210930', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'display_department\', 1, $domainId, 1);', 'fearless359'),
+(327, 'Make invoice_item_id a key field in the invoice_item_tax table.', '20220909', 'ALTER TABLE `si_invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`);', 'fearless359'),
+(328, 'Add cron_invoice_items table to the database.', '20220909', 'CREATE TABLE `si_cron_invoice_items` (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `cron_id` int(11) UNSIGNED NOT NULL, `quantity` decimal(25,6) NOT NULL DEFAULT 0.000000, `product_id` int(11) UNSIGNED NOT NULL, `unit_price` decimal(25,6) DEFAULT 0.000000, `tax_amount` decimal(25,6) DEFAULT 0.000000, `gross_total` decimal(25,6) DEFAULT 0.000000, `description` text COLLATE utf8_unicode_ci DEFAULT NULL, `total` decimal(25,6) DEFAULT 0.000000, `attribute` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;ALTER TABLE `si_cron_invoice_items` ADD KEY `cron_id` (`cron_id`), ADD KEY `product_id` (`product_id`); ALTER TABLE `si_cron_invoice_items` ADD CONSTRAINT `si_cron_invoice_items_ibfk_1` FOREIGN KEY (`cron_id`) REFERENCES `si_cron` (`id`) ON UPDATE CASCADE, ADD CONSTRAINT `si_cron_invoice_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `si_products` (`id`) ON UPDATE CASCADE;', 'fearless359'),
+(329, 'Add cron_invoice_item_tax table to the database.', '20220909', 'CREATE TABLE `si_cron_invoice_item_tax` (`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `cron_invoice_item_id` int(11) UNSIGNED NOT NULL, `tax_id` int(11) UNSIGNED NOT NULL, `tax_type` char(1) COLLATE utf8_unicode_ci DEFAULT NULL, `tax_rate` decimal(25,6) NOT NULL, `tax_amount` decimal(25,6) NOT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;ALTER TABLE `si_cron_invoice_item_tax` ADD KEY `cron_invoice_item_id` (`cron_invoice_item_id`), ADD KEY `tax_id` (`tax_id`);ALTER TABLE `si_cron_invoice_item_tax` ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE, ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `si_cron_invoice_items` (`id`) ON UPDATE CASCADE;', 'fearless359'),
+(330, 'Add invoice_item_id as a key for the invoice_item_tax table.', '20220926', 'ALTER TABLE `si_invoice_item_tax` MODIFY `invoice_item_id` INT(11) UNSIGNED NOT NULL, MODIFY `tax_id` INT(11) UNSIGNED NOT NULL; ALTER TABLE `si_invoice_item_tax` ADD KEY `invoice_item_id` (`invoice_item_id`);', 'fearless359'),
+(331, 'Add foreign key for invoice_item_id to invoice_item_tax table.', '20221013', 'ALTER TABLE `si_invoice_item_tax` ADD CONSTRAINT `si_invoice_item_tax_ibfk_2` FOREIGN KEY (`invoice_item_id`) REFERENCES `si_invoice_items` (`id`) ON UPDATE CASCADE;', 'fearless359'),
+(332, 'Add payment_warehouse table to the database.', '20221013', 'CREATE TABLE `si_payment_warehouse` (`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `customer_id` int(11) UNSIGNED NOT NULL, `last_payment_id` int(11) UNSIGNED, `balance` decimal(25,6) NOT NULL, `payment_type` int(11) UNSIGNED NOT NULL, `check_number` varchar(10) DEFAULT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;ALTER TABLE `si_payment_warehouse` ADD KEY `customer_id` (`customer_id`), ADD KEY `last_payment_id` (`last_payment_id`), ADD KEY `payment_type` (`payment_type`);ALTER TABLE `si_payment_warehouse` ADD CONSTRAINT `si_payment_warehouse_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE,ADD CONSTRAINT `si_payment_warehouse_ibfk_2` FOREIGN KEY (`last_payment_id`) REFERENCES `si_payment` (`id`) ON UPDATE SET NULL ON DELETE SET NULL,ADD CONSTRAINT `si_payment_warehouse_ibfk_3` FOREIGN KEY (`payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE;', 'fearless359'),
+(333, 'Add warehouse_amount field to payment table.', '20221019', 'ALTER TABLE `si_payment` ADD `customer_id` int(11) UNSIGNED AFTER `ac_inv_id`, ADD `warehouse_amount` decimal(25,6) NOT NULL DEFAULT 0 AFTER `ac_check_number`; ALTER TABLE `si_payment` ADD KEY `customer_id` (`customer_id`); ALTER TABLE `si_payment` ADD CONSTRAINT `si_payment_ibfk_3` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE SET NULL ON DELETE SET NULL;', 'fearless359'),
+(334, 'Add payment delete days option.', '20221022', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'payment_delete_days\', 0, 1, 1);', 'fearless359');
 
 --
 -- Test/required data for `si_system_defaults` table - no constraints
 --
+
 INSERT INTO `si_system_defaults` (`name`, `value`, `domain_id`, `extension_id`)
 VALUES ('biller', '', '1', '1')
      , ('company_logo', 'simple_invoices_logo.png', '1', '1')
@@ -1342,6 +1394,7 @@ VALUES ('biller', '', '1', '1')
      , ('password_number', '1', '1', '1')
      , ('password_special', '1', '1', '1')
      , ('password_upper', '1', '1', '1')
+     , ('payment_delete_days', '0', '1', '1')
      , ('payment_type', '1', '1', '1')
      , ('preference', '1', '1', '1')
      , ('product_attributes', '0', '1', '1')
@@ -1377,16 +1430,6 @@ VALUES (1, 'administrator')
      , (3, 'user')
      , (4, 'customer')
      , (5, 'biller');
-
---
--- Test/required data for `si_invoice_item_tax` table - must follow si_tax
---
-INSERT INTO `si_invoice_item_tax` (`id`, `invoice_item_id`, `tax_id`, `tax_type`, `tax_rate`, `tax_amount`)
-VALUES (1, 1, 3, '%', 10.000000, 12.500000)
-     , (2, 2, 1, '%', 10.000000, 12.500000)
-     , (3, 3, 4, '%', 0.000000, 0.000000)
-     , (4, 4, 1, '%', 10.000000, 14.000000)
-     , (5, 5, 4, '%', 0.000000, 0.000000);
 
 --
 -- Test/required data for `si_products_attributes` table - must follow si_products_attributes_type
@@ -1430,6 +1473,17 @@ VALUES (1, 1, 1, 1.000000, 4, 125.000000, 12.500000, 125.000000, '', 137.500000)
      , (3, 1, 1, 1.000000, 2, 140.000000, 0.000000, 140.000000, '', 140.000000)
      , (4, 1, 1, 1.000000, 2, 140.000000, 14.000000, 140.000000, '', 154.000000)
      , (5, 1, 1, 1.000000, 1, 150.000000, 0.000000, 150.000000, '', 150.000000);
+
+--
+-- Test/required data for `si_invoice_item_tax` table - must follow si_tax
+--
+INSERT INTO `si_invoice_item_tax` (`id`, `invoice_item_id`, `tax_id`, `tax_type`, `tax_rate`, `tax_amount`)
+VALUES (1, 1, 3, ''%'', 10.000000, 12.500000)
+     , (2, 2, 1, ''%'', 10.000000, 12.500000)
+     , (3, 3, 4, ''%'', 0.000000, 0.000000)
+     , (4, 4, 1, ''%'', 10.000000, 14.000000)
+     , (5, 5, 4, ''%'', 0.000000, 0.000000);
+
 --
 -- Test/required data for `si_user` table - must follow si_user_domain and si_user_role
 --

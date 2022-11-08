@@ -11,12 +11,12 @@
                 <span class="loginForm__company">{$logoCompanyName}</span>
             </div>
             <div class="loginForm__group">
-                <input type="text" name="user" id="userId" class="loginForm__input" placeholder="{$LANG.idUc}"/>
+                <input type="text" name="user" id="userId" class="loginForm__input" placeholder="{$PLACEHOLDERS['id']}"/>
                 <label for="userId" class="loginForm__label">{$LANG.idUc}</label>
             </div>
 
             <div class="loginForm__group">
-                <input type="password" name="pass" id="password" class="loginForm__input" placeholder="{$LANG.password}" value=""/></td>
+                <input type="password" name="pass" id="password" class="loginForm__input" placeholder="{$PLACEHOLDERS['password']}" value=""/></td>
                 <label for="password" class="loginForm__label">{$LANG.password}</label>
             </div>
             {if $errorMessage }

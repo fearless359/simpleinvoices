@@ -1,7 +1,23 @@
+// Verify check number on change to number or type field.
+$(document).on("change", ".validateCheckNumber", (function() {
+    // noinspection JSUnresolvedFunction
+    validateCheckNumber();
+}))
+
+// See if amount greater than payment due or warehoused amount
+$(document).on("change", ".checkForWarehousedAmount", (function() {
+    checkPaymentInWarehouse();
+}));
+
+// Set warehoused attributes for screen fields when invoice field changed.
+$(document).on("change", ".setWarehousedInfo", (function() {
+    setWarehouseInfoInAmountFields();
+}));
+
 // Call to reload sub_customer list if parent ID changed.
 $(document).on("change", ".setSubCustomers", (function() {
-    let $customerId = $(this).val();
-    invoiceCustomerChange($customerId);
+    let customerId = $(this).val();
+    invoiceCustomerChange(customerId);
 }));
 
 /* Product Change - updates line item with product price info */
@@ -24,33 +40,6 @@ $(document).on("click", ".invoice_export_dialog", (function () {
     ShowDialog(true);
 }));
 
-// unhide.description, unhide.note, description
-//show invoice item line details
-$(document).on("click", "a.show_details", (function () {
-    let clonedRow = $('#itemtable div.lineItem:first').clone();
-    let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
-    if (rowID_old === undefined) {
-        alert('Invalid invoice. No existing rows to show.');
-        return false;
-    }
-    $('.details').show(); // Show the details
-    $('.hide_details').show(); // Show the hide details button
-    $('.show_details').hide(); // Hide the show details button
-}));
-
-//hide invoice item line details
-$(document).on("click", "a.hide_details", (function () {
-    let clonedRow = $('#itemtable div.lineItem:first').clone();
-    let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
-    if (rowID_old === undefined) {
-        alert('Invalid invoice. No existing rows to show.');
-        return false;
-    }
-    $('.details').hide(); // Hide the details
-    $('.hide_details').hide(); // Hide the hide details button
-    $('.show_details').show(); // Show the show details button
-}));
-
 //add new line item in invoices
 $(document).on("click", "a.addLineItem", (function (e) {
     e.preventDefault();
@@ -58,6 +47,13 @@ $(document).on("click", "a.addLineItem", (function (e) {
 }));
 
 $(document).ready(function () {
+    // Form submission verification
+    $('#frmpost').submit(function (e) {
+        // Check number validation
+        // noinspection JSUnresolvedFunction
+        verifyPaymentTypeAndCheckNumberConsistent(e);
+    });
+
     // Export dialog window - onclick send href to create export file and close window
     $(".export_window").click(function() {
         HideDialog();

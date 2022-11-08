@@ -10,7 +10,7 @@ use Inc\Claz\PdoDbException;
 function getSubCustomer(string $parentCustomerId='') {
     global $pdoDb;
 
-    session_name('SiAuth');
+    session_name(SESSION_NAME);
     session_start();
     try {
         $pdoDb->addSimpleWhere('parent_customer_id', $parentCustomerId, 'AND');

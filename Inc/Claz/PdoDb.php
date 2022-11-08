@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
+<?php
+/** @noinspection PhpPropertyOnlyWrittenInspection */
 
 namespace Inc\Claz;
 
@@ -772,6 +773,37 @@ class PdoDb
     }
 
     /**
+     * Check if a specified foreign key name exists in the database attached to this object.
+     * @param string $foreignKeyNameIn to look for. Note that the database name will be added
+     *      if not present.
+     * @param string $tableNameIn
+     * @param string $referenceTableNameIn
+     * @return bool true if key exists, false if not.
+     */
+    public function checkForeignKeyExists(string $foreignKeyNameIn, string $tableNameIn, string $referenceTableNameIn): bool
+    {
+        try {
+            $foreignKeyName = self::addTbPrefix($foreignKeyNameIn);
+            $tableName = self::addTbPrefix($tableNameIn);
+            $referenceTableName = self::addTbPrefix($referenceTableNameIn);
+            $sql = "SELECT * FROM `information_schema`.`REFERENTIAL_CONSTRAINTS` " .
+                           "WHERE `CONSTRAINT_SCHEMA` = '$this->tableSchema' AND " .
+                                 "`CONSTRAINT_NAME` = '$foreignKeyName' AND " .
+                                 "`TABLE_NAME` = '$tableName' AND " .
+                                 "`REFERENCED_TABLE_NAME` = '$referenceTableName';";
+            if ($sth = $this->pdoDb2->prepare($sql)) {
+                if ($sth->execute() !== false) {
+                    $tmpResult = $sth->fetchAll(PDO::FETCH_ASSOC);
+                    return !empty($tmpResult);
+                }
+            }
+        } catch (Exception $exp) {
+            error_log("PdoDb checkForeignKeyExists(): Error: " . $exp->getMessage());
+        }
+        return false;
+    }
+
+    /**
      * Get a list of fields (aka columns) in a specified table.
      * @param string $table_in Name of the table to get fields for.
      * @return array Column names from the table. An empty array is
@@ -820,6 +852,7 @@ class PdoDb
                     } // end while
                 }
             }
+            // formatter:on
         } catch (Exception $exp) {
             error_log("PdoDb getTableFields(): Error: " . $exp->getMessage());
         }
@@ -949,6 +982,21 @@ class PdoDb
             $field = '`' . $field . '`';
         }
         return $field;
+    }
+
+    /**
+     * Add the <b>SimpleInvoices</b> database name field, if not already present.
+     * @param string $tableIn Table name that the table name will be prepended to.
+     * @return string Updated table name.
+     * @noinspection PhpUnused*/
+    public function addDbName(string $tableIn): string
+    {
+        $table = self::addTbPrefix($tableIn);
+        $pattern = "/^" . $this->tableSchema . "\/.*$/";
+        if (preg_match($pattern, $table) != 1) {
+            return $this->tableSchema . "/" . $table;
+        }
+        return $table;
     }
 
     /**

@@ -11,14 +11,30 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-// If the invoice ID is present, access payments for it but only first.
-if (isset($_GET['ac_inv_id'])) {
-    // Can result in multiple payments being retrieved.
-    $payment = Payment::getOne($_GET['ac_inv_id'], false);
-} else {
-    $payment = Payment::getOne($_GET['id']);
+try {
+    $payment = [];
+    // If the invoice ID is present, access payments for it but only first.
+    if (isset($_GET['ac_inv_id'])) {
+        // Can result in multiple payments being retrieved.
+        $payment = Payment::getOne($_GET['ac_inv_id'], false);
+    } elseif (isset($_GET['id'])) {
+        $payment = Payment::getOne($_GET['id']);
+    }
+
+    $numPymtRecs = empty($payment) ? 0 : $payment['num_payment_recs'];
+    if ($numPymtRecs > 1 && isset($_GET['id'])) {
+        // If multiple payments and have unique ID, get the requested record.
+        $payment = Payment::getOne($_GET['id']);
+    }
+
+    if (isset($_GET['message'])) {
+        $smarty->assign('message', $_GET['message']);
+    }
+} catch (PdoDbException $pde) {
+    error_log("payments/view.php - Invalid id error: " . $pde->getMessage());
+    exit("Unable to get payment to display. View error log for more information.");
 }
-$numPymtRecs = empty($payment) ? 0 : $payment['num_payment_recs'];
+
 $smarty->assign('num_payment_recs', $numPymtRecs);
 $smarty->assign("payment", $payment);
 

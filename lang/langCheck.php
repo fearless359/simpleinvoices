@@ -16,66 +16,66 @@
  *      To execute the lang check run the command below
  *      and view the langCheck.html file in your browser
  *
- *      php -q langCheck.php > langCheck.txt
+ *      php.exe -q lang/langCheck.php > lang/langCheck.txt
  *
  */
 
 
 /*
- * Get the language codes ('en', 'pt', etc) that exists in this folder.
+ * Get the language codes ('en', 'pt', etc.) that exists in this folder.
  */
-
-define("SI_DEBUG", false);
-define("SI_AUTHOR", false);
+const SI_DEBUG = false;
+const SI_AUTHOR = false;
 $uLine = 106;
 if (SI_AUTHOR) {
     $uLine += 11;
 }
-
-include_once "langFunctions.php";
+$path = dirname(__FILE__);
+include_once "{$path}/langFunctions.php";
 
 // Header
-print str_repeat("=", $uLine);
-print "\n";
-print sprintf("%-10s", 'Lang. Code') . " | ";
-print sprintf("%-29s", 'Lang. name') . " | ";
-print sprintf("%-11s", 'New strings') . " | ";
-print sprintf("%15s", 'Strings in file') . " | ";
-print sprintf("%16s", 'Total translated') . " | ";
-print sprintf("%8s", '% Done') . " | ";
+echo str_repeat("=", $uLine);
+echo "\n";
+echo sprintf("%-10s", 'Lang. Code') . " | ";
+echo sprintf("%-29s", 'Lang. name') . " | ";
+echo sprintf("%-11s", 'New strings') . " | ";
+echo sprintf("%15s", 'Strings in file') . " | ";
+echo sprintf("%16s", 'Total translated') . " | ";
+echo sprintf("%8s", '% Done') . " | ";
 if (SI_AUTHOR) {
-    print sprintf("%10s", 'Authors');
+    echo sprintf("%10s", 'Authors');
 }
-print "\n";
-print str_repeat("=", $uLine);
-print "\n";
+echo "\n";
+echo str_repeat("=", $uLine);
+echo "\n";
 
 // The main language. Needed to compare the % done of the other languages.
-$enLang = processLangFile('en_US');
+$enLang = processLangFile($path,'en_US');
 if (SI_DEBUG) {
-    echo "debug: en_US, {$enLang[0]}, {$enLang[1]}\n";
+    echo "debug: en_US, $enLang[0], $enLang[1]\n";
 }
 
-// Lets process the language folders.
-foreach (getDefinedLanguages() as $langCode) {
+// Let's process the language folders.
+$definedLanguages = getDefinedLanguages($path);
+foreach ($definedLanguages as $langCode) {
 
     // Redo the XML part thanks to a suggestion by Nicolas Ruflin.
     // Nicolas, thanks for the PHP lesson.
-    $xml = simplexml_load_file("{$langCode}/info.xml");
+    $xml = simplexml_load_file("$path/$langCode/info.xml");
 
     $tmp = explode(',', $xml->author);
     $xml->author = join(', ', $tmp);
     if (SI_DEBUG) {
-        echo "debug: {$xml->name}, {$xml->author}\n";
+        echo "debug: $xml->name, $xml->author\n";
     }
 
     /*
      Process the language files
     */
 
-    $count = processLangFile($langCode);
+    $count = processLangFile($path, $langCode);
     if (SI_DEBUG) {
-        echo "debug: {$langCode}, {$count[0]}, {$count[1]}\n";
+        echo "debug: $langCode, $count[0], $count[1]\n";
     }
 
     if ($count[0] == 0) {
@@ -93,19 +93,18 @@ foreach (getDefinedLanguages() as $langCode) {
     }
 
 
-    print sprintf("%-10s", $langCode) . " | ";
-    print sprintf("%-29s", utf8_decode("{$xml->name} ({$xml->englishname})")) . " | ";
-    print sprintf("%-11s", $newStrings) . " | ";
-    print sprintf("%15s", $count[0]) . " | ";
-    print sprintf("%16s", $count[1]) . " | ";
-    print sprintf("%8s", $percentage) . " | ";
+    echo sprintf("%-10s", $langCode) . " | ";
+    echo sprintf("%-29s", utf8_decode("$xml->name ($xml->englishname)")) . " | ";
+    echo sprintf("%-11s", $newStrings) . " | ";
+    echo sprintf("%15s", $count[0]) . " | ";
+    echo sprintf("%16s", $count[1]) . " | ";
+    echo sprintf("%8s", $percentage) . " | ";
     if (SI_AUTHOR) {
-        print sprintf("%10s", trim($xml->author)) . " | ";
+        echo sprintf("%10s", trim($xml->author)) . " | ";
     }
-    print "\n";
+    echo "\n";
 }
 
 // Footer
-print str_repeat("-", $uLine);
-print "\n";
-
+echo str_repeat("-", $uLine);
+echo "\n";

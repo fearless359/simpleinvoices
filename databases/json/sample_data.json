@@ -186,49 +186,6 @@
             "domain_id":"DOMAIN-ID"
         }
     ],
-    "si_invoice_item_tax":
-    [
-        {
-            "id":"1",
-            "invoice_item_id":"1",
-            "tax_id":"3",
-            "tax_type":"%",
-            "tax_rate":"10",
-            "tax_amount":"12.5"
-        },
-        {
-            "id":"2",
-            "invoice_item_id":"2",
-            "tax_id":"1",
-            "tax_type":"%",
-            "tax_rate":"10",
-            "tax_amount":"12.5"
-        },
-        {
-            "id":"3",
-            "invoice_item_id":"3",
-            "tax_id":"4",
-            "tax_type":"%",
-            "tax_rate":"0",
-            "tax_amount":"0"
-        },
-        {
-            "id":"4",
-            "invoice_item_id":"4",
-            "tax_id":"1",
-            "tax_type":"%",
-            "tax_rate":"10",
-            "tax_amount":"14"
-        },
-        {
-            "id":"5",
-            "invoice_item_id":"5",
-            "tax_id":"4",
-            "tax_type":"%",
-            "tax_rate":"0",
-            "tax_amount":"0"
-        }
-    ],
     "si_products_attributes":
     [
         {
@@ -427,6 +384,49 @@
             "gross_total":"150",
             "description":"",
             "total":"150"
+        }
+    ],
+    "si_invoice_item_tax":
+    [
+        {
+            "id":"1",
+            "invoice_item_id":"1",
+            "tax_id":"3",
+            "tax_type":"%",
+            "tax_rate":"10",
+            "tax_amount":"12.5"
+        },
+        {
+            "id":"2",
+            "invoice_item_id":"2",
+            "tax_id":"1",
+            "tax_type":"%",
+            "tax_rate":"10",
+            "tax_amount":"12.5"
+        },
+        {
+            "id":"3",
+            "invoice_item_id":"3",
+            "tax_id":"4",
+            "tax_type":"%",
+            "tax_rate":"0",
+            "tax_amount":"0"
+        },
+        {
+            "id":"4",
+            "invoice_item_id":"4",
+            "tax_id":"1",
+            "tax_type":"%",
+            "tax_rate":"10",
+            "tax_amount":"14"
+        },
+        {
+            "id":"5",
+            "invoice_item_id":"5",
+            "tax_id":"4",
+            "tax_type":"%",
+            "tax_rate":"0",
+            "tax_amount":"0"
         }
     ],
     "si_install_complete":

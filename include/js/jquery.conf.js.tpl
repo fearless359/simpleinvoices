@@ -1,5 +1,57 @@
 {literal}
 <script>
+    // unhide.description, unhide.note, description
+    //show invoice item line details
+    $(document).on("click", "a.show_details", function () {
+        let clonedRow = $('#itemtable div.lineItem:first').clone();
+        let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+        if (rowID_old === undefined) {
+            let warnMsg = {/literal}'{$LANG.invalidUc} {$LANG.invoice}. {$LANG.noUc} {$LANG.existing} ' +
+                '{$LANG.rows} {$LANG.to} {$LANG.show}.';{literal}
+            let warning = 'style="font-size:2rem; color:darkorange;"';
+            let msgStyle = 'style="margin:20px auto; color:darkslategrey;"'
+            alertify.alert('<h2 ' + msgStyle + '>' + warnMsg + '</h2>')
+                    .set({
+                        transition: 'zoom',
+                        label: '{/literal}{$LANG.closeUc}{literal}',
+                        modal: true,
+                        resizable: true
+                    })
+                    .resizeTo('60%', 250)
+                    .setHeader('<em ' + warning + '>{/literal}{$LANG.warningUcAll}{literal}</em>');
+            return false;
+        }
+        $('.details').show(); // Show the details
+        $('.hide_details').show(); // Show the hide details button
+        $('.show_details').hide(); // Hide the show details button
+    });
+
+    //hide invoice item line details
+    $(document).on("click", "a.hide_details", (function () {
+        let clonedRow = $('#itemtable div.lineItem:first').clone();
+        let rowID_old = $("input[id^='quantity']", clonedRow).attr("id");
+        if (rowID_old === undefined) {
+            let warnMsg = {/literal}'{$LANG.invalidUc} {$LANG.invoice}. {$LANG.noUc} {$LANG.existing} ' +
+                '{$LANG.rows} {$LANG.to} {$LANG.show}.';{literal}
+            let warning = 'style="font-size:2rem; color:darkorange;"';
+            let msgStyle = 'style="margin:20px auto; color:darkslategrey;"'
+            alertify.alert('<h2 ' + msgStyle + '>' + warnMsg + '</h2>')
+                    .set({
+                        transition: 'zoom',
+                        label: '{/literal}{$LANG.closeUc}{literal}',
+                        modal: true,
+                        resizable: true
+                    })
+                    .resizeTo('60%', 250)
+                    .setHeader('<em ' + warning + '>{/literal}{$LANG.warningUcAll}{literal}</em>');
+            return false;
+        }
+
+        $('.details').hide(); // Hide the details
+        $('.hide_details').hide(); // Hide the hide details button
+        $('.show_details').show(); // Show the show details button
+    }));
+
     $(document).on("click", ".delete_link", function (e) {
         e.preventDefault();
         let rowNum = $(this).attr("data-row-num");
@@ -47,7 +99,7 @@
     $(document).ready(function(){
         $("#Container").after(
             '<div id="confirm_delete_line_item" style="display: none;" title="Delete this line item?">' +
-            '<div style="padding-right: 2em;">Choose "Delete" to remove this item. If an existing item, it will be removed from the database when you save the form.</div>' +
+            '<div style="padding-right: 2em;">{/literal}{$LANG.itemDeleteMsg}{literal}</div>' +
             '</div>'
         );
 

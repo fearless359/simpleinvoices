@@ -3,11 +3,12 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2022 at 05:06 PM
+-- Generation Time: Oct 27, 2022 at 03:32 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -399,13 +400,15 @@ CREATE TABLE `si_log` (
 CREATE TABLE `si_payment` (
   `id` int(11) UNSIGNED NOT NULL,
   `ac_inv_id` int(11) UNSIGNED DEFAULT NULL,
+  `customer_id` int(11) UNSIGNED DEFAULT NULL,
   `ac_amount` decimal(25,6) NOT NULL,
   `ac_notes` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `ac_date` datetime NOT NULL,
   `ac_payment_type` int(11) UNSIGNED DEFAULT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
   `online_payment_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ac_check_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL
+  `ac_check_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `warehouse_amount` decimal(25,6) NOT NULL DEFAULT 0.000000
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -419,6 +422,21 @@ CREATE TABLE `si_payment_types` (
   `domain_id` int(11) UNSIGNED NOT NULL,
   `pt_description` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pt_enabled` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `si_payment_warehouse`
+--
+
+CREATE TABLE `si_payment_warehouse` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `customer_id` int(11) UNSIGNED NOT NULL,
+  `last_payment_id` int(11) UNSIGNED DEFAULT NULL,
+  `balance` decimal(25,6) NOT NULL,
+  `payment_type` int(11) UNSIGNED NOT NULL,
+  `check_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -788,7 +806,8 @@ ALTER TABLE `si_payment`
   ADD KEY `domain_id` (`domain_id`),
   ADD KEY `ac_inv_id` (`ac_inv_id`),
   ADD KEY `ac_amount` (`ac_amount`),
-  ADD KEY `ac_payment_type` (`ac_payment_type`);
+  ADD KEY `ac_payment_type` (`ac_payment_type`),
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `si_payment_types`
@@ -796,6 +815,15 @@ ALTER TABLE `si_payment`
 ALTER TABLE `si_payment_types`
   ADD PRIMARY KEY (`domain_id`,`pt_id`),
   ADD UNIQUE KEY `pt_id` (`pt_id`);
+
+--
+-- Indexes for table `si_payment_warehouse`
+--
+ALTER TABLE `si_payment_warehouse`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `last_payment_id` (`last_payment_id`),
+  ADD KEY `payment_type` (`payment_type`);
 
 --
 -- Indexes for table `si_preferences`
@@ -1009,6 +1037,12 @@ ALTER TABLE `si_payment_types`
   MODIFY `pt_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `si_payment_warehouse`
+--
+ALTER TABLE `si_payment_warehouse`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `si_preferences`
 --
 ALTER TABLE `si_preferences`
@@ -1095,7 +1129,8 @@ ALTER TABLE `si_cron_invoice_items`
 -- Constraints for table `si_cron_invoice_item_tax`
 --
 ALTER TABLE `si_cron_invoice_item_tax`
-  ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_1` FOREIGN KEY (`tax_id`) REFERENCES `si_tax` (`tax_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_cron_invoice_item_tax_ibfk_2` FOREIGN KEY (`cron_invoice_item_id`) REFERENCES `si_cron_invoice_items` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `si_cron_log`
@@ -1166,7 +1201,16 @@ ALTER TABLE `si_log`
 --
 ALTER TABLE `si_payment`
   ADD CONSTRAINT `si_payment_ibfk_1` FOREIGN KEY (`ac_inv_id`) REFERENCES `si_invoices` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `si_payment_ibfk_2` FOREIGN KEY (`ac_payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `si_payment_ibfk_2` FOREIGN KEY (`ac_payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_payment_ibfk_3` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Constraints for table `si_payment_warehouse`
+--
+ALTER TABLE `si_payment_warehouse`
+  ADD CONSTRAINT `si_payment_warehouse_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `si_payment_warehouse_ibfk_2` FOREIGN KEY (`last_payment_id`) REFERENCES `si_payment` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `si_payment_warehouse_ibfk_3` FOREIGN KEY (`payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `si_products`

@@ -20,4 +20,4 @@ const ITEMIZED_INVOICE = 2;
 // - this way everyone can have their own conf setting without messing with anyone else's setting
 //RELEASE TODO: make sure CONFIG_SECTION is set back to production
 const CONFIG_SECTION = "production"; //test,staging,dev,live etc..
-const CONFIG_DB_PREFIX = 'database';
+const SESSION_NAME = 'SiAuth';

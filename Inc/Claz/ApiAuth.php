@@ -13,7 +13,7 @@ class ApiAuth
         // API calls don't use the auth module
         if ($module != 'api') {
             if (PHP_SESSION_ACTIVE !== session_status()){
-                session_name('SiAuth');
+                session_name(SESSION_NAME);
                 session_start();
             }
             $sessionId = $_SESSION['id'] ?? 0;
@@ -23,7 +23,7 @@ class ApiAuth
             if (!$sessionId > 0) {
                 // If this is not an "auth" module request, then force login screen.
                 if ($module !== "auth" && $module !== "install") {
-                    Log::out("ApiAuth::authenticate() - Forcing direct to login screen.");
+                    Log::out("ApiAuth::authenticate() - Forcing redirect to login screen.");
                     header('Location: index.php?module=auth&view=login');
                     exit();
                 }

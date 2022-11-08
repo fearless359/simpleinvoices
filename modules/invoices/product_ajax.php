@@ -8,7 +8,7 @@ use Inc\Claz\Util;
 
 global $pdoDb;
 
-session_name('SiAuth');
+session_name(SESSION_NAME);
 session_start();
 
 $rowId = Util::htmlSafe($_GET['row']);

@@ -127,13 +127,14 @@ class Eway
             // @formatter:off
             Payment::insert([
                 "ac_inv_id"         => $this->invoice['id'],
+                "customer_id"       => $this->customer['id'],
                 "ac_amount"         => $this->invoice['total'],
                 "ac_notes"          => $message,
                 "ac_date"           => date('Y-m-d'),
                 "online_payment_id" => $ewayResponseFields['EWAYTRXNNUMBER'],
                 "domain_id"         => DomainId::get(),
                 "ac_payment_type"   => PaymentType::selectOrInsertWhere("Eway")
-            ]);
+            ], $this->customer['id']);
 
             return 'true';
         }

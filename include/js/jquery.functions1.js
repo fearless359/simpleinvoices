@@ -2,7 +2,101 @@
 * Script: jquery.functions1.js
 * Purpose: jquery/javascript functions for Simple Invoices
 */
+function setWarehouseInfoInAmountFields()
+{
+    let option = $('select option:selected');
+    let val = option.val();
 
+    let customerId = option.attr('data-customer-id');
+    let cname = option.attr('data-customer-name');
+    let bname = option.attr('data-biller-name');
+    let currencyCode = option.attr('data-currency-code');
+    let locale = option.attr('data-locale');
+    let warehousedPayment = option.attr('data-warehoused-payment');
+    let paymentType = option.attr('data-warehoused-payment-type');
+    let paymentTypeDesc = option.attr('data-warehouse-payment-type-desc');
+    let checkNumber = option.attr('data-warehoused-check-number');
+    let owing = option.attr('data-owing');
+
+    let amount = $("#amountId");
+    amount.attr('data-owing', owing);
+    amount.attr('data-currency-code', currencyCode);
+    amount.attr('data-locale', locale);
+    amount.attr('data-warehoused-payment', warehousedPayment);
+    if (owing === undefined) {
+        amount.val('');
+    } else if (Number(warehousedPayment) > 0 && Number(warehousedPayment) < Number(owing)) {
+        amount.val(warehousedPayment);
+    } else {
+        amount.val(owing);
+    }
+
+    let pymtTypeIdHidden = $('input[name="ac_payment_type"]');
+    let pymtTypeIdHiddenLabel = $("label[for='pymtTypeIdInput']");
+    let pymtTypeInput = $('#pymtTypeIdInput');
+
+    let pymtTypeIdLabel = $("label[for='pymtTypeId']");
+    let pymtTypeId = $('#pymtTypeId');
+
+    let chkNum = $('#checkNumberId');
+
+    // For warehousePayment, display related input fields and hide select fields.
+    // Otherwise, set and display related select fields and hide input fields.
+    if (Number(warehousedPayment) > 0) {
+        // Hide label and disable select field for payment type.
+        pymtTypeIdLabel.hide();
+        pymtTypeId.prop('disabled', 'disabled').hide();
+
+        // Set value and enable the hidden ac_payment_type input field
+        pymtTypeIdHidden.val(paymentType)
+                        .prop('disabled', false);
+
+        // Show label for input payment type field.
+        pymtTypeIdHiddenLabel.show();
+
+        // Set value and enable readonly input field for payment type
+        pymtTypeInput.prop('disabled', false);
+        pymtTypeInput.val(paymentTypeDesc);
+        pymtTypeInput.show();
+
+        chkNum.val(checkNumber);
+        chkNum.prop('readonly', 'readonly');
+        chkNum.attr('tabindex', '-1');
+    } else {
+        // Hide label and disable input related payment type fields.
+        pymtTypeIdHiddenLabel.hide();
+        pymtTypeIdHidden.prop('disabled', 'disabled');
+        pymtTypeInput.prop('disabled', 'disabled').hide();
+
+        // Set select option for pymtTypeId select field and enable related fields.
+        pymtTypeId.prop('disabled', false);
+        pymtTypeIdLabel.show();
+        $('select[id="pymtTypeId"] option').removeProp('selected');
+        $('#pymtTypeId option[value="1"]').prop('selected', true);
+        pymtTypeId.show();
+
+        chkNum.val('');
+        chkNum.prop('readonly', false);
+        let tabindex = chkNum.attr('data-tabindex');
+        if (tabindex === undefined) {
+            tabindex = "140";
+        }
+        chkNum.attr('tabindex', tabindex);
+    }
+
+    $("#customerId").val(customerId);
+
+    if (val === undefined || val === "") {
+        $('.invPymtInfoFields').hide();
+    } else {
+        $('#customer-name').text(cname);
+        $('#biller-name').text(bname);
+        $('.invPymtInfoFields').show();
+    }
+    amount.focus();
+}
+
+// show modal dialog
 function ShowDialog(modal)
 {
     let overlay = $("#overlay");
@@ -18,6 +112,7 @@ function ShowDialog(modal)
     }
 }
 
+// close modal dialog
 function HideDialog()
 {
     $("#overlay").hide();
@@ -102,12 +197,12 @@ function invoiceCustomerChange(customerId) {
 /*
 * function: siLog
 * purpose: wrapper function for blackbirdjs logging
-* if debugging is OFF in config.ini - then blackbirdjs.js wont be loaded in header.tpl and normal call to log.debug would fail and cause problems
+* if debugging is OFF in config.ini - then blackbirdjs.js won't be loaded in header.tpl and normal call to log.debug would fail and cause problems
 */
 function siLog(level, message) {
     let log_level = "log." + level + "('" + message + "')";
 
-    //if blackbirdjs is loaded (ie. debug in config.ini is on) run - else do nothing
+    //if blackbirdjs is loaded (i.e. debug in config.ini is on) run - else do nothing
     if (window.log) {
         eval(log_level);
     }
@@ -128,7 +223,7 @@ function addLineItem() {
     let lastRow = $(jqSelector).clone();
     let clonedRow = $(jqSelector).clone();
 
-    //find the Id for the row from the quantity if
+    // Find the ID for the row from the quantity if
     // let oldRowId = $("input[id^='quantity']", clonedRow).attr("id");
     let oldRowId = $(".delete_link", clonedRow).attr("data-row-num");
     if (oldRowId === undefined) {

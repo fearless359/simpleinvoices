@@ -90,7 +90,7 @@ class User
     /**
      * Retrieve all user records
      * @param int|null $id If no null, the id of the specific user record to retrieve.
-     * @param bool Set to true if only enabled user records should be retrieved.
+     * @param bool $enabled Set to true if only enabled user records should be retrieved.
      * @return array Rows retrieved
      */
     private static function getUsers(?int $id = null, bool $enabled = false): array {
@@ -98,7 +98,7 @@ class User
 
         $results = [];
         try {
-            session_name('SiAuth');
+            session_name(SESSION_NAME);
             session_start();
 
             // If user role is customer or biller, then restrict invoices to those they have access to.

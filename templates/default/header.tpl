@@ -16,32 +16,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" href="../../images/favicon.ico"/>
-    <link href="include/js/jquery-ui-1.13.1.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <link href="include/js/jquery-ui-1.13.1.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
-    <link href="include/js/jquery-ui-1.13.1.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
+
+    <link href="node_modules/jquery-ui/dist/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+    <link href="node_modules/jquery-ui/dist/themes/smoothness/theme.css" rel="stylesheet" type="text/css"/>
 
     <link href="node_modules/tooltipster/dist/css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css"/>
     <link href="node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" type="text/css"/>
-    <!--suppress CssUnusedSymbol -->
-    <style>
-        {literal}
-        /* Settings for the validationEngine */
-        .formError {
-            position: relative !important;
-            display: block !important;
-            cursor: pointer !important;
-            text-align: left !important;
-            top: 0 !important;
-            width: 40% !important;
-        }
 
-        {/literal}
-    </style>
+{* Commented out 2022/11/01 by Rich Rowley pending future deletion. *}
+{*    <!--suppress CssUnusedSymbol -->*}
+{*    <style>*}
+{*        {literal}*}
+{*        /* Settings for the validationEngine */*}
+{*        .formError {*}
+{*            position: relative !important;*}
+{*            display: block !important;*}
+{*            cursor: pointer !important;*}
+{*            text-align: left !important;*}
+{*            top: 0 !important;*}
+{*            width: 40% !important;*}
+{*        }*}
+
+{*        {/literal}*}
+{*    </style>*}
     <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+
+    <link href="node_modules/alertifyjs/build/css/alertify.css" rel="stylesheet" type="text/css"/>
+    <link href="node_modules/alertifyjs/build/css/themes/default.min.css" rel="stylesheet" type="text/css"/>
+
     <link href="include/js/trix-main/dist/trix.css" rel="stylesheet" type="text/css">
 
     <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="include/js/jquery-ui-1.13.1.custom/jquery-ui.js"></script>
+    <script src="node_modules/jquery-ui/dist/jquery-ui.js"></script>
     <script src="node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 
@@ -50,16 +56,21 @@
 
     <script src="node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
 
+    <script src="node_modules/alertifyjs/build/alertify.min.js"></script>
+
     <script src="include/js/trix-main/dist/trix.js"></script>
+
     {$extension_jquery_files }
-    <script src="include/js/jquery.functions1.js"></script>
-    {include 'include/js/jquery.functions.js.tpl'}
+
     <script src="include/js/jquery.conf1.js"></script>
     {include 'include/js/jquery.conf.js.tpl'}
+
+    <script src="include/js/jquery.functions1.js"></script>
+    {include 'include/js/jquery.functions.js.tpl'}
+
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
     {$smarty.capture.hook_head_end}
 </head>
-{*<body class="body_si body_module_{$module} body_view_{$view}">*}
 <body class="body_si body_module_{$module}">
 {$smarty.capture.hook_body_start}
 <div class="si_grey_background"></div>

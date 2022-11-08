@@ -9,7 +9,8 @@ class Biller
 {
     /**
      * Calculate the number of invoices in the database
-     * @return int Count of invoices in the database
+     * @return int Count of invoices in the database. Note that if an exception is thrown,
+     *      it will be reported in the error log but a count of 0 will be returned.
      */
     public static function count(): int
     {
@@ -103,7 +104,7 @@ class Biller
 
         $billers = [];
         try {
-            session_name('SiAuth');
+            session_name(SESSION_NAME);
             session_start();
 
             // If user role is customer or biller, then restrict billers to the one for this session.

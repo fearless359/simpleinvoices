@@ -30,8 +30,7 @@ class Setup
         $this->configIni = Config::init($environment, $updateCustomConfig, $configFile);
         $loggerLevel = isset($this->configIni['loggerLevel']) ? strtoupper($this->configIni['loggerLevel']) : 'EMERGENCY';
         Log::open($loggerLevel);
-        Log::out("Setup::init() - logger has been setup");
-        Log::out("Setup::init() - configIni: " . print_r($this->configIni, true));
+        Log::out("Setup::init() - logger opened. loggerLevel[$loggerLevel]");
 
         // If not CUSTOM_CONFIG_FILE, this is a test setup. So do not instantiate database objects.
         if ($configFile == Config::CUSTOM_CONFIG_FILE) {

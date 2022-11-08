@@ -1,32 +1,24 @@
 <?php
 /**
  * Build array of defined languages
+ * @param string $path Current process path
  * @return array
  */
-function getDefinedLanguages(): array
+function getDefinedLanguages(string $path): array
 {
-    // The root path of the language files. Change if needed.
-    $dir = '.';
-
     // Open a known directory and proceed to read its contents
-    if (!is_dir($dir)) {
-        exit("($dir) is not a directory.");
+    if (!is_dir($path)) {
+        exit("($path) is not a directory.");
     }
 
+    $regxIterator = new RegexIterator(new DirectoryIterator($path), '/^[a-z]{2}(_[A-Z]{2})?$/');
     $langFiles = [];
-
-    //	Implementation - Forward Compatible
-    try {
-        foreach (new RegexIterator(new DirectoryIterator($dir), '/^[a-z]{2}(_[A-Z]{2})?$/') as $entry) {
-            $langFiles[] = $entry->getFilename();
-        }
-    } catch (UnexpectedValueException $exp) {
-        exit($exp->getMessage());
+    foreach ($regxIterator as $entry) {
+        $langFiles[] = $entry->getFilename();
     }
 
     // Sort by lang code.
     sort($langFiles);
-
     return $langFiles;
 }
 
@@ -38,10 +30,10 @@ function getDefinedLanguages(): array
  * @param string $langCode
  * @return array
  */
-function processLangFile(string $langCode): array
+function processLangFile(string $path, string $langCode): array
 {
 
-    $langFile = file("{$langCode}/lang.php");
+    $langFile = file("$path/$langCode/lang.php");
 
     $count = 0;
     $countTranslated = 0;

@@ -9,6 +9,7 @@
     "build:css": "npm-run-all compile:sass prefix:css compress:css"
   },
   "dependencies": {
+    "alertifyjs": "^1.13.1",
     "datatables": "^1.10.18",
     "datatables.net": "^1.11.3",
     "datatables.net-buttons-dt": "^1.7.0",
@@ -18,6 +19,7 @@
     "datatables.net-responsive": "^2.2.7",
     "datatables.net-scroller-dt": "^1.5.1",
     "jquery": "^3.6.0",
+    "jquery-ui": "^1.13.2",
     "jquery-validation": "^1.19.3",
     "tooltipster": "^4.2.8"
   },

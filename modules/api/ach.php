@@ -27,20 +27,23 @@ if ($_POST['pg_response_code'] == 'A01') {
         $xmlMessage = 'Online payment for invoices: '.$_POST['pg_consumerorderid'].' has already been entered';
         Log::out($xmlMessage, Log::INFO);
     } else {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $invoice    = Invoice::getOne($_POST['pg_consumerorderid']);
+        $biller     = Biller::getOne($invoice['biller_id']);
+
+        $customerId = $invoice['customer_id'];
+
         $pmtType = PaymentType::selectOrInsertWhere("ACH");
         Payment::insert([
             "ac_inv_id"         => $_POST['pg_consumerorderid'],
+            "customer_id"       => $customerId,
             "ac_amount"         => $_POST['pg_total_amount'],
             "ac_notes"          => $paypalData,
             "ac_date"           => date('Y-m-d'),
             "online_payment_id" => $_POST['pg_consumerorderid'],
             "ac_payment_type"   => $pmtType
-        ]);
+        ], $customerId);
         Log::out('ACH - payment_type='.$pmtType, Log::INFO);
-
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $invoice    = Invoice::getOne($_POST['pg_consumerorderid']);
-        $biller     = Biller::getOne($invoice['biller_id']);
 
         //send email
         $body  =  "A PaymentsGateway.com payment of ".$_POST['pg_total_amount']." was successfully received\n";

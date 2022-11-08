@@ -145,9 +145,9 @@
             <div class="grid__container grid__head-10 details"
                  {if $defaults.invoice_description_open == $smarty.const.DISABLED}style="display:none;"{/if}>
                 {* colspan intentionally greater than min and max number so always uses full size *}
-                <div class="cols__2-span-9">
+                <div class="cols__2-span-10">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" rows="3" cols="99"
+                    <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" rows="3" cols="102"
                               class="margin__left-0-5" data-row-num="{$line|htmlSafe}"
                               data-description="{$LANG.descriptionUc}">{$invoiceItem.description|outHtml}</textarea>
                 </div>
@@ -164,9 +164,9 @@
     <div class="cols__1-span-2 bold">{$LANG.notes}:</div>
 </div>
 <div class="grid__container grid__head-10">
-    <div class='cols__1-span-9'>
-        <input name="note" id="note" {if isset($invoice.note)}value="{$invoice.note|outHtml}"{/if} type="hidden">
-        <trix-editor input="note"></trix-editor>
+    <div class='cols__1-span-10'>
+        <input name="note" id="noteId" {if isset($invoice.note)}value="{$invoice.note|outHtml}"{/if} type="hidden">
+        <trix-editor class="trix-content" input="noteId"></trix-editor>
     </div>
 </div>
 <div class="grid__container grid_head-10">

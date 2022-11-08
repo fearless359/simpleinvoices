@@ -13,7 +13,8 @@ Util::allowDirectAccess();
 
 $menu = true;
 
-session_name('SiAuth');
+session_name(SESSION_NAME);
 session_start();
+//session_unset();
 session_destroy();
 header('Location: .');
