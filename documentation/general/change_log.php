@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-11-10 - <strong>2020.4.4</strong>
+                <ul>
+                    <li>Add invoice display days SI Defaults option for invoice display screen.</li>
+                </ul>
+            </li>
             <li>2022-11-08 - <strong>2020.4.3</strong>
                 <ul>
                     <li>Add payment warehouse feature to SI.</li>

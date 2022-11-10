@@ -219,6 +219,16 @@ switch ($getVal) {
         $value       = Util::dropDown($array, $defaults[$default]);
         break;
 
+    case "invoice_display_days":
+        // The $description, $default, $value fields are required to set up the generic
+        // edit template for this extension value.
+        $default     = $getVal;
+        $description = "{$LANG[Util::camelCase($default)]}";
+        $attribute   = Util::htmlSafe($defaults[$default]);
+        $value       = "<input type='text' size='4' name='value' id='valueId' value='$attribute' min='0' max='9999' />\n";
+        $found       = true;
+        break;
+
     case "language":
         $default   = "language";
         $languages = getLanguageList();

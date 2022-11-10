@@ -20,16 +20,23 @@
     <div class="si_message">{$LANG.noInvoices}</div>
 {else}
     <div class="grid__container grid__head-10">
-        <div class="cols__4-span-3 align__text-center">
+        <div class="cols__3-span-3 align__text-right">
             <a href="index.php?module=invoices&amp;view=itemized">
                 <button><img src="images/add.png" alt=""/>{$LANG.newInvoice}</button>
             </a>
         </div>
-        <div class="cols__7-span-4 grid__justify-content-end">
+        <div class="cols__6-span-5 grid__justify-content-end">
                 <span class='cols__1-span-1 si_filters_title'>{$LANG.filters}:</span>
                 <span class='cols__2-span-5 si_filters_links'>
-                    <a href="index.php?module=invoices&amp;view=manage"
-                       class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">{$LANG.allUc}</a>
+                    {if $invoiceDisplayDays > 0}
+                        <a href="index.php?module=invoices&amp;view=manage"
+                           class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">{$LANG.lastUc} {$invoiceDisplayDays} {$LANG.daysUc}</a>
+                        <a href="index.php?module=invoices&amp;view=manage&amp;showAll=true"
+                           class="first{if !isset($smarty.get.having) || empty($smarty.get.having)}{/if}">{$LANG.allUc}</a>
+                    {else}
+                        <a href="index.php?module=invoices&amp;view=manage&amp;showAll=true"
+                           class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">{$LANG.allUc}</a>
+                    {/if}
                     <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed"
                        class="{if isset($smarty.get.having) && $smarty.get.having=='money_owed'}selected{/if}">{$LANG.due}</a>
                     <a href="index.php?module=invoices&amp;view=manage&amp;having=paid"

@@ -778,6 +778,14 @@ class SqlPatchManager
         ];
         self::makePatch('334', $patch);
 
+        $patch = [
+            'name' => "Add invoice display days option.",
+            'patch' => "INSERT INTO `" . TB_PREFIX . "system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('invoice_display_days', 0, $domainId, 1);",
+            'date' => "20221110",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('335', $patch);
+
         // @formatter:on
     }
 

@@ -253,6 +253,16 @@ class SystemDefaults
     }
 
     /**
+     * Get "invoice_display_days" entry from the system_defaults table.
+     * @return int Number of days in the past that invoices will be selected
+     *      to display on the initial manage screen.
+     */
+    public static function getInvoiceDisplayDays(): int
+    {
+        return self::getValue('invoice_display_days');
+    }
+
+    /**
      * Get "language" entry from the system_defaults table.
      * @return string Language setting (ex: en_US)
      */

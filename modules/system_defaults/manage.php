@@ -30,6 +30,7 @@ $smarty->assign("defaultDisplayDepartment"     , SystemDefaults::getDisplayDepar
 $smarty->assign("defaultExpense"               , SystemDefaults::getExpense());
 $smarty->assign("defaultInventory"             , SystemDefaults::getInventory());
 $smarty->assign("defaultInvoiceDescriptionOpen", SystemDefaults::getInvoiceDescriptionOpen());
+$smarty->assign("defaultInvoiceDisplayDays"    , SystemDefaults::getInvoiceDisplayDays());
 $smarty->assign("defaultLogging"               , SystemDefaults::getLogging());
 $smarty->assign("defaultPasswordLower"         , SystemDefaults::getPasswordLower());
 $smarty->assign("defaultPasswordMinLength"     , SystemDefaults::getPasswordMinLength());

@@ -484,6 +484,13 @@
       "sql_release": "20221022",
       "sql_statement": "INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('payment_delete_days', 0, 1, 1);",
       "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "335",
+      "sql_patch": "Add invoice display days option.",
+      "sql_release": "20221110",
+      "sql_statement": "INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('invoice_display_days', 0, 1, 1);",
+      "source": "fearless359"
     }
   ],
   "si_system_defaults": [

@@ -178,6 +178,17 @@
     </div>
 
     <div class="grid__container grid__head-10">
+        <div class="cols__1-span-4 bold align__text-right margin__right-1">{$LANG.invoiceDisplayDays}:
+            <img class="tooltip" title="{$LANG.helpInvoiceDisplayDays}" src="{$helpImagePath}help-small.png" alt=""/>
+            <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=invoice_display_days' tabindex="224"
+               class="margin__left-1">
+                <img src="images/edit.png" title="{$LANG.edit}" alt="{$LANG.edit}"/>
+            </a>
+        </div>
+        <div class="cols__5-span-6 margin__left-0-5">{$defaults.invoice_display_days}</div>
+    </div>
+
+    <div class="grid__container grid__head-10">
         <div class="cols__1-span-4 bold align__text-right margin__right-1">{$LANG.language}:
             <img class="tooltip" title="{$LANG.helpLanguage}" src="{$helpImagePath}help-small.png" alt=""/>
             <a href='index.php?module=system_defaults&amp;view=edit&amp;submit=language' tabindex="140"

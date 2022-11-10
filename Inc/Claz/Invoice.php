@@ -2,6 +2,7 @@
 
 namespace Inc\Claz;
 
+use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -72,12 +73,13 @@ class Invoice
      * @param string $sort field to order by (optional).
      * @param string $dir order by direction, "asc" or "desc" - (optional).
      * @param bool $manageTable true if select for manage.tpl table; false (default) if not.
-     * @param bool $includeWarehouse true if should include warehouse info with all selected, false if not.
+     * @param bool $includeWarehouse true if should include warehouse info with all selected, false if not.\
+     * @param int $invoiceDisplayDays If specified, the days in the past invoices will be retrieved for.
      * @return array Invoices retrieved.
      * @throws PdoDbException
      */
     public static function getAllWithHavings($having, string $sort = "", string $dir = "", bool $manageTable = false,
-                                             bool $includeWarehouse = false): array
+                                             bool $includeWarehouse = false, int $invoiceDisplayDays = 0): array
     {
         global $pdoDb;
 
@@ -106,10 +108,10 @@ class Invoice
         }
 
         if ($manageTable) {
-            return self::manageTableInfo();
+            return self::manageTableInfo($invoiceDisplayDays);
         }
 
-        return self::getInvoices(null, $sort, $dir, $includeWarehouse);
+        return self::getInvoices(null, $sort, $dir, $includeWarehouse, $invoiceDisplayDays);
     }
 
     /**
@@ -144,17 +146,18 @@ class Invoice
 
     /**
      * Minimize the amount of data returned to the manage table.
+     * @param int $invoiceDisplayDays Number of days in the past to limit invoices retrieved; 0 means no limit.
      * @return array Data for the manage table rows.
      * @throws PdoDbException
      */
-    public static function manageTableInfo(): array
+    public static function manageTableInfo(int $invoiceDisplayDays = 0): array
     {
         global $config, $LANG;
 
         session_name(SESSION_NAME);
         session_start();
         $readOnly = $_SESSION['role_name'] == 'customer';
-        $rows = self::getInvoices();
+        $rows = self::getInvoices(null, '', '', false, $invoiceDisplayDays);
         $tableRows = [];
         foreach ($rows as $row) {
             // @formatter:off
@@ -232,20 +235,29 @@ class Invoice
      * @param string $sort field to order by, defaults to index_name.
      * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
      * @param bool $includeWarehouse true if warehouse info include, false if not.
+     * @param int $invoiceDisplayDays Number of days in the past to limit invoices retrieved; 0 means no limit.
      * @return array Selected rows.
      * @throws PdoDbException
      */
-    private static function getInvoices(?int $id = null, string $sort = "", string $dir = "", bool $includeWarehouse = false): array
+    private static function getInvoices(?int $id = null, string $sort = "", string $dir = "",
+                                        bool $includeWarehouse = false, int $invoiceDisplayDays = 0): array
     {
         global $pdoDb;
 
+        session_name(SESSION_NAME);
+        session_start();
+
         try {
+            if ($invoiceDisplayDays > 0) {
+                $now = new DateTime();
+                $back = $now->sub(DateInterval::createFromDateString("$invoiceDisplayDays days"));
+                $displayLimitDt = $back->format('Y-m-d G:i:s');
+                $pdoDb->addToWhere(new WhereItem(false,'iv.date', ">=", $displayLimitDt, false, 'AND'));
+            }
+
             if (isset($id)) {
                 $pdoDb->addSimpleWhere('iv.id', $id, 'AND');
             }
-
-            session_name(SESSION_NAME);
-            session_start();
 
             // If user role is customer or biller, then restrict invoices to those they have access to.
             if ($_SESSION['role_name'] == 'customer') {

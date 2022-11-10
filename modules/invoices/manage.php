@@ -2,6 +2,7 @@
 
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
 /*
@@ -26,7 +27,15 @@ $having = $_GET['having'] ?? "";
 $readOnly = $_SESSION['role_name'] == 'customer';
 
 try {
-    $invoices = Invoice::getAllWithHavings($having, '', '', true);
+    if (isset($_GET['showAll'])) {
+        $invoiceDisplayDays = 0;
+    } else {
+        $invoiceDisplayDays = SystemDefaults::getInvoiceDisplayDays();
+    }
+    $smarty->assign("invoiceDisplayDays", $invoiceDisplayDays);
+
+    $invoices = Invoice::getAllWithHavings($having, '', '', true, false,
+                                           $invoiceDisplayDays);
     $data = json_encode(['data' => mb_convert_encoding($invoices, 'UTF-8')]);
     if (file_put_contents("public/data.json", $data) === false) {
         error_log("modules/invoices/manage.php Unable to store json data.");
