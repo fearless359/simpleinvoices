@@ -213,7 +213,7 @@ class SystemDefaults
      */
     public static function getDelete(): int
     {
-        return self::getValue('delete');
+        return intval(self::getValue('delete'));
     }
 
     /**
@@ -222,7 +222,7 @@ class SystemDefaults
      */
     public static function getDisplayDepartment(): int
     {
-        return self::getValue('display_department');
+        return intval(self::getValue('display_department'));
     }
 
     /**
@@ -231,7 +231,7 @@ class SystemDefaults
      */
     public static function getExpense(): int
     {
-        return self::getValue('expense');
+        return intval(self::getValue('expense'));
     }
 
     /**
@@ -240,7 +240,7 @@ class SystemDefaults
      */
     public static function getInventory(): int
     {
-        return self::getValue('inventory');
+        return intval(self::getValue('inventory'));
     }
 
     /**
@@ -249,7 +249,7 @@ class SystemDefaults
      */
     public static function getInvoiceDescriptionOpen(): int
     {
-        return self::getValue('invoice_description_open');
+        return intval(self::getValue('invoice_description_open'));
     }
 
     /**
@@ -259,7 +259,7 @@ class SystemDefaults
      */
     public static function getInvoiceDisplayDays(): int
     {
-        return self::getValue('invoice_display_days');
+        return intval(self::getValue('invoice_display_days'));
     }
 
     /**
@@ -277,7 +277,7 @@ class SystemDefaults
      */
     public static function getLogging(): int
     {
-        return self::getValue('logging');
+        return intval(self::getValue('logging'));
     }
 
     /**
@@ -286,7 +286,7 @@ class SystemDefaults
      */
     public static function getPasswordLower(): int
     {
-        return self::getValue('password_lower');
+        return intval(self::getValue('password_lower'));
     }
 
     /**
@@ -295,7 +295,7 @@ class SystemDefaults
      */
     public static function getPasswordMinLength(): int
     {
-        return self::getValue('password_min_length', "", false);
+        return intval(self::getValue('password_min_length', "", false));
     }
 
     /**
@@ -304,7 +304,7 @@ class SystemDefaults
      */
     public static function getPasswordNumber(): int
     {
-        return self::getValue('password_number');
+        return intval(self::getValue('password_number'));
     }
 
     /**
@@ -313,7 +313,7 @@ class SystemDefaults
      */
     public static function getPasswordSpecial(): int
     {
-        return self::getValue('password_special');
+        return intval(self::getValue('password_special'));
     }
 
     /**
@@ -322,7 +322,7 @@ class SystemDefaults
      */
     public static function getPasswordUpper(): int
     {
-        return self::getValue('password_upper');
+        return intval(self::getValue('password_upper'));
     }
 
     /**
@@ -332,7 +332,7 @@ class SystemDefaults
      */
     public static function getPaymentDeleteDays(): int
     {
-        return self::getValue('payment_delete_days');
+        return intval(self::getValue('payment_delete_days'));
     }
 
 
@@ -343,7 +343,7 @@ class SystemDefaults
      */
     public static function getPreference(): int
     {
-        return self::getValue('preference');
+        return intval(self::getValue('preference'));
     }
 
     /**
@@ -352,7 +352,7 @@ class SystemDefaults
      */
     public static function getProductAttributes(): int
     {
-        return self::getValue('product_attributes');
+        return intval(self::getValue('product_attributes'));
     }
 
     /**
@@ -361,7 +361,7 @@ class SystemDefaults
      */
     public static function getProductGroups(): int
     {
-        return self::getValue('product_groups');
+        return intval(self::getValue('product_groups'));
     }
 
     /**
@@ -370,7 +370,7 @@ class SystemDefaults
      */
     public static function getSubCustomer(): int
     {
-        return self::getValue('sub_customer');
+        return intval(self::getValue('sub_customer'));
     }
 
     /**
@@ -379,7 +379,7 @@ class SystemDefaults
      */
     public static function getSessionTimeout(): int
     {
-        return self::getValue('session_timeout', "", false);
+        return intval(self::getValue('session_timeout', "", false));
     }
 
 }

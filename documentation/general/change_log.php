@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-11-18 - <strong>2020.4.5</strong>
+                <ul>
+                    <li>Modified system defaults get functions to force int type value returned when appropriate.</li>
+                </ul>
+            </li>
             <li>2022-11-10 - <strong>2020.4.4</strong>
                 <ul>
                     <li>Add invoice display days SI Defaults option for invoice display screen.</li>
