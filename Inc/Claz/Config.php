@@ -40,6 +40,10 @@ class Config
             self::updateConfig();
         }
 
+        if (!\file_exists("./$configFile")) {
+            SiError::out('generic', 'Config::init()', "Ini file does not exist: $configFile");
+        }
+
         $config = parse_ini_file("./$configFile", true);
         if ($config === false) {
             SiError::out('generic', 'Config::init()', "Unable to parse ini file: $configFile");
@@ -56,7 +60,9 @@ class Config
     {
         // Create custom.config.ini file if it doesn't already exist
         if (!file_exists("./" . self::CUSTOM_CONFIG_FILE)) {
-            copy("./" . self::CONFIG_FILE, "./" . self::CUSTOM_CONFIG_FILE);
+            if (!copy("./" . self::CONFIG_FILE, "./" . self::CUSTOM_CONFIG_FILE)) {
+                SiError::out('install', 'Config::update_config()', 'Unable to copy ' . self::CONFIG_FILE . ' to ' . self::CUSTOM_CONFIG_FILE);
+            }
         }
     }
 
@@ -285,5 +291,4 @@ class Config
             unlink($filenameNew);
         }
     }
-
 }

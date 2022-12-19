@@ -38,26 +38,7 @@ class Setup
                 $this->pdoDb = new PdoDb($this->configIni);
                 $this->pdoDbAdmin = new PdoDb($this->configIni);
             } catch (PdoDbException $pde) {
-                if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
-                    echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
-                    echo "<ol>";
-                    echo "  <li>Make a mySQL compatible database with a user that has full access to it.</li>";
-                    echo "  <li>In the \"config\" directory, copy the <b>config.ini</b> file to <b>custom.config.ini</b></li>";
-                    echo "  <li>Modify the database settings in the <b>custom.config.ini</b> file for the database made in step 1.";
-                    echo "    <ul>";
-                    echo "      <li>Set <b>databaseDbname</b> to the name of the database.";
-                    echo "      <li>Set <b>databaseUsername</b> to the username of the database administrator.</li>";
-                    echo "      <li>Set <b>databasePassword</b> to the database administrator password. Note you might need to include this in single quotes.</li>";
-                    echo "    </ul>";
-                    echo "  </li>";
-                    echo "  <li>In your browser, execute the command to access SI again and follow the instructions.</li>";
-                    echo "</ol>";
-                } else {
-                    echo "<h1 style='font-weight:bold;color:red;'>";
-                    echo "  " . $pde->getMessage() . " (Error code: {$pde->getCode()})";
-                    echo "</h1>";
-                }
-
+                SiError::out('dbConnection', $pde->getMessage());
                 throw new PdoDbException($pde->getMessage());
             }
         }
@@ -69,7 +50,6 @@ class Setup
         ini_set('display_errors', $this->configIni['phpSettingsDisplayErrors']);
         ini_set('log_errors', $this->configIni['phpSettingsLogErrors']);
         ini_set('error_log', $this->configIni['phpSettingsErrorLog']);
-
     }
 
     public function getConfigIni(): array
@@ -86,5 +66,4 @@ class Setup
     {
         return $this->pdoDbAdmin;
     }
-
 }
