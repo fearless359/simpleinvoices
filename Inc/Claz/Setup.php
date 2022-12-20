@@ -41,12 +41,12 @@ class Setup
                 if (preg_match('/.*{dbname|password|username}/', $pde->getMessage())) {
                     echo "<h1 style='font-weight:bold;color:red;'>Initial setup. Follow the following instructions:</h1>";
                     echo "<ol>";
-                    echo "  <li>Make a mySQL compatible database with a user that has full access to it.</li>";
+                    echo "  <li>Make a mySQL compatible database with a user that has full access to it.";
                     echo "  <li>In the \"config\" directory, copy the <b>config.ini</b> file to <b>custom.config.ini</b></li>";
                     echo "  <li>Modify the database settings in the <b>custom.config.ini</b> file for the database made in step 1.";
                     echo "    <ul>";
                     echo "      <li>Set <b>databaseDbname</b> to the name of the database.";
-                    echo "      <li>Set <b>databaseUsername</b> to the username of the database administrator.</li>";
+                    echo "      <li>Set <b>databaseUsername</b> to the username of the database administrator. Assure user is authorized to connect to server's IP.</li>";
                     echo "      <li>Set <b>databasePassword</b> to the database administrator password. Note you might need to include this in single quotes.</li>";
                     echo "    </ul>";
                     echo "  </li>";

@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2022-12-20 - <strong>2020.4.6</strong>
+                <ul>
+                    <li>Added need to verify db user's access to server in &quot;Initial setup&quot; message.</li>
+                </ul>
+            </li>
             <li>2022-11-18 - <strong>2020.4.5</strong>
                 <ul>
                     <li>Modified system defaults get functions to force int type value returned when appropriate.</li>
