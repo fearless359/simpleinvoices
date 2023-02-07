@@ -20,6 +20,7 @@
     "ext-pdo": "*",
     "ext-intl": "*",
     "sebastian/global-state": "^5.0",
-    "smarty/smarty": "^4.2"
+    "smarty/smarty": "^4.2",
+    "ezyang/htmlpurifier": "^4.16"
   }
 }

@@ -13,7 +13,7 @@ use Inc\Claz\Util;
 global $apiRequest, $config, $databaseBuilt, $databasePopulated, $extNames, $module, $pdoDbAdmin, $view;
 
 require_once 'library/paypal/paypal.class.php';
-require_once 'library/HTMLPurifier/HTMLPurifier.standalone.php';
+//require_once 'library/HTMLPurifier/HTMLPurifier.standalone.php';
 
 $smarty = new Smarty();
 

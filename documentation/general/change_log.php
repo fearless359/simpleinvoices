@@ -17,6 +17,12 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-02-07 - <strong>2020.4.7</strong>
+                <ul>
+                    <li>Updated to use HTMLPurifier library maintained via composer.</li>
+                    <li>Update composer vendor files to current versions.</li>
+                </ul>
+            </li>
             <li>2022-12-20 - <strong>2020.4.6</strong>
                 <ul>
                     <li>Added need to verify db user's access to server in &quot;Initial setup&quot; message.</li>
