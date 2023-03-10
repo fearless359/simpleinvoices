@@ -117,12 +117,20 @@ if ($op == "create" ) {
             $idx = 0;
             while ($idx <= $_POST['max_items']) {
                 if (isset($_POST["delete$idx"]) && $_POST["delete$idx"] == "yes") {
-                    Invoice::delete('invoice_items', 'id', $_POST["line_item$idx"]);
+                    $lineItemIdx = $_POST["line_item$idx"];
+                    foreach ($_POST["tax_id"][$idx] as $key => $value) {
+                        if (!empty($value)) {
+                            Invoice::delete('invoice_item_tax', 'invoice_item_id',$lineItemIdx);
+                            break;
+                        }
+                    }
+
+                    Invoice::delete('invoice_items', 'id', $lineItemIdx);
                 } elseif (isset($_POST["quantity$idx"])) {
 
                     //new line item added in edit page
                     $item = $_POST["line_item$idx"] ?? "";
-                    $qty = isset($_POST["quantity$idx"]) ? Util::dbStd($_POST["quantity$idx"]) : "";
+                    $qty = Util::dbStd($_POST["quantity$idx"]);
                     $product = $_POST["products$idx"] ?? "";
                     $desc = $_POST["description$idx"] ?? "";
                     $price = isset($_POST["unit_price$idx"]) ? Util::dbStd($_POST["unit_price$idx"]) : "";

@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-03-10 - <strong>2020.4.8</strong>
+                <ul>
+                    <li>Fixed invoice line item deletion failure to remove associated taxes.</li>
+                </ul>
+            </li>
             <li>2023-02-07 - <strong>2020.4.7</strong>
                 <ul>
                     <li>Updated to use HTMLPurifier library maintained via composer.</li>
