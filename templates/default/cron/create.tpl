@@ -18,10 +18,11 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="invoiceId" class="cols__1-span-1 align__text-right margin__right-1">{$LANG.invoiceUc}:</label>
-                <select name="invoice_id" id="invoiceId" class="cols__2-span-9" required autofocus tabindex="10">
+                <select name="invoice_id" id="invoiceId" class="cols__2-span-9 cronInvoiceChange" required autofocus tabindex="10">
                     <option value=''></option>
                     {foreach $invoice_all as $invoice}
                         <option value="{$invoice.id|htmlSafe}"
+                                data-locale="{$invoice.locale}" data-currency-code="{$invoice.currency_code}"
                                 {if isset($smarty.post.invoice_id) &&
                                     $smarty.post.invoice_id == $invoice.id}selected{/if}>
                             {$invoice.index_name|htmlSafe}
@@ -39,14 +40,16 @@
             </div>
             <div class="grid__container grid__head-10">
                 <label for="enddate" class="cols__1-span-4 align__text-right margin__right-1">{$LANG.endDate}:</label>
-                <input type="text" name="end_date" id="enddate" class="cols__5-span-1 date-picker validate-date" tabindex="30"
+                <input type="text" name="end_date" id="enddate" class="cols__5-span-1 date-picker" tabindex="30"
                        placeholder="{$PLACEHOLDERS['date']}"
                        {if isset($smarty.post.end_date)}value="{$smarty.post.end_date}"{/if}/>
             </div>
+            <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+            <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
             <div class="grid__container grid__head-10">
                 <label for="recurrenceId" class="cols__1-span-4 align__text-right margin__right-1">{$LANG.recurEach}:</label>
-                <input name="recurrence" id="recurrenceId" class="cols__5-span-1" required tabindex="40"
-                       {if isset($smarty.post.recurrence)}value="{$smarty.post.recurrence}"{/if}/>
+                <input name="recurrence" id="recurrenceId" class="cols__5-span-1 validateWholeNumber" required tabindex="40"
+                       {if isset($smarty.post.recurrence)}value="{$smarty.post.recurrence|utilNumberTrim:0}"{/if}/>
                 <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="recurrence_type" class="cols__6-span-1 margin__left-0-5" required tabindex="50">
                     <option value="day"

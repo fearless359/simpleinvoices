@@ -33,9 +33,11 @@
                 <input type="text" name="date" id="date" required readonly class="cols__4-span-1 date-picker"
                        value='{$smarty.now|date_format:"%Y-%m-%d"}' tabindex="20"/>
             </div>
+            <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+            <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
             <div class="grid__container grid__head-10">
                 <label for="amountId" class="cols__2-span-2 align__text-right">{$LANG.amountUc}:&nbsp;</label>
-                <input name="amount" id="amountId" class="cols__4-span-2" required tabindex="30"/>
+                <input name="amount" id="amountId" class="cols__4-span-2 validateNumber" required tabindex="30"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="billerId" class="cols__2-span-2 align__text-right">{$LANG.billerUc}:&nbsp;</label>
@@ -61,10 +63,14 @@
             </div>
             <div class="grid__container grid__head-10">
                 <label for="invoiceId" class="cols__2-span-2 align__text-right">{$LANG.invoiceUc}:&nbsp;</label>
-                <select name="invoice_id" id="invoiceId" class="cols__4-span-4" tabindex="60">
-                    <option value=''></option>
+                <select name="invoice_id" id="invoiceId" class="cols__4-span-4 expenseInvoiceChange" tabindex="60">
+                    <option value='' data-locale="{$config.localLocale}" data-currency-code="{$config.localCurrencyCode}"></option>
                     {foreach $expenseAdd.invoices as $invoice}
-                        <option value="{$invoice.id}">{$invoice.index_id}&nbsp;&dash;&nbsp;{$invoice.customer}&nbsp;&dash;&nbsp;{$invoice.date}</option>
+                        <option value="{$invoice.id}" data-locale="{$invoice.locale}"
+                                data-currency-code="{$invoice.currency_code}" data-precision="{$invoice.precision}"
+                                {if isset($smarty.post.invoice_id) && $smarty.post.invoice_id == $invoice.id}selected{/if}>
+                            {$invoice.index_id}&nbsp;&dash;&nbsp;{$invoice.customer}&nbsp;&dash;&nbsp;{$invoice.date}
+                        </option>
                     {/foreach}
                 </select>
             </div>

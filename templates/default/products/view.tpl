@@ -21,7 +21,7 @@
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.productUnitPrice}:</div>
-        <div class="cols__4-span-5">{$product.unit_price|utilNumberTrim}</div>
+        <div class="cols__4-span-5">{$product.unit_price|utilNumber}</div>
     </div>
     {if $defaults.inventory == $smarty.const.ENABLED}
         <div class="grid__container grid__head-10">

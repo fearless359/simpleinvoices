@@ -22,10 +22,14 @@
             <div class="cols__3-span-2 align__text-right bold">{$LANG.lastPaymentId}:&nbsp;</div>
             <div class="cols__5-span-4">{$paymentWarehouse.last_payment_id|utilNumberTrim:0}</div>
         </div>
+        <input type="hidden" name="locale" id="localeId" value="{$paymentWarehouse.locale}">
+        <input type="hidden" name="currency_code" id="currencyCodeId" value="{$paymentWarehouse.currency_code}">
+        <input type="hidden" name="precision" id="precisionId" value="{$paymentWarehouse.precision}">
         <div class="grid__container grid__head-10">
             <label for="balanceId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.balanceUc}:</label>
-            <input type="text" name="balance" id="balanceId" class="cols__5-span-2" required size="20" tabindex="30"
-                   {if $paymentWarehouse.balance}value="{$paymentWarehouse.balance|utilNumberTrim}"{/if}/>
+            <input type="text" name="balance" id="balanceId" class="cols__5-span-2 validateNumber"
+                   required size="20" tabindex="30"
+                   {if $paymentWarehouse.balance}value="{$paymentWarehouse.balance|utilNumber:$paymentWarehouse.precision:$paymentWarehouse.locale}"{/if}/>
         </div>
         <div class="grid__container grid__head-10">
             <label for="pymtTypeId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.paymentType}:</label>

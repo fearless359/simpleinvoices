@@ -2,6 +2,8 @@
 
 namespace Inc\Claz;
 
+use NumberFormatter;
+
 /**
  * Class PaymentWarehouse
  * @package Inc\Claz
@@ -97,6 +99,7 @@ class PaymentWarehouse
     {
         global $pdoDb;
 
+        $pwRecs = [];
         try {
             if (isset($id)) {
                 switch ($idType) {
@@ -147,12 +150,24 @@ class PaymentWarehouse
             $pdoDb->addToJoins($jn);
 
             $rows = $pdoDb->request("SELECT", "payment_warehouse", "pw");
+            foreach ($rows as $row) {
+                $locale = $row['locale'];
+                $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+                $precision = $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS);
+                $row['precision'] = $precision;
+
+                $pwRecs[] = $row;
+            }
         } catch (PdoDbException $pde) {
             error_log("PaymentWarehouse::getPaymentWarehouseRecords() - error: " . $pde->getMessage());
             return [];
         }
 
-        return $rows;
+        if (empty($pwRecs)) {
+            return [];
+        }
+
+        return $pwRecs;
     }
 
     /**

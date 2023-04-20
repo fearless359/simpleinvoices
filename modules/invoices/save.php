@@ -21,7 +21,7 @@ use Inc\Claz\Util;
  */
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
-global $LANG, $smarty, $pdoDb;
+global $config, $LANG, $smarty, $pdoDb;
 
 Util::directAccessAllowed();
 
@@ -30,6 +30,10 @@ $refreshRedirect = "<meta http-equiv=\"refresh\" content=\"2;URL=index.php?modul
 
 $op = $_POST['op'];
 $type = $_POST['type'];
+
+$locale = $_POST['locale'] ?? $config['localLocale'];
+$currencyCode = $_POST['currency_code'] ?? $config['localCurrencyCode'];
+$precision = $_POST['precision'] ?? $config['localPrecision'];
 
 $id = null;
 if ($op == "create" ) {
@@ -60,14 +64,14 @@ if ($op == "create" ) {
         if ($type == TOTAL_INVOICE) {
             $productId = Product::insertProduct(DISABLED, DISABLED);
             if ($productId > 0) {
-                $unitPrice = Util::dbStd($_POST["unit_price"]);
+                $unitPrice = Util::dbStd($_POST["unit_price"], $locale);
                 $taxIds = [];
                 foreach ($_POST['tax_id'] as $taxId) {
                     if (!empty($taxId)) {
                         $taxIds[] = $taxId;
                     }
                 }
-                Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice);
+                Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice, null);
             } else {
                 error_log("modules/invoices/save.php TOTAL_INVOICE: Unable to save description in si_products table");
             }
@@ -76,10 +80,11 @@ if ($op == "create" ) {
             while ($idx <= $_POST['max_items']) {
                 if (!empty($_POST["quantity$idx"])) {
                     // @formatter:off
-                    $unitPrice = Util::dbStd($_POST["unit_price$idx"]);
+                    $qty = Util::dbStd($_POST["quantity$idx"], $locale);
+                    $unitPrice = Util::dbStd($_POST["unit_price$idx"], $locale);
                     $taxIds = empty($_POST["tax_id"][$idx]) ? [] : $_POST["tax_id"][$idx];
                     $attr = empty($_POST["attribute"][$idx]) ? [] : $_POST["attribute"][$idx];
-                    Invoice::insertInvoiceItem($id, $_POST["quantity$idx"], $_POST["products$idx"],
+                    Invoice::insertInvoiceItem($id, $qty, $_POST["products$idx"],
                                                $taxIds, $_POST["description$idx"], $unitPrice, $attr);
                     // @formatter:on
                 }
@@ -102,7 +107,7 @@ if ($op == "create" ) {
     try {
         if (Invoice::updateInvoice($id)) {
             if ($type == TOTAL_INVOICE) {
-                $unitPrice = empty($_POST['unit_price']) ? 0 : Util::dbStd($_POST['unit_price']);
+                $unitPrice = empty($_POST['unit_price']) ? 0 : Util::dbStd($_POST['unit_price'], $locale);
                 $pdoDb->setFauxPost([
                     "unit_price" => $unitPrice,
                     "description" => $_POST['description0']
@@ -117,15 +122,23 @@ if ($op == "create" ) {
             $idx = 0;
             while ($idx <= $_POST['max_items']) {
                 if (isset($_POST["delete$idx"]) && $_POST["delete$idx"] == "yes") {
-                    Invoice::delete('invoice_items', 'id', $_POST["line_item$idx"]);
+                    $lineItemIdx = $_POST["line_item$idx"];
+                    foreach ($_POST["tax_id"][$idx] as $key => $value) {
+                        if (!empty($value)) {
+                            Invoice::delete('invoice_item_tax', 'invoice_item_id',$lineItemIdx);
+                            break;
+                        }
+                    }
+
+                    Invoice::delete('invoice_items', 'id', $lineItemIdx);
                 } elseif (isset($_POST["quantity$idx"])) {
 
                     //new line item added in edit page
                     $item = $_POST["line_item$idx"] ?? "";
-                    $qty = Util::dbStd($_POST["quantity$idx"]);
+                    $qty = Util::dbStd($_POST["quantity$idx"], $locale);
                     $product = $_POST["products$idx"] ?? "";
                     $desc = $_POST["description$idx"] ?? "";
-                    $price = isset($_POST["unit_price$idx"]) ? Util::dbStd($_POST["unit_price$idx"]) : "";
+                    $price = isset($_POST["unit_price$idx"]) ? Util::dbStd($_POST["unit_price$idx"], $locale) : "";
                     $attr = $_POST["attribute$idx"] ?? null;
                     $taxIds = $_POST["tax_id"][$idx] ?? [];
 

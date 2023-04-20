@@ -6,6 +6,7 @@ use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Exception;
+use NumberFormatter;
 
 /**
  * Class Invoice
@@ -351,10 +352,17 @@ class Invoice
 
             $invoices = [];
             foreach ($rows as $row) {
+                $locale = $row['locale'];
+                $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+                $precision = $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS);
+                $row['precision'] = $precision;
+
                 $owing = $row['total'] - $row['paid'];
                 // Check for case where owing on invoice differs from calculated owing
                 // FYI: Preference ID 1 is Invoice.
-                if ($owing > 0 && Util::numberTrim($row['owing']) != Util::numberTrim($owing) &&
+                if ($owing > 0 &&
+                    Util::numberTrim($row['owing'], $precision, $locale) !=
+                    Util::numberTrim($owing, $precision, $locale) &&
                     $row['preference_id'] == 1) {
                     $forceUpdate = true;
                     $row['owing'] = $owing;
@@ -692,7 +700,7 @@ class Invoice
      * @throws PdoDbException
      */
     public static function insertInvoiceItem(int $invoiceId, float $quantity, int $productId, array $taxIds,
-                                             string $description = "", float $unitPrice = 0, ?array $attribute = null): int
+                                             string $description, float $unitPrice, ?array $attribute): int
     {
         global $LANG;
 
@@ -798,7 +806,7 @@ class Invoice
      * @throws PdoDbException
      */
     public static function updateInvoiceItem(int $id, float $quantity, int $productId, array $taxIds,
-                                             string $description, float $unitPrice, ?array $attribute = null): void
+                                             string $description, float $unitPrice, ?array $attribute): void
     {
         global $LANG, $pdoDb;
 
@@ -1208,6 +1216,7 @@ class Invoice
             error_log("Invoice::getInvoiceItems() - id[$id] error: " . $pde->getMessage());
             throw $pde;
         }
+
         return $invoiceItems;
     }
 

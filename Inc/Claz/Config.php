@@ -46,6 +46,13 @@ class Config
         }
 
         self::$customConfig = $config[$section];
+
+        if (isset(self::$customConfig['localLocale'])) {
+            self::$customConfig['localLocaleGlobal'] = preg_replace('/^(.*)_(.*)$/', '$1-$2', self::$customConfig['localLocale']);
+        } else {
+            error_Log("config localLocaleGlobal not set");
+        }
+
         return self::$customConfig;
     }
 
@@ -201,7 +208,7 @@ class Config
         $unmatchedFlagged = false;
         while (($line = fgets($fpCur)) !== false) {
             if (!$unmatchedFlagged) {
-                $unmatchedFlagged = str_contains($line, 'Possibly Deprecated');
+                $unmatchedFlagged = preg_match('/Possibly Deprecated/', $line);
             }
 
             switch (ConfigLines::lineType($line)) {

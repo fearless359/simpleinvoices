@@ -2,6 +2,8 @@
 
 namespace Inc\Claz;
 
+use NumberFormatter;
+
 /**
  * Class Expense
  * @package Inc\Claz
@@ -45,9 +47,10 @@ class Expense
      */
     public static function manageTableInfo(): array
     {
-        global $config, $LANG;
+        global $LANG;
 
         $rows = self::getExpenses();
+
         $tableRows = [];
         foreach ($rows as $row) {
             $viewName = $LANG['view'] . ' ' . $row['p_desc'];
@@ -61,6 +64,11 @@ class Expense
                 "<a class='index_table' title='$editName' " .
                     "href='index.php?module=expense&amp;view=edit&amp;id={$row['eid']}'>" .
                     "<img src='images/edit.png' class='action' alt='$editName'/>" .
+                "</a>" .
+                "&nbsp;" .
+                "<a class='index_table' title='{$LANG['delete']} {$LANG['expenseUc']}' " .
+                   "href='index.php?module=expense&amp;view=delete&amp;stage=1&amp;id={$row['eid']}' >" .
+                   "<img src='images/delete.png' class='action' alt='{$LANG['delete']}'/>" .
                 "</a>";
 
             $quickView =
@@ -82,8 +90,8 @@ class Expense
                 'cName' => $row['c_name'],
                 'ivId' => $quickView,
                 'statusWording' => $row['status_wording'],
-                'currencyCode' => $config['localCurrencyCode'],
-                'locale' => preg_replace($pattern, $replPattern, $config['localLocale'])
+                'currencyCode' => $row['currency_code'],
+                'locale' => preg_replace($pattern,$replPattern, $row['locale'])
             ];
         }
 
@@ -97,7 +105,7 @@ class Expense
      */
     private static function getExpenses(?int $id = null): array
     {
-        global $LANG, $pdoDb;
+        global $config, $LANG, $pdoDb;
 
         $expenses = [];
         try {
@@ -131,7 +139,12 @@ class Expense
             $join->addSimpleItem("i.domain_id", new DbField("e.domain_id"));
             $pdoDb->addToJoins($join);
 
-            $case = new CaseStmt("status", "status_wording");
+            $jn = new Join("LEFT", "preferences", "pf");
+            $jn->addSimpleItem("pf.pref_id", new DbField("i.preference_id"), 'AND');
+            $jn->addSimpleItem('pf.domain_id', new DbField("i.domain_id"));
+            $pdoDb->addToJoins($jn);
+
+            $case = new CaseStmt("e.status", "status_wording");
             $case->addWhen("=", ENABLED, $LANG['paidUc']);
             $case->addWhen("!=", ENABLED, $LANG['notPaid'], true);
             $pdoDb->addToCaseStmts($case);
@@ -139,7 +152,7 @@ class Expense
             // This is a fudge until sub-select can be added to the features.
             $expItemTax = TB_PREFIX . "expense_item_tax";
             $pdoDb->addToFunctions("(SELECT SUM(tax_amount) FROM $expItemTax WHERE expense_id = e.id) AS tax");
-            $pdoDb->addToFunctions("(SELECT tax + e.amount) AS total");
+            $pdoDb->addToFunctions("(SELECT COALESCE(tax, 0) + e.amount) AS total");
 
             $selectList = [
                 new DbField('e.id', 'eid'),
@@ -157,11 +170,29 @@ class Expense
                 new DbField('b.name', 'b_name'),
                 new DbField('ea.name', 'ea_name'),
                 new DbField('c.name', 'c_name'),
-                new DbField('p.description', 'p_desc')
+                new DbField('p.description', 'p_desc'),
+                new DbField("pf.locale", "locale"),
+                new DbField("pf.pref_currency_sign", "currency_sign"),
+                new DbField("pf.currency_code", "currency_code")
             ];
             $pdoDb->setSelectList($selectList);
 
-            $expenses = $pdoDb->request("SELECT", "expense", 'e');
+            $rows = $pdoDb->request("SELECT", "expense", 'e');
+            foreach ($rows as $row) {
+                if (empty($row['locale'])) {
+                    $row['locale'] = $config['localLocale'];
+                    $row['currency_code'] = $config['localCurrencyCode'];
+                }
+
+                $locale = $row['locale'];
+                $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+                $currencySign = $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+                $precision = $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS);
+                $row['currency_sign'] = $currencySign;
+                $row['precision'] = $precision;
+
+                $expenses[] = $row;
+            }
         } catch (PdoDbException $pde) {
             error_log("Expense::getExpense() - error: " . $pde->getMessage());
         }
@@ -257,19 +288,37 @@ class Expense
     }
 
     /**
+     * Delete expense.
+     * @param int $id ID of the expense record to delete.
+     * @throws PdoDbException
+     */
+    public static function delete(int $id): bool
+    {
+        global $pdoDb;
+
+        // Delete payment then get invoice so that owing will be updated.
+        $pdoDb->addSimpleWhere('id', $id);
+        return $pdoDb->request('DELETE', 'expense');
+    }
+
+    /**
      * Insert/update the multiple taxes per line item into the si_expense_item_tax table
      * @param int $expenseId
-     * @param array $lineItemTaxId
+     * @param array|string $lineItemTaxId
      * @param float $unitPrice
      * @param float $quantity
      * @param string $action
      * @return bool true if processed without error; false otherwise.
      */
-    public static function expenseItemTax(int $expenseId, array $lineItemTaxId, float $unitPrice, float $quantity, string $action = ""): bool
+    public static function expenseItemTax(int $expenseId, $lineItemTaxId, float $unitPrice, float $quantity, string $action = ""): bool
     {
         global $config;
 
+        // If taxes present, they will be in an array otherwise should be empty string
         if (empty($lineItemTaxId)) {
+            return false;
+        } elseif (is_string($lineItemTaxId)) {
+            error_log("Expense::expenseItemTax() - lineItemTaxId[$lineItemTaxId] invalid value input");
             return false;
         }
 

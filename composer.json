@@ -24,11 +24,6 @@
     "mpdf/mpdf": "~8.1.1",
     "sebastian/global-state": "^5.0",
     "smarty/smarty": "^4.2",
-    "swiftmailer/swiftmailer": "^6.0",
-    "samshal/acl": "dev-master"
-  },
-  "require-dev": {
-    "mockery/mockery": "^1.4",
-    "phpunit/phpunit": "^9"
+    "ezyang/htmlpurifier": "^4.16"
   }
 }

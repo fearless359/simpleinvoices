@@ -55,7 +55,8 @@ try {
                 $adjInfo = $LANG['decreased'];
             }
 
-            $adjMsg = "{$LANG['fyi']}: {$LANG['paymentUc']} $adjInfo {$LANG['warehoused']} {$LANG['balance']} {$LANG['by']} " . Util::currency(abs($payment['warehouse_amount']));
+            $adjMsg = "{$LANG['fyi']}: {$LANG['paymentUc']} $adjInfo {$LANG['warehoused']} {$LANG['balance']} {$LANG['by']} " .
+                Util::currency(abs($payment['warehouse_amount']), $payment['locale'], $payment['currency_code']);
             if (!empty($payment['ac_check_number'])) {
                 $adjMsg .= " {$LANG['for']} {$LANG['checkNumber']}{$payment['ac_check_number']}";
             }

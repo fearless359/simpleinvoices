@@ -2,6 +2,8 @@
 
 namespace Inc\Claz;
 
+use NumberFormatter;
+
 /**
  * Class Preferences
  * @package Inc\Claz
@@ -165,7 +167,7 @@ class Preferences
     {
         global $pdoDb;
 
-        $rows = [];
+        $defaultPreferences = [];
         try {
             $pdoDb->addSimpleWhere('name', 'preference', 'AND');
             $pdoDb->addSimpleWhere("s.domain_id", DomainId::get());
@@ -175,11 +177,19 @@ class Preferences
             $pdoDb->addToJoins($jn);
 
             $rows = $pdoDb->request("SELECT", "system_defaults", "s");
+            foreach ($rows as $row) {
+                $formatter = new NumberFormatter($row['locale'], NumberFormatter::CURRENCY);
+                $precision = $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS);
+                $row['precision'] = $precision;
+
+                $defaultPreferences[] = $row;
+            }
+
         } catch (PdoDbException $pde) {
             error_log("Preferences::getDefaultPreference() - Error: " . $pde->getMessage());
         }
 
-        return empty($rows) ? $rows : $rows[0];
+        return empty($defaultPreferences) ? [] : $defaultPreferences[0];
     }
 
     /**

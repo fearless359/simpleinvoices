@@ -279,7 +279,7 @@
     <tr class="">
       <td class="">{$payment.id|htmlSafe}</td>
       <td class="" colspan="3">{$invoice.index_id|htmlSafe}</td>
-      <td class="align__text-right">{$preference.pref_currency_sign}{$payment.ac_amount|utilNumber}</td>
+      <td class="align__text-right">{$payment.ac_amount|utilCurrency:$payment.locale:$payment.currency_code}</td>
       <td class="align__text-right">{$payment.date|htmlSafe}</td>
       <td class="align__text-right">
         {$paymentType.pt_description|htmlSafe}

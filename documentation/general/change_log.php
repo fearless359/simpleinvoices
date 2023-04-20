@@ -17,11 +17,23 @@
     <br/>
     <div id="left">
         <ul>
-            <li>2023-04-20 - <strong>2023.0.0</strong>
+            <li>2023-04-20 - <strong>2020.4.10</strong>
                 <ul>
-                    <li>Updated to run on PHP 8.1 and above. This is a requirement.</li>
-                    <li>Added template function for International Dates. See Template Date Formatting topic on
-                        SimpleInvoice.group forum.</li>
+                    <li>Use globalization for client side number formatting and verification.</li>
+                    <li>Check for payment owing before allowing payment screen display.</li>
+                    <li>Add logic to get inventory cost from product.</li>
+                    <li>Added logic to delete expense records.</li>
+                </ul>
+            </li>
+            <li>2023-03-10 - <strong>2020.4.8</strong>
+                <ul>
+                    <li>Fixed invoice line item deletion failure to remove associated taxes.</li>
+                </ul>
+            </li>
+            <li>2023-02-07 - <strong>2020.4.7</strong>
+                <ul>
+                    <li>Updated to use HTMLPurifier library maintained via composer.</li>
+                    <li>Update composer vendor files to current versions.</li>
                 </ul>
             </li>
             <li>2022-12-20 - <strong>2020.4.6</strong>

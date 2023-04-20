@@ -123,7 +123,10 @@ class Cron
                 "cron.recurrence",
                 "cron.recurrence_type",
                 "cust.name",
-                new DbField("iv.index_id", 'index_id')
+                new DbField("iv.index_id", 'index_id'),
+                new DbField("pf.locale", "locale"),
+                new DbField("pf.pref_currency_sign", "currency_sign"),
+                new DbField("pf.currency_code", "currency_code")
             ];
 
             $pdoDb->setSelectList($exprList);
@@ -349,9 +352,6 @@ class Cron
                         $biller = Biller::getOne($invoice['biller_id']);
                         $customer = Customer::getOne($invoice['customer_id']);
                         $preference = Preferences::getOne($invoice['preference_id']);
-
-//                        $billerEmail = [$biller['email'] => $biller['name']];
-//                        $customerEmail = [$customer['email'] => $customer['name']];
 
                         // email invoice
                         if ($value['email_biller'] == ENABLED || $value['email_customer'] == ENABLED) {
@@ -992,7 +992,7 @@ class Cron
      * @param int|string $id of cron_invoice_items record to delete.
      * @return bool true if delete processed, false if not.
      */
-    public static function deleteCronInvoiceItem(int|string $id): bool
+    public static function deleteCronInvoiceItem($id): bool
     {
         global $pdoDb;
 

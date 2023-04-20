@@ -14,14 +14,17 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlEncode}">
     <div class="grid__area">
+        <input type="hidden" name="cronId" id="cronId" value="{$cron.id|htmlSafe}">
         <div class="grid__container grid__head-10">
             <label for="invoiceId" class="cols__1-span-1 align__text-right margin__right-1">{$LANG.invoiceUc}:</label>
-            <select name="invoice_id" id="invoiceId" class="cols__2-span-8" {if $cronInvoiceItemsCount > 0}disabled{/if} required autofocus tabindex="10"
-                    onchange="$('#renderButtons').css('display','none')">
+            <select name="invoice_id" id="invoiceId"
+                    class="cols__2-span-8 cronInvoiceChange"
+                    {if $cronInvoiceItemsCount > 0}disabled{/if} required autofocus tabindex="10">
                 <option value=''></option>
                 {foreach $invoice_all as $invoice}
                     <option value="{if isset($invoice.id)}{$invoice.id}{/if}" {if $invoice.id == $cron.invoice_id}selected{/if}
-                            data-inv-type="{if $invoice.type_id == ITEMIZED_INVOICE}ITEMIZED{else}TOTAL{/if}"">
+                            data-locale="{$invoice.locale}" data-currency-code="{$invoice.currency_code}"
+                            data-inv-type="{if $invoice.type_id == ITEMIZED_INVOICE}ITEMIZED{else}TOTAL{/if}">
                         {$LANG.invUc}#{$invoice.index_id}: ({$invoice.biller|htmlSafe}, {$invoice.customer|htmlSafe}, {$invoice.total|utilNumber})
                     </option>
                 {/foreach}
@@ -39,13 +42,16 @@
         </div>
         <div class="grid__container grid__head-10">
             <label for="end_date" class="cols__1-span-4 align__text-right margin__right-1">{$LANG.endDate}:</label>
-            <input type="text" name="end_date" id="end_date" class="cols__5-span-1 date-picker validate-date" tabindex="30"
+            <input type="text" name="end_date" id="end_date" class="cols__5-span-1 date-picker" tabindex="30"
                    placeholder="{$PLACEHOLDERS['date']}" value='{$cron.end_date|htmlSafe}'/>
         </div>
+        <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+        <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
         <div class="grid__container grid__head-10">
             <label for="recurrenceId" class="cols__1-span-4 align__text-right margin__right-1">{$LANG.recurEach}:</label>
-            <input name="recurrence" id="recurrenceId" class="cols__5-span-1" required tabindex="40"
-                   value='{$cron.recurrence|htmlSafe}'/>
+            <input name="recurrence" id="recurrenceId" class="cols__5-span-1 validateWholeNumber" required tabindex="40"
+                   data-locale="{$cron.locale}" data-currency-code="{$cron.currency_code}"
+                   value='{$cron.recurrence|utilNumberTrim:0}'/>
             <select name="recurrence_type" tabindex="50" class="cols__6-span-1 margin__left-0-5" required>
                 <option value="day" {if $cron.recurrence_type == 'day'}selected{/if} >{$LANG.days}</option>
                 <option value="week" {if $cron.recurrence_type == 'week'}selected{/if} >{$LANG.weeks}</option>
@@ -77,6 +83,7 @@
             <img src="images/cross.png" alt=""/>{$LANG.cancel}
         </a>
     </div>
+    <input type="hidden" name="domain_id" id="domain_id" value="{$cron.domain_id}">
     <input type="hidden" name="op" value="edit"/>
 </form>
 {if $invoiceType == ITEMIZED_INVOICE}

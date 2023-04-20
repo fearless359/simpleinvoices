@@ -5,11 +5,19 @@
                   data-row-num="0" data-description="{$LANG.descriptionUc}">{$invoiceItems[0].description|outHtml}</textarea>
     </div>
 </div>
+<input type="hidden" name="locale" id="localeId" value="{$invoice.locale}">
+<input type="hidden" name="currency_code" id="currencyCodeId" value="{$invoice.currency_code}">
+<input type="hidden" name="precision" id="precisionId" value="{$invoice.precision}">
+<input type="hidden" name="quantity0" id="quantity0" size="10" value="1">
+<input type="hidden" name="line_item0" id="line_item0" value="{$invoiceItems[0].id|htmlSafe}">
+<input type="hidden" name="id0" id="id0" value="{$invoiceItems[0].id|htmlSafe}"/>
+<input type="hidden" name="products0" id="products0" value="{$invoiceItems[0].product_id|htmlSafe}"/>
 <div class="grid__container grid__head-10">
-    <label for="unitPrice0Id" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.grossTotal}:</label>
+    <label for="unit_price0" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.grossTotal}:</label>
     <div class="cols__3-span-3">
-        <input type="text" class="align__text-right" required name="unit_price0" id="unitPrice0Id"
-               value="{$invoiceItems[0].unit_price|utilNumber}" size="10"/>
+        <input type="text" name="unit_price0" id="unit_price0" required
+               class="align__text-right validateNumber"
+               value="{$invoiceItems[0].unit_price|utilNumber:$invoice.precision:$invoice.locale}" size="10"/>
     </div>
     {if $defaults.tax_per_line_item > 0}
         <div class="cols__6-span-1 bold align__text-right margin__right-1 margin__top-0-5">{$LANG.tax}:&nbsp;</div>
@@ -42,9 +50,10 @@
         {if !isset($preferences) }
             <em>{$LANG.noPreferences}</em>
         {else}
-            <select name="preference_id" id="preferenceId">
+            <select name="preference_id" id="preferenceId" class="invoicePreference">
                 {foreach $preferences as $preference}
-                    <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
+                    <option {if $preference.pref_id == $invoice.preference_id}selected{/if}
+                            data-locale="{$preference.locale}" data-currency-code="{$preference.currency_code}"
                             value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">{$preference.pref_description|htmlSafe}</option>
                 {/foreach}
             </select>

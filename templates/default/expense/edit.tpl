@@ -30,10 +30,12 @@
             <input type="text" name="date" id="date" required readonly class="cols__4-span-2 date-picker"
                    value="{$expense.date}" tabindex="20"/>
         </div>
+        <input type="hidden" name="locale" id="localeId" value="{$expense.locale}">
+        <input type="hidden" name="currency_code" id="currencyCodeId" value="{$expense.currency_code}">
         <div class="grid__container grid__head-10">
             <label for="amountId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.amountUc}:</label>
-            <input name="amount" id="amountId" class="cols__4-span-2" required
-                   value="{$expense.amount|utilNumber}" tabindex="30"/>
+            <input name="amount" id="amountId" class="cols__4-span-2 validateNumber" required
+                   value="{$expense.amount|utilNumber:$expense.preision:$expense.locale}" tabindex="30"/>
         </div>
         <div class="grid__container grid__head-10">
             <label for="billerId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.billerUc}:</label>
@@ -57,17 +59,18 @@
         </div>
         <div class="grid__container grid__head-10">
             <label for="invoiceId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.invoiceUc}:</label>
-            <select name="invoice_id" id="invoiceId" class="cols__4-span-2" tabindex="60">
-                <option value=''></option>
+            <select name="invoice_id" id="invoiceId" class="cols__4-span-5 expenseInvoiceChange" tabindex="60">
+                <option value='' data-locale="{$config.localLocale}" data-currency-code="{$config.localCurrencyCode}"></option>
                 {foreach $detail.invoices as $invoice}
-                    <option value="{$invoice.id|htmlSafe}" {if $invoice.id ==  $expense.iv_id}selected{/if}>
+                    <option value="{$invoice.id|htmlSafe}" data-locale="{$invoice.locale}"
+                            data-currency-code="{$invoice.currency_code}" {if $invoice.id ==  $expense.iv_id}selected{/if}>
                         {$invoice.index_id}&nbsp;&dash;&nbsp;{$invoice.customer}&nbsp;&dash;&nbsp;{$invoice.date}</option>
                 {/foreach}
             </select>
         </div>
         <div class="grid__container grid__head-10">
             <label for="productId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.productUc}:</label>
-            <select name="product_id" id="productId" class="cols__4-span-2" tabindex="70">
+            <select name="product_id" id="productId" class="cols__4-span-5" tabindex="70">
                 <option value=''></option>
                 {foreach $detail.products as $product}
                     <option {if $product.id == $expense.p_id}selected{/if}

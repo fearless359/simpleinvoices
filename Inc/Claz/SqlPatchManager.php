@@ -264,7 +264,7 @@ class SqlPatchManager
         $pageInfo['html'] =
             "<div class='si_message_install'>" .
             "{$LANG['theUc']} {$LANG['list']} {$LANG['below']} {$LANG['describes']} {$LANG['which']} {$LANG['patches']} {$LANG['have']} {$LANG['andLc']} " .
-            "{$LANG['have']} {$LANG['not']} {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}. {$LANG['if']} " .
+            "{$LANG['have']} {$LANG['notLc']} {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}. {$LANG['if']} " .
             "{$LANG['there']} {$LANG['are']} {$LANG['patches']} {$LANG['that']} {$LANG['have']} {$LANG['notLc']} {$LANG['been']} {$LANG['applied']}, " .
             "{$LANG['run']} {$LANG['the']} {$LANG['database']} {$LANG['update']} {$LANG['by']} {$LANG['clicking']} {$LANG['update']}." .
             "</div>" .
@@ -289,7 +289,7 @@ class SqlPatchManager
                 }
             } else {
                 $pageInfo['rows'][$ndx]['text'] = "{$LANG['sqlUc']} {$LANG['patch']} $ndx, $patchName " .
-                    "<span class='error'><b>{$LANG['has']} {$LANG['not']}</b> {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}</span>";
+                    "<span class='error'><b>{$LANG['has']} {$LANG['notLc']}</b> {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}</span>";
                 $pageInfo['rows'][$ndx]['result'] = 'todo';
             }
         }

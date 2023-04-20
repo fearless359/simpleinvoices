@@ -11,15 +11,15 @@
         {include file="../invoices/invoiceItemsShowHide.tpl"}
         <div class="align__text-center">
             {* invoice_save class used to activate function in jquery.conf1.js file *}
-            <button type="submit" class="invoice_save positive" name="submit" value="{$LANG.save}" tabindex="900">
+            <button type="submit" class="invoice_save positive" name="submit" value="{$LANG.save}">
                 <img class="button_img" src="images/tick.png" alt=""/>{$LANG.save}
             </button>
-            <a href="index.php?module=cron&amp;view=edit&amp;id={$cron.id}" class="button negative" tabindex="901">
+            <a href="index.php?module=cron&amp;view=edit&amp;id={$cron.id}" class="button negative">
                 <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
             </a>
         </div>
         <input type="hidden" name="cron_id" value="{$cron.id|htmlSafe}"/>
         <input type="hidden" name="op" value="edit"/>
-        <input type="hidden" id="max_items" name="max_items" value="{if isset($lines)}{$lines|htmlSafe}{/if}"/>
+        <input type="hidden" id="max_items" name="max_items" value="{$cronInvoiceItemCount|htmlSafe}">
     </div>
 </form>

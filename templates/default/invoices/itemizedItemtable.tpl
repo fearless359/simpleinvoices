@@ -12,6 +12,9 @@
     {/section}
     <div class="cols__{$begCol}-span-1 bold align__text-center">{$LANG.unitPrice}</div>
 </div>
+<input type="hidden" name="locale" id="localeId" value="{$globalInfo.locale}">
+<input type="hidden" name="currency_code" id="currencyCodeId" value="{$globalInfo.currency_code}">
+<input type="hidden" name="precision" id="precisionId" value="{$globalInfo.precision}">
 <div id="itemtable" data-number-tax-items="{$defaults.tax_per_line_item}">
     {section name=line loop=$dynamic_line_items}
         {$line = $smarty.section.line.index}
@@ -35,8 +38,9 @@
                         </a>
                         <span>&nbsp;</span>
                         <!--suppress HtmlFormInputWithoutLabel -->
-                        <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" {if $line == 0}required{/if}
-                               class="align__text-right {if $line == 0}validate-quantity{/if}" data-row-num="{$line|htmlSafe}"
+                        <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}"
+                               class="align__text-right validateQuantity" {if $line == 0}required{/if}
+                               data-row-num="{$line|htmlSafe}"
                                value="{if isset($defaultInvoiceItems[$line].quantity)}{$defaultInvoiceItems[$line].quantity|utilNumberTrim}{/if}">
                     </div>
                 </div>
@@ -46,7 +50,7 @@
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
-                                class="product_change width_100 margin__left-0-5" {if $line == 0}required{/if}
+                                class="width_100 margin__left-0-5 productChange" {if $line == 0}required{/if}
                                 data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
                                 data-product-groups-enabled="{$defaults.product_groups}">
                             <option value=""></option>
@@ -78,7 +82,8 @@
                 {/section}
                 <div class="cols__{$begCol}-span-1">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <input class="align__text-right margin__left-1" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="9"
+                    <input name="unit_price{$line|htmlSafe}" id="unit_price{$line|htmlSafe}" size="9"
+                            class="align__text-right margin__left-1 validateNumber"
                            {if $line == "0"}required{/if} data-row-num="{$line|htmlSafe}"
                            value="{if isset($defaultInvoiceItems[$line].unit_price)}{$defaultInvoiceItems[$line].unit_price|utilNumber}{/if}"/>
                 </div>

@@ -23,6 +23,8 @@ if (isset($_POST['savePaymentWarehouse'])) {
     $paymentType = $_POST['payment_type'] ?? 0;
     $checkNumber = $_POST['check_number'] ?? '';
 
+    $balance = Util::dbStd($balance, $_POST['locale']);
+
     try {
         if ($op === 'create') {
             if (PaymentWarehouse::insert($customerId, null, $balance, $paymentType, $checkNumber)) {
@@ -34,7 +36,7 @@ if (isset($_POST['savePaymentWarehouse'])) {
             }
         }
     } catch (PdoDbException $pde) {
-        error_log("payment_warehouse save.php - error: " . $pde->getMessage());
+        error_log("payment_warehouse\save.php - DB Error: " . $pde->getMessage());
     }
 }
 

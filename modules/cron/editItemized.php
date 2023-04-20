@@ -35,7 +35,8 @@ try {
     $smarty->assign('cron', $cron);
 
     $invoice = Invoice::getOne($cron['invoice_id']);
-    $smarty->assign('invoice'   , $invoice);
+    $smarty->assign('invoice', $invoice);
+
     $smarty->assign('preference', Preferences::getOne($invoice['preference_id']));
 
     $cronInvoiceItems = Cron::getCronInvoiceItems($cron['id'], $invoice['domain_id']);
@@ -47,15 +48,13 @@ try {
         $dynamicLineItems = $defaults['line_items'];
     }
 
-    // @formatter:off
-    $smarty->assign("cronInvoiceItems"  , $cronInvoiceItems);
-    $smarty->assign("lines"             , count ($cronInvoiceItems));
+    $smarty->assign("cronInvoiceItems", $cronInvoiceItems);
+    $smarty->assign("cronInvoiceItemCount", count($cronInvoiceItems));
     $smarty->assign("dynamic_line_items", $dynamicLineItems);
-    $smarty->assign("defaults"          , $defaults);
-    $smarty->assign("preferences"       , Preferences::getActivePreferences());
-    $smarty->assign("products"          , Product::getAll(true));
-    $smarty->assign("taxes"             , Taxes::getAll());
-    // @formatter:on
+    $smarty->assign("defaults", $defaults);
+    $smarty->assign("preferences", Preferences::getActivePreferences());
+    $smarty->assign("products", Product::getAll(true));
+    $smarty->assign("taxes", Taxes::getAll());
 } catch (PdoDbException $pde) {
     error_log("modules/cron/editItemized.php: error " . $pde->getMessage());
     exit("Unable to process request. See error log for details.");
@@ -64,4 +63,3 @@ try {
 $smarty->assign('pageActive', 'cron');
 $smarty->assign('subPageActive', 'cronInvoiceItems');
 $smarty->assign('activeTab', '#money');
-

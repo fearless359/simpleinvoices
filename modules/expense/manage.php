@@ -13,7 +13,6 @@ $addButtonLink = "index.php?module=expense&amp;view=create";
 $addButtonMsg = $LANG['addNewExpense'];
 $displayBlock = "<div class='si_message_error'>{$LANG['noExpenses']}</div>";
 
-
 $expenses = Expense::manageTableInfo();
 
 $data = json_encode(['data' => mb_convert_encoding($expenses, 'UTF-8')]);

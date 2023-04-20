@@ -35,8 +35,8 @@
     </table>
     <!--suppress JSUnusedLocalSymbols -->
     <script>
-        let productGroupEnabled = {$defaults.product_groups} == {$smarty.const.ENABLED},
-            inventoryEnabled = {$defaults.inventory} == {$smarty.const.ENABLED}
+        let productGroupEnabled = {$defaults.product_groups} === {$smarty.const.ENABLED},
+            inventoryEnabled = {$defaults.inventory} === {$smarty.const.ENABLED};
         {literal}
         $(document).ready(function () {
             $('#si-data-table').DataTable({

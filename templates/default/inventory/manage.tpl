@@ -23,12 +23,12 @@
     <table id="si-data-table" class="display responsive compact cell-border">
         <thead>
         <tr>
-            <th class="align__text-center">{$LANG.actions}</th>
-            <th class="align__text-center">{$LANG.dateUc}</th>
+            <th>{$LANG.actions}</th>
+            <th>{$LANG.dateUc}</th>
             <th>{$LANG.productUc}</th>
-            <th class="align__text-right">{$LANG.quantity}</th>
-            <th class="align__text-right">{$LANG.costUc}</th>
-            <th class="align__text-right">{$LANG.totalCost}</th>
+            <th>{$LANG.quantityUc}</th>
+            <th>{$LANG.costUc}</th>
+            <th>{$LANG.inventory} {$LANG.totalUc}</th>
         </tr>
         </thead>
     </table>
@@ -74,9 +74,9 @@
                     [2, "asc"]
                 ],
                 "columnDefs": [
-                    {"targets": 0, "orderable": false, "className": 'dt-body-center'},
-                    {"targets": 1, "className": 'dt-body-center'},
-                    {"targets": [3,4,5], "className": 'dt-body-right'}
+                    {"targets": 0, "orderable": false, "className": 'dt-center'},
+                    {"targets": 1, "className": 'dt-center'},
+                    {"targets": [3,4,5], "className": 'dt-right'}
                 ],
                 "colReorder": true
             });

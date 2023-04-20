@@ -34,7 +34,7 @@
     </div>
     <div class="grid__container grid__head-6">
         <div class="cols__3-span-1 bold underline">{$LANG.propertyUc}</div>
-        <div class="cols__4-span-2 bold underline">{$LANG.value}</div>
+        <div class="cols__4-span-2 bold underline">{$LANG.valueUc}</div>
     </div>
     <div class="grid__container grid__head-6">
         <div class="cols__3-span-1 bold">{$LANG.hostUc}:</div>

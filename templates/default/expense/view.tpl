@@ -11,19 +11,19 @@
 <div class="grid__area">
     <div class="grid__container grid__head-10">
         <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.amountUc}:</div>
-        <div class="cols__5-span-5">{$expense.amount|utilCurrency}</div>
+        <div class="cols__5-span-5">{$expense.amount|utilCurrency:$expense.locale:$expense.currency_code}</div>
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.tax}:</div>
         <div class="cols__5-span-5">
             {foreach $detail.expense_tax_grouped as $tax}
-                {$tax.tax_name}: {$tax.tax_amount|utilCurrency}
+                {$tax.tax_name}: {$tax.tax_amount|utilCurrency:$expense.locale:$expense.currency_code}
             {/foreach}
         </div>
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.totalUc}:</div>
-        <div class="cols__5-span-5">{$detail.expense_tax_total|utilCurrency}</div>
+        <div class="cols__5-span-5">{$detail.expense_tax_total|utilCurrency:$expense.locale:$expense.currency_code}</div>
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.expenseAccount}:</div>

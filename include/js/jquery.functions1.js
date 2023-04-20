@@ -7,28 +7,36 @@ function setWarehouseInfoInAmountFields()
     let option = $('select option:selected');
     let val = option.val();
 
+    let locale = option.attr('data-locale').replace('_', '-');
+    let currencyCode = option.attr('data-currency-code');
+
     let customerId = option.attr('data-customer-id');
     let cname = option.attr('data-customer-name');
     let bname = option.attr('data-biller-name');
-    let currencyCode = option.attr('data-currency-code');
-    let locale = option.attr('data-locale');
-    let warehousedPayment = option.attr('data-warehoused-payment');
+    let warehousedPayment = normalizeFloatVal(option.attr('data-warehoused-payment'), locale);
     let paymentType = option.attr('data-warehoused-payment-type');
     let paymentTypeDesc = option.attr('data-warehouse-payment-type-desc');
     let checkNumber = option.attr('data-warehoused-check-number');
-    let owing = option.attr('data-owing');
+    let owing = normalizeFloatVal(option.attr('data-owing'), locale);
+
+    let intl = new Intl.NumberFormat(locale, {style: 'currency', currency: currencyCode});
+    let options = intl.resolvedOptions();
+    let fracDigits = options.minimumFractionDigits;
+
+    let fmtr = new Intl.NumberFormat(locale, {maximumFractionDigits: fracDigits, minimumFractionDigits: fracDigits});
+
+    $("#localeId").val(locale);
+    $("#currencyCodeId").val(currencyCode);
 
     let amount = $("#amountId");
-    amount.attr('data-owing', owing);
-    amount.attr('data-currency-code', currencyCode);
-    amount.attr('data-locale', locale);
-    amount.attr('data-warehoused-payment', warehousedPayment);
+    amount.attr('data-owing', fmtr.format(owing));
+    amount.attr('data-warehoused-payment', fmtr.format(warehousedPayment));
     if (owing === undefined) {
         amount.val('');
-    } else if (Number(warehousedPayment) > 0 && Number(warehousedPayment) < Number(owing)) {
-        amount.val(warehousedPayment);
+    } else if (warehousedPayment > 0 && warehousedPayment < owing) {
+        amount.val(fmtr.format(warehousedPayment));
     } else {
-        amount.val(owing);
+        amount.val(fmtr.format(owing));
     }
 
     let pymtTypeIdHidden = $('input[name="ac_payment_type"]');
@@ -42,14 +50,15 @@ function setWarehouseInfoInAmountFields()
 
     // For warehousePayment, display related input fields and hide select fields.
     // Otherwise, set and display related select fields and hide input fields.
-    if (Number(warehousedPayment) > 0) {
+    if (warehousedPayment > 0) {
         // Hide label and disable select field for payment type.
         pymtTypeIdLabel.hide();
         pymtTypeId.prop('disabled', 'disabled').hide();
 
         // Set value and enable the hidden ac_payment_type input field
-        pymtTypeIdHidden.val(paymentType)
-                        .prop('disabled', false);
+        pymtTypeIdHidden
+            .val(paymentType)
+            .prop('disabled', false);
 
         // Show label for input payment type field.
         pymtTypeIdHiddenLabel.show();
@@ -97,7 +106,7 @@ function setWarehouseInfoInAmountFields()
 }
 
 // show modal dialog
-function ShowDialog(modal)
+function showSiDialog(modal)
 {
     let overlay = $("#overlay");
     overlay.show();
@@ -107,13 +116,13 @@ function ShowDialog(modal)
         overlay.unbind("click");
     } else {
         overlay.click(function () {
-            HideDialog();
+            hideSiDialog();
         });
     }
 }
 
 // close modal dialog
-function HideDialog()
+function hideSiDialog()
 {
     $("#overlay").hide();
     $("#dialog").fadeOut(300);
@@ -136,17 +145,17 @@ function deleteLineItem(row_number) {
 /*
 * Product Change -Inventory  - updates cost from  product info
 */
-function product_inventory_change(product, existing_cost) {
+function productInventoryChange(productId, existingCost) {
     let gmail_loading = $('#gmail_loading');
     gmail_loading.show();
     $.ajax({
         type: 'GET',
-        url: './index.php?module=invoices&view=product_inventory_ajax&id=' + product,
-        data: "id: " + product,
+        url: './index.php?module=invoices&view=product_inventory_ajax&id=' + productId,
+        data: "id: " + productId,
         dataType: "json",
         success: function (data) {
             gmail_loading.hide();
-            if (existing_cost !== null) {
+            if (existingCost !== null) {
                 $("#cost").attr("value", data['cost']);
             }
         }
@@ -266,7 +275,6 @@ function addLineItem() {
     clonedRow.find("#quantity" + rowID_new).attr("name", "quantity" + rowID_new);
     clonedRow.find("#quantity" + rowID_new).val("");
     clonedRow.find("#quantity" + rowID_new).attr("data-row-num", rowID_new);
-    clonedRow.find("#quantity" + rowID_new).removeClass("validate[required,min[.01],custom[number]]");
 
     clonedRow.find("#products" + oldRowId).attr("id", "products" + rowID_new);
     clonedRow.find("#products" + rowID_new).attr("name", "products" + rowID_new);
