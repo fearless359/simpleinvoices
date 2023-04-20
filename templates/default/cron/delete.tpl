@@ -18,7 +18,7 @@
     {$LANG.selectUc} <b>{$LANG.delete}</b> {$LANG.to} {$LANG.removeThisRecord} {$LANG.andLc}
     {$LANG.its} {$LANG.associated} {$LANG.history}:
 </h2>
-<form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlencode}">
+<form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlEncode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.invoiceUc}:</div>

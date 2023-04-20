@@ -5,6 +5,7 @@ use DateTime;
 use Exception;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use IntlDateFormatter;
 use NumberFormatter;
 use Smarty;
 
@@ -203,7 +204,7 @@ class Util
         $httpHost = empty($_SERVER['HTTP_HOST']) ? "" : $_SERVER['HTTP_HOST'];
         $_SERVER['FULL_URL'] .= $config['authenticationHttp'] . $httpHost . $dir;
 
-        if (strlen($_SERVER['FULL_URL']) > 1 && substr($_SERVER['FULL_URL'], -1, 1) != '/') {
+        if (strlen($_SERVER['FULL_URL']) > 1 && !str_ends_with($_SERVER['FULL_URL'], '/')) {
             $_SERVER['FULL_URL'] .= '/';
         }
 
@@ -222,6 +223,10 @@ class Util
     public static function number($number, $precision = null, string $locale = ""): string
     {
         global $config;
+
+        if (!isset($number)) {
+            $number = 0;
+        }
 
         if (empty($locale)) {
             $locale = $config['localLocale'];
@@ -243,15 +248,19 @@ class Util
     /**
      * Format number in default form.
      * Note: Default form is without leading & trailing zeros, and locale decimal point (period or comma).
-     * @param string|int|float $number Numeric value to be formatted.
+     * @param float|int|string|null $number Numeric value to be formatted.
      * @param int|null $precision Decimal places for the number. Optional, precision from $config file used if not specified.
      * @param string $locale Locale to use for formatting the number. Optional, locale from $config file used if not specified.
      * @return string Formatted string.
      * @noinspection DuplicatedCode
      */
-    public static function numberTrim($number, ?int $precision = null, string $locale = ""): string
+    public static function numberTrim(float|int|string|null $number, ?int $precision = null, string $locale = ""): string
     {
         global $config;
+
+        if (!isset($number)) {
+            $number = 0;
+        }
 
         if (empty($locale)) {
             $locale = $config['localLocale'];
@@ -282,15 +291,19 @@ class Util
 
     /**
      * Format number in default currency form.
-     * @param string|int|float $number Numeric value to be formatted.
+     * @param float|int|string|null $number Numeric value to be formatted.
      * @param string $locale Locale to use for formatting the number.
      *          Optional, locale from $config file used if not specified.
      * @param string $currencyCode
      * @return string Formatted string.
      */
-    public static function currency($number, string $locale = "", string $currencyCode = ""): string
+    public static function currency(float|int|string|null $number, string $locale = "", string $currencyCode = ""): string
     {
         global $config;
+
+        if (!isset($number)) {
+            $number = 0;
+        }
 
         if (empty($currencyCode)) {
             $currencyCode = $config['localCurrencyCode'];
@@ -330,37 +343,44 @@ class Util
             exit($str);
         }
 
+        // Break date apart from time. Date will be index 0
         $parts = explode(' ', $dateVal);
         $dateTime = DateTime::createFromFormat('Y-m-d', $parts[0]);
 
-        switch ($dateFormat) {
-            case "full":
-                $pattern = "l, F d, Y"; // Friday, February 13, 2020
-                break;
-
-            case "long":
-                $pattern = "F d, Y"; // February 13, 2020
-                break;
-
-            case "short":
-                $pattern = "m/d/y"; // 02/13/20
-                break;
-
-            case "month":
-                $pattern = "F"; // February
-                break;
-
-            case "month_short":
-                $pattern = "M"; // Feb
-                break;
-
-            case "medium":
-            default:
-                $pattern = "m/d/Y"; // 02/13/2020
-                break;
-        }
+        $pattern = match ($dateFormat) {
+            "full" => "l, F d, Y",
+            "long" => "F d, Y",
+            "short" => "m/d/y",
+            "month" => "F",
+            "month_short" => "M",
+            default => "m/d/Y"
+        };
 
         return $dateTime->format($pattern);
+    }
+
+    /**
+     * Generate a printable date format in the requested form.
+     * @param string $dateTimeVal Must be "Y-m-d H:i:s" format value as obtained from the database.
+     * @param string $locale typically the locale field for the invoice preference.
+     * @param string $format translates to IntlDateFormatter constants: short, medium, long, full, none.
+     *                  Defaults to none.
+     * @return string Formatted date for user display.
+     */
+    public static function intlDate(string $dateTimeVal, string $locale, string $format = "none"): string
+    {
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeVal);
+
+        $format = strtolower($format);
+        $intlFormat = match($format) {
+            "short" => IntlDateFormatter::SHORT,
+            "medium" => IntlDateFormatter::MEDIUM,
+            "long" => IntlDateFormatter::LONG,
+            "full" => IntlDateFormatter::FULL,
+            default => IntlDateFormatter::NONE
+        };
+        $formatter = new IntlDateFormatter($locale, $intlFormat, IntlDateFormatter::NONE);
+        return $formatter->format($dateTime);
     }
 
     /**
@@ -418,11 +438,24 @@ class Util
     }
 
     /**
+     * Create an array containing a range of elements.
+     * Used a smarty template modifier as capability for php range as modifier was deprecated in PHP 8.1
+     * @param string|int|float $start
+     * @param string|int|float $end
+     * @param int|float $step
+     * @return array
+     */
+    public static function utilRange(string|int|float $start, string|int|float $end, int|float $step=1): array
+    {
+        return range($start, $end, $step);
+    }
+
+    /**
      * Make sure $str is properly encoded for html display.
      * @param null|string|int $str String to make safe.
      * @return string Safe string for html display.
      */
-    public static function htmlSafe($str): string
+    public static function htmlSafe(int|string $str): string
     {
         if (!isset($str)) {
             return '';
@@ -430,12 +463,20 @@ class Util
         return htmlentities($str, ENT_QUOTES, 'UTF-8');
     }
 
+    public static function urlEncode(?string $str): string
+    {
+        if (empty($str)) {
+            return '';
+        }
+        return urlencode($str);
+    }
+
     /**
      * Make sure URL is safe for html use.
      * @param string|array $str
      * @return bool|string
      */
-    public static function urlSafe($str)
+    public static function urlSafe(string|array $str): bool|string
     {
         /** @noinspection RegExpRedundantEscape */
         /** @noinspection RegExpDuplicateCharacterInClass */
@@ -473,16 +514,37 @@ class Util
         return '';
     }
 
+    public static function destroyOldAndStartNewSession(): void
+    {
+        session_unset();
+        session_destroy();
+        session_write_close();
+        setcookie(session_name(),'',0,'/');
+
+        session_name(SESSION_NAME);
+        session_start();
+        session_regenerate_id(true);
+
+        Log::out("Util::destroyOldAndStartNewSession() - New session_id[" . session_id() . "]");
+    }
+
     /**
      * Number of minutes before session times out.
      * @param int $timeoutMinutes
+     * @param string $module
+     * @param string $view
      */
-    public static function sessionTimeout(int $timeoutMinutes): void
+    public static function sessionTimeout(int $timeoutMinutes, string &$module, string &$view): void
     {
         $timeoutSeconds = $timeoutMinutes * 60;
-        ini_set('session.gc_maxlifetime', $timeoutSeconds);
+        $now = time();
+        if (isset($_SESSION['timeout']) && $now > $_SESSION['timeout']) {
+            self::destroyOldAndStartNewSession();
+            $module = 'auth';
+            $view = 'login';
+        }
 
-        session_set_cookie_params($timeoutSeconds);
+        $_SESSION['timeout'] = $now + $timeoutSeconds;
     }
 
     /**
@@ -496,7 +558,7 @@ class Util
         $result = '';
         $action = strtolower($action);
         if ($action == 'set') {
-            $label = empty($label) ? 'Break ' . (count(self::$timeBreaks) + 1) : $label;
+            $label = empty($label) ? 'Break ' . count(self::$timeBreaks) + 1 : $label;
             self::$timeBreaks[] = [$label, microtime(true)];
         } elseif ($action == 'report') {
             $label = empty($label) ? 'End' : $label;
@@ -546,6 +608,15 @@ class Util
         }
 
         return "$date $time";
+    }
+
+    public static function trimmer(?string $string): ?string
+    {
+        if (!isset($string)) {
+            return null;
+        }
+
+        return trim($string);
     }
 
     /**

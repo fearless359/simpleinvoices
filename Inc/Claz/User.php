@@ -98,9 +98,6 @@ class User
 
         $results = [];
         try {
-            session_name(SESSION_NAME);
-            session_start();
-
             // If user role is customer or biller, then restrict invoices to those they have access to.
             if ($_SESSION['role_name'] == 'biller' || $_SESSION['role_name'] == 'customer') {
                 $pdoDb->addSimpleWhere('u.id', $_SESSION['id'], 'AND');

@@ -10,36 +10,23 @@ class Import
 {
     public string $file;
     public bool $debug;
-    /**
-     * @var array|string
-     */
-    public $patternFind;
-    /**
-     * @var array|string
-     */
-    public $patternReplace;
+    public string|array $patternFind;
+    public string|array $patternReplace;
 
     /**
      * @return bool|string Read data string or false on failure.
      */
-    private function getFile()
+    private function getFile(): bool|string
     {
         return file_get_contents($this->file, true);
     }
 
-    /**
-     * @param string $string
-     * @return string|array
-     */
-    public function replace(string $string)
+    public function replace(string $string): array|string
     {
         return str_replace($this->patternFind, $this->patternReplace, $string);
     }
 
-    /**
-     * @return string|array
-     */
-    public function collate()
+    public function collate(): array|string
     {
         $json = $this->getFile();
         return $this->replace($json);

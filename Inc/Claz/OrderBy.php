@@ -54,7 +54,7 @@ class OrderBy
      * @param string $order Order <b>A</b> ascending, <b>D</b> descending. Defaults to <b>A</b>.
      * @throws PdoDbException if either parameter does not contain the form and values specified for them.
      */
-    public function addField($field, string $order = 'A'): void
+    public function addField(array|string $field, string $order = 'A'): void
     {
         $lclOrder = strtoupper($order);
         if (!preg_match('/^(A|D|ASC|DESC)$/', $lclOrder)) {

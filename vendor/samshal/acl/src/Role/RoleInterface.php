@@ -20,7 +20,7 @@ namespace Samshal\Acl\Role;
 interface RoleInterface
 {
 	/**
-	 * Returns the descriptionof a role object
+	 * Returns the description of a role object
 	 *
 	 * @return string
 	 */

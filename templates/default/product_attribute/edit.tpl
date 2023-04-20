@@ -23,17 +23,17 @@
             <label for="typeId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.type}:</label>
             <select name="type_id" id="typeId" class="cols__5-span-1" tabindex="20">
                 {foreach $types as $k => $v}
-                    <option value="{if isset($v.id)}{$v.id}{/if}" {if $product_attribute.type_id == $v.id} selected {/if}>{$LANG[$v.name]}</option>
+                    <option value="{if isset($v.id)}{$v.id}{/if}" {if $product_attribute.type_id == $v.id}selected{/if}>{$LANG[$v.name]|capitalize}</option>
                 {/foreach}
             </select>
         </div>
         <div class="grid__container grid__head-10">
             <label for="enabledId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.enabled}:</label>
-            {html_options name=enabled id=enabledId class=cols__5-span-1 options=$enabled selected=$product_attribute.enabled tabindex=30}
+            {html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled selected=$product_attribute.enabled tabindex=30}
         </div>
         <div class="grid__container grid__head-10">
             <label for="visibleId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.visible}:</label>
-            {html_options name=visible id=visibleId class=cols__5-span-1 options=$enabled selected=$product_attribute.visible tabindex=40}
+            {html_options name=visible id=visibleId class="cols__5-span-1" options=$enabled selected=$product_attribute.visible tabindex=40}
         </div>
     </div>
     <div class="align__text-center margin__top-2">

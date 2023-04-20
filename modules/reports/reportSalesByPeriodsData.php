@@ -14,14 +14,14 @@ Util::directAccessAllowed();
 
 /**
  * Calculate the current rate.
- * @param $thisYearAmount
- * @param $lastYearAmount
+ * @param float $thisYearAmount
+ * @param float $lastYearAmount
  * @param int $precision
  * @return float
  */
-function calcMyRate($thisYearAmount, $lastYearAmount, int $precision = 2): float
+function calcMyRate(float $thisYearAmount, float $lastYearAmount, int $precision = 2): float
 {
-    if (!$lastYearAmount) {
+    if ($lastYearAmount == 0) {
         return 0;
     }
     return round(($thisYearAmount - $lastYearAmount) / $lastYearAmount * 100, $precision);
@@ -105,7 +105,9 @@ while ($year <= $thisYear) {
             error_log("modules/reports/reportSalesByPeriods.php - error(2): " . $pde->getMessage());
         }
         $data['sales']['months'][$month][$year] = $rows[0]['month_total'] ?? 0;
-        $data['sales']['monthsRate'][$month][$year] = calcMyRate($data['sales']['months'][$month][$year], $data['sales']['months'][$month][$year - 1]);
+
+        $prevYear = $data['sales']['months'][$month][$year - 1] ?? 0;
+        $data['sales']['monthsRate'][$month][$year] = calcMyRate($data['sales']['months'][$month][$year], $prevYear);
 
         // Monthly Payment ----------------------------
         $rows = [];
@@ -119,7 +121,9 @@ while ($year <= $thisYear) {
             error_log("modules/reports/reportSalesByPeriods.php - error(3): " . $pde->getMessage());
         }
         $data['payments']['months'][$month][$year] = $rows[0]['month_total_payments'] ?? 0;
-        $data['payments']['monthsRate'][$month][$year] = calcMyRate($data['payments']['months'][$month][$year], $data['payments']['months'][$month][$year - 1]);
+
+        $prevYear = $data['payment']['months'][$month][$year - 1] ?? 0;
+        $data['payments']['monthsRate'][$month][$year] = calcMyRate($data['payments']['months'][$month][$year], $prevYear);
 
         $month++;
     }
@@ -146,9 +150,10 @@ while ($year <= $thisYear) {
     } catch (PdoDbException $pde) {
         error_log("modules/reports/reportSalesByPeriods.php - error(4): " . $pde->getMessage());
     }
-
     $data['sales']['total'][$year] = $rows[0]['year_total'];
-    $data['sales']['totalRate'][$year] = calcMyRate($data['sales']['total'][$year], $data['sales']['total'][$year - 1]);
+
+    $prevYear = $data['sales']['total'][$year - 1] ?? 0;
+    $data['sales']['totalRate'][$year] = calcMyRate($data['sales']['total'][$year], $prevYear);
 
     // Total Annual Payment ----------------------------
     $rows = [];
@@ -160,9 +165,10 @@ while ($year <= $thisYear) {
     } catch (PdoDbException $pde) {
         error_log("modules/reports/reportSalesByPeriods.php - error(3): " . $pde->getMessage());
     }
-
     $data['payments']['total'][$year] = $rows[0]['year_total_payments'];
-    $data['payments']['totalRate'][$year] = calcMyRate($data['payments']['total'][$year], $data['payments']['total'][$year - 1]);
+
+    $prevYear = $data['payments']['total'][$year - 1] ?? 0;
+    $data['payments']['totalRate'][$year] = calcMyRate($data['payments']['total'][$year], $prevYear);
 
     $years[] = $year;
     $year++;

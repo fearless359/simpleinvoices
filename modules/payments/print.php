@@ -16,8 +16,13 @@ global $LANG, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$menu = false;
-$payment = Payment::getOne($_GET['id']);
+try {
+    $payment = Payment::getOne($_GET['id']);
+} catch (PdoDbException $pde) {
+    $msg = "payments print.php - error: " . $pde->getMessage();
+    error_log($msg);
+    exit($msg);
+}
 
 // Get Invoice preference - so can link from this screen back to the invoice
 $biller = Biller::getOne($payment['biller_id']);
@@ -178,7 +183,7 @@ try {
 }
 
 // @formatter:off
-$smarty->assign("menu"             , $menu);
+$smarty->assign("menu"             , false);
 $smarty->assign("payment"          , $payment);
 $smarty->assign("invoice"          , $invoice);
 $smarty->assign("biller"           , $biller);

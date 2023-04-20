@@ -18,18 +18,17 @@ namespace Samshal\Acl\Registry;
 class GlobalRegistry extends Registry
 {
     /**
-     * Overrides the global save method
+     * Overrides the global save method variadic
      *
      * @param string $role
-     * @param variadic $options
-     * @throws Exception
-     * @return void
+     * @param mixed ...$options
+     * @noinspection PhpParameterNameChangedDuringInheritanceInspection
      */
-    public function save(string $role, ...$options)
+    public function save(string $role, ...$options): void
     {
-        $resource = $options[0];
-        $permission = $options[1];
-        $status = (isset($options[2])) ? $options[2] : true;
+        $resource = (string)$options[0];
+        $permission = (string)$options[1];
+        $status = !(isset($options[2])) || $options[2];
 
         $this->registry[$role][$resource][$permission]["status"] = $status;
     }

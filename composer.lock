@@ -652,30 +652,30 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.4",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
+                "reference": "ef29f6d262798707a9edd554e2b82517ef3a9376"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
-                "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/ef29f6d262798707a9edd554e2b82517ef3a9376",
+                "reference": "ef29f6d262798707a9edd554e2b82517ef3a9376",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=8.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Psr\\Log\\": "Psr/Log/"
+                    "Psr\\Log\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -696,34 +696,38 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/1.1.4"
+                "source": "https://github.com/php-fig/log/tree/2.0.0"
             },
-            "time": "2021-05-03T11:20:27+00:00"
+            "time": "2021-07-14T16:41:46+00:00"
         },
         {
             "name": "samshal/acl",
-            "version": "v1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Samshal/Acl.git",
-                "reference": "96da075dc6080c1745dedb301738211283eea0ef"
+                "url": "https://github.com/fearless359/Acl.git",
+                "reference": "c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Samshal/Acl/zipball/96da075dc6080c1745dedb301738211283eea0ef",
-                "reference": "96da075dc6080c1745dedb301738211283eea0ef",
+                "url": "https://api.github.com/repos/fearless359/Acl/zipball/c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2",
+                "reference": "c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0"
+                "php": "^8.1"
             },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Samshal\\Acl\\": "./src"
+                    "Samshal\\Acl\\": "./src",
+                    "Samshal\\Acl\\Test\\": "./tests"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -731,14 +735,17 @@
                 {
                     "name": "Samshal",
                     "email": "samueladeshina73@gmail.com"
+                },
+                {
+                    "name": "Fearless359",
+                    "email": "fearless359@gmail.com"
                 }
             ],
             "description": "This package provides a lightweight and flexible access control list for privileges and permission management.",
             "support": {
-                "issues": "https://github.com/Samshal/Acl/issues",
-                "source": "https://github.com/Samshal/Acl/tree/v1.0"
+                "source": "https://github.com/fearless359/Acl/tree/master"
             },
-            "time": "2016-06-10T10:43:53+00:00"
+            "time": "2023-02-25T19:06:47+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -924,16 +931,16 @@
         },
         {
             "name": "setasign/fpdi",
-            "version": "v2.3.6",
+            "version": "v2.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Setasign/FPDI.git",
-                "reference": "6231e315f73e4f62d72b73f3d6d78ff0eed93c31"
+                "reference": "bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/6231e315f73e4f62d72b73f3d6d78ff0eed93c31",
-                "reference": "6231e315f73e4f62d72b73f3d6d78ff0eed93c31",
+                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05",
+                "reference": "bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05",
                 "shasum": ""
             },
             "require": {
@@ -984,7 +991,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Setasign/FPDI/issues",
-                "source": "https://github.com/Setasign/FPDI/tree/v2.3.6"
+                "source": "https://github.com/Setasign/FPDI/tree/v2.3.7"
             },
             "funding": [
                 {
@@ -992,7 +999,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-11T11:37:01+00:00"
+            "time": "2023-02-09T10:38:43+00:00"
         },
         {
             "name": "smarty/smarty",
@@ -1566,7 +1573,7 @@
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0"
+                "php": "^8.1"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^9 || ^11",
@@ -3166,13 +3173,15 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "samshal/acl": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
+        "ext-intl": "*",
         "ext-json": "*",
-        "ext-pdo": "*",
-        "ext-intl": "*"
+        "ext-pdo": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

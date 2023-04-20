@@ -4,15 +4,10 @@ use Inc\Claz\DbField;
 use Inc\Claz\DomainId;
 use Inc\Claz\Join;
 use Inc\Claz\OnClause;
-use Inc\Claz\PdoDb;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
-/**
- * @var PdoDb $pdoDb
- * @noinspection PhpRedundantVariableDocTypeInspection
- */
 global $endDate, $pdoDb, $smarty, $startDate;
 
 Util::directAccessAllowed();
@@ -52,30 +47,32 @@ $lastPrefDesc = "";
 $ivTotalTax = 0;
 $idx = 0;
 $cntRows = count($rows);
-do {
-    $row = $rows[$idx];
-    $idx++;
-    $done = $idx >= $cntRows;
-    if ($lastInv != $row['index_id'] || $lastPrefDesc != $row['pref_description']) {
-        if ($lastInv != 0) {
+if ($cntRows > 0) {
+    do {
+        $row = $rows[$idx];
+        $idx++;
+        $done = $idx >= $cntRows;
+        if ($lastInv != $row['index_id'] || $lastPrefDesc != $row['pref_description']) {
+            if ($lastInv != 0) {
+                $invRec['tax_amount'] = $ivTotalTax;
+                $invoices[] = $invRec;
+            }
+
+            $invRec = $row;
+            $lastInv = $row['index_id'];
+            $lastPrefDesc = $row['pref_description'];
+            $ivTotalTax = $row['tax_amount'];
+        } else {
+            $ivTotalTax += $row['tax_amount'];
+        }
+        $totalTaxes += $row['tax_amount'];
+
+        if ($done) {
             $invRec['tax_amount'] = $ivTotalTax;
             $invoices[] = $invRec;
         }
-
-        $invRec = $row;
-        $lastInv = $row['index_id'];
-        $lastPrefDesc = $row['pref_description'];
-        $ivTotalTax = $row['tax_amount'];
-    } else {
-        $ivTotalTax += $row['tax_amount'];
-    }
-    $totalTaxes += $row['tax_amount'];
-
-    if ($done) {
-        $invRec['tax_amount'] = $ivTotalTax;
-        $invoices[] = $invRec;
-    }
-} while (!$done);
+    } while (!$done);
+}
 
 $smarty->assign('invoices', $invoices);
 $smarty->assign('totalTaxes', $totalTaxes);

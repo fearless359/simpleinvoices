@@ -50,7 +50,7 @@ class Request
      *        clause. Optional parameter.
      * @throws PdoDbException
      */
-    public function addSimpleWhere(string $field, $value, string $connector = ""): void
+    public function addSimpleWhere(string $field, array|string $value, string $connector = ""): void
     {
         $this->addWhereItem(false, $field, "=", $value, false, $connector);
     }
@@ -64,13 +64,13 @@ class Request
      * @param string $operator Valid SQL comparison operator to the <b>$field</b> record
      *        content test against the <b>$value</b> parameter. Currently only the relational
      *        operator are allowed: <b>=</b>, <b><></b>, <b><</b>, <b>></b>, <b><=</b> and <b>>=</b>.
-     * @param array|string|int|DbField $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginVal,endVal)</b>.
+     * @param array|int|string|DbField $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginVal,endVal)</b>.
      * @param bool $close_paren Set to <b>true</b> if a closing parenthesis should be
      *        inserted after this term; otherwise set to <b>false</b>.
      * @param string $connector The "AND" or "OR" connector if additional terms will be clause. Optional parameter.
      * @throws PdoDbException
      */
-    public function addWhereItem(bool $open_paren, string $field, string $operator, $value, bool $close_paren,
+    public function addWhereItem(bool   $open_paren, string $field, string $operator, DbField|array|int|string $value, bool $close_paren,
                                  string $connector = ""): void
     {
         $whereItem = new WhereItem($open_paren, $field, $operator, $value, $close_paren, $connector);
@@ -79,8 +79,7 @@ class Request
 
     /**
      * Add a field to order by and its sort attribute.
-     * @param mixed $field Either an <i>array</i> or <i>string</i>.
-     *        The following forms are valid:
+     * @param array|string $field The following forms are valid:
      *          <i>string</i> - A <i>field name</i> to be added to the collection
      *                          of ordered items with the specified <b>$order</b>.
      *          <i>array</i>  - An array of <i>field names</i> or of <i>arrays</i>.<br/>
@@ -97,7 +96,7 @@ class Request
      * @throws PdoDbException if either parameter does not contain the form and values specified for them.
      * @noinspection PhpUnused
      */
-    public function addOrderBy($field, string $order = "A"): void
+    public function addOrderBy(array|string $field, string $order = "A"): void
     {
         $this->orderBy->addField($field, $order);
     }
@@ -112,7 +111,7 @@ class Request
      *           Ex: array("name", "street_address", "city", "state", "zip").
      * @noinspection PhpUnused
      */
-    public function addSelectList($selectList): void
+    public function addSelectList(array|string $selectList): void
     {
         if (is_array($selectList)) {
             foreach ($selectList as $field) {
@@ -160,7 +159,7 @@ class Request
      * clause but are to be excluded from the <i>INSERT</i> or </i>UPDATE</i> fields. Typically
      * excluded fields are the unique identifier for the record which cannot be updated. However,
      * any field may be specified for exclusion..
-     * @param string|array $excludedFields Can be one of the following:
+     * @param array|string $excludedFields Can be one of the following:
      *        <ol>
      *          <li>A string with <i><u>one</u> field name</i> in it. Ex: <b>"name"</b>.</li>
      *          <li>An ordered array of <i>field names</i>. Ex: <b>array("id", "user_id")</b></li>
@@ -170,7 +169,7 @@ class Request
      *        </ol>
      * @throws PdoDbException if the parameter is not an array.
      */
-    public function setExcludedFields($excludedFields): void
+    public function setExcludedFields(array|string $excludedFields): void
     {
         if (is_array($excludedFields)) {
             $idx = 0;
@@ -228,7 +227,7 @@ class Request
      * @throws PdoDbException if an error is thrown when the <b>request</b> is performed.
      * @noinspection PhpUnused
      */
-    public function performRequest(PdoDb $pdoDb)
+    public function performRequest(PdoDb $pdoDb): array|bool|int
     {
         try {
             // @formatter:off
@@ -261,6 +260,7 @@ class Request
     /**
      * Describe what the table the request is for.
      * @return string Description of the request
+     * @noinspection PhpUnused
      */
     public function describe(): string
     {

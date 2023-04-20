@@ -60,7 +60,7 @@ class SqlPatchManager
             $pdoDbAdmin->setOrderBy(['sql_patch_ref', 'D']);
             $pdoDbAdmin->setLimit(1);
             $rows = $pdoDbAdmin->request("SELECT", "sql_patchmanager");
-        } catch (PdoDbException $pde) {
+        } catch (PdoDbException) {
             return 0;
         }
         // Returns number of patches applied
@@ -93,7 +93,7 @@ class SqlPatchManager
     /**
      * Assign database patches up to date message in smarty "page" variable.
      */
-    public static function donePatchesMessage()
+    public static function donePatchesMessage(): void
     {
         global $LANG, $smarty;
         $pageInfo = [
@@ -179,7 +179,7 @@ class SqlPatchManager
     /**
      * Run the unapplied patches.
      */
-    public static function runPatches()
+    public static function runPatches(): void
     {
         global $LANG, $pdoDbAdmin, $smarty;
 
@@ -251,7 +251,7 @@ class SqlPatchManager
     /**
      * List all patches and their status.
      */
-    public static function listPatches()
+    public static function listPatches(): void
     {
         global $LANG, $smarty;
         // Initialize patch data if not already done
@@ -335,7 +335,7 @@ class SqlPatchManager
         try {
             $pdoDbAdmin->addSimpleWhere('sql_patch_ref', $patchRef);
             $rows = $pdoDbAdmin->request('SELECT', 'sql_patchmanager');
-        } catch (PdoDbException $pde) {
+        } catch (PdoDbException) {
             return false;
         }
         return !empty($rows);
@@ -388,8 +388,9 @@ class SqlPatchManager
 
     /**
      * Save product group information for those with extension enabled.
+     * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function prePatch321()
+    private static function prePatch321(): void
     {
         global $pdoDbAdmin, $subCustomerExtEnabled;
 
@@ -415,8 +416,9 @@ class SqlPatchManager
 
     /**
      * Special handling for patch #321
+     * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function postPatch321()
+    private static function postPatch321(): void
     {
         global $subCustomerExtEnabled;
 
@@ -430,8 +432,9 @@ class SqlPatchManager
 
     /**
      * Save product group information for those with extension enabled.
+     * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function prePatch322()
+    private static function prePatch322(): void
     {
         global $pdoDbAdmin, $productGroupEnabled;
 
@@ -456,8 +459,9 @@ class SqlPatchManager
 
     /**
      * Special handling for patch #322
+     * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function postPatch322()
+    private static function postPatch322(): void
     {
         global $pdoDbAdmin, $productGroupEnabled;
 
@@ -481,44 +485,12 @@ class SqlPatchManager
      * @throws PdoDbException If undefined foreign key values found.
      * @noinspection PhpVariableNamingConventionInspection
      */
-    private static function prePatch331() {
+    private static function prePatch331(): void
+    {
         global $pdoDbAdmin;
 
-        // @formatter::off
         $undefined_values = [];
         set_time_limit(240);
-/*
-             [
-                'table'       => 'invoice_item_tax',
-                'constraint'  => 'fk_role',
-                'foreign_key' => 'role_id',
-                'references'  => 'user_role',
-                'column'      => 'id'
-            ]
-        ];
-
-        $undefined_values = array();
-        set_time_limit(240);
-            $table = 'invoice_item_tax';
-            $foreign_key = 'role_id';
-            $references = 'user_role;
-            $column = 'id;
-
-            $pdoDb_admin->addToWhere(new WhereItem(false, $foreign_key, 'IS NOT NULL', '', false));
-            $pdoDb_admin->setSelectList($foreign_key);
-            $rows = $pdoDb_admin->request('SELECT', $table);
-            foreach ($rows as $row) {
-                $value = $row[$foreign_key];
-                $pdoDb_admin->addSimpleWhere($column, $value);
-                $pdoDb_admin->setSelectList($column);
-                $recs = $pdoDb_admin->request('SELECT', $references);
-                if (empty($recs)) {
-                    // Key construction so it can be exploded in error message and to make sure only one
-                    // occurrence of the missing value is displayed in the error message.
-                    $undefined_values[$table . ':' . $foreign_key . ':' . $references . ':' . $column . ':' . $value] = $value;
-                }
-            }
- */
         $table = 'invoice_item_tax';
         $foreign_keys = ['invoice_items' => 'invoice_item_id', 'tax' => 'tax_id'];
         $columns = ['invoice_items' => 'id', 'tax' => 'tax_id'];
@@ -568,7 +540,7 @@ class SqlPatchManager
     /**
      * Load all patches to be processed.
      */
-    private static function loadPatches()
+    private static function loadPatches(): void
     {
         global $pdoDbAdmin;
 

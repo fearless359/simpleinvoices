@@ -23,7 +23,7 @@
             {$invoice.index_id|htmlSafe}
         </div>
         <form name="frmpost" method="POST" id="frmpost"
-              action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlencode}">
+              action="index.php?module=invoices&amp;view=delete&amp;stage=2&amp;id={$smarty.get.id|urlEncode}">
             <div class="align__text-center">
                 <button type="submit" class="positive" name="submit">
                     <img class="button_img" src="images/tick.png" alt="{$LANG.yesUc}"/>{$LANG.yesUc}

@@ -14,10 +14,7 @@ class Having
     private bool $leftParen;
     private string $field;
     private string $operator;
-    /**
-     * @var DbField|int|string
-     */
-    private $value;
+    private array|string|DbField $value;
     private string $connector;
     private bool $rightParen;
 
@@ -27,7 +24,7 @@ class Having
      *        statement; else <b>false</b> (default) if no left parenthesis is to be added.
      * @param string|DbField|FunctionStmt $field
      * @param string $operator
-     * @param DbField|number|array|string $value Can be a string, number or an array as needed by the specified <b>$operator</b>.
+     * @param array|string|DbField $value Can be a string, number or an array as needed by the specified <b>$operator</b>.
      * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
      *        not specified, it will be set automatically to <b>AND</b> if a subsequent
      *        criterion is added.
@@ -35,7 +32,7 @@ class Having
      *        <i>$value</i> parameter; else <b>false</b> (default) if no right parenthesis is to be added.
      * @throws PdoDbException
      */
-    public function __construct(bool $leftParen, $field, string $operator, $value, bool $rightParen=false, string $connector="")
+    public function __construct(bool $leftParen, DbField|FunctionStmt|string $field, string $operator, DbField|array|string $value, bool $rightParen=false, string $connector="")
     {
         $this->leftParen = $leftParen;
         $this->rightParen = $rightParen;
@@ -115,10 +112,7 @@ class Having
         return $this->operator;
     }
 
-    /**
-     * @return DbField|int|string
-     */
-    public function getValue()
+    public function getValue(): DbField|int|string
     {
         return $this->value;
     }
@@ -149,9 +143,10 @@ class Having
     /**
      * Set the connector to a specified value.
      * @param string $connector Valid connector, <b>OR</b>, or <b>AND</b>.
+     * @return  void
      * @throws PdoDbException
      */
-    public function setConnector(string $connector)
+    public function setConnector(string $connector): void
     {
         $this->connector = $connector;
         if (!empty($connector)) {

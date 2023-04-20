@@ -668,7 +668,7 @@ class Cron
      * @param int $cronId to remove cron information for.
      * @throws PdoDbException thrown if issue arises.
      */
-    public static function deleteCronInvoiceItems(int $cronId)
+    public static function deleteCronInvoiceItems(int $cronId): void
     {
         global $config, $pdoDb;
 
@@ -995,6 +995,7 @@ class Cron
     public static function deleteCronInvoiceItem($id): bool
     {
         global $pdoDb;
+
 
         try {
             $pdoDb->begin();

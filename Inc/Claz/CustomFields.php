@@ -161,7 +161,7 @@ class CustomFields
         foreach ($rows as $row) {
             // @formatter:off
             $customFields[$row['cf_custom_field']] =
-                empty($row['cf_custom_label']) ? ($noUndefinedLabels ? "" : $cfl . ($idx % 4 + 1)) :
+                empty($row['cf_custom_label']) ? ($noUndefinedLabels ? "" : $cfl . $idx % 4 + 1) :
                                                   $row['cf_custom_label'];
             $idx++;
             // @formatter:on

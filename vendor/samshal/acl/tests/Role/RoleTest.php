@@ -6,12 +6,13 @@
  */
 namespace Samshal\Acl\Test\Role;
 
+use PHPUnit\Framework\TestCase;
 use Samshal\Acl\Role\DefaultRole as Role;
 
 /**
  * class RoleTest.
  */
-class RoleTest extends \PHPUnit_Framework_TestCase
+class RoleTest extends TestCase
 {
     public function testNewRoleReturnStringName()
     {

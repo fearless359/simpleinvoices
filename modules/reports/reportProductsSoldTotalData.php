@@ -5,15 +5,10 @@ use Inc\Claz\DomainId;
 use Inc\Claz\FunctionStmt;
 use Inc\Claz\Join;
 use Inc\Claz\OnClause;
-use Inc\Claz\PdoDb;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 use Inc\Claz\WhereItem;
 
-/**
- * @var PdoDb $pdoDb
- * @noinspection PhpRedundantVariableDocTypeInspection
- */
 global $endDate, $pdoDb, $smarty, $startDate;
 
 Util::directAccessAllowed();

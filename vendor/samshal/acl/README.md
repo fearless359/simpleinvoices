@@ -13,7 +13,7 @@ This component is an implementation of an ACL, it makes it easy for you to get u
 - Ability to set Permissions on Resources and granting these Permissions to Roles.
 - Support for Role Inheritance.
 - Fully Serializable, can work interoperably with any source of data.
-- Compatible with PHP v7.0+
+- Compatible with PHP v8.1+
 - Easy to use
 
 **Resources** are objects which acts in accordance to the permissions defined on them by the ACLs. **Roles** are objects that requests access to resources and can be allowed or denied by the ACL layers. **Permissions** are just rules defined on Resources.
@@ -30,7 +30,7 @@ Samshal\Acl is available via [Composer/Packagist](https://packagist.org/packages
 ```json
 	{
 		"require":{
-			"samshal/acl":"^1.0"
+			"samshal/acl":"^2.0"
 		}
 	}
 ```
@@ -151,11 +151,11 @@ To check the permission a role has on a certain resource, you can use a snippet 
 	...
 
 	$booleanResultIndicatingPermission = $acl->can->admin->view('patientFinancialHistory');
-	//We are asking a very simple question: can an Admin role View the patientFinanicialHistory resource?
+	//We are asking a very simple question: can an Admin role View the patientFinancialHistory resource?
 
 	//even better, we could use it in a conditional
 
-	if ($acl->can->accountant->delete('patientFinanicalHistory'))
+	if ($acl->can->accountant->delete('patientFinancialHistory'))
 	{
 		//delete the patients financial history!
 	}
@@ -219,7 +219,7 @@ You can also call a Permission object without any parameter. This grants the per
 This library is currently developed and maintained by [Samuel Adeshina](http://samshal.github.io)
 
 ## ROAD MAP
-The next release will include most of the features and fixes detailed in this [issue](https://github.com/Samshal/Acl/issues) especially [this](https://github.com/Samshal/Acl/issues/3)
+Road Map draft in progress.
 
 ## HOW TO CONTRIBUTE
 Support follows PSR-2 PHP coding standards.

@@ -76,9 +76,13 @@ try {
             $customers[$name]['products'] = [];
         }
 
-        array_push($customers[$name]['products'], $pInfo);
+        $customers[$name]['products'][] = $pInfo;
 
-        $customers[$name]['total_quantity'] += $row['sum_quantity'];
+        if (isset($customers[$name]['total_quantity'])) {
+            $customers[$name]['total_quantity'] += $row['sum_quantity'];
+        } else {
+            $customers[$name]['total_quantity'] = $row['sum_quantity'];
+        }
     }
 } catch (PdoDbException $pde) {
     exit("modules/reports/reportProductsSoldByCustomer.php Unexpected error: {$pde->getMessage()}");

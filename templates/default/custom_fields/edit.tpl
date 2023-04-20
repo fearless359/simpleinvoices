@@ -13,7 +13,7 @@
  *	    GPL v3 or above
  *}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlencode}">
+      action="index.php?module=custom_fields&amp;view=save&amp;id={$smarty.get.id|urlEncode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <div class="cols__3-span-3 bold align__text-right margin__right-1">{$LANG.customFieldDbFieldName}:</div>

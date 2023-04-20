@@ -79,8 +79,12 @@ try {
             $periods[$row['Aging']]['invoices'] = [];
         }
 
-        array_push($periods[$row['Aging']]['invoices'], $row);
-        $periods[$row['Aging']]['sum_total'] += $row['inv_owing'];
+        $periods[$row['Aging']]['invoices'][] = $row;
+        if (isset($periods[$row['Aging']]['sum_total'])) {
+            $periods[$row['Aging']]['sum_total'] += $row['inv_owing'];
+        } else {
+            $periods[$row['Aging']]['sum_total'] = $row['inv_owing'];
+        }
         $totalOwed += $row['inv_owing'];
     }
 

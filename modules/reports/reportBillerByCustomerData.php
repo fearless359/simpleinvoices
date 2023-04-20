@@ -69,9 +69,13 @@ try {
             $billerInfo[$billerName]['customers'] = [];
         }
 
-        array_push($billerInfo[$billerName]['customers'], $customer);
+        $billerInfo[$billerName]['customers'][] = $customer;
 
-        $billerInfo[$billerName]['totalSales'] += $row['sumTotal'];
+        if (isset($billerInfo[$billerName]['totalSales'])) {
+            $billerInfo[$billerName]['totalSales'] += $row['sumTotal'];
+        } else {
+            $billerInfo[$billerName]['totalSales'] = $row['sumTotal'];
+        }
 
         $totalSales += $row['sumTotal'];
     }

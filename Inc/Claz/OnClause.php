@@ -23,14 +23,14 @@ class OnClause extends WhereClause
      * Add an <b>OnItem</b> object constructed from simple parameters.
      * @param string $field Field (aka column) of table to be joined or available in the scope
      *        of fields from tables in the join statement.
-     * @param array|string|int|DbField $value Value to use in the test. This can be a constant or a field in
+     * @param array|int|string|DbField $value Value to use in the test. This can be a constant or a field in
      *        the table being joined to. Note that if this is a table field, the <i>DbField</i>
      *        class should be used to render it. Ex: obj->addSimpleItem(iv.id, new DbField(ii.id)).
      * @param string $connector The "AND" or "OR" connector if additional terms will be
      *        clause. Optional parameter.
      * @throws PdoDbException If an invalid operator or connector is found.
      */
-    public function addSimpleItem(string $field, $value, string $connector = ""): void
+    public function addSimpleItem(string $field, DbField|array|int|string $value, string $connector = ""): void
     {
         try {
             parent::addSimpleItem($field, $value, $connector);
@@ -41,10 +41,10 @@ class OnClause extends WhereClause
 
     /**
      * Add a <b>OnItem</b> object to the <i>ON</i> clause.
-     * @param WhereClause|WhereItem|OnClause|OnItem $whereItem
+     * @param OnClause|OnItem|WhereClause|WhereItem $whereItem
      * @throws PdoDbException If end of clause shows out of balance parenthesis.
      */
-    public function addItem($whereItem): void
+    public function addItem(WhereClause|OnItem|WhereItem|OnClause $whereItem): void
     {
         try {
             parent::addItem($whereItem);

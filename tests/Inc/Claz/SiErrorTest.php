@@ -42,12 +42,46 @@ class SiErrorTest extends TestCase
             "<br />The file <b>tmp/php.log</b> has to be writable";
         self::assertEquals($expected, $mess, 'SiError default message test failed');
 
+        $mess = SiError::out('dbConnection', 'Unable to make connection');
+        $expected = "<br />===========================================" .
+            "<br />SimpleInvoices database connection problem" .
+            "<br />===========================================" .
+            "<br />" .
+            "<br />Could not connect to the SimpleInvoices database" .
+            "<br />" .
+            "<br />For information on how to fix this, refer to the following database error: " .
+            "<br />--> <b>Unable to make connection</b>" .
+            "<br />" .
+            "<br />If this is an &quot;Access denied&quot; error please enter the correct database " .
+            "connection details config/custom.config.ini." .
+            "<br />" .
+            "<br /><b>Note:</b> If you are installing SimpleInvoices please follow the below steps:" .
+            "<ol>" .
+            "<li>Create a blank MySQL database (cPanel or myPHPAdmin). Defined a DB Admin username " .
+            "with full access to this database. Assign a password to this DB Admin user.</li>" .
+            "<li>Enter the correct database connection details in the config/custom.config.ini file.</li>" .
+            "<li>Refresh this page</li>" .
+            "</ol>" .
+            "<br />===========================================";
+        self::assertEquals($expected, $mess, 'SiError dbError message test failed');
+
         $mess = SiError::out('dbError', 'si_table', 'Invalid table');
         $expected = "<br />===========================================" .
             "<br />SimpleInvoices database error" .
             "<br />===========================================" .
             "<br />" .
             "<br />>si_table - Error: Invalid table";
+        self::assertEquals($expected, $mess, 'SiError dbError message test failed');
+
+        $mess = SiError::out('phpVersion', 'Invalid version');
+        $expected = "<br />===========================================" .
+            "<br />SimpleInvoices - PHP - Version Issue" .
+            "<br />===========================================" .
+            "<br />" .
+            "<br />Invalid version" .
+            "<br />" .
+            "<br />===========================================" .
+            "<br />";
         self::assertEquals($expected, $mess, 'SiError dbError message test failed');
 
         $mess = SiError::out('default');

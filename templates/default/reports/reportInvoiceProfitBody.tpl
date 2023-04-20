@@ -1,4 +1,4 @@
-{if $fileType != 'xls' && $fileType != 'doc'}
+{if empty($fileType) || $fileType != 'xls' && $fileType != 'doc'}
     <link rel="shortcut icon" href="{$path}../../../images/favicon.ico"/>
     <link rel="stylesheet" href="{$path}../../../css/main.css">
 {/if}
@@ -23,7 +23,6 @@
     {foreach $invoices as $invoice}
         {if $invoice@index > 0}
             {if $invoice.preference != $prevPreference}
-                <
                 <tr class="tr_{cycle values="A,B"}">
                     <td>&nbsp;</td>
                 </tr>
@@ -32,8 +31,10 @@
         {assign 'prevPreference' $invoice.preference}
         <tr class="tr_{cycle values="A,B"}">
             <td class="align__text-right">
-                {if $format != 'print' && $format != 'pdf' && $fileType != 'xls' && $fileType != 'doc'}
-                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoices[invoice].id|urlencode}">
+                {if !isset($format)}{$fmt = ''}{else}{$fmt = $format}{/if}
+                {if !isset($fileType)}{$fType = ''}{else}{$fType = $fileType}{/if}
+                {if $fmt != 'print' && $fmt != 'pdf' && $fType != 'xls' && $fType != 'doc'}
+                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlEncode}">
                         {$invoice.index_id|htmlSafe}
                     </a>
                 {else}
@@ -50,10 +51,12 @@
     </tbody>
     <tfoot>
     <tr>
-        <td class="align__text-right bold" colspan="7">{$LANG.totalUc}:</td>
-        <td class="align__text-right bold">{$invoiceTotals.sumTotal|utilCurrency}</td>
-        <td class="align__text-right bold">{$invoiceTotals.sumCost|utilCurrency}</td>
-        <td class="align__text-right bold">{$invoiceTotals.sumProfit|utilCurrency}</td>
+        {if !empty($invoiceTotals)}
+            <td class="align__text-right bold" colspan="7">{$LANG.totalUc}:</td>
+            <td class="align__text-right bold">{$invoiceTotals.sumTotal|utilCurrency}</td>
+            <td class="align__text-right bold">{$invoiceTotals.sumCost|utilCurrency}</td>
+            <td class="align__text-right bold">{$invoiceTotals.sumProfit|utilCurrency}</td>
+        {/if}
     </tr>
     </tfoot>
 </table>

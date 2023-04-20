@@ -5,6 +5,7 @@ use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
 use Inc\Claz\PaymentType;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
@@ -34,6 +35,7 @@ try {
         $smarty->assign("biller", Biller::getOne($invoice['biller_id']));
         $smarty->assign("customer", Customer::getOne($invoice['customer_id']));
     }
+    $smarty->assign("invoice" , $invoice);
 
     if (isset($_GET['message'])) {
         $smarty->assign('message', $_GET['message']);

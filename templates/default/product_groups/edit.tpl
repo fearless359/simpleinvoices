@@ -15,7 +15,7 @@
  *      https://simpleinvoices.group*/
  *}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=product_groups&amp;view=save&amp;name={$smarty.get.name|urlencode}">
+      action="index.php?module=product_groups&amp;view=save&amp;name={$smarty.get.name|urlEncode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="nameId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.groupUc} {$LANG.nameUc}:

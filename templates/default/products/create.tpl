@@ -124,7 +124,7 @@
                                 <div class="grid__container grid__head-checkbox">
                                     <input type="checkbox" name="custom_flags_{$cflg.flg_id}" id="custom_flags_{$cflg.flg_id}"
                                            class="cols__1-span-1 margin__top-0-5" value="1" tabindex="11{$cflg@index}"/>
-                                    <label for="custom_flags_{$cflg.flg_id}" class="cols__2-span-1 margin__top-0">{$cflg.field_label|trim|htmlSafe}
+                                    <label for="custom_flags_{$cflg.flg_id}" class="cols__2-span-1 margin__top-0">{$cflg.field_label|utilTrim|htmlSafe}
                                         {if strlen($cflg.field_help) > 0}
                                             <img class="tooltip" title="{$cflg.field_help}" src="{$helpImagePath}help-small.png" alt="help"/>
                                         {/if}

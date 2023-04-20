@@ -62,6 +62,7 @@ class Log extends Logger
                 SiError::out('notWritable', 'file', self::$path);
             }
 
+            /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
             switch ($level) {
                 case 'DEBUG':
                     $loggerLevel = Logger::DEBUG;

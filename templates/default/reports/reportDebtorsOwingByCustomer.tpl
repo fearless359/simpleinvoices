@@ -1,12 +1,12 @@
 {include file=$path|cat:"library/reportTitle.tpl" title=$title}
 {include file=$path|cat:"library/exportButtons.tpl"
 		 params=[
-			 'endDate' => $endDate|urlencode,
+			 'endDate' => $endDate|urlEncode,
 		     'fileName' => "reportDebtorsOwingByCustomer",
-			 'filterByDateRange' => $filterByDateRange|urlencode,
-		     'includeAllCustomers' => $includeAllCustomers|urlencode,
-			 'startDate' => $startDate|urlencode,
-		     'title' => $title|urlencode
+			 'filterByDateRange' => $filterByDateRange|urlEncode,
+		     'includeAllCustomers' => $includeAllCustomers|urlEncode,
+			 'startDate' => $startDate|urlEncode,
+		     'title' => $title|urlEncode
 		 ]
 }
 {if $menu}

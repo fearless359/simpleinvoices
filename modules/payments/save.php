@@ -12,7 +12,7 @@ Util::directAccessAllowed();
 $displayBlock = "<div class='si_message_error'>$LANG[savePaymentFailure]</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=invoices&amp;view=manage' />";
 
-if (isset($_POST['process_payment'])) {
+if (isset($_POST['process_payment']) && !empty($_POST['invoice_id'])) {
     $result = Payment::insert([
         "ac_inv_id"       => $_POST['invoice_id'],
         "customer_id"     => $_POST['customer_id'],

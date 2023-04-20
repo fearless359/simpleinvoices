@@ -17,62 +17,44 @@ namespace Samshal\Acl\Registry;
  */
 class Registry implements RegistryInterface
 {
-    /**
-     * @var array $registry
-     */
-    protected $registry = [];
+    protected array $registry = [];
 
     /**
      * Saves an object to the registry
-     *
      * @param string $object
-     * @param variadic $options
-     * @return void
+     * @param mixed ...$options
      */
-    public function save(string $object, ...$options)
+    public function save(string $object, ...$options): void
     {
         if (!$this->exists($object)) {
             $this->registry[$object] = [];
         }
-
-        return;
     }
 
     /**
      * removes an object from the registry
-     *
-     * @param string $object
-     * @return bool
      */
-    public function remove(string $object) : bool
+    public function remove(string $object): void
     {
         if ($this->exists($object)) {
             unset($this->registry[$object]);
         }
-
-        return true;
     }
 
     /**
      * determines if an object exists in the registry
-     *
-     * @param string $object
-     * @return boolean
      */
     public function exists(string $object) : bool
     {
-        return (!empty($this->registry) && isset($this->registry[$object]));
+        return !empty($this->registry) && isset($this->registry[$object]);
     }
 
     /**
      * retrieves an object index from the registry
-     *
-     * @param string $object
-     * @return mixed
      */
-    public function get(string $object)
+    public function get(string $object): mixed
     {
-        return ($this->exists($object)) ? $this->registry[$object] : null;
+        return $this->exists($object) ? $this->registry[$object] : null;
     }
 
     /**
@@ -101,12 +83,8 @@ class Registry implements RegistryInterface
 
     /**
      * Sets the value of a registry object
-     *
-     * @param string $registryIndex
-     * @param string $registryValue
-     * @return void
      */
-    public function setRegistryValue(string $registryIndex, string $registryValue)
+    public function setRegistryValue(string $registryIndex, string $registryValue): void
     {
         $this->registry[$registryIndex][] = $registryValue;
     }

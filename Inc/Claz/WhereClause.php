@@ -21,7 +21,7 @@ class WhereClause
      * @param WhereClause|WhereItem|null $whereItem (Optional) If set, will add to this newly instantiated object.
      * @throws PdoDbException
      */
-    public function __construct($whereItem = null)
+    public function __construct(WhereClause|WhereItem $whereItem = null)
     {
         $this->whereItems = [];
         $this->parenCnt = 0;
@@ -64,10 +64,10 @@ class WhereClause
 
     /**
      * Add a <b>WhereItem</b> object to the <i>WHERE</i> clause.
-     * @param WhereClause|WhereItem|OnClause|OnItem $whereItem
+     * @param OnClause|OnItem|WhereClause|WhereItem $whereItem
      * @throws PdoDbException If end of clause shows out of balance parenthesis.
      */
-    public function addItem($whereItem): void
+    public function addItem(WhereClause|OnItem|WhereItem|OnClause $whereItem): void
     {
         if (is_a($whereItem, 'Inc\Claz\WhereClause') || is_a($whereItem, 'Inc\Claz\OnClause')) {
             foreach($whereItem->whereItems as $wi) {
@@ -87,12 +87,12 @@ class WhereClause
     /**
      * Add a <b>WhereItem</b> that performs an equality check.
      * @param string $field Table column for the left side of the test.
-     * @param array|string|int|DbField $value Constant or <b>DbField</b> for the right side of the test.
+     * @param array|int|string|DbField $value Constant or <b>DbField</b> for the right side of the test.
      * @param string $connector (Optional) <b>AND</b> or <b>OR</b> connector if this
      *        is not that last statement in the <b>WHERE</b> clause.
      * @throws PdoDbException
      */
-    public function addSimpleItem(string $field, $value, string $connector = ""): void
+    public function addSimpleItem(string $field, DbField|array|int|string $value, string $connector = ""): void
     {
         $this->addItem(new WhereItem(false, $field, "=", $value, false, $connector));
     }
@@ -149,12 +149,13 @@ class WhereClause
     }
 
     /**
-     * @param array|WhereClause|OnClause $whereClause
-     * @param int &$tokenCnt
-     * @param array &$keyPairs
+     * Build the Where clause from information collected by this object.
+     * @param WhereClause|array|OnClause $whereClause
+     * @param int $tokenCnt
+     * @param array $keyPairs
      * @return string
      */
-    private function buildWhereClause($whereClause, int &$tokenCnt, array &$keyPairs): string
+    private function buildWhereClause(WhereClause|array|OnClause $whereClause, int &$tokenCnt, array &$keyPairs): string
     {
         /**
          * @var WhereItem $whereItem

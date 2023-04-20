@@ -20,49 +20,31 @@ interface RegistryInterface
 {
     /**
      * Adds a new value to the global registry
-     *
-     * @param string $object
-     * @return void
      */
-    public function save(string $object, ...$options);
+    public function save(string $object, ...$options): void;
 
     /**
-     * remves an object from the global registry
-     *
-     * @param string $object
-     * @return void
+     * removes an object from the global registry
      */
-    public function remove(string $object) : bool;
+    public function remove(string $object): void;
 
     /**
      * determines if an object exists in the global registry
-     *
-     * @param string $object
-     * @return boolean
      */
     public function exists(string $object) : bool;
 
     /**
      * retrieves an object index from the registry
-     *
-     * @param string $object
-     * @return mixed
      */
-    public function get(string $object);
+    public function get(string $object): mixed;
 
     /**
      * returns the registry global property
-     *
-     *  @return array
      */
-    public function getRegistry();
+    public function getRegistry(): array;
 
     /**
      * Sets the value of a registry object
-     *
-     * @param string $registryIndex
-     * @param string $registryValue
-     * @return void
      */
-    public function setRegistryValue(string $registryIndex, string $registryValue);
+    public function setRegistryValue(string $registryIndex, string $registryValue): void;
 }

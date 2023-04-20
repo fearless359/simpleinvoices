@@ -28,6 +28,7 @@ try {
 
     $rows = $pdoDb->request('SELECT', 'log', 'l');
 
+    /** @noinspection RegExpRedundantEscape */
     $patterns = [
         'insert' => "/.*INSERT\s+INTO\s+" . TB_PREFIX . "invoices\s+/im",
         'update' => "/.*(UPDATE\s+" . TB_PREFIX . "invoices\s+SET.*WHERE\s.*id\s+=\s+)([0-9]+)\s+/im",
@@ -46,25 +47,19 @@ try {
                  'lastId' => $row['last_id'],
                  'timestamp' => $row['timestamp']
              ];
-        } else {
-            $match = [];
-            if (preg_match($patterns['update'], $row['sqlquerie'], $match)) {
-                $updates[] =[
-                    'user' => $user,
-                    'lastId' => $match[2],
-                    'timestamp' => $row['timestamp']
-                ];
-            } else {
-                $match = [];
-                if (preg_match($patterns['payment'], $row['sqlquerie'], $match)) {
-                    $payments[] = [
-                        'user' => $user,
-                        'lastId' => $match[2],
-                        'timestamp' => $row['timestamp'],
-                        'amount' => $match[3]
-                    ];
-                }
-            }
+        } elseif (preg_match($patterns['update'], $row['sqlquerie'], $match)) {
+            $updates[] =[
+                'user' => $user,
+                'lastId' => $match[2],
+                'timestamp' => $row['timestamp']
+            ];
+        } elseif (preg_match($patterns['payment'], $row['sqlquerie'], $match)) {
+            $payments[] = [
+                'user' => $user,
+                'lastId' => $match[2],
+                'timestamp' => $row['timestamp'],
+                'amount' => $match[3]
+            ];
         }
     }
 

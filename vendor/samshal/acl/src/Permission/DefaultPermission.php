@@ -23,7 +23,7 @@ class DefaultPermission implements PermissionInterface, ObjectInterface
      * @var string $permissionName
      * @access protected
      */
-    protected $permissionName;
+    protected string $permissionName;
 
     /**
      * {@inheritdoc}

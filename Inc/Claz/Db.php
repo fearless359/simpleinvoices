@@ -91,7 +91,6 @@ class Db
 
     private function instantiatePdo(): void
     {
-        // @formatter:off
         try {
             $this->pdo = new PDO($this->dsn, $this->userName, $this->password, $this->utf8);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -101,11 +100,7 @@ class Db
         }
     }
 
-    /**
-     * @param string $sqlQuery
-     * @return object|null|PDOStatement
-     */
-    public function query(string $sqlQuery): ?object
+    public function query(string $sqlQuery): PDOStatement|null
     {
         try {
             $argc = func_num_args();

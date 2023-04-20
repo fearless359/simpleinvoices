@@ -30,6 +30,7 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Polyfill\\Iconv\\' => 23,
+            'Samshal\\Acl\\Test\\' => 17,
             'Samshal\\Acl\\' => 12,
         ),
         'P' => 
@@ -89,13 +90,17 @@ class ComposerStaticInit6e64d1b3bf7cde5cb394cbdc0e86cd86
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-iconv',
         ),
+        'Samshal\\Acl\\Test\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/samshal/acl/tests',
+        ),
         'Samshal\\Acl\\' => 
         array (
             0 => __DIR__ . '/..' . '/samshal/acl/src',
         ),
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            0 => __DIR__ . '/..' . '/psr/log/src',
         ),
         'Psr\\Http\\Message\\' => 
         array (

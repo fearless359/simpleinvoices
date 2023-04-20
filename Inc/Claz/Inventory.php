@@ -138,10 +138,7 @@ class Inventory
         return isset($inv_id) ? $inventories[0] : $inventories;
     }
 
-    /**
-     * @return int|mixed
-     */
-    public static function insert()
+    public static function insert(): int
     {
         global $pdoDb;
 
@@ -155,10 +152,7 @@ class Inventory
         return $result;
     }
 
-    /**
-     * @return bool|mixed
-     */
-    public static function update()
+    public static function update(): bool
     {
         global $pdoDb;
 

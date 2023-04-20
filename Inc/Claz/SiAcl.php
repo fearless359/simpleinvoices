@@ -2,11 +2,11 @@
 
 namespace Inc\Claz;
 
-use Samshal\Acl\Acl;
 use Exception;
+use Samshal\Acl\Acl;
 
 /**
- * Class SamshalAcl
+ * Class SiAcl
  * @package Inc\Claz
  */
 class SiAcl
@@ -17,7 +17,7 @@ class SiAcl
      * It should be retrieved from $_SESSION['acl'] whenever it is to be used.
      * @throws Exception
      */
-    public static function init()
+    public static function init(): void
     {
         $acl = new Acl();
 
@@ -135,6 +135,11 @@ class SiAcl
             ],
             'documentation' => [
                 'view' => $adminAccess
+            ],
+            'errorPages' => [
+                'e401' => [
+                    'all'
+                ]
             ],
             'expense' => [
                 'create' => $adminAccess,
@@ -272,7 +277,7 @@ class SiAcl
         ];
 
         // Add all roles so they are available for use
-        foreach ($roles as $role) {
+       foreach ($roles as $role) {
             $acl->addRole($role);
         }
 
@@ -287,18 +292,14 @@ class SiAcl
             }
         }
 
-        session_name(SESSION_NAME);
-        session_start();
         $_SESSION['acl'] = serialize($acl);
     }
 
     /**
      * Get the role for the current session.
-     * @return mixed|string
+     * @return string
      */
-    public static function getSessionRole() {
-        session_name(SESSION_NAME);
-        session_start();
+    public static function getSessionRole(): string {
         return empty($_SESSION['role_name']) ? 'all' : $_SESSION['role_name'];
     }
 
@@ -325,35 +326,43 @@ class SiAcl
 
     /**
      * Add resource(s) to the current Acl object.
-     * @param string|array $resource
+     * @param array|string $resource
      * @param Acl $acl
      * @noinspection PhpUnused
      */
-    public static function appendResources($resource, Acl $acl): void
+    public static function appendResources(array|string $resource, Acl $acl): void
     {
-        if (is_array($resource)) {
-            foreach ($resource as $lclResource) {
-                $acl->addResource($lclResource);
+        try {
+            if (is_array($resource)) {
+                foreach ($resource as $lclResource) {
+                    $acl->addResource($lclResource);
+                }
+            } else {
+                $acl->addResource($resource);
             }
-        } else {
-            $acl->addResource($resource);
+        } catch (Exception) {
+            // No action. Resource already in the list.
         }
     }
 
     /**
      * Add resource(s) to the current Acl object.
-     * @param string|array $resource
+     * @param array|string $resource
      * @param Acl $acl
      * @noinspection PhpUnused
      */
-    public static function appendPermission($resource, Acl $acl): void
+    public static function appendPermission(array|string $resource, Acl $acl): void
     {
-        if (is_array($resource)) {
-            foreach ($resource as $lclResource) {
-                $acl->addResource($lclResource);
+        try {
+            if (is_array($resource)) {
+                foreach ($resource as $lclResource) {
+                    $acl->addResource($lclResource);
+                }
+            } else {
+                $acl->addResource($resource);
             }
-        } else {
-            $acl->addResource($resource);
+        } catch (exception) {
+            // Resource already in list
         }
     }
 

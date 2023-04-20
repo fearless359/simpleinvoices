@@ -38,7 +38,7 @@
     </div>
 </div>
 <div class="align__text-center margin__top-3 margin__bottom-2">
-    <a href="index.php?module=user&amp;view=edit&amp;id={$user.id|urlencode}" class="button positive">
+    <a href="index.php?module=user&amp;view=edit&amp;id={$user.id|urlEncode}" class="button positive">
         <img src="images/report_edit.png" alt="{$LANG.edit}"/>{$LANG.edit}
     </a>
     <a href="index.php?module=user&amp;view=manage" class="button negative">

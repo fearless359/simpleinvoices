@@ -236,12 +236,12 @@
             'dev_requirement' => false,
         ),
         'psr/log' => array(
-            'pretty_version' => '1.1.4',
-            'version' => '1.1.4.0',
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/log',
             'aliases' => array(),
-            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+            'reference' => 'ef29f6d262798707a9edd554e2b82517ef3a9376',
             'dev_requirement' => false,
         ),
         'psr/log-implementation' => array(
@@ -251,12 +251,14 @@
             ),
         ),
         'samshal/acl' => array(
-            'pretty_version' => 'v1.0',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../samshal/acl',
-            'aliases' => array(),
-            'reference' => '96da075dc6080c1745dedb301738211283eea0ef',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => 'c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2',
             'dev_requirement' => false,
         ),
         'sebastian/cli-parser' => array(
@@ -404,12 +406,12 @@
             'dev_requirement' => true,
         ),
         'setasign/fpdi' => array(
-            'pretty_version' => 'v2.3.6',
-            'version' => '2.3.6.0',
+            'pretty_version' => 'v2.3.7',
+            'version' => '2.3.7.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../setasign/fpdi',
             'aliases' => array(),
-            'reference' => '6231e315f73e4f62d72b73f3d6d78ff0eed93c31',
+            'reference' => 'bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05',
             'dev_requirement' => false,
         ),
         'smarty/smarty' => array(

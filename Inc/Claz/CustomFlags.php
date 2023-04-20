@@ -215,7 +215,7 @@ class CustomFlags
      * @param string $fieldHelp Help data to display for this field.
      * @return bool <b>true</b> if update processed, <b>false</b> if not.
      */
-    public static function updateCustomFlags(string $associatedTable, int $flgId, string $fieldLabel, $enabled, bool $clearFlags, string $fieldHelp): bool
+    public static function updateCustomFlags(string $associatedTable, int $flgId, string $fieldLabel, bool|int|string $enabled, bool $clearFlags, string $fieldHelp): bool
     {
         global $config;
 
