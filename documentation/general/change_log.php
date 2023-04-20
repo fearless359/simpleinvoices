@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-04-20 - <strong>2023.0.1</strong>
+                <ul>
+                    <li>Fixed multiple issues emanating from merge of globalization logic with 2023 version.</li>
+                </ul>
+            </li>
             <li>2023-04-20 - <strong>2023.0.0</strong>
                 <ul>
                     <li>Updated to run on PHP 8.1 and above. This is a requirement.</li>

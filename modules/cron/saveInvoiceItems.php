@@ -29,7 +29,6 @@ $op = $_POST['op'] ?? "";
 $displayBlock = "<div class=\"si_message_error\">{$LANG['saveCronItemsFailure']}</div>";
 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=cron&amp;view=editItemized&amp;id=$cronId' />";
 if ($op == 'edit') {
-    $type = $_POST['type'];
     $locale = $_POST['locale'];
     try {
         $idx = 0;

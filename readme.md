@@ -16,7 +16,10 @@
 * [Version Update Process](https://simpleinvoices.group/version_update/)
 
 ## Fearless359 Version Downloads
-* Master 2020 - ([master_2020.zip](https://github.com/fearless359/simpleinvoices/archive/master_2020.zip)) PHP 7.4 and up.
+Master 2020 - ([master_2023.zip](https://github.com/fearless359/simpleinvoices/archive/refs/heads/master_2023.zip)) PHP 8.1 and up.
+* New version to support PHP 8.1 and later versions.
+  
+Master 2020 - ([master_2020.zip](https://github.com/fearless359/simpleinvoices/archive/master_2020.zip)) PHP 7.4 and up.
   * Update uses Composer and Node for library maintenance and class autoload. Both libraries are
     in the download. You will find the Composer library in the **vendor** directory and the
     Node library in the **node_modules** directory.

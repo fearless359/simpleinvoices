@@ -35,7 +35,7 @@
         <div class="grid__container grid__head-10">
             <label for="amountId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.amountUc}:</label>
             <input name="amount" id="amountId" class="cols__4-span-2 validateNumber" required
-                   value="{$expense.amount|utilNumber:$expense.preision:$expense.locale}" tabindex="30"/>
+                   value="{$expense.amount|utilNumber:$expense.precision:$expense.locale}" tabindex="30"/>
         </div>
         <div class="grid__container grid__head-10">
             <label for="billerId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.billerUc}:</label>

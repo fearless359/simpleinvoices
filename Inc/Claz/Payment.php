@@ -4,6 +4,7 @@ namespace Inc\Claz;
 
 use DateTime;
 use Exception;
+use NumberFormatter;
 
 /**
  * Class Payment
@@ -284,6 +285,11 @@ class Payment
             foreach ($rows as $row) {
                 $row['notes_short'] = Util::TruncateStr($row['ac_notes'], '13', '...');
                 $row['date'] = Util::date($row['ac_date']);
+
+                $formatter = new NumberFormatter($row['locale'], NumberFormatter::CURRENCY);
+                $precision = $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS);
+                $row['precision'] = $precision;
+
                 $payments[] = $row;
             }
         } catch (PdoDbException $pde) {

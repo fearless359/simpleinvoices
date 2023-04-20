@@ -1,7 +1,7 @@
 {include file="templates/default/headline.xml"}
 <!DOCTYPE html>
 <!--suppress HtmlRequiredLangAttribute -->
-<html lang="{$config['localLocaleGlobal']}">
+<html lang="{$config['localLocale']}">
 <head>
     {strip}
         {assign var='tmp_lang_module' value="title_module_`$module`"}

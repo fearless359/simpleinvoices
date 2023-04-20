@@ -17,7 +17,7 @@
 
 {if $smarty.get.stage == 1}
     <div class="si_message_warning bold">
-        {$LANG.confirmDelete} {$LANG.expense} {$payment.id|htmlSafe}
+        {$LANG.confirmDelete} {$LANG.expenseUc} {$expense.eid|htmlSafe}
     </div>
     <br/>
     {if isset($adjustMessage)}
@@ -35,7 +35,6 @@
             </button>
         </div>
         <input type="hidden" name="doDelete" value="y"/>
-        <input type="hidden" name="ac_inv_id" value="{$payment.ac_inv_id}"/>
     </form>
 {else}
     {$display_block}

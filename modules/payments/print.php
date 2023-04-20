@@ -16,6 +16,7 @@ global $LANG, $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
+$menu = false; // This variable is reference here and in index.php.
 try {
     $payment = Payment::getOne($_GET['id']);
 } catch (PdoDbException $pde) {
@@ -183,7 +184,7 @@ try {
 }
 
 // @formatter:off
-$smarty->assign("menu"             , false);
+$smarty->assign("menu"             , $menu);
 $smarty->assign("payment"          , $payment);
 $smarty->assign("invoice"          , $invoice);
 $smarty->assign("biller"           , $biller);

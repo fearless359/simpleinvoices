@@ -414,7 +414,7 @@ foreach ($extNames as $extName) {
         }
     }
 }
-Log::out("index.php - After extension_php_insert_files, etc.");
+Log::out("index.php - After extensionPhpInsertFiles, etc.");
 
 // Determine reports template path for an extension or standard path.
 if ($module == "reports" && ($view == "export" || $view == "email")) {
@@ -436,7 +436,7 @@ if ($module == "reports" && ($view == "export" || $view == "email")) {
 if ($extensionPhpFile == 0) {
     $myPath = Util::getCustomPath("$module/$view", 'module');
     if (isset($myPath)) {
-        Log::out("index.php - my_path[$myPath]");
+        Log::out("index.php - including myPath[$myPath]");
         /** @noinspection PhpIncludeInspection */
         include $myPath;
     }
@@ -449,7 +449,7 @@ if ($module == "export" || $view == "export") {
     Log::out("index.php - path[$path] Before export exit");
     exit(0);
 }
-Log::out("index.php - After export/export exit");
+Log::out("index.php - After export/export exit passed by.");
 
 // **********************************************************
 // Post load javascript files - START
