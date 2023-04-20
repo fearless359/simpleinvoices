@@ -18,7 +18,7 @@
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__3-span-2 align__text-right bold">{$LANG.balanceUc}:&nbsp;</div>
-        <div class="cols__5-span-2">{$paymentWarehouse.balance|utilCurrency}</div>
+        <div class="cols__5-span-2">{$paymentWarehouse.balance|utilCurrency:$paymentWarehouse.locale:$paymentWarehouse.currency_code}</div>
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__3-span-2 align__text-right bold">{$LANG.paymentType}:&nbsp;</div>

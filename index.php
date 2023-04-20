@@ -304,7 +304,7 @@ if ($module == "invoices" && strstr($view, "template")) {
 Log::out("index.php - After invoices/template");
 
 // Check for "api" module or a "xml" or "ajax" "page request" (aka view)
-if ($apiRequest || strstr($view, "xml") || preg_match("/.*[Aa]jax/", $view)) {
+if ($apiRequest || strstr($view, "xml") || preg_match("/[Aa]jax/", $view)) {
     $extensionXml = 0;
     foreach ($extNames as $extName) {
         if (file_exists("extensions/$extName/modules/$module/$view.php")) {

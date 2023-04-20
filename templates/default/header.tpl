@@ -1,7 +1,7 @@
 {include file="templates/default/headline.xml"}
 <!DOCTYPE html>
 <!--suppress HtmlRequiredLangAttribute -->
-<html lang="en">
+<html lang="{$config['localLocaleGlobal']}">
 <head>
     {strip}
         {assign var='tmp_lang_module' value="title_module_`$module`"}
@@ -17,28 +17,13 @@
 
     <link rel="shortcut icon" href="../../images/favicon.ico"/>
 
+    {* CSS stylesheets *}
     <link href="node_modules/jquery-ui/dist/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
     <link href="node_modules/jquery-ui/dist/themes/smoothness/theme.css" rel="stylesheet" type="text/css"/>
 
     <link href="node_modules/tooltipster/dist/css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css"/>
     <link href="node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" type="text/css"/>
 
-{* Commented out 2022/11/01 by Rich Rowley pending future deletion. *}
-{*    <!--suppress CssUnusedSymbol -->*}
-{*    <style>*}
-{*        {literal}*}
-{*        /* Settings for the validationEngine */*}
-{*        .formError {*}
-{*            position: relative !important;*}
-{*            display: block !important;*}
-{*            cursor: pointer !important;*}
-{*            text-align: left !important;*}
-{*            top: 0 !important;*}
-{*            width: 40% !important;*}
-{*        }*}
-
-{*        {/literal}*}
-{*    </style>*}
     <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
 
     <link href="node_modules/alertifyjs/build/css/alertify.css" rel="stylesheet" type="text/css"/>
@@ -46,13 +31,11 @@
 
     <link href="include/js/trix-main/dist/trix.css" rel="stylesheet" type="text/css">
 
+   {* script files *}
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/jquery-ui/dist/jquery-ui.js"></script>
     <script src="node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-
-    <script src="node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="node_modules/jquery-validation/dist/additional-methods.min.js"></script>
 
     <script src="node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
 

@@ -22,13 +22,17 @@
             <input type="text" name="tax_description" id="descId" class="cols__5-span-3" required size="25" tabindex="10"
                    value="{if isset($tax.tax_description)}{$tax.tax_description|htmlSafe}{/if}"/>
         </div>
+        <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+        <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
+        <input type="hidden" name="precision" id="precisionId" value="{$config.localPrecision}">
         <div class="grid__container grid__head-10">
             <label for="percentageId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.rateUc}:
                 <img class="tooltip" title="{$LANG.helpTaxRateSign}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
             <input type="text" name="tax_percentage" id="percentageId" tabindex="20" size="10" required
-                   class="cols__5-span-1 validate-number" value="{$tax.tax_percentage|utilNumber}"/>
-            {html_options name=type class="cols__6-span-1 magrin__left-1" options=$types selected=$tax.type tabindex=21}
+                   class="cols__5-span-1 validateNumber adjustTaxSign"
+                   value="{$tax.tax_percentage|utilNumber}"/>
+            {html_options name=type class="cols__6-span-1 magrin__left-1 checkTaxPercentage" id="typeId" options=$types selected=$tax.type tabindex=21}
             <span class="cols__7-span-2 margin__left-1 margin__top-0-5">{$LANG.ie10For10}</span>
         </div>
         <div class="grid__container grid__head-10">

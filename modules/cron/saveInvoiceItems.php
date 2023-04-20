@@ -30,6 +30,7 @@ $displayBlock = "<div class=\"si_message_error\">{$LANG['saveCronItemsFailure']}
 $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=cron&amp;view=editItemized&amp;id=$cronId' />";
 if ($op == 'edit') {
     $type = $_POST['type'];
+    $locale = $_POST['locale'];
 
     try {
         $idx = 0;
@@ -48,7 +49,8 @@ if ($op == 'edit') {
                 if ($desc == "Description") {
                     $desc = "";
                 }
-                $unitPrice = isset($_POST["unit_price$idx"]) ? Util::dbStd($_POST["unit_price$idx"]) : "";
+                $unitPrice = isset($_POST["unit_price$idx"]) ? Util::dbStd($_POST["unit_price$idx"], $locale) : "";
+
                 $attr = $_POST["attribute$idx"] ?? null;
                 $taxIds = $_POST["tax_id"][$idx] ?? [];
                 if (empty($item)) {

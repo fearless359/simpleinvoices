@@ -122,25 +122,21 @@ class Product
             $wh->addSimpleItem('ii.invoice_id', new DbField('iv.id'), 'AND');
             $wh->addSimpleItem('iv.preference_id', new DbField('pr.pref_id'), 'AND');
             $wh->addSimpleItem('pr.status', ENABLED);
-            $se = new Select($fn, $fr, $wh, null, 'qty_out');
-            $pdoDb->addToSelectStmts($se);
+            $pdoDb->addToSelectStmts(new Select($fn, $fr, $wh, null, 'qty_out'));
 
             $fn = new FunctionStmt('SUM', 'COALESCE(inv.quantity,0)');
             $fr = new FromStmt('inventory', 'inv');
             $wc = new WhereClause();
             $wc->addSimpleItem('inv.product_id', new DbField('p.id'), 'AND');
             $wc->addSimpleItem('inv.domain_id', new DbField('p.domain_id'));
-            $se = new Select($fn, $fr, $wc, null, 'qty_in');
-            $pdoDb->addToSelectStmts($se);
+            $pdoDb->addToSelectStmts(new Select($fn, $fr, $wc, null, 'qty_in'));
 
             $fn = new FunctionStmt('COALESCE', 'p.reorder_level,0');
-            $se = new Select($fn, null, null, null, 'reorder_level');
-            $pdoDb->addToSelectStmts($se);
+            $pdoDb->addToSelectStmts(new Select($fn, null, null, null, 'reorder_level'));
 
             $fn = new FunctionStmt('', 'qty_in');
             $fn->addPart('-', 'qty_out');
-            $se = new Select($fn, null, null, null, 'quantity');
-            $pdoDb->addToSelectStmts($se);
+            $pdoDb->addToSelectStmts(new Select($fn, null, null, null, 'quantity'));
 
             $ca = new CaseStmt('p.enabled', 'enabled_text');
             $ca->addWhen('=', ENABLED, $LANG['enabled']);

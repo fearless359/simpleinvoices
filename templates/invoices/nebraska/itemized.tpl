@@ -5,7 +5,7 @@
                         <th class="center" style="width: 5%;">{$LANG.item}</th>
                         <th class="center" style="width: 35%;">{$LANG.productsUc}</th>
                         <th class="center" style="width: 10%;">{$LANG.unitOfMeasurement}</th>
-                        <th class="center" style="width: 10%;">{$LANG.quantity}</th>
+                        <th class="center" style="width: 10%;">{$LANG.quantityUc}</th>
                         <th class="center">{$LANG.productUnitPrice}</th>
                         <th class="center">{$LANG.productValue}</th>
                         {if $invoice.total_tax|utilNumber > 0}

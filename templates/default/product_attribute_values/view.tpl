@@ -17,7 +17,7 @@
         <div class="cols__6-span-2">{$product_attribute_values.name|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold align__text-right margin__right-1">{$LANG.value}:</div>
+        <div class="cols__5-span-1 bold align__text-right margin__right-1">{$LANG.valueUc}:</div>
         <div class="cols__6-span-1">{$product_attribute_values.value|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">

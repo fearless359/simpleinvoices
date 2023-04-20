@@ -12,8 +12,15 @@ $displayBlock = "<div class=\"si_message_error\">{$LANG['saveTaxRateFailure']}</
 $refreshRedirect = "<meta http-equiv='refresh' content='2;url=index.php?module=tax_rates&amp;view=manage' />";
 
 # Deal with op and add some basic sanity checking
+$op = $_POST['op'] ?? '';
+$percentage = $_POST['tax_percentage'] ?? 0;
+$type = $_POST['type'] ?? '';
+if (empty($percentage) && !empty($type)) {
+    $_POST['type'] = '';
+} elseif (!empty($percentage) && empty($type)) {
+    $_POST['type'] = '%';
+}
 
-$op = empty($_POST['op']) ? '' : $_POST['op'];
 if ($op == 'create') {
     if (Taxes::verifyExists($_POST['tax_description'])) {
         $displayBlock = "<div class='si_message_error'>{$LANG['duplicateTaxDescription']}</div>";

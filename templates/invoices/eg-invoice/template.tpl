@@ -214,9 +214,9 @@
         </tr>
         {if $invoice.type_id == ITEMIZED_INVOICE}
             <tr>
-                <td class="tbl1-bottom col1"><b>{$LANG.quantity_short}</b></td>
+                <td class="tbl1-bottom col1"><b>{$LANG.quantityShort}</b></td>
                 <td class="tbl1-bottom col1" colspan="3"><b>{$LANG.item}</b></td>
-                <td class="tbl1-bottom col1"style="text-align:right;"><b>{$LANG.unit_cost}</b></td>
+                <td class="tbl1-bottom col1"style="text-align:right;"><b>{$LANG.unitCost}</b></td>
                 <td class="tbl1-bottom col1"style="text-align:right;"><b>{$LANG.price}</b></td>
             </tr>
             {foreach from=$invoiceItems item=invoiceItem}

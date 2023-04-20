@@ -18,6 +18,11 @@ $_POST['customer_id'] = empty($_POST['customer_id']) ? null : $_POST['customer_i
 $_POST['invoice_id'] = empty($_POST['invoice_id']) ? null : $_POST['invoice_id'];
 $_POST['product_id'] = empty($_POST['product_id']) ? null : $_POST['product_id'];
 
+$amount = $_POST['amount'];
+$locale = $_POST['locale'];
+
+$_POST['amount'] = Util::dbStd($amount, $locale);
+
 if ($op === 'create') {
     if (Expense::insert()) {
         $displayBlock = "<div class='si_message_ok'>{$LANG['saveExpenseSuccess']}</div>";

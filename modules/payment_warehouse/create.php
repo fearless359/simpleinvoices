@@ -17,13 +17,12 @@ if (!empty($_POST['customer'])) {
         $smarty->assign('message', "");
     }
 
-    // formatter:off
     $customers = Customer::getALL([
         'enabledOnly'    => true,
         'noTotals'       => true,
         'notInWarehouse' => true
     ]);
-    // formatter:on
+
     $smarty->assign('customers', $customers);
     $smarty->assign('customerCount', count($customers));
 

@@ -17,6 +17,14 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-04-20 - <strong>2020.4.10</strong>
+                <ul>
+                    <li>Use globalization for client side number formatting and verification.</li>
+                    <li>Check for payment owing before allowing payment screen display.</li>
+                    <li>Add logic to get inventory cost from product.</li>
+                    <li>Added logic to delete expense records.</li>
+                </ul>
+            </li>
             <li>2023-03-10 - <strong>2020.4.8</strong>
                 <ul>
                     <li>Fixed invoice line item deletion failure to remove associated taxes.</li>

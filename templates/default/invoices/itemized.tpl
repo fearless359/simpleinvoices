@@ -14,7 +14,7 @@
                 {include file="$path/itemizedInvoiceBot.tpl" }
                 <br/>
                 <input type="hidden" id="max_items" name="max_items" value="{$dynamic_line_items|htmlSafe}"/>
-                <input type="hidden" name="type" value="2"/>
+                <input type="hidden" id="typeId" name="type" value="2"/>
                 <div class="align__text-center">
                     <button type="submit" class="invoice_save" name="submit" value="{$LANG.save}">
                         <img class="button_img" src="images/tick.png" alt=""/>{$LANG.save}

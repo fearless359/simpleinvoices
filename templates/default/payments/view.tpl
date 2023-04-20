@@ -35,10 +35,10 @@
         </div>
         <div class="grid__container grid__head-10">
             <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.amountUc}:</div>
-            <div class="cols__5-span-4">{$payment.ac_amount|utilNumber}&nbsp;
+            <div class="cols__5-span-4">{$payment.ac_amount|utilNumber:$payment.precision:$payment.locale}&nbsp;
             {if $payment.warehouse_amount != 0}
                 {if $payment.warehouse_amount > 0}
-                    <em>{$LANG.paymentUc} {$LANG.excess} {$LANG.of} {$payment.warehouse_amount|utilCurrency}&comma; {$LANG.warehoused}</em>
+                    <em>{$LANG.paymentUc} {$LANG.excess} {$LANG.of} {$payment.warehouse_amount|utilCurrency:$payment.locale:$payment.currency_code}&comma; {$LANG.warehoused}</em>
                 {else}
                     <em>{$LANG.paymentUc} {$LANG.applied} {$LANG.to} {$LANG.warehouse} {$LANG.balance}</em>
                 {/if}

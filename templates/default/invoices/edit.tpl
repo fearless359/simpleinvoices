@@ -74,13 +74,7 @@
         </div>
         <input type="hidden" name="id" value="{$invoice.id|htmlSafe}"/>
         <input type="hidden" name="op" value="edit"/>
-        {if $invoice.type_id == TOTAL_INVOICE }
-            <input type="hidden" id="quantity0" size="10" value="1.00" name="quantity0"/>
-            <input type="hidden" id="line_item0" value="{$invoiceItems[0].id|htmlSafe}" name="line_item0"/>
-            <input type="hidden" name="id0" value="{$invoiceItems[0].id|htmlSafe}"/>
-            <input type="hidden" name="products0" value="{$invoiceItems[0].product_id|htmlSafe}"/>
-        {/if}
-        <input type="hidden" name="type" value="{if isset($invoice.type_id)}{$invoice.type_id|htmlSafe}{/if}"/>
+        <input type="hidden" id="typeId" name="type" value="{if isset($invoice.type_id)}{$invoice.type_id|htmlSafe}{/if}"/>
         <input type="hidden" id="max_items" name="max_items" value="{if isset($lines)}{$lines|htmlSafe}{/if}"/>
     </div>
 </form>

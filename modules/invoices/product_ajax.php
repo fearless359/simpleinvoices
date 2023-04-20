@@ -11,9 +11,11 @@ global $pdoDb;
 session_name(SESSION_NAME);
 session_start();
 
-$rowId = Util::htmlSafe($_GET['row']);
-$id = $_GET['id'];
+$id = $_GET['id'] ?? '';
 if (!empty($id)) {
+    $rowId = Util::htmlSafe($_GET['row']);
+    $locale = $_GET['locale'] ?? 'en_US';
+    $fracDigits = $_GET['fracDigits'] ?? '2';
     $output = [];
 
     $row = Product::getOne($id);
@@ -91,8 +93,8 @@ if (!empty($id)) {
 
         // Format with decimal places with precision as defined in config.ini
         // @formatter:off
-        $output['unit_price']           = Util::number($row['unit_price']);
-        $output['markup_price']         = Util::number($row['markup_price']);
+        $output['unit_price']           = Util::number($row['unit_price'], $fracDigits, $locale);
+        $output['markup_price']         = Util::number($row['markup_price'], $fracDigits, $locale);
         $output['default_tax_id']       = $row['default_tax_id'] ?? "";
         $output['default_tax_id_2']     = $row['default_tax_id_2'] ?? "";
         $output['attribute']            = isset($row['attribute']) ? $row['default_tax_id_2'] : "";
@@ -102,8 +104,6 @@ if (!empty($id)) {
         $output['notes_as_description'] = $row['notes_as_description'] ?? "N";
         $output['show_description']     = $row['show_description'] ?? "N";
         // @formatter:on
-    } else {
-        $output .= '';
     }
 
     echo json_encode($output);

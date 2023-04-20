@@ -1,8 +1,7 @@
 <div class="grid__container grid__head-10">
     <div class="cols__1-span-1 bold align__text-right">
         <label for="quantity0">{$LANG.quantityShort}
-            <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}" src="{$helpImagePath}required-small.png" alt=""/>
-        </label>
+            <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}" src="{$helpImagePath}required-small.png" alt=""/> </label>
     </div>
     <div class="cols__2-span-4 bold align__text-center">{$LANG.item}</div>
     {$begCol = 6}
@@ -12,6 +11,9 @@
     {/section}
     <div class="cols__{$begCol}-span-1 bold align__text-right">{$LANG.unitPrice}</div>
 </div>
+<input type="hidden" name="locale" id="localeId" value="{$invoice.locale}">
+<input type="hidden" name="currency_code" id="currencyCodeId" value="{$invoice.currency_code}">
+<input type="hidden" name="precision" id="precisionId" value="{$invoice.precision}">
 <div id="itemtable" data-number-tax-items="{$defaults.tax_per_line_item}">
     {foreach $invoiceItems as $line => $invoiceItem}
         <input type="hidden" id="delete{$line|htmlSafe}" name="delete{$line|htmlSafe}"/>
@@ -24,20 +26,17 @@
                         {$cols = "16% 84%"} {* Account for image not displaying on first line. *}
                     {else}
                         {$cols = "9% 7% 84%"}
-                   {/if}
-                   <div id="qtyColumn" style="display:grid;grid-template-columns: {$cols};">
+                    {/if}
+                    <div id="qtyColumn" style="display:grid;grid-template-columns: {$cols};">
                         <a class="delete_link" id="delete_link{$line|htmlSafe}" href="#" title="{$LANG.deleteLineItem}"
                            {if $line == "0"}style="display:none;"{/if}
-                           data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}>
-                            <img id="delete_image{$line|htmlSafe}" class="margin__top-0-5"
-                                 src="images/delete_item.png" alt="{$LANG.deleteLineItem}"/>
-                        </a>
-                        <span>&nbsp;</span>
+                           data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}> <img id="delete_image{$line|htmlSafe}" class="margin__top-0-5"
+                                                                                                                       src="images/delete_item.png" alt="{$LANG.deleteLineItem}"/> </a> <span>&nbsp;</span>
                         <!--suppress HtmlFormInputWithoutLabel -->
-                       <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}" {if $line == 0}required{/if}
-                              class="align__text-right {if $line == 0}validate-quantity{/if}"
-                              {if $line == 0}required{/if} data-row-num="{$line|htmlSafe}"
-                               value='{$invoiceItem.quantity|utilNumberTrim}'/>
+                        <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}"
+                               class="align__text-right validateQuantity" {if $line == 0}required{/if}
+                               data-row-num="{$line|htmlSafe}" data-decimal-places="2"
+                               value='{$invoiceItem.quantity|utilNumberTrim:$invoice.precision:$invoice.locale}'/>
                     </div>
                 </div>
                 <div class="cols__2-span-4">
@@ -46,7 +45,7 @@
                     {else}
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="products{$line|htmlSafe}" id="products{$line|htmlSafe}"
-                                class="product_change width_100 margin__left-0-5" {if $line == 0}required{/if}
+                                class="width_100 margin__left-0-5 productChange" {if $line == 0}required{/if}
                                 data-row-num="{$line|htmlSafe}" data-description="{$LANG.descriptionUc}"
                                 data-product-groups-enabled="{$defaults.product_groups}">
                             {foreach $products as $product}
@@ -75,9 +74,10 @@
                 {/section}
                 <div class="cols__{$begCol}-span-1">
                     <!--suppress HtmlFormInputWithoutLabel -->
-                    <input type="text" class="align__text-right margin__left-1" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}" size="9"
+                    <input type="text" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}"
+                           class="align__text-right margin__left-1 validateNumber" size="9"
                            {if $line == "0"}required{/if} data-row-num="{$line|htmlSafe}"
-                           value="{$invoiceItem.unit_price|utilNumber}"/>
+                           value="{$invoiceItem.unit_price|utilNumber:$invoice.precision:$invoice.locale}"/>
                 </div>
             </div>
 
@@ -90,8 +90,7 @@
                 {if $invoiceItem.product.enabled == $smarty.const.ENABLED}
                     {if $prodAttrVal.type == 'list'}
                         <div class="cols__{$begCol}-span-2">
-                            <label for="list{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label>
-                            <select name="attribute{$line}[{$prodAttrVal.id}]" id="list{$line}{$prodAttrVal.id}">
+                            <label for="list{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <select name="attribute{$line}[{$prodAttrVal.id}]" id="list{$line}{$prodAttrVal.id}">
                                 <option value=""></option>
                                 {foreach $prodAttrVal.attrVals as $key => $val}
                                     {if $prodAttrVal.enabled == $smarty.const.ENABLED}
@@ -117,9 +116,8 @@
                             {/if}
                         {/foreach}
                         <div class='cols__{$begCol}-span-2'>
-                            <label for="free{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label>
-                            <input type="text" name="attribute{$line}[{$prodAttrVal.id}]"
-                                   id="free{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
+                            <label for="free{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <input type="text" name="attribute{$line}[{$prodAttrVal.id}]"
+                                                                                                                   id="free{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
                         </div>
                         {$begCol = $begCol + 2}
                     {elseif $prodAttrVal.type == 'decimal'}
@@ -131,9 +129,8 @@
                             {/if}
                         {/foreach}
                         <div class='cols__{$begCol}-span-2'>
-                            <label for="decimal{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label>
-                            <input type="text" name="attribute{$line}[{$prodAttrVal.id}]" size="5"
-                                   id="decimal{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
+                            <label for="decimal{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <input type="text" name="attribute{$line}[{$prodAttrVal.id}]" size="5"
+                                                                                                                      id="decimal{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
                         </div>
                         {$begCol = $begCol + 2}
                     {/if}
@@ -175,10 +172,11 @@
         {if !isset($preferences) }
             <em>{$LANG.noPreferences}</em>
         {else}
-            <select name="preference_id" id="preferenceId">
+            <select name="preference_id" id="preferenceId" class="invoicePreference">
                 {foreach $preferences as $preference}
                     <option {if $preference.pref_id == $invoice.preference_id} selected {/if}
-                            value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">{$preference.pref_description|htmlSafe}</option>
+                            data-locale="{$preference.locale}" data-currency-code="{$preference.currency_code}"
+                            value="{$preference.pref_id|htmlSafe}">{$preference.pref_description|htmlSafe}</option>
                 {/foreach}
             </select>
         {/if}

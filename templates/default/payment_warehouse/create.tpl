@@ -21,16 +21,20 @@
         <div class="grid__area">
             <div class="grid__container grid__head-10">
                 <label for="customerId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.customerUc}:</label>
-                <select name="customer" id="customerId" class="cols__5-span-4" required tabindex="20">
-                    <option value="" selected></option>
+                <select name="customer" id="customerId" class="cols__5-span-4 changePaymentWarehouseCustomer" required tabindex="20">
+                    <option value="" data-locale="{$config.localLocale}" data-currency-code="{$config.localCurrencyCode}"
+                            selected></option>
                     {foreach $customers as $customer}
-                        <option value="{$customer.id}">{$customer.name}</option>"
+                        <option value="{$customer.id}" data-locale="{$customer.locale}"
+                                data-currency-code="{$customer.currency_code}">{$customer.name}</option>"
                     {/foreach}
                 </select>
             </div>
+            <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+            <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
             <div class="grid__container grid__head-10">
                 <label for="balanceId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.balanceUc}:</label>
-                <input type="text" name="balance" id="balanceId" class="cols__5-span-2" required size="20" tabindex="30"/>
+                <input type="text" name="balance" id="balanceId" class="cols__5-span-2 validateNumber" required size="20" tabindex="30"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="pymtTypeId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.paymentType}:</label>

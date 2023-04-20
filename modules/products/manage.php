@@ -10,8 +10,7 @@ global $smarty;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$defaults = SystemDefaults::loadValues();
-$smarty->assign("defaults", $defaults);
+$smarty->assign("defaults", SystemDefaults::loadValues());
 
 $products = Product::manageTableInfo();
 $data = json_encode(['data' => mb_convert_encoding($products, 'UTF-8')]);

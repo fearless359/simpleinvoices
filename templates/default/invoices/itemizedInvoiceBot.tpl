@@ -17,10 +17,12 @@
         {if !isset($preferences) }
             <em>{$LANG.noPreferences}</em>
         {else}
-            <select name="preference_id" id="preferenceId">
+            <select name="preference_id" id="preferenceId" class="invoicePreference"
+                    data-curr-pref-id="{$defaults.preference}">
                 {foreach $preferences as $preference}
                     <option {if $preference.pref_id == $defaults.preference}selected{/if}
-                            value="{if isset($preference.pref_id)}{$preference.pref_id|htmlSafe}{/if}">{$preference.pref_description|htmlSafe}</option>
+                            data-locale="{$preference.locale}" data-currency-code="{$preference.currency_code}"
+                            value="{$preference.pref_id|htmlSafe}">{$preference.pref_description|htmlSafe}</option>
                 {/foreach}
             </select>
         {/if}

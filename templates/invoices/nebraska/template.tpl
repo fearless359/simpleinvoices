@@ -236,7 +236,7 @@
                     <th class="clean center bleft bdown">{$LANG.item}</th>
                     <th class="clean center bleft bdown">{$LANG.productsUc}</th>
                     <th class="clean center bleft bdown">{$LANG.unitOfMeasurement}</th>
-                    <th class="clean center bleft bdown">{$LANG.quantity}</th>
+                    <th class="clean center bleft bdown">{$LANG.quantityUc}</th>
                     <th class="clean center bleft bdown">{$LANG.productUnitPrice}</th>
                     <th class="clean center bleft bdown">{$LANG.productValue}</th>
                   {/if}

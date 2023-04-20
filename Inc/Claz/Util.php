@@ -167,7 +167,7 @@ class Util
             if ($width > $maxWidth || $height > $maxHeight) {
                 $wp = $maxWidth / $width;
                 $hp = $maxHeight / $height;
-                $percent = $wp > $hp ? $hp : $wp;
+                $percent = min($wp, $hp);
                 $imgWidth = $width * $percent;
                 $imgHeight = $height * $percent;
             }
@@ -214,12 +214,12 @@ class Util
      * Format numbers.
      * Note: This is a wrapper for the <b>NumberFormatter</b> function.
      * @param string|int|float $number Number to be formatted
-     * @param int|null $precision Decimal precision.
+     * @param string|int|null $precision Decimal precision.
      * @param string $locale Locale the number is to be formatted for.
      * @return string Formatted number.
      * @noinspection DuplicatedCode
      */
-    public static function number($number, ?int $precision = null, string $locale = ""): string
+    public static function number($number, $precision = null, string $locale = ""): string
     {
         global $config;
 
@@ -227,8 +227,10 @@ class Util
             $locale = $config['localLocale'];
         }
 
-        if (!isset($precision)) {
-            $precision = $config['localPrecision'];
+        $precision = intval($precision ?? $config['localPrecision']);
+
+        if (is_string($number)) {
+            $number = floatval($number);
         }
 
         $numberFormatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);
@@ -364,37 +366,26 @@ class Util
     /**
      * Convert a localized number back to the format stored in the database.
      * @param string $number
+     * @param string|null $locale
      * @return string Number formatted for database storage (ex: 12.345,67 converts to 12345.67)
      */
-    public static function dbStd(string $number): string
+    public static function dbStd(string $number, ?string $locale=null): string
     {
         global $config;
 
-        $locale = $config['localLocale'];
-        $currencyCode = $config['localCurrencyCode'];
-        $precision = $config['localPrecision'];
+        // Use the provided locale or if none, the locale in the custom.config.ini file.
+        $locale = $locale ?? $config['localLocale'];
 
-        $typeCurrency = false;
-        $parts = str_split($number);
-        foreach($parts as $item) {
-            if (preg_match('/[^\-,.0-9]/', $item)) {
-                $typeCurrency = true;
-                break;
-            }
-        }
+        $fmtr = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
-        $formatterType = $typeCurrency ? NumberFormatter::CURRENCY :NumberFormatter::DECIMAL;
+        // Get the group separator character and decimal point character for
+        // the provided locale.
+        $group = $fmtr->getSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
+        $decimalPoint = $fmtr->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
-        $numberFormatter = new NumberFormatter($locale, $formatterType);
-        $numberFormatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
-
-        if ($typeCurrency) {
-            $formattedNumber = $numberFormatter->parseCurrency($number, $currencyCode);
-        } else {
-            $formattedNumber = $numberFormatter->parse($number);
-        }
-
-        return empty($formattedNumber) ? '0' : $formattedNumber;
+        // Remove group separators and change decimal point to period
+        $stdNum = str_replace([$group, $decimalPoint], ['', '.'], $number);
+        return empty($stdNum) ? '0' : $stdNum;
     }
 
     /**
@@ -428,11 +419,14 @@ class Util
 
     /**
      * Make sure $str is properly encoded for html display.
-     * @param string|int $str String to make safe.
+     * @param null|string|int $str String to make safe.
      * @return string Safe string for html display.
      */
     public static function htmlSafe($str): string
     {
+        if (!isset($str)) {
+            return '';
+        }
         return htmlentities($str, ENT_QUOTES, 'UTF-8');
     }
 
@@ -494,7 +488,7 @@ class Util
     /**
      * @param string $action 'set' to set the current time. 'report' to
      *          report the elapsed time.
-     * @param string Descriptive label to the break.
+     * @param string $label Descriptive label to the break.
      * @return string;
      */
     public static function timer(string $action, string $label): string
@@ -507,7 +501,6 @@ class Util
         } elseif ($action == 'report') {
             $label = empty($label) ? 'End' : $label;
             self::$timeBreaks[] = [$label, microtime(true)];
-            $result = '';
             for ($ndx = 1; $ndx < count(self::$timeBreaks); $ndx++) {
                 $cur = self::$timeBreaks[$ndx];
                 $curLabel = $cur[0];

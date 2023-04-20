@@ -7,6 +7,7 @@
     </div>
 </div>
 {$smarty.capture.hook_body_end}
+<!--suppress JSUnresolvedReference -->
 <script>
     $(document).ready(function () {
         $(".tooltip").tooltipster({
@@ -19,24 +20,11 @@
             trigger      : 'hover'
         });
 
-        $("#frmpost").validate();
-
-        jQuery.validator.addClassRules("validate-date", {
-            dateISO: true
-        });
-
-        jQuery.validator.addClassRules("validate-number", {
-            number: true
-        });
-
-        jQuery.validator.addMethod("quantity", function(value) {
-            return /^\d*$|^\d*\.\d$|^\d*\.\d\d$|^-\d*$|^-\d*\.\d$|^-\d*\.\d\d$/.test(value);
-        }, "Enter a number with no more than two decimal places. Negative numbers are allowed.");
-
-        jQuery.validator.addClassRules("validate-quantity", {
-            quantity: true
+        $("#frmpost").submit(function (event) {
+            verifyErrorsResolved(event);
         });
     });
 </script>
+{include 'include/js/globalizedNumberValidator.js.tpl'}
 </body>
 </html>

@@ -22,7 +22,7 @@
         </div>
         <div class="grid__container grid__head-10">
             <label for="productId" class="cols__2-span-1 align__text-right">{$LANG.productUc}:&nbsp;</label>
-            <select name="product_id" id="productId" class="cols__3-span-2 product_inventory_change" required tabindex="20">
+            <select name="product_id" id="productId" class="cols__3-span-2 productInventoryChange" required tabindex="20">
                 <option value=''></option>
                 {foreach $product_all as $product}
                     <option value="{if isset($product.id)}{$product.id|htmlSafe}{/if}"
@@ -30,14 +30,16 @@
                 {/foreach}
             </select>
         </div>
+        <input type="hidden" name="locale" id="localeId" value="{$inventory.locale}">
+        <input type="hidden" name="currency_code" id="currencyCodeId" value="{$inventory.currency_code}">
         <div class="grid__container grid__head-10">
-            <label for="quantityId" class="cols__2-span-1 align__text-right">{$LANG.quantity}:&nbsp;</label>
-            <input name="quantity" id="quantityId" class="cols__3-span-1" required size="10" tabindex="30"
-                   value='{$inventory.quantity|utilNumberTrim}'>
+            <label for="quantityId" class="cols__2-span-1 align__text-right">{$LANG.quantityUc}:&nbsp;</label>
+            <input name="quantity" id="quantityId" class="cols__3-span-1 validateWholeNumber"
+                   required size="10" tabindex="30" value='{$inventory.quantity|utilNumberTrim:0}'>
         </div>
         <div class="grid__container grid__head-10">
             <label for="cost" class="cols__2-span-1 align__text-right">{$LANG.costUc}:&nbsp;</label>
-            <input name="cost" id="cost" class="cols__3-span-2" required size="10" tabindex="40"
+            <input name="cost" id="cost" class="cols__3-span-2 validateNumber" required size="10" tabindex="40"
                    value='{$inventory.cost|utilNumber}'>
         </div>
         <div class="grid__container grid__head-10">

@@ -25,7 +25,7 @@
                 </select>
             </div>
             <div class="grid__container grid__head-10">
-                <label for="nameId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.value}:</label>
+                <label for="nameId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.valueUc}:</label>
                 <input type="text" name="value" id="nameId" class="cols__5-span-2" required
                        {if isset($smarty.post.value)}value="{$smarty.post.value}"{/if} size="25"/>
             </div>

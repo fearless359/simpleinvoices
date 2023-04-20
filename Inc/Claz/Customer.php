@@ -165,7 +165,7 @@ class Customer
      * @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection*/
     private static function getCustomers(array $params): array
     {
-        global $LANG, $pdoDb;
+        global $config, $LANG, $pdoDb;
 
         // formatter:off
         $id             = $params['id']            ?? null;
@@ -213,6 +213,14 @@ class Customer
 
             $rows = $pdoDb->request("SELECT", "customers");
             foreach ($rows as $row) {
+                if (empty($row['default_invoice'])) {
+                    $row['locale'] = $config['localLocale'];
+                    $row['currency_code'] = $config['localCurrencyCode'];
+                } else {
+                    $defaultInvoice = Invoice::getOne($row['default_invoice']);
+                    $row['locale'] = $defaultInvoice['locale'];
+                    $row['currency_code'] = $defaultInvoice['currency_code'];
+                }
                 if ($notInWarehouse) {
                     $pw = PaymentWarehouse::getOne($row['id'], 1);
                     if (!empty($pw)) {

@@ -25,13 +25,17 @@
                 <input type="text" name="tax_description" id="descId" class="cols__5-span-3" required size="35" tabindex="10"
                        value="{if isset($smarty.post.tax_description)}{$smarty.post.tax_description|htmlSafe}{/if}"/>
             </div>
+            <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+            <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
+            <input type="hidden" name="precision" id="precisionId" value="{$config.localPrecision}">
             <div class="grid__container grid__head-10">
                 <label for="percentageId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.rateUc}:
                     <img class="tooltip" title="{$LANG.helpTaxRateSign}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="tax_percentage" id="percentageId" class="cols__5-span-1" size="25" tabindex="20"
+                <input type="text" name="tax_percentage" id="percentageId" size="25" tabindex="20"
+                       class="cols__5-span-1 validateNumber adjustTaxSign"
                        value="{if isset($smarty.post.tax_percentage)}{$smarty.post.tax_percentage|htmlSafe}{/if}"/>
-                {html_options name=type class="cols__6-span-1 margin__left-1" options=$types selected=$types tabindex=30}
+                {html_options name=type class="cols__6-span-1 margin__left-1 checkTaxPercentage" id="typeId" options=$types tabindex=30}
                 <span class="cols__7-span-2 margin__left-1 margin__top-0-5">{$LANG.ie10For10}</span>
             </div>
             <div class="grid__container grid__head-10">

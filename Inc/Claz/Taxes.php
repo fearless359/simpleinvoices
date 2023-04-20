@@ -2,6 +2,8 @@
 
 namespace Inc\Claz;
 
+use NumberFormatter;
+
 /**
  * Class Taxes
  * @package Inc\Claz
@@ -58,8 +60,13 @@ class Taxes
                 "<img src='$image' alt='{$row['enabled_text']}' title='{$row['enabled_text']}' />";
 
             $percentage = round($row['tax_percentage'], 2);
-            $type = $row['type'];
-            $rate = $type == '%' ? $percentage . $type : $type . $percentage;
+            if ($percentage == 0) {
+                $rate = 0;
+            } elseif ($row['type'] == '%') {
+                $rate = $percentage . $row['type'];
+            } else {
+                $rate = Util::currency($percentage);
+            }
 
             $tableRows[] = [
                 'action' => $action,
@@ -88,7 +95,7 @@ class Taxes
      */
     private static function getTaxes(?int $id = null, bool $activeOnly = false): array
     {
-        global $LANG, $pdoDb;
+        global $config, $LANG, $pdoDb;
 
         $taxes = [];
         try {
@@ -111,7 +118,21 @@ class Taxes
 
             $pdoDb->setOrderBy("tax_description");
 
-            $taxes = $pdoDb->request("SELECT", "tax");
+            $rows = $pdoDb->request("SELECT", "tax");
+
+            $symbol = NumberFormatter::create(
+                $config['localLocale'],
+                NumberFormatter::CURRENCY
+            )->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+
+            foreach ($rows as $row) {
+                if ($row['tax_percentage'] == 0) {
+                    $row['type'] = '';
+                } elseif ($row['type'] != '%') {
+                    $row['type'] = $symbol;
+                }
+                $taxes[] = $row;
+            }
         } catch (PdoDbException $pde) {
             error_log("Taxes::getAll() - error: " . $pde->getMessage());
         }
@@ -129,7 +150,15 @@ class Taxes
      */
     public static function getTaxTypes(): array
     {
-        return ['%' => '%', '$' => '$'];
+        global $config;
+
+        $locale = str_replace('_', '-', $config['localLocale']);
+        $symbol = NumberFormatter::create(
+            $locale,
+            NumberFormatter::CURRENCY
+        )->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+
+        return ['' => '', '%' => '%', $symbol => $symbol];
     }
 
     /**
@@ -138,7 +167,7 @@ class Taxes
      */
     public static function getDefaultTax(): array
     {
-        global $pdoDb;
+        global $config, $pdoDb;
 
         try {
             $pdoDb->addSimpleWhere("s.name", "tax", "AND");
@@ -153,7 +182,26 @@ class Taxes
         } catch (PdoDbException $pde) {
             error_log("Taxes::getDefaultTax() - error: " . $pde->getMessage());
         }
-        return empty($rows) ? [] : $rows[0];
+
+        if (empty($rows)) {
+            return [];
+        }
+
+        $locale = str_replace('_', '-', $config['localLocale']);
+        $symbol = NumberFormatter::create(
+            $locale,
+            NumberFormatter::CURRENCY
+        )->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+
+        $taxes = $rows[0];
+        $taxes['locale'] = $locale;
+        if ($taxes['tax_percentage'] == 0) {
+            $taxes['type'] = '';
+        } elseif ($taxes['type'] != '%') {
+            $taxes['type'] = $symbol;
+        }
+
+        return $taxes;
     }
 
     /**
@@ -188,7 +236,7 @@ class Taxes
             $pdoDb->setFauxPost(['domain_id' => DomainId::get(),
                 'tax_description' => $_POST['tax_description'],
                 'tax_percentage' => $_POST['tax_percentage'],
-                'type' => $_POST['type'],
+                'type' => empty($_POST['tax_percentage']) ? '' : $_POST['type'],
                 'tax_enabled' => $_POST['tax_enabled']
             ]);
             $result = $pdoDb->request("INSERT", "tax");
@@ -212,7 +260,7 @@ class Taxes
             $pdoDb->setFauxPost([
                 'tax_description' => $_POST['tax_description'],
                 'tax_percentage'  => $_POST['tax_percentage'],
-                'type'            => $_POST['type'],
+                'type'            => empty($_POST['tax_percentage']) ? '' : $_POST['type'],
                 'tax_enabled'     => $_POST['tax_enabled']
             ]);
             // @formatter:on

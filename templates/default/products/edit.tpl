@@ -22,23 +22,27 @@
             <input type="text" name="description" id="description" class="cols__4-span-5" required size="50" tabindex="10"
                    value="{if isset($product.description)}{$product.description|htmlSafe}{/if}"/>
         </div>
+        <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+        <input type="hidden" name="currency-code=" id="currencyCodeId" value="{$config.localCurrencyCode}">
         <div class="grid__container grid__head-10">
             <label for="unitPriceId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.productUnitPrice}:</label>
-            <input type="text" name="unit_price" id="unitPriceId" class="cols__4-span-2" size="25" tabindex="20"
-                   value="{$product.unit_price|utilNumberTrim}"/>
+            {* Note: utilNumber with no parms uses configuration values to format number which is what we want. *}
+            <input type="text" name="unit_price" id="unitPriceId" class="cols__4-span-2 validateNumber"
+                   size="25" tabindex="20" value="{$product.unit_price|utilNumber}"/>
         </div>
         {if $defaults.inventory == $smarty.const.ENABLED}
             <div class="grid__container grid__head-10">
                 <label for="costId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.costUc}:
                     <img class="tooltip" title="{$LANG.helpCost}" src="{$helpImagePath}help-small.png" alt=""/>
                 </label>
-                <input type="text" name="cost" id="costId" class="cols__4-span-2" size="25" tabindex="30"
-                       value="{$product.cost|utilNumber}"/>
+                <input type="text" name="cost" id="costId" class="cols__4-span-2 validateNumber"
+                       size="25" tabindex="30" value="{$product.cost|utilNumber}"/>
             </div>
             <div class="grid__container grid__head-10">
                 <label for="reorderLevelId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.reorderLevel}:</label>
-                <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2" size="25" tabindex="40"
-                       value="{if isset($product.reorder_level)}{$product.reorder_level|htmlSafe}{/if}"/>
+                <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2 validateWholeNumber"
+                       size="25" tabindex="40"
+                       value="{if isset($product.reorder_level)}{$product.reorder_level|utilNumberTrim:0}{/if}"/>
             </div>
         {/if}
         <div class="grid__container grid__head-10">

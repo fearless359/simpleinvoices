@@ -39,6 +39,7 @@
     </div>
 </div>
 {* section for sub_customer *}
+{if ($defaults.sub_customer)}
 <div class="grid__container grid__head-10">
     <label for="subCustId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.subCustomer}:</label>
     <div class="cols__5-span-3">
@@ -55,6 +56,7 @@
         </select>
     </div>
 </div>
+{/if}
 <div class="grid__container grid__head-10">
     <label for="date1" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
     <div class="cols__5-span-1">

@@ -89,7 +89,7 @@ class Inventory
      */
     private static function getInventories(?int $inv_id = null): array
     {
-        global $LANG, $pdoDb;
+        global $config, $LANG, $pdoDb;
 
         $inventories = [];
         try {
@@ -123,6 +123,10 @@ class Inventory
             foreach ($rows as $row) {
                 $row['vname'] = $LANG['view'] . ' ' . $row['id'];
                 $row['ename'] = $LANG['edit'] . ' ' . $row['id'];
+
+                $row['locale'] = $config['localLocale'];
+                $row['currency_code'] = $config['localCurrencyCode'];
+
                 $inventories[] = $row;
             }
         } catch (PdoDbException $pde) {

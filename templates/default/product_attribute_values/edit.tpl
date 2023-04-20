@@ -12,7 +12,7 @@
             </select>
         </div>
         <div class="grid__container grid__head-10">
-            <label for="valueId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.value}:</label>
+            <label for="valueId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.valueUc}:</label>
             <input type="text" name="value" id="valueId" class="cols__5-span-2" size="50" tabindex="20"
                        value="{$product_attribute_values.value}"/>
         </div>

@@ -24,7 +24,7 @@
         <div class="cols__6-span-3">{$inventory.date|htmlSafe}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.quantity}:</div>
+        <div class="cols__5-span-1 bold">{$LANG.quantityUc}:</div>
         <div class="cols__6-span-3">{$inventory.quantity|utilNumberTrim}</div>
     </div>
     <div class="grid__container grid__head-10">

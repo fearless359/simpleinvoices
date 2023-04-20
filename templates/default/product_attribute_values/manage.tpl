@@ -24,7 +24,7 @@
         <tr>
             <th class="align__text-center">{$LANG.actions}</th>
             <th>{$LANG.attribute}</th>
-            <th>{$LANG.value}</th>
+            <th>{$LANG.valueUc}</th>
             <th class="align__text-center">{$LANG.enabled}</th>
         </tr>
         </thead>
