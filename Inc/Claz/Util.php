@@ -214,13 +214,13 @@ class Util
     /**
      * Format numbers.
      * Note: This is a wrapper for the <b>NumberFormatter</b> function.
-     * @param string|int|float $number Number to be formatted
-     * @param string|int|null $precision Decimal precision.
+     * @param float|int|string|null $number Number to be formatted
+     * @param int|null $precision Decimal precision.
      * @param string $locale Locale the number is to be formatted for.
      * @return string Formatted number.
      * @noinspection DuplicatedCode
      */
-    public static function number($number, $precision = null, string $locale = ""): string
+    public static function number(float|int|string|null $number, ?int $precision = null, string $locale = ""): string
     {
         global $config;
 
@@ -455,7 +455,7 @@ class Util
      * @param null|string|int $str String to make safe.
      * @return string Safe string for html display.
      */
-    public static function htmlSafe(int|string $str): string
+    public static function htmlSafe(int|string|null $str): string
     {
         if (!isset($str)) {
             return '';

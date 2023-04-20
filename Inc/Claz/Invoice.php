@@ -700,7 +700,7 @@ class Invoice
      * @throws PdoDbException
      */
     public static function insertInvoiceItem(int $invoiceId, float $quantity, int $productId, array $taxIds,
-                                             string $description, float $unitPrice, ?array $attribute): int
+                                             string $description, float $unitPrice, ?array $attribute = null): int
     {
         global $LANG;
 
@@ -806,7 +806,7 @@ class Invoice
      * @throws PdoDbException
      */
     public static function updateInvoiceItem(int $id, float $quantity, int $productId, array $taxIds,
-                                             string $description, float $unitPrice, ?array $attribute): void
+                                             string $description, float $unitPrice, ?array $attribute = null): void
     {
         global $LANG, $pdoDb;
 

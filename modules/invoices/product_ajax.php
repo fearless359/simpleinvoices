@@ -8,10 +8,8 @@ use Inc\Claz\Util;
 
 global $pdoDb;
 
-session_name(SESSION_NAME);
-session_start();
-
-$id = $_GET['id'] ?? '';
+$rowId = Util::htmlSafe($_GET['row']);
+$id = $_GET['id'];
 if (!empty($id)) {
     $rowId = Util::htmlSafe($_GET['row']);
     $locale = $_GET['locale'] ?? 'en_US';

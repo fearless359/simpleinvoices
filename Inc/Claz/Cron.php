@@ -992,7 +992,7 @@ class Cron
      * @param int|string $id of cron_invoice_items record to delete.
      * @return bool true if delete processed, false if not.
      */
-    public static function deleteCronInvoiceItem($id): bool
+    public static function deleteCronInvoiceItem(int|string $id): bool
     {
         global $pdoDb;
 
