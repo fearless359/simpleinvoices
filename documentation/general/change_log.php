@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-04-20 - <strong>2023.0.0</strong>
+                <ul>
+                    <li>Updated to run on PHP 8.1 and above. This is a requirement.</li>
+                    <li>Added template function for International Dates. See Template Date Formatting topic on
+                        SimpleInvoice.group forum.</li>
+                </ul>
+            </li>
             <li>2022-12-20 - <strong>2020.4.6</strong>
                 <ul>
                     <li>Added need to verify db user's access to server in &quot;Initial setup&quot; message.</li>

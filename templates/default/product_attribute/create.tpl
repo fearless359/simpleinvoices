@@ -25,7 +25,7 @@
                 <label for="typeId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.type}:</label>
                 <select name="type_id" id="typeId" class="cols__5-span-1">
                     {foreach $types as $k => $v}
-                        <option value="{if isset($v.id)}{$v.id}{/if}">{$LANG[$v.name]}</option>
+                        <option value="{if isset($v.id)}{$v.id}{/if}">{$LANG[$v.name]|capitalize}</option>
                     {/foreach}
                 </select>
             </div>

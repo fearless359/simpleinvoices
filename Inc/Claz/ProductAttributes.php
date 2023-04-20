@@ -59,18 +59,19 @@ class ProductAttributes
                   "</a>";
 
             $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
-            $enabled = "<span style='display:none'>{$row['enabled_text']}</span>" .
+
+            $enabled = "<span style='display:none'>{$row['enabledText']}</span>" .
                        "<img src='$image' alt='{$LANG['enabled']}'>";
 
             $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
-            $visible = "<span style='display:none'>{$row['visible_text']}</span>" .
+            $visible = "<span style='display:none'>{$row['visibleText']}</span>" .
                        "<img src='$image' alt='{$LANG['enabled']}'>";
 
 
-                $tableRows[] = [
+            $tableRows[] = [
                 'action' => $action,
                 'name' => $row['name'],
-                'typeName' => ucwords($row['type_name']),
+                'typeName' => ucwords($row['typeName']),
                 'enabled' => $enabled,
                 'visible' => $visible
             ];
@@ -95,10 +96,10 @@ class ProductAttributes
             $pdoDb->setSelectList([
                 new DbField('pa.id', 'id'),
                 new DbField('pa.name', 'name'),
-                new DbField('pa.type_id', 'typeId'),
+                new DbField('pa.type_id', 'type_id'),
                 new DbField('pa.enabled', 'enabled'),
                 new DbField('pa.visible', 'visible'),
-                new DbField('pat.name', 'type')
+                new DbField('pat.name', 'typeName')
             ]);
 
             $connector = isset($id) && $enabled ? 'AND' : '';

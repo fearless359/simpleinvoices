@@ -13,8 +13,6 @@ Util::allowDirectAccess();
 
 $menu = true;
 
-session_name(SESSION_NAME);
-session_start();
-//session_unset();
-session_destroy();
+Util::destroyOldAndStartNewSession();
+
 header('Location: .');

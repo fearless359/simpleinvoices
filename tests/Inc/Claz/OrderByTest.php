@@ -22,8 +22,7 @@ class OrderByTest extends TestCase
         $ob = new OrderBy('enable_txt', 'D');
         try {
             $ob->addField('id', 'D');
-            /** @noinspection PhpRedundantOptionalArgumentInspection */
-            $ob->addField('name', 'A');
+            $ob->addField('name');
         } catch (PdoDbException $pde) {
             self::fail("testOrderByClass() Unexpected error thrown for addFields. Error: {$pde->getMessage()}");
         }

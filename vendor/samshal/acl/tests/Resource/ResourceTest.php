@@ -6,12 +6,13 @@
  */
 namespace Samshal\Acl\Test\Resource;
 
+use PHPUnit\Framework\TestCase;
 use Samshal\Acl\Resource\DefaultResource as Resource;
 
 /**
  * class ResourceTest.
  */
-class ResourceTest extends \PHPUnit_Framework_TestCase
+class ResourceTest extends TestCase
 {
     public function testNewResourceReturnStringName()
     {

@@ -8,9 +8,6 @@ use Inc\Claz\Util;
 
 global $pdoDb;
 
-session_name(SESSION_NAME);
-session_start();
-
 $rowId = Util::htmlSafe($_GET['row']);
 $id = $_GET['id'];
 if (!empty($id)) {
@@ -102,8 +99,6 @@ if (!empty($id)) {
         $output['notes_as_description'] = $row['notes_as_description'] ?? "N";
         $output['show_description']     = $row['show_description'] ?? "N";
         // @formatter:on
-    } else {
-        $output .= '';
     }
 
     echo json_encode($output);

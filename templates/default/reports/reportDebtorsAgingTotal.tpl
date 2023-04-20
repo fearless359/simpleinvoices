@@ -2,7 +2,7 @@
 {include file=$path|cat:"library/exportButtons.tpl"
 		 params=[
 		     'fileName' => "reportDebtorsAgingTotal",
-		     'title' => $title|urlencode
+		     'title' => $title|urlEncode
 		 ]
 }
 {include file=$path|cat:"reportDebtorsAgingTotalBody.tpl"}

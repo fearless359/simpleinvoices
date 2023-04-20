@@ -30,7 +30,7 @@ $smarty->assign('title', $LANG["monthlySalesPerYear"]);
 $smarty->assign('pageActive', 'report');
 $smarty->assign('activeTab', '#home');
 if (!isset($menu)) {
-    $menu = true;
+    $menu = true; // Causes menu section of report gen page to display.
 }
 $smarty->assign('menu', $menu);
 $smarty->assign('showReportExportButtons', true);

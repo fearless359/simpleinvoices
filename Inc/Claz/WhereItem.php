@@ -9,7 +9,7 @@ namespace Inc\Claz;
 class WhereItem
 {
     private const CONNECTORS = '/^(AND|OR)$/';
-    private const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|REGEXP|IS NULL|IS NOT NULL|REGEXP)$/';
+    private const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|IS NULL|IS NOT NULL|REGEXP)$/';
 
     private bool $closeParen;
     private string $connector;
@@ -17,10 +17,7 @@ class WhereItem
     private bool $openParen;
     private string $operator;
     private string $token;
-    /**
-     * @var array|DbField|int|string
-     */
-    private $value;
+    private string|int|array|DbField $value;
 
     /**
      * Class constructor
@@ -32,14 +29,14 @@ class WhereItem
      *        content test against the <b>$value</b> parameter. Allowed operators:
      *          <b>=</b>, <b><></b>, <b><</b>, <b>></b>, <b><=</b> and <b>>=</b>,
      *          <b>BETWEEN</b>, <b>LIKE</b>, <b>IN</b>, <b>IS</b>, <b>IS NOT</b>, <b>REGEXP</b>
-     * @param array|string|int|DbField $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginVal,endVal)</b>.
+     * @param array|int|string|DbField $value Value to use in the test. Note for <b>BETWEEN</b> this will be: <b>array(beginVal,endVal)</b>.
      * @param bool $closeParen Set to <b>true</b> if a closing parenthesis should be
      *        inserted after this term; otherwise set to <b>false</b>.
      * @param string $connector The "AND" or "OR" connector if additional terms will be
      *        clause. Optional parameter.
      * @throws PdoDbException If an invalid operator or connector is found.
      */
-    public function __construct(bool $openParen, string $field, string $operator, $value, bool $closeParen, string $connector = "")
+    public function __construct(bool $openParen, string $field, string $operator, DbField|array|int|string $value, bool $closeParen, string $connector = "")
     {
         $this->openParen = $openParen;
         $this->field = $field;

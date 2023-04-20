@@ -11,11 +11,7 @@ class FunctionStmt
     private const OPERATORS = '/^(-|\+|\*|\/)$/';
 
     private ?string $function;
-
-    /**
-     * @var DbField|string
-     */
-    private $parameter;
+    private DbField|string $parameter;
     private string $alias;
     private array $parts;
 
@@ -26,7 +22,7 @@ class FunctionStmt
      *        "SUM(amount)" or "amount" or can be a DbField.
      * @param string $alias (Optional) Name to assign to the function result.
      */
-    public function __construct(?string $function, $parameter, string $alias = "")
+    public function __construct(?string $function, DbField|string $parameter, string $alias = "")
     {
         $this->function = $function;
         $this->parameter = $parameter;
@@ -37,10 +33,10 @@ class FunctionStmt
     /**
      * Add another part of the function.
      * @param string $operator Math operator value is <b>+</b>, <b>-</b>, <b>*</b> or <b>/</b>.
-     * @param DbField|object|string $part
+     * @param object|string $part
      * @throws PdoDbException if an invalid <b>$operator</b> is specified.
      */
-    public function addPart(string $operator, $part): void
+    public function addPart(string $operator, object|string $part): void
     {
         if (!preg_match(self::OPERATORS, $operator)) {
             $str = "FunctionStmt - addPart(): Invalid operator, $operator.";

@@ -122,7 +122,7 @@ if ($op == "create" ) {
 
                     //new line item added in edit page
                     $item = $_POST["line_item$idx"] ?? "";
-                    $qty = isset($_POST["quantity$idx"]) ? Util::dbStd($_POST["quantity$idx"]) : "";
+                    $qty = Util::dbStd($_POST["quantity$idx"]);
                     $product = $_POST["products$idx"] ?? "";
                     $desc = $_POST["description$idx"] ?? "";
                     $price = isset($_POST["unit_price$idx"]) ? Util::dbStd($_POST["unit_price$idx"]) : "";

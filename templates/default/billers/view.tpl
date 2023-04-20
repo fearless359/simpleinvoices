@@ -112,12 +112,12 @@
         </div>
     {/if}
     <div class="grid__container grid__head-10">
-        <div class="cols__2-span-2 bold align__text-right margin__right-1">{$LANG.invoiceFooter}:</div>
-        <div class="cols__4-span-6">{$biller.footer|outHtml}</div>
+        <div class="cols__2-span-3 bold align__text-right margin__right-1">{$LANG.invoiceFooter}:</div>
+        <div class="cols__5-span-6">{$biller.footer|outHtml}</div>
     </div>
     <div class="grid__container grid__head-10">
-        <div class="cols__2-span-2 bold align__text-right margin__right-1">{$LANG.notes}:</div>
-        <div class="cols__4-span-6">{$biller.notes|outHtml}</div>
+        <div class="cols__2-span-3 bold align__text-right margin__right-1">{$LANG.notes}:</div>
+        <div class="cols__5-span-6">{$biller.notes|outHtml}</div>
     </div>
     <div class="grid__container grid__head-10">
         <div class="cols__2-span-3 bold align__text-right margin__right-1">{$LANG.enabled}:</div>

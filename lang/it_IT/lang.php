@@ -173,7 +173,7 @@ $LANG['enabled'] = "Abilitato";//1
 $LANG['endDate'] = "Data fine (AAAA-MM-GG)";//1
 $LANG['endDateShort'] = "Data fine";//1
 $LANG['eway'] = "Eway";//0
-$LANG['ewayCustomerId'] = "Eway customer ID";//0
+$LANG['ewayCustomerId'] = "Eway Customer ID";//0
 $LANG['ewayMerchantXml'] = "Eway merchant hosted XML";//0
 $LANG['exportAs'] = "Esporta come";//1
 $LANG['exportDoc'] = "Esporta come DOC";//1
@@ -221,7 +221,7 @@ $LANG['helpEmailCc'] = "Here you can specify any email address you want to CC bu
 $LANG['helpEmailFrom'] = "This field gets the default value from the Billers email address.  You can change this email address as you require but cannot add more than 1 email address in this field.";//0
 $LANG['helpEmailTo'] = "This field gets the default value from the Customers email address.  You can change this email address as you require<br /><br /><em>Note: You can add multiple email addresses here - just use a semi-colon, <strong>;</strong> to split the addresses.</em>";//0
 $LANG['helpInsertBillerText'] = "To select no logo please select '_default_blank_logo.png' from the list.<br /><br />To add additional logos into SimpleInvoices, copy the logo file into the logo directory in the SimpleInvoices folder.";//0
-$LANG['helpInvPrefCurrencySign'] = "This is the curreny symbol that will be used through-out the invoice. <br /><br /><b>Note:</b> Euro, Pound etc.. please use the html code for you currency sign in this field.  Refer to the list of html codes on the following website for your non $ currency sign <a href='https://www.ascii.cl/htmlcodes.htm' target='_blank'>https://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />This is required so that PDF can work correctly with non $ symbols<br /><br /> &#38;#163; is the html code for the Pound,<br /> &#38;#8364; for the Euro, etc..";//0
+$LANG['helpInvPrefCurrencySign'] = "This is the curreny symbol that will be used through-out the invoice. <br /><br /><b>Note:</b> Euro, Pound etc.. please use the html code for you currency sign in this field.  Refer to the list of html codes on the following website for your non $ currency sign <a href='https://www.ascii.cl/htmlcodes.htm' target='_blank'>https://www.ascii.cl/htmlcodes.htm</a>.  <br /><br />This is required so that PDF can work correctly with non $ symbols<br /><br /> &amp;<code>pound;</code> is the html code for the Pound,<br /> &amp;<code>euro;</code> for the Euro, etc..";//0
 $LANG['helpInvPrefDescription'] = "This is the name of the set of preference - it's not used on the invoice itself, just in the creation of the invoice when you select from the drop down list which Invoice Preference you wish to use.";//0
 $LANG['helpInvPrefInvoiceDetailHeading'] = "This is what will appear as the heading of the footer/details section of the invoice.";//0
 $LANG['helpInvPrefInvoiceDetailLine'] = "Questo è il testo che appare come dettaglio o piè di pagina. Di solito è usato per specificare le condizioni di pagamento ecc.";//1

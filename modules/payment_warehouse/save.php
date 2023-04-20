@@ -1,6 +1,7 @@
 <?php
 
 use Inc\Claz\PaymentWarehouse;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\Util;
 
 global $LANG, $smarty;
@@ -22,14 +23,18 @@ if (isset($_POST['savePaymentWarehouse'])) {
     $paymentType = $_POST['payment_type'] ?? 0;
     $checkNumber = $_POST['check_number'] ?? '';
 
-    if ($op === 'create') {
-        if (PaymentWarehouse::insert($customerId, null, $balance, $paymentType, $checkNumber)) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['savePaymentWarehouseSuccess']}</div>";
+    try {
+        if ($op === 'create') {
+            if (PaymentWarehouse::insert($customerId, null, $balance, $paymentType, $checkNumber)) {
+                $displayBlock = "<div class='si_message_ok'>{$LANG['savePaymentWarehouseSuccess']}</div>";
+            }
+        } elseif ($op === 'edit') {
+            if (PaymentWarehouse::update($id, $balance, $paymentType, $checkNumber)) {
+                $displayBlock = "<div class='si_message_ok'>{$LANG['savePaymentWarehouseSuccess']}</div>";
+            }
         }
-    } elseif ($op === 'edit') {
-        if (PaymentWarehouse::update($id, $balance, $paymentType, $checkNumber)) {
-            $displayBlock = "<div class='si_message_ok'>{$LANG['savePaymentWarehouseSuccess']}</div>";
-        }
+    } catch (PdoDbException $pde) {
+        error_log("payment_warehouse save.php - error: " . $pde->getMessage());
     }
 }
 

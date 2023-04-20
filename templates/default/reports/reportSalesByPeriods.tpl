@@ -3,7 +3,7 @@
          params=[
              'fileName' => "reportSalesByPeriods",
              'showRates' => "{$showRates}",
-             'title' => $title|urlencode
+             'title' => $title|urlEncode
         ]
 }
 {if $menu}

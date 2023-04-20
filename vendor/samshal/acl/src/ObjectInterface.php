@@ -11,7 +11,7 @@ namespace Samshal\Acl;
 /**
  * interface ObjectInterface.
  *
- * Any class that creates a new Object (a new Resouce, Role or Permission) must obey this contract.
+ * Any class that creates a new Object (a new Resource, Role or Permission) must obey this contract.
  *
  * @package samshal.acl
  * @author Samuel Adeshina <samueladeshina73@gmail.com>

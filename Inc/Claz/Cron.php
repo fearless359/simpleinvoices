@@ -668,7 +668,7 @@ class Cron
      * @param int $cronId to remove cron information for.
      * @throws PdoDbException thrown if issue arises.
      */
-    public static function deleteCronInvoiceItems(int $cronId)
+    public static function deleteCronInvoiceItems(int $cronId): void
     {
         global $config, $pdoDb;
 
@@ -989,12 +989,13 @@ class Cron
 
     /**
      * Deletes a specific cron_invoice_items record and its tax info from the database.
-     * @param int $id of cron_invoice_items record to delete.
+     * @param int|string $id of cron_invoice_items record to delete.
      * @return bool true if delete processed, false if not.
      */
-    public static function deleteCronInvoiceItem(int $id): bool
+    public static function deleteCronInvoiceItem(int|string $id): bool
     {
         global $pdoDb;
+
 
         try {
             $pdoDb->begin();

@@ -67,7 +67,7 @@
         </div>
         <div class="grid__container grid__head-10">
             <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.onlinePaymentId}:</div>
-            <div class="cols__5-span-2">{$payment.online_payment_id|htmlSafe}</div>
+            <div class="cols__5-span-2">{if isset($payment.online_payment)}{$payment.online_payment_id|htmlSafe}{/if}</div>
         </div>
         <div class="grid__container grid__head-10">
             <div class="cols__3-span-2 bold">{$LANG.notes}:</div>

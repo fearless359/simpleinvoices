@@ -1,4 +1,4 @@
-{if $fileType != 'xls' && $fileType != 'doc'}
+{if empty($fileType) || $fileType != 'xls' && $fileType != 'doc'}
     <link rel="shortcut icon" href="{$path}../../../images/favicon.ico"/>
     <link rel="stylesheet" href="{$path}../../../css/main.css">
 {/if}
@@ -16,8 +16,8 @@
         <th class="align__text-right">{$LANG.totalUc}</th>
         <th class="align__text-right">{$LANG.paidUc}</th>
         <th class="align__text-right">{$LANG.owingUc}</th>
-        <th class="align__text-center">{$LANG.date|htmlSafe|ucfirst}</th>
-        <th class="align__text-right">{$LANG.age|htmlSafe}</th>
+        <th class="align__text-center">{$LANG.dateUc}</th>
+        <th class="align__text-right">{$LANG.age}</th>
     </tr>
     </thead>
     <tbody>

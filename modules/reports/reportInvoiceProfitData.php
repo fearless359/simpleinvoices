@@ -41,7 +41,7 @@ try {
             $pdoDb->addSimpleWhere('invoice_id', $val['id'], 'AND');
             $pdoDb->addSimpleWhere('domain_id', DomainId::get());
             $rows = $pdoDb->request('SELECT', 'invoice_items');
-            $quantity = empty($rows) ? 0 : $rows[0]['quantity'];
+            $quantity = isset($rows[0]['quantity']) ?? 0;
 
             $pdoDb->addToFunctions('(SUM(cost * quantity) / SUM(quantity)) AS avg_cost');
             $pdoDb->addSimpleWhere('product_id', $pv['product_id'], 'AND');
@@ -54,9 +54,23 @@ try {
         $invoices[$key]['cost'] = $invoiceTotalCost;
         $invoices[$key]['profit'] = $invoices[$key]['total'] - $invoices[$key]['cost'];
 
-        $invoiceTotals['sumTotal'] += $invoices[$key]['total'];
-        $invoiceTotals['sumCost'] += $invoices[$key]['cost'];
-        $invoiceTotals['sumProfit'] += $invoices[$key]['profit'];
+        if (isset($invoiceTotals['sumTotal'])) {
+            $invoiceTotals['sumTotal'] += $invoices[$key]['total'];
+        } else {
+            $invoiceTotals['sumTotal'] = $invoices[$key]['total'];
+        }
+
+        if (isset($invoiceTotals['sumCost'])) {
+            $invoiceTotals['sumCost'] += $invoices[$key]['cost'];
+        } else {
+            $invoiceTotals['sumCost'] = $invoices[$key]['cost'];
+        }
+
+        if (isset($invoiceTotals['sumProfit'])) {
+            $invoiceTotals['sumProfit'] += $invoices[$key]['profit'];
+        } else {
+            $invoiceTotals['sumProfit'] = $invoices[$key]['profit'];
+        }
     }
 
     $smarty->assign('invoices'      , $invoices);

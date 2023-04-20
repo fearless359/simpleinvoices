@@ -1,14 +1,14 @@
 {include file=$path|cat:"library/reportTitle.tpl" title=$title}
 {include file=$path|cat:"library/exportButtons.tpl"
          params=[
-             'billerId' => $billerId|urlencode,
-             'customerId' => $customerId|urlencode,
-             'endDate' => $endDate|urlencode,
+             'billerId' => $billerId|urlEncode,
+             'customerId' => $customerId|urlEncode,
+             'endDate' => $endDate|urlEncode,
              'fileName' => "reportStatement",
-             'filterByDateRange' => $filterByDateRange|urlencode,
-             'includePaidInvoices' => $includePaidInvoices|urlencode,
-             'startDate' => $startDate|urlencode,
-             'title' => $title|urlencode
+             'filterByDateRange' => $filterByDateRange|urlEncode,
+             'includePaidInvoices' => $includePaidInvoices|urlEncode,
+             'startDate' => $startDate|urlEncode,
+             'title' => $title|urlEncode
         ]
 }
 {if $menu}

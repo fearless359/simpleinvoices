@@ -47,7 +47,7 @@
 </div>
 <br/>
 <div class="align__text-center">
-    <a href="index.php?module=cron&amp;view=edit&amp;id={$cron.id|urlencode}" class="button positive">
+    <a href="index.php?module=cron&amp;view=edit&amp;id={$cron.id|urlEncode}" class="button positive">
         <img src="images/report_edit.png" alt="{$LANG.edit}" />{$LANG.edit}
     </a>
     <a href="index.php?module=cron&amp;view=manage" class="button negative">

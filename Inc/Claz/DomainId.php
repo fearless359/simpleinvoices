@@ -16,10 +16,6 @@ class DomainId
      */
     public static function get(?int $domainId = null): int
     {
-        if (PHP_SESSION_ACTIVE !== session_status()){
-            session_name(SESSION_NAME);
-            session_start();
-        }
         // default when session value absent - fake auth, whether auth needed or not
         $domId = 1;
 

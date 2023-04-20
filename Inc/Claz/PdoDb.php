@@ -20,7 +20,7 @@ class PdoDb
     private array $caseStmts;
     private bool $debug;
     private string $debugLabel;
-    private int $debugMicroTime;
+    private float $debugMicroTime;
     private bool $distinct;
     private array $excludedFields;
     private array $fauxPost;
@@ -110,7 +110,7 @@ class PdoDb
         // @formatter:off
         $this->caseStmts        = [];
         $this->debugLabel       = "";
-        $this->debugMicroTime   = 0;
+        $this->debugMicroTime   = 0.0;
         $this->distinct         = false;
         $this->excludedFields   = [];
         $this->fauxPost         = [];
@@ -223,12 +223,12 @@ class PdoDb
     /**
      * Add a simple WhereItem testing for equality.
      * @param string $column Table column name.
-     * @param string|int|DbField $value Value to test for.
+     * @param int|string|DbField $value Value to test for.
      * @param string $connector (Optional) If specified, used to connect to a subsequent
      *        <i>WhereItem</i>. Typically "AND" or "OR".
      * @throws PdoDbException
      */
-    public function addSimpleWhere(string $column, $value, string $connector = ""): void
+    public function addSimpleWhere(string $column, DbField|int|string $value, string $connector = ""): void
     {
         $this->addToWhere(new WhereItem(false, $column, "=", $value, false, $connector));
     }
@@ -292,11 +292,11 @@ class PdoDb
 
     /**
      * Specify functions with parameters to list of those to perform
-     * @param FunctionStmt|string $function FunctionStmt object or a string with a preformatted
+     * @param string|FunctionStmt $function FunctionStmt object or a string with a preformatted
      *        function to include in parameter list. For example, "count(id)".
      * @throws PdoDbException
      */
-    public function addToFunctions($function): void
+    public function addToFunctions(FunctionStmt|string $function): void
     {
         if (is_string($function) || is_a($function, "Inc\Claz\FunctionStmt")) {
             $this->functions[] = $function;
@@ -316,7 +316,7 @@ class PdoDb
 
     /**
      * Add a <b>Join</b> object to this request.
-     * @param Join|array $join Parameter can take several forms:
+     * @param array|Join $join Parameter can take several forms:
      *        <ol>
      *          <li><b>Join class object</b></li>
      *          <li><b>Array with 4 values</b>. The values are:
@@ -338,7 +338,7 @@ class PdoDb
      *        </ol>
      * @throws PdoDbException If invalid values are passed.
      */
-    public function addToJoins($join): void
+    public function addToJoins(Join|array $join): void
     {
         if (is_a($join, "Inc\Claz\Join")) {
             $this->joinStmts[] = $join;
@@ -409,7 +409,7 @@ class PdoDb
     /**
      * Set the <b>ORDER BY</b> statement object to generate when the next request is performed.
      * Note that this method can be called multiple times to add additional values.
-     * @param OrderBy|array|string $orderBy Can take several forms.
+     * @param array|string|OrderBy $orderBy Can take several forms.
      *        1) A string that is the name of the field to order by in ascending order.
      *           Ex: "street_address".
      *        2) An array with two elements. The first is the field name and the second is the
@@ -418,7 +418,7 @@ class PdoDb
      *        4) An OrderBy object that will replace any previous settings.
      * @throws PdoDbException if an invalid parameter type is found.
      */
-    public function setOrderBy($orderBy): void
+    public function setOrderBy(OrderBy|array|string $orderBy): void
     {
         if (is_a($orderBy, "Inc\Claz\OrderBy")) {
             $this->orderBy = $orderBy;
@@ -452,7 +452,7 @@ class PdoDb
     /**
      * Set the <b>GROUP BY</b> statement object to generate when the next request is performed.
      * Note that this method can be called multiple times to add additional values.
-     * @param string|array|DbField $groupBy Can take one of the following forms.
+     * @param array|string|DbField $groupBy Can take one of the following forms.
      *        <ol>
      *          <li>A string that is the name of the field to group by. Ex: "street_address".</li>
      *          <li>An ordered array that contains a list of field names to group by. The list is
@@ -461,7 +461,7 @@ class PdoDb
      *              encapsulate the field name as `tax`.`tax_id`.
      * @throws PdoDbException if an invalid parameter type is found.
      */
-    public function setGroupBy($groupBy): void
+    public function setGroupBy(DbField|array|string $groupBy): void
     {
         if (is_array($groupBy)) {
             foreach ($groupBy as $item) {
@@ -490,11 +490,11 @@ class PdoDb
      * Set/add to <b>Havings</b> values using reduced parameter list.
      * @param string $field
      * @param string $operator
-     * @param string|DbField $value
+     * @param array|DbField|string $value
      * @param string $connector Optional "AND" or "OR".
      * @throws PdoDbException
      */
-    public function setSimpleHavings(string $field, string $operator, $value, string $connector = ""): void
+    public function setSimpleHavings(string $field, string $operator, array|DbField|string $value, string $connector = ""): void
     {
         $having = new Having(false, $field, $operator, $value, false, $connector);
         $this->setHavings($having);
@@ -506,7 +506,7 @@ class PdoDb
      * @param Having|Havings $havings <b>HAVING</b> or <b>HAVINGS</b> object to add.
      * @throws PdoDbException If parameter is not valid.
      */
-    public function setHavings($havings): void
+    public function setHavings(Havings|Having $havings): void
     {
         if (is_a($havings, "Inc\Claz\Having") || is_a($havings, "Inc\Claz\Havings")) {
             $this->havings->addHavings($havings);
@@ -534,7 +534,7 @@ class PdoDb
      * clause but are to be excluded from the <i>INSERT</i> or </i>UPDATE</i> fields. Typically
      * excluded fields are the unique identifier for the record which cannot be updated. However,
      * any field may be specified for exclusion..
-     * @param string|array $excludedFields Can be one of the following:
+     * @param array|string $excludedFields Can be one of the following:
      *        <ol>
      *          <li>A string with <i><u>one</u> field name</i> in it. Ex: <b>"name"</b>.</li>
      *          <li>An ordered array of <i>field names</i>. Ex: <b>array("id", "user_id")</b></li>
@@ -544,7 +544,7 @@ class PdoDb
      *        </ol>
      * @throws PdoDbException if the parameter is not an array.
      */
-    public function setExcludedFields($excludedFields): void
+    public function setExcludedFields(array|string $excludedFields): void
     {
         if (is_array($excludedFields)) {
             $idx = 0;
@@ -614,7 +614,7 @@ class PdoDb
      * Specify the subset of fields that a <i>SELECT</i> is to access.
      * Note that default is to select all fields. This function can be called multiple
      * times to build the list conditionally.
-     * @param string|array|DbField $selectList Can take one of two forms.
+     * @param array|string|DbField $selectList Can take one of two forms.
      *        1) A string with the field name to select from the table.
      *           Ex: "street_address".
      *        2) An array of field names to select from the table.
@@ -622,7 +622,7 @@ class PdoDb
      *        3) A DbField object. Ex: new DbField("iv.invoice_id", "invoice_id").
      * @throws PdoDbException if an invalid parameter type is found.
      */
-    public function setSelectList($selectList): void
+    public function setSelectList(DbField|array|string $selectList): void
     {
         if (is_a($selectList, "Inc\Claz\DbField")) {
             $this->selectList[] = $selectList;
@@ -1037,7 +1037,7 @@ class PdoDb
      *         otherwise <b>true</b> on success or <b>false</b> on failure.
      * @throws PdoDbException if any unexpected setting or missing information is encountered.
      */
-    public function request(string $request, string $table, string $alias = "")
+    public function request(string $request, string $table, string $alias = ""):array|bool|int
     {
 
         if ($this->debug) {
@@ -1057,11 +1057,11 @@ class PdoDb
                 }
 
                 foreach ($this->tableConstraints as $column => $constraint) {
-                    if (preg_match('/compound/', $column)) {
+                    if (str_contains($column, 'compound')) {
                         $column = preg_replace('/compound *(\(.*\)).*$/', '\1', $column);
                     }
 
-                    if (strstr($constraint, '~') === false) {
+                    if (!str_contains($constraint, '~')) {
                         $constraint .= " " . $column;
                     } else {
                         $constraint = preg_replace('/~/', $column, $constraint);
@@ -1265,7 +1265,7 @@ class PdoDb
      *         otherwise <b>true</b> on success or <b>false</b> on failure.
      * @throws PdoDbException If unable to bind values or execute request.
      */
-    public function query(string $sql, array $valuePairs = [])
+    public function query(string $sql, array $valuePairs = []): array|bool|int
     {
         $this->lastCommand = ""; // Clear the previous last command.
         $this->debugger($sql);
@@ -1318,7 +1318,7 @@ class PdoDb
         }
 
         if ($this->debug) {
-            $msc = microtime(true) - $this->debugMicroTime;
+            $msc = intval(microtime(true) - $this->debugMicroTime);
             error_log("Processing time: " . $msc * 1000 . "ms"); // in milliseconds
         }
 

@@ -201,7 +201,7 @@ class Config
         $unmatchedFlagged = false;
         while (($line = fgets($fpCur)) !== false) {
             if (!$unmatchedFlagged) {
-                $unmatchedFlagged = preg_match('/.*Possibly Deprecated/', $line);
+                $unmatchedFlagged = str_contains($line, 'Possibly Deprecated');
             }
 
             switch (ConfigLines::lineType($line)) {

@@ -34,6 +34,10 @@ if (set_include_path($lclPath) === false) {
 }
 
 require_once 'vendor/autoload.php';
+require_once 'config/define.php';
+
+session_name(SESSION_NAME);
+session_start();
 
 Util::allowDirectAccess();
 
@@ -41,11 +45,6 @@ $module = isset($_GET['module']) ? Util::filenameEscape($_GET['module']) : "";
 $view = isset($_GET['view']) ? Util::filenameEscape($_GET['view']) : "";
 $action = isset($_GET['case']) ? Util::filenameEscape($_GET['case']) : "";
 $apiRequest = $module == 'api';
-
-require_once 'config/define.php';
-
-session_name(SESSION_NAME);
-session_start();
 
 /***********************************************************************
  * Make sure the public and tmp directories exist and are writeable.
@@ -102,6 +101,15 @@ try {
     exit();
 }
 
+$phpVersion = phpversion();
+Log::out("index.php - session_id[" . session_id() . "] PHP Version[$phpVersion]");
+
+$pattern = "/^8\.[1-9].*/";
+if (!preg_match($pattern, $phpVersion)) {
+    SiError::out('phpVersion',"SimpleInvoices 2023 requires PHP 8.1x. " .
+        "You are currently running PHP $phpVersion ");
+}
+
 // globals set in the init.php logic
 $databaseBuilt = false;
 $databasePopulated = false;
@@ -134,7 +142,7 @@ if ($apiRequest || $timeout <= 0) {
     $timeout = 60;
 }
 
-Util::sessionTimeout($timeout);
+Util::sessionTimeout($timeout, $module, $view);
 
 // Will be set in the following init.php call to extensions that are enabled.
 $extNames = [];
@@ -216,8 +224,9 @@ if ($module == "options" && $view == "database_sqlpatches") {
 
     // See if we need to verify patches have been loaded.
     if ($applyDbPatches) {
+        $sessionId = $_SESSION['id'] ?? 0;
         Log::out("index.php - authenticationEnabled[{$config['authenticationEnabled']}] ".
-            "\$_SESSION['id'][{$_SESSION['id']}]");
+            "\$_SESSION['id'][$sessionId]");
         // If default user or an active session exists, proceed with check.
         if ($config['authenticationEnabled'] == DISABLED || isset($_SESSION['id'])) {
             // Check if there are patches to process
@@ -286,7 +295,7 @@ if (!CheckPermission::isAllowed($module, $view)) {
     $role = SiAcl::getSessionRole();
     Log::out("index.php - CheckPermission::isAllowed('$module', '$view') returned false for role[$role].");
     $module = "errorPages";
-    $view = "401";
+    $view = "e401";
 }
 
 // This logic is for the default_invoice where the invoice "template" (aka record)
@@ -304,7 +313,7 @@ if ($module == "invoices" && strstr($view, "template")) {
 Log::out("index.php - After invoices/template");
 
 // Check for "api" module or a "xml" or "ajax" "page request" (aka view)
-if ($apiRequest || strstr($view, "xml") || preg_match("/.*[Aa]jax/", $view)) {
+if ($apiRequest || strstr($view, "xml") || preg_match("/[Aa]jax/", $view)) {
     $extensionXml = 0;
     foreach ($extNames as $extName) {
         if (file_exists("extensions/$extName/modules/$module/$view.php")) {
@@ -606,8 +615,8 @@ if ($extensionTemplates == 0) {
 }
 Log::out("index.php - final path[$path] realPath[$realPath] myTplPath[$myTplPath]");
 
-$smarty->assign("extension_insertion_files", $extensionInsertionFiles);
-$smarty->assign("perform_extension_insertions", $performExtensionInsertions);
+$smarty->assign("extensionInsertionFiles", $extensionInsertionFiles);
+$smarty->assign("performExtensionInsertions", $performExtensionInsertions);
 
 // If this is not an extension, $path and $realPath are the same. If it is an extension,
 // $path is relative to the extension and $realPath is relative to the standard library path.

@@ -21,10 +21,7 @@ use Samshal\Acl\ObjectInterface as ObjectInterface;
  */
 class DefaultResource implements ResourceInterface, ObjectInterface
 {
-    /**
-     * @var string
-     */
-    protected $resourceName;
+    protected string $resourceName;
 
     /**
      * {@inheritdoc}

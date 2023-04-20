@@ -1,20 +1,28 @@
 {
     "name": "samshal/acl",
     "description": "This package provides a lightweight and flexible access control list for privileges and permission management.",
-    "type": "Library",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Samshal",
             "email": "samueladeshina73@gmail.com"
+        },
+        {
+            "name": "Fearless359",
+            "email": "fearless359@gmail.com"
         }
     ],
     "require": {
-        "php": "^7.0"
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
     },
     "autoload":{
         "psr-4":{
-            "Samshal\\Acl\\":"./src"
+            "Samshal\\Acl\\":"./src",
+            "Samshal\\Acl\\Test\\": "./tests"
         }
     }
 }

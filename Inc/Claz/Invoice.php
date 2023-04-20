@@ -154,8 +154,6 @@ class Invoice
     {
         global $config, $LANG;
 
-        session_name(SESSION_NAME);
-        session_start();
         $readOnly = $_SESSION['role_name'] == 'customer';
         $rows = self::getInvoices(null, '', '', false, $invoiceDisplayDays);
         $tableRows = [];
@@ -243,9 +241,6 @@ class Invoice
                                         bool $includeWarehouse = false, int $invoiceDisplayDays = 0): array
     {
         global $pdoDb;
-
-        session_name(SESSION_NAME);
-        session_start();
 
         try {
             if ($invoiceDisplayDays > 0) {
@@ -1029,9 +1024,6 @@ class Invoice
         global $pdoDb;
 
         try {
-            session_name(SESSION_NAME);
-            session_start();
-
             // If user role is customer or biller, then restrict invoices to those they have access to.
             if ($_SESSION['role_name'] == 'customer') {
                 $pdoDb->addSimpleWhere("customer_id", $_SESSION['user_id'], "AND");
@@ -1132,7 +1124,7 @@ class Invoice
      * @return Havings havings SQL statement
      * @throws PdoDbException
      */
-    public static function buildHavings(string $option, $parms = ""): Havings
+    public static function buildHavings(string $option, array|string $parms = ""): Havings
     {
         try {
             $havings = new Havings();

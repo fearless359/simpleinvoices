@@ -2,8 +2,8 @@
 {include file=$path|cat:"library/exportButtons.tpl"
          params=[
              'fileName' => "reportDebtorsByAmount",
-             'includePaidInvoices' => $includePaidInvoices|urlencode,
-             'title' => $title|urlencode
+             'includePaidInvoices' => $includePaidInvoices|urlEncode,
+             'title' => $title|urlEncode
          ]
 }
 {if $menu}

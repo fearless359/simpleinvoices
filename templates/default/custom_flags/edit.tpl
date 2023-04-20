@@ -12,7 +12,7 @@
  *      GPL v3 or above
  *}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=custom_flags&amp;view=save&amp;associated_table={$cflg.associated_table|urlencode}&amp;flg_id={$cflg.flg_id|urlencode}">
+      action="index.php?module=custom_flags&amp;view=save&amp;associated_table={$cflg.associated_table|urlEncode}&amp;flg_id={$cflg.flg_id|urlEncode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <div class="cols__2-span-2 bold align__text-right margin__right-1">{$LANG.associatedTable}:
@@ -37,7 +37,7 @@
             <label for="enabledId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.customFlagsUc}:
                 <img class="tooltip" title="{$LANG.helpCustomFlagsEnable}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            {html_options name=$LANG.enabled|lower id=enabledId class=cols__4-span-2 options=$enable_options selected=$cflg.enabled|htmlSafe}
+            {html_options name=$LANG.enabled|lower id=enabledId class="cols__4-span-2" options=$enable_options selected=$cflg.enabled|htmlSafe}
         </div>
         <div class="grid__container grid__head-10">
             <div class="cols__4-span-6">

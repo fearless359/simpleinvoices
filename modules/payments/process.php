@@ -5,6 +5,7 @@ use Inc\Claz\Customer;
 use Inc\Claz\Invoice;
 use Inc\Claz\PaymentType;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\Preferences;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
 
@@ -17,11 +18,17 @@ Util::directAccessAllowed();
 try {
     if (isset($_GET['id'])) {
         $invoice = Invoice::getOne($_GET['id']);
-        $smarty->assign("invoice", $invoice);
-        $smarty->assign("biller"         , Biller::getOne($invoice['biller_id']));
-        $smarty->assign("customer"       , Customer::getOne($invoice['customer_id']));
-        $smarty->assign("invoice"        , $invoice);
+        $smarty->assign("biller"  , Biller::getOne($invoice['biller_id']));
+        $smarty->assign("customer", Customer::getOne($invoice['customer_id']));
+    } else {
+        $preference = Preferences::getDefaultPreference();
+        $invoice = [];
+        $invoice['currency_code'] = $preference['currency_code'];
+        $invoice['locale'] = $preference['locale'];
+        $invoice['warehousedPayment'] = '0';
+        $smarty->assign('customer', Customer::getDefaultCustomer());
     }
+    $smarty->assign("invoice" , $invoice);
 
     if (isset($_GET['message'])) {
         $smarty->assign('message', $_GET['message']);

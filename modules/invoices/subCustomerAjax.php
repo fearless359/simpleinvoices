@@ -7,11 +7,10 @@ use Inc\Claz\PdoDbException;
  * Make the option section of a select statement for sub-customers.
  * @param string $parentCustomerId
  */
-function getSubCustomer(string $parentCustomerId='') {
+function getSubCustomer(string $parentCustomerId=''): never
+{
     global $pdoDb;
 
-    session_name(SESSION_NAME);
-    session_start();
     try {
         $pdoDb->addSimpleWhere('parent_customer_id', $parentCustomerId, 'AND');
         $pdoDb->addSimpleWhere('domain_id', DomainId::get());

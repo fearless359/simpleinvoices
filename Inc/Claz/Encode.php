@@ -9,9 +9,11 @@ namespace Inc\Claz;
 class Encode
 {
     /**
-     * @param array|string $array
-     * @param int $level
-     * @return string
+     * Format the content of $array into an XML user readable output.
+     * @param array $array Data to be formatted for output.
+     * @param int $level WARNING - do not specify this parameter. Used by
+     *          function to track recursion level.
+     * @return string XML formatted output.
      */
     public static function xml(array $array, int $level = 1): string
     {
@@ -66,19 +68,27 @@ class Encode
     }
 
     /**
-     * @param mixed $data
-     * @param string $format
-     * @return false|string
+     * JSON encode data.
+     * @param mixed $data Data to be encoded. Typically an array of values from database.
+     * @param string $format Specify "pretty" if encoded data is to be formatted
+     *          for user readable output.
+     * @return false|string Returns false if json_encode() fails otherwise the encoded string.
      */
-    public static function json($data, string $format = 'plain')
+    public static function json(mixed $data, string $format = 'plain'): false|string
     {
         $message = json_encode($data);
-        if ($format == 'pretty') {
+        if ($message !== false && $format == 'pretty') {
             return self::prettyPrint($message, ["format" => "html"]);
         }
         return $message;
     }
 
+    /**
+     * Format the input json encoded value for user readable output.
+     * @param string $json
+     * @param array $options
+     * @return string
+     */
     public static function prettyPrint(string $json, array $options = []): string
     {
         /** @noinspection RegExpRedundantEscape */

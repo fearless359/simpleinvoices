@@ -8,6 +8,8 @@
  */
 namespace Samshal\Acl;
 
+use Exception;
+
 /**
  * Interface AclInterface.
  *
@@ -21,27 +23,18 @@ interface AclInterface
 {
     /**
      * Adds a new role object to the registry
-     *
-     * @param string $role
-     * @return void
      */
-    public function addRole(string ...$role);
+    public function addRole(string ...$role): void;
 
     /**
      * Adds a new resource object to the registry
-     *
-     * @param string $resource
-     * @return void
      */
-    public function addResource(string ...$resource);
+    public function addResource(string ...$resource): void;
 
     /**
      * Adds a new permission object to the registry
-     *
-     * @param string $permission
-     * @return void
      */
-    public function addPermission(string ...$permission);
+    public function addPermission(string ...$permission): void;
 
     /**
      * Adds objects lazily.
@@ -49,31 +42,19 @@ interface AclInterface
      * Automatically determine the type of an object and call the appropriate
      * add method on it.
      *
-     * @param ObjectInterface $object
-     * @throws \Exception
-     * @return void
+     * @throws Exception
      */
-    public function add(ObjectInterface ...$object);
+    public function add(ObjectInterface ...$object): void;
 
     /**
      * Change the status option of an assigned permission to true
      *
-     * @param string $role;
-     * @param string $permission
-     * @param string $resource
-     * @param boolean $status Optional
-     * @throws \Exception
-     * @return void
+     * @throws Exception
      */
-    public function allow(string $role, string $permission, string $resource, bool $status=null);
+    public function allow(string $role, string $permission, string $resource, ?bool $status=null): void;
 
     /**
      * Change the status option of an assigned permission to false
-     *
-     * @param string $role;
-     * @param string $permission
-     * @param string $resource
-     * @return void
      */
-    public function deny(string $role, string $permission, string $resource);
+    public function deny(string $role, string $permission, string $resource): void;
 }

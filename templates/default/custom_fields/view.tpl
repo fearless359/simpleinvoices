@@ -27,7 +27,7 @@
     </div>
     <br/>
     <div class="align__text-center">
-        <a href="index.php?module=custom_fields&amp;view=edit&amp;id={$cf.cf_id|urlencode}" class="button positive">
+        <a href="index.php?module=custom_fields&amp;view=edit&amp;id={$cf.cf_id|urlEncode}" class="button positive">
             <img src="images/tick.png" alt="{$LANG.edit}"/>{$LANG.edit}
         </a>
         <a href="index.php?module=custom_fields&amp;view=manage" class="button negative">

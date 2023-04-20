@@ -1,10 +1,10 @@
 {include file=$path|cat:"library/reportTitle.tpl" title=$title}
 {include file=$path|cat:"library/exportButtons.tpl"
          params=[
-			'endDate' => $endDate|urlencode,
+			'endDate' => $endDate|urlEncode,
 			'fileName' => "reportProductsSoldTotal",
-			'startDate' => $startDate|urlencode,
-			'title' => $title|urlencode
+			'startDate' => $startDate|urlEncode,
+			'title' => $title|urlEncode
 			]
 }
 {if $menu}

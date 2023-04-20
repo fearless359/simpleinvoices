@@ -15,6 +15,7 @@ class EmailBody
 
     public function create(): string
     {
+        /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
         switch ($this->emailType) {
             case "cron_payment":
                 $emailBody = "$this->customerName, A PDF copy of your payment receipt is attached.<br /><br />Thank you for using our service,<br />$this->billerName";

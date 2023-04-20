@@ -2,12 +2,12 @@
 {include file=$path|cat:"library/reportTitle.tpl" title=$title}
 {include file=$path|cat:"library/exportButtons.tpl"
          params=[
-             'endDate' => $endDate|urlencode,
+             'endDate' => $endDate|urlEncode,
              'fileName' => "reportSalesByRepresentative",
-             'filterByDateRange' => $filterByDateRange|urlencode,
-             'salesRep' => $salesRep|urlencode,
-             'startDate' => $startDate|urlencode,
-             'title' => $title|urlencode
+             'filterByDateRange' => $filterByDateRange|urlEncode,
+             'salesRep' => $salesRep|urlEncode,
+             'startDate' => $startDate|urlEncode,
+             'title' => $title|urlEncode
          ]
 }
 {if $menu}

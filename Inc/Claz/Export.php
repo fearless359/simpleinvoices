@@ -234,7 +234,7 @@ class Export
                     $pageActive = "invoices";
                     $smarty->assign('pageActive', $pageActive);
 
-                    $origLocale = $this->assignTemplateLanguage($this->preference);
+                    $origLocale = $this->assignTemplateLanguage($preference);
 
                     $smarty->assign('biller', $biller);
                     $smarty->assign('customer', $this->customer);

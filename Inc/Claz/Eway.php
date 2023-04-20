@@ -20,7 +20,7 @@ class Eway
     /**
      * @var mixed
      */
-    public $message;
+    public array $message;
 
     public function preCheck(): string
     {
@@ -79,7 +79,7 @@ class Eway
             $key = $config['encryptionDefaultKey'];
             $enc = new Encryption();
             $creditCardNumber = $enc->decrypt($key, $this->customer['credit_card_number']);
-        } catch (Exception $exp) {
+        } catch (Exception) {
             return 'false';
         }
 
@@ -142,10 +142,7 @@ class Eway
         return 'false';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMessage()
+    public function getMessage(): array
     {
         return $this->message;
     }

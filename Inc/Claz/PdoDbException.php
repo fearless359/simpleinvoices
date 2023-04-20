@@ -16,15 +16,12 @@ class PdoDbException extends Exception
      * @param int $code
      * @param Exception|null $previous
      */
-    public function __construct($message, $code = 0, ?Exception $previous = null)
+    public function __construct($message, int $code = 0, ?Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return __CLASS__ . ": [$this->code]: $this->message\n";
     }
@@ -34,7 +31,7 @@ class PdoDbException extends Exception
      * @noinspection PhpMethodMayBeStaticInspection
      * @noinspection PhpUnused
      */
-    public function customFunctions()
+    public function customFunctions(): void
     {
         echo "A custom function for this type of exception\n";
     }

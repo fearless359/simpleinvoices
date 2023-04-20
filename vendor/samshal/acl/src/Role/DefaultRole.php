@@ -21,15 +21,9 @@ use Samshal\Acl\ObjectInterface as ObjectInterface;
  */
 class DefaultRole implements RoleInterface, ObjectInterface
 {
-    /**
-     * @var string
-     */
-    protected $roleName;
+    protected string $roleName;
 
-    /**
-     * @var string
-     */
-    protected $roleDescription;
+    protected string $roleDescription;
 
     /**
      * {@inheritdoc}

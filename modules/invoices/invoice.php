@@ -31,9 +31,6 @@ global $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-session_name("SiAuth");
-session_start();
-
 $role = $_SESSION['role_name'];
 
 // @formatter:off

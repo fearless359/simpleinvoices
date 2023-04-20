@@ -2,8 +2,8 @@
 {include file=$path|cat:"library/exportButtons.tpl"
          params=[
              'fileName' => "reportPastDue",
-             'displayDetail' => $displayDetail|urlencode,
-             'title' => $title|urlencode
+             'displayDetail' => $displayDetail|urlEncode,
+             'title' => $title|urlEncode
          ]
 }
 {if $menu}

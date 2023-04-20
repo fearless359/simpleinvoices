@@ -26,7 +26,7 @@ global $smarty;
 Util::directAccessAllowed();
 
 if ($_SESSION['role_name'] == 'biller' && $_SESSION['user_id'] != $_GET['id']) {
-    header('Location: index.php?module=errorPages&view=401');
+    header('Location: index.php?module=errorPages&view=e401');
     exit();
 }
 

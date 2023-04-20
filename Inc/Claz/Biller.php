@@ -104,9 +104,6 @@ class Biller
 
         $billers = [];
         try {
-            session_name(SESSION_NAME);
-            session_start();
-
             // If user role is customer or biller, then restrict billers to the one for this session.
             if ($_SESSION['role_name'] == 'biller') {
                 $pdoDb->addSimpleWhere("id", $_SESSION['user_id'], "AND");

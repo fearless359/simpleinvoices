@@ -306,7 +306,7 @@ class Payment
      *          online_payment_id value to select payments for.
      * @return array
      */
-    public static function selectByValue(string $filter, $value): array
+    public static function selectByValue(string $filter, array|int $value): array
     {
         global $pdoDb;
 

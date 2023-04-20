@@ -18,7 +18,7 @@
         </div>
         <div class="grid__container grid__head-10">
             <label for="" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.status}:</label>
-            {html_options name=enabled id=enabledId class=cols__5-span-1 options=$enabled selected=$product_attribute_values.enabled tabindex=30}
+            {html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled selected=$product_attribute_values.enabled tabindex=30}
         </div>
     </div>
     <div class="align__text-center">

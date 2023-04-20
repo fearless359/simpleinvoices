@@ -6,3 +6,6 @@ composer.lock
 doc/
 metrics/
 test.php
+
+.idea/**
+.phpunit.result.cache

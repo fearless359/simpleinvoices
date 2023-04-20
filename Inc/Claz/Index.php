@@ -57,9 +57,11 @@ class Index
      * Create a new si_index record.
      * @param int $id Last assigned invoice index_id.
      * @param int $subNode ID for the preference record of this index.
+     * @return  void
      * @throws PdoDbException if insert fails
      */
-    public static function insert(int $id, int $subNode) {
+    public static function insert(int $id, int $subNode): void
+    {
         global $pdoDbAdmin;
 
         try {

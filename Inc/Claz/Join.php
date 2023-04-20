@@ -13,10 +13,7 @@ class Join
 
     private GroupBy $groupBy;
     private OnClause $onClause;
-    /**
-     * @var SELECT|string
-     */
-    private $table;
+    private SELECT|string $table;
     private string $tableAlias;
     private string $type;
 
@@ -26,7 +23,7 @@ class Join
      * @param string|SELECT $table Database table to join. If not present, the database prefix will be added.
      * @param string $tableAlias Alias for table to use for column name references.
      */
-    public function __construct(string $type, $table, string $tableAlias = "")
+    public function __construct(string $type, string|SELECT $table, string $tableAlias = "")
     {
         $this->type = strtoupper($type);
         if (preg_match(self::JOIN_TYPE, $this->type) != 1) {
@@ -56,14 +53,14 @@ class Join
      * Add a simple item to the <b>OnClause</b>.
      * @param string $field Field (aka column) of table to be joined or available in the scope
      *        of fields from tables in the join statement.
-     * @param DbField|string $value Value to use in the test. This can be a constant or a field in
+     * @param string|DbField $value Value to use in the test. This can be a constant or a field in
      *        the table being joined to. Note that if this is a table field, the <i>DbField</i>
      *        class should be used to render it. Ex: obj->addSimpleItem(iv.id, new DbField(ii.id)).
      * @param string $connector Connector to the next item, <b>AND</b> or <b>OR</b>. If not
      *        specified, this is the last item in the <b>OnClause</b>.
      * @throws PdoDbException
      */
-    public function addSimpleItem(string $field, $value, string $connector="")
+    public function addSimpleItem(string $field, DbField|string $value, string $connector=""): void
     {
         $this->onClause->addSimpleItem($field, $value, $connector);
     }
@@ -73,7 +70,7 @@ class Join
      * @param OnClause $onClause Object of class type <b>OnClause</b>.
      * @throws PdoDbException
      */
-    public function setOnClause(OnClause $onClause)
+    public function setOnClause(OnClause $onClause): void
     {
         if (!$this->onClause->isEmpty()) {
             throw new PdoDbException("Join setOnClause(): Attempt to set multiple \"OnClause\" statements.");
@@ -85,7 +82,7 @@ class Join
      * Add a <b>GROUP BY</b> object for this join.
      * @param GroupBy $groupBy
      */
-    public function addGroupBy(GroupBy $groupBy)
+    public function addGroupBy(GroupBy $groupBy): void
     {
         $this->groupBy = $groupBy;
     }

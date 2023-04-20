@@ -34,7 +34,7 @@ if ($paypal->validate_ipn()) {
     Log::out('Paypal - custom=' . $_POST ['custom'], Log::INFO);
     $domainId = '';
     foreach ($customArray as $key => $value) {
-        if (strstr($value, "domain_id:")) {
+        if (str_contains($value, "domain_id:")) {
             Log::out("Paypal - value[$value]", Log::INFO);
             $domainId = substr($value, 10);
         }
@@ -78,7 +78,7 @@ if ($paypal->validate_ipn()) {
             $email = new Email();
             $email->setBody($body);
             $email->setEmailTo([$biller ['email'] => $biller['name']]);
-            $email->setFrom("simpleinvoices@localhost.localdomain");
+            $email->setFrom(["simpleinvoices@localhost.localdomain"]);
             $email->setSubject('Instant Payment Notification - Received Payment');
             $email->send();
 
@@ -100,7 +100,7 @@ if ($error) {
 } else {
     try {
         $xml = new Encode();
-        $xmlOut = $xml::xml($xmlMessage);
+        $xmlOut = $xml::xml([$xmlMessage]);
         echo $xmlOut;
     } catch (Exception $exp) {
         echo $exp->getMessage();
