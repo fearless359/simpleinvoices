@@ -46,8 +46,9 @@ class DbTest extends TestCase
     public function testGetInstance()
     {
         $mock = Mockery::mock('Db');
-        $mock->expects()
-            ->getInstance($this->config)
+        $mock->shouldReceive('getInstance')
+            ->once()
+            ->with($this->config)
             ->andReturnSelf();
         Assert::assertInstanceOf('Db', $mock->getInstance($this->config));
     }

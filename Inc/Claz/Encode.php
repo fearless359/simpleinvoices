@@ -74,7 +74,7 @@ class Encode
      *          for user readable output.
      * @return false|string Returns false if json_encode() fails otherwise the encoded string.
      */
-    public static function json(mixed $data, string $format = 'plain'): false|string
+    public static function json($data, string $format = 'plain')
     {
         $message = json_encode($data);
         if ($message !== false && $format == 'pretty') {

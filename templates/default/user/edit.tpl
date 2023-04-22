@@ -53,7 +53,7 @@
     </script>
 {/literal}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=user&amp;view=save&amp;username={$user.username|urlEncode}">
+      action="index.php?module=user&amp;view=save&amp;username={$user.username|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="userNameId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.username}:
@@ -134,7 +134,7 @@
             <label for="enabledId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.enabled}:
                 <img class="tooltip" title="{$LANG.helpUserEnabled}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <td>{html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled_options selected=$user.enabled tabindex=70}</td>
+            <td>{html_options name=enabled id=enabledId class=cols__5-span-1 options=$enabled_options selected=$user.enabled tabindex=70}</td>
         </div>
     </div>
     <div class="align__text-center margin__top-3 margin__bottom-2">

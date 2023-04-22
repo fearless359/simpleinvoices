@@ -35,7 +35,7 @@
 </div>
 <br/>
 <div class="align__text-center">
-    <a href="index.php?module=custom_flags&amp;view=edit&amp;associated_table={$cflg.associated_table|urlEncode}&flg_id={$cflg.flg_id|urlEncode}"
+    <a href="index.php?module=custom_flags&amp;view=edit&amp;associated_table={$cflg.associated_table|urlencode}&flg_id={$cflg.flg_id|urlencode}"
        class="button positive">
         <img src="images/report_edit.png" alt="{$LANG.edit}"/>{$LANG.edit}
     </a>

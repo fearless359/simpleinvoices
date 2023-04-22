@@ -60,7 +60,7 @@ class SqlPatchManager
             $pdoDbAdmin->setOrderBy(['sql_patch_ref', 'D']);
             $pdoDbAdmin->setLimit(1);
             $rows = $pdoDbAdmin->request("SELECT", "sql_patchmanager");
-        } catch (PdoDbException) {
+        } catch (PdoDbException $pde) {
             return 0;
         }
         // Returns number of patches applied
@@ -93,7 +93,7 @@ class SqlPatchManager
     /**
      * Assign database patches up to date message in smarty "page" variable.
      */
-    public static function donePatchesMessage(): void
+    public static function donePatchesMessage()
     {
         global $LANG, $smarty;
         $pageInfo = [
@@ -179,7 +179,7 @@ class SqlPatchManager
     /**
      * Run the unapplied patches.
      */
-    public static function runPatches(): void
+    public static function runPatches()
     {
         global $LANG, $pdoDbAdmin, $smarty;
 
@@ -251,7 +251,7 @@ class SqlPatchManager
     /**
      * List all patches and their status.
      */
-    public static function listPatches(): void
+    public static function listPatches()
     {
         global $LANG, $smarty;
         // Initialize patch data if not already done
@@ -335,7 +335,7 @@ class SqlPatchManager
         try {
             $pdoDbAdmin->addSimpleWhere('sql_patch_ref', $patchRef);
             $rows = $pdoDbAdmin->request('SELECT', 'sql_patchmanager');
-        } catch (PdoDbException) {
+        } catch (PdoDbException $pde) {
             return false;
         }
         return !empty($rows);
@@ -390,7 +390,7 @@ class SqlPatchManager
      * Save product group information for those with extension enabled.
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function prePatch321(): void
+    private static function prePatch321()
     {
         global $pdoDbAdmin, $subCustomerExtEnabled;
 
@@ -418,7 +418,7 @@ class SqlPatchManager
      * Special handling for patch #321
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function postPatch321(): void
+    private static function postPatch321()
     {
         global $subCustomerExtEnabled;
 
@@ -434,7 +434,7 @@ class SqlPatchManager
      * Save product group information for those with extension enabled.
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function prePatch322(): void
+    private static function prePatch322()
     {
         global $pdoDbAdmin, $productGroupEnabled;
 
@@ -461,7 +461,7 @@ class SqlPatchManager
      * Special handling for patch #322
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function postPatch322(): void
+    private static function postPatch322()
     {
         global $pdoDbAdmin, $productGroupEnabled;
 
@@ -485,7 +485,7 @@ class SqlPatchManager
      * @throws PdoDbException If undefined foreign key values found.
      * @noinspection PhpVariableNamingConventionInspection
      */
-    private static function prePatch331(): void
+    private static function prePatch331()
     {
         global $pdoDbAdmin;
 
@@ -540,7 +540,7 @@ class SqlPatchManager
     /**
      * Load all patches to be processed.
      */
-    private static function loadPatches(): void
+    private static function loadPatches()
     {
         global $pdoDbAdmin;
 

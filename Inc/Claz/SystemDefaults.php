@@ -142,7 +142,7 @@ class SystemDefaults
      * @param bool $ret_string true if failed flag to return as 'DISABLED' string, false returns 0.
      * @return string|int Value of system_defaults row for specified name.
      */
-    public static function getValue(string $name, string $extensionId = "", bool $ret_string = true): int|string
+    public static function getValue(string $name, string $extensionId = "", bool $ret_string = true)
     {
         global $LANG;
 

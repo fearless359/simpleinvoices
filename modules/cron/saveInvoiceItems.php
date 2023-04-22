@@ -31,6 +31,7 @@ $refreshRedirect = "<meta http-equiv='refresh' content='2;URL=index.php?module=c
 if ($op == 'edit') {
     $type = $_POST['type'];
     $locale = $_POST['locale'];
+
     try {
         $idx = 0;
         while ($idx <= $_POST['max_items']) {

@@ -330,15 +330,14 @@
         </div>
         <div class="cols__5-span-6 margin__left-0-5">{if $defaultSubCustomer == $smarty.const.ENABLED}{$LANG.enabled}{else}{$LANG.disabled}{/if}</div>
     </div>
-
     {* This section will insert any extensions that add system-default fields *}
     {* If you create such an extension, please follow the standard above the pust a semi-coloan
        after the field label, sets tabindex=-1" to the help anchor, and a tabindex with a valur
        that causes tabbing to hit your field after the others. This starts at 240 currently. *}
-    {if $performExtensionInsertions}
-        {section name=idx loop=$extensionInsertionFiles}
-            {if $extensionInsertionFiles[idx].module  == 'system_defaults'}
-                {include file=$extensionInsertionFiles[idx].file}
+    {if $perform_extension_insertions}
+        {section name=idx loop=$extension_insertion_files}
+            {if $extension_insertion_files[idx].module  == 'system_defaults'}
+                {include file=$extension_insertion_files[idx].file}
             {/if}
         {/section}
     {/if}

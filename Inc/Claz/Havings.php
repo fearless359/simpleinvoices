@@ -34,14 +34,14 @@ class Havings
      * @param bool $leftParen <b>true</b> if left parenthesis should be included; <b>false</b> if not.
      * @param string $field Field name to use.
      * @param string $operator
-     * @param array|DbField|string $value Can be any data type needed by the specified <b>$operator</b>.
+     * @param DbField|array|number $value Can be any data type needed by the specified <b>$operator</b>.
      * @param bool $rightParen <b>true</b> if right parenthesis should be included; </b>false</b> if not.
      * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
      *        not specified, it will be set automatically to <b>AND</b> if a subsequent
      *        criterion is added.
      * @throws PdoDbException
      */
-    public function add(bool $leftParen, string $field, string $operator, array|DbField|string $value,
+    public function add(bool $leftParen, string $field, string $operator, $value,
                         bool $rightParen=false, string $connector=""): void
     {
         $this->addDefaultConnector();
@@ -52,13 +52,13 @@ class Havings
      * Add another <b>Having</b> object to this clause.
      * @param string $field
      * @param string $operator
-     * @param array|DbField|string $value Can be a string, DbField object or an array.
+     * @param DbField|array|number|string $value Can be a string, DbField object or an array.
      * @param string $connector (Optional) If specified, should be set to <b>AND</b> or <b>OR</b>. If
      *        not specified, it will be set automatically to <b>AND</b> if a subsequent
      *        criterion is added.
      * @throws PdoDbException
      */
-    public function addSimple(string $field, string $operator, array|DbField|string $value, string $connector=""): void
+    public function addSimple(string $field, string $operator, $value, string $connector="")
     {
         $this->addDefaultConnector();
         $having = new Having(false, $field, $operator, $value, false, $connector);
@@ -70,7 +70,7 @@ class Havings
      * @param Having|Havings $havings Object with values to add.
      * @throws PdoDbException Invalid parameter type
      */
-    public function addHavings(Havings|Having $havings): void
+    public function addHavings($havings)
     {
         $this->addDefaultConnector();
         if (is_a($havings, "Inc\Claz\Having")) {

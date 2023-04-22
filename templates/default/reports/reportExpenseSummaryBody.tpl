@@ -59,10 +59,8 @@
         <tr class="tr_{cycle values="A,B"}">
             <td class="align__text-right">
             {$invoice.preference}
-            {if !isset($format)}{$fmt = ''}{else}{$fmt = $format}{/if}
-            {if !isset($fileType)}{$fType = ''}{else}{$fType = $fileType}{/if}
-            {if $fmt != 'print' && $fmt != 'pdf' && $fType != 'xls' && $fType != 'doc'}
-                <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlEncode}">
+            {if $format != 'print' && $format != 'pdf' && $fileType != 'xls' && $fileType != 'doc'}
+                <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlencode}">
                     {$invoice.index_id|htmlSafe}
                 </a>
             {else}

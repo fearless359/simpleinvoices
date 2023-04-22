@@ -13,20 +13,11 @@ Util::directAccessAllowed();
  * Compare last activity dates for sorting
  * @param array $a
  * @param array $b
- * @return int 0 if $a['last_activity_date'] == $b['last_activity_date'],
- *             1 if $a['last_activity_date'] > $b['last_activity_date'],
- *            -1 if $a['last_activity_date'] < $b['last_activity_date']
+ * @return bool true if $a['last_activity_date'] > $b['last_activity_date']
  */
-function custCmp(array $a, array $b): int
+function custCmp(array $a, array $b): bool
 {
-    if ($b['last_activity_date'] == $a['last_activity_date']) {
-        $result = 0;
-    } elseif ($b['last_activity_date'] > $a['last_activity_date']) {
-        $result = 1;
-    } else {
-        $result = -1;
-    }
-    return $result;
+    return $b['last_activity_date'] > $a['last_activity_date'];
 }
 
 $customers = [];

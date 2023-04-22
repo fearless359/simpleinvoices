@@ -50,7 +50,7 @@ class Request
      *        clause. Optional parameter.
      * @throws PdoDbException
      */
-    public function addSimpleWhere(string $field, array|string $value, string $connector = ""): void
+    public function addSimpleWhere(string $field, $value, string $connector = "")
     {
         $this->addWhereItem(false, $field, "=", $value, false, $connector);
     }
@@ -70,8 +70,8 @@ class Request
      * @param string $connector The "AND" or "OR" connector if additional terms will be clause. Optional parameter.
      * @throws PdoDbException
      */
-    public function addWhereItem(bool   $open_paren, string $field, string $operator, DbField|array|int|string $value, bool $close_paren,
-                                 string $connector = ""): void
+    public function addWhereItem(bool $open_paren, string $field, string $operator, $value, bool $close_paren,
+                                 string $connector = "")
     {
         $whereItem = new WhereItem($open_paren, $field, $operator, $value, $close_paren, $connector);
         $this->whereClause->addItem($whereItem);
@@ -79,7 +79,8 @@ class Request
 
     /**
      * Add a field to order by and its sort attribute.
-     * @param array|string $field The following forms are valid:
+     * @param mixed $field Either an <i>array</i> or <i>string</i>.
+     *        The following forms are valid:
      *          <i>string</i> - A <i>field name</i> to be added to the collection
      *                          of ordered items with the specified <b>$order</b>.
      *          <i>array</i>  - An array of <i>field names</i> or of <i>arrays</i>.<br/>
@@ -96,7 +97,7 @@ class Request
      * @throws PdoDbException if either parameter does not contain the form and values specified for them.
      * @noinspection PhpUnused
      */
-    public function addOrderBy(array|string $field, string $order = "A"): void
+    public function addOrderBy($field, string $order = "A")
     {
         $this->orderBy->addField($field, $order);
     }
@@ -111,7 +112,7 @@ class Request
      *           Ex: array("name", "street_address", "city", "state", "zip").
      * @noinspection PhpUnused
      */
-    public function addSelectList(array|string $selectList): void
+    public function addSelectList($selectList)
     {
         if (is_array($selectList)) {
             foreach ($selectList as $field) {
@@ -169,7 +170,7 @@ class Request
      *        </ol>
      * @throws PdoDbException if the parameter is not an array.
      */
-    public function setExcludedFields(array|string $excludedFields): void
+    public function setExcludedFields($excludedFields)
     {
         if (is_array($excludedFields)) {
             $idx = 0;
@@ -227,7 +228,7 @@ class Request
      * @throws PdoDbException if an error is thrown when the <b>request</b> is performed.
      * @noinspection PhpUnused
      */
-    public function performRequest(PdoDb $pdoDb): array|bool|int
+    public function performRequest(PdoDb $pdoDb)
     {
         try {
             // @formatter:off

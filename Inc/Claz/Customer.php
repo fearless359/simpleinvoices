@@ -445,7 +445,7 @@ class Customer
      * @param int $parentId
      * @noinspection PhpUnused
      */
-    public static function getSubCustomerAjax(int $parentId): never
+    public static function getSubCustomerAjax(int $parentId)
     {
         $rows = self::getSubCustomers($parentId);
         $output = "<option value=''></option>";
@@ -547,7 +547,7 @@ class Customer
             $maskLen = $len - $numToShow;
             $maskedValue = str_repeat($maskChr, $maskLen);
             $maskedValue .= substr($decryptedValue, $maskLen);
-        } catch (Exception) {
+        } catch (Exception $exp) {
             return $value;
         }
         return $maskedValue;

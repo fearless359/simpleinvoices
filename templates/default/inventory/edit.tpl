@@ -12,7 +12,7 @@
  *      https://simpleinvoices.group
  *}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=inventory&amp;view=save&amp;id={$inventory.id|urlEncode}">
+      action="index.php?module=inventory&amp;view=save&amp;id={$inventory.id|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="date" class="cols__2-span-1 align__text-right">{$LANG.dateUc}:&nbsp;</label>

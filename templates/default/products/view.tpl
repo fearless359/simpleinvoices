@@ -105,7 +105,7 @@
                                 <input type="checkbox" name="custom_flags_{$cflg.flg_id}" id="custom_flags_{$cflg.flg_id}Id" disabled
                                        class="cols__1-span-1 margin__top-0-5"
                                        {if substr($product.custom_flags,$i,1) == $smarty.const.ENABLED}checked{/if} value="1"/>
-                                <label for="custom_flags_{$cflg.flg_id}Id" class="cols__2-span-1 margin__top-0">{$cflg.field_label|utilTrim|htmlSafe}:</label>
+                                <label for="custom_flags_{$cflg.flg_id}Id" class="cols__2-span-1 margin__top-0">{$cflg.field_label|trim|htmlSafe}:</label>
                             </div>
                         </div>
                     </div>

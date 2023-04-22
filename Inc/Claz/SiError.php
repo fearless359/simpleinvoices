@@ -39,7 +39,7 @@ class SiError
     public static function out(string $type, string $info1 = "", string $info2 = ""): string
     {
         $dbname = '';
-        if ($type == "dbConnection" && str_contains($info1, "Unknown database")) {
+        if ($type == "dbConnection" && strstr($info1, "Unknown database") !== false) {
             $type = "install";
             $parts = explode("'", $info1);
             $dbname = $parts[1];
@@ -196,17 +196,6 @@ class SiError
                         "<br />" .
                         "<br />===========================================" .
                         "<br />";
-                break;
-
-            case "phpVersion":
-                $mess = "<br />===========================================" .
-                    "<br />SimpleInvoices - PHP - Version Issue" .
-                    "<br />===========================================" .
-                    "<br />" .
-                    "<br />$info1" .
-                    "<br />" .
-                    "<br />===========================================" .
-                    "<br />";
                 break;
 
             default:

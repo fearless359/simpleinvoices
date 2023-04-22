@@ -31,7 +31,7 @@ class PdoDbException extends Exception
      * @noinspection PhpMethodMayBeStaticInspection
      * @noinspection PhpUnused
      */
-    public function customFunctions(): void
+    public function customFunctions()
     {
         echo "A custom function for this type of exception\n";
     }

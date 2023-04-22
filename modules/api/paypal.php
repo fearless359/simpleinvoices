@@ -34,7 +34,7 @@ if ($paypal->validate_ipn()) {
     Log::out('Paypal - custom=' . $_POST ['custom'], Log::INFO);
     $domainId = '';
     foreach ($customArray as $key => $value) {
-        if (str_contains($value, "domain_id:")) {
+        if (strstr($value, "domain_id:")) {
             Log::out("Paypal - value[$value]", Log::INFO);
             $domainId = substr($value, 10);
         }

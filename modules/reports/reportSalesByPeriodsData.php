@@ -150,6 +150,7 @@ while ($year <= $thisYear) {
     } catch (PdoDbException $pde) {
         error_log("modules/reports/reportSalesByPeriods.php - error(4): " . $pde->getMessage());
     }
+
     $data['sales']['total'][$year] = $rows[0]['year_total'];
 
     $prevYear = $data['sales']['total'][$year - 1] ?? 0;
@@ -165,6 +166,7 @@ while ($year <= $thisYear) {
     } catch (PdoDbException $pde) {
         error_log("modules/reports/reportSalesByPeriods.php - error(3): " . $pde->getMessage());
     }
+
     $data['payments']['total'][$year] = $rows[0]['year_total_payments'];
 
     $prevYear = $data['payments']['total'][$year - 1] ?? 0;

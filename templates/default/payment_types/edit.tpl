@@ -26,7 +26,7 @@
         </div>
         <div class="grid__container grid__head-10">
             <label for="enabledId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.status}:</label>
-            {html_options name=pt_enabled id=enabledId class="cols__5-span-1" options=$enabled selected=$paymentType.pt_enabled tabindex=20}
+            {html_options name=pt_enabled id=enabledId class=cols__5-span-1 options=$enabled selected=$paymentType.pt_enabled tabindex=20}
         </div>
     </div>
     <div class="align__text-center">

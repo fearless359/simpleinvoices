@@ -12,7 +12,7 @@
  *	    https://simpleinvoices.group
  *}
 <!--suppress HtmlFormInputWithoutLabel -->
-<form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlEncode}">
+<form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlencode}">
     <div class="grid__area">
         <input type="hidden" name="cronId" id="cronId" value="{$cron.id|htmlSafe}">
         <div class="grid__container grid__head-10">
@@ -92,7 +92,7 @@
     <div class="si_filters align__text-center margin__bottom-2" id="renderButtons">
         <div class="align__text-center margin__top-3 margin__bottom-3">
             <a title=" {$LANG.printUc}" class="button square" id="renderQuickViewId"
-               href="index.php?module=cron&amp;view=renderQuickView&amp;cronId={$cron.id|urlEncode}">
+               href="index.php?module=cron&amp;view=renderQuickView&amp;cronId={$cron.id|urlencode}">
                 <img src='{$path}../../../images/printer.png' class='action'  alt=""/>&nbsp; {$LANG.renderInvoice}
             </a>
             <a class="button square" id="editItemizedId"

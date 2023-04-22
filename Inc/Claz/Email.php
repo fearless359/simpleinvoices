@@ -38,7 +38,10 @@ class Email
         $this->emailTo = [];
     }
 
-    public function errorLog(): void
+    /**
+     *  @return void
+     **/
+    public function errorLog()
     {
         error_log("Email::errorLog() - bcc: " . print_r($this->bcc, true));
         error_log("Email::errorLog() - body[$this->body]");

@@ -79,7 +79,7 @@ class Eway
             $key = $config['encryptionDefaultKey'];
             $enc = new Encryption();
             $creditCardNumber = $enc->decrypt($key, $this->customer['credit_card_number']);
-        } catch (Exception) {
+        } catch (Exception $exp) {
             return 'false';
         }
 
@@ -142,7 +142,7 @@ class Eway
         return 'false';
     }
 
-    public function getMessage(): array
+    public function getMessage()
     {
         return $this->message;
     }

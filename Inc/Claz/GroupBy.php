@@ -14,7 +14,7 @@ class GroupBy
      * GroupBy class constructor
      * @param string|DbField|array $field Highest priority fields to <b>GROUP BY</b>.
      */
-    public function __construct(string|DbField|array $field = [])
+    public function __construct($field = [])
     {
         if (is_array($field)) {
             $this->fields = $field;

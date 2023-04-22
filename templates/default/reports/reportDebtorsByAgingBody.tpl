@@ -16,8 +16,8 @@
         <th class="align__text-right">{$LANG.totalUc}</th>
         <th class="align__text-right">{$LANG.paidUc}</th>
         <th class="align__text-right">{$LANG.owingUc}</th>
-        <th class="align__text-center">{$LANG.dateUc}</th>
-        <th class="align__text-right">{$LANG.age}</th>
+        <th class="align__text-center">{$LANG.date|htmlSafe|ucfirst}</th>
+        <th class="align__text-right">{$LANG.age|htmlSafe}</th>
     </tr>
     </thead>
     <tbody>

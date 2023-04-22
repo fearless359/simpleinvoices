@@ -157,6 +157,7 @@ class Invoice
 
         $readOnly = $_SESSION['role_name'] == 'customer';
         $rows = self::getInvoices(null, '', '', false, $invoiceDisplayDays);
+
         $tableRows = [];
         foreach ($rows as $row) {
             // @formatter:off
@@ -223,6 +224,7 @@ class Invoice
                 'locale' => preg_replace($pattern,'$1-$2', $row['locale'])
             ];
         }
+
         return $tableRows;
     }
 
@@ -1132,7 +1134,7 @@ class Invoice
      * @return Havings havings SQL statement
      * @throws PdoDbException
      */
-    public static function buildHavings(string $option, array|string $parms = ""): Havings
+    public static function buildHavings(string $option, $parms = ""): Havings
     {
         try {
             $havings = new Havings();

@@ -21,7 +21,7 @@ class WhereClause
      * @param WhereClause|WhereItem|null $whereItem (Optional) If set, will add to this newly instantiated object.
      * @throws PdoDbException
      */
-    public function __construct(WhereClause|WhereItem $whereItem = null)
+    public function __construct($whereItem = null)
     {
         $this->whereItems = [];
         $this->parenCnt = 0;
@@ -67,7 +67,7 @@ class WhereClause
      * @param OnClause|OnItem|WhereClause|WhereItem $whereItem
      * @throws PdoDbException If end of clause shows out of balance parenthesis.
      */
-    public function addItem(WhereClause|OnItem|WhereItem|OnClause $whereItem): void
+    public function addItem($whereItem)
     {
         if (is_a($whereItem, 'Inc\Claz\WhereClause') || is_a($whereItem, 'Inc\Claz\OnClause')) {
             foreach($whereItem->whereItems as $wi) {
@@ -92,7 +92,7 @@ class WhereClause
      *        is not that last statement in the <b>WHERE</b> clause.
      * @throws PdoDbException
      */
-    public function addSimpleItem(string $field, DbField|array|int|string $value, string $connector = ""): void
+    public function addSimpleItem(string $field, $value, string $connector = "")
     {
         $this->addItem(new WhereItem(false, $field, "=", $value, false, $connector));
     }

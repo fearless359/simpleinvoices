@@ -13,7 +13,10 @@ class Join
 
     private GroupBy $groupBy;
     private OnClause $onClause;
-    private SELECT|string $table;
+    /**
+     * @var SELECT|string
+     */
+    private $table;
     private string $tableAlias;
     private string $type;
 
@@ -23,7 +26,7 @@ class Join
      * @param string|SELECT $table Database table to join. If not present, the database prefix will be added.
      * @param string $tableAlias Alias for table to use for column name references.
      */
-    public function __construct(string $type, string|SELECT $table, string $tableAlias = "")
+    public function __construct(string $type, $table, string $tableAlias = "")
     {
         $this->type = strtoupper($type);
         if (preg_match(self::JOIN_TYPE, $this->type) != 1) {
@@ -60,7 +63,7 @@ class Join
      *        specified, this is the last item in the <b>OnClause</b>.
      * @throws PdoDbException
      */
-    public function addSimpleItem(string $field, DbField|string $value, string $connector=""): void
+    public function addSimpleItem(string $field, $value, string $connector="")
     {
         $this->onClause->addSimpleItem($field, $value, $connector);
     }
@@ -70,7 +73,7 @@ class Join
      * @param OnClause $onClause Object of class type <b>OnClause</b>.
      * @throws PdoDbException
      */
-    public function setOnClause(OnClause $onClause): void
+    public function setOnClause(OnClause $onClause)
     {
         if (!$this->onClause->isEmpty()) {
             throw new PdoDbException("Join setOnClause(): Attempt to set multiple \"OnClause\" statements.");
@@ -82,7 +85,7 @@ class Join
      * Add a <b>GROUP BY</b> object for this join.
      * @param GroupBy $groupBy
      */
-    public function addGroupBy(GroupBy $groupBy): void
+    public function addGroupBy(GroupBy $groupBy)
     {
         $this->groupBy = $groupBy;
     }

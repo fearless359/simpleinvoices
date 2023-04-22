@@ -7,7 +7,7 @@ use Inc\Claz\PdoDbException;
  * Make the option section of a select statement for sub-customers.
  * @param string $parentCustomerId
  */
-function getSubCustomer(string $parentCustomerId=''): never
+function getSubCustomer(string $parentCustomerId='')
 {
     global $pdoDb;
 

@@ -23,23 +23,25 @@
                 <input type="text" name="description" id="description" class="cols__4-span-5" required size="50" tabindex="10"
                        value="{if isset($smarty.post.description)}{$smarty.post.description|htmlSafe}{/if}"/>
             </div>
+            <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
+            <input type="hidden" name="currency-code=" id="currencyCodeId" value="{$config.localCurrencyCode}">
             <div class="grid__container grid__head-10">
                 <label for="unitPriceId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.unitPrice}:</label>
-                <input type="text" name="unit_price" id="unitPriceId" class="cols__4-span-2" size="25" tabindex="20"
-                       value="{if isset($smarty.post.unit_price)}{$smarty.post.unit_price|htmlSafe}{/if}"/>
+                <input type="text" name="unit_price" id="unitPriceId" class="cols__4-span-2 validateNumber"
+                       size="25" tabindex="20" value="{if isset($smarty.post.unit_price)}{$smarty.post.unit_price|utilNumber}{/if}"/>
             </div>
             {if $defaults.inventory == $smarty.const.ENABLED}
                 <div class="grid__container grid__head-10">
                     <label for="costId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.costUc}:
                         <img class="tooltip" title="{$LANG.helpCost}" src="{$helpImagePath}help-small.png" alt=""/>
                     </label>
-                    <input type="text" name="cost" id="costId" class="cols__4-span-2" size="25" tabindex="30"
-                           value="{if isset($smarty.post.cost)}{$smarty.post.cost|htmlSafe}{/if}"/>
+                    <input type="text" name="cost" id="costId" class="cols__4-span-2 validateNumber" size="25" tabindex="30"
+                           value="{if isset($smarty.post.cost)}{$smarty.post.cost|utilNumber}{/if}"/>
                 </div>
                 <div class="grid__container grid__head-10">
                     <label for="reorderLevelId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.reorderLevel}:</label>
-                    <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2" size="25" tabindex="40"
-                           value="{if isset($smarty.post.reorder_level)}{$smarty.post.reorder_level|htmlSafe}{/if}"/>
+                    <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2 validateWholeNumber" size="25" tabindex="40"
+                           value="{if isset($smarty.post.reorder_level)}{$smarty.post.reorder_level|utilNumberTrim:0}{/if}"/>
                 </div>
             {/if}
             <div class="grid__container grid__head-10">
@@ -124,7 +126,7 @@
                                 <div class="grid__container grid__head-checkbox">
                                     <input type="checkbox" name="custom_flags_{$cflg.flg_id}" id="custom_flags_{$cflg.flg_id}"
                                            class="cols__1-span-1 margin__top-0-5" value="1" tabindex="11{$cflg@index}"/>
-                                    <label for="custom_flags_{$cflg.flg_id}" class="cols__2-span-1 margin__top-0">{$cflg.field_label|utilTrim|htmlSafe}
+                                    <label for="custom_flags_{$cflg.flg_id}" class="cols__2-span-1 margin__top-0">{$cflg.field_label|trim|htmlSafe}
                                         {if strlen($cflg.field_help) > 0}
                                             <img class="tooltip" title="{$cflg.field_help}" src="{$helpImagePath}help-small.png" alt="help"/>
                                         {/if}

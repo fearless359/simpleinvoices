@@ -4,7 +4,7 @@ namespace Inc\Claz;
 
 use Exception;
 
-//include_once 'vendor/autoload.php';
+include_once 'vendor/autoload.php';
 include_once 'config/define.php';
 
 /**

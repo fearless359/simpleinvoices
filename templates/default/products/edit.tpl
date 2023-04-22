@@ -15,7 +15,7 @@
  *      https://simpleinvoices.group
  *}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=products&amp;view=save&amp;id={$smarty.get.id|urlEncode}">
+      action="index.php?module=products&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="description" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.productDescription}:</label>
@@ -40,7 +40,7 @@
             </div>
             <div class="grid__container grid__head-10">
                 <label for="reorderLevelId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.reorderLevel}:</label>
-                <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2 validateWholeNumber"
+                <input type="text" name="reorder_level" id="reorderLevelId" class="cols__4-span-2 "
                        size="25" tabindex="40"
                        value="{if isset($product.reorder_level)}{$product.reorder_level|utilNumberTrim:0}{/if}"/>
             </div>
@@ -131,7 +131,7 @@
                                            class="cols__1-span-1 margin__top-0-5" tabindex="6{$i}"
                                             {if substr($product.custom_flags,$i,1) == '1'} checked {/if} value="1"/>
                                     <label for="custom_flags_{$cflg.flg_id}Id" class="cols__2-span-1 margin__top-0">
-                                        {$cflg.field_label|utilTrim|htmlSafe}
+                                        {$cflg.field_label|trim|htmlSafe}
                                         {if strlen($cflg.field_help) > 0}
                                             <img class="tooltip" title="{$cflg.field_help}" src="{$helpImagePath}help-small.png" alt=""/>
                                         {/if}

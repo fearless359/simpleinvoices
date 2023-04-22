@@ -10,15 +10,17 @@ namespace Inc\Claz;
 class DbField
 {
     private string $alias;
-
-    private int|string $field;
+    /**
+     * @var int|string
+     */
+    private $field;
 
     /**
      * Class constructor
      * @param string|int $field Field name or integer constant.
      * @param string $alias (Optional) Alias for this field. Specify only if needed.
      */
-    public function __construct(string|int $field, string $alias = "")
+    public function __construct($field, string $alias = "")
     {
         $this->field = $field;
         $this->alias = $alias;

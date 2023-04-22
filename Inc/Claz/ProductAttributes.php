@@ -60,18 +60,18 @@ class ProductAttributes
 
             $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
 
-            $enabled = "<span style='display:none'>{$row['enabledText']}</span>" .
+            $enabled = "<span style='display:none'>{$row['enabled_text']}</span>" .
                        "<img src='$image' alt='{$LANG['enabled']}'>";
 
             $image = $row['enabled'] == ENABLED ? "images/tick.png" : "images/cross.png";
-            $visible = "<span style='display:none'>{$row['visibleText']}</span>" .
+            $visible = "<span style='display:none'>{$row['visible_text']}</span>" .
                        "<img src='$image' alt='{$LANG['enabled']}'>";
 
 
             $tableRows[] = [
                 'action' => $action,
                 'name' => $row['name'],
-                'typeName' => ucwords($row['typeName']),
+                'typeName' => ucwords($row['type_name']),
                 'enabled' => $enabled,
                 'visible' => $visible
             ];
@@ -99,7 +99,7 @@ class ProductAttributes
                 new DbField('pa.type_id', 'type_id'),
                 new DbField('pa.enabled', 'enabled'),
                 new DbField('pa.visible', 'visible'),
-                new DbField('pat.name', 'typeName')
+                new DbField('pat.name', 'type')
             ]);
 
             $connector = isset($id) && $enabled ? 'AND' : '';

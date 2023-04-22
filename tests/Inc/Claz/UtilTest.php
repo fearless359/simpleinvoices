@@ -157,6 +157,8 @@ class UtilTest extends TestCase
 
     public function testGetLogo()
     {
+        $url = Util::getURL();
+
         $biller['logo'] = '';
         $logo = Util::getLogo($biller);
         self::assertEquals('templates/invoices/logos/_default_blank_logo.png', $logo, 'Test for default logo');

@@ -20,7 +20,7 @@
     {/if}
     <h3 class="align__text-center margin__bottom-2">{$LANG.email} {$invoice.index_name|htmlSafe} {$LANG.to} {$LANG.customerUc} {$LANG.asLc} {$LANG.pdf}</h3>
     <form name="frmpost" method="POST" id="frmpost"
-          action="index.php?module=invoices&amp;view=email&amp;stage=2&amp;id={$smarty.get.id|urlEncode}">
+          action="index.php?module=invoices&amp;view=email&amp;stage=2&amp;id={$smarty.get.id|urlencode}">
         <div class="grid__area">
                 <div class="grid__container grid__head-6">
                     <label for="emailFrom" class="cols__1-span-2">

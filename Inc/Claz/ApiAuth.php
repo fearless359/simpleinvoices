@@ -12,10 +12,13 @@ class ApiAuth
     {
         // API calls don't use the auth module
         if ($module != 'api') {
-            Log::out("ApiAuth::authenticate - _SESSION: " . print_r($_SESSION, true));
+            if (PHP_SESSION_ACTIVE !== session_status()){
+                session_name(SESSION_NAME);
+                session_start();
+            }
             $sessionId = $_SESSION['id'] ?? 0;
             $getId = $_GET['id'] ?? 0;
-            Log::out("ApiAuth::authenticate() - module[$module] view[$view] sessionId[$sessionId] getId[$getId]");
+            Log::out("ApiAuth::authenticate() - sessionId[$sessionId] getId[$getId] module[$module] view[$view]");
             // If we don't have an active session, force login screen.
             if (!$sessionId > 0) {
                 // If this is not an "auth" module request, then force login screen.

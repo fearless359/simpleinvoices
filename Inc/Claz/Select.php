@@ -12,7 +12,7 @@ class Select
     private FromStmt $fromStmt;
     private GroupBy $groupBy;
     private array $joins;
-    private FunctionStmt|CaseStmt|array $list;
+    private $list;
     private int $tokenCnt;
     private WhereClause $whereClause;
 
@@ -30,8 +30,8 @@ class Select
      * @param string $alias (Optional) Alias to assign to the select statement.
      * @throws PdoDbException if invalid parameter types are submitted.
      */
-    public function __construct(FunctionStmt|array|CaseStmt $list, ?FromStmt $fromStmt = null,
-                                WhereClause|WhereItem $whereClause = null, ?GroupBy $groupBy = null, string $alias = "")
+    public function __construct($list, ?FromStmt $fromStmt = null, $whereClause = null,
+                                ?GroupBy $groupBy = null, string $alias = "")
     {
 
         if (!is_array($list) && !is_a($list, "Inc\Claz\FunctionStmt") &&

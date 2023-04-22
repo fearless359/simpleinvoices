@@ -17,7 +17,7 @@ class SiAcl
      * It should be retrieved from $_SESSION['acl'] whenever it is to be used.
      * @throws Exception
      */
-    public static function init(): void
+    public static function init()
     {
         $acl = new Acl();
 
@@ -277,7 +277,7 @@ class SiAcl
         ];
 
         // Add all roles so they are available for use
-       foreach ($roles as $role) {
+        foreach ($roles as $role) {
             $acl->addRole($role);
         }
 
@@ -330,7 +330,7 @@ class SiAcl
      * @param Acl $acl
      * @noinspection PhpUnused
      */
-    public static function appendResources(array|string $resource, Acl $acl): void
+    public static function appendResources(array|string $resource, Acl $acl)
     {
         try {
             if (is_array($resource)) {
@@ -351,7 +351,7 @@ class SiAcl
      * @param Acl $acl
      * @noinspection PhpUnused
      */
-    public static function appendPermission(array|string $resource, Acl $acl): void
+    public static function appendPermission($resource, Acl $acl)
     {
         try {
             if (is_array($resource)) {

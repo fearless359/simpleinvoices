@@ -30,12 +30,16 @@ class ImportJson
     /**
      * @return bool|string Read data or false if failure.
      */
-    private function getFileContents(): bool|string
+    private function getFileContents()
     {
         return file_get_contents($this->fileName, true);
     }
 
-    private function replace(string $str): array|string
+    /**
+     * @param string $str
+     * @return string|array
+     */
+    private function replace(string $str)
     {
         return str_replace($this->find, $this->replace, $str);
     }
@@ -45,7 +49,7 @@ class ImportJson
      * @return mixed
      * @noinspection PhpMethodMayBeStaticInspection
      */
-    private function decode(string $json): mixed
+    private function decode(string $json)
     {
         return json_decode($json, true);
     }

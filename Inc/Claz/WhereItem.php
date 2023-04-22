@@ -9,7 +9,7 @@ namespace Inc\Claz;
 class WhereItem
 {
     private const CONNECTORS = '/^(AND|OR)$/';
-    private const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|IS NULL|IS NOT NULL|REGEXP)$/';
+    private const OPERATORS = '/^(=|<>|<|>|<=|>=|<=>|BETWEEN|LIKE|IN|REGEXP|IS NULL|IS NOT NULL|REGEXP)$/';
 
     private bool $closeParen;
     private string $connector;
@@ -17,7 +17,10 @@ class WhereItem
     private bool $openParen;
     private string $operator;
     private string $token;
-    private string|int|array|DbField $value;
+    /**
+     * @var array|DbField|int|string
+     */
+    private $value;
 
     /**
      * Class constructor
@@ -36,7 +39,7 @@ class WhereItem
      *        clause. Optional parameter.
      * @throws PdoDbException If an invalid operator or connector is found.
      */
-    public function __construct(bool $openParen, string $field, string $operator, DbField|array|int|string $value, bool $closeParen, string $connector = "")
+    public function __construct(bool $openParen, string $field, string $operator, $value, bool $closeParen, string $connector = "")
     {
         $this->openParen = $openParen;
         $this->field = $field;

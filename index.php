@@ -101,15 +101,6 @@ try {
     exit();
 }
 
-$phpVersion = phpversion();
-Log::out("index.php - session_id[" . session_id() . "] PHP Version[$phpVersion]");
-
-$pattern = "/^8\.[1-9].*/";
-if (!preg_match($pattern, $phpVersion)) {
-    SiError::out('phpVersion',"SimpleInvoices 2023 requires PHP 8.1x. " .
-        "You are currently running PHP $phpVersion ");
-}
-
 // globals set in the init.php logic
 $databaseBuilt = false;
 $databasePopulated = false;
@@ -142,7 +133,7 @@ if ($apiRequest || $timeout <= 0) {
     $timeout = 60;
 }
 
-Util::sessionTimeout($timeout, $module, $view);
+Util::sessionTimeout($timeout);
 
 // Will be set in the following init.php call to extensions that are enabled.
 $extNames = [];
@@ -224,9 +215,8 @@ if ($module == "options" && $view == "database_sqlpatches") {
 
     // See if we need to verify patches have been loaded.
     if ($applyDbPatches) {
-        $sessionId = $_SESSION['id'] ?? 0;
         Log::out("index.php - authenticationEnabled[{$config['authenticationEnabled']}] ".
-            "\$_SESSION['id'][$sessionId]");
+            "\$_SESSION['id'][{$_SESSION['id']}]");
         // If default user or an active session exists, proceed with check.
         if ($config['authenticationEnabled'] == DISABLED || isset($_SESSION['id'])) {
             // Check if there are patches to process
@@ -615,8 +605,8 @@ if ($extensionTemplates == 0) {
 }
 Log::out("index.php - final path[$path] realPath[$realPath] myTplPath[$myTplPath]");
 
-$smarty->assign("extensionInsertionFiles", $extensionInsertionFiles);
-$smarty->assign("performExtensionInsertions", $performExtensionInsertions);
+$smarty->assign("extension_insertion_files", $extensionInsertionFiles);
+$smarty->assign("perform_extension_insertions", $performExtensionInsertions);
 
 // If this is not an extension, $path and $realPath are the same. If it is an extension,
 // $path is relative to the extension and $realPath is relative to the standard library path.

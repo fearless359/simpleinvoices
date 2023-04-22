@@ -31,10 +31,8 @@
         {assign 'prevPreference' $invoice.preference}
         <tr class="tr_{cycle values="A,B"}">
             <td class="align__text-right">
-                {if !isset($format)}{$fmt = ''}{else}{$fmt = $format}{/if}
-                {if !isset($fileType)}{$fType = ''}{else}{$fType = $fileType}{/if}
-                {if $fmt != 'print' && $fmt != 'pdf' && $fType != 'xls' && $fType != 'doc'}
-                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlEncode}">
+                {if $format != 'print' && $format != 'pdf' && $fileType != 'xls' && $fileType != 'doc'}
+                    <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoices[invoice].id|urlencode}">
                         {$invoice.index_id|htmlSafe}
                     </a>
                 {else}
@@ -51,12 +49,10 @@
     </tbody>
     <tfoot>
     <tr>
-        {if !empty($invoiceTotals)}
-            <td class="align__text-right bold" colspan="7">{$LANG.totalUc}:</td>
-            <td class="align__text-right bold">{$invoiceTotals.sumTotal|utilCurrency}</td>
-            <td class="align__text-right bold">{$invoiceTotals.sumCost|utilCurrency}</td>
-            <td class="align__text-right bold">{$invoiceTotals.sumProfit|utilCurrency}</td>
-        {/if}
+        <td class="align__text-right bold" colspan="7">{$LANG.totalUc}:</td>
+        <td class="align__text-right bold">{$invoiceTotals.sumTotal|utilCurrency}</td>
+        <td class="align__text-right bold">{$invoiceTotals.sumCost|utilCurrency}</td>
+        <td class="align__text-right bold">{$invoiceTotals.sumProfit|utilCurrency}</td>
     </tr>
     </tfoot>
 </table>

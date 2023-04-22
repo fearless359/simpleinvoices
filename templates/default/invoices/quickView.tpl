@@ -17,25 +17,25 @@
  *}
 <div class="align__text-center margin__bottom-2">
     <a title="{$LANG.printPreviewTooltip} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
-       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlEncode}&amp;format=print"
+       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id|urlencode}&amp;format=print"
        class="button square" target="_blank">
         <img src='images/printer.png' class='action' alt="{$LANG.printUc}"/>&nbsp;{$LANG.printUc}
     </a>
     {if $smarty.session.role_name != 'customer'}
         <a title="{$LANG.edit} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
-           href="index.php?module=invoices&amp;view=edit&amp;id={$invoice.id|urlEncode}"
+           href="index.php?module=invoices&amp;view=edit&amp;id={$invoice.id|urlencode}"
            class="button square">
             <img src='images/edit.png' class='action' alt="{$LANG.edit}"/>&nbsp;{$LANG.edit}
         </a>
         <a title="{$LANG.processPaymentFor} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
-           href="index.php?module=payments&amp;view=process&amp;id={$invoice.id|urlEncode}&amp;op=pay_selected_invoice"
+           href="index.php?module=payments&amp;view=process&amp;id={$invoice.id|urlencode}&amp;op=pay_selected_invoice"
            class="button square">
             <img src='images/money_dollar.png' class='action' alt="{$LANG.processPayment}"/>&nbsp;{$LANG.paymentUc}
         </a>
     {/if}
     {if $ewayPreCheck == 'true' && $smarty.session.role_name != 'customer'}
         <a title="{$LANG.processPaymentFor} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
-           href="index.php?module=payments&amp;view=eway&amp;id={$invoice.id|urlEncode}"
+           href="index.php?module=payments&amp;view=eway&amp;id={$invoice.id|urlencode}"
            class="button square">
             <img src='images/money_dollar.png' class='action' alt="{$LANG.processPaymentViaEway}"/>&nbsp;{$LANG.eway}
         </a>
@@ -47,23 +47,23 @@
         <img src='images/page_white_acrobat.png' class='action' alt="{$LANG.exportPdf}"/>&nbsp;{$LANG.pdf}
     </a>
     <a title="{$LANG.exportUc} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe} {$LANG.exportXlsTooltip} .{$config.exportSpreadsheet|htmlSafe} {$LANG.formatTooltip}"
-       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$spreadsheet|urlEncode}"
+       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$spreadsheet|urlencode}"
        class="button square">
         <img src='images/page_white_excel.png' class='action' alt="{$LANG.exportAs} {$spreadsheet|htmlSafe}"/>&nbsp;{$LANG.xlsUc}
     </a>
     <a title="{$LANG.exportUc} {$preference.pref_inv_wording} {$invoice.index_id|htmlSafe} {$LANG.exportDocTooltip} .{$config.exportWordProcessor|htmlSafe} {$LANG.formatTooltip}"
-       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$wordprocessor|urlEncode}"
+       href="index.php?module=export&amp;view=invoice&amp;id={$invoice.id}&amp;format=file&amp;filetype={$wordprocessor|urlencode}"
        class="button square">
         <img src='images/page_white_word.png' class='action' alt="{$LANG.exportAs} {$wordprocessor|htmlSafe}"/>&nbsp;{$LANG.docUc}
     </a>
     <a title="{$LANG.email} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
-       href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice.id|urlEncode}"
+       href="index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$invoice.id|urlencode}"
        class="button square">
         <img src='images/mail-message-new.png' class='action' alt="{$LANG.email}"/>&nbsp;{$LANG.email}
     </a>
     {if $defaults.delete == $smarty.const.ENABLED && $smarty.session.role_name != 'biller' && $smarty.session.role_name != 'customer'}
         <a title="{$LANG.delete} {$preference.pref_inv_wording|htmlSafe} {$invoice.index_id|htmlSafe}"
-           href="index.php?module=invoices&amp;view=delete&amp;stage=1&amp;id={$invoice.id|urlEncode}"
+           href="index.php?module=invoices&amp;view=delete&amp;stage=1&amp;id={$invoice.id|urlencode}"
            class="button square">
             <img src='images/delete.png' class='action' alt="{$LANG.delete}"/>&nbsp;{$LANG.delete}
         </a>
@@ -163,7 +163,7 @@
             <div class="grid__area-totals--financial--invoice-box1">
                 <div class="bold align__text-right">{$LANG.totalUc}</div>
                 <div class="bold align__text-right">
-                    <a href="index.php?module=payments&amp;view=manage&amp;id={$invoice.id|urlEncode}">
+                    <a href="index.php?module=payments&amp;view=manage&amp;id={$invoice.id|urlencode}">
                         {$LANG.paidUc}
                     </a>
                 </div>
@@ -179,14 +179,14 @@
         </div>
         <div class="grid__area-totals--financial--area">
             <h5>
-                <a href="index.php?module=customers&amp;view=view&amp;id={$customer.id|urlEncode}">
+                <a href="index.php?module=customers&amp;view=view&amp;id={$customer.id|urlencode}">
                     {$LANG.customerAccount}
                 </a>
             </h5>
             <div class="grid__area-totals--financial--invoice-box2">
                 <div class="bold align__text-right">{$LANG.totalUc}</div>
                 <div class="bold align__text-right">
-                    <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlEncode}">
+                    <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">
                         {$LANG.paidUc}
                     </a>
                 </div>

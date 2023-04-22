@@ -30,7 +30,7 @@ class OnClause extends WhereClause
      *        clause. Optional parameter.
      * @throws PdoDbException If an invalid operator or connector is found.
      */
-    public function addSimpleItem(string $field, DbField|array|int|string $value, string $connector = ""): void
+    public function addSimpleItem(string $field, $value, string $connector = "")
     {
         try {
             parent::addSimpleItem($field, $value, $connector);
@@ -44,7 +44,7 @@ class OnClause extends WhereClause
      * @param OnClause|OnItem|WhereClause|WhereItem $whereItem
      * @throws PdoDbException If end of clause shows out of balance parenthesis.
      */
-    public function addItem(WhereClause|OnItem|WhereItem|OnClause $whereItem): void
+    public function addItem($whereItem)
     {
         try {
             parent::addItem($whereItem);

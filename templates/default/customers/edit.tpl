@@ -15,7 +15,7 @@
     <h3 class="align__text-center si_message_error">{$errorMsg}</h3>
 {/if}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlEncode}">
+      action="index.php?module=customers&amp;view=save&amp;id={$customer.id|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="name" class="cols__1-span-3 align__text-right">{$LANG.customerName}:

@@ -4,6 +4,7 @@ use Inc\Claz\DbField;
 use Inc\Claz\Join;
 use Inc\Claz\Log;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\SystemDefaults;
 use Inc\Claz\User;
 use Inc\Claz\Util;
 
@@ -17,8 +18,7 @@ use Inc\Claz\Util;
  *  License:
  *      GPL v3 or above
  */
-
-global $module, $pdoDb, $smarty, $view;
+global $pdoDb, $smarty;
 
 Util::allowDirectAccess();
 
@@ -32,7 +32,6 @@ if (!defined("STD_LOGIN_FAILED_MSG")) {
 $errorMessage = '';
 Util::loginLogo($smarty);
 Log::out("login.php - _POST - " . print_r($_POST, true));
-Log::out("login.php - _SESSION - " . print_r($_SESSION, true));
 if (empty($_POST['user']) || empty($_POST['pass'])) {
     if (isset($_POST['action']) && $_POST['action'] == 'login') {
         $errorMessage = STD_LOGIN_FAILED_MSG;
@@ -41,6 +40,17 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
     $username = $_POST['user'];
     $password = $_POST['pass'];
     if (User::verifyPassword($username, $password)) {
+        session_name(SESSION_NAME);
+        session_start();
+
+        Log::out("login.php - Valid username and password");
+        $timeout = SystemDefaults::getSessionTimeout();
+        if ($timeout <= 0) {
+            $timeout = 60;
+        }
+
+        Util::sessionTimeout($timeout);
+
         try {
             $jn = new Join('LEFT', 'user_role', 'r');
             $jn->addSimpleItem('u.role_id', new DbField('r.id'));

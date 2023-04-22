@@ -47,19 +47,25 @@ try {
                  'lastId' => $row['last_id'],
                  'timestamp' => $row['timestamp']
              ];
-        } elseif (preg_match($patterns['update'], $row['sqlquerie'], $match)) {
-            $updates[] =[
-                'user' => $user,
-                'lastId' => $match[2],
-                'timestamp' => $row['timestamp']
-            ];
-        } elseif (preg_match($patterns['payment'], $row['sqlquerie'], $match)) {
-            $payments[] = [
-                'user' => $user,
-                'lastId' => $match[2],
-                'timestamp' => $row['timestamp'],
-                'amount' => $match[3]
-            ];
+        } else {
+            $match = [];
+            if (preg_match($patterns['update'], $row['sqlquerie'], $match)) {
+                $updates[] =[
+                    'user' => $user,
+                    'lastId' => $match[2],
+                    'timestamp' => $row['timestamp']
+                ];
+            } else {
+                $match = [];
+                if (preg_match($patterns['payment'], $row['sqlquerie'], $match)) {
+                    $payments[] = [
+                        'user' => $user,
+                        'lastId' => $match[2],
+                        'timestamp' => $row['timestamp'],
+                        'amount' => $match[3]
+                    ];
+                }
+            }
         }
     }
 

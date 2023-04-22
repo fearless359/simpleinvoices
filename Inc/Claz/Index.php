@@ -60,7 +60,7 @@ class Index
      * @return  void
      * @throws PdoDbException if insert fails
      */
-    public static function insert(int $id, int $subNode): void
+    public static function insert(int $id, int $subNode)
     {
         global $pdoDbAdmin;
 

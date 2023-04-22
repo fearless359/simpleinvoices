@@ -75,21 +75,17 @@ $smarty->assign('patchCount', $patchCount);
 $unappliedPatches = SqlPatchManager::numberOfUnappliedPatches();
 
 try {
-    $smarty->registerPlugin('modifier', "utilCamelCase"      , ["Inc\Claz\Util", "camelCase"]);
-    $smarty->registerPlugin('modifier', "utilCurrency"       , ["Inc\Claz\Util", "currency"]);
-    $smarty->registerPlugin('modifier', "utilDate"           , ["Inc\Claz\Util", "date"]);
-    $smarty->registerPlugin('modifier', "utilIntlDate"       , ["Inc\Claz\Util", "intlDate"]);
     $smarty->registerPlugin('modifier', "utilNumber"         , ["Inc\Claz\Util", "number"]);
     $smarty->registerPlugin('modifier', "utilNumberTrim"     , ["Inc\Claz\Util", "numberTrim"]);
-    $smarty->registerPlugin('modifier', "utilRange"          , ["Inc\Claz\Util", "utilRange"]);
-    $smarty->registerPlugin('modifier', "utilSqlDataWithTime", ["Inc\Claz\Util", "sqlDateWithTime"]);
-    $smarty->registerPlugin('modifier', "utilTrim"           , ["Inc\Claz\Util", "trimmer"]);
+    $smarty->registerPlugin('modifier', "utilCurrency"       , ["Inc\Claz\Util", "currency"]);
+    $smarty->registerPlugin('modifier', "utilCamelCase"      , ["Inc\Claz\Util", "camelCase"]);
+    $smarty->registerPlugin('modifier', "utilDate"           , ["Inc\Claz\Util", "date"]);
     $smarty->registerPlugin('modifier', "utilTruncateStr"    , ["Inc\Claz\Util", "truncateStr"]);
+    $smarty->registerPlugin('modifier', "utilSqlDataWithTime", ["Inc\Claz\Util", "sqlDateWithTime"]);
 
-    $smarty->registerPlugin('modifier', 'htmlSafe'   , ['Inc\Claz\Util', 'htmlSafe']);
-    $smarty->registerPlugin('modifier', 'outHtml'    , ['Inc\Claz\Util', 'outHtml']);
-    $smarty->registerPlugin('modifier', 'urlEncode'  , ['Inc\Claz\Util', 'urlEncode']);
-    $smarty->registerPlugin('modifier', 'urlSafe'    , ['Inc\Claz\Util', 'urlSafe']);
+    $smarty->registerPlugin('modifier', 'htmlSafe' , ['Inc\Claz\Util', 'htmlSafe']);
+    $smarty->registerPlugin('modifier', 'outHtml'  , ['Inc\Claz\Util', 'outHtml']);
+    $smarty->registerPlugin('modifier', 'urlSafe'  , ['Inc\Claz\Util', 'urlSafe']);
 
     $smarty->registerPlugin('modifier', 'urlencode', 'urlencode'); // PHP function
 } catch (SmartyException $se) {
@@ -126,13 +122,14 @@ if (isset($defaults['company_name_item'])) {
 }
 
 if (!$apiRequest) {
-    $fakeAuth = $_SESSION['fakeAuth'] ?? "";
     Log::out("init.php - authenticationEnabled[{$config['authenticationEnabled']}] " .
-        "$fakeAuth unappliedPatches[$unappliedPatches]");
+        "fakeAuth[{$_SESSION['fakeAuth']}] unappliedPatches[$unappliedPatches]");
 
     // if user logged into SimpleInvoices with authentication set to false,
     // then use the fake authentication, killing the session that was started.
-    if ($config['authenticationEnabled'] == ENABLED && $fakeAuth == "1" && $unappliedPatches == 0) {
+    if ($config['authenticationEnabled'] == ENABLED && $_SESSION['fakeAuth'] == "1" && $unappliedPatches == 0) {
+        session_name(SESSION_NAME);
+        session_start();
         session_destroy();
 
         header('Location: .');
@@ -197,9 +194,13 @@ $earlyExit = [
     "statement_export"
 ];
 
-$smartyOutput = match ($module) {
-    "export" => "fetch",
-    default => "display",
+switch ($module) {
+    case "export":
+        $smartyOutput = "fetch";
+        break;
+    default:
+        $smartyOutput = "display";
+        break;
 };
 Log::out("init.php - smartyOutput[$smartyOutput]");
 

@@ -166,7 +166,7 @@
             <label for="ewayCustomerId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.ewayCustomerId}:</label>
             <div class="cols__4-span-5">
                 <input type="text" name="eway_customer_id" id="ewayCustomerId" tabindex="160" size="25"
-                       class="margin__left-0-5" placeholder="12345678"
+                       class="margin__left-0-5"
                        value="{if isset($biller.eway_customer_id)}{$biller.eway_customer_id|htmlSafe}{/if}"/>
             </div>
         </div>
@@ -231,7 +231,7 @@
                 <img class="tooltip" title="{$LANG.helpInsertBillerText}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
             <div class="cols__4-span-5">
-                {html_options name=logo id=logoId class="margin__left-0-5"
+                {html_options name=logo id=logoId class=margin__left-0-5
                               output=$files values=$files selected=$biller.logo tabindex=220}
             </div>
         </div>
@@ -258,7 +258,7 @@
         <div class="grid__container grid__head-10">
             <label for="enabledId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.enabled}:</label>
             <div class="cols__4-span-5">
-                {html_options name=enabled id=enabledId class="margin__left-0-5"
+                {html_options name=enabled id=enabledId class=margin__left-0-5
                               options=$enabled selected=$biller.enabled tabindex=250}
             </div>
         </div>

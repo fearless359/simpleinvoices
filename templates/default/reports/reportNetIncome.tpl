@@ -1,14 +1,14 @@
 {include file=$path|cat:"library/reportTitle.tpl" title=$title}
 {include file=$path|cat:"library/exportButtons.tpl"
          params=[
-             'customFlag' => $customFlag|urlEncode,
-             'customFlagLabel' => $customFlagLabel|urlEncode,
-             'customerId' => $customerId|urlEncode,
-             'displayDetail' => $displayDetail|urlEncode,
-             'endDate' => $endDate|urlEncode,
+             'customFlag' => $customFlag|urlencode,
+             'customFlagLabel' => $customFlagLabel|urlencode,
+             'customerId' => $customerId|urlencode,
+             'displayDetail' => $displayDetail|urlencode,
+             'endDate' => $endDate|urlencode,
              'fileName' => "reportNetIncome",
-             'startDate' => $startDate|urlEncode,
-             'title' => $title|urlEncode
+             'startDate' => $startDate|urlencode,
+             'title' => $title|urlencode
          ]
 }
 {if $menu}

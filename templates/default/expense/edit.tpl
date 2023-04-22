@@ -12,7 +12,7 @@
  *      GPL v3 or above
  *}
 <form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id|urlEncode}">
+      action="index.php?module=expense&amp;view=save&amp;id={$smarty.get.id|urlencode}">
     <div class="grid__area">
         <div class="grid__container grid__head-10">
             <label for="expenseAccountId" class="cols__2-span-2 align__text-right margin__right-1">{$LANG.expenseAccounts}:</label>

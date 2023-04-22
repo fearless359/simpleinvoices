@@ -100,7 +100,11 @@ class Db
         }
     }
 
-    public function query(string $sqlQuery): PDOStatement|null
+    /**
+     * @param string $sqlQuery
+     * @return object|null|PDOStatement
+     */
+    public function query(string $sqlQuery): ?object
     {
         try {
             $argc = func_num_args();

@@ -9,21 +9,21 @@
       "Inc\\Claz\\": "Inc/Claz/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/fearless359/Acl"
-    }
-  ],
+  "require-dev": {
+    "phpunit/phpunit": "^9",
+    "mockery/mockery": "^1.4"
+  },
   "require": {
-    "ext-intl": "*",
     "ext-json": "*",
-    "ext-pdo": "*",
-    "ezyang/htmlpurifier": "^4.16",
-    "monolog/monolog": "^2.1",
     "mpdf/mpdf": "~8.1.1",
+    "samshal/acl":"^1.0",
+    "swiftmailer/swiftmailer": "^6.0",
+    "monolog/monolog": "^2.1",
+    "ext-pdo": "*",
+    "ext-intl": "*",
     "sebastian/global-state": "^5.0",
     "smarty/smarty": "^4.2",
     "ezyang/htmlpurifier": "^4.16"
   }
 }
+

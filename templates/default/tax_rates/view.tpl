@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="align__text-center margin__top-3 margin__bottom-2">
-    <a href="index.php?module=tax_rates&amp;view=edit&amp;id={$tax.tax_id|urlEncode}" class="button positive">
+    <a href="index.php?module=tax_rates&amp;view=edit&amp;id={$tax.tax_id|urlencode}" class="button positive">
         <img src="images/report_edit.png" alt="{$LANG.edit}"/>{$LANG.edit}
     </a>
 

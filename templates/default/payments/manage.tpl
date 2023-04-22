@@ -16,7 +16,7 @@
         <button><img src="images/add.png" alt=""/>{$LANG.processPayment}</button>
     </a>
     {if isset($smarty.get.id)}
-        <a href="index.php?module=payments&amp;view=process&amp;id={$smarty.get.id|urlEncode}&amp;op=pay_selected_invoice" class="">
+        <a href="index.php?module=payments&amp;view=process&amp;id={$smarty.get.id|urlencode}&amp;op=pay_selected_invoice" class="">
             <button><img src="images/money.png" alt=""/>{$LANG.paymentsFilteredInvoice}</button>
         </a>
     {/if}

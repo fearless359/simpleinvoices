@@ -121,7 +121,7 @@
                 </div>
                 <div class="grid__container grid__head-6">
                     <div class="cols__1-span-1 bold align__text-right margin__right-1">
-                        <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlEncode}">{$LANG.totalPaid}</a>:
+                        <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlencode}">{$LANG.totalPaid}</a>:
                     </div>
                     <div class="cols__2-span-1 align__text-right underline">{$customer.paid|utilCurrency}</div>
                 </div>
@@ -161,17 +161,17 @@
                 <table id="custInvoices" class="display responsive compact cell-border">
                     <thead>
                     <tr>
-                        <th>{$LANG.invoiceUc}</th>
-                        <th>{$LANG.dateCreated}</th>
-                        <th>{$LANG.totalUc}</th>
-                        <th>{$LANG.paidUc}</th>
-                        <th>{$LANG.owingUc}</th>
+                        <th class="align__text-right">{$LANG.invoiceUc}</th>
+                        <th class="align__text-center">{$LANG.dateCreated}</th>
+                        <th class="align__text-right">{$LANG.totalUc}</th>
+                        <th class="align__text-right">{$LANG.paidUc}</th>
+                        <th class="align__text-right">{$LANG.owingUc}</th>
                     </tr>
                     </thead>
                     <tbody>
                     {foreach $invoices as $invoice}
                         <tr>
-                            <td><a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlEncode}">{$invoice.index_id|htmlSafe}</a></td>
+                            <td><a href="index.php?module=invoices&amp;view=quickView&amp;id={$invoice.id|urlencode}">{$invoice.index_id|htmlSafe}</a></td>
                             <td>{$invoice.date|htmlSafe}</td>
                             <td>{$invoice.total|utilCurrency}</td>
                             <td>{$invoice.paid|utilCurrency}</td>
@@ -193,11 +193,7 @@
                     {$parentChildList = $parentCustomer}
                 {/if}
                 <div id="section-5" class="fragment">
-                    <table id="parentChildTable" class="display responsive compact cell-border" style="width:70%;">
-                        <colgroup>
-                            <col span="1" style="width: 10%">
-                            <col span="1" style="width: 45%">
-                        </colgroup>
+                    <table id="parentChildTable" class="display responsive compact cell-border">
                         <thead>
                         <tr>
                             <th>{$LANG.actions}</th>
@@ -209,11 +205,11 @@
                             <tr>
                                 <td>
                                     <a title='{$LANG.view} {$LANG.customerUc} {$pcl.name|htmlSafe}'
-                                       href='index.php?module=customers&amp;view=view&amp;id={$pcl.id|urlEncode}'>
+                                       href='index.php?module=customers&amp;view=view&amp;id={$pcl.id|urlencode}'>
                                         <img src='images/view.png' class='action' alt='{$LANG.view} {$LANG.customerUc} {$pcl.name}'/>
                                     </a>
                                     <a class='index_table' title='{$LANG.edit} {$LANG.customerUc} {$pcl.name|htmlSafe}'
-                                       href='index.php?module=customers&amp;view=edit&amp;id={$pcl.id|urlEncode}'>
+                                       href='index.php?module=customers&amp;view=edit&amp;id={$pcl.id|urlencode}'>
                                         <img src='images/edit.png' class='action' alt='{$LANG.edit} {$LANG.customerUc} {$pcl.name}'/>
                                     </a>
                                 </td>
@@ -227,7 +223,7 @@
         </div>
     </div>
     <div class="align__text-center margin__bottom-2">
-        <a href="index.php?module=customers&amp;view=edit&amp;id={$customer.id|urlEncode}" class="button positive">
+        <a href="index.php?module=customers&amp;view=edit&amp;id={$customer.id|urlencode}" class="button positive">
             <img src="images/tick.png" alt="{$LANG.edit}"/>{$LANG.edit}
         </a>
         <a href="index.php?module=customers&amp;view=manage" tabindex="-1" class="button negative">
@@ -244,11 +240,11 @@
             "responsive": true,
             "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
             "columnDefs": [
-                {"targets": 0, "className": 'dt-right' },
-                {"targets": 1, "className": 'dt-center' },
-                {"targets": 2, "className": "dt-right" },
-                {"targets": 3, "className": 'dt-right' },
-                {"targets": 4, "className": 'dt-right' }
+                {"targets": 0, "className": 'dt-body-right' },
+                {"targets": 1, "className": 'dt-body-center' },
+                {"targets": 2, "className": "dt-body-right" },
+                {"targets": 3, "className": 'dt-body-right' },
+                {"targets": 4, "className": 'dt-body-right' }
             ],
             "colReorder": true,
             "order": [
@@ -261,7 +257,7 @@
             "responsive": true,
             "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
             "columnDefs": [
-                {"targets": 0, "className": 'dt-center' }
+                {"targets": 0, "className": 'dt-body-center' }
             ],
             "colReorder": true,
             "order": [
