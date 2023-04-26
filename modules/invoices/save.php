@@ -66,9 +66,11 @@ if ($op == "create" ) {
             if ($productId > 0) {
                 $unitPrice = Util::dbStd($_POST["unit_price"], $locale);
                 $taxIds = [];
-                foreach ($_POST['tax_id'] as $taxId) {
-                    if (!empty($taxId)) {
-                        $taxIds[] = $taxId;
+                if (!empty($_POST['tax_id'])) {
+                    foreach ($_POST['tax_id'] as $taxId) {
+                        if (!empty($taxId)) {
+                            $taxIds[] = $taxId;
+                        }
                     }
                 }
                 Invoice::insertInvoiceItem($id, 1, $productId, $taxIds, $_POST['description'], $unitPrice, null);

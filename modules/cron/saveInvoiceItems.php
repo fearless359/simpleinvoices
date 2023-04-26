@@ -34,7 +34,7 @@ if ($op == 'edit') {
         $idx = 0;
         while ($idx <= $_POST['max_items']) {
             $id = $_POST["line_item$idx"] ?? 0;
-            $qty = isset($_POST["quantity$idx"]) ? Util::dbStd($_POST["quantity$idx"]) : 0;
+            $qty = isset($_POST["quantity$idx"]) ? Util::dbStd($_POST["quantity$idx"], $locale) : 0;
             if (isset($_POST["delete$idx"]) && $_POST["delete$idx"] == "yes" ||
                 $id != 0 && $qty == 0) {
                 Cron::deleteCronInvoiceItem($id);

@@ -1,6 +1,6 @@
 <div class="grid__area {if $even == 1}even{else}odd{/if}">
     <div class="grid__container grid__head-10">
-        <div class="align__text-right pad__right-1">{$invoiceItem.quantity|utilNumberTrim}</div>
+        <div class="align__text-right pad__right-1">{$invoiceItem.quantity|utilNumberTrim:$invoice.precision:$locale}</div>
         <div class="cols__2-span-5">{$invoiceItem.product.description|htmlSafe}</div>
         <div class="cols__7-span-2 align__text-right">{$invoiceItem.unit_price|utilCurrency:$locale:$currencyCode}</div>
         <div class="cols__9-span-2 align__text-right">{$invoiceItem.gross_total|utilCurrency:$locale:$currencyCode}</div>

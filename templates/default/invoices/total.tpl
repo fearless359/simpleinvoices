@@ -7,7 +7,7 @@
             <div class="grid__container grid__head-10">
                 <label for="description" class="cols__1-span-10">{$LANG.descriptionUc}:</label>
                 <textarea name="description" id="description" class="cols__1-span-10"
-                          rows="3" cols="100%">{$defaultInvoice.note|outHtml}</textarea>
+                          rows="3" cols="100%">{if !empty($defaultInvoice.note)}{$defaultInvoice.note|outHtml}{/if}</textarea>
             </div>
             <input type="hidden" name="locale" id="localeId" value="{$globalInfo.locale}">
             <input type="hidden" name="currency_code" id="currencyCodeId" value="{$globalInfo.currency_code}">

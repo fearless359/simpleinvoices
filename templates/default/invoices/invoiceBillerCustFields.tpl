@@ -40,22 +40,24 @@
 </div>
 {* section for sub_customer *}
 {if ($defaults.sub_customer)}
-<div class="grid__container grid__head-10">
-    <label for="subCustId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.subCustomer}:</label>
-    <div class="cols__5-span-3">
-        {$displayNone = false}
-        {if empty($subCustomers)}
-            <em id="noSubCustomers" style="display:inline-block;">{$LANG.noSubCustomers}</em>
-            {$displayNone = true}
-        {/if}
-        <select name="custom_field1" id="subCustId" {if $displayNone}style="display:none;"{/if}>
-            {foreach $subCustomers as $subCustomer}
-                <option {if isset($subCustomer.id) && $subCustomer.id == $defaultCustomerID}selected{/if}
-                        value="{$subCustomer.id|htmlSafe}">{$subCustomer.attention|htmlSafe}</option>
-            {/foreach}
-        </select>
+    <div class="grid__container grid__head-10">
+        <label for="subCustId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.subCustomer}:</label>
+        <div class="cols__5-span-3">
+            {$displayNone = false}
+            {if empty($subCustomers)}
+                <em id="noSubCustomers" style="display:inline-block;">{$LANG.noSubCustomers}</em>
+                {$displayNone = true}
+            {/if}
+            <select name="custom_field1" id="subCustId" {if $displayNone}style="display:none;"{/if}>
+                {if !empty($subCustomers)}
+                    {foreach $subCustomers as $subCustomer}
+                        <option {if isset($subCustomer.id) && $subCustomer.id == $defaultCustomerID}selected{/if}
+                                value="{$subCustomer.id|htmlSafe}">{$subCustomer.attention|htmlSafe}</option>
+                    {/foreach}
+                {/if}
+            </select>
+        </div>
     </div>
-</div>
 {/if}
 <div class="grid__container grid__head-10">
     <label for="date1" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>

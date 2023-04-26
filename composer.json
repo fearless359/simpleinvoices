@@ -9,12 +9,6 @@
       "Inc\\Claz\\": "Inc/Claz/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/fearless359/Acl"
-    }
-  ],
   "require": {
     "ext-intl": "*",
     "ext-json": "*",

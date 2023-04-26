@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-04-26 - <strong>2023.0.2</strong>
+                <ul>
+                    <li>Fixed multiple issues emanating from merge of globalization logic with 2023 version.</li>
+                </ul>
+            </li>
             <li>2023-04-20 - <strong>2023.0.1</strong>
                 <ul>
                     <li>Fixed multiple issues emanating from merge of globalization logic with 2023 version.</li>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33a58c13dc0f36eb2e2b059c8e2ba7f2",
+    "content-hash": "4866cd71fbcc489fa061fed83fd2c04b",
     "packages": [
         {
             "name": "doctrine/deprecations",
@@ -705,13 +705,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fearless359/Acl.git",
-                "reference": "c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2"
+                "url": "https://github.com/Samshal/Acl.git",
+                "reference": "3254846d5241c6257106d93b56c2733eeb7ceb8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fearless359/Acl/zipball/c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2",
-                "reference": "c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2",
+                "url": "https://api.github.com/repos/Samshal/Acl/zipball/3254846d5241c6257106d93b56c2733eeb7ceb8a",
+                "reference": "3254846d5241c6257106d93b56c2733eeb7ceb8a",
                 "shasum": ""
             },
             "require": {
@@ -728,6 +728,7 @@
                     "Samshal\\Acl\\Test\\": "./tests"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -743,9 +744,10 @@
             ],
             "description": "This package provides a lightweight and flexible access control list for privileges and permission management.",
             "support": {
-                "source": "https://github.com/fearless359/Acl/tree/master"
+                "issues": "https://github.com/Samshal/Acl/issues",
+                "source": "https://github.com/Samshal/Acl/tree/master"
             },
-            "time": "2023-02-25T19:06:47+00:00"
+            "time": "2023-03-05T08:10:05+00:00"
         },
         {
             "name": "sebastian/global-state",

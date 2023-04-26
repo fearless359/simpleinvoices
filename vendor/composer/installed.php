@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '3349d211f0a7d0fbc2c3883fc532c3ed2fc3cfe6',
+        'reference' => '27975a0745b8572ac243a1151c731b7a28715413',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '3349d211f0a7d0fbc2c3883fc532c3ed2fc3cfe6',
+            'reference' => '27975a0745b8572ac243a1151c731b7a28715413',
             'dev_requirement' => false,
         ),
         'cordoval/hamcrest-php' => array(
@@ -258,7 +258,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => 'c272f2c6a4176c9bf7aa9d09f5097d62ea5201e2',
+            'reference' => '3254846d5241c6257106d93b56c2733eeb7ceb8a',
             'dev_requirement' => false,
         ),
         'sebastian/cli-parser' => array(

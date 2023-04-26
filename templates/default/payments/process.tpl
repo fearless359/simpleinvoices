@@ -14,7 +14,7 @@
  *  Website:
  *      https://simpleinvoices.group*/
  *}
-{if $display_block}
+{if isset($display_block)}
     {$display_block}
     {$refresh_redirect}
 {else}
@@ -51,8 +51,8 @@
                     <input type="text" name="ac_amount" id="amountId" size="25" required tabindex="110"
                            class="cols__4-span-2 checkForWarehousedAmount"
                            data-rule-number="true"
-                           data-owing="{$invoice.owing|utilNumber:$invoice.preicsion:$invoice.locale}"
-                           data-warehoused-payment="{$invoice.warehousedPayment|utilNumber:$invoice.preicsion:$invoice.locale}"
+                           data-owing="{$invoice.owing|utilNumber:$invoice.precision:$invoice.locale}"
+                           data-warehoused-payment="{$invoice.warehousedPayment|utilNumber:$invoice.precision:$invoice.locale}"
                            value="{if $invoice.warehousedPayment > 0 &&
                                       $invoice.warehousedPayment < $invoice.owing}{$invoice.warehousedPayment|utilNumber:$invoice.precision:$invoice.locale}
                             {else}{$invoice.owing|utilNumber:$invoice.precision:$invoice.locale}{/if}"/>
