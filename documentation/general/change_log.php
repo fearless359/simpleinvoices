@@ -17,6 +17,12 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-04-28 - <strong>2023.0.3</strong>
+                <ul>
+                    <li>Modify CRON delete logic to remove invoice item records.</li>
+                    <li>Fix issue with payment process screen customer_id field.</li>
+                </ul>
+            </li>
             <li>2023-04-26 - <strong>2023.0.2</strong>
                 <ul>
                     <li>Fixed multiple issues emanating from merge of globalization logic with 2023 version.</li>

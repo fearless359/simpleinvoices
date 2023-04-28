@@ -17,16 +17,18 @@
 <input type="hidden" name="precision" id="precision" value="{$invoice.precision}">
 <div id="itemtable" data-number-tax-items="{$defaults.tax_per_line_item}">
     {if $cronInvoiceItemCount == 0}
+        {$items = false}
         {if $dynamic_line_items <= 0}
             {$limit = 2}
         {else}
             {$limit = $dynamic_line_items - 1}
         {/if}
     {else}
+        {$items = true}
         {$limit = $cronInvoiceItemCount - 1}
     {/if}
     {for $line = 0 to $limit}
-        {$cronInvoiceItem = $cronInvoiceItems[$line]}
+        {if $items}{$cronInvoiceItem = $cronInvoiceItems[$line]}{/if}
         <input type="hidden" id="delete{$line|htmlSafe}" name="delete{$line|htmlSafe}"/>
         <input type="hidden" name="line_item{$line|htmlSafe}" id="line_item{$line|htmlSafe}"
                value="{if isset($cronInvoiceItem.id)}{$cronInvoiceItem.id|htmlSafe}{/if}"/>

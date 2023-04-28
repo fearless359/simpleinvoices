@@ -198,16 +198,27 @@ class Cron
         global $pdoDb;
 
         try {
+            $row = self::getOne($id);
+            $invoiceId = $row['invoice_id'];
+
             $pdoDb->begin();
-            $pdoDb->addSimpleWhere('cron_id', $id);
-            $result = $pdoDb->request('DELETE', 'cron_log');
+            $pdoDb->addSimpleWhere('cron_invoice_item_id', $invoiceId);
+            $result = $pdoDb->request('DELETE', 'cron_invoice_item_tax');
             if ($result) {
-                $pdoDb->addSimpleWhere("id", $id, "AND");
-                $pdoDb->addSimpleWhere("domain_id", DomainId::get());
-                $result = $pdoDb->request("DELETE", "cron");
+                $pdoDb->addSimpleWhere('cron_id', $id);
+                $result = $pdoDb->request('DELETE', 'cron_invoice_items');
                 if ($result) {
-                    $pdoDb->commit();
-                    return true;
+                    $pdoDb->addSimpleWhere('cron_id', $id);
+                    $result = $pdoDb->request('DELETE', 'cron_log');
+                    if ($result) {
+                        $pdoDb->addSimpleWhere("id", $id, "AND");
+                        $pdoDb->addSimpleWhere("domain_id", DomainId::get());
+                        $result = $pdoDb->request("DELETE", "cron");
+                        if ($result) {
+                            $pdoDb->commit();
+                            return true;
+                        }
+                    }
                 }
             }
         } catch (PdoDbException $pde) {

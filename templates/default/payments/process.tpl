@@ -100,7 +100,7 @@
                         <option value="" selected></option>
                         {foreach $invoice_all as $inv}
                             {assign txt "`$inv.index_name|htmlSafe` ( `$inv.customer|htmlSafe`, `$LANG.totalUc` `$inv.total|utilNumber:$inv.precision:$inv.locale` : `$LANG.owingUc` `$inv.owing|utilNumber:$inv.precision:$inv.locale`"}
-                            {if $inv.warehousedPayment > 0 && $inv.warhousedPayment <= $inv.owing}
+                            {if isset($inv.warehousedPayment) && $inv.warehousedPayment > 0 && $inv.warehousedPayment <= $inv.owing}
                                 {$txt = "`$txt`: `$LANG.warehousedUc` `$LANG.limitUc`: `$inv.warehousedPayment|utilNumber:$inv.precision:$inv.locale`"}
                             {/if}
                             {$txt = "`$txt` )"}
@@ -188,8 +188,11 @@
             </div>
             {if $smarty.get.op === "pay_selected_invoice"}
                 <input type="hidden" name="invoice_id" id="invoiceId" value="{$invoice.id|htmlSafe}"/>
+                <input type="hidden" name="customer_id" id="customerId" value="{if $customer.id}{$customer.id|htmlSafe}{/if}"/>
+            {else}
+{*                {* invoice_id already set as the select statement above. *}
+                <input type="hidden" name="customer_id" id="customerId" value=""/>
             {/if}
-            <input type="hidden" name="customer_id" id="customerId" value="{if $customer.id}{$customer.id|htmlSafe}{/if}"/>
         </div>
     </form>
 {/if}

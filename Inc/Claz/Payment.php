@@ -410,7 +410,7 @@ class Payment
      * @param array $list <i>Faux Post</i> list of record's values.
      * @return bool true if record inserted. false if failed.
      */
-    public static function insert(array $list, int $customerId): bool
+    public static function insert(array $list, int|string $customerId): bool
     {
         global $pdoDb;
 

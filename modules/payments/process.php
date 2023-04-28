@@ -35,7 +35,6 @@ try {
         $smarty->assign("biller", Biller::getOne($invoice['biller_id']));
         $smarty->assign("customer", Customer::getOne($invoice['customer_id']));
     }
-    $smarty->assign("invoice" , $invoice);
 
     if (isset($_GET['message'])) {
         $smarty->assign('message', $_GET['message']);
