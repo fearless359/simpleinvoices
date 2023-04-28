@@ -12,13 +12,13 @@ class PaymentWarehouse
 {
     /**
      * Get a record for the specified parameters.
-     * @param int $id The id of the record to retrieve relative to the $idType.
+     * @param int|string $id The id of the record to retrieve relative to the $idType.
      * @param int $idType indicates which key to use to retrieve a record.
      *          If 0, $id is the record id, if 1, $id is a customer_id,
      *          if 2, $id is the last_payment_id or if 3, the id is the payment_type.
      * @return array Selected record or empty array if no record found.
      */
-    public static function getOne(int $id, int $idType): array
+    public static function getOne($id, int $idType): array
     {
         $rows = self::getPaymentWarehouseRecords($id, $idType);
         if (empty($rows)) {
@@ -89,13 +89,13 @@ class PaymentWarehouse
 
     /**
      * Common data access method. Retrieve record(s) per specified parameters.
-     * @param int|null $id The id of the record to retrieve relative to the $idType.
+     * @param int|string|null $id The id of the record to retrieve relative to the $idType.
      * @param int|null $idType indicates which key to use to retrieve a record.
      *          If 0, $id is the record id, if 1, $id is a customer_id,
      *          if 2, $id is the last_payment_id or if 3, the id is the payment_type.
      * @return array Selected record or empty array if no record found.
      */
-    private static function getPaymentWarehouseRecords(?int $id = null, ?int $idType = null): array
+    private static function getPaymentWarehouseRecords($id = null, ?int $idType = null): array
     {
         global $pdoDb;
 

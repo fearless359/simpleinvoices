@@ -64,7 +64,8 @@
             <div class="grid__container grid__head-10">
                 <label for="invoiceId" class="cols__2-span-2 align__text-right">{$LANG.invoiceUc}:&nbsp;</label>
                 <select name="invoice_id" id="invoiceId" class="cols__4-span-4 expenseInvoiceChange" tabindex="60">
-                    <option value='' data-locale="{$config.localLocale}" data-currency-code="{$config.localCurrencyCode}"></option>
+                    <option value='' data-locale="{$config.localLocale}" data-currency-code="{$config.localCurrencyCode}"
+                            data-precision="{$config.localPrecision}"></option>
                     {foreach $expenseAdd.invoices as $invoice}
                         <option value="{$invoice.id}" data-locale="{$invoice.locale}"
                                 data-currency-code="{$invoice.currency_code}" data-precision="{$invoice.precision}"

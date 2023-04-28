@@ -188,8 +188,10 @@
             </div>
             {if $smarty.get.op === "pay_selected_invoice"}
                 <input type="hidden" name="invoice_id" id="invoiceId" value="{$invoice.id|htmlSafe}"/>
+                <input type="hidden" name="customer_id" id="customerId" value="{if $customer.id}{$customer.id|htmlSafe}{/if}"/>
+            {else}
+                <input type="hidden" name="customer_id" id="customerId" value=""/>
             {/if}
-            <input type="hidden" name="customer_id" id="customerId" value="{if $customer.id}{$customer.id|htmlSafe}{/if}"/>
         </div>
     </form>
 {/if}

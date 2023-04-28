@@ -17,6 +17,12 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-04-28 - <strong>2020.4.12</strong>
+                <ul>
+                    <li>Modify CRON delete logic to remove invoice item records.</li>
+                    <li>Fix issue with payment process screen customer_id field.</li>
+                </ul>
+            </li>
             <li>2023-04-22 - <strong>2020.4.11</strong>
                 <ul>
                     <li>Clean up issues from merge.</li>
