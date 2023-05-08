@@ -7,6 +7,7 @@ global $LANG, $menu, $smarty;
 Util::directAccessAllowed();
 
 $smarty->assign('title', $LANG["debtorsByAgingPeriods"]);
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 include "modules/reports/reportDebtorsByAgingData.php";
 

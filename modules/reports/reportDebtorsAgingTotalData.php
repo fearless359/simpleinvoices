@@ -103,7 +103,7 @@ try {
             $results[$total['aging']]['total'] = $total['invTotal'];
         } else {
             $results[$total['aging']] = [
-                'total' => $total['aging'],
+                'total' => $total['invTotal'],
                 'paid' => 0,
                 'owing' => 0
             ];

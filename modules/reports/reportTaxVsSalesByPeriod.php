@@ -21,6 +21,7 @@ global $LANG, $pdoDb, $smarty;
 use Inc\Claz\Util;
 
 Util::directAccessAllowed();
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 $smarty->assign('title', "{$LANG['monthlyUc']} {$LANG['tax']} {$LANG['summaryUc']} {$LANG['per']} {$LANG['yearUc']}");
 

@@ -8,7 +8,7 @@ namespace Inc\Claz;
 class NetIncomeReport
 {
 
-    public static function selectRptItems(string $startDate, string $stopDate, int $customerId, ?int $excludeCustomFlagItems): array
+    public static function selectRptItems(string $startDate, string $stopDate, int $customerId, int|string|null $excludeCustomFlagItems): array
     {
         global $pdoDb;
 

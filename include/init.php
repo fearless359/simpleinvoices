@@ -62,7 +62,7 @@ if ($databaseBuilt) {
         exit("Database must be populated to run a batch job.");
     }
 }
-
+Log::out("init.php - module[$module] view[$view]");
 // Turn authorization off if an api request, or
 // the database is not built and populated, or
 // a request to install sample data.

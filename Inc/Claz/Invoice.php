@@ -42,9 +42,9 @@ class Invoice
      * @return array $invoice
      * @throws PdoDbException
      */
-    public static function getOne(int $id): array
+    public static function getOne(int $id, bool $useIndexId = false): array
     {
-        return self::getInvoices($id);
+        return self::getInvoices($id,'', '', false, 0,$useIndexId);
     }
 
     /**
@@ -239,7 +239,8 @@ class Invoice
      * @throws PdoDbException
      */
     private static function getInvoices(?int $id = null, string $sort = "", string $dir = "",
-                                        bool $includeWarehouse = false, int $invoiceDisplayDays = 0): array
+                                        bool $includeWarehouse = false, int $invoiceDisplayDays = 0,
+                                        bool $useIndexId = false): array
     {
         global $pdoDb;
 
@@ -251,15 +252,19 @@ class Invoice
                 $pdoDb->addToWhere(new WhereItem(false,'iv.date', ">=", $displayLimitDt, false, 'AND'));
             }
 
-            if (isset($id)) {
-                $pdoDb->addSimpleWhere('iv.id', $id, 'AND');
-            }
-
             // If user role is customer or biller, then restrict invoices to those they have access to.
             if ($_SESSION['role_name'] == 'customer') {
                 $pdoDb->addSimpleWhere("c.id", $_SESSION['user_id'], "AND");
             } elseif ($_SESSION['role_name'] == 'biller') {
                 $pdoDb->addSimpleWhere("b.id", $_SESSION['user_id'], "AND");
+            }
+
+            if (isset($id)) {
+                if ($useIndexId) {
+                    $pdoDb->addSimpleWhere('iv.index_id', $id, 'AND');
+                } else {
+                    $pdoDb->addSimpleWhere('iv.id', $id, 'AND');
+                }
             }
 
             // If caller pass a null value, that mean there is no limit.

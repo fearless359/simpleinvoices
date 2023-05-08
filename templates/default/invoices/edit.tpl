@@ -48,10 +48,18 @@
             <div class="cols__3-span-8">
                 {if !isset($customers)}
                     <em>{$LANG.noCustomers}</em>
+                {elseif $isDefaultInvoice == true}
+                    {foreach $customers as $customer}
+                        {if $customer.id == $invoice.customer_id}
+                            <input type="text" name="customer_id" id="customerId" value="{$customer.name|htmlSafe}">
+                            <span class="si_message_warning">{$LANG.customerUc} {$LANG.cant} {$LANG.change} {$LANG.asLc} {$LANG.invoice} {$LANG.is} {$LANG.default} {$LANG.for} {$LANG.customer}.</span>
+                            {break}
+                        {/if}
+                    {/foreach}
                 {else}
                     <select name="customer_id" id="customerId">
                         {foreach $customers as $customer}
-                            <option {if $customer.id == $invoice.customer_id} selected {/if}
+                            <option {if $customer.id == $invoice.customer_id}selected{/if}
                                     value="{if isset($customer.id)}{$customer.id|htmlSafe}{/if}">{$customer.name|htmlSafe}</option>
                         {/foreach}
                     </select>

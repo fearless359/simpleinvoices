@@ -31,7 +31,7 @@
             {foreach $cust->invInfo as $invInfo}
                 <tr class="tr_{cycle values="A,B"}">
                     <td class="align__text-right">
-                        <a href="index.php?module=invoices&amp;view=quickView&amp;id={$id}">
+                        <a href="index.php?module=invoices&amp;view=quickView&amp;id={$invInfo->id}">
                             {$LANG.invoice}&nbsp;#{$invInfo->indexId}
                         </a>
                     </td>

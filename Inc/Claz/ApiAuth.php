@@ -17,7 +17,7 @@ class ApiAuth
             $getId = $_GET['id'] ?? 0;
             Log::out("ApiAuth::authenticate() - module[$module] view[$view] sessionId[$sessionId] getId[$getId]");
             // If we don't have an active session, force login screen.
-            if (!$sessionId > 0) {
+            if ($sessionId <= 0) {
                 // If this is not an "auth" module request, then force login screen.
                 if ($module !== "auth" && $module !== "install") {
                     Log::out("ApiAuth::authenticate() - Forcing redirect to login screen.");
@@ -26,27 +26,23 @@ class ApiAuth
                 }
             }
 
-            if ($module != "auth" && $view != "logout" && $module != 'errorPages') {
-                /*
-                 * If the role is biller or customer, the available options are restricted.
-                 * For biller, only invoices for the biller can be accessed
-                 */
-                $userId = $_SESSION['user_id'];
-                $id = $getId;
-                $role = $_SESSION['role_name'];
-                $viewInArray = in_array($view, ['edit', 'manage', 'save', 'view']);
-                $billerAccess = $module == 'billers' && $viewInArray && ($id == 0 || $userId == $id);
-                $userAccess = $module == 'user' && $viewInArray && ($id == 0 || $sessionId == $id);
-                $invoiceAccess = $module == 'invoices';
-                $paymentAccess = $module == 'payments';
-                $moduleViewOk = $role != 'biller' || $billerAccess || $userAccess || $invoiceAccess || $paymentAccess;
-                Log::out("ApiAuth::authenticate() = role[$role] viewInArray[$viewInArray] billerAccess[$billerAccess] " .
-                    "userAccess[$userAccess] moduleViewOk[$moduleViewOk] userId[$userId] id[$id]");
-                if (!$moduleViewOk) {
-                    header('Location: index.php?module=errorPages&view=e401');
-                    exit();
-                }
-            }
+//            if ($module != "auth" && $view != "logout" && $module != 'errorPages') {
+//                 // If the role is biller or customer, the available options are restricted.
+//                $userId = $_SESSION['user_id'];
+//                $id = $getId;
+//                $role = $_SESSION['role_name'];
+//                $viewInArray = in_array($view, ['edit', 'manage', 'save', 'view']);
+//                $userAccess = $module == 'user' && $viewInArray && ($id == 0 || $sessionId == $id);
+//                $invoiceAccess = $module == 'invoices';
+//                $paymentAccess = $module == 'payments';
+//                $moduleViewOk = $userAccess || $invoiceAccess || $paymentAccess;
+//                Log::out("ApiAuth::authenticate() - role[$role] viewInArray[$viewInArray] userAccess[$userAccess] " .
+//                    "moduleViewOk[$moduleViewOk] userId[$userId] id[$id]");
+//                if (!$moduleViewOk) {
+//                    header('Location: index.php?module=errorPages&view=e401');
+//                    exit();
+//                }
+//            }
         }
     }
 }

@@ -9,12 +9,12 @@
 }
 {if $menu}
     <form name="frmpost" method="POST" id="frmpost"
-          action="index.php?module=reports&amp;view=reportExpenseSummary">
+          action="index.php?module=reports&amp;view=reportExpenseSummary&amp;showAllReports={$showAllReports}">
         <div class="si_form si_form_search">
             <div class="grid__area">
                 {include file=$path|cat:"library/dateRangePrompt.tpl"}
                 {include file=$path|cat:"library/runReportButton.tpl" value="reportExpenseSummary" label=$LANG.runReport}
-            </div>>
+            </div>
         </div>
     </form>
 {/if}

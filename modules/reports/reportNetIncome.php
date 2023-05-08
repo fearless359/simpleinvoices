@@ -17,6 +17,7 @@ use Inc\Claz\Util;
 global $endDate, $LANG, $menu, $smarty, $startDate;
 
 Util::directAccessAllowed();
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 include 'library/dateRangePrompt.php';
 include 'library/displayDetailPrompt.php';

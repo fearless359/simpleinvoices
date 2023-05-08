@@ -5,6 +5,7 @@ use Inc\Claz\Util;
 global $LANG, $menu, $smarty;
 
 Util::directAccessAllowed();
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 include "library/dateRangePrompt.php";
 $reverseFilterByDateRangeDefault = true;

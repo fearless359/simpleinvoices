@@ -24,19 +24,15 @@ try {
         $havings[] = ["money_owed" => ''];
     }
 
-    if (!empty($billerId)) {
-        $pdoDb->addSimpleWhere("biller_id", $billerId, "AND");
-    }
-    if (!empty($customerId)) {
-        $pdoDb->addSimpleWhere("customer_id", $customerId, "AND");
-    }
-
-    $invoices = Invoice::getAllWithHavings($havings, "date", "desc");
-    foreach ($invoices as $row) {
-        if ($row ['status'] > 0) {
-            $statement ['total'] += $row ['total'];
-            $statement ['owing'] += $row ['owing'];
-            $statement ['paid'] += $row ['paid'];
+    $rows = Invoice::getAllWithHavings($havings, "date", "desc");
+    foreach ($rows as $row) {
+        if ($billerId > 0 && $billerId == $row['biller_id']) {
+            $invoices[] = $row;
+            if ($row ['status'] > 0) {
+                $statement ['total'] += $row ['total'];
+                $statement ['owing'] += $row ['owing'];
+                $statement ['paid'] += $row ['paid'];
+            }
         }
     }
 } catch (PdoDbException $pde) {

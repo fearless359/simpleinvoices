@@ -21,12 +21,13 @@ use Inc\Claz\Util;
 global $LANG, $smarty, $pdoDb;
 
 Util::directAccessAllowed();
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 include 'library/dateRangePrompt.php';
 
-$smarty->assign('title', "{$LANG['expenseUc']} {$LANG['account']} {$LANG['summary']}");
-$smarty->assign('title2', "{$LANG['invoiceUc']}/{$LANG['quoteUc']} {$LANG['summary']}");
-$smarty->assign('title3', "{$LANG['paymentUc']} {$LANG['summary']}");
+$smarty->assign('title', "{$LANG['expenseUc']} {$LANG['accountUc']} {$LANG['summaryUc']}");
+$smarty->assign('title2', "{$LANG['invoiceUc']}/{$LANG['quoteUc']} {$LANG['summaryUc']}");
+$smarty->assign('title3', "{$LANG['paymentUc']} {$LANG['summaryUc']}");
 
 include "modules/reports/reportExpenseSummaryData.php";
 

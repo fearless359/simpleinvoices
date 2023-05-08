@@ -8,9 +8,15 @@ use Inc\Claz\OnClause;
 use Inc\Claz\PdoDbException;
 use Inc\Claz\WhereItem;
 
-global $endDate, $pdoDb, $smarty, $startDate;
+global $billerId, $endDate, $pdoDb, $smarty, $startDate;
 
 try {
+    if (!empty($billerId)) {
+        $pdoDb->addSimpleWhere('b.id', $billerId, 'AND');
+    }
+    $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
+    $pdoDb->addSimpleWhere('b.domain_id', DomainId::get());
+
     $pdoDb->setSelectList('b.name');
 
     $pdoDb->addToFunctions(new FunctionStmt('SUM', 'ii.total', 'sumTotal'));
@@ -32,9 +38,6 @@ try {
     $jn->addSimpleItem('pr.pref_id', new DbField('iv.preference_id'), 'AND');
     $jn->addSimpleItem('pr.domain_id', new DbField('iv.domain_id'));
     $pdoDb->addToJoins($jn);
-
-    $pdoDb->addSimpleWhere('pr.status', ENABLED, 'AND');
-    $pdoDb->addSimpleWhere('b.domain_id', DomainId::get());
 
     $pdoDb->setGroupBy('b.name');
 

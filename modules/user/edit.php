@@ -2,6 +2,7 @@
 
 use Inc\Claz\Biller;
 use Inc\Claz\Customer;
+use Inc\Claz\PdoDbException;
 use Inc\Claz\User;
 use Inc\Claz\UserSecurity;
 use Inc\Claz\Util;
@@ -26,11 +27,12 @@ use Inc\Claz\Util;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-global $smarty, $LANG;
+global $LANG, $pdoDb, $smarty;
 
 $user = User::getOne($_GET['id']);
 
-$custInfo = Customer::getAll(['noTotals' => true]);
+$custInfo = Customer::getAll(['noTotals' => true, 'enabledOnly' => true]);
+
 $billers = Biller::getAll();
 
 if ($user['user_id'] == 0) {

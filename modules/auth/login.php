@@ -84,7 +84,11 @@ if (empty($_POST['user']) || empty($_POST['pass'])) {
         }
 
         if (isset($_SESSION['role_name'])) {
-            if ($_SESSION['role_name'] == 'customer' && $_SESSION['user_id'] > 0) {
+            Log::out("login.php - role_name[{$_SESSION['role_name']}] user_id[{$_SESSION['user_id']}]");
+            if ($_SESSION['role_name'] == 'biller' && $_SESSION['user_id'] > 0) {
+                header("Location: index.php?module=billers&view=view&id={$_SESSION['user_id']}");
+                exit();
+            } elseif ($_SESSION['role_name'] == 'customer' && $_SESSION['user_id'] > 0) {
                 header("Location: index.php?module=customers&view=view&id={$_SESSION['user_id']}");
                 exit();
             }

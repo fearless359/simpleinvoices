@@ -211,9 +211,14 @@ class Customer
                     $row['locale'] = $config['localLocale'];
                     $row['currency_code'] = $config['localCurrencyCode'];
                 } else {
-                    $defaultInvoice = Invoice::getOne($row['default_invoice']);
-                    $row['locale'] = $defaultInvoice['locale'];
-                    $row['currency_code'] = $defaultInvoice['currency_code'];
+                    $defaultInvoice = Invoice::getOne($row['default_invoice'], true);
+                    if (empty($defaultInvoice)) {
+                        $row['locale'] = $config['localLocale'];
+                        $row['currency_code'] = $config['localCurrencyCode'];
+                    } else {
+                        $row['locale'] = $defaultInvoice['locale'];
+                        $row['currency_code'] = $defaultInvoice['currency_code'];
+                    }
                 }
                 if ($notInWarehouse) {
                     $pw = PaymentWarehouse::getOne($row['id'], 1);

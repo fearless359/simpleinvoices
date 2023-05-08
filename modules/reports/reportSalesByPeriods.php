@@ -22,6 +22,7 @@ use Inc\Claz\Util;
 global $LANG, $smarty;
 
 Util::directAccessAllowed();
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 include 'modules/reports/reportSalesByPeriodsData.php';
 

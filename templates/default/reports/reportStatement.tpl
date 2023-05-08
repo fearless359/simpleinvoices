@@ -12,7 +12,7 @@
         ]
 }
 {if $menu}
-    <form name="frmpost" method="POST" id="frmpost" action="index.php?module=reports&amp;view=reportStatement">
+    <form name="frmpost" method="POST" id="frmpost" action="index.php?module=reports&amp;view=reportStatement&amp;showAllReports={$showAllReports}">
         <div class="si_form si_form_search">
             <div class="grid__area">
                 {include file=$path|cat:"library/dateRangePrompt.tpl"}

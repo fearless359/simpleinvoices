@@ -7,6 +7,7 @@ global $LANG, $pdoDb, $smarty;
 Util::directAccessAllowed();
 
 include "library/dateRangePrompt.php";
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 $smarty->assign('title', "{$LANG['databaseLog']} {$LANG['reportUc']}");
 

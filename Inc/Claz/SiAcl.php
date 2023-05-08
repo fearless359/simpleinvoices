@@ -55,27 +55,30 @@ class SiAcl
         ];
 
         $reports = [
-            'index' =>$adminBillerCustomerAccess,
-            'reportBillerByCustomer' => $adminBillerAccess,
-            'reportBillerTotal' => $adminBillerAccess,
-            'reportDatabaseLog' => $adminAccess,
-            'reportDebtorsAgingTotal' => $adminAccess,
-            'reportDebtorsByAging' => $adminAccess,
-            'reportDebtorsByAmount' => $adminAccess,
+            'email'                        => $adminBillerCustomerAccess,
+            'export'                       => $adminBillerCustomerAccess,
+            'index'                        => $adminBillerCustomerAccess,
+            'reportBillerByCustomer'       => $adminBillerAccess,
+            'reportBillerTotal'            => $adminBillerAccess,
+            'reportDatabaseLog'            => $adminAccess,
+            'reportDebtorsAgingTotal'      => $adminAccess,
+            'reportDebtorsByAging'         => $adminAccess,
+            'reportDebtorsByAmount'        => $adminAccess,
             'reportDebtorsOwingByCustomer' => $adminAccess,
             'reportExpenseAccountByPeriod' => $adminAccess,
-            'reportInvoiceProfit' => $adminBillerAccess,
-            'reportNetIncome' => $adminBillerAccess,
-            'reportPastDue' => $adminBillerAccess,
+            'reportExpenseSummary'         => $adminAccess,
+            'reportInvoiceProfit'          => $adminAccess,
+            'reportNetIncome'              => $adminAccess,
+            'reportPastDue'                => $adminAccess,
             'reportProductsSoldByCustomer' => $adminCustomerAccess,
-            'reportProductsSoldTotal' => $adminAccess,
-            'reportSalesByPeriods' => $adminAccess,
-            'reportSalesByRepresentative' => $adminAccess,
-            'reportSalesCustomersTotal' => $adminCustomerAccess,
-            'reportSalesTotal' => $adminAccess,
-            'reportSummary' => $adminAccess,
-            'reportTaxTotal' => $adminAccess,
-            'reportTaxVsSalesByPeriod' => $adminAccess,
+            'reportProductsSoldTotal'      => $adminAccess,
+            'reportSalesByPeriods'         => $adminAccess,
+            'reportSalesByRepresentative'  => $adminAccess,
+            'reportSalesCustomersTotal'    => $adminCustomerAccess,
+            'reportSalesTotal'             => $adminAccess,
+            'reportStatement'              => $adminBillerAccess,
+            'reportTaxTotal'               => $adminAccess,
+            'reportTaxVsSalesByPeriod'     => $adminAccess
         ];
 
         // The structure is as follows:
@@ -83,201 +86,215 @@ class SiAcl
         //      permission
         //          roles
         $resourcePermissions = [
-            'api' => [
-                'ach' => $adminAccess,
-                'cron' => $adminAccess,
-                'invoice' => $adminAccess,
-                'paypal' => $adminAccess,
-                'recur' => $adminAccess,
+            'api'                      => [
+                'ach'      => $adminAccess,
+                'cron'     => $adminAccess,
+                'invoice'  => $adminAccess,
+                'paypal'   => $adminAccess,
+                'recur'    => $adminAccess,
                 'recorder' => $adminAccess
             ],
-            'auth' => [
-                'login' => [
+            'auth'                     => [
+                'login'  => [
                     'all'
                 ],
                 'logout' => $roles
             ],
-            'billers' => [
+            'billers'                  => [
                 'create' => $adminAccess,
-                'edit' => $adminBillerAccess,
+                'edit'   => $adminBillerAccess,
                 'manage' => $adminBillerAccess,
-                'save' => $adminBillerAccess,
-                'view' => $adminBillerAccess,
+                'save'   => $adminBillerAccess,
+                'view'   => $adminBillerAccess,
             ],
-            'cron' => [
+            'cron'                     => [
                 'create' => $adminAccess,
                 'delete' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'run' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'run'    => $adminAccess,
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'custom_fields' => [
-                'edit' => $adminAccess,
+            'custom_fields'            => [
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'custom_flags' => [
-                'edit' => $adminAccess,
+            'custom_flags'             => [
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'customers' => [
-                'create' => $adminAccess,
-                'edit' => $adminCustomerAccess,
-                'manage' => $adminCustomerAccess,
-                'save' => $adminCustomerAccess,
+            'customers'                => [
+                'create'     => $adminAccess,
+                'edit'       => $adminCustomerAccess,
+                'manage'     => $adminCustomerAccess,
+                'save'       => $adminCustomerAccess,
                 'usedefault' => $adminCustomerAccess,
-                'view' => $adminCustomerAccess
+                'view'       => $adminCustomerAccess
             ],
-            'documentation' => [
+            'documentation'            => [
                 'view' => $adminAccess
             ],
-            'errorPages' => [
+            'errorPages'               => [
                 'e401' => [
                     'all'
                 ]
             ],
-            'expense' => [
+            'expense'                  => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'expense_account' => [
+            'expense_account'          => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'export' => [
+            'export'                   => [
                 'invoice' => $adminBillerCustomerAccess,
             ],
-            'extensions' => [
-                'manage' => $adminAccess,
+            'extensions'               => [
+                'manage'   => $adminAccess,
                 'register' => $adminAccess,
-                'save' => $adminAccess
+                'save'     => $adminAccess
             ],
-            'index' => [
+            'index'                    => [
                 'index' => $adminAccess
             ],
-            'install' => [
+            'install'                  => [
                 'essential' => [
                     'all'
                 ],
-                'index' => [
+                'index'     => [
                     'all'
                 ],
                 'structure' => [
                     'all'
                 ]
             ],
-            'inventory' => [
+            'inventory'                => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'invoices' => [
-                'create' => $adminBillerAccess,
-                'delete' => $adminAccess,
-                'edit' => $adminBillerAccess,
-                'email' => $adminBillerCustomerAccess,
-                'itemized' => $adminBillerAccess,
-                'manage' => $adminBillerCustomerAccess,
-                'quickView' => $adminBillerCustomerAccess,
+            'invoices'                 => [
+                'create'       => $adminBillerAccess,
+                'delete'       => $adminAccess,
+                'edit'         => $adminBillerAccess,
+                'email'        => $adminBillerCustomerAccess,
+                'itemized'     => $adminBillerAccess,
+                'manage'       => $adminBillerCustomerAccess,
+                'quickView'    => $adminBillerCustomerAccess,
                 'product_ajax' => $adminBillerAccess,
-                'save' => $adminBillerAccess,
-                'total' => $adminBillerAccess,
-                'usedefault' => $adminAccess
+                'save'         => $adminBillerAccess,
+                'total'        => $adminBillerAccess,
+                'usedefault'   => $adminAccess
             ],
-            'options' => [
-                'backup_database' => $adminAccess,
+            'options'                  => [
+                'backup_database'     => $adminAccess,
                 'database_sqlpatches' => $adminAccess,
-                'index' => $adminAccess,
-                'manage_cronlog' => $adminAccess,
-                'manage_sqlpatches' => $adminAccess
+                'index'               => $adminAccess,
+                'manage_cronlog'      => $adminAccess,
+                'manage_sqlpatches'   => $adminAccess
             ],
-            'payment_types' => [
+            'payment_types'            => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'payments' => [
-                'print' => $adminBillerAccess,
-                'manage' => $adminBillerAccess,
+            'payments'                 => [
+                'print'   => $adminBillerAccess,
+                'manage'  => $adminBillerAccess,
                 'process' => $adminAccess,
-                'save' => $adminBillerAccess,
-                'view' => $adminBillerAccess
+                'save'    => $adminBillerAccess,
+                'view'    => $adminBillerAccess
             ],
-            'preferences' => [
+            'preferences'              => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'product_attribute' => [
+            'product_attribute'        => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
             'product_attribute_values' => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'products' => [
+            'product_groups'           => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'reports' => $reports,
-            'si_info' => [
+            'product_warehouse'        => [
+                'create' => $adminAccess,
+                'edit'   => $adminAccess,
+                'manage' => $adminAccess,
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
+            ],
+            'products'                 => [
+                'create' => $adminAccess,
+                'edit'   => $adminAccess,
+                'manage' => $adminAccess,
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
+            ],
+            'reports'                  => $reports,
+            'si_info'                  => [
                 'index' => $adminAccess
             ],
-            'statement' => [
-                'index' => $adminAccess,
-                'email' => $adminAccess,
+            'statement'                => [
+                'index'  => $adminAccess,
+                'email'  => $adminAccess,
                 'export' => $adminAccess
             ],
-            'system_defaults' => [
-                'edit' => $adminAccess,
+            'system_defaults'          => [
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess
+                'save'   => $adminAccess
             ],
-            'tax_rates' => [
+            'tax_rates'                => [
                 'create' => $adminAccess,
-                'edit' => $adminAccess,
+                'edit'   => $adminAccess,
                 'manage' => $adminAccess,
-                'save' => $adminAccess,
-                'view' => $adminAccess
+                'save'   => $adminAccess,
+                'view'   => $adminAccess
             ],
-            'user' => [
+            'user'                     => [
                 'create' => $adminAccess,
-                'edit' => $adminBillerCustomerAccess,
+                'edit'   => $adminBillerCustomerAccess,
                 'manage' => $adminBillerCustomerAccess,
-                'save' => $adminBillerCustomerAccess,
-                'view' => $adminBillerCustomerAccess
+                'save'   => $adminBillerCustomerAccess,
+                'view'   => $adminBillerCustomerAccess
             ]
         ];
 
         // Add all roles so they are available for use
-       foreach ($roles as $role) {
+        foreach ($roles as $role) {
             $acl->addRole($role);
         }
 
@@ -299,8 +316,21 @@ class SiAcl
      * Get the role for the current session.
      * @return string
      */
-    public static function getSessionRole(): string {
+    public static function getSessionRole(): string
+    {
         return empty($_SESSION['role_name']) ? 'all' : $_SESSION['role_name'];
+    }
+
+    public static function getReportList(): array
+    {
+        $acl = unserialize($_SESSION['acl']);
+        $reports = [];
+        foreach ($acl->reports as $report) {
+            if ($report <> 'index') {
+                $reports[] = $report;
+            }
+        }
+        return $reports;
     }
 
     /**
@@ -315,9 +345,7 @@ class SiAcl
         if ($role == 'administrator') {
             return true;
         }
-        /**
-         * @var Acl $acl
-         */
+
         $acl = unserialize($_SESSION['acl']);
 
         /** @noinspection PhpUndefinedFieldInspection */

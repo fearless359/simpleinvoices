@@ -41,6 +41,12 @@ try {
     if ($defaultTemplateSet) {
         $invoice['id'] = null;
     }
+    $assignedCustomer = Customer::getOne($invoice['customer_id']);
+    if (!empty($assignedCustomer) && $assignedCustomer['default_invoice'] == $invoice['index_id']) {
+        $smarty->assign('isDefaultInvoice', true);
+    } else {
+        $smarty->assign('isDefaultInvoice', false);
+    }
 
     $invoiceItems = Invoice::getInvoiceItems($masterInvoiceId);
 

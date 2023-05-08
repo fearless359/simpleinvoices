@@ -8,6 +8,7 @@ Util::directAccessAllowed();
 
 $includePaidInvoices = $_POST['includePaidInvoices'] ?? 'no';
 $smarty->assign('includePaidInvoices', $includePaidInvoices);
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 $smarty->assign('title', $LANG["debtorsByAmountOwed"]);
 

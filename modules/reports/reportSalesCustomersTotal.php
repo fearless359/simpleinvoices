@@ -7,6 +7,7 @@ global $endDate, $LANG, $menu, $pdoDb, $smarty, $startDate;
 Util::directAccessAllowed();
 
 include 'library/dateRangePrompt.php';
+$smarty->assign('showAllReports', $_GET['showAllReports']);
 
 $customerId = isset($_POST['customerId']) ? intval($_POST['customerId']) : 0;
 

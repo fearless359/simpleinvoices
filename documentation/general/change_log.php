@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-05-08 - <strong>2023.0.4</strong>
+                <ul>
+                    <li>Modify reports to work in line with user access role.</li>
+                    <li>Disabled customer dropdown for invoice edit when it is default for the assigned customer.</li>
+                    <li>Modified customer dropdown for users with customer role to only present enabled customers.</li>
+                </ul>
+            </li>
             <li>2023-04-28 - <strong>2023.0.3</strong>
                 <ul>
                     <li>Modify CRON delete logic to remove invoice item records.</li>

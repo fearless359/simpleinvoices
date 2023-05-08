@@ -26,12 +26,15 @@ use Inc\Claz\Util;
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-global $smarty, $LANG;
+global $LANG, $pdoDb, $smarty;
 
 $user = User::getOne($_GET['id']);
+
 $roles = User::getUserRoles();
 
-$custInfo = Customer::getAll(['noTotals' => true]);
+$pdoDb->setOrderBy([['enabled', 'D'], ['name', 'A']]);
+$custInfo = Customer::getAll(['noTotals' => true, 'orderBySet' => true]);
+
 $billers = Biller::getAll();
 
 if ($user['user_id'] == 0) {
@@ -39,7 +42,7 @@ if ($user['user_id'] == 0) {
 } elseif ($user['role_name'] == 'customer') {
     $userIdDesc = $user['user_id'] . " - Undefined";
     foreach($custInfo as $info) {
-        if ($info['id'] == $info['user_id']) {
+        if ($info['id'] == $user['user_id']) {
             $userIdDesc = $user['user_id'] . " - " . $info['name'];
             break;
         }
