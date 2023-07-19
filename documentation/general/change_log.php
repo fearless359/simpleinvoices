@@ -17,6 +17,12 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-07-19 - <strong>2023.0.6</strong>
+                <ul>
+                    <li>Test for session variable "role_name" not set when using non-authentication mode to
+                        change a user's password (typically the admin's password) when it has been forgotten.</li>
+                </ul>
+            </li>
             <li>2023-07-18 - <strong>2023.0.5</strong>
                 <ul>
                     <li>Check that session role name is set before checking for a value.</li>

@@ -63,7 +63,8 @@
                    class="cols__5-span-4" required tabindex="10" required
                    value="{if isset($user.username)}{$user.username|htmlSafe}{/if}" size="50" id="username"
                    pattern="{$usernamePattern}" title="See help for details." autofocus
-                   {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}readonly{/if}/>
+                   {if isset($smarty.session.role_name) &&
+                        ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}readonly{/if}/>
         </div>
         <div class="grid__container grid__head-10">
             <label for="password_id" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.newPassword}:
@@ -87,7 +88,9 @@
                    placeholder="{$PLACEHOLDERS['email']}" title="See help for details" autocomplete="off"
                    value="{if isset($user.email)}{$user.email|htmlSafe}{/if}"/>
         </div>
-        <div class="grid__container grid__head-10" {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
+        <div class="grid__container grid__head-10"
+            {if isset($smarty.session.role_name) &&
+                ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
             <label for="roleId1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.role}:
                 <img class="tooltip" title="{$LANG.helpUserRole}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
@@ -100,13 +103,16 @@
                 {/foreach}
             </select>
         </div>
-        <div class="grid__container grid__head-10" {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
+        <div class="grid__container grid__head-10"
+            {if isset($smarty.session.role_name) &&
+                ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
             <label for="userId1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.userId}:
                 <img class="tooltip" title="{$LANG.helpUserId}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
             <select name="user_id" id="userId1" class="cols__5-span-2" tabindex="60"
                     title="See help for details"
-                    {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}disabled{/if}>
+                    {if isset($smarty.session.role_name) &&
+                        $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}disabled{/if}>
                 {if $user.role_name == "customer"}
                     {assign var="ids" value="~"|explode:$cust}
                     {foreach $ids as $id}
@@ -130,7 +136,9 @@
                 {/if}
             </select>
         </div>
-        <div class="grid__container grid__head-10" {if $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}style="display:none;"{/if}>
+        <div class="grid__container grid__head-10"
+                   {if isset($smarty.session.role_name) &&
+                        ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
             <label for="enabledId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.enabled}:
                 <img class="tooltip" title="{$LANG.helpUserEnabled}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
