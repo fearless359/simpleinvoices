@@ -25,7 +25,8 @@ global $smarty;
 
 //stop the direct browsing to this file - let index.php handle which files get displayed
 Log::out("session: " . print_r($_SESSION, true));
-if ($_SESSION['role_name'] == 'biller' && $_SESSION['user_id'] != $_GET['id']) {
+if (isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'biller' &&
+    $_SESSION['user_id'] != $_GET['id']) {
 //    header('Location: index.php?module=errorPages&view=401');
     header("HTTP/1.0 401 Not authorized");
     exit();

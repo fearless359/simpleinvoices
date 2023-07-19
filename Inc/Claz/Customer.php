@@ -75,7 +75,7 @@ class Customer
     {
         global $config, $LANG, $pdoDb;
 
-        $customerSession = $_SESSION['role_name'] == 'customer';
+        $customerSession = isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'customer';
 
         $viewCust = $LANG['view'] . " " . $LANG['customerUc'];
         $editCust = $LANG['edit'] . " " . $LANG['customerUc'];
@@ -185,7 +185,7 @@ class Customer
             }
 
             // If user role is customer or biller, then restrict invoices to those they have access to.
-            if ($_SESSION['role_name'] == 'customer') {
+            if (isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'customer') {
                 $pdoDb->addSimpleWhere("id", $_SESSION['user_id'], "AND");
             }
 

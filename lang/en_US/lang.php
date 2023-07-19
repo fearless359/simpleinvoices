@@ -1122,6 +1122,14 @@ $LANG['zip'] = "Zip Code";//1
 
 if (!defined('RUNNING_IN_BASH_SHELL')) {
     $defaults = SystemDefaults::loadValues($databaseBuilt);
+    if (empty($defaults)) {
+       $defaults['password_lower'] = '1';
+       $defaults['password_number'] = '1';
+       $defaults['password_special'] = '1';
+       $defaults['password_upper'] = '1';
+       $defaults['password_min_length'] = '8';
+    }
+
     $pwdMsg = $LANG['passwordsMust'] . ":" .
         "<ul>" .
         "  <li>{$LANG['beginWithAnAlphaCharacter']}</li>" .

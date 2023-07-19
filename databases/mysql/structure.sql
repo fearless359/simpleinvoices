@@ -8,7 +8,6 @@
 -- PHP Version: 7.4.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -383,7 +382,7 @@ CREATE TABLE `si_invoice_type` (
 --
 
 CREATE TABLE `si_log` (
-  `id` bigint(11) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) UNSIGNED DEFAULT NULL,
@@ -546,7 +545,7 @@ CREATE TABLE `si_products_attribute_type` (
 CREATE TABLE `si_product_groups` (
   `name` varchar(60) NOT NULL,
   `markup` int(2) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1022,7 +1021,7 @@ ALTER TABLE `si_invoice_type`
 -- AUTO_INCREMENT for table `si_log`
 --
 ALTER TABLE `si_log`
-  MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `si_payment`

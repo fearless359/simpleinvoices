@@ -31,7 +31,7 @@ global $config, $smarty;
 // stop the direct browsing to this file - let index.php handle which files get displayed
 Util::directAccessAllowed();
 
-$role = $_SESSION['role_name'];
+$role = $_SESSION['role_name'] ?? "";
 
 $billers = Biller::getAll(true);
 $billerCount = Biller::count();

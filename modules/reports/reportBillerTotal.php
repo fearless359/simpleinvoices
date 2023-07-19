@@ -7,7 +7,7 @@ use Inc\Claz\Biller;
 include 'library/dateRangePrompt.php';
 $smarty->assign('showAllReports', $_GET['showAllReports']);
 
-if ($_SESSION['role_name'] == 'biller') {
+if (isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'biller') {
     $billerId = intval($_SESSION['user_id']);
 } else {
     $billerId = $_POST['billerId'] ?? 0;

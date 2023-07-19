@@ -140,14 +140,13 @@ class SqlPatchManager
                 } elseif ($id == 331) {
                     self::prePatch331();
                 }
-
                 // patch hasn't been run, so run it
                 $pdoDbAdmin->query($patch['patch']);
 
                 $smartyRow['text'] = "{$LANG['sqlUc']} {$LANG['patch']} $escapedId, $patchName <i>{$LANG['has']}</i> {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}";
                 $smartyRow['result'] = "done";
 
-                // now update the ".TB_PREFIX."sql_patchmanager table
+                // now update the sql_patchmanager table
                 $pdoDbAdmin->setFauxPost([
                     'sql_patch_ref' => $id,
                     'sql_patch'     => $patch['name'],
@@ -166,7 +165,6 @@ class SqlPatchManager
                 } elseif ($id == 322) {
                     self::postPatch322();
                 }
-
             }
         } catch (PdoDbException $pde) {
             error_log("SqlPatchManager::runSqlPatch() - " . $pde->getMessage());
@@ -268,7 +266,7 @@ class SqlPatchManager
             "{$LANG['there']} {$LANG['are']} {$LANG['patches']} {$LANG['that']} {$LANG['have']} {$LANG['notLc']} {$LANG['been']} {$LANG['applied']}, " .
             "{$LANG['run']} {$LANG['the']} {$LANG['database']} {$LANG['update']} {$LANG['by']} {$LANG['clicking']} {$LANG['update']}." .
             "</div>" .
-            "<div class='si_message_warning'>{$LANG['warningUcAll']}: {$LANG['pleaseUc']} {$LANG['backupYouDatabase']} {$LANG['before']} {$LANG['upgrading']}!</div>" .
+            "<div class='si_message_warning'>{$LANG['warningUcAll']}: {$LANG['pleaseUc']} {$LANG['backupYourDatabase']} {$LANG['before']} {$LANG['upgrading']}!</div>" .
             "<div class='align__text-center margin__top-3 margin__bottom-2'>" .
             "  <a href='index.php?case=run' class='button'><img src='../../images/tick.png' alt='update'/>{$LANG['updateUc']}</a>" .
             "</div>";
@@ -757,6 +755,16 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('335', $patch);
+
+        $patch = [
+            'name' => 'Make id type for si_log table consistent with all other id settings.',
+            'patch' =>
+                "ALTER TABLE `" . TB_PREFIX . "log` " .
+                "MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;",
+            'date' => "20230717",
+            'source' => 'fearless359'
+        ];
+        self::makePatch('336', $patch);
 
         // @formatter:on
     }

@@ -24,7 +24,7 @@ $having = $_GET['having'] ?? "";
 
 // If user role is customer or biller, then restrict invoices to those they have access to.
 // Make customer access read only. Billers change work only on those invoices generated for them.
-$readOnly = $_SESSION['role_name'] == 'customer';
+$readOnly = isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'customer';
 
 try {
     if (isset($_GET['showAll'])) {

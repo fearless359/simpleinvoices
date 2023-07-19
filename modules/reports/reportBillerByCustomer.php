@@ -8,7 +8,7 @@ Util::directAccessAllowed();
 
 include 'library/dateRangePrompt.php';
 
-$billerId = $_SESSION['role_name'] == 'biller' ? intval($_SESSION['user_id']) : 0;
+$billerId = isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'biller' ? intval($_SESSION['user_id']) : 0;
 $smarty->assign('billerId', $billerId);
 $smarty->assign('showAllReports', $_GET['showAllReports']);
 

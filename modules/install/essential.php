@@ -15,8 +15,8 @@ if ($databaseBuilt && !$databasePopulated) {
 
     $importJson = new importJson($file, $find, $replace);
     $collated = $importJson->collate();
-
     try {
+        $pdoDb->setLoadingEssentialData();
         $pdoDb->query($collated);
         $displayBlock =
             '<div>' .

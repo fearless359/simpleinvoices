@@ -491,6 +491,13 @@
       "sql_release": "20221110",
       "sql_statement": "INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES ('invoice_display_days', 0, 1, 1);",
       "source": "fearless359"
+    },
+    {
+      "sql_patch_ref": "336",
+      "sql_patch": "Make id type for si_log table consistent with all other id settings.",
+      "sql_release": "20230717",
+      "sql_statement": "ALTER TABLE `si_log` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;",
+      "source": "fearless359"
     }
   ],
   "si_system_defaults": [

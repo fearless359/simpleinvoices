@@ -28,10 +28,12 @@ class PdoDb
     private array $functions;
     private array $groupBy;
     private Havings $havings;
+    private bool $initComplete;
     private array $joinStmts;
     private array $keyPairs;
     private string $lastCommand;
     private int $limit;
+    private bool $loadingEssentialData;
     private bool $noErrorLog;
     private string $onDuplicateKey;
     private Orderby $orderBy;
@@ -45,7 +47,6 @@ class PdoDb
     private array $tableConstraints;
     private string $tableEngine;
     private string $tableSchema;
-    private bool $transaction;
     private bool $usePost;
     private WhereClause $whereClause;
 
@@ -58,11 +59,11 @@ class PdoDb
      */
     public function __construct(array $config)
     {
+        $this->initComplete = false; // for use in clearAll()
         $this->clearAll();
 
         $this->tableSchema = $config['databaseDbname'];
         $this->debug = false;
-        $this->transaction = false;
         if ($config['databaseHost'] == "localhost") {
             $host = "127.0.0.1";
         } else {
@@ -86,6 +87,8 @@ class PdoDb
             error_log(print_r($exp, true));
             throw new PdoDbException($str);
         }
+
+        $this->initComplete = true;
     }
 
     /**
@@ -95,7 +98,7 @@ class PdoDb
      */
     public function __destruct()
     {
-        if ($this->transaction) {
+        if ($this->pdoDb->inTransaction()) {
             error_log("PdoDb destruct - incomplete transaction - rollback performed.");
             $this->rollback();
         }
@@ -108,33 +111,35 @@ class PdoDb
     public function clearAll(bool $clearTran = true): void
     {
         // @formatter:off
-        $this->caseStmts        = [];
-        $this->debugLabel       = "";
-        $this->debugMicroTime   = 0.0;
-        $this->distinct         = false;
-        $this->excludedFields   = [];
-        $this->fauxPost         = [];
-        $this->fieldPrefix      = "";
-        $this->functions        = [];
-        $this->groupBy          = [];
-        $this->havings          = new Havings();
-        $this->joinStmts        = [];
-        $this->keyPairs         = [];
-        $this->lastCommand      = "";
-        $this->limit            = 0;
-        $this->noErrorLog       = false;
-        $this->onDuplicateKey   = "";
-        $this->orderBy          = new OrderBy();
-        $this->saveLastCommand  = false;
-        $this->selectAll        = false;
-        $this->selectList       = [];
-        $this->selectStmts      = [];
-        $this->tableColumns     = [];
-        $this->tableConstraints = [];
-        $this->tableEngine      = "";
-        $this->usePost          = true;
-        $this->whereClause      = new WhereClause();
-        if ($clearTran && isset($this->transaction) && $this->transaction) {
+        $this->caseStmts            = [];
+        $this->debugLabel           = "";
+        $this->debugMicroTime       = 0.0;
+        $this->distinct             = false;
+        $this->excludedFields       = [];
+        $this->fauxPost             = [];
+        $this->fieldPrefix          = "";
+        $this->functions            = [];
+        $this->groupBy              = [];
+        $this->havings              = new Havings();
+        $this->joinStmts            = [];
+        $this->keyPairs             = [];
+        $this->lastCommand          = "";
+        $this->limit                = 0;
+        $this->loadingEssentialData = false;
+        $this->noErrorLog           = false;
+        $this->onDuplicateKey       = "";
+        $this->orderBy              = new OrderBy();
+        $this->saveLastCommand      = false;
+        $this->selectAll            = false;
+        $this->selectList           = [];
+        $this->selectStmts          = [];
+        $this->tableColumns         = [];
+        $this->tableConstraints     = [];
+        $this->tableEngine          = "";
+        $this->usePost              = true;
+        $this->whereClause          = new WhereClause();
+
+        if ($this->initComplete && $clearTran && $this->pdoDb->inTransaction()) {
             try {
                 $this->rollback();
             } catch (PdoDbException $pde) {
@@ -397,6 +402,10 @@ class PdoDb
         $this->caseStmts[] = $caseStmt;
     }
 
+    public function setLoadingEssentialData(): void
+    {
+        $this->loadingEssentialData = true;
+    }
     /**
      * @param string $statement to perform update on duplicate key.
      * @noinspection PhpUnused
@@ -901,55 +910,43 @@ class PdoDb
 
     /**
      * Begin a transaction.
-     * @throws PdoDbException if a transaction is already in process.
      */
     public function begin(): void {
         if ($this->debug) {
             error_log("begin()");
         }
-        if ($this->transaction) {
-            $this->rollback();
-            throw new PdoDbException("PdoDb begin(): Called when transaction already in process.");
+        if ($this->pdoDb->inTransaction()) {
+            $this->commit();
+            error_log("PdoDb begin(): Method called what transaction in process. Changes committed and processing continued.");
         }
         $this->clearAll();
-        $this->transaction = true;
         $this->pdoDb->beginTransaction();
     }
 
     /**
      * Rollback actions performed as part of the current transaction.
-     * @throws PdoDbException
      */
     public function rollback(): void {
-        if ($this->transaction) {
+        if ($this->pdoDb->inTransaction()) {
             if ($this->debug) {
                 error_log("rollback()");
             }
             $this->pdoDb->rollback();
-            $this->transaction = false;
-            $this->clearAll();
-        } else {
-            $this->clearAll();
-            throw new PdoDbException("PdoDb rollback(): Called when no transaction is in process.");
         }
+        $this->clearAll();
     }
 
     /**
      * Commit actions performed in this transaction.
-     * @throws PdoDbException if called when no transaction is in process.
      */
     public function commit(): void {
-        if ($this->transaction) {
+        if ($this->pdoDb->inTransaction()) {
             if ($this->debug) {
                 error_log("commit()");
             }
             $this->pdoDb->commit();
-            $this->transaction = false;
-            $this->clearAll();
-        } else {
-            $this->clearAll();
-            throw new PdoDbException("PdoDb commit(): Called when no transaction is in process.");
         }
+        $this->clearAll();
     }
 
     /**
@@ -1304,9 +1301,12 @@ class PdoDb
             throw new PdoDbException('PdoDb - query(): Execute error. See error_log.');
         }
 
+
         $parts = explode(' ', $sql);
         $request = strtoupper($parts[0]);
-        if ($request == "INSERT") {
+        if ($this->loadingEssentialData) {
+            $result = true;
+        } elseif ($request == "INSERT") {
             $result = $this->lastInsertId();
         } elseif ($request == "SELECT" ||
             $request == "SHOW TABLES") {

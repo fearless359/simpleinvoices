@@ -14,14 +14,14 @@ include 'library/includePaidInvoicesPrompt.php';
 
 // If session role is biller or customer, restrict to assigned biller or customer.
 // Otherwise, allow user to select.
-if ($_SESSION['role_name'] == 'biller') {
+if (isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'biller') {
     $billerId = $_SESSION['user_id'];
 } else {
     $billerId = $_POST['billerId'] ?? 0;
 }
 $smarty->assign('billerId', $billerId);
 
-if ($_SESSION['role_name'] == 'customer') {
+if (isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'customer') {
     $customerId = $_SESSION['user_id'];
 } else {
     $customerId = $_POST['customerId'] ?? null;

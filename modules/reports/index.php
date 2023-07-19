@@ -40,10 +40,12 @@ foreach ($allReports as $report) {
 $smarty->assign('reports', $reports);
 $smarty->assign('showAllReports', $showAllReports);
 
-if ($_SESSION['role_name'] == 'biller') {
-    $smarty->assign('billerId', $_SESSION['user_id']);
-} elseif ($_SESSION['role_name'] == 'customer') {
-    $smarty->assign('customerId', $_SESSION['user_id']);
+if (isset($_SESSION['role_name'])) {
+    if ($_SESSION['role_name'] == 'biller') {
+        $smarty->assign('billerId', $_SESSION['user_id']);
+    } elseif ($_SESSION['role_name'] == 'customer') {
+        $smarty->assign('customerId', $_SESSION['user_id']);
+    }
 }
 
 $smarty->assign('pageActive', 'report');

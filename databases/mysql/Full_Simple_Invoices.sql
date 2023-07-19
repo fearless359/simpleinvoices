@@ -8,7 +8,6 @@
 -- PHP Version: 7.4.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -383,7 +382,7 @@ CREATE TABLE `si_invoice_type` (
 --
 
 CREATE TABLE `si_log` (
-  `id` bigint(11) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `domain_id` int(11) UNSIGNED NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) UNSIGNED DEFAULT NULL,
@@ -1022,7 +1021,7 @@ ALTER TABLE `si_invoice_type`
 -- AUTO_INCREMENT for table `si_log`
 --
 ALTER TABLE `si_log`
-  MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `si_payment`
@@ -1370,7 +1369,8 @@ INSERT INTO `si_sql_patchmanager` (`sql_patch_ref`, `sql_patch`, `sql_release`, 
 (332, 'Add payment_warehouse table to the database.', '20221013', 'CREATE TABLE `si_payment_warehouse` (`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `customer_id` int(11) UNSIGNED NOT NULL, `last_payment_id` int(11) UNSIGNED, `balance` decimal(25,6) NOT NULL, `payment_type` int(11) UNSIGNED NOT NULL, `check_number` varchar(10) DEFAULT NULL) ENGINE = InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;ALTER TABLE `si_payment_warehouse` ADD KEY `customer_id` (`customer_id`), ADD KEY `last_payment_id` (`last_payment_id`), ADD KEY `payment_type` (`payment_type`);ALTER TABLE `si_payment_warehouse` ADD CONSTRAINT `si_payment_warehouse_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE CASCADE,ADD CONSTRAINT `si_payment_warehouse_ibfk_2` FOREIGN KEY (`last_payment_id`) REFERENCES `si_payment` (`id`) ON UPDATE SET NULL ON DELETE SET NULL,ADD CONSTRAINT `si_payment_warehouse_ibfk_3` FOREIGN KEY (`payment_type`) REFERENCES `si_payment_types` (`pt_id`) ON UPDATE CASCADE;', 'fearless359'),
 (333, 'Add warehouse_amount field to payment table.', '20221019', 'ALTER TABLE `si_payment` ADD `customer_id` int(11) UNSIGNED AFTER `ac_inv_id`, ADD `warehouse_amount` decimal(25,6) NOT NULL DEFAULT 0 AFTER `ac_check_number`; ALTER TABLE `si_payment` ADD KEY `customer_id` (`customer_id`); ALTER TABLE `si_payment` ADD CONSTRAINT `si_payment_ibfk_3` FOREIGN KEY (`customer_id`) REFERENCES `si_customers` (`id`) ON UPDATE SET NULL ON DELETE SET NULL;', 'fearless359'),
 (334, 'Add payment delete days option.', '20221022', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'payment_delete_days\', 0, 1, 1);', 'fearless359'),
-(335, 'Add invoice display days option.', '20221110', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'invoice_display_days\', 0, 1, 1);', 'fearless359');
+(335, 'Add invoice display days option.', '20221110', 'INSERT INTO `si_system_defaults` (name ,value ,domain_id ,extension_id ) VALUES (\'invoice_display_days\', 0, 1, 1);', 'fearless359'),
+(336, 'Make id type for si_log table consistent with all other id settings.', '20230717', 'ALTER TABLE `si_log` MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;', 'fearless359');
 
 --
 -- Test/required data for `si_system_defaults` table - no constraints

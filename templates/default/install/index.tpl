@@ -29,7 +29,7 @@
     </div>
     <div class="grid__container grid__head-6">
         <div class="cols__1-span-6 bold align__text-center underline fonts__size-2">
-            <em>{$config_file_path}</em> {$LANG.databaseUc} {$LANG.settings}
+            <em>{$configFile}</em> {$LANG.databaseUc} {$LANG.settings}
         </div>
     </div>
     <div class="grid__container grid__head-6">

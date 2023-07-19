@@ -17,6 +17,14 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-07-18 - <strong>2023.0.5</strong>
+                <ul>
+                    <li>Check that session role name is set before checking for a value.</li>
+                    <li>Fix issue with database transaction logic reporting an error when there was none.</li>
+                    <li>Add SQL patch to assure si_log id variable characteristics is consistently defined.</li>
+                    <li>Fix issues with loading essential data when database created from scratch.</li>
+                </ul>
+            </li>
             <li>2023-05-08 - <strong>2023.0.4</strong>
                 <ul>
                     <li>Modify reports to work in line with user access role.</li>

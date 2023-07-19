@@ -155,7 +155,7 @@ class Invoice
     {
         global $config, $LANG;
 
-        $readOnly = $_SESSION['role_name'] == 'customer';
+        $readOnly = isset($_SESSION['role_name']) && $_SESSION['role_name'] == 'customer';
         $rows = self::getInvoices(null, '', '', false, $invoiceDisplayDays);
         $tableRows = [];
         foreach ($rows as $row) {
@@ -253,10 +253,12 @@ class Invoice
             }
 
             // If user role is customer or biller, then restrict invoices to those they have access to.
-            if ($_SESSION['role_name'] == 'customer') {
-                $pdoDb->addSimpleWhere("c.id", $_SESSION['user_id'], "AND");
-            } elseif ($_SESSION['role_name'] == 'biller') {
-                $pdoDb->addSimpleWhere("b.id", $_SESSION['user_id'], "AND");
+            if (isset($_SESSION['role_name'])) {
+                if ($_SESSION['role_name'] == 'customer') {
+                    $pdoDb->addSimpleWhere("c.id", $_SESSION['user_id'], "AND");
+                } elseif ($_SESSION['role_name'] == 'biller') {
+                    $pdoDb->addSimpleWhere("b.id", $_SESSION['user_id'], "AND");
+                }
             }
 
             if (isset($id)) {
@@ -1038,10 +1040,12 @@ class Invoice
 
         try {
             // If user role is customer or biller, then restrict invoices to those they have access to.
-            if ($_SESSION['role_name'] == 'customer') {
-                $pdoDb->addSimpleWhere("customer_id", $_SESSION['user_id'], "AND");
-            } elseif ($_SESSION['role_name'] == 'biller') {
-                $pdoDb->addSimpleWhere("biller_id", $_SESSION['user_id'], "AND");
+            if (isset($_SESSION['role_name'])) {
+                if ($_SESSION['role_name'] == 'customer') {
+                    $pdoDb->addSimpleWhere("customer_id", $_SESSION['user_id'], "AND");
+                } elseif ($_SESSION['role_name'] == 'biller') {
+                    $pdoDb->addSimpleWhere("biller_id", $_SESSION['user_id'], "AND");
+                }
             }
 
             $pdoDb->addSimpleWhere('index_id', $indexId, 'AND');
