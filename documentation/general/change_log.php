@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2023-09-09 - <strong>2023.0.7</strong>
+                <ul>
+                    <li>Fix gitignore from excluding css files needed by node modules.</li>
+                </ul>
+            </li>
             <li>2023-07-19 - <strong>2023.0.6</strong>
                 <ul>
                     <li>Test for session variable "role_name" not set when using non-authentication mode to
