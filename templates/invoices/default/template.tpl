@@ -25,8 +25,8 @@
       <th class="col1 tbl1-bottom" colspan="4">{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.summaryUc}</th>
     </tr>
     {print_if_not_empty label=[$preference.pref_inv_wording|htmlSafe, ' ', $LANG.numberShort] field=$invoice.index_id class1='text_left' class2='right' colspan="3"}
-    {print_if_not_empty label=[$preference.pref_inv_wording|htmlSafe, ' ', $LANG.dateUc] field=$invoice.date|utilDate class1='text_left' class2='right' colspan="3"}
-    <!-- Show the Invoice Custom Fields if valid -->
+    {print_if_not_empty label=[$preference.pref_inv_wording|htmlSafe, ' ', $LANG.dateUc] field={$invoice.date_original|utilIntlDate:$invoice.locale:"long"} class1='text_left' class2='right' colspan="3"}
+        <!-- Show the Invoice Custom Fields if valid -->
     {if !empty($customFieldLabels.invoice_cf1)}
       {print_if_not_empty label=$customFieldLabels.invoice_cf1 field=$invoice.custom_field1 class1='text_left' class2='right' colspan="3"}
     {/if}

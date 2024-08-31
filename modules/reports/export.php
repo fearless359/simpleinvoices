@@ -19,7 +19,15 @@ global$module, $path;
 
 // @formatter:off
 $billerId          = $_GET['billerId'] ?? null;
+if (is_string($billerId)) {
+    $billerId = intval($billerId);
+}
+
 $customerId        = $_GET['customerId'] ?? null;
+if (is_string($customerId)) {
+    $customerId = intval($customerId);
+}
+
 $displayDetail     = $_GET['displayDetail'] ?? "no";
 $endDate           = $_GET['endDate'] ?? "";
 $fileName          = $_GET['fileName'] ?? "";
