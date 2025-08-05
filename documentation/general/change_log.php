@@ -17,9 +17,16 @@
     <br/>
     <div id="left">
         <ul>
-            <li>2023-09-09 - <strong>2023.0.7</strong>
+            <li>2025-08-05 - <strong>2026.0.0</strong>
                 <ul>
-                    <li>Fix gitignore from excluding css files needed by node modules.</li>
+                    <li>Added logic to support printing unapplied prepayment (warehoused) amount on invoices.
+                        Two new language items added to use on invoice, <strong>reserveUc</strong> and
+                        <strong>unappliedUc</strong>.</li>
+                    <li>Added in historic database update entries (1 through 319) to the patch management table.
+                        These are the database changes that made it necessary to run master_2019.2 to update older
+                        versions of SI before loading the more current versions. Now with master_2026, you can
+                        update from all versions of SI to the most current.</li>
+                    <li>Cleaned up miscellaneous warnings in code found by qodana utility.</li>
                 </ul>
             </li>
             <li>2023-07-19 - <strong>2023.0.6</strong>

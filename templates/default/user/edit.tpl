@@ -20,7 +20,6 @@
             let role = document.getElementById("roleId1");
             let roleIdx = role.selectedIndex;
             let roleText = role.options[roleIdx].text;
-            let origRoleVal = document.getElementById("origRole1").value;
 
             let currRoleElem = document.getElementById("currRole1");
             let currRoleVal = currRoleElem.value;

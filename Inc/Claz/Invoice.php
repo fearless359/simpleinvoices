@@ -42,9 +42,9 @@ class Invoice
      * @return array $invoice
      * @throws PdoDbException
      */
-    public static function getOne(int $id, bool $useIndexId = false): array
+    public static function getOne(int $id, bool $useIndexId = false, bool $includeWarehouse = false): array
     {
-        return self::getInvoices($id,'', '', false, 0,$useIndexId);
+        return self::getInvoices($id,'', '', $includeWarehouse, 0,$useIndexId);
     }
 
     /**
@@ -394,14 +394,16 @@ class Invoice
                 // Only present warehouse information if this is a specific record request.
                 // This avoids reporting multiple invoices for the same client with each
                 // showing warehouse information that is not adjusted for potential payments.
-                if ((isset($id) || $includeWarehouse) && $row['owing'] > 0) {
+                if ((isset($id) || $includeWarehouse)) {
                     $warehousedPayment = PaymentWarehouse::getOne($row['customer_id'], 1);
                     if (empty($warehousedPayment)) {
                         $whPymtAmt = '0';
                         $whPymtType = '';
                         $whPymtChkNo = '';
                         $whPymtTypeDesc = '';
+                        $whBalance = '0';
                     } else {
+                        $whBalance = $warehousedPayment['balance'];
                         $whPymtAmt= Util::number(min($row['owing'], $warehousedPayment['balance']));
                         $whPymtType = $warehousedPayment['payment_type'];
                         $whPymtChkNo = $warehousedPayment['check_number'];
@@ -410,10 +412,14 @@ class Invoice
                         $whPymtTypeDesc = $pmtType['pt_description'];
                     }
 
-                    $row['warehousedPayment'] = $whPymtAmt;
-                    $row['warehousedPaymentType'] = $whPymtType;
-                    $row['warehousedCheckNumber'] = $whPymtChkNo;
-                    $row['warehousedPaymentTypeDesc'] = $whPymtTypeDesc;
+                    $row['warehouseBalance'] = $whBalance;
+                    
+                    if ($row['owing'] > 0) {
+	                    $row['warehousedPayment'] = $whPymtAmt;
+	                    $row['warehousedPaymentType'] = $whPymtType;
+	                    $row['warehousedCheckNumber'] = $whPymtChkNo;
+	                    $row['warehousedPaymentTypeDesc'] = $whPymtTypeDesc;
+                    }
                 }
 
                 if ($forceUpdate) {

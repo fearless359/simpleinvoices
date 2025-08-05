@@ -225,11 +225,7 @@ class Cron
             error_log("Cron::delete() - error: " . $pde->getMessage());
         }
 
-        try {
-            $pdoDb->rollback();
-        } catch (PdoDbException $pde) {
-            error_log("Cron::delete() - error2: " . $pde->getMessage());
-        }
+        $pdoDb->rollback();
         return false;
     }
 
@@ -323,7 +319,8 @@ class Cron
 
                             if ($month) {
                                 // Calculate number of month passed.
-                                $val = $todayMonth - $startMonth + ($todayYear - $startYear) * 12;
+                                $val = ($todayMonth - $startMonth);
+                                $val += ($todayYear - $startYear) * 12;
                             } else {
                                 // Calculate number of years passed.
                                 $val = $todayYear - $startYear;
@@ -1025,12 +1022,7 @@ class Cron
             error_log("Cron::deleteCronInvoiceItem() - error: " . $pde->getMessage());
         }
 
-        try {
-            $pdoDb->rollback();
-        } catch (PdoDbException $pde) {
-            error_log("Cron::deleteCronInvoiceItem() - error2: " . $pde->getMessage());
-        }
-
+        $pdoDb->rollback();
         return false;
     }
 

@@ -856,6 +856,7 @@ $LANG['reports'] = "Reports";//1
 $LANG['reportUc'] = "Report";//1
 $LANG['requiredField'] = "<strong style='color:red;'>Required Field!</strong>";//1
 $LANG['resetCustomFlags'] = "Reset Associated Flag Field";//1
+$LANG['reserveUc'] = "Reserve";//1
 $LANG['resolveUc'] = "Resolve";//0
 $LANG['return'] = "return";//1
 $LANG['returnToPreviousScreen'] = "Return to previous screen";//1
@@ -1058,6 +1059,7 @@ $LANG['toUc'] = "To";//1
 $LANG['transactionUc'] = "Transaction";//1
 $LANG['type'] = "Type";//1
 $LANG['unableToAccessVersionInformation'] = "Unable to access version information";//1
+$LANG['unappliedUc'] = "Unapplied";//1
 $LANG['unassigned'] = "unassigned";//1
 $LANG['unassignedUc'] = "Unassigned";//1
 $LANG['unchanged'] = "unchanged";//0
