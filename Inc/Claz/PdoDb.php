@@ -140,11 +140,7 @@ class PdoDb
         $this->whereClause          = new WhereClause();
 
         if ($this->initComplete && $clearTran && $this->pdoDb->inTransaction()) {
-            try {
-                $this->rollback();
-            } catch (PdoDbException $pde) {
-                error_log("PdoDb::clearAll() - Error: " . $pde->getMessage());
-            }
+            $this->rollback();
         }
         // @formatter:on
     }

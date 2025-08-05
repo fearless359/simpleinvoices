@@ -33,7 +33,7 @@ use Inc\Claz\Util;
 {if isset($encrypt_error)}
 <h1>Unable to perform <?php Util::htmlSafe($encrypt_error); ?> requet.</h1>
 {else}
-<form action='<?php echo urlSafe($_SERVER['PHP_SELF']) ?>' method='post'>
+<form action='<?php echo Util::urlSafe($_SERVER['PHP_SELF']) ?>' method='post'>
     <br/>Original Text<br/>
     <textarea name='text' cols="40" rows="8" wrap="soft">Welcome to the Real World.</textarea>
     <br/>Enter Key String<br/>

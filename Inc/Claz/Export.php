@@ -116,7 +116,7 @@ class Export
 
             case "file":
                 if ($this->module != "reports" && !empty($this->invoiceId)) {
-                    $invoice = Invoice::getOne($this->invoiceId);
+                    $invoice = Invoice::getOne($this->invoiceId, false, true);
                     $preference = Preferences::getOne($invoice['preference_id']);
                 }
 
@@ -176,7 +176,7 @@ class Export
             case "invoice":
                 try {
                     if (empty($this->invoices)) {
-                        $invoice = Invoice::getOne($this->invoiceId);
+                        $invoice = Invoice::getOne($this->invoiceId, false, true);
                     } else {
                         $invoice = $this->invoices;
                         $this->invoiceId = $invoice['id'];

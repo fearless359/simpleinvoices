@@ -25,6 +25,8 @@ templates/invoices/logos/
 css/main.comp.css
 css/main.prefix.css
 
+qodana.yaml
+
 ### PhpStorm intelliJ folder ###
 .idea/**
 

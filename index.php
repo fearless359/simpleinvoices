@@ -167,7 +167,6 @@ Log::out("index.php - After init.php - module[$module] view[$view] " .
     "patchCount[$patchCount] unappliedPatches[$unappliedPatches]");
 foreach ($extNames as $extName) {
     if (file_exists("extensions/$extName/include/init.php")) {
-        /** @noinspection PhpIncludeInspection */
         $extInitFile = "extensions/$extName/include/init.php";
         Log::out("index.php - extInitFile[$extInitFile]");
         require_once $extInitFile;

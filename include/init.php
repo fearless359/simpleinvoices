@@ -53,11 +53,7 @@ $patchCount = 0;
 if ($databaseBuilt) {
     // Set these global variables.
     $patchCount = SqlPatchManager::lastPatchApplied();
-    if ($patchCount > 0 && $patchCount < SqlPatchManager::BEGINNING_PATCH_NUMBER) {
-        exit("You need to load Fearless359/SimpleInvoices version master_2019.2 prior to loading this version.");
-    }
-
-    $databasePopulated = $patchCount >= SqlPatchManager::BEGINNING_PATCH_NUMBER;
+    $databasePopulated = $patchCount > 0;
     if ($apiRequest && !$databasePopulated) {
         exit("Database must be populated to run a batch job.");
     }
