@@ -1,9 +1,11 @@
+@use "../abstracts/variables" as v;
+
 .web_dialog {
     position: fixed;
     top: 30%;
     left: 42%;
     background-color: white;
-    border: 2px solid $colorGreyLight-15;
+    border: 2px solid v.$colorGreyLight-15;
     z-index: 102;
     font-size: 1.3rem;
 
@@ -17,7 +19,7 @@
         width: 100%;
         margin: 0;
         padding: 0;
-        background: $colorBlack;
+        background: v.$colorBlack;
         opacity: .15;
         filter: alpha(opacity=15);
         -moz-opacity: .15;
@@ -31,7 +33,7 @@
     grid-template-columns: 1fr;
     font-family: arial, verdana, helvetica, sans-serif;
     font-size: 1.2rem;
-    color: $colorGreyDark-7;
+    color: v.$colorGreyDark-7;
 
     & a,
     & button {

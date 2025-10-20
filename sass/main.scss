@@ -1,31 +1,33 @@
 @charset "utf-8";
 
-@import "abstracts/mixins";
-@import "abstracts/variables";
+@use "abstracts/mixins";
+@use "abstracts/variables";
 
-@import "base/base";
+@use "base/base";
 
-@import "pages/customers";
-@import "pages/patches";
-@import "pages/reports";
+@use "pages/customers";
+@use "pages/patches";
+@use "pages/reports";
 
-@import "layout/footer";
-@import "layout/grids";
-@import "layout/tabs";
+@use "layout/footer";
+@use "layout/grids";
+@use "layout/tabs";
 
-@import "components/buttons";
-@import "components/colors";
-@import "components/dialog";
-@import "components/errors";
-@import "components/filters";
-@import "components/flex";
-@import "components/fonts";
-@import "components/forms";
-@import "components/headings";
-@import "components/help";
-@import "components/links";
-@import "components/lists";
-@import "components/login";
-@import "components/messages";
-@import "components/tables";
-@import "components/toolbars";
+@use "components/buttons";
+@use "components/colors";
+@use "components/dialog";
+@use "components/errors";
+@use "components/filters";
+@use "components/flex";
+@use "components/fonts";
+@use "components/forms";
+@use "components/headings";
+@use "components/help";
+@use "components/links";
+@use "components/lists";
+@use "components/login";
+@use "components/messages";
+@use "components/tables";
+@use "components/toolbars";
+
+@use "window/media";

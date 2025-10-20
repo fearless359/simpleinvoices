@@ -67,13 +67,13 @@
 {capture name=hook_tabmenu_end}
 
 	<div id="my_menu2">
-		<ul class="subnav">
+		<ul class="menu__sub">
 			<li><a  href="http://kernel.org">Kernel</a></li>
 			<li><a  href="http://ubuntu.org">ubuntu</a></li>
 		</ul>
 	</div>
 	<div id="my_settings">
-		<ul class="subnav">
+		<ul class="menu__sub">
 			<li><a  href="http://kernel.org">My setting link</a></li>
 		</ul>
 	</div>

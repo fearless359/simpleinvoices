@@ -34,7 +34,7 @@ function validateNumber(event, elem, locale, val, fracDigits, errorMsg) {
     // Get the decimal point character for the locale
     let decimalPoint = new Intl.NumberFormat(locale).format(1.1).replace(/1/g, '');
 
-    let pattern = '^';
+    let pattern = '^-?';
     let grpPos = val.indexOf(group);
     let groupSepPresent = grpPos > 0;
 
@@ -66,7 +66,7 @@ function validateNumber(event, elem, locale, val, fracDigits, errorMsg) {
         pattern += '\\' + decimalPoint + '\\d{1,' + fracDigits + '}';
     }
     pattern += "$";
-
+console.info("validateNumber pattern[" + pattern + "]");
     if (new RegExp(pattern).test(val) === false) {
         // If the value is invalid, display an error message and add an error class to the input field
         event.preventDefault();

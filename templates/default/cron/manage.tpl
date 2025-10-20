@@ -24,7 +24,7 @@
         <thead>
         <tr>
             <th class="align__text-center">{$LANG.actions}</th>
-            <th class="align__text-center">{$LANG.invoiceId}</th>
+            <th class="align__text-center">{$LANG.invUc}#</th>
             <th class="align__text-center">{$LANG.startDateShort}</th>
             <th class="align__text-center">{$LANG.endDateShort}</th>
             <th>{$LANG.recurEach}</th>
@@ -43,13 +43,13 @@
                 "deferRender": true,
                 "responsive": true,
                 "columns": [
-                    { "data": "action" },
-                    { "data": "invoiceId" },
-                    { "data": "startDate" },
-                    { "data": "endDate"},
-                    { "data": "recurrenceInfo" },
-                    { "data": "emailBillerNice"},
-                    { "data": "emailCustomerNice"},
+                    { "data": "action", "width": "8%" },
+                    { "data": "invoiceId", "width": "8%" },
+                    { "data": "startDate", "width": "10%" },
+                    { "data": "endDate", "width": "10%" },
+                    { "data": "recurrenceInfo", "width": "10%" },
+                    { "data": "emailBillerNice", "width": "8%" },
+                    { "data": "emailCustomerNice", "width": "8%" },
                     { "data": "customerName"},
                 ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
@@ -57,13 +57,12 @@
                     [2, "desc"]
                 ],
                 "columnDefs": [
-                    { "targets": 0, "width": "9%", "className": 'dt-body-center', "orderable": false },
-                    { "targets": 1, "width": "12%", "className": 'dt-body-center' },
-                    { "targets": [2,3], "width": "11%", "className": 'dt-body-center' },
-                    { "targets": 4, "width": "12%" },
-                    { "targets": 5, "width": "10%", "className": 'dt-body-center' },
-                    { "targets": 6, "width": "10%", "className": 'dt-body-center' },
-                    { "targets": 7, "width": "40%" }
+                    { "targets": 0, "className": 'dt-body-center', "orderable": false },
+                    { "targets": 1, "className": 'dt-body-center' },
+                    { "targets": [2,3], "className": 'dt-body-center' },
+                    { "targets": 4 },
+                    { "targets": [5, 6], "className": 'dt-body-center' },
+                    { "targets": 7 }
                 ],
                 "colReorder": true
             });

@@ -1,9 +1,11 @@
+@use "../abstracts/variables" as v;
+
 #si_page_updates {
     & .si_list li {
         list-style: none;
         padding: 1px 0 1px 3rem;
         margin: 0;
-        border-bottom: 1px dotted $colorGreyLight-13;
+        border-bottom: 1px dotted v.$colorGreyLight-13;
         font-size: 1.1rem;
         line-height: 14px;
 
@@ -13,7 +15,7 @@
         }
 
         &.li_todo {
-            color: $colorBlueDark-2;
+            color: v.$colorBlueDark-2;
         }
 
         &.li_done {

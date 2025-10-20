@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as v;
+
 #si_form_cust {
     width: 100%;
 
@@ -44,12 +46,12 @@
         }
 
         & th {
-            color: $colorGreyDark-4;
+            color: v.$colorGreyDark-4;
             font-weight: bold;
-            background: $colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
+            background: v.$colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
             padding-top: 6px;
             padding-bottom: 6px;
-            border-top: 1px solid $colorGreyLight-11;
+            border-top: 1px solid v.$colorGreyLight-11;
             border-bottom: 0;
             text-align: left;
             vertical-align: middle;
@@ -60,7 +62,7 @@
         }
 
         & td {
-            border-left: 1px solid $colorGreyLight-7;
+            border-left: 1px solid v.$colorGreyLight-7;
         }
     }
 }

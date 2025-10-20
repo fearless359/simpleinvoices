@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as v;
+
 a {
     &.intro {
         font-size: 1.5em;
@@ -7,27 +9,27 @@ a {
     &:link,
     &:visited {
         text-decoration: none;
-        color: $colorDarkBlue;
+        color: v.$colorDarkBlue;
     }
 
     &.hook {
-        color: $colorBlack;
+        color: v.$colorBlack;
         font-size: 1.5em;
         font-weight: bold;
     }
 
     &:hover {
-        color: $colorBlue;
+        color: v.$colorBlue;
 
-        &.hook {color: $colorBlack;}
+        &.hook {color: v.$colorBlack;}
     }
 
     &.anchor {
         &:link,
         &:visited,
         &:hover {
-            color: $colorWhite;
-            background: $colorWhite;
+            color: v.$colorWhite;
+            background: v.$colorWhite;
             font-size: 0;
             text-decoration: none;
             padding: 0;
@@ -58,8 +60,8 @@ a {
         &.active:link,
         &.active:visited,
         &.active:hover {
-            background: $colorGreyDark-1 !important;
-            color: $colorBlue !important;
+            background: v.$colorGreyDark-1 !important;
+            color: v.$colorBlue !important;
             text-decoration: none;
             font-weight: 400 !important;
         }

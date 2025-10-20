@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as v;
+
 form {
     margin: 0;
     padding: 0;
@@ -6,8 +8,8 @@ form {
 input,
 select,
 textarea {
-    background: $colorWhite url(../images/text-bg.gif) repeat-x scroll center top;
-    border: 1px solid $colorGreyLight-13;
+    background: v.$colorWhite url(../images/text-bg.gif) repeat-x scroll center top;
+    border: 1px solid v.$colorGreyLight-13;
     margin: 1px;
     padding: 0.2em 0.3em;
     font-size: 1.6rem;
@@ -88,9 +90,9 @@ input[type=text] { -webkit-appearance: none; }
 
 div {
     // @formatter:off
-    &.even { background-color: rgba($colorWhite, 1.0); }
+    &.even { background-color: rgba(v.$colorWhite, 1.0); }
 
-    &.odd { background-color: rgba($colorGreyLight-6, .8); }
+    &.odd { background-color: rgba(v.$colorGreyLight-6, .8); }
     // @formatter:on
 }
 
@@ -106,9 +108,9 @@ div {
     }
 
     &__text {
-        &-left { text-align: left; }
-        &-center { text-align: center; }
-        &-right { text-align: right; }
+        &-left { text-align: left !important; }
+        &-center { text-align: center !important; }
+        &-right { text-align: right !important; }
     }
     // @formatter:on
 }
@@ -143,21 +145,21 @@ div {
         overflow: hidden;
 
         & table {
-            border-top: 1px dotted $colorGreyLight-11;
+            border-top: 1px dotted v.$colorGreyLight-11;
             margin: 0 auto;
         }
 
         & th,
         & td {
             padding: 3px;
-            border-bottom: 1px dotted $colorGreyLight-11;
+            border-bottom: 1px dotted v.$colorGreyLight-11;
         }
 
         & tbody th {
             text-align: left;
             white-space: nowrap;
             font-weight: bold;
-            color: $colorGreyDark-3;
+            color: v.$colorGreyDark-3;
             padding-left: .5rem;
             padding-right: .7rem;
             vertical-align: top;
@@ -169,18 +171,18 @@ div {
         }
 
         & h4 {
-            color: $colorGreyDark-4;
+            color: v.$colorGreyDark-4;
             padding: 0;
             margin: 5px 0;
         }
 
         &_search {
             margin-bottom: 30px;
-            border: 1px solid $colorGreyLight-13;
+            border: 1px solid v.$colorGreyLight-13;
             -moz-border-radius: 8px;
             -webkit-border-radius: 8px;
             border-radius: 8px;
-            background: $colorGreyLight-4;
+            background: v.$colorGreyLight-4;
             padding: 20px 0 13px 0;
         }
     }

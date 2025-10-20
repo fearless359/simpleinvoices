@@ -1,9 +1,11 @@
+@use "../abstracts/variables" as v;
+
 .si_message {
     min-height: 0;
     font-size: 1.2rem;
-    color: $colorBlueLight-3;
-    background-color: $colorBlueLight-2;
-    border-color: $colorBlueLight-1;
+    color: v.$colorBlueLight-3;
+    background-color: v.$colorBlueLight-2;
+    border-color: v.$colorBlueLight-1;
 
     &,
     &_ok,
@@ -12,35 +14,35 @@
         padding: 10px;
         margin: 10px;
         text-align: center;
-        border: 1px solid $colorGreyLight-13;
+        border: 1px solid v.$colorGreyLight-13;
         -moz-border-radius: 8px;
         -webkit-border-radius: 8px;
         border-radius: 8px;
     }
 
     &_ok {
-        background: $colorGreenLight-1 url(../images/tick.png) 47px 16px no-repeat;
-        border-color: $colorGreenLight-2;
-        color: $colorGreen;
+        background: v.$colorGreenLight-1 url(../images/tick.png) 47px 16px no-repeat;
+        border-color: v.$colorGreenLight-2;
+        color: v.$colorGreen;
     }
 
     &_error {
-        background: $colorRedLight-1 url(../images/cross.png) 47px 16px no-repeat;
-        color: $colorIndianRed;
-        border-color: $colorRedLight-2;
+        background: v.$colorRedLight-1 url(../images/cross.png) 47px 16px no-repeat;
+        color: v.$colorIndianRed;
+        border-color: v.$colorRedLight-2;
     }
 
     &_warning {
-        color: $colorGoldenDark-1;
+        color: v.$colorGoldenDark-1;
         text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-        background-color: $colorGoldenLight-1;
-        border: 1px solid $colorGoldenLight-2;
+        background-color: v.$colorGoldenLight-1;
+        border: 1px solid v.$colorGoldenLight-2;
     }
 
     &_install {
         margin: 30px;
         padding: 3px;
-        border-bottom: 1px dotted $colorGreyLight-11;
-        border-top: 1px dotted $colorGreyLight-11;
+        border-bottom: 1px dotted v.$colorGreyLight-11;
+        border-top: 1px dotted v.$colorGreyLight-11;
     }
 }

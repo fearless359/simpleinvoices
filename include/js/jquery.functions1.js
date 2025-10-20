@@ -2,8 +2,7 @@
 * Script: jquery.functions1.js
 * Purpose: jquery/javascript functions for Simple Invoices
 */
-function setWarehouseInfoInAmountFields()
-{
+function setWarehouseInfoInAmountFields() {
     let option = $('select option:selected');
     let val = option.val();
 
@@ -106,8 +105,7 @@ function setWarehouseInfoInAmountFields()
 }
 
 // show modal dialog
-function showSiDialog(modal)
-{
+function showSiDialog(modal) {
     let overlay = $("#overlay");
     overlay.show();
     $("#dialog").fadeIn(300);
@@ -122,8 +120,7 @@ function showSiDialog(modal)
 }
 
 // close modal dialog
-function hideSiDialog()
-{
+function hideSiDialog() {
     $("#overlay").hide();
     $("#dialog").fadeOut(300);
 }
@@ -180,24 +177,24 @@ function count_invoice_line_items() {
 function invoiceCustomerChange(customerId) {
     $('#gmail_loading').show();
     $.ajax({
-        type : 'GET',
-        url : './index.php?module=invoices&view=subCustomerAjax&id=' + customerId,
-        dataType : "json",
-        success : function(data) {
+        type: 'GET',
+        url: './index.php?module=invoices&view=subCustomerAjax&id=' + customerId,
+        dataType: "json",
+        success: function (data) {
             $("#subCustId")
                 .html(data)
                 .css('display', 'inline-block');
             $("#noSubCustomers")
                 .css('display', 'none');
         },
-        error : function() {
+        error: function () {
             $("#subCustId")
                 .html('')
                 .css('display', 'none');
             $("#noSubCustomers")
                 .css('display', 'inline-block');
         },
-        complete : function() {
+        complete: function () {
             $('#gmail_loading').hide();
         }
     });
@@ -342,4 +339,51 @@ function export_invoice(row_number, spreadsheet, wordprocessor) {
             $(this).dialog("destroy")
         }
     });
+}
+
+let prevMenuDropdownItem = null;
+let prevSubMenuDropdownItem = null;
+let prevSubMenuDropdownUlItem = null;
+let justSet = false;
+$(document).on('click', function (e) {
+    e.stopPropagation();
+
+    if (justSet) {
+        justSet = false;
+    } else {
+        if (prevSubMenuDropdownItem != null) {
+            prevSubMenuDropdownItem.css('display', 'none');
+            prevSubMenuDropdownItem = null
+        }
+
+        if (prevSubMenuDropdownUlItem != null) {
+            prevSubMenuDropdownUlItem.css('display', 'none');
+            prevSubMenuDropdownUlItem = null;
+        }
+    }
+})
+
+function addSubMenuDropdownActiveItem(nam1, nam2) {
+    if (prevMenuDropdownItem != null) {
+        prevMenuDropdownItem.removeClass('activeItem');
+    }
+    let obj = $('.' + nam1 + nam2);
+    obj.addClass("activeItem");
+    prevMenuDropdownItem = obj;
+
+    if (prevSubMenuDropdownItem != null) {
+        prevSubMenuDropdownItem.css('display', 'none');
+    }
+    obj = $('.' + nam1 + 'sub_' + nam2 + '_dropdown');
+    obj.css('display', 'block');
+    prevSubMenuDropdownItem = obj;
+
+    if (prevSubMenuDropdownUlItem != null) {
+        prevSubMenuDropdownUlItem.css('display', 'none');
+    }
+    obj = $("#" + nam2 + "SubList");
+    obj.css('display', 'flex').css('flex-direction', 'column');
+    prevSubMenuDropdownUlItem = obj;
+
+    justSet = true; // prevent document on click from clearing this.
 }

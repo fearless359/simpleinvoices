@@ -1,26 +1,30 @@
+@use "../abstracts/variables" as v;
+
+@use "../abstracts/mixins" as m;
+
 .si_filters {
     padding: 0;
     overflow: hidden;
 
     &_links {
         overflow: hidden;
-        @include borderBackgroundFilter;
+        @include m.borderBackgroundFilter;
 
         & a {
             float: right;
-            border-left: 1px solid $colorGreyLight-13;
+            border-left: 1px solid v.$colorGreyLight-13;
             margin: 0 auto;
             padding: .8rem 1rem;
             min-width: 3rem;
             text-align: center;
-            color: $colorGreyDark-7;
-            text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
-            0 1px 0 rgba($colorWhite, 1);
+            color: v.$colorGreyDark-7;
+            text-shadow: 0 -1px 0 rgba(v.$colorBlack, 0.2),
+            0 1px 0 rgba(v.$colorWhite, 1);
         }
 
         & a:hover {
-            color: $colorGreyDark-4;
-            background: $colorGreyLight-9;
+            color: v.$colorGreyDark-4;
+            background: v.$colorGreyLight-9;
         }
 
         & a.first {
@@ -29,10 +33,10 @@
         }
 
         & a.selected {
-            background: $colorGreyLight-4;
-            color: $colorGreyDark-6;
-            text-shadow: 0 -1px 1px rgba($colorWhite, 0.9),
-            0 1px 0 rgba($colorWhite, 1);
+            background: v.$colorGreyLight-4;
+            color: v.$colorGreyDark-6;
+            text-shadow: 0 -1px 1px rgba(v.$colorWhite, 0.9),
+            0 1px 0 rgba(v.$colorWhite, 1);
         }
 
         & img {
@@ -41,7 +45,7 @@
     }
 
     &_title {
-        color: $colorGreyDark-1;
+        color: v.$colorGreyDark-1;
         line-height: 3rem;
         margin: .5rem 1rem 0 1rem;
         vertical-align: top;

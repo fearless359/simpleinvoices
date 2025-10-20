@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as v;
+
 table {
     border-collapse: collapse;
 
@@ -27,7 +29,7 @@ table {
 
 tr {
     &.index_table {
-        background-color: $colorGreyLight-4;
+        background-color: v.$colorGreyLight-4;
         font-style: normal;
         font-weight: 400;
         text-decoration: none;
@@ -41,7 +43,7 @@ tr {
 
 th.details_screen,
 td.details_screen {
-    border-bottom: 1px dashed $colorGreyLight-12;
+    border-bottom: 1px dashed v.$colorGreyLight-12;
     line-height: 24px;
 }
 

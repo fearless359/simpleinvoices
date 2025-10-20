@@ -1,16 +1,12 @@
 .flex {
     &__container {
         display: flex;
-        align-items: flex-start;
-        height: 7rem;
-        padding: 1rem;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
         flex-wrap: wrap;
-        //justify-content: center;
-        //width: 90%;
-        //margin-left: 1rem;
+        align-items: flex-start;
         align-content: space-between;
+        row-gap: 1rem;
+        height: 8rem;
+        margin-bottom: 3rem;
 
         h3 {
             margin-top: 1.5rem;
@@ -21,18 +17,6 @@
             align-self: flex-end;
         }
     }
-
-    &__items {
-        //flex-grow: 10;
-        //min-height: 7rem;
-        //flex-wrap: wrap;
-        //align-self: flex-start;
-    }
-    //
-    //&__title {
-    //    //flex-grow: 1;
-    //    min-width: 13rem;
-    //}
 }
 
 .wrapper {

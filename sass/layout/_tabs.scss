@@ -1,62 +1,371 @@
+@use "../abstracts/variables" as v;
+
+/*
+
 #tabmenu {
-    min-height: 10rem;
-    padding-top: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    z-index: 1;
-    position: relative;
-    overflow: hidden;
+  min-height: 10rem;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
 
-    & .subnav {
-        & .active {
-            font-weight: bold;
-            -moz-border-radius: 9px;
-            -webkit-border-radius: 9px;
-            border-radius: 9px;
-            background-color: $activeTab;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            padding: 7px;
-        }
-
-        & a.active {
-            color: $colorWhite;
-        }
-
-        & .active_subpage {
-            background-color: $colorGreyDark-2;
-        }
-
-        & a.active_subpage {
-            color: $colorWhite;
-            margin-left: -19px;
-        }
+  & .subnav {
+    & .active {
+      font-weight: bold;
+      -moz-border-radius: 9px;
+      -webkit-border-radius: 9px;
+      border-radius: 9px;
+      background-color: v.$activeTab;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      padding: 7px;
     }
-}
 
-#si_tab_settings {
-    padding-right: 5px;
-    float: right;
+    & a.active {
+      color: v.$colorWhite;
+    }
+
+    & .active_subpage {
+      background-color: v.$colorGreyDark-2;
+    }
+
+    & a.active_subpage {
+      color: v.$colorWhite;
+      margin-left: -19px;
+    }
+  }
 }
 
 .subnav {
-    padding-top: 0;
+  padding-top: 0;
 
-    & li {
-        display: inline;
-        height: 2rem;
-        list-style-type: none;
-        padding-right: 1rem;
-    }
+  & li {
+    display: inline;
+    height: 2rem;
+    list-style-type: none;
+    padding-right: 1rem;
+  }
 }
+*/
 
 #tabs_customer {
-    border-bottom: 0 $colorGreyLight-6 solid;
+  border-bottom: 0 v.$colorGreyLight-6 solid;
 
-    & .anchors a {
-        background-color: $colorGreyLight-4;
-        margin-top: 2px;
-        padding-top: 6px;
-        padding-left: 0;
+  & .anchors a {
+    background-color: v.$colorGreyLight-4;
+    margin-top: 2px;
+    padding-top: 6px;
+    padding-left: 0;
+  }
+}
+
+.menu {
+  min-height: 10rem;
+  line-height: 3rem;
+  background: v.$colorGreyLight-5;
+  color: v.$colorBlack;
+  justify-content: space-around;
+
+  &__sub {
+    & li {
+      display: inline;
+      height: 2rem;
+      list-style-type: none;
+      padding-right: 1rem;
     }
+
+    & .active {
+      font-weight: bold;
+      -moz-border-radius: 9px;
+      -webkit-border-radius: 9px;
+      border-radius: 9px;
+      background-color: v.$activeTab;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      padding: 7px;
+    }
+
+    & a.active {
+      color: v.$colorWhite;
+    }
+
+    & .active_subpage {
+      background-color: v.$colorGreyDark-2;
+    }
+
+    & a.active_subpage {
+      color: v.$colorWhite;
+      margin-left: -19px;
+    }
+  }
+
+  & li {
+    padding: 15px;
+
+    & a {
+      color: v.$colorGreyDark-7;
+      text-decoration: none;
+    }
+
+    & a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__sub_home, &__sub_money, &__sub__people, &__sub_product, &__sub_setting {
+    & li {
+      display: inline;
+      height: 2rem;
+      list-style-type: none;
+      padding-right: 1rem;
+    }
+
+    & .active {
+      font-weight: bold;
+      -moz-border-radius: 9px;
+      -webkit-border-radius: 9px;
+      border-radius: 9px;
+      background-color: v.$activeTab;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      padding: 7px;
+    }
+
+    & a.active {
+      color: v.$colorWhite;
+    }
+
+    & .active_subpage {
+      background-color: v.$colorGreyDark-2;
+    }
+
+    & a.active_subpage {
+      color: v.$colorWhite;
+      margin-left: -19px;
+    }
+  }
+
+  &__mobile {
+    display: none;
+    cursor: pointer;
+  }
+
+  &__tab_setting {
+    float: right !important;
+    padding-right: 5px !important;
+  }
+}
+
+.activeItem {
+  background-color: v.$activeTab !important;
+}
+
+@media (max-width: 770px) {
+  .activeItem {
+    font-weight: bold;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    border-radius: 6px;
+    color: v.$colorWhite !important;
+    padding: 7px;
+    margin: 1vw !important;
+  }
+
+  .menu {
+    display: none;
+
+    &__tab_setting {
+      float: none !important;
+    }
+
+    &__mobile {
+      display: block !important;
+      list-style: none;
+      padding: 1rem;
+      color: v.$colorBlack;
+      text-align: left;
+
+      &_hash {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        margin-top: -5px;
+        margin-left: -10px;
+
+        &_line {
+          width: 100%;
+          height: 4px;
+          background-color: v.$colorBlack;
+          position: absolute;
+
+          &:nth-child(2) {
+            top: 50%;
+            margin-top: -2px;
+          }
+
+          &:nth-child(3) {
+            bottom: 0;
+          }
+        }
+      }
+
+      & ul {
+        display: none;
+
+        & li {
+          display: flex;
+          flex-direction: column;
+          height: 0;
+          list-style-type: none;
+          margin: 0 1rem 3rem 1rem;
+        }
+      }
+
+      &_hash:active &_dropdown, &_hash:hover &_dropdown {
+        display: block;
+
+        & ul {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 1rem;
+        }
+      }
+
+      &_dropdown {
+        display: none;
+        position: absolute;
+        min-width: 12rem;
+        min-height: 18rem;
+        background-color: v.$colorGreyLight-6;
+        box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, 0.5);
+        top: 1rem;
+        left: 1rem;
+        z-index: 1;
+
+        & a {
+          margin:1rem;
+          display: block;
+        }
+      }
+
+      &_sub {
+        &_home {
+          &:active &_dropdown, &:hover &_dropdown {
+            display: block;
+          }
+
+          &_dropdown {
+            display: none;
+            position: absolute;
+            background-color: v.$colorGreyLight-11;
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+            min-height: 1rem;
+            min-width: 12rem;
+            top: 8rem;
+            left: 12rem;
+            z-index: 2;
+          }
+
+          & #homeSubList {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+        }
+
+        &_money {
+          &:active &_dropdown, &:hover &_dropdown {
+            display: block;
+          }
+
+          &_dropdown {
+            display: none;
+            position: absolute;
+            background-color: v.$colorGreyLight-11;
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+            min-height: 20rem;
+            min-width: 22rem;
+            top: 11rem;
+            left: 12rem;
+            z-index: 2;
+          }
+
+          & #moneySubList {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+        }
+
+        &_people {
+          &:active &_dropdown, &:hover &_dropdown {
+            display: block;
+          }
+
+          &_dropdown {
+            display: none;
+            position: absolute;
+            background-color: v.$colorGreyLight-11;
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+            min-height: 1rem;
+            min-width: 12rem;
+            top: 14rem;
+            left: 12rem;
+            z-index: 2;
+          }
+
+          & #peopleSubList {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+        }
+
+        &_product {
+          &:active &_dropdown, &:hover &_dropdown {
+            display: block;
+          }
+
+          &_dropdown {
+            display: none;
+            position: absolute;
+            background-color: v.$colorGreyLight-11;
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+            min-height: 1rem;
+            min-width: 24rem;
+            top: 17rem;
+            left: 12rem;
+            z-index: 2;
+          }
+
+          & #productSubList {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+        }
+
+        &_setting {
+          &:active &_dropdown, &:hover &_dropdown {
+            display: block;
+          }
+
+          &_dropdown {
+            display: none;
+            position: absolute;
+            background-color: v.$colorGreyLight-11;
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+            min-height: 1rem;
+            min-width: 15rem;
+            top: 20.5rem;
+            left: 12rem;
+            z-index: 2;
+          }
+
+          & #settingSubList {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+        }
+      }
+    }
+  }
 }

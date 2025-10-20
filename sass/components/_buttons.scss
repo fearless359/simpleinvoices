@@ -1,17 +1,18 @@
+@use "../abstracts/variables" as v;
 
 button,
 .button {
     margin: 0 2rem 0 0;
     padding: 1rem 2rem;
-    border: 1px solid $colorGreyLight-11;
+    border: 1px solid v.$colorGreyLight-11;
     border-radius: 5rem;
     min-width: 3rem;
     text-align: center;
     font-size: 1.6rem;
-    color: $colorGreyDark-7;
-    background: $colorPrimary;
-    text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
-    0 1px 0 rgba($colorWhite, 1);
+    color: v.$colorGreyDark-7;
+    background: v.$colorPrimary;
+    text-shadow: 0 -1px 0 rgba(v.$colorBlack, 0.2),
+    0 1px 0 rgba(v.$colorWhite, 1);
 
     &.small {
         font-size: 1rem;
@@ -26,10 +27,10 @@ button,
     }
 
     &.selected {
-        background: $colorGreyLight-4;
-        color: $colorGreyDark-6;
-        text-shadow: 0 -1px 1px rgba($colorWhite, 0.9),
-        0 1px 0 rgba($colorWhite, 1);
+        background: v.$colorGreyLight-4;
+        color: v.$colorGreyDark-6;
+        text-shadow: 0 -1px 1px rgba(v.$colorWhite, 0.9),
+        0 1px 0 rgba(v.$colorWhite, 1);
     }
 
     & img {
@@ -37,8 +38,8 @@ button,
     }
 
     &:hover {
-        color: $colorGreyDark-4;
-        background: $colorGreyLight-11;
+        color: v.$colorGreyDark-4;
+        background: v.$colorGreyLight-11;
     }
 
 
@@ -51,19 +52,19 @@ button,
     }
 
     &.report {
-        border: 1px solid $colorGreyLight-16;
+        border: 1px solid v.$colorGreyLight-16;
     }
 }
 
 .btn {
     height: 4rem;
     width: 8rem;
-    border: 1px solid $colorGreyLight-13;
+    border: 1px solid v.$colorGreyLight-13;
     border-radius: 100px;
     min-width: 30px;
     text-align: center;
-    text-shadow: 0 -1px 0 rgba($colorBlack, 0.2),
-    0 1px 0 rgba($colorWhite, 1);
+    text-shadow: 0 -1px 0 rgba(v.$colorBlack, 0.2),
+    0 1px 0 rgba(v.$colorWhite, 1);
 
     &:link,
     &:visited {
@@ -82,12 +83,12 @@ button,
     &:focus {
         outline: none;
         transform: translateY(-0.1rem);
-        box-shadow: 0 0.5rem 1rem rgba($colorBlack, 0.2);
+        box-shadow: 0 0.5rem 1rem rgba(v.$colorBlack, 0.2);
     }
 
     &:hover {
         transform: translateY(-0.3rem);
-        box-shadow: 0 1rem 2rem rgba($colorBlack, 0.2);
+        box-shadow: 0 1rem 2rem rgba(v.$colorBlack, 0.2);
 
         &::after {
             transform: scaleX(1.4) scaleY(1.6);
@@ -96,11 +97,11 @@ button,
     }
 
     &--grey {
-        background-color: $colorGreyLight-13;
-        //color: $colorGreyDark-3;
+        background-color: v.$colorGreyLight-13;
+        //color: v.$colorGreyDark-3;
 
         &::after {
-            background-color: $colorWhite;
+            background-color: v.$colorWhite;
         }
     }
 
@@ -131,22 +132,22 @@ button,
         &:link,
         &:visited {
             font-size: 1.6rem;
-            color: $colorGreyDark-7;
+            color: v.$colorGreyDark-7;
             display: inline-block;
             text-decoration: none;
-            border-bottom: 1px solid $colorGreyDark-7;
+            border-bottom: 1px solid v.$colorGreyDark-7;
             padding: 3px;
         }
 
         &:hover {
-            background-color: $colorGreyDark-7;
+            background-color: v.$colorGreyDark-7;
             color: white;
-            box-shadow: 0 1rem 2rem rgba($colorBlack, 0.15);
+            box-shadow: 0 1rem 2rem rgba(v.$colorBlack, 0.15);
             transform: translateY(-2px);
         }
 
         &:active {
-            box-shadow: 0 0.5rem 1rem rgba($colorBlack, 0.15);
+            box-shadow: 0 0.5rem 1rem rgba(v.$colorBlack, 0.15);
             transform: translateY(0);
         }
     }

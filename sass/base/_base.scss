@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@use "../abstracts/variables" as v;
 
 * {
     box-sizing: border-box;
@@ -13,9 +14,9 @@ html {
 
 body {
     font-family: arial, verdana, helvetica, sans-serif;
-    background: $colorPrimary;
+    background: v.$colorPrimary;
     font-size: 1.6rem;
-    color: $colorGreyDark-7;
+    color: v.$colorGreyDark-7;
 }
 
 .bold {
@@ -40,7 +41,7 @@ p {
 }
 
 hr {
-    background-color: $colorBlack;
+    background-color: v.$colorBlack;
     height: 1px;
     border: 0;
     margin: 10px 0;
@@ -66,7 +67,7 @@ hr {
 pre {
     font-family: "Bitstream Vera Sans Mono", monaco, "Courier New", courier, monospace;
     background: inherit;
-    color: $colorGreyDark-7;
+    color: v.$colorGreyDark-7;
     font-size: 80%;
 }
 
@@ -75,9 +76,9 @@ pre {
     padding: 0;
     line-height: 240%;
     text-align: right;
-    background: $colorGreyDark-2;
-    color: $colorGreyLight-7;
-    border-bottom: 1px solid $colorGreyDark-4;
+    background: v.$colorGreyDark-2;
+    color: v.$colorGreyLight-7;
+    border-bottom: 1px solid v.$colorGreyDark-4;
     font-size: 1.1rem;
 
     & .si_wrap {
@@ -86,7 +87,7 @@ pre {
     }
 
     & a {
-        color: $headerLink;
+        color: v.$headerLink;
     }
 }
 
@@ -100,16 +101,16 @@ pre {
     border: none;
     border-radius: 0;
     z-index: 1;
-    -moz-box-shadow: 0 3px 5px $colorGreyLight-13;
-    -webkit-box-shadow: 0 3px 5px $colorGreyLight-13;
-    box-shadow: 0 3px 5px $colorGreyLight-13;
+    -moz-box-shadow: 0 3px 5px v.$colorGreyLight-13;
+    -webkit-box-shadow: 0 3px 5px v.$colorGreyLight-13;
+    box-shadow: 0 3px 5px v.$colorGreyLight-13;
     overflow: hidden;
 }
 
 .validation_alert {
     font-weight: 700;
-    color: $colorWhite;
-    background-color: $colorRed;
+    color: v.$colorWhite;
+    background-color: v.$colorRed;
     padding: 10px;
 }
 
@@ -122,5 +123,5 @@ img.action {
 }
 
 .error {
-    color: $colorRed;
+    color: v.$colorRed;
 }

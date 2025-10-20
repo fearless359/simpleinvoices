@@ -193,17 +193,17 @@ class Invoice
                           "<img src='images/view.png' class='action' alt='view' />" .
                       "</a>" .
                       $invEdit .
-                      "<a class='index_table' title='{$LANG['printPreviewTooltip']} {$row['index_id']}' target='_blank' " .
+                      "<a class='index_table desktopOnly' title='{$LANG['printPreviewTooltip']} {$row['index_id']}' target='_blank' " .
                          "href='index.php?module=export&amp;view=invoice&amp;id={$row['id']}&amp;format=print'>" .
                           "<img src='images/printer.png' class='action' alt='print' />" .
                       "</a>" .
-                      "<a class='invoice_export_dialog' id='btnShowSimple' title='{$LANG['exportUc']} {$row['index_id']}' " .
+                      "<a class='invoice_export_dialog desktopOnly' id='btnShowSimple' title='{$LANG['exportUc']} {$row['index_id']}' " .
                          "href='#' data-row-num='{$row['id']}' data-spreadsheet='{$config['exportSpreadsheet']}' " .
                          "data-wordprocessor='{$config['exportWordProcessor']}'>" .
                           "<img src='images/page_white_acrobat.png' class='action' alt='spreadsheet'/>" .
                       "</a>" .
                       $invPymt .
-                      "<a title='{$LANG['email']} {$row['index_id']}' class='index_table' " .
+                      "<a title='{$LANG['email']} {$row['index_id']}' class='index_table desktopOnly' " .
                          "href='index.php?module=invoices&amp;view=email&amp;stage=1&amp;id={$row['id']}'>" .
                           "<img src='images/mail-message-new.png' class='action' alt='email' />" .
                       "</a>";

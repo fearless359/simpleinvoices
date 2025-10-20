@@ -37,7 +37,17 @@ require_once 'vendor/autoload.php';
 require_once 'config/define.php';
 
 session_name(SESSION_NAME);
-session_start();
+
+// Check if the session is active
+if (session_status() === PHP_SESSION_NONE) {
+    // Start the session if it hasn't started
+    session_start();
+    $started = true;
+} else {
+    $started = false;
+}
+/*session_name(SESSION_NAME);
+session_start();*/
 
 Util::allowDirectAccess();
 
@@ -102,7 +112,7 @@ try {
 }
 
 $phpVersion = phpversion();
-Log::out("index.php - session_id[" . session_id() . "] PHP Version[$phpVersion]");
+Log::out("index.php - session_id[" . session_id() . "] PHP Version[$phpVersion] Session already started[$started]");
 
 $pattern = "/^8\.[1-9].*/";
 if (!preg_match($pattern, $phpVersion)) {
@@ -462,7 +472,6 @@ foreach ($extNames as $extName) {
 }
 
 // NOTE: Don't load the default file if we are processing an authentication "auth" request.
-// if ($extensionPostLoadJquery == 0 && $module != 'auth') {
 if ($module != 'auth' && !($module == 'payments' && $view == 'print')) {
     $smarty->$smartyOutput("include/js/post_load.jquery.ext.js.tpl");
 }

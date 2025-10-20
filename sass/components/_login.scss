@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as v;
+
 .loginForm {
     width: 50%;
     max-width: 60rem;
@@ -23,41 +25,41 @@
         flex-direction: column;
         margin: 0 auto;
         padding: 2rem 2rem 3rem 2rem;
-        border: 10px solid $colorGreyLight-14;
+        border: 10px solid v.$colorGreyLight-14;
         text-align: left;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        -moz-box-shadow: 6px 6px 15px rgba($colorBlack, 0.4);
-        -webkit-box-shadow: 6px 6px 15px rgba($colorBlack, 0.4);
-        box-shadow: 6px 6px 15px rgba($colorBlack, 0.4);
+        -moz-box-shadow: 6px 6px 15px rgba(v.$colorBlack, 0.4);
+        -webkit-box-shadow: 6px 6px 15px rgba(v.$colorBlack, 0.4);
+        box-shadow: 6px 6px 15px rgba(v.$colorBlack, 0.4);
         overflow: hidden;
-        background: $colorGreyLight-2;
+        background: v.$colorGreyLight-2;
         background: -moz-linear-gradient(top,
-            rgba($colorGreyLight-2, 1) 0%,
-            rgba($colorGreyLight-8, 1) 100%);
+            rgba(v.$colorGreyLight-2, 1) 0%,
+            rgba(v.$colorGreyLight-8, 1) 100%);
         background: -webkit-gradient(
                 linear,
                 left top,
                 left bottom,
-                color-stop(0%, rgba($colorGreyLight-2, 1)),
-                color-stop(100%, rgba($colorGreyLight-8, 1)));
+                color-stop(0%, rgba(v.$colorGreyLight-2, 1)),
+                color-stop(100%, rgba(v.$colorGreyLight-8, 1)));
         background: -webkit-linear-gradient(
                 top,
-                rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-8, 1) 100%);
+                rgba(v.$colorGreyLight-2, 1) 0%,
+                rgba(v.$colorGreyLight-8, 1) 100%);
         background: -o-linear-gradient(
                 top,
-                rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-8, 1) 100%);
+                rgba(v.$colorGreyLight-2, 1) 0%,
+                rgba(v.$colorGreyLight-8, 1) 100%);
         background: -ms-linear-gradient(
                 top,
-                rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-8, 1) 100%);
+                rgba(v.$colorGreyLight-2, 1) 0%,
+                rgba(v.$colorGreyLight-8, 1) 100%);
         background: linear-gradient(
                 to bottom,
-                rgba($colorGreyLight-2, 1) 0%,
-                rgba($colorGreyLight-8, 1) 100%);
+                rgba(v.$colorGreyLight-2, 1) 0%,
+                rgba(v.$colorGreyLight-8, 1) 100%);
     }
 
     &__header {
@@ -66,7 +68,7 @@
         flex-direction: row;
         font-weight: normal;
         padding: 6px 0;
-        color: $colorGreyDark-4;
+        color: v.$colorGreyDark-4;
         margin-bottom: 2rem;
     }
 
@@ -91,7 +93,7 @@
         color: inherit;
         padding: 1.5rem 2rem;
         border-radius: 2px;
-        background-color: rgba($colorWhite, 0.5);
+        background-color: rgba(v.$colorWhite, 0.5);
         border: none;
         border-bottom: 3px solid transparent;
         width: 90%;
@@ -107,11 +109,11 @@
     &__input:focus {
         outline: none;
         box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
-        border-bottom: 3px solid $colorGreyLight-13;
+        border-bottom: 3px solid v.$colorGreyLight-13;
     }
 
     &__input::placeholder {
-        color: $colorGreyDark-1;
+        color: v.$colorGreyDark-1;
     }
 
     &__label {

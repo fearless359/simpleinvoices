@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as v;
+
 dl,
 li,
 ol,
@@ -34,37 +36,37 @@ ul {
     }
 
     &__color-blue {
-        color: $colorDarkBlue;
+        color: v.$colorDarkBlue;
     }
 }
 
 .si_list {
     & table {
-        border: 1px solid $colorGreyLight-11;
+        border: 1px solid v.$colorGreyLight-11;
         border-top: none;
         width: 100%;
     }
 
     & thead th {
-        color: $colorGreyDark-4;
+        color: v.$colorGreyDark-4;
         font-weight: bold;
-        background: $colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
+        background: v.$colorGreyLight-1 url(../images/fhbg.gif) repeat-x bottom;
         padding: 6px 5px;
-        border-top: 1px solid $colorGreyLight-11;
+        border-top: 1px solid v.$colorGreyLight-11;
         border-bottom: 0;
         vertical-align: middle;
     }
 
     & td {
         padding: 3px 5px;
-        border-bottom: 1px solid $colorGreyLight-11;
+        border-bottom: 1px solid v.$colorGreyLight-11;
     }
 
     & tfoot th,
     & tfoot td {
         color: black;
         font-weight: bold;
-        background: $colorGreyLight-5 url(../images/fhbg.gif) repeat-x bottom;
+        background: v.$colorGreyLight-5 url(../images/fhbg.gif) repeat-x bottom;
         padding-top: 4px;
         padding-bottom: 4px;
     }

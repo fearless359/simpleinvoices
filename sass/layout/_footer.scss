@@ -1,12 +1,13 @@
+@use "../abstracts/variables" as v;
 
 #si_footer {
     font-size: 1rem;
     padding-top: 15px;
     padding-bottom: 15px;
-    color: $colorGreyDark-2;
+    color: v.$colorGreyDark-2;
 
     & a {
-        color: $colorGreyDark-7;
+        color: v.$colorGreyDark-7;
     }
 
     & .si_wrap {

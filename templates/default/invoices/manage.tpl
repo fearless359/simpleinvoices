@@ -52,9 +52,9 @@
         <thead>
         <tr>
             <th class="align__text-center">{$LANG.actions}</th>
-            <th class="align__text-center">{$LANG.invoiceUc}#</th>
-            <th>{$LANG.billerUc}</th>
+            <th class="align__text-center">{$LANG.invUc}#</th>
             <th>{$LANG.customerUc}</th>
+            <th class="desktopOnly">{$LANG.billerUc}</th>
             <th class="align__text-center">{$LANG.preferenceUc}</th>
             <th class="align__text-center">{$LANG.dateUc}</th>
             <th class="align__text-right">{$LANG.totalUc}</th>
@@ -90,14 +90,15 @@
                 "deferRender": true,
                 "responsive": true,
                 "columns": [
-                    {"data": "action"},
-                    {"data": "index_id"},
-                    {"data": "biller"},
+                    {"data": "action", "width": "12%"},
+                    {"data": "index_id", "width": "8%"},
                     {"data": "customer"},
-                    {"data": "preference"},
-                    {"data": "date"},
+                    {"data": "biller"},
+                    {"data": "preference", "width": "10%"},
+                    {"data": "date", "width": "10%"},
                     {
                         "data": "total",
+                        "width": "10%",
                         "render": function (data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
@@ -108,6 +109,7 @@
                     },
                     {
                         "data": "owing",
+                        "width": "10%",
                         "render": function (data, type, row) {
                             let formatter = new Intl.NumberFormat(row['locale'], {
                                 'style': 'currency',
@@ -116,18 +118,17 @@
                             return formatter.format(data);
                         }
                     },
-                    {"data": "aging"}
+                    {"data": "aging", "width": "6%"},
                 ],
                 "lengthMenu": [[15, 20, 25, 30, -1], [15, 20, 25, 30, "All"]],
                 "columnDefs": [
                     {
                         "targets": 0,
-                        "width": "12%",
                         "className": 'dt-body-center',
                         "orderable": false
                     },
-                    {"targets": [1, 4, 5, 7], "className": 'dt-body-center'},
-                    {"targets": 5, "width": "10%"},
+                    {"targets": [1, 4, 7], "className": 'dt-body-center'},
+                    {"targets": 5, "className": 'dt-body-center desktopOnly'},
                     {"targets": [6, 7, 8], "className": 'dt-body-right'}
                 ],
                 "colReorder": true

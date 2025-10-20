@@ -17,7 +17,17 @@
     <br/>
     <div id="left">
         <ul>
-            <li>2025-08-05 - <strong>2026.0.0</strong>
+            <li>2025-10-20 - <strong>2026.00.01</strong>
+                <ul>
+                    <li>Modified to support mobile menu scheme on small screen device.</li>
+                    <li>Invoice manage screen table modified for better mobile screen display and invoice display
+                        screen modified to allow print, email, etc. buttons for small screen.</li>
+                    <li>Updated readme.md file to reference only the master_2026 version since if supports updates
+                        from all previous versions.</li>
+                    <li>Modified to allow optional, leading minus signs on numeric fields.</li>
+                </ul>
+            </li>
+            <li>2025-08-05 - <strong>2026.00.00</strong>
                 <ul>
                     <li>Added logic to support printing unapplied prepayment (warehoused) amount on invoices.
                         Two new language items added to use on invoice, <strong>reserveUc</strong> and
