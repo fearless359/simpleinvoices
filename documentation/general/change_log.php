@@ -17,6 +17,11 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2025-10-20 - <strong>2025.00.02</strong>
+                <ul>
+                    <li>Correct misnumbered data table setting in the invoices management template.</li>
+                </ul>
+            </li>
             <li>2025-10-20 - <strong>2026.00.01</strong>
                 <ul>
                     <li>Modified to support mobile menu scheme on small screen device.</li>

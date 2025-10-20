@@ -127,8 +127,8 @@
                         "className": 'dt-body-center',
                         "orderable": false
                     },
-                    {"targets": [1, 4, 7], "className": 'dt-body-center'},
-                    {"targets": 5, "className": 'dt-body-center desktopOnly'},
+                    {"targets": [1, 4, 5], "className": 'dt-body-center'},
+                    {"targets": 3, "className": 'desktopOnly'},
                     {"targets": [6, 7, 8], "className": 'dt-body-right'}
                 ],
                 "colReorder": true
