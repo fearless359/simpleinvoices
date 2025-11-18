@@ -47,7 +47,7 @@
         });
         {/literal}
     </script>
-    <div class="si_help_div">
+    <div class="si__help-div">
         <a class="tooltip" href="#" title="{$LANG.helpWhatAreCustomFields}">
             {$LANG.whatAreCustomFields}
             <img src="{$helpImagePath}help-small.png" alt=""/>

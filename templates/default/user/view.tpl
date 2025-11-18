@@ -3,6 +3,7 @@
  *      User details template
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface. 
  * 	    20210701 by Rich Rowley to convert to grid layout
  *
  *  License:
@@ -11,30 +12,30 @@
  *  Website:
  *      https://simpleinvoices.group
  *}
-<div class="grid__area">
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.username}:</div>
-        <div class="cols__4-span-5">{$user.username|htmlSafe}</div>
+<div class="flex__area">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.username}:</div>
+        <div>{$user.username|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.password}:</div>
-        <div class="cols__4-span-5">**********</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.password}:</div>
+        <div>**********</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.role}:</div>
-        <div class="cols__4-span-5">{$user.role_name|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.role}:</div>
+        <div>{$user.role_name|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.email}:</div>
-        <div class="cols__4-span-5">{$user.email|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.email}:</div>
+        <div>{$user.email|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
-        <div class="cols__4-span-5">{$user.enabled_text|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.enabled}:</div>
+        <div>{$user.enabled_text|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.userId}:</div>
-        <div class="cols__4-span-5">{$user_id_desc|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.userId}:</div>
+        <div>{$user_id_desc|htmlSafe}</div>
     </div>
 </div>
 <div class="align__text-center margin__top-3 margin__bottom-2">

@@ -3,6 +3,7 @@
  *      Product Attribute Values add template
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  * 	    20210630 by Rich Rowley to convert to grid layout
  *
  *  License:
@@ -15,23 +16,23 @@
     {include file="templates/default/product_attribute_values/save.tpl"}
 {else}
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=product_attribute_values&amp;view=create">
-        <div class="grid__area">
-            <div class="grid__container grid__head-10">
-                <label for="attributeId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.attribute}:</label>
-                <select name="attribute_id" id="attributeId" class="cols__5-span-2">
+        <div class="flex__area">
+            <div class="flex__container flex__start">
+                <label for="attributeId" class="margin__right-1">{$LANG.attribute}:</label>
+                <select name="attribute_id" id="attributeId">
                     {foreach $product_attributes as $product_attribute}
                         <option value="{$product_attribute.id}">{$product_attribute.name}</option>
                     {/foreach}
                 </select>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="nameId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.valueUc}:</label>
-                <input type="text" name="value" id="nameId" class="cols__5-span-2" required
+            <div class="flex__container flex__start">
+                <label for="nameId" class="margin__right-1">{$LANG.valueUc}:</label>
+                <input type="text" name="value" id="nameId" required
                        {if isset($smarty.post.value)}value="{$smarty.post.value}"{/if} size="25"/>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="enabledId" class="cols__4-span-1 align__text-right margin__right-1">{$LANG.enabled}:</label>
-                {html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled selected=1}
+            <div class="flex__container flex__start">
+                <label for="enabledId" class="margin__right-1">{$LANG.enabled}:</label>
+                {html_options name=enabled id=enabledId options=$enabled selected=1}
             </div>
         </div>
         <div class="align__text-center margin__top-2">

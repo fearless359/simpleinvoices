@@ -3,6 +3,7 @@
  *      Product Attribute Values details template
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  * 	    20210630 by Rich Rowley to convert to grid layout
  *
  *  License:
@@ -11,18 +12,18 @@
  *  Website:
  *      https://simpleinvoices.group
  *}
-<div class="grid__area">
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold align__text-right margin__right-1">{$LANG.attribute}:</div>
-        <div class="cols__6-span-2">{$product_attribute_values.name|htmlSafe}</div>
+<div class="flex__area">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.attribute}:</div>
+        <div>{$product_attribute_values.name|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold align__text-right margin__right-1">{$LANG.valueUc}:</div>
-        <div class="cols__6-span-1">{$product_attribute_values.value|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.valueUc}:</div>
+        <div>{$product_attribute_values.value|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
-        <div class="cols__6-span-1">{$product_attribute_values.enabled_text}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.enabled}:</div>
+        <div>{$product_attribute_values.enabled_text}</div>
     </div>
 </div>
 <div class="align__text-center margin__top-3 margin__bottom-3">

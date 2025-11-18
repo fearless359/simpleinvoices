@@ -29,13 +29,15 @@ if ($databaseBuilt && !$databasePopulated) {
                     '<strong>demo</strong>, and the password, <strong>demo</strong>. After which ' .
                     'you should add a new user for yourself and disable the <strong>demo</strong> user.</p>' .
             '</div>' .
-            '<div class="align__text-center margin__top-3 margin__bottom-2">' .
-                '<a href="index.php" class="button positive">' .
-                    '<img src="../../images/tick.png" alt="" />Start using SimpleInvoices' .
-                '</a>' .
-                '<a href="index.php?module=install&amp;view=sample_data" class="button positive">' .
-                    '<img src="../../images/tick.png" alt="" />Install Sample Data' .
-                '</a>' .
+            '<div class="flex__area">' .
+                '<div class="flex__container">' .
+                    '<a href="index.php" class="button positive">' .
+                        '<img src="../../images/tick.png" alt="" />Start using SimpleInvoices' .
+                    '</a>' .
+                    '<a href="index.php?module=install&amp;view=sample_data" class="button positive">' .
+                        '<img src="../../images/tick.png" alt="" />Install Sample Data' .
+                    '</a>' .
+                '</div>' .
             '</div>';
     } catch (PdoDbException $pde) {
         error_log("essential.php: " . $pde->getMessage());

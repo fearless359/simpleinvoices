@@ -7,7 +7,7 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 use IntlDateFormatter;
 use NumberFormatter;
-use Smarty;
+use Smarty\Smarty;
 
 /**
  * Class Util

@@ -2,7 +2,8 @@
  *  Script: manage.tpl
  *      Manage invoices template
  *
- *  Last modified:
+ *  Last Modified:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  *      20210624 by Richard Rowley to add cell-border class to table tag.
  *
  *  Website:
@@ -12,10 +13,12 @@
  *      GPL v3 or above
  *}
 {if $number_of_invoices == 0}
-    <div class="align__text-center margin__bottom-2">
-        <a href="index.php?module=invoices&amp;view=itemized" class="">
-            <button><img src="images/add.png" alt=""/>{$LANG.newInvoice}</button>
-        </a>
+    <div class="flex__area">
+        <div class="flex__container">
+            <a href="index.php?module=invoices&amp;view=itemized" class="">
+                <button><img src="images/add.png" alt=""/>{$LANG.newInvoice}</button>
+            </a>
+        </div>
     </div>
     <div class="si_message">{$LANG.noInvoices}</div>
 {else}
@@ -26,26 +29,26 @@
             </a>
         </div>
         <div class="cols__6-span-5 grid__justify-content-end">
-                <span class='cols__1-span-1 si_filters_title'>{$LANG.filters}:</span>
-                <span class='cols__2-span-5 si_filters_links'>
-                    {if $invoiceDisplayDays > 0}
-                        <a href="index.php?module=invoices&amp;view=manage"
-                           class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">{$LANG.lastUc} {$invoiceDisplayDays} {$LANG.daysUc}</a>
-                        <a href="index.php?module=invoices&amp;view=manage&amp;showAll=true"
-                           class="first{if !isset($smarty.get.having) || empty($smarty.get.having)}{/if}">{$LANG.allUc}</a>
-                    {else}
-                        <a href="index.php?module=invoices&amp;view=manage&amp;showAll=true"
-                           class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">{$LANG.allUc}</a>
-                    {/if}
-                    <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed"
-                       class="{if isset($smarty.get.having) && $smarty.get.having=='money_owed'}selected{/if}">{$LANG.due}</a>
-                    <a href="index.php?module=invoices&amp;view=manage&amp;having=paid"
-                       class="{if isset($smarty.get.having) && $smarty.get.having=='paid'}selected{/if}">{$LANG.paidUc}</a>
-                    <a href="index.php?module=invoices&amp;view=manage&amp;having=draft"
-                       class="{if isset($smarty.get.having) && $smarty.get.having=='draft'}selected{/if}">{$LANG.draft}</a>
-                    <a href="index.php?module=invoices&amp;view=manage&amp;having=real"
-                       class="{if isset($smarty.get.having) && $smarty.get.having=='real'}selected{/if}">{$LANG.real}</a>
-                </span>
+            <span class='cols__1-span-1 si_filters_title'>{$LANG.filters}:</span>
+            <span class='cols__2-span-5 si_filters_links'>
+                {if $invoiceDisplayDays > 0}
+                    <a href="index.php?module=invoices&amp;view=manage"
+                       class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">{$LANG.lastUc} {$invoiceDisplayDays} {$LANG.daysUc}</a>
+                    <a href="index.php?module=invoices&amp;view=manage&amp;showAll=true"
+                       class="first{if !isset($smarty.get.having) || empty($smarty.get.having)}{/if}">{$LANG.allUc}</a>
+                {else}
+                    <a href="index.php?module=invoices&amp;view=manage&amp;showAll=true"
+                       class="first{if !isset($smarty.get.having) || empty($smarty.get.having)} selected{/if}">{$LANG.allUc}</a>
+                {/if}
+                <a href="index.php?module=invoices&amp;view=manage&amp;having=money_owed"
+                   class="{if isset($smarty.get.having) && $smarty.get.having=='money_owed'}selected{/if}">{$LANG.due}</a>
+                <a href="index.php?module=invoices&amp;view=manage&amp;having=paid"
+                   class="{if isset($smarty.get.having) && $smarty.get.having=='paid'}selected{/if}">{$LANG.paidUc}</a>
+                <a href="index.php?module=invoices&amp;view=manage&amp;having=draft"
+                   class="{if isset($smarty.get.having) && $smarty.get.having=='draft'}selected{/if}">{$LANG.draft}</a>
+                <a href="index.php?module=invoices&amp;view=manage&amp;having=real"
+                   class="{if isset($smarty.get.having) && $smarty.get.having=='real'}selected{/if}">{$LANG.real}</a>
+            </span>
         </div>
     </div>
     <table id="si-data-table" class="display responsive compact cell-border">

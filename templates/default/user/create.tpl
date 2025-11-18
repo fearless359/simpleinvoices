@@ -6,6 +6,7 @@
  *      Justin Kelly, Nicolas Ruflin, Soif, Rich Rowley
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  * 	    20210701 by Rich Rowley to convert to grid layout
  *
  *  License:
@@ -17,37 +18,44 @@
 {if isset($smarty.post.username) && isset($smarty.post.submit)}
     {include file="templates/default/user/save.tpl"}
 {else}
-    <div class="grid__container grid__head-10 margin__bottom-2">
-        <h3 class="cols__3-span-6 align__text-center">{$LANG.addNewUser}</h3>
+    <div class="flex__area">
+        <div class="margin__bottom-2">
+            <h3 class="align__text-center">{$LANG.addNewUser}</h3>
+        </div>
     </div>
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=user&amp;view=create">
-        <div class="grid__area">
-            <div class="grid__container grid__head-10">
-                <label for="username" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.username}:
-                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpUsername}" src="{$helpImagePath}required-small.png" alt=""/>
+        <div class="flex__area">
+            <div class="flex__container flex__start">
+                <label for="username" class="margin__right-1">{$LANG.username}:
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpUsername}"
+                         src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="text" name="username" id="username" class="cols__4-span-5" required size="35" tabindex="10"
-                       pattern="{$usernamePattern}" placeholder="{$PLACEHOLDERS["name"]}" title="See help for details." autocomplete="off" autofocus/>
+                <input type="text" name="username" id="username" required size="35" tabindex="10"
+                       pattern="{$usernamePattern}" placeholder="{$PLACEHOLDERS["name"]}" title="See help for details."
+                       autocomplete="off" autofocus/>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="passwordId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.newPassword}:
-                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpNewPassword}" src="{$helpImagePath}required-small.png" alt=""/>
+            <div class="flex__container flex__start">
+                <label for="passwordId" class="margin__right-1">{$LANG.newPassword}:
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpNewPassword}"
+                         src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
                 <input type="password" name="password" id="passwordId" class="cols__4-span-5" required size="20"
                        pattern="{$pwd_pattern}" title="See help for details." tabindex="20"/>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="passwordConfirmId" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.confirmPassword}:
-                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpConfirmPassword}" src="{$helpImagePath}required-small.png" alt=""/>
+            <div class="flex__container flex__start">
+                <label for="passwordConfirmId" class="margin__right-1">{$LANG.confirmPassword}:
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpConfirmPassword}"
+                         src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
                 <input type="password" name="confirm_password" id="passwordConfirmId" size="20" tabindex="30"
-                       class="cols__4-span-5" required pattern="{$pwd_pattern}" title="See help for details"/>
+                       required pattern="{$pwd_pattern}" title="See help for details"/>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="email" class="cols__1-span-3 align__text-right margin__right-1">{$LANG.email}:
-                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailAddress}" src="{$helpImagePath}required-small.png" alt=""/>
+            <div class="flex__container flex__start">
+                <label for="email" class="margin__right-1">{$LANG.email}:
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailAddress}"
+                         src="{$helpImagePath}required-small.png" alt=""/>
                 </label>
-                <input type="email" name="email" id="email" class="cols__4-span-5" required size="35" tabindex="40"
+                <input type="email" name="email" id="email" required size="35" tabindex="40"
                        title="See help for details" placeholder="{$PLACEHOLDERS.email}"/>
             </div>
         </div>

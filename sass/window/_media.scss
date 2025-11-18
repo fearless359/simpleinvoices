@@ -1,23 +1,17 @@
-@media (max-width: 770px) {
+@use "../abstracts/variables" as v;
+
+.mobileOnly {
+  display: none; /* Hide on desktop */
+}
+
+.desktopOnly {
+}
+
+@media (max-width: v.$mediaMaxWidth) {
   .mobileOnly {
-    /*
-    display: block; !* Show on mobile *!
-    */
   }
 
   .desktopOnly {
     display: none; /* Hide on mobile */
-  }
-}
-
-@media (min-width: 771px) {
-  .mobileOnly {
-    display: none; /* Hide on desktop */
-  }
-
-  .desktopOnly {
-    /*
-    display: block; !* Show on desktop *!
-    */
   }
 }

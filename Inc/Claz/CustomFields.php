@@ -211,12 +211,12 @@ class CustomFields
 
         $writeMode = $permission == 'write'; // if false then in read mode.
 
-        $cssClassHead = "grid__container grid__head-10";
-        $cssClassLabel = "cols__1-span-2 align__text-right margin__right-1";
+        $cssClassHead = "flex__container flex__start";
+        $cssClassLabel = "margin__right-1";
         if (!$writeMode) {
             $cssClassLabel .= " bold";
         }
-        $cssClassField = "cols__3-span-8";
+        $cssClassField = "";
         $separator = ":";
 
         // Get the custom field number (last character of the name).

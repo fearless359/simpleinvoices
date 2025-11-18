@@ -1,107 +1,243 @@
 @use "../abstracts/variables" as v;
 
 .grid {
-    &__area {
-        width: 90%;
-        margin: 0 auto;
+  &__area {
+    width: 80%;
+    margin: 0 auto;
 
-        &-totals {
-            width: 70%;
-            margin: 0 auto;
+    &-totals {
+      width: 80%;
+      margin: 0 auto;
 
-            & h4 {
-                text-align: center;
-                padding: 0;
-                margin: 0 0 7px 0;
-                color: v.$colorGreyDark-2;
-                font-weight: bold;
-            }
+      & h4 {
+        text-align: center;
+        padding: 0;
+        margin: 0 0 7px 0;
+        color: v.$colorGreyDark-2;
+        font-weight: bold;
+      }
 
-            & h5 {
-                font-weight: bold;
-                padding: 0 0 8px 0;
-                margin: 0;
-            }
+      & h5 {
+        font-weight: bold;
+        padding: 0 0 8px 0;
+        margin: 0;
+      }
 
-            &--financial {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
+      &--financial {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
 
 
-                &--area {
-                    border: 1px solid v.$colorGreyLight-13;
-                    margin-right: 10px;
-                }
-
-                &--invoice {
-                    &-box1 {
-                        display: grid;
-                        grid-template-columns: repeat(4, 1fr);
-                    }
-
-                    &-box2 {
-                        display: grid;
-                        grid-template-columns: repeat(3, 1fr);
-                    }
-                }
-            }
+        &--area {
+          border: 1px solid v.$colorGreyLight-13;
+          margin-right: 10px;
         }
-    }
 
-    &__report {
-        &-menu-areas {
+        &--invoice {
+          &-box1 {
             display: grid;
-            grid-template-columns: 13rem repeat(3, auto);
-            grid-template-rows: 5rem;
-            grid-template-areas:
+            grid-template-columns: repeat(4, 1fr);
+          }
+
+          &-box2 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+      }
+    }
+  }
+
+  &__report {
+    &-menu-areas {
+      display: grid;
+      grid-template-columns: 13rem repeat(3, auto);
+      grid-template-rows: 5rem;
+      grid-template-areas:
                 "lbl one  two  three"
                 "lbl four five six";
-            grid-auto-columns: max-content 20rem;
-            margin-right: 0;
-        }
-
-        &-lbl {
-            grid-area: lbl;
-        }
-
-        &-itm {
-            &-1 { grid-area: one; }
-            &-2 { grid-area: two; }
-            &-3 { grid-area: three; }
-            &-4 { grid-area: four; }
-            &-5 { grid-area: five; }
-            &-6 { grid-area: six; }
-        }
+      grid-auto-columns: max-content 20rem;
+      margin-right: 0;
     }
 
-    &__container {
-        display: grid;
-        margin: 0 auto 1rem auto;
-        overflow: hidden;
+    &-lbl {
+      grid-area: lbl;
     }
 
-    &__head {
-        // @formatter:off
+    &-itm {
+      &-1 {
+        grid-area: one;
+      }
+
+      &-2 {
+        grid-area: two;
+      }
+
+      &-3 {
+        grid-area: three;
+      }
+
+      &-4 {
+        grid-area: four;
+      }
+
+      &-5 {
+        grid-area: five;
+      }
+
+      &-6 {
+        grid-area: six;
+      }
+    }
+  }
+
+  &__container {
+    display: grid;
+    margin: 0 auto 1rem auto;
+    overflow: hidden;
+  }
+
+  &__head {
+    // @formatter:off
         &-6 { grid-template-columns: repeat(6, 16.66%); }
         &-10 { grid-template-columns: repeat(10, 10%); }
         &-12 { grid-template-columns: repeat(12, 8.33%); }
 
         &-checkbox { grid-template-columns: 5% 95% }
         // @formatter:on
+  }
+
+  &__justify {
+    &-content {
+      &-end {
+        display: grid;
+        justify-content: end;
+      }
+    }
+  }
+}
+
+@media (max-width: v.$mediaMaxWidth) {
+  .grid {
+    &__area {
+      width: 90%;
+      margin: 0 auto;
+
+      &-totals {
+        width: 90%;
+        margin: 0 auto;
+
+        & h4 {
+          text-align: center;
+          padding: 0;
+          margin: 0 0 7px 0;
+          color: v.$colorGreyDark-2;
+          font-weight: bold;
+        }
+
+        & h5 {
+          font-weight: bold;
+          padding: 0 0 8px 0;
+          margin: 0;
+        }
+
+        &--financial {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+
+
+          &--area {
+            border: 1px solid v.$colorGreyLight-13;
+            margin-right: 10px;
+          }
+
+          &--invoice {
+            &-box1 {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+            }
+
+            &-box2 {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+            }
+          }
+        }
+      }
+    }
+
+    &__report {
+      &-menu-areas {
+        display: grid;
+        grid-template-columns: 13rem repeat(3, auto);
+        grid-template-rows: 5rem;
+        grid-template-areas:
+                "lbl one  two  three"
+                "lbl four five six";
+        grid-auto-columns: max-content 20rem;
+        margin-right: 0;
+      }
+
+      &-lbl {
+        grid-area: lbl;
+      }
+
+      &-itm {
+        &-1 {
+          grid-area: one;
+        }
+
+        &-2 {
+          grid-area: two;
+        }
+
+        &-3 {
+          grid-area: three;
+        }
+
+        &-4 {
+          grid-area: four;
+        }
+
+        &-5 {
+          grid-area: five;
+        }
+
+        &-6 {
+          grid-area: six;
+        }
+      }
+    }
+
+    &__container {
+      display: grid;
+      margin: 0 auto 1rem auto;
+      overflow: hidden;
+    }
+
+    &__head {
+      // @formatter:off
+            &-6 { grid-template-columns: repeat(6, 16.66%); }
+            &-10 { grid-template-columns: repeat(10, 10%); }
+            &-12 { grid-template-columns: repeat(12, 8.33%); }
+
+            &-checkbox { grid-template-columns: 5% 95% }
+            // @formatter:on
     }
 
     &__justify {
-        &-content {
-            &-end {
-                display: grid;
-                justify-content: end;
-            }
+      &-content {
+        &-end {
+          display: grid;
+          justify-content: end;
         }
+      }
     }
+  }
 }
 
 .cols {
-    // @formatter:off
+  // @formatter:off
     &__1-span {
         &-1 { grid-column: 1 / span 1; }
         &-2 { grid-column: 1 / span 2; }

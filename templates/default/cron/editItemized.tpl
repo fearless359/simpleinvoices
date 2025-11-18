@@ -1,10 +1,12 @@
 <form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=saveInvoiceItems">
-    <div class='grid__area'>
-        <div class="grid__container grid__head-10">
-            <div class="cols__1-span-2 bold align__text-right margin__right-1">{$LANG.cronUc} {$LANG.idUc}:</div>
-            <div class="cols__3-span-2">{$cron.id|htmlSafe}</div>
-            <div class="cols__6-span-3 bold align__text-right margin__right-1">{$LANG.toUc} {$LANG.beUc} {$LANG.copiedUc} {$LANG.from} {$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}:</div>
-            <div class="cols__9-span-1">{$invoice.index_id|htmlSafe}</div>
+    <div class='flex__area'>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.cronUc} {$LANG.idUc}:</div>
+            <div>{$cron.id|htmlSafe}</div>
+        </div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.toUc} {$LANG.beUc} {$LANG.copiedUc} {$LANG.from} {$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}:</div>
+            <div>{$invoice.index_id|htmlSafe}</div>
         </div>
         <br/>
         {include file="$path/editItemizedInvoiceItems.tpl"}

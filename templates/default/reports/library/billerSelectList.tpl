@@ -4,7 +4,6 @@
         {if !isset($showAllReports) || $showAllReports == '1'}
             <option {if empty($billerId)}selected{/if} value=0>{$LANG.allUc}&nbsp;{$LANG.billersUc}</option>
         {/if}
-        {var_dump($billers)}
         {foreach $billers as $biller}
             <option {if $biller.id == $billerId}selected{/if} value={$biller.id}>{$biller.name}</option>
         {/foreach}

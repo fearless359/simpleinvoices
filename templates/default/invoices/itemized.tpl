@@ -1,3 +1,16 @@
+{*
+ * Script: details.tpl
+ *      Invoice entry template
+ *
+ *  Last modified:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
+ *
+ * License:
+ *      GPL v3 or above
+ *
+ * Website:
+ *      https://simpleinvoices.group
+ *}
 <div class="delay__display">
     {include file="$path/invoiceTypeButtons.tpl" }
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=invoices&amp;view=save">
@@ -7,7 +20,7 @@
             </div>
             {include file="$path/../initialSetupButtons.tpl"}
         {else}
-            <div class="grid__area">
+            <div class="flex__area">
                 {include file="$path/invoiceBillerCustFields.tpl" }
                 {include file="$path/itemizedItemtable.tpl" }
                 {include file="$path/invoiceItemsShowHide.tpl" }
@@ -23,7 +36,7 @@
                         <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
                     </a>
                 </div>
-                <div class="si_help_div">
+                <div class="si__help-div">
                     <a class="tooltip" title="{$LANG.helpInvoiceCustomFields}">
                         <img src="{$helpImagePath}help-small.png" alt="{$LANG.wantMoreFields}"/>{$LANG.wantMoreFields}
                     </a>

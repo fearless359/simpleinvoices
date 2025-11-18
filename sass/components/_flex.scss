@@ -1,25 +1,91 @@
+@use "../abstracts/variables" as v;
+
 .flex {
-    &__container {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        align-content: space-between;
-        row-gap: 1rem;
-        height: 8rem;
-        margin-bottom: 3rem;
+  &__area {
+    width: 80%;
+    margin: 0 auto;
+  }
 
-        h3 {
-            margin-top: 1.5rem;
-            min-width: 13rem;
-        }
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: space-between;
+    justify-content: center;
+    row-gap: 1rem;
+    margin-bottom: 1rem;
 
-        a {
-            align-self: flex-end;
-        }
+    h3 {
+      margin-top: 1rem;
+      min-width: 13rem;
     }
+
+    a {
+      align-self: flex-end;
+    }
+  }
+
+  &__start {
+    justify-content: flex-start;
+  }
+
+  &__end {
+    justify-content: flex-end;
+  }
+
+  &__space-between {
+    justify-content: space-between;
+  }
+
+  &__gap {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: v.$mediaMaxWidth) {
+  .flex {
+    &__area {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
 }
 
 .wrapper {
-    width: 90%;
-    margin: 0 auto;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.responsive__form {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  margin: auto;
+
+  &-group {
+    margin-bottom: 1rem;
+  }
+
+  input, select {
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: v.$mediaMaxWidth) {
+  .responsive__form {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    input, select {
+      width: calc(50% - 10px);
+      margin-right: 10px;
+    }
+
+    input:last-child, select:last-child {
+      margin-right: 0;
+    }
+  }
 }

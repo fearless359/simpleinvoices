@@ -24,17 +24,17 @@
     {if isset($message)}
         <h3 class="align__text-center margin__bottom-2 si_message_warning">{$message}</h3>
     {/if}
-    <div class="grid__area">
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.paymentId}:</div>
-            <div class="cols__5-span-2">{$payment.id|htmlSafe}</div>
+    <div class="flex__area">
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.paymentId}:</div>
+            <div>{$payment.id|htmlSafe}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.invoiceId}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.invoiceId}:</div>
             <div class="cols__5-span-2"><a href='index.php?module=invoices&amp;view=quickView&amp;id={$payment.ac_inv_id|htmlSafe}'>{$payment.iv_index_id|htmlSafe}</a></div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.amountUc}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.amountUc}:</div>
             <div class="cols__5-span-4">{$payment.ac_amount|utilNumber:$payment.precision:$payment.locale}&nbsp;
             {if $payment.warehouse_amount != 0}
                 {if $payment.warehouse_amount > 0}
@@ -45,35 +45,35 @@
             {/if}
             </div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.dateUc}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.dateUc}:</div>
             <div class="cols__5-span-2">{$payment.ac_date|date_format:"%Y-%m-%d"}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.billerUc}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.billerUc}:</div>
             <div class="cols__5-span-4">{$payment.bname|htmlSafe}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.customerUc}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.customerUc}:</div>
             <div class="cols__5-span-4">{$payment.cname|htmlSafe}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.paymentType}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.paymentType}:</div>
             <div class="cols__5-span-2">{$paymentType.pt_description|htmlSafe}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.checkNumberUc}:</div>
-            <div class="cols__5-span-2">{if strtolower($paymentType.pt_description)=="check"}{$payment.ac_check_number|htmlSafe}{/if}</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.checkNumberUc}:</div>
+            <div class="cols__5-span-2">{if $paymentType.pt_description|lower=="check"}{$payment.ac_check_number|htmlSafe}{/if}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.onlinePaymentId}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.onlinePaymentId}:</div>
             <div class="cols__5-span-2">{if isset($payment.online_payment)}{$payment.online_payment_id|htmlSafe}{/if}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-2 bold">{$LANG.notes}:</div>
+        <div class="flex__container flex__start">
+            <div class="bold">{$LANG.notes}:</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__3-span-6">{$payment.ac_notes|outHtml}</div>
+        <div class="flex__container flex__start">
+            <div>{$payment.ac_notes|outHtml}</div>
         </div>
         <div class="align__text-center margin__top-2">
             <a href="index.php?module=payments&amp;view=manage" class="button negative">

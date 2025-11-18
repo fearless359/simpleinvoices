@@ -8,56 +8,56 @@
  * License:
  *   GPL v3 or above
 *}
-<div class="grid__area">
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.amountUc}:</div>
-        <div class="cols__5-span-5">{$expense.amount|utilCurrency:$expense.locale:$expense.currency_code}</div>
+<div class="flex__area">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.amountUc}:</div>
+        <div>{$expense.amount|utilCurrency:$expense.locale:$expense.currency_code}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.tax}:</div>
-        <div class="cols__5-span-5">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.tax}:</div>
+        <div>
             {foreach $detail.expense_tax_grouped as $tax}
                 {$tax.tax_name}: {$tax.tax_amount|utilCurrency:$expense.locale:$expense.currency_code}
             {/foreach}
         </div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.totalUc}:</div>
-        <div class="cols__5-span-5">{$detail.expense_tax_total|utilCurrency:$expense.locale:$expense.currency_code}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.totalUc}:</div>
+        <div>{$detail.expense_tax_total|utilCurrency:$expense.locale:$expense.currency_code}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.expenseAccount}:</div>
-        <div class="cols__5-span-5">{$expense.ea_name}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.expenseAccount}:</div>
+        <div>{$expense.ea_name}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.dateUc}:</div>
-        <div class="cols__5-span-5">{$expense.date|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.dateUc}:</div>
+        <div>{$expense.date|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.billerUc}:</div>
-        <div class="cols__5-span-5">{if isset($expense.b_name)}{$expense.b_name}{/if}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.billerUc}:</div>
+        <div>{if isset($expense.b_name)}{$expense.b_name}{/if}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.customerUc}:</div>
-        <div class="cols__5-span-5">{if isset($expense.c_name)}{$expense.c_name}{/if}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.customerUc}:</div>
+        <div>{if isset($expense.c_name)}{$expense.c_name}{/if}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.invoiceUc}:</div>
-        <div class="cols__5-span-5">{if isset($detail.invoice.index_name)}{$detail.invoice.index_name}{/if}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.invoiceUc}:</div>
+        <div>{if isset($detail.invoice.index_name)}{$detail.invoice.index_name}{/if}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.productUc}:</div>
-        <div class="cols__5-span-5">{if isset($expense.p_desc)}{$expense.p_desc}{/if}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.productUc}:</div>
+        <div>{if isset($expense.p_desc)}{$expense.p_desc}{/if}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold align__text-right margin__right-1">{$LANG.status}:</div>
-        <div class="cols__5-span-5">{$expense.status_wording}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.status}:</div>
+        <div>{$expense.status_wording}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 bold">{$LANG.notes}:</div>
+    <div class="flex__container flex__start">
+        <div class="bold">{$LANG.notes}:</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-7">{$expense.note|outHtml}</div>
+    <div class="flex__container flex__start">
+        <div>{$expense.note|outHtml}</div>
     </div>
 </div>
 <div class="align__text-center margin__top-3 margin__bottom-2">

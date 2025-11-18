@@ -3,6 +3,7 @@
  *      Customer details template
  *
  *  Last modified:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  *      20210618 by Richard Rowley to add cell-border class to table tag.
  *
  * License:
@@ -11,89 +12,89 @@
  * Website:
  *      https://simpleinvoices.group
  *}
-<div class="grid__area delay__display">
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.customerName}:</div>
-        <div class="cols__4-span-6">{$customer.name}</div>
+<div class="flex__area delay__display">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.customerName}:</div>
+        <div>{$customer.name}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.customerDepartment}:</div>
-        <div class="cols__4-span-6">{$customer.department|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.customerDepartment}:</div>
+        <div>{$customer.department|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.attentionShort}:</div>
-        <div class="cols__4-span-6">{$customer.attention|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.attentionShort}:</div>
+        <div>{$customer.attention|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.street}:</div>
-        <div class="cols__4-span-6">{$customer.street_address|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.street}:</div>
+        <div>{$customer.street_address|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.street2}:</div>
-        <div class="cols__4-span-6">{$customer.street_address2|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.street2}:</div>
+        <div>{$customer.street_address2|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.city}:</div>
-        <div class="cols__4-span-6">{$customer.city|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.city}:</div>
+        <div>{$customer.city|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.state}:</div>
-        <div class="cols__4-span-6">{$customer.state|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.state}:</div>
+        <div>{$customer.state|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.zip}:</div>
-        <div class="cols__4-span-6">{$customer.zip_code|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.zip}:</div>
+        <div>{$customer.zip_code|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.country}:</div>
-        <div class="cols__4-span-6">{$customer.country|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.country}:</div>
+        <div>{$customer.country|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.phoneUc}:</div>
-        <div class="cols__4-span-6">{$customer.phone|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.phoneUc}:</div>
+        <div>{$customer.phone|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.mobilePhone}:</div>
-        <div class="cols__4-span-6">{$customer.mobile_phone|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.mobilePhone}:</div>
+        <div>{$customer.mobile_phone|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.fax}:</div>
-        <div class="cols__4-span-6">{$customer.fax|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.fax}:</div>
+        <div>{$customer.fax|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.email}:</div>
-        <div class="cols__4-span-6"><a href="mailto:{$customer.email|htmlSafe}">{$customer.email|htmlSafe}</a></div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.email}:</div>
+        <div><a href="mailto:{$customer.email|htmlSafe}">{$customer.email|htmlSafe}</a></div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.defaultInvoice}:</div>
-        <div class="cols__4-span-6">{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.defaultInvoice}:</div>
+        <div>{if $customer.default_invoice != 0}{$customer.default_invoice}{/if}</div>
     </div>
     {if !empty($customFieldLabel.customer_cf1)}
-    <div class="grid__container grid__head-10">
-            <div class="cols__1-span-3 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf1}:</div>
-            <div class="cols__4-span-6">{$customer.custom_field1|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$customFieldLabel.customer_cf1}:</div>
+        <div>{$customer.custom_field1|htmlSafe}</div>
     </div>
     {/if}
     {if !empty($customFieldLabel.customer_cf2)}
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf2}:</div>
-        <div class="cols__4-span-6">{$customer.custom_field2|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$customFieldLabel.customer_cf2}:</div>
+        <div>{$customer.custom_field2|htmlSafe}</div>
     </div>
     {/if}
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
-        <div class="cols__4-span-6">{$customer.enabled_text|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.enabled}:</div>
+        <div>{$customer.enabled_text|htmlSafe}</div>
     </div>
     {if !empty($customFieldLabel.customer_cf3)}
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-3 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf3}:</div>
-        <div class="cols__4-span-6">{$customer.custom_field3|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$customFieldLabel.customer_cf3}:</div>
+        <div>{$customer.custom_field3|htmlSafe}</div>
     </div>
     {/if}
     {if !empty($customFieldLabel.customer_cf4)}
-    <div class="grid__container grid__head-10">
-        <div class="cols__1-span-2 bold align__text-right margin__right-1">{$customFieldLabel.customer_cf4}:</div>
-        <div class="cols__3-span-3">{$customer.custom_field4|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$customFieldLabel.customer_cf4}:</div>
+        <div>{$customer.custom_field4|htmlSafe}</div>
     </div>
     {/if}
     <div class="si_form" id="si_form_cust">

@@ -5,28 +5,31 @@
  *  Author:
  * 	    Richard Rowley
  *
+ *  Last Modified:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
+ *
  *  License:
  *      GPL v3 or above
  *
  *  Website:
  *      https://simpleinvoices.group
  *}
-<div class="grid__area">
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 align__text-right bold">{$LANG.customerUc}:&nbsp;</div>
-        <div class="cols__5-span-4">{$paymentWarehouse.cname|htmlSafe}</div>
+<div class="flex__area">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.customerUc}:</div>
+        <div>{$paymentWarehouse.cname|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 align__text-right bold">{$LANG.balanceUc}:&nbsp;</div>
-        <div class="cols__5-span-2">{$paymentWarehouse.balance|utilCurrency:$paymentWarehouse.locale:$paymentWarehouse.currency_code}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.balanceUc}:</div>
+        <div>{$paymentWarehouse.balance|utilCurrency:$paymentWarehouse.locale:$paymentWarehouse.currency_code}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 align__text-right bold">{$LANG.paymentType}:&nbsp;</div>
-        <div class="cols__5-span-2">{$paymentWarehouse.description|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.paymentType}:</div>
+        <div>{$paymentWarehouse.description|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__3-span-2 align__text-right bold">{$LANG.checkNumberUc}:&nbsp;</div>
-        <div class="cols__5-span-2">{$paymentWarehouse.check_number|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.checkNumberUc}:</div>
+        <div>{$paymentWarehouse.check_number|htmlSafe}</div>
     </div>
 </div>
 <br/>

@@ -5,6 +5,9 @@
  *  Authors:
  *	    Richard Rowley
  *
+ *  Last Modified:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
+ *
  *  License:
  *	    GPL v3 or above
  *
@@ -18,10 +21,10 @@
         {$LANG.useUc} {$LANG.edit}/{$LANG.delete} {$LANG.options} {$LANG.to} {$LANG.maintain} {$LANG.them}!</h3>
 {else}
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=payment_warehouse&amp;view=create">
-        <div class="grid__area">
-            <div class="grid__container grid__head-10">
-                <label for="customerId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.customerUc}:</label>
-                <select name="customer" id="customerId" class="cols__5-span-4 changePaymentWarehouseCustomer" required tabindex="20">
+        <div class="flex__area">
+            <div class="flex__container flex__start">
+                <label for="customerId" class="margin__right-1">{$LANG.customerUc}:</label>
+                <select name="customer" id="customerId" class="changePaymentWarehouseCustomer" required tabindex="20">
                     <option value="" data-locale="{$config.localLocale}" data-currency-code="{$config.localCurrencyCode}"
                             selected></option>
                     {foreach $customers as $customer}
@@ -32,22 +35,22 @@
             </div>
             <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
             <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
-            <div class="grid__container grid__head-10">
-                <label for="balanceId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.balanceUc}:</label>
-                <input type="text" name="balance" id="balanceId" class="cols__5-span-2 validateNumber" required size="20" tabindex="30"/>
+            <div class="flex__container flex__start">
+                <label for="balanceId" class="margin__right-1">{$LANG.balanceUc}:</label>
+                <input type="text" name="balance" id="balanceId" class="validateNumber" required size="20" tabindex="30"/>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="pymtTypeId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.paymentType}:</label>
-                <select name="payment_type" id="pymtTypeId" class="cols__5-span-2" required tabindex="40">
+            <div class="flex__container flex__start">
+                <label for="pymtTypeId" class="margin__right-1">{$LANG.paymentType}:</label>
+                <select name="payment_type" id="pymtTypeId" required tabindex="40">
                     <option value="" selected></option>
                     {foreach $paymentTypes as $paymentType}
                         <option value="{$paymentType.pt_id}">{$paymentType.pt_description}</option>"
                     {/foreach}
                 </select>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="checkNumberId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.checkNumberUc}:</label>
-                <input type="text" name="check_number" id="checkNumberId" class="cols__5-span-2 validateCheckNumber" size="20" tabindex="50"/>
+            <div class="flex__container flex__start">
+                <label for="checkNumberId" class="margin__right-1">{$LANG.checkNumberUc}:</label>
+                <input type="text" name="check_number" id="checkNumberId" class="validateCheckNumber" size="20" tabindex="50"/>
             </div>
         </div>
         <div class="align__text-center margin__top-2">

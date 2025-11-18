@@ -19,42 +19,43 @@
     {$LANG.its} {$LANG.associated} {$LANG.history}:
 </h2>
 <form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlEncode}">
-    <div class="grid__area">
-        <div class="grid__container grid__head-10">
-            <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.invoiceUc}:</div>
-            <div class="cols__6-span-4">
+    <div class="flex__area">
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.invoiceUc}:</div>
+            <div>
                 <a href="index.php?module=invoices&amp;view=quickView&amp;id={$cron.invoice_id|htmlSafe}">
                     {$cron.index_id|htmlSafe}
                 </a>
             </div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.startDate}:</div>
-            <div class="cols__6-span-4">{$cron.start_date|htmlSafe}</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.startDate}:</div>
+            <div>{$cron.start_date|htmlSafe}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.endDate}:</div>
-            <div class="cols__6-span-4">{$cron.end_date|htmlSafe}</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.endDate}:</div>
+            <div>{$cron.end_date|htmlSafe}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.recurEach}:</div>
-            <div class="cols__6-span-4">{$cron.recurrence|htmlSafe} {$cron.recurrence_type|htmlSafe}</div>
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.recurEach}:</div>
+            <div>{$cron.recurrence|htmlSafe} {$cron.recurrence_type|htmlSafe}</div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.emailBillerAfterCron}:</div>
-            <div class="cols__6-span-4">
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.emailBillerAfterCron}:</div>
+            <div>
                 {if $cron.email_biller == $smarty.const.ENABLED}{$LANG.yesUc}{/if}
                 {if $cron.email_biller == $smarty.const.DISABLED}{$LANG.noUc}{/if}
             </div>
         </div>
-        <div class="grid__container grid__head-10">
-            <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.emailCustomerAfterCron}:</div>
-            <div class="cols__6-span-4">
+        <div class="flex__container flex__start">
+            <div class="bold margin__right-1">{$LANG.emailCustomerAfterCron}:</div>
+            <div>
                 {if $cron.email_customer == $smarty.const.ENABLED}{$LANG.yesUc}{/if}
                 {if $cron.email_customer == $smarty.const.DISABLED}{$LANG.noUc}{/if}
             </div>
         </div>
     </div>
+    <br/>
     <div class="align__text-center">
         <button type="submit" class="positive" name="submit" value="{$LANG.delete}">
             <img class="button_img" src="images/tick.png" alt="{$LANG.delete}"/>{$LANG.delete}

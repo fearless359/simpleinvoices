@@ -6,6 +6,7 @@
  *	    Justin Kelly, Nicolas Ruflin
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  * 	    20210630 by Rich Rowley to convert to grid layout
  *
  *  License:
@@ -16,17 +17,18 @@
  *}
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=payment_types&amp;view=save&amp;id={$smarty.get.id|htmlSafe}">
-    <div class="grid__area">
-        <div class="grid__container grid__head-10">
-            <label for="descriptionId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.paymentTypeDescription}:
-                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpPaymentTypes}" src="{$helpImagePath}required-small.png" alt="(required)"/>
+    <div class="flex__area">
+        <div class="flex__container flex__start">
+            <label for="descriptionId" class=margin__right-1">{$LANG.paymentTypeDescription}:
+                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpPaymentTypes}"
+                     src="{$helpImagePath}required-small.png" alt="(required)"/>
             </label>
-            <input type="text" name="pt_description" id="descriptionId" class="cols__5-span-5" required size="30"
+            <input type="text" name="pt_description" id="descriptionId" required size="30"
                    value="{$paymentType.pt_description|htmlSafe|htmlSafe}" tabindex="10"/>
         </div>
-        <div class="grid__container grid__head-10">
-            <label for="enabledId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.status}:</label>
-            {html_options name=pt_enabled id=enabledId class="cols__5-span-1" options=$enabled selected=$paymentType.pt_enabled tabindex=20}
+        <div class="flex__container flex__start">
+            <label for="enabledId" class="margin__right-1">{$LANG.status}:</label>
+            {html_options name=pt_enabled id=enabledId options=$enabled selected=$paymentType.pt_enabled tabindex=20}
         </div>
     </div>
     <div class="align__text-center">

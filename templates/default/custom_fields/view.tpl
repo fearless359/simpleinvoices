@@ -3,6 +3,7 @@
  *      Custom fields details template
  *
  *  Last Modified:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  *      20210618 by Rich Rowley to use grid layout.
  *      20180922 by Rich Rowley to add option to clean up when field cleared.
  *
@@ -12,18 +13,18 @@
  *  License:
  *      GPL v3 or above
  *}
-<div class="grid__area">
-    <div class="grid__container grid__head-10">
-        <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.customFieldDbFieldName}:</div>
-        <div class="cols__6-span-3">{$cf.cf_custom_field|htmlSafe}</div>
+<div class="flex__area">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.customFieldDbFieldName}:</div>
+        <div>{$cf.cf_custom_field|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.customField}:</div>
-        <div class="cols__6-span-3">{$cf.name|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.customField}:</div>
+        <div>{$cf.name|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__2-span-4 bold align__text-right margin__right-1">{$LANG.customLabel}:</div>
-        <div class="cols__6-span-3">{$cf.cf_custom_label|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.customLabel}:</div>
+        <div>{$cf.cf_custom_label|htmlSafe}</div>
     </div>
     <br/>
     <div class="align__text-center">

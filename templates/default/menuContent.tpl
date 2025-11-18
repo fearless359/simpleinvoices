@@ -49,7 +49,7 @@
     <!-- SECTION:money -->
     <div id="money" class="{$menuClass}sub_money">
         <div class="{$menuClass}sub_money_dropdown">
-            <ul id="moneySubList" class="fonts__size-1-5">
+            <ul id="moneySubList" class="fonts__size-1-5" onclick="closeSubMenuDropdown()">
                 <!-- SECTION:invoices -->
                 <li class="bold"><a {if isset($pageActive) && $pageActive=="invoice"} class="active"{/if}
                             href="index.php?module=invoices&amp;view=manage">{$LANG.invoicesUc}</a></li>

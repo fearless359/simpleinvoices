@@ -6,6 +6,7 @@
  *      Justin Kelly, Nicolas Ruflin
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface. 
  *      20210701 by Rich Rowley to convert to grid layout.
  *
  *  License:
@@ -14,26 +15,26 @@
  *  Website:
  *      https://simpleinvoices.group
  *}
-<div class="grid__area">
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.productUc}:</div>
-        <div class="cols__6-span-3">{$inventory.description|htmlSafe}</div>
+<div class="flex__area">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.productUc}:</div>
+        <div>{$inventory.description|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.dateUc}:</div>
-        <div class="cols__6-span-3">{$inventory.date|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.dateUc}:</div>
+        <div>{$inventory.date|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.quantityUc}:</div>
-        <div class="cols__6-span-3">{$inventory.quantity|utilNumberTrim}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.quantityUc}:</div>
+        <div>{$inventory.quantity|utilNumberTrim}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.costUc}:</div>
-        <div class="cols__6-span-3">{$inventory.cost|utilNumber}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.costUc}:</div>
+        <div>{$inventory.cost|utilNumber}</div>
     </div>
-    <div class="grid__container grid__head-10">
-        <div class="cols__5-span-1 bold">{$LANG.notes}:</div>
-        <div class="cols__6-span-3">{$inventory.note}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.notes}:</div>
+        <div>{$inventory.note}</div>
     </div>
 </div>
 <div class="align__text-center margin__top-3 margin__bottom-2">

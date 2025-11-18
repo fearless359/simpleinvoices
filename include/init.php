@@ -9,6 +9,7 @@ use Inc\Claz\SiError;
 use Inc\Claz\SqlPatchManager;
 use Inc\Claz\SystemDefaults;
 use Inc\Claz\Util;
+use Smarty\Smarty;
 
 global $apiRequest, $config, $databaseBuilt, $databasePopulated, $extNames, $module, $pdoDbAdmin, $view;
 
@@ -22,7 +23,7 @@ $smarty->setConfigDir("config")
        ->setTemplateDir("templates")
        ->setCompileDir("tmp/template_c")
        ->setCacheDir("tmp/cache")
-       ->setPluginsDir(["vendor/smarty/smarty/libs/plugins", "include/smarty_plugins"]);
+       ->addPluginsDir("include/smarty_plugins");
 
 Util::getLocaleList();
 
@@ -33,8 +34,8 @@ if (!is_writable($smarty->getCompileDir())) {
 // add stripslashes smarty function
 try {
     $smarty->registerPlugin('modifier', "unescape", "stripslashes");
-} catch (SmartyException $se) {
-    SiError::out('generic', 'SmartyException', $se->getMessage());
+} catch (Exception $e) {
+    SiError::out('generic', 'SmartyException', $e->getMessage());
 }
 
 // Keep this line. Uncomment to test smarty
@@ -96,17 +97,12 @@ $extNames = Extensions::loadSiExtensions($config, $databaseBuilt, $patchCount);
 Log::out("init.php - extNames: " . print_r($extNames, true));
 
 // point to extension plugin directories if present.
-$pluginDirs = [];
 foreach ($extNames as $extName) {
     $dirTmp = "extensions/$extName/include/smarty_plugins";
     if (is_dir($dirTmp)) {
-        $pluginDirs[] = $dirTmp;
+        $smarty->addPluginsDir($dirTmp);
+        Log::out("init.php - add plugin dir - $dirTmp");
     }
-}
-
-Log::out("init.php - pluginDir: " . json_encode($pluginDirs));
-if (!empty($pluginDirs)) {
-    $smarty->addPluginsDir($pluginDirs);
 }
 
 $defaults = SystemDefaults::loadValues($databaseBuilt);

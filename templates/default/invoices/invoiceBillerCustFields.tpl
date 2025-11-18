@@ -1,14 +1,14 @@
 {if isset($template)}
-    <div class="grid__container grid__head-10">
+    <div class="flex__container flex__start">
         {* This is the case where the invoice content was *}
         {* copied from the designated customer invoice. *}
-        <div class="cols__3-span-2 bold">{$LANG.copiedFrom}:</div>
-        <div class="cols__5-span-3">{$template|htmlSafe}</div>
+        <div class="bold margin__right-1">{$LANG.copiedFrom}:</div>
+        <div>{$template|htmlSafe}</div>
     </div>
 {/if}
-<div class="grid__container grid__head-10">
-    <label for="billerId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.billerUc}:</label>
-    <div class="cols__5-span-3">
+<div class="flex__container flex__start">
+    <label for="billerId" class="margin__right-1">{$LANG.billerUc}:</label>
+    <div>
         {if !isset($billers) }
             <em>{$LANG.noBillers}</em>
         {else}
@@ -22,9 +22,9 @@
         {/if}
     </div>
 </div>
-<div class="grid__container grid__head-10">
-    <label for="customerId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.customerUc}:</label>
-    <div class="cols__5-span-3">
+<div class="flex__container flex__start">
+    <label for="customerId" class="margin__right-1">{$LANG.customerUc}:</label>
+    <div>
         {if !isset($customers) }
             <em>{$LANG.noCustomers}</em>
         {else}
@@ -40,9 +40,9 @@
 </div>
 {* section for sub_customer *}
 {if ($defaults.sub_customer)}
-    <div class="grid__container grid__head-10">
-        <label for="subCustId" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.subCustomer}:</label>
-        <div class="cols__5-span-3">
+    <div class="flex__container flex__start">
+        <label for="subCustId" class="margin__right-1">{$LANG.subCustomer}:</label>
+        <div>
             {$displayNone = false}
             {if empty($subCustomers)}
                 <em id="noSubCustomers" style="display:inline-block;">{$LANG.noSubCustomers}</em>
@@ -59,10 +59,8 @@
         </div>
     </div>
 {/if}
-<div class="grid__container grid__head-10">
-    <label for="date1" class="cols__3-span-2 align__text-right margin__right-1">{$LANG.dateFormatted}:</label>
-    <div class="cols__5-span-1">
-        <input type="text" name="date" id="date1" required readonly size="10" class="date-picker"
-               value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>
-    </div>
+<div class="flex__container flex__start">
+    <label for="date1" class="margin__right-1">{$LANG.dateFormatted}:</label>
+    <input type="text" name="date" id="date1" required readonly size="10" class="date-picker"
+           value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>
 </div>

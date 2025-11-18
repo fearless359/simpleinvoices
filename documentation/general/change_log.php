@@ -17,7 +17,17 @@
     <br/>
     <div id="left">
         <ul>
-            <li>2025-10-20 - <strong>2025.00.02</strong>
+            <li>2025-11-18 - <strong>2026.00.03</strong>
+                <ul>
+                    <li>Update npm packages.</li>
+                    <li>Updated composer libraries. This included update to v5.6.0 of smarty necessitating changes
+                        to the init.php and Export.php files for plugin directory declaration support.</li>
+                    <li>Renamed the program that converts the old config.php to config.ini. Program is now named:
+                        siConvertConfigPhpToConfigIni.php</li>
+                    <li>Modified screens to use flex formatting to support small screen devices.</li>
+                </ul>
+            </li>
+            <li>2025-10-20 - <strong>2026.00.02</strong>
                 <ul>
                     <li>Correct misnumbered data table setting in the invoices management template.</li>
                 </ul>

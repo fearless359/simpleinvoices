@@ -253,12 +253,7 @@ class Export
                     // Plugins specifically associated with your invoice template.
                     $templatePluginsDir = "templates/invoices/$template/plugins/";
                     if (is_dir($templatePluginsDir)) {
-                        $pluginsDirs = $smarty->getPluginsDir();
-                        if (!is_array($pluginsDirs)) {
-                            $pluginsDirs = [$pluginsDirs];
-                        }
-                        $pluginsDirs[] = $templatePluginsDir;
-                        $smarty->setPluginsDir($pluginsDirs);
+                        $smarty->addPluginsDir($templatePluginsDir);
                     }
 
                     $data = $smarty->fetch("templates/invoices/$template/template.tpl");

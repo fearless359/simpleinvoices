@@ -6,6 +6,7 @@
  *      Justin Kelly, Nicolas Ruflin, Soif, Rich Rowley
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  * 	    20210701 by Rich Rowley to convert to grid layout
  *
  *  License:
@@ -53,48 +54,48 @@
 {/literal}
 <form name="frmpost" method="POST" id="frmpost"
       action="index.php?module=user&amp;view=save&amp;username={$user.username|urlEncode}">
-    <div class="grid__area">
-        <div class="grid__container grid__head-10">
-            <label for="userNameId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.username}:
-                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpUsername}" src="{$helpImagePath}required-small.png" alt=""/>
+    <div class="flex__area">
+        <div class="flex__container flex__start">
+            <label for="userNameId" class="margin__right-1">{$LANG.username}:
+                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpUsername}"
+                     src="{$helpImagePath}required-small.png" alt=""/>
             </label>
             <input type="text" name="username" id="userNameId" autocomplete="off"
-                   class="cols__5-span-4" required tabindex="10" required
+                   required tabindex="10" required
                    value="{if isset($user.username)}{$user.username|htmlSafe}{/if}" size="50" id="username"
                    pattern="{$usernamePattern}" title="See help for details." autofocus
                    {if isset($smarty.session.role_name) &&
                         ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}readonly{/if}/>
         </div>
-        <div class="grid__container grid__head-10">
-            <label for="password_id" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.newPassword}:
+        <div class="flex__container flex__start">
+            <label for="password_id" class="margin__right-1">{$LANG.newPassword}:
                 <img class="tooltip" title="{$LANG.helpNewPassword}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="password" name="password" id="password_id" class="cols__5-span-4" size="50" tabindex="20"
+            <input type="password" name="password" id="password_id" size="50" tabindex="20"
                    pattern="{$pwd_pattern}" title="See help for details."/>
         </div>
-        <div class="grid__container grid__head-10">
-            <label for="confirm_pwd_id" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.confirmPassword}:
+        <div class="flex__container flex__start">
+            <label for="confirm_pwd_id" class="margin__right-1">{$LANG.confirmPassword}:
                 <img class="tooltip" title="{$LANG.helpConfirmPassword}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <input type="password" name="confirm_password" id="confirm_pwd_id" class="cols__5-span-4" size="50" tabindex="30"
+            <input type="password" name="confirm_password" id="confirm_pwd_id" size="50" tabindex="30"
                    pattern="{$pwd_pattern}" title="See help for details"/>
         </div>
-        <div class="grid__container grid__head-10">
-            <label for="email" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.email}:
+        <div class="flex__container flex__start">
+            <label for="email" class="margin__right-1">{$LANG.email}:
                 <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailAddress}" src="{$helpImagePath}required-small.png" alt=""/>
             </label>
-            <input type="email" name="email" id="email" class="cols__5-span-4" required size="50" tabindex="40"
+            <input type="email" name="email" id="email" required size="50" tabindex="40"
                    placeholder="{$PLACEHOLDERS['email']}" title="See help for details" autocomplete="off"
                    value="{if isset($user.email)}{$user.email|htmlSafe}{/if}"/>
         </div>
-        <div class="grid__container grid__head-10"
+        <div class="flex__container flex__start"
             {if isset($smarty.session.role_name) &&
                 ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
-            <label for="roleId1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.role}:
+            <label for="roleId1" class="margin__right-1">{$LANG.role}:
                 <img class="tooltip" title="{$LANG.helpUserRole}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <select name="role_id" id="roleId1" class="cols__5-span-2" tabindex="50"
-                    onchange="setUserIdList();" title="See help for details">
+            <select name="role_id" id="roleId1"tabindex="50" onchange="setUserIdList();" title="See help for details">
                 {foreach $roles as $role}
                     <option {if $role.id == $user.role_id}selected{/if} value="{if isset($role.id)}{$role.id|htmlSafe}{/if}">
                         {$role.name|htmlSafe}
@@ -102,14 +103,13 @@
                 {/foreach}
             </select>
         </div>
-        <div class="grid__container grid__head-10"
+        <div class="flex__container flex__start"
             {if isset($smarty.session.role_name) &&
                 ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
-            <label for="userId1" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.userId}:
+            <label for="userId1" class="margin__right-1">{$LANG.userId}:
                 <img class="tooltip" title="{$LANG.helpUserId}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <select name="user_id" id="userId1" class="cols__5-span-2" tabindex="60"
-                    title="See help for details"
+            <select name="user_id" id="userId1"tabindex="60" title="See help for details"
                     {if isset($smarty.session.role_name) &&
                         $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}disabled{/if}>
                 {if $user.role_name == "customer"}
@@ -117,7 +117,7 @@
                     {foreach $ids as $id}
                         {assign var="pts" value=" - "|explode:$id}
                         {assign var="uid" value=$pts[0]-1}
-                        <option {if $user.user_id == trim($pts[0])}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
+                        <option {if $user.user_id == $pts[0]|strip}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
                             {if isset($id)}{$id|htmlSafe}{/if}
                         </option>
                     {/foreach}
@@ -126,7 +126,7 @@
                     {foreach $ids as $id}
                         {assign var="pts" value=" - "|explode:$id}
                         {assign var="uid" value=$pts[0]-1}
-                        <option {if $user.user_id == trim($pts[0])}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
+                        <option {if $user.user_id == $pts[0]|strip}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
                             {if isset($id)}{$id|htmlSafe}{/if}
                         </option>
                     {/foreach}
@@ -135,13 +135,13 @@
                 {/if}
             </select>
         </div>
-        <div class="grid__container grid__head-10"
+        <div class="flex__container flex__start"
                    {if isset($smarty.session.role_name) &&
                         ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
-            <label for="enabledId" class="cols__2-span-3 align__text-right margin__right-1">{$LANG.enabled}:
+            <label for="enabledId" class="margin__right-1">{$LANG.enabled}:
                 <img class="tooltip" title="{$LANG.helpUserEnabled}" src="{$helpImagePath}help-small.png" alt=""/>
             </label>
-            <td>{html_options name=enabled id=enabledId class="cols__5-span-1" options=$enabled_options selected=$user.enabled tabindex=70}</td>
+            {html_options name=enabled id=enabledId options=$enabled_options selected=$user.enabled tabindex=70}
         </div>
     </div>
     <div class="align__text-center margin__top-3 margin__bottom-2">

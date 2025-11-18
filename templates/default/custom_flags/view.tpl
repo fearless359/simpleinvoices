@@ -3,6 +3,7 @@
  *      Custom flags view template
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  *      20210619 by Rich Rowley to convert to grid layout.
  *
  *  Website:
@@ -11,26 +12,26 @@
  *  License:
  *      GPL v3 or above
  *}
-<div class="grid__area">
-    <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.associatedTable}:</div>
-        <div class="cols__3-span-4">{$cflg.associated_table|htmlSafe}</div>
+<div class="flex__area">
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.associatedTable}:</div>
+        <div>{$cflg.associated_table|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.flagNumber}:</div>
-        <div class="cols__3-span-4">{$cflg.flg_id|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.flagNumber}:</div>
+        <div>{$cflg.flg_id|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.fieldLabelUc}:</div>
-        <div class="cols__3-span-4">{$cflg.field_label|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.fieldLabelUc}:</div>
+        <div>{$cflg.field_label|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.enabled}:</div>
-        <div class="cols__3-span-4">{$cflg.enabled_text|htmlSafe}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.enabled}:</div>
+        <div>{$cflg.enabled_text|htmlSafe}</div>
     </div>
-    <div class="grid__container grid__head-6">
-        <div class="cols__2-span-1 bold align__text-right margin__right-1">{$LANG.fieldHelpUc}:</div>
-        <div class="cols__3-span-4">{$cflg.field_help|outHtml}</div>
+    <div class="flex__container flex__start">
+        <div class="bold margin__right-1">{$LANG.fieldHelpUc}:</div>
+        <div>{$cflg.field_help|outHtml}</div>
     </div>
 </div>
 <br/>

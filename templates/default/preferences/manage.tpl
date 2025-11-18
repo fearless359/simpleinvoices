@@ -67,7 +67,7 @@
         {/literal}
     </script>
 {/if}
-<div class="si_help_div">
+<div class="si__help-div">
     <a class="tooltip" href="#" title="{$LANG.helpInvPrefWhatThe}">
         <img src="{$helpImagePath}help-small.png" alt="{$LANG.whatsAllThisInvPref}"/>{$LANG.whatsAllThisInvPref}
     </a>

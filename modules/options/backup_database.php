@@ -31,13 +31,13 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
               "</pre>" .
             "</div>" .
             $txt .
-            "<div class='si_help_div tooltip' title='{$LANG['helpBackupDatabaseFwrite']}''>" .
+            "<div class='si__help-div tooltip' title='{$LANG['helpBackupDatabaseFwrite']}''>" .
                 "<img src='{$helpImagePath}help-small.png' alt=''/>{$LANG['fwriteError']}" .
             "</div>";
     } else {
         $displayBlock =
             "<div class='si_message_error'>ERROR: Unable to complete the backup. See error log for details.</div>" .
-            "<div class='si_help_div tooltip' title='{$LANG['helpBackupDatabaseFwrite']}''>" .
+            "<div class='si__help-div tooltip' title='{$LANG['helpBackupDatabaseFwrite']}''>" .
                 "<img src='{$helpImagePath}help-small.png' alt=''/>{$LANG['failure']}" .
             "</div>";
     }
@@ -52,7 +52,7 @@ if (isset($_GET['op']) && $_GET['op'] == "backup_db") {
             "</div>" .
             "{$LANG['note']}: {$LANG['backupNoteToFile']}" .
         "</div>" .
-        "<div class='si_help_div tooltip' title='{$LANG['helpBackupDatabase']}'>" .
+        "<div class='si__help-div tooltip' title='{$LANG['helpBackupDatabase']}'>" .
             "<img src='{$helpImagePath}important.png' alt=''/>{$LANG['moreInfo']}" .
         "</div>";
 }

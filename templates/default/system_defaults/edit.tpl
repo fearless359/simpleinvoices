@@ -6,6 +6,7 @@
  *      Justin Kelly, Nicolas Ruflin
  *
  *  Last edited:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
  *      20210701 by Rich Rowley to convert to grid layout.
  *
  *  License:
@@ -14,12 +15,12 @@
  *  Website:
  *      https://simpleinvoices.group
  *}
-<div class="grid__area">
-    <h3 class="align__text-center margin__bottom-2">{$LANG.edit} {$description|htmlSafe}</h3>
+<div class="flex__area">
+    <h3 class="margin__bottom-2">{$LANG.edit} {$description|htmlSafe}</h3>
     <form name="frmpost" method="POST" id="frmpost" action="index.php?module=system_defaults&amp;view=save">
-        <div class="grid__container grid__head-10">
-            <label for="valueId" class="cols__2-span-3 bold align__text-right margin__right-1">{$description|htmlSafe}:</label>
-            <div class="cols__5-span-5">{$value}</div>
+        <div class="flex__container flex__start">
+            <label for="valueId" class="bold margin__right-1">{$description|htmlSafe}:</label>
+            <div>{$value}</div>
         </div>
         <div class="align__text-center margin__top-2 margin__bottom-2">
             {if isset($default)}

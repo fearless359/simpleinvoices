@@ -59,7 +59,7 @@
         });
         {/literal}
     </script>
-    <div class="si_help_div">
+    <div class="si__help-div">
         <a class="tooltip" href="#" title="{$LANG.helpWhatAreCustomFlags}">{$LANG.whatAreCustomFlags}
             <img src="{$helpImagePath}help-small.png" alt=""/>
         </a>

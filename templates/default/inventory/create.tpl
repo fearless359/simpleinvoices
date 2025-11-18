@@ -3,6 +3,7 @@
  *      Inventory add template
  *
  *  Last Modified:
+ *      20251110 by Rich Rowley to use flex layout for responsive interface. 
  *      20210630 by Rich Rowley to use grid layout rather than tables.
  *
  *  License:
@@ -17,15 +18,15 @@
 {else}
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=inventory&amp;view=create">
-        <div class="grid__area">
-            <div class="grid__container grid__head-10">
-                <label for="date" class="cols__2-span-1 align__text-right">{$LANG.dateUc}:&nbsp;</label>
-                <input type="text" name="date" id="date" required readonly class="cols__3-span-1 date-picker" size="10" tabindex="10"
+        <div class="flex__area">
+            <div class="flex__container flex__start">
+                <label for="date" class="margin__right-1">{$LANG.dateUc}:</label>
+                <input type="text" name="date" id="date" required readonly class="date-picker" size="10" tabindex="10"
                        value="{if !empty($smarty.post.date)}{$smarty.post.date}{else}{'now'|date_format:'%Y-%m-%d'}{/if}"/>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="productId" class="cols__2-span-1 align__text-right">{$LANG.productUc}:&nbsp;</label>
-                <select name="product_id" id="productId" class="cols__3-span-4 productInventoryChange" required tabindex="20">
+            <div class="flex__container flex__start">
+                <label for="productId" class="margin__right-1">{$LANG.productUc}:</label>
+                <select name="product_id" id="productId" class="productInventoryChange" required tabindex="20">
                     <option value=''></option>
                     {foreach $product_all as $product}
                         <option value="{$product.id|htmlSafe}"
@@ -35,21 +36,21 @@
             </div>
             <input type="hidden" name="locale" id="localeId" value="{$config.localLocale}">
             <input type="hidden" name="currency_code" id="currencyCodeId" value="{$config.localCurrencyCode}">
-            <div class="grid__container grid__head-10">
-                <label for="quantityId" class="cols__2-span-1 align__text-right">{$LANG.quantityUc}:&nbsp;</label>
-                <input name="quantity" id="quantityId" class="cols__3-span-1 validateWholeNumber" required size="10" tabindex="30"
+            <div class="flex__container flex__start">
+                <label for="quantityId" class="margin__right-1">{$LANG.quantityUc}:</label>
+                <input name="quantity" id="quantityId" class="validateWholeNumber" required size="10" tabindex="30"
                        {if !empty($smarty.post.quantity)}value="{$smarty.post.quantity|utilNumberTrim:0}"{/if}>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="cost" class="cols__2-span-1 align__text-right">{$LANG.costUc}:&nbsp;</label>
-                <input name="cost" id="cost" class="cols__3-span-2 validateNumber" required size="10" tabindex="40"
+            <div class="flex__container flex__start">
+                <label for="cost" class="margin__right-1">{$LANG.costUc}:</label>
+                <input name="cost" id="cost" class="validateNumber" required size="10" tabindex="40"
                        {if !empty($smarty.post.cost)}value="{$smarty.post.cost}"{/if}>
             </div>
-            <div class="grid__container grid__head-10">
-                <label for="note" class="cols__2-span-1">{$LANG.notes}:&nbsp;</label>
+            <div class="flex__container flex__start">
+                <label for="note">{$LANG.notes}:</label>
             </div>
             <div class="grid__container grid__head-10">
-                <div class="cols__2-span-8">
+                <div class="cols__1-span-10">
                     <input name="note" id="note" type="hidden" {if isset($smarty.post.note)}value="{$smarty.post.note|outHtml}"{/if}>
                     <trix-editor input="note" tabindex="50"></trix-editor>
                 </div>

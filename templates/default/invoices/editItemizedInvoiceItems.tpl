@@ -1,7 +1,8 @@
 <div class="grid__container grid__head-10">
     <div class="cols__1-span-1 bold align__text-right">
         <label for="quantity0">{$LANG.quantityShort}
-            <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}" src="{$helpImagePath}required-small.png" alt=""/> </label>
+            <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}"
+                 src="{$helpImagePath}required-small.png" alt=""/> </label>
     </div>
     <div class="cols__2-span-4 bold align__text-center">{$LANG.item}</div>
     {$begCol = 6}
@@ -30,8 +31,9 @@
                     <div id="qtyColumn" style="display:grid;grid-template-columns: {$cols};">
                         <a class="delete_link" id="delete_link{$line|htmlSafe}" href="#" title="{$LANG.deleteLineItem}"
                            {if $line == "0"}style="display:none;"{/if}
-                           data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}> <img id="delete_image{$line|htmlSafe}" class="margin__top-0-5"
-                                                                                                                       src="images/delete_item.png" alt="{$LANG.deleteLineItem}"/> </a> <span>&nbsp;</span>
+                           data-row-num="{$line|htmlSafe}" data-delete-line-item={$config.confirmDeleteLineItem}> <img
+                                    id="delete_image{$line|htmlSafe}" class="margin__top-0-5"
+                                    src="images/delete_item.png" alt="{$LANG.deleteLineItem}"/> </a> <span>&nbsp;</span>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}"
                                class="align__text-right validateQuantity" {if $line == 0}required{/if}
@@ -90,7 +92,8 @@
                 {if $invoiceItem.product.enabled == $smarty.const.ENABLED}
                     {if $prodAttrVal.type == 'list'}
                         <div class="cols__{$begCol}-span-2">
-                            <label for="list{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <select name="attribute{$line}[{$prodAttrVal.id}]" id="list{$line}{$prodAttrVal.id}">
+                            <label for="list{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <select
+                                    name="attribute{$line}[{$prodAttrVal.id}]" id="list{$line}{$prodAttrVal.id}">
                                 <option value=""></option>
                                 {foreach $prodAttrVal.attrVals as $key => $val}
                                     {if $prodAttrVal.enabled == $smarty.const.ENABLED}
@@ -116,8 +119,9 @@
                             {/if}
                         {/foreach}
                         <div class='cols__{$begCol}-span-2'>
-                            <label for="free{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <input type="text" name="attribute{$line}[{$prodAttrVal.id}]"
-                                                                                                                   id="free{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
+                            <label for="free{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <input
+                                    type="text" name="attribute{$line}[{$prodAttrVal.id}]"
+                                    id="free{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
                         </div>
                         {$begCol = $begCol + 2}
                     {elseif $prodAttrVal.type == 'decimal'}
@@ -129,8 +133,9 @@
                             {/if}
                         {/foreach}
                         <div class='cols__{$begCol}-span-2'>
-                            <label for="decimal{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <input type="text" name="attribute{$line}[{$prodAttrVal.id}]" size="5"
-                                                                                                                      id="decimal{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
+                            <label for="decimal{$line}{$prodAttrVal.id}" class="">{$prodAttrVal.name}:</label> <input
+                                    type="text" name="attribute{$line}[{$prodAttrVal.id}]" size="5"
+                                    id="decimal{$line}{$prodAttrVal.id}" value="{$attributeValue}"/>
                         </div>
                         {$begCol = $begCol + 2}
                     {/if}
@@ -157,18 +162,18 @@
 {$customFields.2}
 {$customFields.3}
 {$customFields.4}
-<div class="grid__container grid__head-10">
-    <div class="cols__1-span-2 bold">{$LANG.notes}:</div>
+<div class="flex__container flex__start">
+    <div class="bold">{$LANG.notes}:</div>
 </div>
-<div class="grid__container grid__head-10">
-    <div class='cols__1-span-10'>
+<div class="flex__container flex__start">
+    <div>
         <input name="note" id="noteId" {if isset($invoice.note)}value="{$invoice.note|outHtml}"{/if} type="hidden">
         <trix-editor class="trix-content" input="noteId"></trix-editor>
     </div>
 </div>
-<div class="grid__container grid_head-10">
-    <label for="preferenceId" class="cols__1-span-2 align__text-right margin__right-1">{$LANG.invPref}:</label>
-    <div class="cols__3-span-3">
+<div class="flex__container flex__start">
+    <label for="preferenceId" class="margin__right-1">{$LANG.invPref}:</label>
+    <div>
         {if !isset($preferences) }
             <em>{$LANG.noPreferences}</em>
         {else}
@@ -181,9 +186,9 @@
             </select>
         {/if}
     </div>
-    <label for="salesRepresentativeId" class="cols__6-span-2 align__text-right margin__right-1">{$LANG.salesRepresentative}:</label>
-    <div class="cols__8-span-3">
-        <input type="text" name="sales_representative" id="salesRepresentativeId" size="30"
-               value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlSafe}{/if}"/>
-    </div>
+</div>
+<div class="flex__container flex__start">
+    <label for="salesRepresentativeId" class="margin__right-1">{$LANG.salesRepresentative}:</label>
+    <input type="text" name="sales_representative" id="salesRepresentativeId" size="30"
+           value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlSafe}{/if}"/>
 </div>
