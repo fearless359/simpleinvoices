@@ -17,6 +17,15 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2025-11-20 - <strong>2026.00.04</strong>
+                <ul>
+                    <li>Updated Invoice class to declare internal methods protected rather than private to that
+                        extension developers and more easily override use of a single method can still reference
+                        them when extending the parent class.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2025-11-18 - <strong>2026.00.03</strong>
                 <ul>
                     <li>Update npm packages.</li>

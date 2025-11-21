@@ -79,7 +79,7 @@ class Invoice
      * @return array Invoices retrieved.
      * @throws PdoDbException
      */
-    public static function getAllWithHavings($having, string $sort = "", string $dir = "", bool $manageTable = false,
+    public static function getAllWithHavings(array|string $having, string $sort = "", string $dir = "", bool $manageTable = false,
                                              bool $includeWarehouse = false, int $invoiceDisplayDays = 0): array
     {
         global $pdoDb;
@@ -238,7 +238,7 @@ class Invoice
      * @return array Selected rows.
      * @throws PdoDbException
      */
-    private static function getInvoices(?int $id = null, string $sort = "", string $dir = "",
+    protected static function getInvoices(?int $id = null, string $sort = "", string $dir = "",
                                         bool $includeWarehouse = false, int $invoiceDisplayDays = 0,
                                         bool $useIndexId = false): array
     {
@@ -446,7 +446,7 @@ class Invoice
      * @param array $invoice Reference to the array with invoice values.
      * @param array $ageInfo Updated aging information.
      */
-    private static function updateAgingValues(array &$invoice, array $ageInfo): void
+    protected static function updateAgingValues(array &$invoice, array $ageInfo): void
     {
         if (isset($invoice['owing'])) {
             $invoice['owing'] = $ageInfo['owing'];
@@ -475,7 +475,7 @@ class Invoice
      * @param float $owing Amount owing on invoice.
      * @return string Aging string (ex: 1-14, 15-30, etc).
      */
-    private static function agingWording(int $age_days, float $owing): string
+    protected static function agingWording(int $age_days, float $owing): string
     {
         $ageStr = '';
         if ($owing > 0 && $age_days > 0) {
@@ -514,7 +514,7 @@ class Invoice
      *              "aging" (aging is the wording such as 1-14).
      * @throws PdoDbException
      */
-    private static function calculateAgeDays(int $id, string $invoiceDate, float $owing, string $lastActivityDate,
+    protected static function calculateAgeDays(int $id, string $invoiceDate, float $owing, string $lastActivityDate,
                                              string $agingDate, bool $setAging): array
     {
 
@@ -684,7 +684,7 @@ class Invoice
      * @return int Unique ID of the new invoice_item record.
      * @throws PdoDbException
      */
-    private static function insertItem(array $list, ?array $taxIds): int
+    protected static function insertItem(array $list, ?array $taxIds): int
     {
         global $pdoDb;
 
@@ -1263,7 +1263,7 @@ class Invoice
      * @return float
      * @throws PdoDbException
      */
-    private static function getInvoiceTotal(int $invoiceId): float
+    protected static function getInvoiceTotal(int $invoiceId): float
     {
         global $pdoDb;
 
@@ -1323,7 +1323,7 @@ class Invoice
      * @return array Rows retrieve.
      * @throws PdoDbException
      */
-    private static function taxesGroupedForInvoice(int $invoiceId): array
+    protected static function taxesGroupedForInvoice(int $invoiceId): array
     {
         global $pdoDb;
 
@@ -1369,7 +1369,7 @@ class Invoice
      * @return array Items found
      * @throws PdoDbException
      */
-    private static function taxesGroupedForInvoiceItem(int $invoiceItemId): array
+    protected static function taxesGroupedForInvoiceItem(int $invoiceItemId): array
     {
         global $pdoDb;
 
