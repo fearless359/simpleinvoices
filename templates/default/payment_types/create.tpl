@@ -6,6 +6,7 @@
  *	    Justin Kelly, Nicolas Ruflin
  *
  *  Last edited:
+ *      20251209 by Rich Rowley to use column size layout for responsiveness and appearence.
  *      20251110 by Rich Rowley to use flex layout for responsive interface.
  * 	    20210630 by Rich Rowley to convert to grid layout
  *
@@ -18,32 +19,40 @@
 {if !empty($smarty.post.pt_description)}
     {include file="templates/default/payment_types/save.tpl"}
 {else}
-    <form name="frmpost" method="POST" id="frmpost" action="index.php?module=payment_types&amp;view=create">
-        <div class="flex__area">
-            <div class="flex__container flex__start">
-                <label for="descriptionId" class="margin__right-1">{$LANG.paymentTypeDescription}:
-                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpPaymentTypes}"
-                         src="{$helpImagePath}required-small.png" alt=""/>
-                </label>
-                <input type="text" name="pt_description" id="descriptionId" required size="30" tabindex="10"/>
+    <div class="form__container">
+        <form name="frmpost" method="POST" id="frmpost" action="index.php?module=payment_types&amp;view=create">
+            <div class="row">
+                <div class="col__25">
+                    <label for="descriptionId" class="margin__right-1">{$LANG.paymentTypeDescription}:
+                        <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpPaymentTypes}"
+                             src="{$helpImagePath}required-small.png" alt=""/>
+                    </label>
+                </div>
+                <div class="col__75">
+                    <input type="text" name="pt_description" id="descriptionId" required size="30" tabindex="10"/>
+                </div>
             </div>
-            <div class="flex__container flex__start">
-                <label for="enabledId" class="margin__right-1">{$LANG.enabled}:</label>
-                <select name="pt_enabled" id="enabledId" tabindex="20">
-                    <option value="1" selected>{$LANG.enabled}</option>
-                    <option value="0">{$LANG.disabled}</option>
-                </select>
+            <div class="row">
+                <div class="col__25">
+                    <label for="enabledId" class="margin__right-1">{$LANG.enabled}:</label>
+                </div>
+                <div class="col__75">
+                    <select name="pt_enabled" id="enabledId" tabindex="20">
+                        <option value="1" selected>{$LANG.enabled}</option>
+                        <option value="0">{$LANG.disabled}</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="align__text-center margin__top-2">
-            <button type="submit" class="positive" name="insert_preference" value="{$LANG.save}" tabindex="30">
-                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
-            </button>
-            <a href="index.php?module=payment_types&amp;view=manage" class="button negative" tabindex="40">
-                <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
-            </a>
-        </div>
-        <input type="hidden" name="op" value="create"/>
-        <input type="hidden" name="domain_id" value="{$domain_id}"/>
-    </form>
+            <div class="align__text-center margin__top-2">
+                <button type="submit" class="positive" name="insert_preference" value="{$LANG.save}" tabindex="30">
+                    <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
+                </button>
+                <a href="index.php?module=payment_types&amp;view=manage" class="button negative" tabindex="40">
+                    <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
+                </a>
+            </div>
+            <input type="hidden" name="op" value="create"/>
+            <input type="hidden" name="domain_id" value="{$domain_id}"/>
+        </form>
+    </div>
 {/if}

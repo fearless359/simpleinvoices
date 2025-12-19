@@ -2,8 +2,6 @@
     {$LANG.thankYou}&nbsp;{$LANG.beforeStarting}
 </div>
 {$buttonNumber = 1}
-
-
 <div class="flex__area">
     {if empty($billers)}
         <div class="flex__container">

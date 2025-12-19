@@ -1,5 +1,10 @@
 <?php
 
+/**
+ *  Modified 20251210 by Rich Rowley to use Invoice Display Days from the system_defaults
+ *      table to limit in
+ */
+
 namespace Inc\Claz;
 
 use NumberFormatter;
@@ -167,6 +172,7 @@ class Expense
                 new DbField('e.product_id', 'p_id'),
                 new DbField('i.id', 'iv_id'),
                 new DbField('i.index_id', 'iv_index_id'),
+                new DbField('i.date', 'iv_date'),
                 new DbField('b.name', 'b_name'),
                 new DbField('ea.name', 'ea_name'),
                 new DbField('c.name', 'c_name'),
@@ -205,10 +211,13 @@ class Expense
      * @param array|null $expense record.
      * @param bool $enabledOnly true if only enabled billers and customers should be retrieved,
      *                          false if all billers and customers should be retrieved (default).
+     * @param bool $useInvoicesDisplayDays true if invoice display days from system_default table
+     *      should be used to limit the invoices searched for. false if all invoices to be retrieved.
      * @return array Containing the keys: expense_accounts, customers, billers, invoices, products.
      * @throws PdoDbException
      */
-    public static function additionalInfo(?array $expense=null, bool $enabledOnly = false): array
+    public static function additionalInfo(?array $expense=null, bool $enabledOnly = false,
+                                          bool $useInvoicesDisplayDays = false): array
     {
         // @formatter:off
         $addInfo = [];
@@ -229,10 +238,11 @@ class Expense
                 $addInfo['expense_account'] = ExpenseAccount::getOne($expense['ea_id']);
             }
         } else {
+            $invoiceDisplayDays = $useInvoicesDisplayDays ? SystemDefaults::getInvoiceDisplayDays() : 0;
             $params = $enabledOnly ? ['enabledOnly' => 1] : [];
             $addInfo['customers']        = Customer::getAll($params);
             $addInfo['billers']          = Biller::getAll($enabledOnly);
-            $addInfo['invoices']         = Invoice::getAll();
+            $addInfo['invoices']         = Invoice::getAll('index_name', 'desc', $invoiceDisplayDays);
             $addInfo['products']         = Product::getAll(true);
             $addInfo['expense_accounts'] = ExpenseAccount::getAll();
         }

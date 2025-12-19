@@ -14,48 +14,69 @@
  *  Website:
  *      https://simpleinvoices.group*/
  *}
-<form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=payment_warehouse&amp;view=save&amp;id={$smarty.get.id|htmlSafe}">
-    <div class="flex__area">
-        <div class="flex__container flex__start">
-            <div class="bold margin__right-1">{$LANG.customerUc}:&nbsp;</div>
-            <div>{$paymentWarehouse.cname|htmlSafe}</div>
+<div class="form__container">
+    <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=payment_warehouse&amp;view=save&amp;id={$smarty.get.id|htmlSafe}">
+        <div class="row">
+            <div class="col__20">
+                <span class="label">{$LANG.customerUc}:</span>
+            </div>
+            <div class="col__80">
+                <span class="inputText">{$paymentWarehouse.cname|htmlSafe}</span>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <div class="bold margin__right-1">{$LANG.lastPaymentId}:&nbsp;</div>
-            <div>{$paymentWarehouse.last_payment_id|utilNumberTrim:0}</div>
+        <div class="row">
+            <div class="col__20">
+                <span class="label">{$LANG.lastPaymentId}:</span>
+            </div>
+            <div class="col__80">
+                <span class="inputText">{$paymentWarehouse.last_payment_id|utilNumberTrim:0}</span>
+            </div>
         </div>
         <input type="hidden" name="locale" id="localeId" value="{$paymentWarehouse.locale}">
         <input type="hidden" name="currency_code" id="currencyCodeId" value="{$paymentWarehouse.currency_code}">
         <input type="hidden" name="precision" id="precisionId" value="{$paymentWarehouse.precision}">
-        <div class="flex__container flex__start">
-            <label for="balanceId" class="margin__right-1">{$LANG.balanceUc}:</label>
-            <input type="text" name="balance" id="balanceId" class="validateNumber" required size="20" tabindex="30"
-                   {if $paymentWarehouse.balance}value="{$paymentWarehouse.balance|utilNumber:$paymentWarehouse.precision:$paymentWarehouse.locale}"{/if}/>
+        <div class="row">
+            <div class="col__20">
+                <label for="balanceId">{$LANG.balanceUc}:</label>
+            </div>
+            <div class="col__80">
+                <input type="text" name="balance" id="balanceId" class="validateNumber" required size="20" tabindex="30"
+                       {if $paymentWarehouse.balance}value="{$paymentWarehouse.balance|utilNumber:$paymentWarehouse.precision:$paymentWarehouse.locale}"{/if}/>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="pymtTypeId" class="margin__right-1">{$LANG.paymentType}:</label>
-            <select name="payment_type" id="pymtTypeId" required tabindex="40">
-                {foreach $paymentTypes as $paymentType}
-                    <option value="{$paymentType.pt_id}" {if $paymentType.pt_id == $paymentWarehouse.payment_type}selected{/if}>{$paymentType.pt_description}</option>"
-                {/foreach}
-            </select>
+        <div class="row">
+            <div class="col__20">
+                <label for="pymtTypeId">{$LANG.paymentType}:</label>
+            </div>
+            <div class="col__80">
+                <select name="payment_type" id="pymtTypeId" required tabindex="40">
+                    {foreach $paymentTypes as $paymentType}
+                        <option value="{$paymentType.pt_id}"
+                                {if $paymentType.pt_id == $paymentWarehouse.payment_type}selected{/if}>{$paymentType.pt_description}</option>
+                    {/foreach}
+                </select>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="checkNumberId" class="margin__right-1">{$LANG.checkNumberUc}:</label>
-            <input type="text" name="check_number" id="checkNumberId" class="validateCheckNumber" size="20" tabindex="50"
-                   value="{$paymentWarehouse.check_number}"/>
+        <div class="row">
+            <div class="col__20">
+                <label for="checkNumberId">{$LANG.checkNumberUc}:</label>
+            </div>
+            <div class="col__80">
+                <input type="text" name="check_number" id="checkNumberId" class="validateCheckNumber" size="20"
+                       tabindex="50" value="{$paymentWarehouse.check_number}"/>
+            </div>
         </div>
-    </div>
-    <br/>
-    <div class="align__text-center">
-        <button type="submit" class="positive" name="savePaymentWarehouse" value="{$LANG.save}" tabindex="100">
-            <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
-        </button>
-        <a href="index.php?module=payment_warehouse&amp;view=manage" class="button negative" tabindex="110">
-            <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
-        </a>
-    </div>
-    <input type="hidden" name="op" value="edit">
-    <br/>
-</form>
+        <br/>
+        <div class="align__text-center">
+            <button type="submit" class="positive" name="savePaymentWarehouse" value="{$LANG.save}" tabindex="100">
+                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
+            </button>
+            <a href="index.php?module=payment_warehouse&amp;view=manage" class="button negative" tabindex="110">
+                <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
+            </a>
+        </div>
+        <input type="hidden" name="op" value="edit">
+        <br/>
+    </form>
+</div>

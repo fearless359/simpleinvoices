@@ -334,9 +334,6 @@ function export_invoice(row_number, spreadsheet, wordprocessor) {
         overlay: {
             opacity: 0.5,
             background: "black"
-        },
-        close: function () {
-            $(this).dialog("destroy")
         }
     });
 }

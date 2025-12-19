@@ -15,8 +15,14 @@ Util::directAccessAllowed();
 $expenseId = $_GET['id'];
 
 $expense = Expense::getOne($expenseId);
+
+$locale = $expense['locale'];
+$formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+$precision = $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS);
+$expense['precision'] = $precision;
+
 try {
-    $detail = Expense::additionalInfo();
+    $detail = Expense::additionalInfo(null, false, true);
     $detail['expense_tax'] = ExpenseTax::getAll($expenseId);
     $detail['expense_tax_total'] = $expense['amount'] + ExpenseTax::getSum($expenseId);
     $detail['expense_tax_grouped'] = ExpenseTax::grouped($expenseId);

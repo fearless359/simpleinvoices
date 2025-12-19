@@ -16,20 +16,33 @@
  *  Website:
  *      https://simpleinvoices.group
  *}
-<form name="frmpost" method="POST" id="frmpost" action="index.php?module=invoices&amp;view=save">
-    <div class='flex__area'>
-        <div class="flex__container flex__start">
-            <div class="bold margin__right-1">{$preference.pref_inv_wording|htmlSafe} {$LANG.numberShort}:</div>
-            <div>{if !$invoice.id}{$LANG.copiedFrom}&nbsp;{/if}{$invoice.index_id|htmlSafe}</div>
+<div class="form__container">
+    <form name="frmpost" method="POST" id="frmpost" action="index.php?module=invoices&amp;view=save">
+        <div class='row'>
+            <div class="col__20">
+                <label for="invoice_number">
+                    {if !$invoice.id}{$LANG.copiedFrom}&nbsp;{/if}{$preference.pref_inv_wording|htmlSafe}
+                    &nbsp;{$LANG.numberShort}:
+                </label>
+            </div>
+            <div class="col__80">
+                <input type="text" size="10" width="14" id="invoice_number" value="{$invoice.index_id|htmlSafe}" disabled/>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="dateId" class="margin__right-1">{$LANG.dateFormatted}:</label>
-            <input type="text" size="10" class="date-picker" name="date" id="dateId" required readonly
-                   value="{$invoice.date|htmlSafe}"/>
+        <div class="row">
+            <div class="col__20">
+                <label for="dateId">{$LANG.dateFormatted}:</label>
+            </div>
+            <div class="col__80">
+                <input type="text" size="10" class="date-picker" name="date" id="dateId" required readonly
+                       value="{$invoice.date|htmlSafe}"/>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="billerId" class="margin__right-1">{$LANG.billerUc}:</label>
-            <div>
+        <div class="row">
+            <div class="col__20">
+                <label for="billerId">{$LANG.billerUc}:</label>
+            </div>
+            <div class="col__80">
                 {if !isset($billers) }
                     <em>{$LANG.noBillers}</em>
                 {else}
@@ -42,9 +55,11 @@
                 {/if}
             </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="customerId" class="margin__right-1">{$LANG.customerUc}:</label>
-            <div>
+        <div class="row">
+            <div class="col__20">
+                <label for="customerId">{$LANG.customerUc}:</label>
+            </div>
+            <div class="col__80">
                 {if !isset($customers)}
                     <em>{$LANG.noCustomers}</em>
                 {elseif $isDefaultInvoice == true}
@@ -84,5 +99,5 @@
         <input type="hidden" id="typeId" name="type"
                value="{if isset($invoice.type_id)}{$invoice.type_id|htmlSafe}{/if}"/>
         <input type="hidden" id="max_items" name="max_items" value="{if isset($lines)}{$lines|htmlSafe}{/if}"/>
-    </div>
-</form>
+    </form>
+</div>

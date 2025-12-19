@@ -6,9 +6,11 @@
         <div>{$template|htmlSafe}</div>
     </div>
 {/if}
-<div class="flex__container flex__start">
-    <label for="billerId" class="margin__right-1">{$LANG.billerUc}:</label>
-    <div>
+<div class="row">
+    <div class="col__20">
+        <label for="billerId">{$LANG.billerUc}:</label>
+    </div>
+    <div class="col__80">
         {if !isset($billers) }
             <em>{$LANG.noBillers}</em>
         {else}
@@ -22,9 +24,11 @@
         {/if}
     </div>
 </div>
-<div class="flex__container flex__start">
-    <label for="customerId" class="margin__right-1">{$LANG.customerUc}:</label>
-    <div>
+<div class="row">
+    <div class="col__20">
+        <label for="customerId">{$LANG.customerUc}:</label>
+    </div>
+    <div class="col__80">
         {if !isset($customers) }
             <em>{$LANG.noCustomers}</em>
         {else}
@@ -40,12 +44,14 @@
 </div>
 {* section for sub_customer *}
 {if ($defaults.sub_customer)}
-    <div class="flex__container flex__start">
-        <label for="subCustId" class="margin__right-1">{$LANG.subCustomer}:</label>
-        <div>
+    <div class="row">
+        <div class="col__20">
+            <label for="subCustId">{$LANG.subCustomer}:</label>
+        </div>
+        <div class="col__80">
             {$displayNone = false}
             {if empty($subCustomers)}
-                <em id="noSubCustomers" style="display:inline-block;">{$LANG.noSubCustomers}</em>
+                <em id="noSubCustomers" class="margin__top-1-5" style="display:inline-block;">{$LANG.noSubCustomers}</em>
                 {$displayNone = true}
             {/if}
             <select name="custom_field1" id="subCustId" {if $displayNone}style="display:none;"{/if}>
@@ -59,8 +65,12 @@
         </div>
     </div>
 {/if}
-<div class="flex__container flex__start">
-    <label for="date1" class="margin__right-1">{$LANG.dateFormatted}:</label>
-    <input type="text" name="date" id="date1" required readonly size="10" class="date-picker"
-           value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>
+<div class="row">
+    <div class="col__20">
+        <label for="date1">{$LANG.dateFormatted}:</label>
+    </div>
+    <div class="col__80">
+        <input type="text" name="date" id="date1" required readonly size="10" class="date-picker"
+               value="{if isset($smarty.get.date)}{$smarty.get.date}{else}{$smarty.now|date_format:"%Y-%m-%d"}{/if}"/>
+    </div>
 </div>

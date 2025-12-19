@@ -3,6 +3,7 @@
 use Inc\Claz\Cron;
 use Inc\Claz\Invoice;
 use Inc\Claz\PdoDbException;
+use Inc\Claz\SystemDefaults;
 
 global $smarty;
 
@@ -12,13 +13,30 @@ $cron = Cron::getOne($_GET['id']);
 $smarty->assign('cron', $cron);
 
 try {
-    $invoice = Invoice::getOne($cron['invoice_id']);
-    $domainId = $invoice['domain_id'];
-    $smarty->assign('invoiceType', $invoice['type_id']);
+    $invoiceDisplayDays = SystemDefaults::getInvoiceDisplayDays();
+
+    $smarty->assign("invoiceDisplayDays", $invoiceDisplayDays);
+
+    $assignedInvoice = Invoice::getOne($cron['invoice_id']);
+
+    $domainId = $assignedInvoice['domain_id'];
+    $smarty->assign('invoiceType', $assignedInvoice['type_id']);
 
     $smarty->assign('cronInvoiceItemsCount', count(Cron::getCronInvoiceItems($id, $domainId)));
 
-    $smarty->assign('invoice_all', Invoice::getAll());
+    $invoices = Invoice::getAll('index_name', 'desc', $invoiceDisplayDays);
+    $containsInvoice = false;
+    foreach ($invoices as $invoice) {
+        if ($invoice['id'] == $assignedInvoice['id']) {
+            $containsInvoice = true;
+            break;
+        }
+    }
+    if (!$containsInvoice) {
+        $invoices[] = $assignedInvoice;
+    }
+
+    $smarty->assign('invoice_all', $invoices);
 } catch (PdoDbException $pde) {
     error_log("edit.php Invoice::getAll() exception: {$pde->getMessage()}");
 }

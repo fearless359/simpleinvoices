@@ -8,10 +8,10 @@ form {
 input,
 select,
 textarea {
-  background: v.$colorWhite url(../images/text-bg.gif) repeat-x scroll center top;
+  background: v.$colorWhite url(images/text-bg.gif) repeat-x scroll center top;
   border: 1px solid v.$colorGreyLight-13;
   margin: 1px;
-  padding: 0.2em 0.3em;
+  padding: 0.2rem 0.3rem;
   font-size: 1.6rem;
 }
 
@@ -25,11 +25,16 @@ label {
 }
 
 /* Fix webkit 'black background on text input bug (mostly in Mac IDEs) */
-input[type="text"] {
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+.inputText {
   -webkit-appearance: none;
 }
 
-  input[type="checkbox"] {
+input[type="checkbox"] {
   width: 20px;
   height: 20px;
 }
@@ -84,6 +89,8 @@ input[type="text"] {
   &__0-5 { padding: .5rem; }
 
   &__top-1 { padding-top: 1rem; }
+
+  &__top-1-5 { padding-top: 1.5rem; }
 
   &__right {
     &-1 { padding-right: 1rem; }
@@ -203,6 +210,222 @@ div {
   .transform {
     &__uppercase {
       text-transform: uppercase;
+    }
+  }
+}
+
+/******************************************/
+/* Style the container */
+.form__container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 2rem;
+
+  & h3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    min-width: 13rem;
+  }
+
+  & trix-editor {
+    background-color: v.$colorWhite;
+  }
+
+  & label, & .label, & .labelTotal {
+    font-weight: bold;
+    margin-top: .5rem;
+  }
+
+  & .labelTotal {
+    float: right;
+  }
+
+  & .showHide {
+    float: right;
+    margin-top: 2rem;
+    margin-left: auto;
+  }
+
+  /* Style the label to display next to the inputs */
+  & label, .label {
+    display: inline-block;
+    padding: 1rem 1rem 1rem 0;
+  }
+
+  & .inputText {
+    position: relative;
+    top: 1.6rem;
+    left: 0.5rem;
+  }
+
+  & input[type=text],
+  & input[type="tel"],
+  & input[type="email"],
+  & input[type="url"],
+  & input[type="password"],
+  & select,
+  & textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+
+  & input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 1.25rem;
+  }
+
+  /* Style the submit button */
+  & input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+  }
+
+  /* Floating column for labels: 5% width */
+  & .col__5 {
+    float: left;
+    width: 5%;
+  }
+
+  /* Floating column for labels: 10% width */
+  & .col__10 {
+    float: left;
+    width: 10%;
+    margin-top: 0.5rem;
+  }
+
+  /* Floating column for labels: 15% width */
+  & .col__15 {
+    float: left;
+    width: 15%;
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+
+  /* Floating column for labels: 20% width */
+  & .col__20 {
+    float: left;
+    width: 20%;
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+
+  /* Floating column for labels: 25% width */
+  & .col__25 {
+    float: left;
+    width: 25%;
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+
+  /* Floating column for labels: 30% width */
+  & .col__30 {
+    float: left;
+    width: 30%;
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+
+  /* Floating column for inputs: 40% width */
+  & .col__40 {
+    float: left;
+    width: 50%;
+    margin-top: 0.5rem;
+  }
+
+  /* Floating column for inputs: 50% width */
+  & .col__50 {
+    float: left;
+    width: 50%;
+    margin-top: 0.5rem;
+  }
+
+  /* Floating column for inputs: 70% width */
+  & .col__70 {
+    float: left;
+    width: 70%;
+    margin-top: 0.5rem;
+  }
+
+  /* Floating column for inputs: 75% width */
+  & .col__75 {
+    float: left;
+    width: 75%;
+    margin-top: 0.5rem;
+  }
+
+  /* Floating column for inputs: 80% width */
+  & .col__80 {
+    float: left;
+    width: 80%;
+    margin-top: 0.5rem;
+  }
+
+  /* Floating column for inputs: 95% width */
+  & .col__95 {
+    float: left;
+    width: 95%;
+    margin-top: 0.5rem;
+  }
+
+  /* Floating column for inputs: 100% width */
+  & .col__100 {
+    float: left;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  /* Clear floats after the columns */
+  & .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@media screen and (max-width: v.$mediaMaxWidth) {
+  .form__container {
+    & .inputText {
+      top: 0;
+      left: 0;
+    }
+
+    & .showHide {
+      float: left;
+      margin-top: 1rem;
+      margin-left: 0;
+    }
+
+    & .align__text-right {
+      text-align: left !important;
+    }
+
+    & .col__5,
+    & .col__10,
+    & .col__15,
+    & .col__20,
+    & .col__25,
+    & .col__30,
+    & .col__40,
+    & .col__50,
+    & .col__70,
+    & .col__75,
+    & .col__80,
+    & .col__100,
+    & input[type=submit] {
+      width: 100%;
+      margin-top: 0;
+      float: left;
+      text-align: left;
     }
   }
 }

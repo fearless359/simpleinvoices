@@ -2,6 +2,7 @@
 
 namespace Inc\Claz;
 
+use DateInterval;
 use Mpdf\Output\Destination;
 
 use DateTime;
@@ -27,11 +28,12 @@ class Cron
 
     /**
      * Retrieve all records for the current user's domain
+     * @param int $invoiceDisplayDays If specified, the days in the past invoice will be retrieved for.
      * @return array
      */
-    public static function getAll(): array
+    public static function getAll(int $invoiceDisplayDays = 0): array
     {
-        return self::getCrons();
+        return self::getCrons(0, $invoiceDisplayDays);
     }
 
     /**
@@ -42,7 +44,7 @@ class Cron
     {
         global $LANG;
 
-        $rows = self::getAll();
+        $rows = self::getCrons();
         $tableRows = [];
         foreach ($rows as $row) {
             $action =
@@ -79,16 +81,17 @@ class Cron
 
     /**
      * Standard getter for cron records.
-     * @param int|null $id If not null, the id of the record to retrieve.
+     * @param int $id If not 0, the id of the record to retrieve.
+     * @param int $invoiceDisplayDays If specified, the days in the past invoice will be retrieved for.
      * @return array
      */
-    private static function getCrons(?int $id = null): array
+    private static function getCrons(int $id = 0, int $invoiceDisplayDays = 0): array
     {
         global $LANG, $pdoDb;
 
         $crons = [];
         try {
-            if (isset($id)) {
+            if (!empty($id)) {
                 $pdoDb->addSimpleWhere('cron.id', $id, 'AND');
             }
             $pdoDb->addSimpleWhere("cron.domain_id", DomainId::get());
@@ -97,9 +100,18 @@ class Cron
             $se = new Select($fn, null, null, null, "index_name");
             $pdoDb->addToSelectStmts($se);
 
+            $onClause = new OnClause();
+            if ($invoiceDisplayDays > 0) {
+                $now = new DateTime();
+                $back = $now->sub(DateInterval::createFromDateString("$invoiceDisplayDays days"));
+                $displayLimitDt = $back->format('Y-m-d G:i:s');
+                $onClause->addItem(new WhereItem(false,'iv.date', ">=", $displayLimitDt, false, 'AND'));
+            }
+
+            $onClause->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");
+            $onClause->addSimpleItem("cron.domain_id", new DbField("iv.domain_id"));
             $jn = new Join('INNER', 'invoices', 'iv');
-            $jn->addSimpleItem("cron.invoice_id", new DbField("iv.id"), "AND");
-            $jn->addSimpleItem("cron.domain_id", new DbField("iv.domain_id"));
+            $jn->setOnClause($onClause);
             $pdoDb->addToJoins($jn);
 
             $jn = new Join('INNER', 'customers', 'cust');
@@ -147,7 +159,7 @@ class Cron
         if (empty($crons)) {
             return [];
         }
-        return isset($id) ? $crons[0] : $crons;
+        return !empty($id) ? $crons[0] : $crons;
     }
 
     /**

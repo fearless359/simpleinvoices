@@ -6,9 +6,10 @@
  *   Justin Kelly, Nicolas Ruflin, Ap.Muthu
  *
  *  Last Modified:
- *      2025-11-10 by Rich Rowley to use flex layout for responsive interface.
- *      2021-06-15 by Richard Rowley to use grid layout.
- *      2018-10-20 by Richard Rowley
+ *      20251207 by Rich Rowley to use column size layout for responsiveness and appearence.
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
+ *      20210615 by Richard Rowley to use grid layout.
+ *      20181020 by Richard Rowley
  *
  * License:
  *     GPL v3 or above
@@ -78,129 +79,145 @@
     </div>
 </div>
 <br/>
-<!--Actions heading - start-->
-{include file="$path/quickViewInvoiceView.tpl"}
-{if $invoice.type_id == TOTAL_INVOICE}
-    {include file="$path/quickViewTotal.tpl"}
-{elseif $invoice.type_id == ITEMIZED_INVOICE}
-    {include file="$path/quickViewItemized.tpl"}
+<div class="form__container">
+    <!--Actions heading - start-->
+    {include file="$path/quickViewInvoiceView.tpl"}
+    {if $invoice.type_id == TOTAL_INVOICE}
+        {include file="$path/quickViewTotal.tpl"}
+    {elseif $invoice.type_id == ITEMIZED_INVOICE}
+        {include file="$path/quickViewItemized.tpl"}
 
-    {foreach $invoiceItems as $invoiceItem }
-        {* Set here because it can't be tested in included file *}
-        {$even = $invoiceItem@iteration is div by 2}
-        {include file="$path/quickViewForeachItemized.tpl"}
-    {/foreach}
-    {if !empty($invoice.note)}
+        {foreach $invoiceItems as $invoiceItem }
+{*            Set here because it can't be tested in included file *}
+            {$even = $invoiceItem@iteration is div by 2}
+            {include file="$path/quickViewForeachItemized.tpl"}
+        {/foreach}
+        {if !empty($invoice.note)}
+            <br/>
+            <div class="row">
+                <div class="col__20">
+                    <span class="label">{$LANG.notes}:</span>
+                </div>
+                <div class="col__75">
+                    <span class="abbrevNotes inputText">{$invoice.note|truncate:80:"...":true|outHtml}</span>
+                    <span class="fullNotes inputText" style="display: none;">{$invoice.note|outHtml}</span>
+                </div>
+                <div class="col__5">
+                    <span class="showHide">
+                        <a href='#' class="showNotes"
+                           onclick="$('.fullNotes').show();$('.abbrevNotes').hide();$('.hideNotes').show();$('.showNotes').hide();">
+                            <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
+                        </a>
+                        <a href='#' class="hideNotes" style="display:none;"
+                           onclick="$('.fullNotes').hide();$('.abbrevNotes').show();$('.hideNotes').hide();$('.showNotes').show();">
+                            <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        {/if}
         <br/>
-        <div class="flex__area">
-            <div class="flex__container flex__start">
-                <span class="bold">{$LANG.notes}:</span>
-                <span class="float__rignt align__right">
-                    <a href='#' class="showNotes"
-                       onclick="$('.fullNotes').show();$('.abbrevNotes').hide();$('.hideNotes').show();$('.showNotes').hide();">
-                        <img src="images/magnifier_zoom_in.png" alt="{$LANG.showDetails}"/>
-                    </a>
-                    <a href='#' class="hideNotes" style="display:none;"
-                       onclick="$('.fullNotes').hide();$('.abbrevNotes').show();$('.hideNotes').hide();$('.showNotes').show();">
-                        <img src="images/magnifier_zoom_out.png" alt="{$LANG.hideDetails}"/>
-                    </a>
-                </span>
+        {if !empty($invoice.sales_representative)}
+            <div class="row">
+                <div class="col__20">
+                    <span class="label">{$LANG.salesRepresentative}:</span>
+                </div>
+                <div class="col__75">
+                    <span class="inputText">{$invoice.sales_representative|htmlSafe}</span>
+                </div>
             </div>
-            <div class="flex__container flex__start">
-                <span class="abbrevNotes">{$invoice.note|truncate:80:"...":true|outHtml}</span>
-                <span class="fullNotes" style="display: none;">{$invoice.note|outHtml}</span>
-            </div>
-        </div>
+        {/if}
+        {* end itemized invoice *}
     {/if}
-    <br/>
-    {if !empty($invoice.sales_representative)}
-        <div class="flex__area">
-            <div class="flex__container flex__start">
-                <div class="bold margin__right-1">{$LANG.salesRepresentative}:</div>
-                <div>{$invoice.sales_representative|htmlSafe}</div>
-            </div>
-        </div>
-    {/if}
-    {* end itemized invoice *}
-{/if}
-<div class="flex__area">
     {$customFields.1}
     {$customFields.2}
     {$customFields.3}
     {$customFields.4}
-</div>
-{* tax section - start --------------------- *}
-{if $invoiceNumberOfTaxes > 0}
-    <div class="grid__area">
-        <div class="grid__container grid__head-10">
-            <div class="cols__1-span-9 bold align__text-right">{$LANG.subtotalUc}:</div>
-            <div class="cols__10-span-1 align__text-right {if $invoiceNumberOfTaxes > 1}underline{/if}">
-                {$invoice.gross|utilCurrency:$locale:$currencyCode}
+    {* tax section - start --------------------- *}
+    {if $invoiceNumberOfTaxes > 0}
+        <div class="row">
+            <div class="col__80">
+                <div class="bold align__text-right">{$LANG.subtotalUc}:</div>
+            </div>
+            <div class="col__20">
+                <div class="align__text-right {if $invoiceNumberOfTaxes > 1}underline{/if}">
+                    {$invoice.gross|utilCurrency:$locale:$currencyCode}
+                </div>
             </div>
         </div>
         {foreach $invoice.tax_grouped as $taxg}
-            <div class="grid__container grid__head-10">
-                <div class="cols__1-span-9 bold align__text-right">{$taxg.tax_name|htmlSafe}:</div>
-                <div class="cols__10-span-1 align__text-right {if $taxg@last}underline{/if}">
-                    {$taxg.tax_amount|utilCurrency:$locale:$currencyCode}
+            <div class="row">
+                <div class="col__80">
+                    <div class="bold align__text-right">{$taxg.tax_name|htmlSafe}:</div>
+                </div>
+                <div class="col__20">
+                    <div class="align__text-right {if $taxg@last}underline{/if}">
+                        {$taxg.tax_amount|utilCurrency:$locale:$currencyCode}
+                    </div>
                 </div>
             </div>
         {/foreach}
-        <div class="grid__container grid__head-10">
-            <div class="cols__1-span-9 bold align__text-right">{$LANG.taxTotal}:</div>
-            <div class="cols__10-span-1 align__text-right underline_double">
-                {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
+        <div class="row">
+            <div class="col__80">
+                <div class="bold align__text-right">{$LANG.taxTotal}:</div>
+            </div>
+            <div class="col__20">
+                <div class="align__text-right underline_double">
+                    {$invoice.total_tax|utilCurrency:$locale:$currencyCode}
+                </div>
             </div>
         </div>
-    </div>
-{/if}
-{* tax section - end *}
-<div class="flex__area">
-    <div class="flex__container flex__end">
-        <div class="bold margin__right-1">{$LANG.totalUc} {$preference.pref_inv_wording|htmlSafe} {$LANG.amountUc}:</div>
-        <div class="bold float__right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
-    </div>
-</div>
-<br/>
-<div class="grid__area-totals">
-    <h4>{$LANG.financialStatus}</h4>
-    <div class="grid__area-totals--financial">
-        <div class="grid__area-totals--financial--area">
-            <h5>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$invoice.index_id|htmlSafe}</h5>
-            <div class="grid__area-totals--financial--invoice-box1">
-                <div class="bold align__text-right">{$LANG.totalUc}</div>
-                <div class="bold align__text-right">
-                    <a href="index.php?module=payments&amp;view=manage&amp;id={$invoice.id|urlEncode}">
-                        {$LANG.paidUc}
-                    </a>
-                </div>
-                <div class="bold align__text-right">{$LANG.owingUc}</div>
-                <div class="bold align__text-right">{$LANG.age}
-                    <img class="tooltip" title="{$LANG.helpAge}" src="{$helpImagePath}help-small.png" alt=""/>
-                </div>
-                <div class="align__text-right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
-                <div class="align__text-right">{$invoice.paid|utilCurrency:$locale:$currencyCode}</div>
-                <div class="align__text-right">{$invoice.owing|utilCurrency:$locale:$currencyCode}</div>
-                <div class="align__text-right">{$invoiceAge|htmlSafe}</div>
-            </div>
+    {/if}
+    {* tax section - end *}
+    <div class="row">
+        <div class="col__80">
+            <span class="labelTotal">{$LANG.totalUc}&nbsp;{$preference.pref_inv_wording|htmlSafe}&nbsp;{$LANG.amountUc}:</span>
         </div>
-        <div class="grid__area-totals--financial--area">
-            <h5>
-                <a href="index.php?module=customers&amp;view=view&amp;id={$customer.id|urlEncode}">
-                    {$LANG.customerAccount}
-                </a>
-            </h5>
-            <div class="grid__area-totals--financial--invoice-box2">
-                <div class="bold align__text-right">{$LANG.totalUc}</div>
-                <div class="bold align__text-right">
-                    <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlEncode}">
-                        {$LANG.paidUc}
-                    </a>
+        <div class="col__20">
+            <span class="labelTotal">{$invoice.total|utilCurrency:$locale:$currencyCode}</span>
+        </div>
+    </div>
+    <br/>
+    <div class="grid__area-totals">
+        <h4>{$LANG.financialStatus}</h4>
+        <div class="grid__area-totals-financial">
+            <div class="grid__area-totals-financial-area">
+                <h5>{$preference.pref_inv_wording|htmlSafe}&nbsp;{$invoice.index_id|htmlSafe}</h5>
+                <div class="grid__area-totals-financial-invoice-box1">
+                    <div class="bold align__text-right">{$LANG.totalUc}</div>
+                    <div class="bold align__text-right">
+                        <a href="index.php?module=payments&amp;view=manage&amp;id={$invoice.id|urlEncode}">
+                            {$LANG.paidUc}
+                        </a>
+                    </div>
+                    <div class="bold align__text-right">{$LANG.owingUc}</div>
+                    <div class="bold align__text-right">{$LANG.age}
+                        <img class="tooltip" title="{$LANG.helpAge}" src="{$helpImagePath}help-small.png" alt=""/>
+                    </div>
+                    <div class="align__text-right">{$invoice.total|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="align__text-right">{$invoice.paid|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="align__text-right">{$invoice.owing|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="align__text-right">{$invoiceAge|htmlSafe}</div>
                 </div>
-                <div class="bold align__text-right">{$LANG.owingUc}</div>
-                <div class="align__text-right">{$customerAccount.total|utilCurrency:$locale:$currencyCode}</div>
-                <div class="align__text-right">{$customerAccount.paid|utilCurrency:$locale:$currencyCode}</div>
-                <div class="align__text-right">{$customerAccount.owing|utilCurrency:$locale:$currencyCode}</div>
+            </div>
+            <div class="grid__area-totals-financial-area">
+                <h5>
+                    <a href="index.php?module=customers&amp;view=view&amp;id={$customer.id|urlEncode}">
+                        {$LANG.customerAccount}
+                    </a>
+                </h5>
+                <div class="grid__area-totals-financial-invoice-box2">
+                    <div class="bold align__text-right">{$LANG.totalUc}</div>
+                    <div class="bold align__text-right">
+                        <a href="index.php?module=payments&amp;view=manage&amp;c_id={$customer.id|urlEncode}">
+                            {$LANG.paidUc}
+                        </a>
+                    </div>
+                    <div class="bold align__text-right">{$LANG.owingUc}</div>
+                    <div class="align__text-right">{$customerAccount.total|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="align__text-right">{$customerAccount.paid|utilCurrency:$locale:$currencyCode}</div>
+                    <div class="align__text-right">{$customerAccount.owing|utilCurrency:$locale:$currencyCode}</div>
+                </div>
             </div>
         </div>
     </div>

@@ -6,6 +6,7 @@
  *      Justin Kelly, Nicolas Ruflin, Soif, Rich Rowley
  *
  *  Last edited:
+ *      20251215 by Rich Rowley to use column size layout for responsiveness and appearence.
  *      20251110 by Rich Rowley to use flex layout for responsive interface.
  * 	    20210701 by Rich Rowley to convert to grid layout
  *
@@ -52,111 +53,145 @@
         }
     </script>
 {/literal}
-<form name="frmpost" method="POST" id="frmpost"
-      action="index.php?module=user&amp;view=save&amp;username={$user.username|urlEncode}">
-    <div class="flex__area">
-        <div class="flex__container flex__start">
-            <label for="userNameId" class="margin__right-1">{$LANG.username}:
-                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpUsername}"
-                     src="{$helpImagePath}required-small.png" alt=""/>
-            </label>
-            <input type="text" name="username" id="userNameId" autocomplete="off"
-                   required tabindex="10" required
-                   value="{if isset($user.username)}{$user.username|htmlSafe}{/if}" size="50" id="username"
-                   pattern="{$usernamePattern}" title="See help for details." autofocus
-                   {if isset($smarty.session.role_name) &&
-                        ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}readonly{/if}/>
+<div class="form__container">
+    <form name="frmpost" method="POST" id="frmpost"
+          action="index.php?module=user&amp;view=save&amp;username={$user.username|urlEncode}">
+        <div class="row">
+            <div class="col__25">
+                <label for="userNameId">{$LANG.username}:
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpUsername}"
+                         src="{$helpImagePath}required-small.png" alt=""/>
+                </label>
+            </div>
+            <div class="col__75">
+                <input type="text" name="username" id="userNameId" autocomplete="off"
+                       required tabindex="10" required
+                       value="{if isset($user.username)}{$user.username|htmlSafe}{/if}" size="50" id="username"
+                       pattern="{$usernamePattern}" title="See help for details." autofocus
+                       {if isset($smarty.session.role_name) &&
+                       ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}readonly{/if}/>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="password_id" class="margin__right-1">{$LANG.newPassword}:
-                <img class="tooltip" title="{$LANG.helpNewPassword}" src="{$helpImagePath}help-small.png" alt=""/>
-            </label>
-            <input type="password" name="password" id="password_id" size="50" tabindex="20"
-                   pattern="{$pwd_pattern}" title="See help for details."/>
+        <div class="row">
+            <div class="col__25">
+                <label for="password_id">{$LANG.newPassword}:
+                    <img class="tooltip" title="{$LANG.helpNewPassword}" src="{$helpImagePath}help-small.png" alt=""/>
+                </label>
+            </div>
+            <div class="col__75">
+                <input type="password" name="password" id="password_id" size="50" tabindex="20"
+                       pattern="{$pwd_pattern}" title="See help for details."/>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="confirm_pwd_id" class="margin__right-1">{$LANG.confirmPassword}:
-                <img class="tooltip" title="{$LANG.helpConfirmPassword}" src="{$helpImagePath}help-small.png" alt=""/>
-            </label>
-            <input type="password" name="confirm_password" id="confirm_pwd_id" size="50" tabindex="30"
-                   pattern="{$pwd_pattern}" title="See help for details"/>
+        <div class="row">
+            <div class="col__25">
+                <label for="confirm_pwd_id">{$LANG.confirmPassword}:
+                    <img class="tooltip" title="{$LANG.helpConfirmPassword}" src="{$helpImagePath}help-small.png"
+                         alt=""/>
+                </label>
+            </div>
+            <div class="col__75">
+                <input type="password" name="confirm_password" id="confirm_pwd_id" size="50" tabindex="30"
+                       pattern="{$pwd_pattern}" title="See help for details"/>
+            </div>
         </div>
-        <div class="flex__container flex__start">
-            <label for="email" class="margin__right-1">{$LANG.email}:
-                <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailAddress}" src="{$helpImagePath}required-small.png" alt=""/>
-            </label>
-            <input type="email" name="email" id="email" required size="50" tabindex="40"
-                   placeholder="{$PLACEHOLDERS['email']}" title="See help for details" autocomplete="off"
-                   value="{if isset($user.email)}{$user.email|htmlSafe}{/if}"/>
+        <div class="row">
+            <div class="col__25">
+                <label for="email">{$LANG.email}:
+                    <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpEmailAddress}"
+                         src="{$helpImagePath}required-small.png" alt=""/>
+                </label>
+            </div>
+            <div class="col__75">
+                <input type="email" name="email" id="email" required size="50" tabindex="40"
+                       placeholder="{$PLACEHOLDERS['email']}" title="See help for details" autocomplete="off"
+                       value="{if isset($user.email)}{$user.email|htmlSafe}{/if}"/>
+            </div>
         </div>
-        <div class="flex__container flex__start"
-            {if isset($smarty.session.role_name) &&
-                ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
-            <label for="roleId1" class="margin__right-1">{$LANG.role}:
-                <img class="tooltip" title="{$LANG.helpUserRole}" src="{$helpImagePath}help-small.png" alt=""/>
-            </label>
-            <select name="role_id" id="roleId1"tabindex="50" onchange="setUserIdList();" title="See help for details">
-                {foreach $roles as $role}
-                    <option {if $role.id == $user.role_id}selected{/if} value="{if isset($role.id)}{$role.id|htmlSafe}{/if}">
-                        {$role.name|htmlSafe}
-                    </option>
-                {/foreach}
-            </select>
+        <div class="row"
+             {if isset($smarty.session.role_name) && ($smarty.session.role_name == 'biller' ||
+             $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
+            <div class="col__25">
+                <label for="roleId1">{$LANG.role}:
+                    <img class="tooltip" title="{$LANG.helpUserRole}" src="{$helpImagePath}help-small.png" alt=""/>
+                </label>
+            </div>
+            <div class="col__75">
+                <select name="role_id" id="roleId1" tabindex="50" onchange="setUserIdList();"
+                        title="See help for details">
+                    {foreach $roles as $role}
+                        <option {if $role.id == $user.role_id}selected{/if}
+                                value="{if isset($role.id)}{$role.id|htmlSafe}{/if}">
+                            {$role.name|htmlSafe}
+                        </option>
+                    {/foreach}
+                </select>
+            </div>
         </div>
-        <div class="flex__container flex__start"
-            {if isset($smarty.session.role_name) &&
-                ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
-            <label for="userId1" class="margin__right-1">{$LANG.userId}:
-                <img class="tooltip" title="{$LANG.helpUserId}" src="{$helpImagePath}help-small.png" alt=""/>
-            </label>
-            <select name="user_id" id="userId1"tabindex="60" title="See help for details"
-                    {if isset($smarty.session.role_name) &&
+        <div class="row"
+             {if isset($smarty.session.role_name) &&
+             ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
+            <div class="col__25">
+                <label for="userId1">{$LANG.userId}:
+                    <img class="tooltip" title="{$LANG.helpUserId}" src="{$helpImagePath}help-small.png" alt=""/>
+                </label>
+            </div>
+            <div class="col__75">
+                <select name="user_id" id="userId1" tabindex="60" title="See help for details"
+                        {if isset($smarty.session.role_name) &&
                         $smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer'}disabled{/if}>
-                {if $user.role_name == "customer"}
-                    {assign var="ids" value="~"|explode:$cust}
-                    {foreach $ids as $id}
-                        {assign var="pts" value=" - "|explode:$id}
-                        {assign var="uid" value=$pts[0]-1}
-                        <option {if $user.user_id == $pts[0]|strip}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
-                            {if isset($id)}{$id|htmlSafe}{/if}
-                        </option>
-                    {/foreach}
-                {elseif $user.role_name == "biller"}
-                    {assign var="ids" value="~"|explode:$bilr}
-                    {foreach $ids as $id}
-                        {assign var="pts" value=" - "|explode:$id}
-                        {assign var="uid" value=$pts[0]-1}
-                        <option {if $user.user_id == $pts[0]|strip}selected{/if} value="{if isset($uid)}{$uid|htmlSafe}{/if}">
-                            {if isset($id)}{$id|htmlSafe}{/if}
-                        </option>
-                    {/foreach}
-                {else}
-                    <option selected value="0">{if isset($user_id_desc)}{$user_id_desc|htmlSafe}{/if}</option>
-                {/if}
-            </select>
+                    {if $user.role_name == "customer"}
+                        {assign var="ids" value="~"|explode:$cust}
+                        {foreach $ids as $id}
+                            {assign var="pts" value=" - "|explode:$id}
+                            {assign var="uid" value=$pts[0]-1}
+                            <option {if $user.user_id == $pts[0]|strip}selected{/if}
+                                    value="{if isset($uid)}{$uid|htmlSafe}{/if}">
+                                {if isset($id)}{$id|htmlSafe}{/if}
+                            </option>
+                        {/foreach}
+                    {elseif $user.role_name == "biller"}
+                        {assign var="ids" value="~"|explode:$bilr}
+                        {foreach $ids as $id}
+                            {assign var="pts" value=" - "|explode:$id}
+                            {assign var="uid" value=$pts[0]-1}
+                            <option {if $user.user_id == $pts[0]|strip}selected{/if}
+                                    value="{if isset($uid)}{$uid|htmlSafe}{/if}">
+                                {if isset($id)}{$id|htmlSafe}{/if}
+                            </option>
+                        {/foreach}
+                    {else}
+                        <option selected value="0">{if isset($user_id_desc)}{$user_id_desc|htmlSafe}{/if}</option>
+                    {/if}
+                </select>
+            </div>
         </div>
-        <div class="flex__container flex__start"
-                   {if isset($smarty.session.role_name) &&
-                        ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
-            <label for="enabledId" class="margin__right-1">{$LANG.enabled}:
-                <img class="tooltip" title="{$LANG.helpUserEnabled}" src="{$helpImagePath}help-small.png" alt=""/>
-            </label>
-            {html_options name=enabled id=enabledId options=$enabled_options selected=$user.enabled tabindex=70}
+        <div class="row"
+             {if isset($smarty.session.role_name) &&
+             ($smarty.session.role_name == 'biller' || $smarty.session.role_name == 'customer')}style="display:none;"{/if}>
+            <div class="col__25">
+                <label for="enabledId">{$LANG.enabled}:
+                    <img class="tooltip" title="{$LANG.helpUserEnabled}" src="{$helpImagePath}help-small.png" alt=""/>
+                </label>
+            </div>
+            <div class="col__75">
+                {html_options name=enabled id=enabledId options=$enabled_options selected=$user.enabled tabindex=70}
+            </div>
         </div>
-    </div>
-    <div class="align__text-center margin__top-3 margin__bottom-2">
-        <button type="submit" class="positive" name="save_user" tabindex="100">
-            <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
-        </button>
-        <a href="index.php?module=user&amp;view=manage" class="button negative" tabindex="110">
-            <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
-        </a>
-    </div>
-    <input type="hidden" name="op" value="edit"/>
-    <input type="hidden" name="id" value="{if isset($user.id)}{$user.id|htmlSafe}{/if}"/>
-    <input type="hidden" name="cust" id="cust1" value="{if isset($cust)}{$cust}{/if}"/>
-    <input type="hidden" name="bilr" id="bilr1" value="{if isset($bilr)}{$bilr}{/if}"/>
-    <input type="hidden" name="origRole" id="origRole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
-    <input type="hidden" name="currRole" id="currRole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
-    <input type="hidden" name="origUserId" id="origUserId1" value="{if isset($orig_user_id)}{$orig_user_id}{/if}"/>
-</form>
+        <div class="align__text-center margin__top-3 margin__bottom-2">
+            <button type="submit" class="positive" name="save_user" tabindex="100">
+                <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
+            </button>
+            <a href="index.php?module=user&amp;view=manage" class="button negative" tabindex="110">
+                <img src="images/cross.png" alt="{$LANG.cancel}"/>{$LANG.cancel}
+            </a>
+        </div>
+        <input type="hidden" name="op" value="edit"/>
+        <input type="hidden" name="id" value="{if isset($user.id)}{$user.id|htmlSafe}{/if}"/>
+        <input type="hidden" name="cust" id="cust1" value="{if isset($cust)}{$cust}{/if}"/>
+        <input type="hidden" name="bilr" id="bilr1" value="{if isset($bilr)}{$bilr}{/if}"/>
+        <input type="hidden" name="origRole" id="origRole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
+        <input type="hidden" name="currRole" id="currRole1" value="{if isset($orig_role_name)}{$orig_role_name}{/if}"/>
+        <input type="hidden" name="origUserId" id="origUserId1" value="{if isset($orig_user_id)}{$orig_user_id}{/if}"/>
+    </form>
+</div>

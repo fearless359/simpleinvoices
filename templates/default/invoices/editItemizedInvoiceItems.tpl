@@ -4,13 +4,21 @@
             <img class="tooltip" title="{$LANG.requiredField} {$LANG.helpQuantity}"
                  src="{$helpImagePath}required-small.png" alt=""/> </label>
     </div>
-    <div class="cols__2-span-4 bold align__text-center">{$LANG.item}</div>
+    <div class="cols__2-span-4 bold align__text-center">
+        <label for="products0">{$LANG.item}</label>
+    </div>
     {$begCol = 6}
-    {section name=tax_header loop=$defaults.tax_per_line_item }
-        <div class="cols__{$begCol}-span-1 bold align__text-center">{$LANG.tax}{if $defaults.tax_per_line_item > 1} {$smarty.section.tax_header.iteration|htmlSafe}{/if}</div>
+    {section name=tax loop=$defaults.tax_per_line_item}
+        <div class="cols__{$begCol}-span-1 bold align__text-center">
+            <label for="tax_id[0][{$smarty.section.tax.index|htmlSafe}]" class="margin__left-1 align__text-right">
+                {$LANG.tax}{if $defaults.tax_per_line_item > 1}&nbsp;{$smarty.section.tax.iteration|htmlSafe}{/if}
+            </label>
+        </div>
         {$begCol = $begCol + 1}
     {/section}
-    <div class="cols__{$begCol}-span-1 bold align__text-right">{$LANG.unitPrice}</div>
+    <div class="cols__{$begCol}-span-1 bold align__text-right">
+        <label for="unit_price0">{$LANG.unitPrice}</label>
+    </div>
 </div>
 <input type="hidden" name="locale" id="localeId" value="{$invoice.locale}">
 <input type="hidden" name="currency_code" id="currencyCodeId" value="{$invoice.currency_code}">
@@ -147,10 +155,10 @@
             <div class="grid__container grid__head-10 details"
                  {if $defaults.invoice_description_open == $smarty.const.DISABLED}style="display:none;"{/if}>
                 {* colspan intentionally greater than min and max number so always uses full size *}
-                <div class="cols__2-span-10">
+                <div class="cols__1-span-10">
                     <!--suppress HtmlFormInputWithoutLabel -->
                     <textarea name="description{$line|htmlSafe}" id="description{$line|htmlSafe}" rows="3" cols="102"
-                              class="margin__left-0-5" data-row-num="{$line|htmlSafe}"
+                              data-row-num="{$line|htmlSafe}"
                               data-description="{$LANG.descriptionUc}">{$invoiceItem.description|outHtml}</textarea>
                 </div>
             </div>
@@ -162,18 +170,22 @@
 {$customFields.2}
 {$customFields.3}
 {$customFields.4}
-<div class="flex__container flex__start">
-    <div class="bold">{$LANG.notes}:</div>
+<div class="row">
+    <div class="col__100">
+        <label for="note">{$LANG.notes}:</label>
+    </div>
 </div>
-<div class="flex__container flex__start">
-    <div>
+<div class="row">
+    <div class="col__100">
         <input name="note" id="noteId" {if isset($invoice.note)}value="{$invoice.note|outHtml}"{/if} type="hidden">
         <trix-editor class="trix-content" input="noteId"></trix-editor>
     </div>
 </div>
-<div class="flex__container flex__start">
-    <label for="preferenceId" class="margin__right-1">{$LANG.invPref}:</label>
-    <div>
+<div class="row">
+    <div class="col__20">
+        <label for="preferenceId" class="margin__right-1">{$LANG.invPref}:</label>
+    </div>
+    <div class="col__80">
         {if !isset($preferences) }
             <em>{$LANG.noPreferences}</em>
         {else}
@@ -187,8 +199,12 @@
         {/if}
     </div>
 </div>
-<div class="flex__container flex__start">
-    <label for="salesRepresentativeId" class="margin__right-1">{$LANG.salesRepresentative}:</label>
-    <input type="text" name="sales_representative" id="salesRepresentativeId" size="30"
-           value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlSafe}{/if}"/>
+<div class="row">
+    <div class="col__20">
+        <label for="salesRepresentativeId" class="margin__right-1">{$LANG.salesRep}:</label>
+    </div>
+    <div class="col__80">
+        <input type="text" name="sales_representative" id="salesRepresentativeId" size="30"
+               value="{if isset($invoice.sales_representative)}{$invoice.sales_representative|htmlSafe}{/if}"/>
+    </div>
 </div>

@@ -290,7 +290,7 @@ img.action {
 }
 
 .grid__area {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 }
 .grid__area-totals {
@@ -304,55 +304,21 @@ img.action {
   color: #888888;
   font-weight: bold;
 }
-.grid__area-totals h5 {
-  font-weight: bold;
-  padding: 0 0 8px 0;
-  margin: 0;
-}
-.grid__area-totals--financial {
+.grid__area-totals-financial {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
-.grid__area-totals--financial--area {
+.grid__area-totals-financial-area {
   border: 1px solid #cccccc;
   margin-right: 10px;
 }
-.grid__area-totals--financial--invoice-box1 {
+.grid__area-totals-financial-invoice-box1 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
-.grid__area-totals--financial--invoice-box2 {
+.grid__area-totals-financial-invoice-box2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-}
-.grid__report-menu-areas {
-  display: grid;
-  grid-template-columns: 13rem repeat(3, auto);
-  grid-template-rows: 5rem;
-  grid-template-areas: "lbl one  two  three" "lbl four five six";
-  grid-auto-columns: max-content 20rem;
-  margin-right: 0;
-}
-.grid__report-lbl {
-  grid-area: lbl;
-}
-.grid__report-itm-1 {
-  grid-area: one;
-}
-.grid__report-itm-2 {
-  grid-area: two;
-}
-.grid__report-itm-3 {
-  grid-area: three;
-}
-.grid__report-itm-4 {
-  grid-area: four;
-}
-.grid__report-itm-5 {
-  grid-area: five;
-}
-.grid__report-itm-6 {
-  grid-area: six;
 }
 .grid__container {
   display: grid;
@@ -365,9 +331,6 @@ img.action {
 .grid__head-10 {
   grid-template-columns: repeat(10, 10%);
 }
-.grid__head-12 {
-  grid-template-columns: repeat(12, 8.33%);
-}
 .grid__head-checkbox {
   grid-template-columns: 5% 95%;
 }
@@ -377,91 +340,8 @@ img.action {
 }
 
 @media (max-width: 770px) {
-  .grid__area {
-    width: 90%;
-    margin: 0 auto;
-  }
   .grid__area-totals {
     width: 90%;
-    margin: 0 auto;
-  }
-  .grid__area-totals h4 {
-    text-align: center;
-    padding: 0;
-    margin: 0 0 7px 0;
-    color: #888888;
-    font-weight: bold;
-  }
-  .grid__area-totals h5 {
-    font-weight: bold;
-    padding: 0 0 8px 0;
-    margin: 0;
-  }
-  .grid__area-totals--financial {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .grid__area-totals--financial--area {
-    border: 1px solid #cccccc;
-    margin-right: 10px;
-  }
-  .grid__area-totals--financial--invoice-box1 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .grid__area-totals--financial--invoice-box2 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .grid__report-menu-areas {
-    display: grid;
-    grid-template-columns: 13rem repeat(3, auto);
-    grid-template-rows: 5rem;
-    grid-template-areas: "lbl one  two  three" "lbl four five six";
-    grid-auto-columns: max-content 20rem;
-    margin-right: 0;
-  }
-  .grid__report-lbl {
-    grid-area: lbl;
-  }
-  .grid__report-itm-1 {
-    grid-area: one;
-  }
-  .grid__report-itm-2 {
-    grid-area: two;
-  }
-  .grid__report-itm-3 {
-    grid-area: three;
-  }
-  .grid__report-itm-4 {
-    grid-area: four;
-  }
-  .grid__report-itm-5 {
-    grid-area: five;
-  }
-  .grid__report-itm-6 {
-    grid-area: six;
-  }
-  .grid__container {
-    display: grid;
-    margin: 0 auto 1rem auto;
-    overflow: hidden;
-  }
-  .grid__head-6 {
-    grid-template-columns: repeat(6, 16.66%);
-  }
-  .grid__head-10 {
-    grid-template-columns: repeat(10, 10%);
-  }
-  .grid__head-12 {
-    grid-template-columns: repeat(12, 8.33%);
-  }
-  .grid__head-checkbox {
-    grid-template-columns: 5% 95%;
-  }
-  .grid__justify-content-end {
-    display: grid;
-    justify-content: end;
   }
 }
 .cols__1-span-1 {
@@ -476,7 +356,7 @@ img.action {
 .cols__1-span-4 {
   grid-column: 1/span 4;
 }
-.cols__1-span-5 {
+.cols__1-span-3 {
   grid-column: 1/span 5;
 }
 .cols__1-span-6 {
@@ -493,12 +373,6 @@ img.action {
 }
 .cols__1-span-10 {
   grid-column: 1/span 10;
-}
-.cols__1-span-11 {
-  grid-column: 1/span 11;
-}
-.cols__1-span-12 {
-  grid-column: 1/span 12;
 }
 .cols__2-span-1 {
   grid-column: 2/span 1;
@@ -527,12 +401,6 @@ img.action {
 .cols__2-span-9 {
   grid-column: 2/span 9;
 }
-.cols__2-span-10 {
-  grid-column: 2/span 10;
-}
-.cols__2-span-11 {
-  grid-column: 2/span 11;
-}
 .cols__3-span-1 {
   grid-column: 3/span 1;
 }
@@ -557,12 +425,6 @@ img.action {
 .cols__3-span-8 {
   grid-column: 3/span 8;
 }
-.cols__3-span-9 {
-  grid-column: 3/span 9;
-}
-.cols__3-span-10 {
-  grid-column: 3/span 10;
-}
 .cols__4-span-1 {
   grid-column: 4/span 1;
 }
@@ -584,12 +446,6 @@ img.action {
 .cols__4-span-7 {
   grid-column: 4/span 7;
 }
-.cols__4-span-8 {
-  grid-column: 4/span 8;
-}
-.cols__4-span-9 {
-  grid-column: 4/span 9;
-}
 .cols__5-span-1 {
   grid-column: 5/span 1;
 }
@@ -608,12 +464,6 @@ img.action {
 .cols__5-span-6 {
   grid-column: 5/span 6;
 }
-.cols__5-span-7 {
-  grid-column: 5/span 7;
-}
-.cols__5-span-8 {
-  grid-column: 5/span 8;
-}
 .cols__6-span-1 {
   grid-column: 6/span 1;
 }
@@ -629,12 +479,6 @@ img.action {
 .cols__6-span-5 {
   grid-column: 6/span 5;
 }
-.cols__6-span-6 {
-  grid-column: 6/span 6;
-}
-.cols__6-span-7 {
-  grid-column: 6/span 7;
-}
 .cols__7-span-1 {
   grid-column: 7/span 1;
 }
@@ -647,12 +491,6 @@ img.action {
 .cols__7-span-4 {
   grid-column: 7/span 4;
 }
-.cols__7-span-5 {
-  grid-column: 7/span 5;
-}
-.cols__7-span-6 {
-  grid-column: 7/span 6;
-}
 .cols__8-span-1 {
   grid-column: 8/span 1;
 }
@@ -662,41 +500,14 @@ img.action {
 .cols__8-span-3 {
   grid-column: 8/span 3;
 }
-.cols__8-span-4 {
-  grid-column: 8/span 4;
-}
-.cols__8-span-5 {
-  grid-column: 8/span 5;
-}
 .cols__9-span-1 {
   grid-column: 9/span 1;
 }
 .cols__9-span-2 {
   grid-column: 9/span 2;
 }
-.cols__9-span-3 {
-  grid-column: 9/span 3;
-}
-.cols__9-span-4 {
-  grid-column: 9/span 4;
-}
 .cols__10-span-1 {
   grid-column: 10/span 1;
-}
-.cols__10-span-2 {
-  grid-column: 10/span 2;
-}
-.cols__10-span-3 {
-  grid-column: 10/span 3;
-}
-.cols__11-span-1 {
-  grid-column: 11/span 1;
-}
-.cols__11-span-2 {
-  grid-column: 11/span 2;
-}
-.cols__12-span-1 {
-  grid-column: 12/span 1;
 }
 
 #tabs_customer {
@@ -1293,10 +1104,10 @@ form {
 input,
 select,
 textarea {
-  background: white url(../images/text-bg.gif) repeat-x scroll center top;
+  background: white url(images/text-bg.gif) repeat-x scroll center top;
   border: 1px solid #cccccc;
   margin: 1px;
-  padding: 0.2em 0.3em;
+  padding: 0.2rem 0.3rem;
   font-size: 1.6rem;
 }
 
@@ -1310,7 +1121,12 @@ label {
 }
 
 /* Fix webkit 'black background on text input bug (mostly in Mac IDEs) */
-input[type=text] {
+input[type=text],
+input[type=tel],
+input[type=email],
+input[type=url],
+input[type=password],
+.inputText {
   -webkit-appearance: none;
 }
 
@@ -1409,6 +1225,9 @@ input[type=checkbox] {
 }
 .pad__top-1 {
   padding-top: 1rem;
+}
+.pad__top-1-5 {
+  padding-top: 1.5rem;
 }
 .pad__right-1 {
   padding-right: 1rem;
@@ -1510,6 +1329,174 @@ div.odd {
   text-transform: uppercase;
 }
 
+/******************************************/
+/* Style the container */
+.form__container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 2rem;
+  /* Style the label to display next to the inputs */
+  /* Style the submit button */
+  /* Floating column for labels: 5% width */
+  /* Floating column for labels: 10% width */
+  /* Floating column for labels: 15% width */
+  /* Floating column for labels: 20% width */
+  /* Floating column for labels: 25% width */
+  /* Floating column for labels: 30% width */
+  /* Floating column for inputs: 40% width */
+  /* Floating column for inputs: 50% width */
+  /* Floating column for inputs: 70% width */
+  /* Floating column for inputs: 75% width */
+  /* Floating column for inputs: 80% width */
+  /* Floating column for inputs: 95% width */
+  /* Floating column for inputs: 100% width */
+  /* Clear floats after the columns */
+}
+.form__container h3 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  min-width: 13rem;
+}
+.form__container trix-editor {
+  background-color: white;
+}
+.form__container label, .form__container .label, .form__container .labelTotal {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+.form__container .labelTotal {
+  float: right;
+}
+.form__container .showHide {
+  float: right;
+  margin-top: 2rem;
+  margin-left: auto;
+}
+.form__container label, .form__container .label {
+  display: inline-block;
+  padding: 1rem 1rem 1rem 0;
+}
+.form__container .inputText {
+  position: relative;
+  top: 1.6rem;
+  left: 0.5rem;
+}
+.form__container input[type=text], .form__container input[type=tel], .form__container input[type=email], .form__container input[type=url], .form__container input[type=password], .form__container select, .form__container textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.form__container input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  margin-top: 1.25rem;
+}
+.form__container input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+.form__container .col__5 {
+  float: left;
+  width: 5%;
+}
+.form__container .col__10 {
+  float: left;
+  width: 10%;
+  margin-top: 0.5rem;
+}
+.form__container .col__15 {
+  float: left;
+  width: 15%;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+.form__container .col__20 {
+  float: left;
+  width: 20%;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+.form__container .col__25 {
+  float: left;
+  width: 25%;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+.form__container .col__30 {
+  float: left;
+  width: 30%;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+.form__container .col__40 {
+  float: left;
+  width: 50%;
+  margin-top: 0.5rem;
+}
+.form__container .col__50 {
+  float: left;
+  width: 50%;
+  margin-top: 0.5rem;
+}
+.form__container .col__70 {
+  float: left;
+  width: 70%;
+  margin-top: 0.5rem;
+}
+.form__container .col__75 {
+  float: left;
+  width: 75%;
+  margin-top: 0.5rem;
+}
+.form__container .col__80 {
+  float: left;
+  width: 80%;
+  margin-top: 0.5rem;
+}
+.form__container .col__95 {
+  float: left;
+  width: 95%;
+  margin-top: 0.5rem;
+}
+.form__container .col__100 {
+  float: left;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+.form__container .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 770px) {
+  .form__container .inputText {
+    top: 0;
+    left: 0;
+  }
+  .form__container .showHide {
+    float: left;
+    margin-top: 1rem;
+    margin-left: 0;
+  }
+  .form__container .align__text-right {
+    text-align: left !important;
+  }
+  .form__container .col__5, .form__container .col__10, .form__container .col__15, .form__container .col__20, .form__container .col__25, .form__container .col__30, .form__container .col__40, .form__container .col__50, .form__container .col__70, .form__container .col__75, .form__container .col__80, .form__container .col__100, .form__container input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+    float: left;
+    text-align: left;
+  }
+}
 h1 {
   font-size: 2.4rem;
   color: #4b7296;
@@ -1694,19 +1681,14 @@ ul {
   padding: 2rem 2rem 3rem 2rem;
   border: 10px solid #bbbbbb;
   text-align: left;
-  -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.4);
   -webkit-box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.4);
   box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   background: #f9f9f9;
   background: -moz-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9f9f9), color-stop(100%, #eaeaea));
   background: -webkit-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
-  background: -o-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
-  background: -ms-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
   background: linear-gradient(to bottom, #f9f9f9 0%, #eaeaea 100%);
 }
 .loginForm__header {

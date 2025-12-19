@@ -52,12 +52,13 @@ class Invoice
      * <strong>NOTE:</strong> DO NOT CLEAR $pdoDb as some selection and other values might have been added
      * @param string $sort field to order by, defaults to index_name.
      * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
+     * @param int $invoiceDisplayDays If specified, the days in the past invoice will be retrieved for.
      * @return array invoice records.
      * @throws PdoDbException
      */
-    public static function getAll(string $sort="index_name", string $dir="desc"): array
+    public static function getAll(string $sort="index_name", string $dir="desc", int $invoiceDisplayDays = 0): array
     {
-        return self::getInvoices(null, $sort, $dir);
+        return self::getInvoices(null, $sort, $dir, false, $invoiceDisplayDays);
     }
 
     /**

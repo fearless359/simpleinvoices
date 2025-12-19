@@ -89,7 +89,7 @@ try {
     $smarty->registerPlugin('modifier', 'urlSafe'    , ['Inc\Claz\Util', 'urlSafe']);
 
     $smarty->registerPlugin('modifier', 'urlencode', 'urlencode'); // PHP function
-} catch (SmartyException $se) {
+} catch (\Smarty\Exception $se) {
     SiError::out('generic', 'SmartyException', $se->getMessage());
 }
 

@@ -3,6 +3,7 @@
  *      Customize options template
  *
  *  Last edited:
+ *      20251207 by Rich Rowley to convert grid to flex format.
  * 	    20210702 by Rich Rowley to convert to grid layout
  *
  *  License:
@@ -11,9 +12,9 @@
  *  Website:
  *      https://simpleinvoices.group
  *}
-<div class="flex__area">
+<div class="form__container">
     <div class="flex__container flex__start">
-        <h3>{$LANG.systemSettings}:&nbsp;</h3>
+        <h3>{$LANG.systemSettings}:</h3>
         <a href="index.php?module=custom_flags&amp;view=manage" class="button square" tabindex="10">
             <img src="images/brick_edit.png" alt="{$LANG.customFlagsUc}" class="desktopOnly"/>{$LANG.customFlagsUc}
         </a>
@@ -28,9 +29,10 @@
         </a>
     </div>
     <div class="flex__container flex__start">
-        <h3>{$LANG.invoiceSettings}:&nbsp;</h3>
+        <h3>{$LANG.invoiceSettings}:</h3>
         <a href="index.php?module=preferences&amp;view=manage" class="button square" tabindex="50">
-            <img src="images/page_white_edit.png" alt="{$LANG.invoicePreferences}" class="desktopOnly"/>{$LANG.invoicePreferences}
+            <img src="images/page_white_edit.png" alt="{$LANG.invoicePreferences}"
+                 class="desktopOnly"/>{$LANG.invoicePreferences}
         </a>
         <a href="index.php?module=payment_types&amp;view=manage" class="button square" tabindex="60">
             <img src="images/creditcards.png" alt="{$LANG.paymentTypes}" class="desktopOnly"/>{$LANG.paymentTypes}
@@ -40,14 +42,15 @@
         </a>
     </div>
     <div class="flex__container flex__start">
-        <h3>{$LANG.databaseActions}:&nbsp;</h3>
-        <a href="index.php?module=options&amp;view=backup_database" class="cols__4-span-3 button square margin__top-1-5 margin__right-1" tabindex="80">
-            <img src="images/database_save.png" alt="{$LANG.backupDatabase}"/>&nbsp;{$LANG.backupDatabase}
+        <h3>{$LANG.databaseActions}:</h3>
+        <a href="index.php?module=options&amp;view=backup_database" class="button square" tabindex="80">
+            <img src="images/database_save.png" alt="{$LANG.backupDatabase}"/>{$LANG.backupDatabase}
         </a>
-        <a href="index.php?module=options&amp;view=manage_cronlog" class="cols__7-span-2 button square margin__top-1-5 margin__right-1" tabindex="90">
-            <img src="images/database_table.png" alt="{$LANG.cronUc} {$LANG.logUc}"/>&nbsp;{$LANG.cronUc}&nbsp;{$LANG.logUc}
+        <a href="index.php?module=options&amp;view=manage_cronlog" class="button square" tabindex="90">
+            <img src="images/database_table.png" alt="{$LANG.cronUc} {$LANG.logUc}"/>{$LANG.cronUc}
+            &nbsp;{$LANG.logUc}
         </a>
-        <a href="index.php?module=options&amp;view=manage_sqlpatches" class="cols__9-span-4 button square margin__top-1-5 margin__right-1" tabindex="100">
-            <img src="images/database.png" alt="{$LANG.databaseUpgradeManager}"/>&nbsp;{$LANG.databaseUpgradeManager}
+        <a href="index.php?module=options&amp;view=manage_sqlpatches" class="button square" tabindex="100">
+            <img src="images/database.png" alt="{$LANG.databaseUpgradeManager}"/>{$LANG.databaseUpgradeManager}
         </a>
     </div>

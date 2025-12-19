@@ -541,7 +541,9 @@ class Util
         if (isset($_SESSION['timeout']) && $now > $_SESSION['timeout']) {
             self::destroyOldAndStartNewSession();
             $module = 'auth';
-            $view = 'login';
+            $view = 'logout';
+            Log::out("Util:sessionTimeout - Session timed out.");
+
         }
 
         $_SESSION['timeout'] = $now + $timeoutSeconds;

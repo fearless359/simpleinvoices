@@ -15,12 +15,12 @@
     row-gap: 1rem;
     margin-bottom: 1rem;
 
-    h3 {
+    & h3 {
       margin-top: 1rem;
       min-width: 13rem;
     }
 
-    a {
+    & a {
       align-self: flex-end;
     }
   }

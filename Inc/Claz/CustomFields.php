@@ -119,7 +119,7 @@ class CustomFields
                 $customFieldName = $LANG['customerUc'];
                 break;
             case "i":
-                $customFieldName = $LANG['invoice'];
+                $customFieldName = $LANG['invoiceUc'];
                 break;
             case "p":
                 $customFieldName = $LANG['productsUc'];
@@ -211,13 +211,10 @@ class CustomFields
 
         $writeMode = $permission == 'write'; // if false then in read mode.
 
-        $cssClassHead = "flex__container flex__start";
-        $cssClassLabel = "margin__right-1";
+        $inputDisplay = "";
         if (!$writeMode) {
-            $cssClassLabel .= " bold";
+            $inputDisplay = "disabled";
         }
-        $cssClassField = "";
-        $separator = ":";
 
         // Get the custom field number (last character of the name).
         $cfn = substr($customField, -1, 1);
@@ -240,23 +237,17 @@ class CustomFields
         if (!empty($customFieldValue) || $writeMode && !empty($cfLabel)) {
             $customLabelValue = Util::htmlSafe(self::getCustomFieldLabel($customField));
             $helpCustomFields = Util::htmlSafe($LANG['helpCustomFields']);
-            if ($writeMode) {
-                $displayBlock =
-                    "<div class='$cssClassHead'>\n" .
-                    "  <label for='customField$cfn' class='$cssClassLabel'>$customLabelValue$separator\n" .
-                    "    <img class='tooltip' title='$helpCustomFields' src='{$helpImagePath}help-small.png' alt='' />\n" .
-                    "  </label>\n" .
-                    "  <div class='$cssClassField'>\n" .
-                    "    <input type='text' name='custom_field$cfn' id='customField$cfn' value='$customFieldValue' size='50'/>\n" .
-                    "  </div>\n" .
-                    "</div>\n";
-            } else {
-                $displayBlock =
-                    "<div class='$cssClassHead'>\n" .
-                    "  <div class='$cssClassLabel'>$customLabelValue$separator</div>\n" .
-                    "  <div class='$cssClassField'>$customFieldValue</div>\n" .
-                    "</div>\n";
-            }
+            $displayBlock =
+                "<div class='row'>\n" .
+                "  <div class='col__20'>\n" .
+                "    <label for='customField$cfn'>$customLabelValue:\n" .
+                "      <img class='tooltip' title='$helpCustomFields' src='{$helpImagePath}help-small.png' alt='' />\n" .
+                "    </label>\n" .
+                "  </div>\n" .
+                "  <div class='col__80'>\n" .
+                "    <input type='text' name='custom_field$cfn' id='customField$cfn' value='$customFieldValue' size='50' $inputDisplay/>\n" .
+                "  </div>\n" .
+                "</div>\n";
         }
         return $displayBlock;
     }

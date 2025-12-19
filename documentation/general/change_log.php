@@ -17,6 +17,20 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2025-12-?? - <strong>2026.00.05</strong>
+                <ul>
+                    <li>Fixed issue with session timeout displaying login screen but when submitted, it just
+                        shows the login screen again; requiring a second login.</li>
+                    <li>Updated screens using new responsive display technique to restore much of the look and
+                        feel of screens prior to the flex formatting changes in version 2026.00.03.</li>
+                    <li>Modified create and edit screens for Expense and Recurrence to use the Invoice Display Days
+                        from system_defaults to limit the number of invoices loaded into the select array. This
+                        speeds rendering time for the screen on systems with large amounts of the historical
+                        invoices.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2025-11-20 - <strong>2026.00.04</strong>
                 <ul>
                     <li>Updated Invoice class to declare internal methods protected rather than private to that
