@@ -13,7 +13,10 @@ $cron = Cron::getOne($_GET['id']);
 $smarty->assign('cron', $cron);
 
 try {
-    $invoiceDisplayDays = SystemDefaults::getInvoiceDisplayDays();
+    $invoiceDisplayDays = 0;
+    if (empty($_GET['all_invoices']) || $_GET['all_invoices'] != 1) {
+        $invoiceDisplayDays = SystemDefaults::getInvoiceDisplayDays();
+    }
 
     $smarty->assign("invoiceDisplayDays", $invoiceDisplayDays);
 

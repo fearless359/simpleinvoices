@@ -3,6 +3,7 @@
  * 	    Cron add template
  *
  *  Last Modified:
+ *      20251222 by Rich Rowley to add option to return all invoices for dropdown.
  *      20251110 by Rich Rowley to use flex layout for responsive interface.
  *      20210618 by Rich Rowley to use grid layout.
  *
@@ -17,6 +18,16 @@
 {else}
     <div class="form__container">
         <form name="frmpost" method="POST" id="frmpost" action="index.php?module=cron&amp;view=create">
+            {if $invoiceDisplayDays != 0}
+                <div class="row">
+                    <div class="col__100 align__text-right">
+                        <a href="index.php?module=cron&amp;view=create&amp;all_invoices=1" class="si_filters_links"
+                           style="padding: 1rem;">
+                            {$LANG.returnUc}&nbsp;{$LANG.allUc}&nbsp;{$LANG.invoicesUc}
+                        </a>
+                    </div>
+                </div>
+            {/if}
             <div class="row">
                 <div class="col__20">
                     <label for="invoiceId">{$LANG.invoiceUc}:</label>
@@ -64,7 +75,8 @@
                     <label for="recurrenceId">{$LANG.recurEach}:</label>
                 </div>
                 <div class="col__70">
-                    <input type="text" name="recurrence" id="recurrenceId" class="validateWholeNumber" required tabindex="40"
+                    <input type="text" name="recurrence" id="recurrenceId" class="validateWholeNumber" required
+                           tabindex="40"
                            {if isset($smarty.post.recurrence)}value="{$smarty.post.recurrence|utilNumberTrim:0}"{/if}/>
                 </div>
                 <div class="col__10">
@@ -115,8 +127,7 @@
                     </select>
                 </div>
             </div>
-            <br/>
-            <div class="align__text-center">
+            <div class="align__text-center margin__top-3 margin__bottom-2">
                 <button type="submit" class="positive" name="submit" value="{$LANG.save}">
                     <img class="button_img" src="images/tick.png" alt="{$LANG.save}"/>{$LANG.save}
                 </button>

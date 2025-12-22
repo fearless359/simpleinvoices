@@ -11,7 +11,10 @@ if (!empty($_POST['invoice_id'])) {
     include 'modules/cron/save.php';
 } else {
     try {
-        $invoiceDisplayDays = SystemDefaults::getInvoiceDisplayDays();
+        $invoiceDisplayDays = 0;
+        if (empty($_GET['all_invoices']) || $_GET['all_invoices'] != 1) {
+            $invoiceDisplayDays = SystemDefaults::getInvoiceDisplayDays();
+        }
 
         $smarty->assign("invoiceDisplayDays", $invoiceDisplayDays);
         $smarty->assign('invoice_all', Invoice::getAll('index_name', 'desc', $invoiceDisplayDays));

@@ -17,7 +17,15 @@
     <br/>
     <div id="left">
         <ul>
-            <li>2025-12-?? - <strong>2026.00.05</strong>
+            <li>2025-12-22 - <strong>2026.00.06</strong>
+                <ul>
+                    <li>Added option to Recurrence and Expense create/edit screens to return all invoices in the
+                        drop down lists.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
+            <li>2025-12-19 - <strong>2026.00.05</strong>
                 <ul>
                     <li>Fixed issue with session timeout displaying login screen but when submitted, it just
                         shows the login screen again; requiring a second login.</li>

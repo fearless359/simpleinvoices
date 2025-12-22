@@ -3,7 +3,9 @@
  * 	    Cron edit template
  *
  * Last edited:
- *      2021-06-17 by Rich Rowley
+ *      20251222 by Rich Rowley to add option to return all invoices for dropdown.
+ *      20251110 by Rich Rowley to use flex layout for responsive interface.
+ *      20210617 by Rich Rowley
  *
  *  License:
  *	    GPL v3 or above
@@ -16,6 +18,16 @@
     <form name="frmpost" method="POST" id="frmpost"
           action="index.php?module=cron&amp;view=save&amp;id={$cron.id|urlEncode}">
         <input type="hidden" name="cronId" id="cronId" value="{$cron.id|htmlSafe}">
+        {if $invoiceDisplayDays != 0 && $cronInvoiceItemsCount == 0}
+            <div class="row">
+                <div class="col__100 align__text-right">
+                    <a href="index.php?module=cron&amp;view=edit&amp;id={$cron.id}&amp;all_invoices=1"
+                       class="si_filters_links" style="padding: 1rem;">
+                        {$LANG.returnUc}&nbsp;{$LANG.allUc}&nbsp;{$LANG.invoicesUc}
+                    </a>
+                </div>
+            </div>
+        {/if}
         <div class="row">
             <div class="col__20">
                 <label for="invoiceId">{$LANG.invoiceUc}:</label>
@@ -49,7 +61,8 @@
                 <label for="start_date">{$LANG.startDate}:</label>
             </div>
             <div class="col__80">
-                <input type="text" name="start_date" id="start_date" value='{$cron.start_date|htmlSafe}' tabindex="20"
+                <input type="text" name="start_date" id="start_date" value='{$cron.start_date|htmlSafe}'
+                       tabindex="20"
                        class="date-picker" required readonly/>
             </div>
         </div>
@@ -70,7 +83,8 @@
             </div>
             <div class="col__70">
                 <input type="text" name="recurrence" id="recurrenceId" class="align__text-right validateWholeNumber"
-                       required tabindex="40" data-locale="{$cron.locale}" data-currency-code="{$cron.currency_code}"
+                       required tabindex="40" data-locale="{$cron.locale}"
+                       data-currency-code="{$cron.currency_code}"
                        value='{$cron.recurrence|utilNumberTrim:0}'/>
             </div>
             <div class="col__10">

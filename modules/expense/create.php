@@ -17,7 +17,13 @@ if (!empty( $_POST ['expense_account_id'] )) {
     include "modules/expense/save.php";
 } else {
     try {
-        $smarty->assign('expenseAdd', Expense::additionalInfo(null, true, true));
+        $invoiceDisplayDays = (empty($_GET['all_invoices']) || $_GET['all_invoices'] != 1);
+        if ($invoiceDisplayDays) {
+            $smarty->assign('invoiceDisplayDays', 1);
+        } else {
+            $smarty->assign('invoiceDisplayDays', 0);
+        }
+        $smarty->assign('expenseAdd', Expense::additionalInfo(null, true, $invoiceDisplayDays));
     } catch (PdoDbException $pde) {
         exit("modules/expense/add.php Unexpected error: {$pde->getMessage()}");
     }

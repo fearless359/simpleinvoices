@@ -3,6 +3,7 @@
  *      Expense add template
  *
  *  Last edited:
+ *      20251222 by Rich Rowley to add option to return all invoices for dropdown.
  *      20251210 by Rich Rowley to use column size layout for responsiveness and appearence.
  *      20210621 by Rich Rowley to convert to grid layout.
  *
@@ -81,6 +82,16 @@
                     </select>
                 </div>
             </div>
+            {if $invoiceDisplayDays != 0}
+                <div class="row">
+                    <div class="col__100 align__text-right">
+                        <a href="index.php?module=expense&amp;view=create&amp;all_invoices=1"
+                           class="si_filters_links" style="padding: 1rem;">
+                            {$LANG.returnUc}&nbsp;{$LANG.allUc}&nbsp;{$LANG.invoicesUc}
+                        </a>
+                    </div>
+                </div>
+            {/if}
             <div class="row">
                 <div class="col__20">
                     <label for="invoiceId" class="margin__right-1">{$LANG.invoiceUc}:</label>

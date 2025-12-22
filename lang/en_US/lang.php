@@ -860,6 +860,7 @@ $LANG['reserveUc'] = "Reserve";//1
 $LANG['resolveUc'] = "Resolve";//0
 $LANG['return'] = "return";//1
 $LANG['returnToPreviousScreen'] = "Return to previous screen";//1
+$LANG['returnUc'] = "Return";//1
 $LANG['reviewUc'] = "Review";//1
 $LANG['role'] = "Role";//1
 $LANG['rows'] = "rows";//0

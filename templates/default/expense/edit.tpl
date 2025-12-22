@@ -3,6 +3,7 @@
  *      Expense edit template
  *
  *  Last edited:
+ *      20251222 by Rich Rowley to add option to return all invoices for dropdown.
  *      20251210 by Rich Rowley to use column size layout for responsiveness and appearence.
  *      20210621 by Rich Rowley to convert to grid layout.
  *
@@ -77,6 +78,16 @@
                 </select>
             </div>
         </div>
+        {if $invoiceDisplayDays != 0}
+            <div class="row">
+                <div class="col__100 align__text-right">
+                    <a href="index.php?module=expense&amp;view=edit&amp;id={$smarty.get.id}&amp;all_invoices=1"
+                       class="si_filters_links" style="padding: 1rem;">
+                        {$LANG.returnUc}&nbsp;{$LANG.allUc}&nbsp;{$LANG.invoicesUc}
+                    </a>
+                </div>
+            </div>
+        {/if}
         <div class="row">
             <div class="col__20">
                 <label for="invoiceId" class="margin__right-1">{$LANG.invoiceUc}:</label>
@@ -88,7 +99,7 @@
                             data-precision="{$config.localPrecision}"></option>
                     {$foundInv = false}
                     {foreach $detail.invoices as $invoice}
-                        {if $invoice.id == $expense.invoice_id}{$foundInv = true}{/if}
+                        {if $invoice.id == $expense.iv_id}{$foundInv = true}{/if}
                         <option value="{$invoice.id|htmlSafe}" data-locale="{$invoice.locale}"
                                 data-currency-code="{$invoice.currency_code}" data-precision="{$invoice.precision}"
                                 {if $invoice.id ==  $expense.iv_id}selected{/if}>

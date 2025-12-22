@@ -22,7 +22,17 @@ $precision = $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS);
 $expense['precision'] = $precision;
 
 try {
-    $detail = Expense::additionalInfo(null, false, true);
+    if (!empty($_GET['all_invoices']) && $_GET['all_invoices'] != 0) {
+        $invoiceDisplayDays = false;
+        $smarty->assign("invoiceDisplayDays", 0);
+    }
+    else {
+        $invoiceDisplayDays = true;
+        $smarty->assign("invoiceDisplayDays", 1);
+    }
+
+    $detail = Expense::additionalInfo(null, false, $invoiceDisplayDays);
+
     $detail['expense_tax'] = ExpenseTax::getAll($expenseId);
     $detail['expense_tax_total'] = $expense['amount'] + ExpenseTax::getSum($expenseId);
     $detail['expense_tax_grouped'] = ExpenseTax::grouped($expenseId);

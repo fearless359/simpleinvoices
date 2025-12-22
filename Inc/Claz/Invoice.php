@@ -53,6 +53,7 @@ class Invoice
      * @param string $sort field to order by, defaults to index_name.
      * @param string $dir sort direction "asc" or "desc" for ascending or descending, defaults to "asc".
      * @param int $invoiceDisplayDays If specified, the days in the past invoice will be retrieved for.
+     *                                0 means no limit.
      * @return array invoice records.
      * @throws PdoDbException
      */
