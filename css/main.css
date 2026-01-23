@@ -975,7 +975,7 @@ button.report,
   background: -ms-linear-gradient(top, #f9f9f9 0%, #e0e0e0 100%);
   background: linear-gradient(to bottom, #f9f9f9 0%, #e0e0e0 100%);
   /* Note that color settings below do not work from variables */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#f9f9f9", endColorstr="#e0e0e0", GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#e0e0e0', GradientType=0 );
 }
 .si_filters_links a {
   float: right;
@@ -1335,22 +1335,6 @@ div.odd {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 2rem;
-  /* Style the label to display next to the inputs */
-  /* Style the submit button */
-  /* Floating column for labels: 5% width */
-  /* Floating column for labels: 10% width */
-  /* Floating column for labels: 15% width */
-  /* Floating column for labels: 20% width */
-  /* Floating column for labels: 25% width */
-  /* Floating column for labels: 30% width */
-  /* Floating column for inputs: 40% width */
-  /* Floating column for inputs: 50% width */
-  /* Floating column for inputs: 70% width */
-  /* Floating column for inputs: 75% width */
-  /* Floating column for inputs: 80% width */
-  /* Floating column for inputs: 95% width */
-  /* Floating column for inputs: 100% width */
-  /* Clear floats after the columns */
 }
 .form__container h3 {
   margin-top: 1rem;
@@ -1371,6 +1355,9 @@ div.odd {
   float: right;
   margin-top: 2rem;
   margin-left: auto;
+}
+.form__container {
+  /* Style the label to display next to the inputs */
 }
 .form__container label, .form__container .label {
   display: inline-block;
@@ -1394,6 +1381,9 @@ div.odd {
   height: 20px;
   margin-top: 1.25rem;
 }
+.form__container {
+  /* Style the submit button */
+}
 .form__container input[type=submit] {
   background-color: #04AA6D;
   color: white;
@@ -1403,14 +1393,23 @@ div.odd {
   cursor: pointer;
   float: right;
 }
+.form__container {
+  /* Floating column for labels: 5% width */
+}
 .form__container .col__5 {
   float: left;
   width: 5%;
+}
+.form__container {
+  /* Floating column for labels: 10% width */
 }
 .form__container .col__10 {
   float: left;
   width: 10%;
   margin-top: 0.5rem;
+}
+.form__container {
+  /* Floating column for labels: 15% width */
 }
 .form__container .col__15 {
   float: left;
@@ -1418,11 +1417,17 @@ div.odd {
   margin-top: 0.5rem;
   text-align: right;
 }
+.form__container {
+  /* Floating column for labels: 20% width */
+}
 .form__container .col__20 {
   float: left;
   width: 20%;
   margin-top: 0.5rem;
   text-align: right;
+}
+.form__container {
+  /* Floating column for labels: 25% width */
 }
 .form__container .col__25 {
   float: left;
@@ -1430,46 +1435,79 @@ div.odd {
   margin-top: 0.5rem;
   text-align: right;
 }
+.form__container {
+  /* Floating column for labels: 30% width */
+}
 .form__container .col__30 {
   float: left;
   width: 30%;
   margin-top: 0.5rem;
   text-align: right;
 }
+.form__container {
+  /* Floating column for inputs: 40% width */
+}
 .form__container .col__40 {
   float: left;
   width: 50%;
   margin-top: 0.5rem;
+}
+.form__container {
+  /* Floating column for inputs: 50% width */
 }
 .form__container .col__50 {
   float: left;
   width: 50%;
   margin-top: 0.5rem;
 }
+.form__container {
+  /* Floating column for inputs: 70% width */
+}
 .form__container .col__70 {
   float: left;
   width: 70%;
   margin-top: 0.5rem;
+}
+.form__container {
+  /* Floating column for inputs: 75% width */
 }
 .form__container .col__75 {
   float: left;
   width: 75%;
   margin-top: 0.5rem;
 }
+.form__container {
+  /* Floating column for inputs: 80% width */
+}
 .form__container .col__80 {
   float: left;
   width: 80%;
   margin-top: 0.5rem;
+}
+.form__container {
+  /* Floating column for inputs: 95% width */
 }
 .form__container .col__95 {
   float: left;
   width: 95%;
   margin-top: 0.5rem;
 }
+.form__container {
+  /* Floating column for inputs: 100% width */
+}
 .form__container .col__100 {
   float: left;
   width: 100%;
   margin-top: 0.5rem;
+}
+.form__container .min-width-5 {
+  min-width: 5rem;
+}
+.form__container .min-width-7 {
+  min-width: 7rem;
+}
+.form__container {
+  /* Clear floats after the columns */
 }
 .form__container .row:after {
   content: "";

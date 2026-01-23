@@ -51,7 +51,7 @@
                             <span>&nbsp;</span>
                             <!--suppress HtmlFormInputWithoutLabel -->
                             <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}"
-                                   class="align__text-right validateQuantity" {if $line == 0}required{/if}
+                                   class="align__text-right min-width-5 validateQuantity" {if $line == 0}required{/if}
                                    data-row-num="{$line|htmlSafe}"
                                    value="{if isset($defaultInvoiceItems[$line].quantity)}{$defaultInvoiceItems[$line].quantity|utilNumberTrim}{/if}">
                         </div>
@@ -81,7 +81,7 @@
                             <!--suppress HtmlFormInputWithoutLabel -->
                             <select id="tax_id[{$line|htmlSafe}][{$taxNumber|htmlSafe}]"
                                     name="tax_id[{$line|htmlSafe}][{$taxNumber|htmlSafe}]"
-                                    data-row-num="{$line|htmlSafe}" class="margin__left-1">
+                                    data-row-num="{$line|htmlSafe}" class="margin__left-1 min-width-7">
                                 <option value=""></option>
                                 {foreach $taxes as $tax}
                                     <option {if isset($defaultInvoiceItems[$line].tax[$taxNumber]) &&
@@ -95,7 +95,7 @@
                     <div class="cols__{$begCol}-span-1">
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" name="unit_price{$line|htmlSafe}" id="unit_price{$line|htmlSafe}" size="9"
-                               class="align__text-right margin__left-1 validateNumber"
+                               class="align__text-right margin__left-1 min-width-7 validateNumber"
                                {if $line == "0"}required{/if} data-row-num="{$line|htmlSafe}"
                                value="{if isset($defaultInvoiceItems[$line].unit_price)}{$defaultInvoiceItems[$line].unit_price|utilNumber}{/if}"/>
                     </div>

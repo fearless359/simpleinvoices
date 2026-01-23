@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2026-01-23 - <strong>2026.00.07</strong>
+                <ul>
+                    <li>Set min width on grid fields to help when form width is small.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2025-12-22 - <strong>2026.00.06</strong>
                 <ul>
                     <li>Added option to Recurrence and Expense create/edit screens to return all invoices in the

@@ -44,7 +44,7 @@
                                     src="images/delete_item.png" alt="{$LANG.deleteLineItem}"/> </a> <span>&nbsp;</span>
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <input type="text" name="quantity{$line|htmlSafe}" id="quantity{$line|htmlSafe}"
-                               class="align__text-right validateQuantity" {if $line == 0}required{/if}
+                               class="align__text-right min-width-5 validateQuantity" {if $line == 0}required{/if}
                                data-row-num="{$line|htmlSafe}" data-decimal-places="2"
                                value='{$invoiceItem.quantity|utilNumberTrim:$invoice.precision:$invoice.locale}'/>
                     </div>
@@ -71,7 +71,7 @@
                         <!--suppress HtmlFormInputWithoutLabel -->
                         <select id="tax_id[{$line|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
                                 name="tax_id[{$line|htmlSafe}][{$smarty.section.tax.index|htmlSafe}]"
-                                data-row-num="{$line|htmlSafe}" class="margin__left-1">
+                                data-row-num="{$line|htmlSafe}" class="margin__left-1 min-width-7">
                             <option value=""></option>
                             {$index = $smarty.section.tax.index}
                             {foreach $taxes as $tax}
@@ -85,7 +85,7 @@
                 <div class="cols__{$begCol}-span-1">
                     <!--suppress HtmlFormInputWithoutLabel -->
                     <input type="text" id="unit_price{$line|htmlSafe}" name="unit_price{$line|htmlSafe}"
-                           class="align__text-right margin__left-1 validateNumber" size="9"
+                           class="align__text-right margin__left-1 min-width-7 validateNumber" size="9"
                            {if $line == "0"}required{/if} data-row-num="{$line|htmlSafe}"
                            value="{$invoiceItem.unit_price|utilNumber:$invoice.precision:$invoice.locale}"/>
                 </div>
