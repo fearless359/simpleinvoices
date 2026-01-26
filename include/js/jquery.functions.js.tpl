@@ -12,10 +12,10 @@
         let pymtType;
         if (tagName === "SELECT" && !pymtTypeId.prop('disabled')) {
             let pymtTypeSelected = pymtTypeId.find(':selected');
-            pymtType = pymtTypeSelected.text().toLowerCase();
+            pymtType = pymtTypeSelected.text().trim().toLowerCase();
         } else {
             pymtTypeId = $('#pymtTypeIdInput');
-            pymtType = pymtTypeId.val().toLowerCase();
+            pymtType = pymtTypeId.val().trim().toLowerCase();
         }
 
         let chkNumId = $('#checkNumberId');

@@ -17,6 +17,14 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2026-01-25 - <strong>2026.00.08</strong>
+                <ul>
+                    <li>Fix check/check number validation logic for payment screen when screen
+                        using minimized menu.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2026-01-23 - <strong>2026.00.07</strong>
                 <ul>
                     <li>Set min width on grid fields to help when form width is small.</li>
