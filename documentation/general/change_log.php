@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2026-02-18 - <strong>2026.00.09</strong>
+                <ul>
+                    <li>Modify email screen to use standard responsive layout.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2026-01-25 - <strong>2026.00.08</strong>
                 <ul>
                     <li>Fix check/check number validation logic for payment screen when screen
@@ -35,7 +42,7 @@
             <li>2025-12-22 - <strong>2026.00.06</strong>
                 <ul>
                     <li>Added option to Recurrence and Expense create/edit screens to return all invoices in the
-                        drop down lists.</li>
+                        drop down lists.</li> 
                 </ul>
             </li>
         </ul>
