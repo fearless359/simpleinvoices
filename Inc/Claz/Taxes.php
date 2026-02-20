@@ -307,10 +307,14 @@ class Taxes
     public static function lineItemTaxCalc(array $tax, float $unitPrice, float $quantity): float
     {
         // Calculate tax as a percentage of unit price or dollars per unit.
+        $taxAmount = 0;
         if (isset($tax['type']) && $tax['type'] == "%") {
-            return $tax['tax_percentage'] / 100 * $unitPrice * $quantity;
+            $taxAmount = $tax['tax_percentage'] / 100 * $unitPrice * $quantity;
+        } else {
+            $taxAmount = $tax['tax_percentage'] * $quantity;
         }
-        return $tax['tax_percentage'] * $quantity;
+
+        return round($taxAmount, 2, PHP_ROUND_HALF_UP);
     }
 
 }

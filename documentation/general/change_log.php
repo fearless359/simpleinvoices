@@ -17,6 +17,13 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2026-02-20 - <strong>2026.00.10</strong>
+                <ul>
+                    <li>Added rounding of tax amount to two decimal places.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2026-02-18 - <strong>2026.00.09</strong>
                 <ul>
                     <li>Modify email screen to use standard responsive layout.</li>
