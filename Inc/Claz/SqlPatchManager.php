@@ -18,6 +18,8 @@ class SqlPatchManager
     private static array $patchLines = [];
     private static int $patchCount = 0;
     private static int $numberToBeginPatchListAt = 0;
+    private static int $lastPatchApplied = 0;
+    private static bool $lastPatchAppliedSet = false;
 
     /**
      * Add an entry to the $patchLines array.
@@ -30,7 +32,7 @@ class SqlPatchManager
         $last++;
 
         if ($last != $num) {
-            error_log("SqlPatchManager::makePatch - Patch #$num is out of sequence.");
+            error_log("SqlPatchManager::makePatch() - Patch #$num is out of sequence.");
             exit("SqlPatchManager::makePatch() error. See error log for more information.");
         }
 
@@ -47,12 +49,22 @@ class SqlPatchManager
 
     /**
      * Greatest sql_patch_ref value in the sql_patchmanager table.
-     * @return int max patch ref value.
+     * @return int number of the last applied to the SI database.
      */
     public static function lastPatchApplied(): int
     {
         global $pdoDbAdmin;
 
+        if (self::$lastPatchAppliedSet) {
+            return self::$lastPatchApplied;
+        }
+
+        self::$lastPatchAppliedSet = true;
+        self::$lastPatchApplied = 0;
+        self::$numberToBeginPatchListAt = 0;
+
+        // Get the last patch applied to the database. This is the table entry with
+        // the greatest sql_patch_ref value.
         try {
             $pdoDbAdmin->setSelectList(['sql_patch_ref']);
             $pdoDbAdmin->setOrderBy(['sql_patch_ref', 'D']);
@@ -61,28 +73,26 @@ class SqlPatchManager
         } catch (PdoDbException) {
             return 0;
         }
+
         // Returns number of patches applied
-        if (empty($rows)) {
-            $lastPatchApplied = 0;
-            self::$numberToBeginPatchListAt = 0;
-        } else {
-            $lastPatchApplied = $rows[0]['sql_patch_ref'];
-            self::$numberToBeginPatchListAt = $lastPatchApplied - 20;
+        if (!empty($rows)) {
+            self::$lastPatchApplied = $rows[0]['sql_patch_ref'];
+            self::$numberToBeginPatchListAt = self::$lastPatchApplied - 20;
         }
 
-        Log::out("SqlPatchManager::lastPatchAppllied() - lastPatchApplied[$lastPatchApplied] numberToBeginPatchListAt[" . self::$numberToBeginPatchListAt . "]");
-        return $lastPatchApplied;
+        Log::out("SqlPatchManager::lastPatchAppllied() - lastPatchApplied[" . self::$lastPatchApplied . "] " .
+            "numberToBeginPatchListAt[" . self::$numberToBeginPatchListAt . "]");
+        return self::$lastPatchApplied;
     }
 
     /**
      * @return int Count of patches
      */
-    public static function numberOfUnappliedPatches(): int
+    public
+    static function numberOfUnappliedPatches(): int
     {
         // Initialize patch data if not already done
-        if (self::$patchCount == 0) {
-            self::loadPatches();
-        }
+        self::loadPatches();
 
         return self::$patchCount - self::lastPatchApplied();
     }
@@ -90,7 +100,8 @@ class SqlPatchManager
     /**
      * Assign database patches up to date message in smarty "page" variable.
      */
-    public static function donePatchesMessage(): void
+    public
+    static function donePatchesMessage(): void
     {
         global $LANG, $smarty;
         $pageInfo = [
@@ -103,57 +114,65 @@ class SqlPatchManager
         $smarty->assign("page", $pageInfo);
     }
 
-    private static function runSqlPatch(int $id, array $patch): array
+    /**
+     * Run a single patch.
+     * @param int $sql_patch_ref Number of the patch
+     * @param array $patch Patch array
+     * @return array Smarty rows of arrays to output for text and result of patch.
+     */
+    private
+    static function runSqlPatch(int $sql_patch_ref, array $patch): array
     {
         global $LANG, $pdoDbAdmin;
 
-        Log::out("SqlPatchManager::runSqlPatch() - id[$id] patch: " . print_r($patch, true));
-        $escapedId = Util::htmlSafe($id);
+        Log::out("SqlPatchManager::runSqlPatch() - sql_patch_ref[$sql_patch_ref] patch: " . print_r($patch, true));
+        $escaped_sql_patch_ref = Util::htmlSafe($sql_patch_ref);
         $patchName = Util::htmlSafe($patch['name']);
 
         $smartyRow = [];
         try {
             $pdoDbAdmin->setSelectAll(true);
-            $pdoDbAdmin->addSimpleWhere('sql_patch_ref', $id);
+            $pdoDbAdmin->addSimpleWhere('sql_patch_ref', $sql_patch_ref);
             $rows = $pdoDbAdmin->request('SELECT', 'sql_patchmanager');
             Log::out("SqlPatchManager::runSqlPatch() - rows: " . print_r($rows, true));
-            if (!empty($rows)) {
-                if ($id < self::$numberToBeginPatchListAt) {
-                    if ($id == 1) {
+            if (!empty($rows) || $sql_patch_ref <= self::lastPatchApplied()) {
+                if ($sql_patch_ref < self::$numberToBeginPatchListAt) {
+                    if ($sql_patch_ref == 1) {
                         $smartyRow['text'] = "*** Previously applied patches skipped to #" . self::$numberToBeginPatchListAt . " ***";
                         $smartyRow['result'] = "sep";
                     }
                 } else {
                     // forget about the patch as it has already been run!!
-                    $smartyRow['text'] = "{$LANG['skippingUc']} {$LANG['sqlUc']} {$LANG['patch']} $escapedId, $patchName {$LANG['asLc']} {$LANG['it']} <i>{$LANG['has']}</i> {$LANG['already']} {$LANG['been']} {$LANG['applied']}";
+                    $smartyRow['text'] = "{$LANG['skippingUc']} {$LANG['sqlUc']} {$LANG['patch']} $escaped_sql_patch_ref, $patchName {$LANG['asLc']} {$LANG['it']} <i>{$LANG['has']}</i> {$LANG['already']} {$LANG['been']} {$LANG['applied']}";
                     $smartyRow['result'] = "skip";
                 }
             } else {
                 // Validate patches before being applied
-                if ($id == 308) {
+                if ($sql_patch_ref == 308) {
                     self::prePatch308();
-                } elseif ($id == 318) {
+                } elseif ($sql_patch_ref == 318) {
                     self::prePatch318();
-                } elseif ($id == 321) {
+                } elseif ($sql_patch_ref == 321) {
                     self::prePatch321();
-                } elseif ($id == 322) {
+                } elseif ($sql_patch_ref == 322) {
                     self::prePatch322();
-                } elseif ($id == 331) {
+                } elseif ($sql_patch_ref == 331) {
                     self::prePatch331();
                 }
+
                 // patch hasn't been run, so run it
                 $pdoDbAdmin->query($patch['patch']);
 
-                $smartyRow['text'] = "{$LANG['sqlUc']} {$LANG['patch']} $escapedId, $patchName <i>{$LANG['has']}</i> {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}";
+                $smartyRow['text'] = "{$LANG['sqlUc']} {$LANG['patch']} $escaped_sql_patch_ref, $patchName <i>{$LANG['has']}</i> {$LANG['been']} {$LANG['applied']} {$LANG['to']} {$LANG['the']} {$LANG['database']}";
                 $smartyRow['result'] = "done";
 
                 // now update the sql_patchmanager table
                 $pdoDbAdmin->setFauxPost([
-                    'sql_patch_ref' => $id,
-                    'sql_patch'     => $patch['name'],
-                    'sql_release'   => $patch['date'],
+                    'sql_patch_ref' => $sql_patch_ref,
+                    'sql_patch' => $patch['name'],
+                    'sql_release' => $patch['date'],
                     'sql_statement' => $patch['patch'],
-                    'source'        => $patch['source']
+                    'source' => $patch['source']
                 ]);
 
                 if ($pdoDbAdmin->request('INSERT', 'sql_patchmanager') == 0) {
@@ -161,15 +180,15 @@ class SqlPatchManager
                     throw new PdoDbException("SqlPatchManager::runSqlPatch() = Unable to insert into sql_patchmanager.");
                 }
 
-                if ($id == 126) {
+                if ($sql_patch_ref == 126) {
                     self::postPatch126();
-                } else if ($id == 303) {
+                } else if ($sql_patch_ref == 303) {
                     self::postPatch303();
-                } else if ($id == 304) {
+                } else if ($sql_patch_ref == 304) {
                     self::postPatch304();
-                } elseif ($id == 321) {
+                } elseif ($sql_patch_ref == 321) {
                     self::postPatch321();
-                } elseif ($id == 322) {
+                } elseif ($sql_patch_ref == 322) {
                     self::postPatch322();
                 }
             }
@@ -184,14 +203,13 @@ class SqlPatchManager
     /**
      * Run the unapplied patches.
      */
-    public static function runPatches(): void
+    public
+    static function runPatches(): void
     {
         global $LANG, $pdoDbAdmin, $smarty;
 
         // Initialize patch data if not already done
-        if (self::$patchCount == 0) {
-            self::loadPatches();
-        }
+        self::loadPatches();
 
         try {
             $rows = $pdoDbAdmin->request('SHOW TABLES', 'sql_patchmanager');
@@ -208,13 +226,13 @@ class SqlPatchManager
             // original simpleinvoices version.
             $pdoDbAdmin->begin();
 
-            $ndx = 0;
+            $patchNumber = 0;
             $pageInfo['html'] = '';
             foreach (self::$patchLines as $patch) {
-                $ndx++;
-                $result = self::runSqlPatch($ndx, $patch);
+                $patchNumber++;
+                $result = self::runSqlPatch($patchNumber, $patch);
                 if (!empty($result)) {
-                    $pageInfo['rows'][$ndx] = $result;
+                    $pageInfo['rows'][$patchNumber] = $result;
                 }
             }
 
@@ -245,13 +263,13 @@ class SqlPatchManager
     /**
      * List all patches and their status.
      */
-    public static function listPatches(): void
+    public
+    static function listPatches(): void
     {
         global $LANG, $smarty;
+
         // Initialize patch data if not already done
-        if (self::$patchCount == 0) {
-            self::loadPatches();
-        }
+        self::loadPatches();
 
         $pageInfo = [];
         $pageInfo['message'] = "Your version of SimpleInvoices can now be upgraded. With this new release there are database patches that need to be applied";
@@ -295,7 +313,8 @@ class SqlPatchManager
      * Get all patches.
      * @return array Rows retrieved. Test for "=== false" to check for failure.
      */
-    public static function sqlPatches(): array
+    public
+    static function sqlPatches(): array
     {
         global $pdoDbAdmin;
 
@@ -315,31 +334,21 @@ class SqlPatchManager
 
     /**
      * Check to see if patch is in database (aka applied).
-     * @param int $patchRef
+     * @param int $sql_patch_ref
      * @return bool true if applied, false if not.
      */
-    private static function checkIfSqlPatchApplied( int $patchRef ): bool
+    private
+    static function checkIfSqlPatchApplied(int $sql_patch_ref): bool
     {
-        global $pdoDbAdmin;
-
-        if ($patchRef == 0) {
-            return true; // start patch always applied
-        }
-
-        try {
-            $pdoDbAdmin->addSimpleWhere('sql_patch_ref', $patchRef);
-            $rows = $pdoDbAdmin->request('SELECT', 'sql_patchmanager');
-        } catch (PdoDbException) {
-            return false;
-        }
-        return !empty($rows);
+        return $sql_patch_ref <= self::lastPatchApplied();
     }
 
     /**
      * Create the sql_patchmanager table and save initial record in it.
      * @return string
      */
-    private static function initializeSqlPatchTable(): string
+    private
+    static function initializeSqlPatchTable(): string
     {
         global $LANG, $pdoDbAdmin;
 
@@ -359,8 +368,8 @@ class SqlPatchManager
 
             $pdoDbAdmin->setFauxPost([
                 'sql_patch_ref' => '319',
-                'sql_patch'     => 'Add set_aging field to si_preferences',
-                'sql_release'   => '20200123',
+                'sql_patch' => 'Add set_aging field to si_preferences',
+                'sql_release' => '20200123',
                 'sql_statement' => "ALTER TABLE `si_preferences` ADD COLUMN `set_aging` BOOL NOT NULL DEFAULT  '0' AFTER `index_group`;" .
                     "UPDATE `si_preferences` SET `set_aging` = 1 WHERE pref_id = '1';"
             ]);
@@ -382,7 +391,8 @@ class SqlPatchManager
     /**
      * Special handling for patch #126
      */
-    private static function postPatch126(): void
+    private
+    static function postPatch126(): void
     {
         global $pdoDbAdmin;
 
@@ -413,7 +423,8 @@ class SqlPatchManager
     /**
      * Create invoice_item_attachments table if it doesn't exist.
      */
-    private static function prePatch308(): void
+    private
+    static function prePatch308(): void
     {
         global $pdoDbAdmin;
 
@@ -442,193 +453,194 @@ class SqlPatchManager
      * that foreign key values are valid (present in the referenced table.
      * @throws PdoDbException If undefined foreign key values found.
      */
-    private static function prePatch318(): void
+    private
+    static function prePatch318(): void
     {
         global $pdoDbAdmin;
 
         // @formatter::off
         $fk_constraints = [
             [
-                'table'       => 'cron',
-                'constraint'  => 'fk_invoice',
+                'table' => 'cron',
+                'constraint' => 'fk_invoice',
                 'foreign_key' => 'invoice_id',
-                'references'  => 'invoices',
-                'column'     => 'id'
+                'references' => 'invoices',
+                'column' => 'id'
             ],
             [
-                'table'       => 'cron_log',
-                'constraint'  => 'fk_cron',
+                'table' => 'cron_log',
+                'constraint' => 'fk_cron',
                 'foreign_key' => 'cron_id',
-                'references'  => 'cron',
-                'column'      => 'id'
+                'references' => 'cron',
+                'column' => 'id'
             ],
             [
-                'table'       => 'expense',
-                'constraint'  => 'fk_biller',
+                'table' => 'expense',
+                'constraint' => 'fk_biller',
                 'foreign_key' => 'biller_id',
-                'references'  => 'biller',
-                'column'      => 'id'
+                'references' => 'biller',
+                'column' => 'id'
             ],
             [
-                'table'       => 'expense',
-                'constraint'  => 'fk_customer',
+                'table' => 'expense',
+                'constraint' => 'fk_customer',
                 'foreign_key' => 'customer_id',
-                'references'  => 'customers',
-                'column'      => 'id'
+                'references' => 'customers',
+                'column' => 'id'
             ],
             [
-                'table'       => 'expense',
-                'constraint'  => 'fk_invoice',
+                'table' => 'expense',
+                'constraint' => 'fk_invoice',
                 'foreign_key' => 'invoice_id',
-                'references'  => 'invoices',
-                'column'      => 'id'
+                'references' => 'invoices',
+                'column' => 'id'
             ],
             [
-                'table'       => 'expense',
-                'constraint'  => 'fk_product',
+                'table' => 'expense',
+                'constraint' => 'fk_product',
                 'foreign_key' => 'product_id',
-                'references'  => 'products',
-                'column'      => 'id'
+                'references' => 'products',
+                'column' => 'id'
             ],
             [
-                'table'       => 'expense',
-                'constraint'  => 'fk_expense_account',
+                'table' => 'expense',
+                'constraint' => 'fk_expense_account',
                 'foreign_key' => 'expense_account_id',
-                'references'  => 'expense_account',
-                'column'      => 'id'
+                'references' => 'expense_account',
+                'column' => 'id'
             ],
             [
-                'table'       => 'expense_item_tax',
-                'constraint'  => 'fk_expense',
+                'table' => 'expense_item_tax',
+                'constraint' => 'fk_expense',
                 'foreign_key' => 'expense_id',
-                'references'  => 'expense',
-                'column'      => 'id'
+                'references' => 'expense',
+                'column' => 'id'
             ],
             [
-                'table'       => 'expense_item_tax',
-                'constraint'  => 'fk_tax',
+                'table' => 'expense_item_tax',
+                'constraint' => 'fk_tax',
                 'foreign_key' => 'tax_id',
-                'references'  => 'tax',
-                'column'      => 'tax_id'
+                'references' => 'tax',
+                'column' => 'tax_id'
             ],
             [
-                'table'       => 'inventory',
-                'constraint'  => 'fk_product',
+                'table' => 'inventory',
+                'constraint' => 'fk_product',
                 'foreign_key' => 'product_id',
-                'references'  => 'products',
-                'column'      => 'id'
+                'references' => 'products',
+                'column' => 'id'
             ],
             [
-                'table'       => 'invoices',
-                'constraint'  => 'fk_biller',
+                'table' => 'invoices',
+                'constraint' => 'fk_biller',
                 'foreign_key' => 'biller_id',
-                'references'  => 'biller',
-                'column'      => 'id'
+                'references' => 'biller',
+                'column' => 'id'
             ],
             [
-                'table'       => 'invoices',
-                'constraint'  => 'fk_customer',
+                'table' => 'invoices',
+                'constraint' => 'fk_customer',
                 'foreign_key' => 'customer_id',
-                'references'  => 'customers',
-                'column'      => 'id'
+                'references' => 'customers',
+                'column' => 'id'
             ],
             [
-                'table'       => 'invoices',
-                'constraint'  => 'fk_invoice_type',
+                'table' => 'invoices',
+                'constraint' => 'fk_invoice_type',
                 'foreign_key' => 'type_id',
-                'references'  => 'invoice_type',
-                'column'      => 'inv_ty_id'
+                'references' => 'invoice_type',
+                'column' => 'inv_ty_id'
             ],
             [
-                'table'       => 'invoices',
-                'constraint'  => 'fk_preference',
+                'table' => 'invoices',
+                'constraint' => 'fk_preference',
                 'foreign_key' => 'preference_id',
-                'references'  => 'preferences',
-                'column'      => 'pref_id'
+                'references' => 'preferences',
+                'column' => 'pref_id'
             ],
             [
-                'table'       => 'invoice_items',
-                'constraint'  => 'fk_invoice',
+                'table' => 'invoice_items',
+                'constraint' => 'fk_invoice',
                 'foreign_key' => 'invoice_id',
-                'references'  => 'invoices',
-                'column'      => 'id'
+                'references' => 'invoices',
+                'column' => 'id'
             ],
             [
-                'table'       => 'invoice_items',
-                'constraint'  => 'fk_product',
+                'table' => 'invoice_items',
+                'constraint' => 'fk_product',
                 'foreign_key' => 'product_id',
-                'references'  => 'products',
-                'column'      => 'id'
+                'references' => 'products',
+                'column' => 'id'
             ],
             [
-                'table'       => 'invoice_item_tax',
-                'constraint'  => 'fk_tax',
+                'table' => 'invoice_item_tax',
+                'constraint' => 'fk_tax',
                 'foreign_key' => 'tax_id',
-                'references'  => 'tax',
-                'column'      => 'tax_id'
+                'references' => 'tax',
+                'column' => 'tax_id'
             ],
             [
-                'table'       => 'invoice_item_attachments',
-                'constraint'  => 'fk_invoice_item',
+                'table' => 'invoice_item_attachments',
+                'constraint' => 'fk_invoice_item',
                 'foreign_key' => 'invoice_item_id',
-                'references'  => 'invoice_items',
-                'column'      => 'id'
+                'references' => 'invoice_items',
+                'column' => 'id'
             ],
             [
-                'table'       => 'payment',
-                'constraint'  => 'fk_invoice',
+                'table' => 'payment',
+                'constraint' => 'fk_invoice',
                 'foreign_key' => 'ac_inv_id',
-                'references'  => 'invoices',
-                'column'      => 'id'
+                'references' => 'invoices',
+                'column' => 'id'
             ],
             [
-                'table'       => 'payment',
-                'constraint'  => 'fk_payment_type',
+                'table' => 'payment',
+                'constraint' => 'fk_payment_type',
                 'foreign_key' => 'ac_payment_type',
-                'references'  => 'payment_types',
-                'column'      => 'pt_id'
+                'references' => 'payment_types',
+                'column' => 'pt_id'
             ],
             [
-                'table'       => 'products',
-                'constraint'  => 'fk_tax',
+                'table' => 'products',
+                'constraint' => 'fk_tax',
                 'foreign_key' => 'default_tax_id',
-                'references'  => 'tax',
-                'column'      => 'tax_id'
+                'references' => 'tax',
+                'column' => 'tax_id'
             ],
             [
-                'table'       => 'products',
-                'constraint'  => 'fk_tax_2',
+                'table' => 'products',
+                'constraint' => 'fk_tax_2',
                 'foreign_key' => 'default_tax_id_2',
-                'references'  => 'tax',
-                'column'      => 'tax_id'
+                'references' => 'tax',
+                'column' => 'tax_id'
             ],
             [
-                'table'       => 'products_attributes',
-                'constraint'  => 'fk_type',
+                'table' => 'products_attributes',
+                'constraint' => 'fk_type',
                 'foreign_key' => 'type_id',
-                'references'  => 'products_attribute_type',
-                'column'      => 'id'
+                'references' => 'products_attribute_type',
+                'column' => 'id'
             ],
             [
-                'table'       => 'products_values',
-                'constraint'  => 'fk_attribute',
+                'table' => 'products_values',
+                'constraint' => 'fk_attribute',
                 'foreign_key' => 'attribute_id',
-                'references'  => 'products_attributes',
-                'column'      => 'id'
+                'references' => 'products_attributes',
+                'column' => 'id'
             ],
             [
-                'table'       => 'user',
-                'constraint'  => 'fk_domain',
+                'table' => 'user',
+                'constraint' => 'fk_domain',
                 'foreign_key' => 'domain_id',
-                'references'  => 'user_domain',
-                'column'      => 'id'
+                'references' => 'user_domain',
+                'column' => 'id'
             ],
             [
-                'table'       => 'user',
-                'constraint'  => 'fk_role',
+                'table' => 'user',
+                'constraint' => 'fk_role',
                 'foreign_key' => 'role_id',
-                'references'  => 'user_role',
-                'column'      => 'id'
+                'references' => 'user_role',
+                'column' => 'id'
             ]
         ];
 
@@ -689,7 +701,8 @@ class SqlPatchManager
      * Save product group information for those with extension enabled.
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function prePatch321(): void
+    private
+    static function prePatch321(): void
     {
         global $pdoDbAdmin, $subCustomerExtEnabled;
 
@@ -717,7 +730,8 @@ class SqlPatchManager
      * Special handling for patch #321
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function postPatch321(): void
+    private
+    static function postPatch321(): void
     {
         global $subCustomerExtEnabled;
 
@@ -733,7 +747,8 @@ class SqlPatchManager
      * Save product group information for those with extension enabled.
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function prePatch322(): void
+    private
+    static function prePatch322(): void
     {
         global $pdoDbAdmin, $productGroupEnabled;
 
@@ -741,8 +756,7 @@ class SqlPatchManager
             $pdoDbAdmin->addSimpleWhere('name', 'invoice_grouped');
             $rows = $pdoDbAdmin->request('SELECT', 'extensions');
 
-            $extEnabled = !empty($rows) && $rows[0]['enabled'] == ENABLED;
-            if ($extEnabled) {
+            if (!empty($rows) && $rows[0]['enabled'] == ENABLED) {
                 $pdoDbAdmin->addSimpleWhere('cf_custom_field', "product_cf1");
                 $rows = $pdoDbAdmin->request('SELECT', 'custom_fields');
                 $productGroupEnabled = !empty($rows[0]['cf_custom_label']);
@@ -759,7 +773,8 @@ class SqlPatchManager
     /**
      * Special handling for patch #303
      */
-    private static function postPatch303(): void
+    private
+    static function postPatch303(): void
     {
         global $pdoDbAdmin;
 
@@ -769,7 +784,7 @@ class SqlPatchManager
             $rows = $pdoDbAdmin->request('SELECT', 'extensions');
             if (!empty($rows)) {
                 // Copy invoice custom field 3 value to the new sales representative field.
-                $pdoDbAdmin->addToWhere(new WhereItem(false,'custom_field3', "<>", "", false));
+                $pdoDbAdmin->addToWhere(new WhereItem(false, 'custom_field3', "<>", "", false));
                 $rows = $pdoDbAdmin->request("SELECT", "invoices");
 
                 foreach ($rows as $row) {
@@ -809,7 +824,8 @@ class SqlPatchManager
      *      "id" to the invoice "index_id" value. If NO "default_invoice" entry exists
      *      a "default_invoice" record with a zero setting will be created.
      */
-    private static function postPatch304(): void
+    private
+    static function postPatch304(): void
     {
         global $pdoDbAdmin;
 
@@ -913,7 +929,8 @@ class SqlPatchManager
      * Special handling for patch #322
      * Note: Will perform exit() with error message if error thrown by called methods.
      */
-    private static function postPatch322(): void
+    private
+    static function postPatch322(): void
     {
         global $pdoDbAdmin, $productGroupEnabled;
 
@@ -937,7 +954,8 @@ class SqlPatchManager
      * @throws PdoDbException If undefined foreign key values found.
      * @noinspection PhpVariableNamingConventionInspection
      */
-    private static function prePatch331(): void
+    private
+    static function prePatch331(): void
     {
         global $pdoDbAdmin;
 
@@ -992,9 +1010,15 @@ class SqlPatchManager
     /**
      * Load all patches to be processed.
      */
-    private static function loadPatches(): void
+    private
+    static function loadPatches(): void
     {
         global $config, $LANG, $language, $pdoDbAdmin;
+
+        if (self::$patchCount != 0) {
+            // Already loaded
+            return;
+        }
 
         // @formatter:off
         $domainId = DomainId::get();
@@ -1992,68 +2016,88 @@ class SqlPatchManager
         ];
         self::makePatch('115', $patch);
 
+        $defaults = [];
+        if (self::lastPatchApplied() < 124) {
+            // system defaults conversion patch
+            // defaults query and DEFAULT NUMBER OF LINE ITEMS
+            try {
+                $pdoDbAdmin->setSelectAll(true);
+                $defaults = $pdoDbAdmin->request('SELECT', 'defaults');
+            } catch (PdoDbException) {
+                // No action needed. $defaults already empty.
+            }
+
+        }
+
         $def_biller = (empty($defaults['def_biller']) ? "" : $defaults['def_biller']);
         $patch = [
             'name' => "System defaults conversion patch - set default biller",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_biller where name = 'biller'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$def_biller' where name = 'biller'",
             'date' => "20070523",
             'source' => 'original'
         ];
         self::makePatch('116', $patch);
+        unset($def_biller);
 
         $def_customer = (empty($defaults['def_customer']) ? "" : $defaults['def_customer']);
         $patch = [
             'name' => "System defaults conversion patch - set default customer",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_customer where name = 'customer'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$def_customer' where name = 'customer'",
             'date' => "20070523",
             'source' => 'original'
         ];
         self::makePatch('117', $patch);
+        unset($def_customer);
 
         $def_tax = (empty($defaults['def_tax']) ? "" : $defaults['def_tax']);
         $patch = [
             'name' => "System defaults conversion patch - set default tax",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_tax where name = 'tax'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$def_tax' where name = 'tax'",
             'date' => "20070523",
             'source' => 'original'
         ];
         self::makePatch('118', $patch);
+        unset($def_tax);
 
         $def_inv_preference = (empty($defaults['def_inv_preference']) ? "" : $defaults['def_inv_preference']);
         $patch = [
             'name' => "System defaults conversion patch - set default invoice reference",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_inv_preference where name = 'preference'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$def_inv_preference' where name = 'preference'",
             'date' => "20070523",
             'source' => 'original'
         ];
         self::makePatch('119', $patch);
+        unset($def_inv_preference);
 
         $def_number_line_items = (empty($defaults['def_number_line_items']) ? "" : $defaults['def_number_line_items']);
         $patch = [
             'name' => "System defaults conversion patch - set default number of line items",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_number_line_items where name = 'line_items'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$def_number_line_items' where name = 'line_items'",
             'date' => "20070523",
             'source' => 'original'
         ];
         self::makePatch('120', $patch);
+        unset($def_number_line_items);
 
         $def_inv_template = (empty($defaults['def_inv_template']) ? "" : $defaults['def_inv_template']);
         $patch = [
             'name' => "System defaults conversion patch - set default invoice template",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_inv_template where name = 'template'",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$def_inv_template' where name = 'template'",
             'date' => "20070523",
             'source' => 'original'
         ];
         self::makePatch('121', $patch);
+        unset($def_inv_template);
 
         $def_payment_type = (empty($defaults['def_payment_type']) ? "" : $defaults['def_payment_type']);
         $patch = [
-            'name' => "System defaults conversion patch - set default paymemt type",
-            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = $def_payment_type where name = 'payment_type'",
+            'name' => "System defaults conversion patch - set default payment type",
+            'patch' => "UPDATE `" . TB_PREFIX . "system_defaults` SET value = '$def_payment_type' where name = 'payment_type'",
             'date' => "20070523",
             'source' => 'original'
         ];
         self::makePatch('122', $patch);
+        unset($def_payment_type);
 
         $patch = [
             'name' => "Add option to delete invoices into the system_defaults table",
@@ -2135,6 +2179,7 @@ class SqlPatchManager
             'source' => 'original'
         ];
         self::makePatch('130', $patch);
+        unset($ac);
 
         $patch = [
             'name' => "Make tax field 3 decimal places",
@@ -2796,6 +2841,7 @@ class SqlPatchManager
             'source' => 'original'
         ];
         self::makePatch('209', $patch);
+        unset($preference);
 
         $patch = [
             'name' => "Create composite primary key for invoice table",
@@ -2832,8 +2878,9 @@ class SqlPatchManager
             'source' => 'original'
         ];
         self::makePatch('213', $patch);
+        unset($preference);
+        unset($maxInvoice);
         unset($defaults);
-        unset($max_invoice);
 
         $patch = [
             'name' => "Add sub_node_2 to si_index table",
@@ -3558,16 +3605,16 @@ class SqlPatchManager
                                                               "KEY `dtable`    (`domain_id`, `associated_table`)) " .
                                                 "ENGINE=InnoDB COMMENT='Specifies an allowed setting for a flag field';" .
                 "ALTER TABLE `" . TB_PREFIX . "products` ADD `custom_flags` CHAR( 10 ) NOT NULL COMMENT 'User defined flags';" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',1,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',2,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',3,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',4,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',5,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',6,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',7,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',8,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',9,0);" .
-                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, flg_id, enabled) VALUES (1,'products',10,0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',1,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',2,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',3,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',4,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',5,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',6,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',7,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',8,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',9,'',0);" .
+                "INSERT INTO `" . TB_PREFIX . "custom_flags` (domain_id, associated_table, field_label, flg_id, field_help, enabled) VALUES (1,'products','',10,'',0);" .
                 "DELETE IGNORE FROM `" . TB_PREFIX . "extensions` WHERE `name` = 'custom_flags';"),
             'date' => "20180922",
             'source' => 'fearless359'
@@ -3592,8 +3639,8 @@ class SqlPatchManager
         self::makePatch('296', $patch);
 
         $ud = ($pdoDbAdmin->checkFieldExists("user", "username"));
-        $conam = $LANG['company_name'];
-        $cologo = 'simple_invoices_logo.png';
+        $coNam = $LANG['company_name'];
+        $coLogo = 'simple_invoices_logo.png';
         $patch = [
             'name' => 'Add User Security enhancement fields and values',
             'patch' => ($ud ? "UPDATE `" . TB_PREFIX . "system_defaults` SET `extension_id` = 1 WHERE `name` IN " .
@@ -3604,9 +3651,9 @@ class SqlPatchManager
                 "UPDATE `" . TB_PREFIX . "user` AS U1, `" . TB_PREFIX . "user` AS U2 SET U1.username = U2.email WHERE U2.id = U1.id;" .
                 "ALTER TABLE `" . TB_PREFIX . "user` ADD UNIQUE INDEX `uname` (`username`);" .
                 "ALTER TABLE `" . TB_PREFIX . "system_defaults` CHANGE `value` `value` VARCHAR(60);" .
-                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'company_logo'        , '$cologo', 1);" .
-                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'company_name'        , '$conam' , 1);" .
-                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'company_name_item'   , '$conam' , 1);" .
+                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'company_logo'        , '$coLogo', 1);" .
+                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'company_name'        , '$coNam' , 1);" .
+                "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'company_name_item'   , '$coNam' , 1);" .
                 "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'password_min_length' , 8        , 1);" .
                 "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'password_lower'      , 1        , 1);" .
                 "INSERT INTO `" . TB_PREFIX . "system_defaults` (`domain_id` , `name`, `value`,`extension_id`) VALUES ($domainId, 'password_number'     , 1        , 1);" .
@@ -3619,8 +3666,8 @@ class SqlPatchManager
         ];
         self::makePatch('297', $patch);
         unset($ud);
-        unset($conam);
-        unset($cologo);
+        unset($coNam);
+        unset($coLogo);
 
         $ud = ($pdoDbAdmin->checkFieldExists('biller', 'signature'));
         $patch = [
@@ -3671,7 +3718,6 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('301', $patch);
-        unset($fe);
 
         $patch = [
             'name' => "Added owing to invoices table",
@@ -3731,6 +3777,7 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('305', $patch);
+        unset($ud);
 
         $patch = [
             'name' => 'Clean up default_tax_id and default_tax_id_2 for products',
@@ -4121,7 +4168,6 @@ class SqlPatchManager
         ];
         self::makePatch('321', $patch);
         unset($fldExists);
-        unset($extEnabled);
 
         $tblExists = $pdoDbAdmin->checkTableExists( 'product_groups');
         $patch = [
@@ -4140,6 +4186,7 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('322', $patch);
+        unset($tblExists);
 
         $patch = [
             'name' => "Add invoice description open option.",
@@ -4209,6 +4256,7 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('328', $patch);
+        unset($tblExists);
 
         $tblExists = $pdoDbAdmin->checkTableExists( 'cron_invoice_item_tax');
         $patch = [
@@ -4231,6 +4279,7 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('329', $patch);
+        unset($tblExists);
 
         $patch = [
             'name' => 'Add invoice_item_id as a key for the invoice_item_tax table.',
@@ -4254,6 +4303,7 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('331', $patch);
+        unset($foreignKeyExists);
 
         $tblExists = $pdoDbAdmin->checkTableExists( 'payment_warehouse');
         $patch = [
@@ -4278,6 +4328,7 @@ class SqlPatchManager
             'source' => 'fearless359'
         ];
         self::makePatch('332', $patch);
+        unset($tblExists);
 
         $patch = [
             'name' => "Add warehouse_amount field to payment table.",

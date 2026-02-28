@@ -120,13 +120,12 @@ if (isset($defaults['company_name_item'])) {
 if (!$apiRequest) {
     $fakeAuth = $_SESSION['fakeAuth'] ?? "";
     Log::out("init.php - authenticationEnabled[{$config['authenticationEnabled']}] " .
-        "$fakeAuth unappliedPatches[$unappliedPatches]");
+        "fakeAuth[$fakeAuth] unappliedPatches[$unappliedPatches]");
 
     // if user logged into SimpleInvoices with authentication set to false,
     // then use the fake authentication, killing the session that was started.
     if ($config['authenticationEnabled'] == ENABLED && $fakeAuth == "1" && $unappliedPatches == 0) {
         session_destroy();
-
         header('Location: .');
     }
 

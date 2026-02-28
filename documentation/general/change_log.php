@@ -17,6 +17,14 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2026-02-28 - <strong>2026.00.11</strong>
+                <ul>
+                    <li>Fixed sql patch manager to handle case where not all old patch history exists
+                        in the si_sql_patchmanager table.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2026-02-20 - <strong>2026.00.10</strong>
                 <ul>
                     <li>Added rounding of tax amount to two decimal places.</li>
