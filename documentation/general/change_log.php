@@ -17,6 +17,15 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2026-03-17 - <strong>2026.00.12</strong>
+                <ul>
+                    <li>Fix invoice preference edit logic to handle making a new numbering group
+                        for different types of invoices. For example, having a numbering group
+                        for Estimates that differs from Invoices.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2026-02-28 - <strong>2026.00.11</strong>
                 <ul>
                     <li>Fixed sql patch manager to handle case where not all old patch history exists

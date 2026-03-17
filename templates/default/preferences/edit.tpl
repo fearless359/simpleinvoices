@@ -224,41 +224,37 @@
                 <script>
                     {literal}
                     function checkIndexGroup() {
-                        let nextIndexIdLabelElem = document.getElementById('nextIndexIdLabel'),
-                            nextIndexIdElem = document.getElementById('nextIndexId'),
-                            startingIndexIdLabelElem = document.getElementById('startingIndexIdLabel'),
-                            startingIndexIdElem = document.getElementById('startingIndexId');
                         if (document.getElementById('groupId').value === "0") {
-                            nextIndexIdLabelElem.style.display = "none";
-                            nextIndexIdElem.style.display = "none";
-                            startingIndexIdLabelElem.style.display = "inline";
-                            startingIndexIdElem.style.display = "inline";
+                            $('#nextIndexRowId').hide();
+                            $('#startingIndexRowId').show();
                         } else {
-                            nextIndexIdLabelElem.style.display = "inline";
-                            nextIndexIdElem.style.display = "inline";
-                            startingIndexIdLabelElem.style.display = "none";
-                            startingIndexIdElem.style.display = "none";
+                            $('#nextIndexRowId').show();
+                            $('#startingIndexRowId').hide();
                         }
                     }
                     {/literal}
                 </script>
                 <div class="row">
-                    <div class="col__30">
-                        <label for="startingIndexId" class="margin__left-1 margin__right-1"
-                               id="startingIndexIdLabel">{$LANG.startingNumber}:
-                            <img class="tooltip" title="{$LANG.helpStartingNumber}" src="{$helpImagePath}help-small.png"
-                                 alt=""/>
-                        </label>
+                    <div id="startingIndexRowId" style="display: none">
+                        <div class="col__30">
+                            <label for="startingIndexId" class="margin__left-1 margin__right-1"
+                                   id="startingIndexIdLabel">{$LANG.startingNumber}:
+                                <img class="tooltip" title="{$LANG.helpStartingNumber}"
+                                     src="{$helpImagePath}help-small.png"
+                                     alt=""/>
+                            </label>
+                        </div>
+                        <div class="col__20">
+                            <input type="number" name="startingIndexId" id="startingIndexId" tabindex="155"
+                                   value="1" min="1">
+                        </div>
                     </div>
-                    <div class="col__20">
-                        <input type="text" name="startingIndexId" id="startingIndexId" tabindex="155"
-                               value="{$startingId}">
-                    </div>
-                    <div class="col__25">
-                        <span class="label margin__left-1" id="nextIndexIdLabel">{$LANG.nextNumber}:</span>
-                    </div>
-                    <div class="col__25 align__text-left" style="margin-top: 2rem;">
-                        <span id="nextIndexId">{$nextId}</span>
+                    <div id="nextIndexRowId">
+                        <div class="col__50">
+                            <span class="label margin__left-1" id="nextIndexIdLabel">{$LANG.nextNumber}:</span>
+                            <span id="nextIndexId">{$nextId}</span>
+                        </div>
+                        <input type="hidden" name="nextIndexValue" id="nextIndexValueId" value="{$nextId}">
                     </div>
                 </div>
             </div>

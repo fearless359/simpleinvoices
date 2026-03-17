@@ -47,7 +47,7 @@ if (!empty($_POST['p_description'])) {
         // If $useThisPref is true, then check to see if invoices for this preference
         // exist already. If they do, the starting number for this preference must be greater
         // than the greatest number already assigned.
-        $smarty->assign('startingId', Invoice::maxIndexIdForPreference($preference['pref_id']) + 1);
+        $smarty->assign('startingId', Invoice::maxIndexIdForPreference($preference['index_group']) + 1);
         $smarty->assign('nextId', Index::next('invoice', $indexGroup));
     } catch (PdoDbException $pde) {
         error_log("modules/preferences/edit.php Exception: {$pde->getMessage()}");

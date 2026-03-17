@@ -1368,7 +1368,7 @@ div.odd {
   top: 1.6rem;
   left: 0.5rem;
 }
-.form__container input[type=text], .form__container input[type=tel], .form__container input[type=email], .form__container input[type=url], .form__container input[type=password], .form__container select, .form__container textarea {
+.form__container input[type=text], .form__container input[type=tel], .form__container input[type=email], .form__container input[type=url], .form__container input[type=password], .form__container input[type=number], .form__container select, .form__container textarea {
   width: 100%;
   padding: 1rem;
   border: 1px solid #ccc;
