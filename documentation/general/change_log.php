@@ -17,6 +17,15 @@
     <br/>
     <div id="left">
         <ul>
+            <li>2026-04-17 - <strong>2026.00.13</strong>
+                <ul>
+                    <li>Updated <strong>Readme.md</strong> file links to current GitHub version of SI.</li>
+                    <li>Added php range and ucfirst functions to registered smarty modifier functions
+                        available for use in templates. Fix for Monthly Sales and Payments per Year report.</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
             <li>2026-03-17 - <strong>2026.00.12</strong>
                 <ul>
                     <li>Fix invoice preference edit logic to handle making a new numbering group

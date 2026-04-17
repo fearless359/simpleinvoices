@@ -88,6 +88,8 @@ try {
     $smarty->registerPlugin('modifier', 'urlEncode'  , ['Inc\Claz\Util', 'urlEncode']);
     $smarty->registerPlugin('modifier', 'urlSafe'    , ['Inc\Claz\Util', 'urlSafe']);
 
+    $smarty->registerPlugin('modifier', 'range', 'range');
+    $smarty->registerPlugin('modifier', 'ucfirst', 'ucfirst');
     $smarty->registerPlugin('modifier', 'urlencode', 'urlencode'); // PHP function
 } catch (\Smarty\Exception $se) {
     SiError::out('generic', 'SmartyException', $se->getMessage());
